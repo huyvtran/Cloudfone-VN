@@ -1,0 +1,11 @@
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang 
+Build flags: ;-miphoneos-version-min=8.0;-DTARGET_OS_IPHONE=1;-D__IOS;-fms-extensions;-mcpu=cortex-a8;-fembed-bitcode;-w
+Id flags: 
+
+The output was:
+1
+ld: building for iOS simulator, but linking against dylib built for OSX, file '/usr/lib/libSystem.dylib' for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+

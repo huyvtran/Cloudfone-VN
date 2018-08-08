@@ -1,0 +1,3 @@
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/matroska2/libmatroska2/CMakeFiles/matroska2.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/matroska2/libebml2/CMakeFiles/ebml2.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/matroska2/corec/corec/CMakeFiles/corec.dir

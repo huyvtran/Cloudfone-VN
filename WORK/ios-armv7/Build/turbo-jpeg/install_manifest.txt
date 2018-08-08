@@ -1,0 +1,2 @@
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/lib/libturbojpeg.a
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/include/turbojpeg.h

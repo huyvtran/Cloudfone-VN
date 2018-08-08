@@ -1,0 +1,41 @@
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang 
+Build flags: ;-miphoneos-version-min=8.0;-DTARGET_OS_IPHONE=1;-D__IOS;-fms-extensions;-mcpu=cortex-a8;-fembed-bitcode
+Id flags: 
+
+The output was:
+1
+clang: warning: argument unused during compilation: '-mcpu=cortex-a8'
+ld: building for iOS simulator, but linking against dylib built for OSX, file '/usr/lib/libSystem.dylib' for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ 
+Build flags: ;-miphoneos-version-min=8.0;-DTARGET_OS_IPHONE=1;-D__IOS;-fms-extensions;-mcpu=cortex-a8;-fembed-bitcode;;-stdlib=libc++
+Id flags: 
+
+The output was:
+1
+clang: warning: argument unused during compilation: '-mcpu=cortex-a8'
+ld: building for iOS simulator, but linking against dylib built for OSX, file '/usr/lib/libSystem.dylib' for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Determining if the function clock_gettime exists in the rt failed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Build/bctoolbox/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f555a/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_f555a.dir/build.make CMakeFiles/cmTC_f555a.dir/build
+Building C object CMakeFiles/cmTC_f555a.dir/CheckFunctionExists.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=armv7-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -mcpu=cortex-a8 -fembed-bitcode -DCHECK_FUNCTION_EXISTS=clock_gettime -arch armv7 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.1.sdk   -o CMakeFiles/cmTC_f555a.dir/CheckFunctionExists.c.o   -c /usr/local/Cellar/cmake/3.4.3/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_f555a
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f555a.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=armv7-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -mcpu=cortex-a8 -fembed-bitcode -DCHECK_FUNCTION_EXISTS=clock_gettime -arch armv7 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_f555a.dir/CheckFunctionExists.c.o  -o cmTC_f555a  -lrt 
+ld: warning: -headerpad_max_install_names is ignored when used with -bitcode_bundle (Xcode setting ENABLE_BITCODE=YES)
+ld: library not found for -lrt
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make[5]: *** [cmTC_f555a] Error 1
+make[4]: *** [cmTC_f555a/fast] Error 2
+
+

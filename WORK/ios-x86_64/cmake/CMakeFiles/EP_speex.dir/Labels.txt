@@ -1,0 +1,14 @@
+# Target labels
+ EP_speex
+# Source files and their labels
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/cmake/CMakeFiles/EP_speex
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/cmake/CMakeFiles/EP_speex.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/cmake/CMakeFiles/EP_speex-complete.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_speex/EP_speex-install.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_speex/EP_speex-mkdir.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_speex/EP_speex-download.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_speex/EP_speex-update.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_speex/EP_speex-patch.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_speex/EP_speex-configure.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_speex/EP_speex-build.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_speex/EP_speex-force_build.rule

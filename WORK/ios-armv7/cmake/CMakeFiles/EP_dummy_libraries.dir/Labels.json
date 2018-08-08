@@ -1,0 +1,51 @@
+
+{
+	"sources" : 
+	[
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/cmake/CMakeFiles/EP_dummy_libraries"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/cmake/CMakeFiles/EP_dummy_libraries.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/cmake/CMakeFiles/EP_dummy_libraries-complete.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_dummy_libraries/EP_dummy_libraries-install.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_dummy_libraries/EP_dummy_libraries-mkdir.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_dummy_libraries/EP_dummy_libraries-download.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_dummy_libraries/EP_dummy_libraries-update.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_dummy_libraries/EP_dummy_libraries-patch.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_dummy_libraries/EP_dummy_libraries-configure.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_dummy_libraries/EP_dummy_libraries-build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : [ "EP_dummy_libraries" ],
+		"name" : "EP_dummy_libraries"
+	}
+}

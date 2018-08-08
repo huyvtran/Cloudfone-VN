@@ -1,0 +1,55 @@
+
+{
+	"sources" : 
+	[
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_opus"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_opus.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_opus-complete.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_opus/EP_opus-install.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_opus/EP_opus-mkdir.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_opus/EP_opus-download.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_opus/EP_opus-update.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_opus/EP_opus-patch.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_opus/EP_opus-configure.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_opus/EP_opus-build.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_opus/EP_opus-force_build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : [ "EP_opus" ],
+		"name" : "EP_opus"
+	}
+}

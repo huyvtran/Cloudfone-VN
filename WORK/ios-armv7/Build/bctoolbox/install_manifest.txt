@@ -1,0 +1,13 @@
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/lib/pkgconfig/bctoolbox.pc
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/share/bctoolbox/cmake/BcToolboxTargets.cmake
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/share/bctoolbox/cmake/BcToolboxTargets-release.cmake
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/share/bctoolbox/cmake/BcToolboxConfig.cmake
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/share/bctoolbox/cmake/BcToolboxConfigVersion.cmake
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/include/bctoolbox/crypto.h
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/include/bctoolbox/list.h
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/include/bctoolbox/logging.h
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/include/bctoolbox/map.h
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/include/bctoolbox/port.h
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/include/bctoolbox/vfs.h
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/include/bctoolbox/exception.hh
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/lib/libbctoolbox.a

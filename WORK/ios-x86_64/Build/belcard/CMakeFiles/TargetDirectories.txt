@@ -1,0 +1,4 @@
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/belcard/tools/CMakeFiles/belcard-parser.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/belcard/tools/CMakeFiles/belcard-unfolder.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/belcard/tools/CMakeFiles/belcard-folder.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/belcard/src/CMakeFiles/belcard-static.dir

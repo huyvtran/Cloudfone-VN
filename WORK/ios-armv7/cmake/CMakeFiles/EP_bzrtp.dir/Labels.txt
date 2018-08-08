@@ -1,0 +1,14 @@
+# Target labels
+ EP_bzrtp
+# Source files and their labels
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/cmake/CMakeFiles/EP_bzrtp
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/cmake/CMakeFiles/EP_bzrtp.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/cmake/CMakeFiles/EP_bzrtp-complete.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bzrtp/EP_bzrtp-install.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bzrtp/EP_bzrtp-mkdir.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bzrtp/EP_bzrtp-download.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bzrtp/EP_bzrtp-update.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bzrtp/EP_bzrtp-patch.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bzrtp/EP_bzrtp-configure.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bzrtp/EP_bzrtp-build.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bzrtp/EP_bzrtp-force_build.rule

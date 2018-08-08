@@ -1,0 +1,2 @@
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc libbelr.a  CMakeFiles/belr-static.dir/abnf.cc.o CMakeFiles/belr-static.dir/belr.cc.o CMakeFiles/belr-static.dir/grammarbuilder.cc.o CMakeFiles/belr-static.dir/parser.cc.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib libbelr.a

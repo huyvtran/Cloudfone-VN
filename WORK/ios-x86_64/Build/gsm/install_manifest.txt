@@ -1,0 +1,2 @@
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/x86_64-apple-darwin.ios/lib/libgsm.a
+/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/x86_64-apple-darwin.ios/include/gsm/gsm.h

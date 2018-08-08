@@ -1,0 +1,10 @@
+# This is a comment
+prefix=/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios
+exec_prefix=/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios
+
+Name:  bctoolbox
+Description: A common set of tools used by Belledonne Communications' softwares
+Version: 0.5.0
+Libs: -L/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/lib -lbctoolbox
+Libs.private:  -L
+Cflags: -I/Users/eicaptain/Desktop/linphone-iphone/liblinphone-sdk/armv7-apple-darwin.ios/include

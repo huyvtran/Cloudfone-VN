@@ -1,0 +1,55 @@
+
+{
+	"sources" : 
+	[
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/cmake/CMakeFiles/EP_turbo-jpeg"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/cmake/CMakeFiles/EP_turbo-jpeg.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/cmake/CMakeFiles/EP_turbo-jpeg-complete.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_turbo-jpeg/EP_turbo-jpeg-install.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_turbo-jpeg/EP_turbo-jpeg-mkdir.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_turbo-jpeg/EP_turbo-jpeg-download.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_turbo-jpeg/EP_turbo-jpeg-update.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_turbo-jpeg/EP_turbo-jpeg-patch.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_turbo-jpeg/EP_turbo-jpeg-configure.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_turbo-jpeg/EP_turbo-jpeg-build.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_turbo-jpeg/EP_turbo-jpeg-force_build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : [ "EP_turbo-jpeg" ],
+		"name" : "EP_turbo-jpeg"
+	}
+}

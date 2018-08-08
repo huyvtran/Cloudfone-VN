@@ -1,0 +1,26 @@
+//
+// Prefix header for all source files of the 'linphone' target in the 'linphone' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+    #import <UIKit/UIKit.h>
+#endif
+
+#import "Log.h"
+#import "Utils.h"
+#import "Contact.h"
+
+#import "UIToggleButton.h"
+#import "UISpeakerButton.h"
+#import "UIBluetoothButton.h"
+#import "UIMutedMicroButton.h"
+
+#import "UIChatBubbleTextCell.h"
+#import "AppStrings.h"
+#import "AppUtils.h"
+#import "SipUtils.h"
+#import "LinphoneAppDelegate.h"
+#import "YBHud.h"
+#import "UIView+Toast.h"
+#import "HMLocalization.h"

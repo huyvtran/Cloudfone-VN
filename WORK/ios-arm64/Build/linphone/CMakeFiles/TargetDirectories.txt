@@ -1,0 +1,3 @@
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/linphone/share/CMakeFiles/rootca.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/linphone/coreapi/CMakeFiles/linphone-static.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/linphone/coreapi/CMakeFiles/liblinphone-git-version.dir

@@ -1,0 +1,7 @@
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Build/ms2/src/CMakeFiles/ms2-yuv2rgb-vs-header.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Build/ms2/src/CMakeFiles/ms2-yuv2rgb-fs-header.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Build/ms2/src/CMakeFiles/mediastreamer_base-static.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Build/ms2/src/CMakeFiles/mediastreamer_voip-static.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Build/ms2/src/CMakeFiles/ms2-git-version.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Build/ms2/src/CMakeFiles/ms2-basedescs-header.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Build/ms2/src/CMakeFiles/ms2-voipdescs-header.dir

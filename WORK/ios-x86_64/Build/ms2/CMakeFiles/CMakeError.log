@@ -1,0 +1,37 @@
+Determining if the system is big endian passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/ms2/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_44fef/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_44fef.dir/build.make CMakeFiles/cmTC_44fef.dir/build
+Building C object CMakeFiles/cmTC_44fef.dir/TestEndianess.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_44fef.dir/TestEndianess.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/ms2/CMakeFiles/CMakeTmp/TestEndianess.c
+Linking C executable cmTC_44fef
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_44fef.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_44fef.dir/TestEndianess.c.o  -o cmTC_44fef  
+
+TestEndianess.c:
+/* A 16 bit integer is required. */
+typedef unsigned short cmakeint16;
+
+/* On a little endian machine, these 16bit ints will give "THIS IS LITTLE ENDIAN."
+   On a big endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_little[] =  {0x4854, 0x5349, 0x4920, 0x2053, 0x494c, 0x5454, 0x454c, 0x4520, 0x444e, 0x4149, 0x2e4e, 0x0000};
+
+/* on a big endian machine, these 16bit ints will give "THIS IS BIG ENDIAN."
+   On a little endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_big[] =     {0x5448, 0x4953, 0x2049, 0x5320, 0x4249, 0x4720, 0x454e, 0x4449, 0x414e, 0x2e2e, 0x0000};
+
+#ifdef __CLASSIC_C__
+int main(argc, argv) int argc; char *argv[];
+#else
+int main(int argc, char *argv[])
+#endif
+{
+  int require = 0;
+  require += info_little[argc];
+  require += info_big[argc];
+  (void)argv;
+  return require;
+}
+
+

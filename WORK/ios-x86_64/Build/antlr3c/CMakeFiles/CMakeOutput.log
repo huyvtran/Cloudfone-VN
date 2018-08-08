@@ -1,0 +1,354 @@
+The target system is: Darwin -  - x86_64
+The host system is: Darwin - 15.6.0 - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang 
+Build flags: ;-miphoneos-version-min=8.0;-DTARGET_OS_IPHONE=1;-D__IOS;-fms-extensions;-w
+Id flags: 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is AppleClang, found in "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/3.4.3/CompilerIdC/a.out"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ffd70/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_ffd70.dir/build.make CMakeFiles/cmTC_ffd70.dir/build
+Building C object CMakeFiles/cmTC_ffd70.dir/testCCompiler.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_ffd70.dir/testCCompiler.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_ffd70
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ffd70.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_ffd70.dir/testCCompiler.c.o  -o cmTC_ffd70  
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_90aa1/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_90aa1.dir/build.make CMakeFiles/cmTC_90aa1.dir/build
+Building C object CMakeFiles/cmTC_90aa1.dir/CMakeCCompilerABI.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_90aa1.dir/CMakeCCompilerABI.c.o   -c /usr/local/Cellar/cmake/3.4.3/share/cmake/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_90aa1
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_90aa1.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names  -v -Wl,-v CMakeFiles/cmTC_90aa1.dir/CMakeCCompilerABI.c.o  -o cmTC_90aa1   
+Apple LLVM version 8.0.0 (clang-800.0.42.1)
+Target: x86_64-apple-darwin
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+ "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld" -demangle -dynamic -arch x86_64 -ios_simulator_version_min 8.0.0 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -w -o cmTC_90aa1 -headerpad_max_install_names -v CMakeFiles/cmTC_90aa1.dir/CMakeCCompilerABI.c.o -lSystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/lib/darwin/libclang_rt.ios.a
+@(#)PROGRAM:ld  PROJECT:ld64-274.1
+configured to support archs: armv6 armv7 armv7s arm64 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em (tvOS)
+Library search paths:
+	/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/usr/lib
+Framework search paths:
+	/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/Library/Frameworks/
+	/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/System/Library/Frameworks/
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_90aa1/fast"]
+  ignore line: [/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_90aa1.dir/build.make CMakeFiles/cmTC_90aa1.dir/build]
+  ignore line: [Building C object CMakeFiles/cmTC_90aa1.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_90aa1.dir/CMakeCCompilerABI.c.o   -c /usr/local/Cellar/cmake/3.4.3/share/cmake/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_90aa1]
+  ignore line: [/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_90aa1.dir/link.txt --verbose=1]
+  ignore line: [/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names  -v -Wl,-v CMakeFiles/cmTC_90aa1.dir/CMakeCCompilerABI.c.o  -o cmTC_90aa1   ]
+  ignore line: [Apple LLVM version 8.0.0 (clang-800.0.42.1)]
+  ignore line: [Target: x86_64-apple-darwin]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin]
+  link line: [ "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld" -demangle -dynamic -arch x86_64 -ios_simulator_version_min 8.0.0 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -w -o cmTC_90aa1 -headerpad_max_install_names -v CMakeFiles/cmTC_90aa1.dir/CMakeCCompilerABI.c.o -lSystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/lib/darwin/libclang_rt.ios.a]
+    arg [/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld] ==> ignore
+    arg [-demangle] ==> ignore
+    arg [-dynamic] ==> ignore
+    arg [-arch] ==> ignore
+    arg [x86_64] ==> ignore
+    arg [-ios_simulator_version_min] ==> ignore
+    arg [8.0.0] ==> ignore
+    arg [-syslibroot] ==> ignore
+    arg [/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk] ==> ignore
+    arg [-w] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_90aa1] ==> ignore
+    arg [-headerpad_max_install_names] ==> ignore
+    arg [-v] ==> ignore
+    arg [CMakeFiles/cmTC_90aa1.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lSystem] ==> lib [System]
+    arg [/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/lib/darwin/libclang_rt.ios.a] ==> lib [/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/lib/darwin/libclang_rt.ios.a]
+  Library search paths: [;/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/usr/lib]
+  Framework search paths: [;/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/Library/Frameworks/;/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/System/Library/Frameworks/]
+  remove lib [System]
+  collapse lib [/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/lib/darwin/libclang_rt.ios.a] ==> [/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/8.0.0/lib/darwin/libclang_rt.ios.a]
+  collapse library dir [/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/usr/lib] ==> [/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/usr/lib]
+  collapse framework dir [/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/Library/Frameworks/] ==> [/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/Library/Frameworks]
+  collapse framework dir [/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/System/Library/Frameworks/] ==> [/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/System/Library/Frameworks]
+  implicit libs: [/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/8.0.0/lib/darwin/libclang_rt.ios.a]
+  implicit dirs: [/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/usr/lib]
+  implicit fwks: [/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/Library/Frameworks;/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk/System/Library/Frameworks]
+
+
+
+
+Detecting C [-std=c11] compiler features compiled with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9313d/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_9313d.dir/build.make CMakeFiles/cmTC_9313d.dir/build
+Building C object CMakeFiles/cmTC_9313d.dir/feature_tests.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -std=c11 -o CMakeFiles/cmTC_9313d.dir/feature_tests.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/feature_tests.c
+Linking C executable cmTC_9313d
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9313d.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_9313d.dir/feature_tests.c.o  -o cmTC_9313d  
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:1c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c99] compiler features compiled with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6a392/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_6a392.dir/build.make CMakeFiles/cmTC_6a392.dir/build
+Building C object CMakeFiles/cmTC_6a392.dir/feature_tests.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -std=c99 -o CMakeFiles/cmTC_6a392.dir/feature_tests.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/feature_tests.c
+Linking C executable cmTC_6a392
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6a392.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_6a392.dir/feature_tests.c.o  -o cmTC_6a392  
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c90] compiler features compiled with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8b6f4/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_8b6f4.dir/build.make CMakeFiles/cmTC_8b6f4.dir/build
+Building C object CMakeFiles/cmTC_8b6f4.dir/feature_tests.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -std=c90 -o CMakeFiles/cmTC_8b6f4.dir/feature_tests.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/feature_tests.c
+Linking C executable cmTC_8b6f4
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8b6f4.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_8b6f4.dir/feature_tests.c.o  -o cmTC_8b6f4  
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:0c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:0c_variadic_macros
+Determining if the include file arpa/nameser.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0cefe/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_0cefe.dir/build.make CMakeFiles/cmTC_0cefe.dir/build
+Building C object CMakeFiles/cmTC_0cefe.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_0cefe.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_0cefe
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0cefe.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_0cefe.dir/CheckIncludeFile.c.o  -o cmTC_0cefe  
+
+
+Determining if the include file ctype.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0844c/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_0844c.dir/build.make CMakeFiles/cmTC_0844c.dir/build
+Building C object CMakeFiles/cmTC_0844c.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_0844c.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_0844c
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0844c.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_0844c.dir/CheckIncludeFile.c.o  -o cmTC_0844c  
+
+
+Determining if the include file inttypes.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8b0d6/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_8b0d6.dir/build.make CMakeFiles/cmTC_8b0d6.dir/build
+Building C object CMakeFiles/cmTC_8b0d6.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_8b0d6.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_8b0d6
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8b0d6.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_8b0d6.dir/CheckIncludeFile.c.o  -o cmTC_8b0d6  
+
+
+Determining if the include file memory.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ffd07/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_ffd07.dir/build.make CMakeFiles/cmTC_ffd07.dir/build
+Building C object CMakeFiles/cmTC_ffd07.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_ffd07.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_ffd07
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ffd07.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_ffd07.dir/CheckIncludeFile.c.o  -o cmTC_ffd07  
+
+
+Determining if the include file netdb.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4d8d5/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_4d8d5.dir/build.make CMakeFiles/cmTC_4d8d5.dir/build
+Building C object CMakeFiles/cmTC_4d8d5.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_4d8d5.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_4d8d5
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4d8d5.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_4d8d5.dir/CheckIncludeFile.c.o  -o cmTC_4d8d5  
+
+
+Determining if the include file netinet/in.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4b24c/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_4b24c.dir/build.make CMakeFiles/cmTC_4b24c.dir/build
+Building C object CMakeFiles/cmTC_4b24c.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_4b24c.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_4b24c
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4b24c.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_4b24c.dir/CheckIncludeFile.c.o  -o cmTC_4b24c  
+
+
+Determining if the include file netinet/tcp.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_474d4/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_474d4.dir/build.make CMakeFiles/cmTC_474d4.dir/build
+Building C object CMakeFiles/cmTC_474d4.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_474d4.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_474d4
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_474d4.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_474d4.dir/CheckIncludeFile.c.o  -o cmTC_474d4  
+
+
+Determining if the include file stdarg.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9c57e/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_9c57e.dir/build.make CMakeFiles/cmTC_9c57e.dir/build
+Building C object CMakeFiles/cmTC_9c57e.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_9c57e.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_9c57e
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9c57e.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_9c57e.dir/CheckIncludeFile.c.o  -o cmTC_9c57e  
+
+
+Determining if the include file stdint.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_2778f/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_2778f.dir/build.make CMakeFiles/cmTC_2778f.dir/build
+Building C object CMakeFiles/cmTC_2778f.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_2778f.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_2778f
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2778f.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_2778f.dir/CheckIncludeFile.c.o  -o cmTC_2778f  
+
+
+Determining if the include file stdlib.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_2e3b9/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_2e3b9.dir/build.make CMakeFiles/cmTC_2e3b9.dir/build
+Building C object CMakeFiles/cmTC_2e3b9.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_2e3b9.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_2e3b9
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2e3b9.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_2e3b9.dir/CheckIncludeFile.c.o  -o cmTC_2e3b9  
+
+
+Determining if the include file strings.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ad28e/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_ad28e.dir/build.make CMakeFiles/cmTC_ad28e.dir/build
+Building C object CMakeFiles/cmTC_ad28e.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_ad28e.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_ad28e
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ad28e.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_ad28e.dir/CheckIncludeFile.c.o  -o cmTC_ad28e  
+
+
+Determining if the include file string.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f255c/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_f255c.dir/build.make CMakeFiles/cmTC_f255c.dir/build
+Building C object CMakeFiles/cmTC_f255c.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_f255c.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_f255c
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f255c.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_f255c.dir/CheckIncludeFile.c.o  -o cmTC_f255c  
+
+
+Determining if the include file sys/malloc.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0137f/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_0137f.dir/build.make CMakeFiles/cmTC_0137f.dir/build
+Building C object CMakeFiles/cmTC_0137f.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_0137f.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_0137f
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0137f.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_0137f.dir/CheckIncludeFile.c.o  -o cmTC_0137f  
+
+
+Determining if the include file sys/socket.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_02171/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_02171.dir/build.make CMakeFiles/cmTC_02171.dir/build
+Building C object CMakeFiles/cmTC_02171.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_02171.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_02171
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_02171.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_02171.dir/CheckIncludeFile.c.o  -o cmTC_02171  
+
+
+Determining if the include file sys/stat.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_331b4/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_331b4.dir/build.make CMakeFiles/cmTC_331b4.dir/build
+Building C object CMakeFiles/cmTC_331b4.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_331b4.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_331b4
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_331b4.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_331b4.dir/CheckIncludeFile.c.o  -o cmTC_331b4  
+
+
+Determining if the include file sys/types.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7a4d2/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_7a4d2.dir/build.make CMakeFiles/cmTC_7a4d2.dir/build
+Building C object CMakeFiles/cmTC_7a4d2.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_7a4d2.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_7a4d2
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7a4d2.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_7a4d2.dir/CheckIncludeFile.c.o  -o cmTC_7a4d2  
+
+
+Determining if the include file unistd.h exists passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1a160/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_1a160.dir/build.make CMakeFiles/cmTC_1a160.dir/build
+Building C object CMakeFiles/cmTC_1a160.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk   -o CMakeFiles/cmTC_1a160.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/antlr3c/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_1a160
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1a160.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=x86_64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -w  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_1a160.dir/CheckIncludeFile.c.o  -o cmTC_1a160  
+
+

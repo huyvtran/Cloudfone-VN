@@ -1,0 +1,1 @@
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Build/bctoolbox/src/CMakeFiles/bctoolbox-static.dir

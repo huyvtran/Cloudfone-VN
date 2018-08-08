@@ -1,0 +1,14 @@
+# Target labels
+ EP_mbedtls
+# Source files and their labels
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/cmake/CMakeFiles/EP_mbedtls
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/cmake/CMakeFiles/EP_mbedtls.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/cmake/CMakeFiles/EP_mbedtls-complete.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_mbedtls/EP_mbedtls-install.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_mbedtls/EP_mbedtls-mkdir.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_mbedtls/EP_mbedtls-download.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_mbedtls/EP_mbedtls-update.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_mbedtls/EP_mbedtls-patch.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_mbedtls/EP_mbedtls-configure.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_mbedtls/EP_mbedtls-build.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_mbedtls/EP_mbedtls-force_build.rule

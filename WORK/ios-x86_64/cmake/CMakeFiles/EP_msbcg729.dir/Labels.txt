@@ -1,0 +1,14 @@
+# Target labels
+ EP_msbcg729
+# Source files and their labels
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/cmake/CMakeFiles/EP_msbcg729
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/cmake/CMakeFiles/EP_msbcg729.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/cmake/CMakeFiles/EP_msbcg729-complete.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_msbcg729/EP_msbcg729-install.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_msbcg729/EP_msbcg729-mkdir.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_msbcg729/EP_msbcg729-download.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_msbcg729/EP_msbcg729-update.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_msbcg729/EP_msbcg729-patch.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_msbcg729/EP_msbcg729-configure.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_msbcg729/EP_msbcg729-build.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_msbcg729/EP_msbcg729-force_build.rule

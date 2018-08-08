@@ -1,0 +1,1 @@
+cmd='/usr/local/Cellar/cmake/3.4.3/bin/cmake;-DENABLE_TESTS=OFF;-DENABLE_STATIC=YES;-DENABLE_SHARED=NO;-C/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64//tmp/EP_bzrtp/EP_bzrtp-cache-$<CONFIG>.cmake;-GUnix Makefiles;/Users/eicaptain/Desktop/linphone-iphone/submodules/bzrtp'

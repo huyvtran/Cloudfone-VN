@@ -1,0 +1,14 @@
+# Target labels
+ EP_linphone
+# Source files and their labels
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_linphone
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_linphone.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_linphone-complete.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_linphone/EP_linphone-install.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_linphone/EP_linphone-mkdir.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_linphone/EP_linphone-download.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_linphone/EP_linphone-update.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_linphone/EP_linphone-patch.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_linphone/EP_linphone-configure.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_linphone/EP_linphone-build.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_linphone/EP_linphone-force_build.rule

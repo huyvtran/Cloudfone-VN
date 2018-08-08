@@ -1,0 +1,118 @@
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang 
+Build flags: ;-miphoneos-version-min=8.0;-DTARGET_OS_IPHONE=1;-D__IOS;-fms-extensions;-fembed-bitcode;-w
+Id flags: 
+
+The output was:
+1
+ld: building for iOS simulator, but linking against dylib built for OSX, file '/usr/lib/libSystem.dylib' for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Determining if the include file sys/audioio.h exists failed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/speex/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b1157/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_b1157.dir/build.make CMakeFiles/cmTC_b1157.dir/build
+Building C object CMakeFiles/cmTC_b1157.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=arm64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -fembed-bitcode -w  -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.1.sdk   -o CMakeFiles/cmTC_b1157.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/speex/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/speex/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:10: fatal error: 'sys/audioio.h' file not found
+#include <sys/audioio.h>
+         ^
+1 error generated.
+make[5]: *** [CMakeFiles/cmTC_b1157.dir/CheckIncludeFile.c.o] Error 1
+make[4]: *** [cmTC_b1157/fast] Error 2
+
+
+Determining if the include file sys/soundcard.h exists failed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/speex/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_cbe45/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_cbe45.dir/build.make CMakeFiles/cmTC_cbe45.dir/build
+Building C object CMakeFiles/cmTC_cbe45.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=arm64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -fembed-bitcode -w  -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.1.sdk   -o CMakeFiles/cmTC_cbe45.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/speex/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/speex/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:10: fatal error: 'sys/soundcard.h' file not found
+#include <sys/soundcard.h>
+         ^
+1 error generated.
+make[5]: *** [CMakeFiles/cmTC_cbe45.dir/CheckIncludeFile.c.o] Error 1
+make[4]: *** [cmTC_cbe45/fast] Error 2
+
+
+Performing C SOURCE FILE Test HAS_SSE failed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/speex/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c4fce/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_c4fce.dir/build.make CMakeFiles/cmTC_c4fce.dir/build
+Building C object CMakeFiles/cmTC_c4fce.dir/src.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=arm64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -fembed-bitcode -w -DHAS_SSE -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.1.sdk   -o CMakeFiles/cmTC_c4fce.dir/src.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/speex/CMakeFiles/CMakeTmp/src.c
+In file included from /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/speex/CMakeFiles/CMakeTmp/src.c:1:
+In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/xmmintrin.h:27:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:45:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_vec_init_v2si(__i, 0);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:69:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packsswb((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:75:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packssdw((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:81:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packuswb((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:87:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhbw((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:93:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhwd((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:99:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhdq((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:105:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpcklbw((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:111:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpcklwd((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:117:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckldq((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:123:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:129:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:135:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddd((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:141:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddsb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:147:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddsw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:153:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddusb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:159:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddusw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:165:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_psubb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include/mmintrin.h:171:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_psubw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+make[5]: *** [CMakeFiles/cmTC_c4fce.dir/src.c.o] Error 1
+make[4]: *** [cmTC_c4fce/fast] Error 2
+
+Source file was:
+#include <xmmintrin.h>
+__m128 testfunc(float *a, float *b) {
+return _mm_add_ps(_mm_loadu_ps(a), _mm_loadu_ps(b));
+}
+int main(int argc, char *argv[]) {}

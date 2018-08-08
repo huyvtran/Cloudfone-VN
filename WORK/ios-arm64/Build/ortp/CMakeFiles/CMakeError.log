@@ -1,0 +1,75 @@
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang 
+Build flags: ;-miphoneos-version-min=8.0;-DTARGET_OS_IPHONE=1;-D__IOS;-fms-extensions;-fembed-bitcode
+Id flags: 
+
+The output was:
+1
+ld: building for iOS simulator, but linking against dylib built for OSX, file '/usr/lib/libSystem.dylib' for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ 
+Build flags: ;-miphoneos-version-min=8.0;-DTARGET_OS_IPHONE=1;-D__IOS;-fms-extensions;-fembed-bitcode;;-stdlib=libc++
+Id flags: 
+
+The output was:
+1
+ld: building for iOS simulator, but linking against dylib built for OSX, file '/usr/lib/libc++.dylib' for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Determining if the include file sys/audio.h exists failed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/ortp/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_94bb3/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_94bb3.dir/build.make CMakeFiles/cmTC_94bb3.dir/build
+Building C object CMakeFiles/cmTC_94bb3.dir/CheckIncludeFile.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=arm64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -fembed-bitcode  -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.1.sdk   -o CMakeFiles/cmTC_94bb3.dir/CheckIncludeFile.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/ortp/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/ortp/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:10: fatal error: 'sys/audio.h' file not found
+#include <sys/audio.h>
+         ^
+1 error generated.
+make[5]: *** [CMakeFiles/cmTC_94bb3.dir/CheckIncludeFile.c.o] Error 1
+make[4]: *** [cmTC_94bb3/fast] Error 2
+
+
+Determining if the system is big endian passed with the following output:
+Change Dir: /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/ortp/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3492d/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_3492d.dir/build.make CMakeFiles/cmTC_3492d.dir/build
+Building C object CMakeFiles/cmTC_3492d.dir/TestEndianess.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=arm64-apple-darwin   -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -fembed-bitcode  -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.1.sdk   -o CMakeFiles/cmTC_3492d.dir/TestEndianess.c.o   -c /Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/ortp/CMakeFiles/CMakeTmp/TestEndianess.c
+Linking C executable cmTC_3492d
+/usr/local/Cellar/cmake/3.4.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3492d.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang  --target=arm64-apple-darwin  -miphoneos-version-min=8.0 -DTARGET_OS_IPHONE=1 -D__IOS -fms-extensions -fembed-bitcode  -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.1.sdk -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_3492d.dir/TestEndianess.c.o  -o cmTC_3492d  
+ld: warning: -headerpad_max_install_names is ignored when used with -bitcode_bundle (Xcode setting ENABLE_BITCODE=YES)
+
+TestEndianess.c:
+/* A 16 bit integer is required. */
+typedef unsigned short cmakeint16;
+
+/* On a little endian machine, these 16bit ints will give "THIS IS LITTLE ENDIAN."
+   On a big endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_little[] =  {0x4854, 0x5349, 0x4920, 0x2053, 0x494c, 0x5454, 0x454c, 0x4520, 0x444e, 0x4149, 0x2e4e, 0x0000};
+
+/* on a big endian machine, these 16bit ints will give "THIS IS BIG ENDIAN."
+   On a little endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_big[] =     {0x5448, 0x4953, 0x2049, 0x5320, 0x4249, 0x4720, 0x454e, 0x4449, 0x414e, 0x2e2e, 0x0000};
+
+#ifdef __CLASSIC_C__
+int main(argc, argv) int argc; char *argv[];
+#else
+int main(int argc, char *argv[])
+#endif
+{
+  int require = 0;
+  require += info_little[argc];
+  require += info_big[argc];
+  (void)argv;
+  return require;
+}
+
+

@@ -1,0 +1,1 @@
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Build/belr/src/CMakeFiles/belr-static.dir

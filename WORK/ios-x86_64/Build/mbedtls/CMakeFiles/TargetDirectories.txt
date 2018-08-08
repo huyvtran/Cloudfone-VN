@@ -1,0 +1,5 @@
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/mbedtls/CMakeFiles/apidoc.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/mbedtls/library/CMakeFiles/lib.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/mbedtls/library/CMakeFiles/mbedx509.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/mbedtls/library/CMakeFiles/mbedtls.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/mbedtls/library/CMakeFiles/mbedcrypto.dir

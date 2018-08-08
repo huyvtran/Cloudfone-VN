@@ -1,0 +1,55 @@
+
+{
+	"sources" : 
+	[
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_msbcg729"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_msbcg729.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_msbcg729-complete.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_msbcg729/EP_msbcg729-install.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_msbcg729/EP_msbcg729-mkdir.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_msbcg729/EP_msbcg729-download.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_msbcg729/EP_msbcg729-update.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_msbcg729/EP_msbcg729-patch.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_msbcg729/EP_msbcg729-configure.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_msbcg729/EP_msbcg729-build.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_msbcg729/EP_msbcg729-force_build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : [ "EP_msbcg729" ],
+		"name" : "EP_msbcg729"
+	}
+}

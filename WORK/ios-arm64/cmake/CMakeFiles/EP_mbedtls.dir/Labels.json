@@ -1,0 +1,55 @@
+
+{
+	"sources" : 
+	[
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_mbedtls"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_mbedtls.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_mbedtls-complete.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_mbedtls/EP_mbedtls-install.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_mbedtls/EP_mbedtls-mkdir.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_mbedtls/EP_mbedtls-download.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_mbedtls/EP_mbedtls-update.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_mbedtls/EP_mbedtls-patch.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_mbedtls/EP_mbedtls-configure.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_mbedtls/EP_mbedtls-build.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_mbedtls/EP_mbedtls-force_build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : [ "EP_mbedtls" ],
+		"name" : "EP_mbedtls"
+	}
+}

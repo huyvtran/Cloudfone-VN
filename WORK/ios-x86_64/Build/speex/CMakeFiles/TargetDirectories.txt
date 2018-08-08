@@ -1,0 +1,2 @@
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/speex/libspeex/CMakeFiles/speexdsp.dir
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/speex/libspeex/CMakeFiles/speex.dir

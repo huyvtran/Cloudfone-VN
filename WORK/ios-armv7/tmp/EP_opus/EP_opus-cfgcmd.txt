@@ -1,0 +1,1 @@
+cmd='/usr/local/Cellar/cmake/3.4.3/bin/cmake;-DENABLE_FIXED_POINT=YES;-DENABLE_STATIC=YES;-DENABLE_SHARED=NO;-C/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7//tmp/EP_opus/EP_opus-cache-$<CONFIG>.cmake;-GUnix Makefiles;/Users/eicaptain/Desktop/linphone-iphone/submodules/externals/opus'

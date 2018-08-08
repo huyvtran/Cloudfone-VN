@@ -1,0 +1,14 @@
+# Target labels
+ EP_gsm
+# Source files and their labels
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_gsm
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_gsm.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/cmake/CMakeFiles/EP_gsm-complete.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_gsm/EP_gsm-install.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_gsm/EP_gsm-mkdir.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_gsm/EP_gsm-download.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_gsm/EP_gsm-update.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_gsm/EP_gsm-patch.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_gsm/EP_gsm-configure.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_gsm/EP_gsm-build.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-arm64/Stamp/EP_gsm/EP_gsm-force_build.rule

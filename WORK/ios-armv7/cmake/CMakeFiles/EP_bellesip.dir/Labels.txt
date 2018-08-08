@@ -1,0 +1,14 @@
+# Target labels
+ EP_bellesip
+# Source files and their labels
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/cmake/CMakeFiles/EP_bellesip
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/cmake/CMakeFiles/EP_bellesip.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/cmake/CMakeFiles/EP_bellesip-complete.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bellesip/EP_bellesip-install.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bellesip/EP_bellesip-mkdir.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bellesip/EP_bellesip-download.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bellesip/EP_bellesip-update.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bellesip/EP_bellesip-patch.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bellesip/EP_bellesip-configure.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bellesip/EP_bellesip-build.rule
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-armv7/Stamp/EP_bellesip/EP_bellesip-force_build.rule

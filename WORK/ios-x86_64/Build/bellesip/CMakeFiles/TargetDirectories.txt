@@ -1,0 +1,1 @@
+/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Build/bellesip/src/CMakeFiles/bellesip-static.dir

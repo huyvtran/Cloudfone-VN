@@ -1,0 +1,1205 @@
+"text_thong_bao_am_thanh"   =   "Đổ chuông"
+"text_co_chuong_cuoc_goi"   =   "Khi có cuộc gọi đến"
+"text_co_chuong_tin_nhan"   =   "Khi có tin nhắn đến"
+"text_thong_bao_rung"       =   "Rung"
+"text_rung_tin_nhan"        =   "Rung khi có tin nhắn đến"
+
+"text_new_contact"          =   "Thêm liên hệ"
+"text_missed_call_from"     =   "Cuộc gọi nhỡ từ"
+
+"text_can_not_save_picture" =   "Không thể tải ảnh"
+"change_subject_failed"     =   "Đổi chủ đề thất bại!"
+"leave_room_failed"         =   "Thất bại. Vui lòng thử lại sau!"
+
+"text_no_internet"      =   "Vui lòng kiểm tra kết nối internet"
+"text_sign_in"          =   "Đăng nhập"
+"text_sign_up"          =   "Đăng ký"
+
+"text_username_empty"   =   "Vui lòng nhập tài khoản"
+"text_password_empty"   =   "Vui lòng nhập mật khẩu"
+
+"text_username"         =   "Tên đăng nhập"
+"text_password"         =   "Mật khẩu"
+"text_forgot_password"  =   "Quên mật khẩu?"
+"text_or_login_with"    =   "Hoặc đăng nhập với"
+"text_no_account"       =   "Chưa có tài khoản?"
+"text_have_account"     =   "Bạn đã có tài khoản?"
+"text_confirm"          =   "Xác nhận"
+
+"TEXT_OTR_NOT_SUPPORTED"    = "Tính năng này chưa được hỗ trợ."
+"text_input_username"   =   "ID/ Di động/ Email"
+"text_error_connection" =   "Vui lòng kiểm tra kết nối internet của bạn"
+
+"text_your_contact_import_successfully" = "Danh bạ của bạn đã được thêm mới thành công"
+"text_please_check_your_connection"     = "Vui lòng kiểm tra kết nối mạng của bạn!"
+
+"text_username_or_email_not_empty"  =   "Tài khoản không được rỗng!"
+
+"text_error"                =   "Đã có lỗi"
+"text_reset_password"       =   "Gửi yêu cầu"
+
+"text_confirm_code"     =   "Mã xác nhận"
+"text_confirm_change_password"  =   "Xác nhận đặt lại mật khẩu"
+
+"text_email"            =   "Email"
+"text_phone"            =   "Số di động"
+"text_agree_1"          =   "Chấp nhận"
+"text_agree_2"          =   "Các điều khoản"
+"text_agree_3"          =   "của CloudFone"
+
+"text_email_empty"      =   "Vui lòng nhập email"
+"text_phone_empty"      =   "Vui lòng nhập số điện thoại"
+"text_phone_invalid"    =   "Số điện thoại không hợp lệ"
+"text_email_invalid"    =   "Email không hợp lệ"
+"text_accept_terms"     =   "Vui lòng chấp nhận điều khoản sử dụng của CloudFone"
+
+"text_status_online"    =   "Sẵn sàng"
+"text_status_offline"   =   "Chưa kết nối"
+"text_status_connecting"=   "Đang kết nối"
+
+"text_not_setup_pbx"        =   "You have not set up a PBX account!"
+"text_pbx_server_empty"     =   "Mã dịch vụ không được rỗng"
+"text_pbx_username_empty"   =   "Username không được rỗng"
+"text_pbx_password_empty"   =   "Mật khẩu không được rỗng"
+
+"text_more"                 =   "Thêm"
+
+"text_menu_edit_profile"    =   "Chỉnh sửa hồ sơ"
+"text_menu_settings"        =   "Thiết lập"
+"text_menu_feedback"        =   "Gửi phản hồi"
+"text_menu_privacy_policy"  =   "Chính sách"
+"text_menu_introduce"       =   "Giới thiệu"
+"text_logout"               =   "Đăng xuất"
+
+"text_gallery"      = "Thư viện"
+"text_camera"       = "Chụp ảnh"
+"text_remove"       = "Hủy ảnh đại diện"
+"text_crop_image"   = "Cập nhật hình đại diện"
+
+"text_successfully" =   "Thành công"
+
+"text_delete"       =   "Xoá"
+"text_cancel"       =   "Hủy bỏ"
+"text_finish"       =   "Xong"
+"text_setup"        =   "Thiết lập"
+
+"text_edit_profile" =   "Cập nhật hồ sơ"
+
+"text_fullname"     =   "Họ tên"
+"text_address"      =   "Địa chỉ"
+"text_save"         =   "Lưu"
+
+"text_settings"         =   "Cài đặt"
+"text_notif_setting"    =   "Cài đặt thông báo"
+"text_acc_setting"      =   "Cài đặt tài khoản"
+"text_sync_contact"     =   "Đồng bộ danh bạ"
+"text_lang_setting"     =   "Cài đặt ngôn ngữ"
+"text_app_settings"     =   "Cài đặt ứng dụng"
+"text_outbot_proxy"     =   "Outbound Proxy"
+
+"text_feedback"         =   "Phản hồi"
+
+"text_policy"               =   "Chính sách";
+
+"text_policy_title1"        =   "You are collecting personal data"
+"text_policy_content1"      =   "Even the display of ads or the use of analytics means you're collecting personal data the user should known about"
+
+"text_policy_title2"        =   "You are third-party services"
+"text_policy_content2"      =   "Services like Google Analytics or AdSense require you to have a privacy policy stating the use of their service"
+
+"text_policy_title3"        =   "Regulations require privacy policies"
+"text_policy_content3"      =   "Services like Google Analytics or AdSense require you to have a privacy stating the use of their service"
+
+"text_introduce"            =   "Giới thiệu"
+"text_ods_company"          =   "ONLINE DATA SERVICES J.S.C"
+"text_introduce_content"    =   "Là Doanh Nghiệp sở hữu một trong những trung tâm dữ liệu (DataCenter) được đầu tư bài bản tại số 54 đường C1, Phường 13, Quận Tân Bình. ODS đã có hơn 06 năm tham gia thị trường công nghệ thông tin, viễn thông và Internet, ODS đã tạo dựng được thương hiệu và chỗ đứng vững chắc ở Việt Nam, đặc biệt trong lĩnh vực Internet, DataCenter, VoIP-Cloudfone, giải pháp ảo hoá hạ tầng điện toán đám mây (IaaS) và bản quyền phần mềm,… Việc kinh doanh của chúng tôi phát triển nhanh chóng với các lĩnh vực mới và đa dạng, ODS đã tạo được thế mạnh, hình ảnh và thương hiệu của mình."
+
+"text_alert_logout_title"   =   "Đăng xuất"
+"text_alert_logout_content" =   "Bạn có muốn đăng xuất hay không?"
+
+"text_yes"          =   "Đồng ý"
+"text_no"           =   "Hủy bỏ"
+
+"text_pbx_on"       =   "Bật"
+"text_pbx_off"      =   "Tắt"
+
+"text_change_acc_name"      =   "Đổi tên tài khoản"
+"text_trunking"             =   "Trung kế"
+"text_change_password"      =   "Đổi mật khẩu"
+"text_close_account"        =   "Đóng tài khoản"
+
+"text_trunking_account"     =   "Tài khoản"
+"text_trunking_pbx"         =   "PBX"
+
+"text_trunking_id"          =   "ID"
+"text_trunking_user"        =   "Tên đăng nhập"
+"text_trunking_pass"        =   "Mật khẩu"
+"text_trunking_clear"       =   "Đặt lại"
+"text_trunking_save"        =   "Lưu"
+
+"text_trunking_header"      =   "Chọn tài khoản"
+"text_refresh"              =   "Cập nhật"
+"text_popup_account"        =   "Tài khoản: "
+"text_popup_account_pbx"    =   "PBX: "
+
+"text_register_success"     =   "Đăng ký thành công"
+"text_old_pass"             =   "Mật khẩu cũ"
+"text_new_pass"             =   "Mật khẩu mới"
+"text_confirm_new_pass"     =   "Xác nhận mật khẩu mới"
+
+"text_change_pass_empty"    =   "Thông tin không được để trống"
+"text_change_pass_len"      =   "Mật khẩu phải dài ít nhất 6 kí tự"
+"text_old_pass_incorrect"   =   "Mật khẩu hiện tại không chính xác"
+
+"text_confirm_pass_not_match"   =   "Xác nhận mật khẩu không chính xác"
+"text_reset_successfully"   =   "Đặt lại thành công"
+
+"text_login_failed"         =   "Kiểm tra tài khoản và tên đăng nhập hoặc kết nối internet của bạn"
+"text_update_failed"        =   "Cập nhật không thành công"
+
+"text_lang_vi"              =   "Tiếng việt"
+"text_lang_en"              =   "Tiếng anh"
+"text_change_language"      =   "Chọn ngôn ngữ"
+
+"text_add_new_contact"      =   "Tạo số liên lạc mới"
+"text_add_exists_contact"   =   "Thêm vào danh bạ"
+
+"text_sync_xmpp"            =   "ĐỒNG BỘ DANH BẠ"
+"text_pull_to_refresh"      = "Kéo để tải lại"
+
+"text_version"              =   "Phiên bản"
+
+"text_search_contact"       =   "Tìm kiếm liên hệ..."
+"text_no_contact"           =   "Không có liên hệ"
+
+"TEXT_ADD_FRIEND_TITLE"     =   "Kết bạn"
+"TEXT_SEND_REQUEST"         =   "Gửi"
+"TEXT_CANCEL_REQUEST"       =   "Hủy bỏ"
+"TEXT_PLACEHOLDER_REQUEST"  =   "Nhập lời mời kết bạn"
+
+"text_information"          =   "Thông tin"
+"text_send_request_msg"     =   "Yêu cầu kết bạn đã được gửi thành công"
+"text_gallery_header"       =   "Thư viện"
+"text_hi"                   =   "Xin chào"
+
+"text_unknown"              =   "Không xác định"
+"text_list_friend_accept"   = "Danh sách kết bạn"
+"text_failed"               =   "Thất bại!"
+
+"text_list_friend_no_contacts"      = "Không có liên hệ"
+"text_contacts_xmpp_sync_success"   =   "Danh bạ đã được đồng bộ"
+
+"text_update_profile_success"       =   "Cập nhật hồ sơ thành công"
+
+"text_not_id_pbx"           =   "Bạn chưa cài đặt tài khoản PBX"
+"text_pbx_name"             =   "Tên PBX"
+"text_pbx_number"           =   "Số PBX"
+"text_pbx_new"              =   "Thêm mới"
+"text_pbx_edit"             =   "Cập nhật"
+
+"text_sync_pbx_contact"     =   "Đồng bộ danh bạ PBX"
+"text_syncing"              =   "Đang đồng bộ..."
+"text_contact_syncing"      =   "Danh bạ PBX đang được đồng bộ!"
+
+"text_name_number_not_empty"    =   "Tên và số pbx không được trống"
+"text_pbx_contact_exists"       =   "Liên hệ này đã tồn tại!"
+
+"text_popup_delete_contact_title"   =   "Xóa liên hệ"
+"text_popup_delete_contact_content" =   "Bạn có muốn xóa liên lạc này không?"
+
+"CN_TEXT_CONFERENCE_VC_TITLE"               = "Hội thoại"
+"CN_TEXT_ADD_CONFERENCE"                    = "Thêm"
+"CN_TEXT_END_CONFERENCE"                    = "Kết thúc"
+
+"text_connected"        = "Đã kết nối"
+
+"text_quality_good"     =   "Tốt"
+"text_quality_average"  =   "Trung bình"
+"text_quality_low"      =   "Thấp"
+"text_quality_very_low" =   "Yếu"
+"text_quality_worse"    =   "Kém"
+
+"text_quality"          =   "Đường truyền"
+
+"TEXT_INCALL_VC_END_CALL"       = "Kết thúc"
+
+"TEXT_POPUP_HOTLINE_TITLE"      = "Dịch vụ khách hàng"
+"TEXT_POPUP_HOTLINE_CALL"       = "Gọi nhân viên tổng đài"
+"TEXT_POPUP_HOTLINE_MESSAGE"    = "Gửi tin nhắn"
+"TEXT_INCALL_VC_END_CALL"       = "Kết thúc"
+
+"TEXT_INCALL_VC_AUDIO_CALL"                 = "Gọi tiếng"
+
+"img_conference"        = "btn_conference.png"
+"img_conference_over"   = "btn_conference_over.png"
+"img_conference_dis"    = "btn_conference_dis.png"
+
+"img_keypad"            = "btn_keypad.png"
+"img_keypad_over"       = "btn_keypad_over.png"
+"img_keypad_dis"        = "btn_keypad_dis.png"
+
+"img_speaker"           = "btn_speaker.png"
+"img_speaker_over"      = "btn_speaker_over.png"
+"img_speaker_dis"       = "btn_speaker_dis.png"
+
+"img_video"             = "btn_video.png"
+"img_video_over"        = "btn_video_over.png"
+"img_video_dis"         = "btn_video_dis.png"
+
+"img_hold"              = "btn_hold.png"
+"img_hold_over"         = "btn_hold_over.png"
+"img_hold_dis"          = "btn_hold_dis.png"
+
+"img_record"            = "btn_record.png"
+"img_record_over"       = "btn_record_over.png"
+"img_record_dis"        = "btn_record_dis.png"
+
+"img_mute"              = "btn_mute.png"
+"img_mute_over"         = "btn_mute_over.png"
+"img_mute_dis"          = "btn_mute_dis.png"
+
+"img_transfer"          = "btn_transfer.png"
+"img_transfer_over"     = "btn_transfer_over.png"
+"img_transfer_dis"      = "btn_transfer_dis.png"
+
+"img_message"           = "btn_message.png"
+"img_message_over"      = "btn_message_over.png"
+"img_message_dis"       = "btn_message_dis.png"
+
+"img_send"              = "btn_send.png"
+"img_send_over"         = "btn_send_over.png"
+"img_send_dis"          = "btn_send_dis.png"
+
+"text_confirm_content1"      =   "Chúng tôi đã gửi mã xác nhận."
+"text_confirm_content2"      =   "Vui lòng kiểm tra tin nhắn của bạn."
+"text_enter_confirmation"   =   "Nhập mã xác nhận"
+"text_confirmcode_empty"    =   "Vui lòng nhập mã xác nhận"
+"text_in"               =   "trong"
+
+"text_not_ip_port"      =   "ip hoặc port không xác định"
+
+"text_choose_contact_for_chat"  =   "Vui lòng chọn liên hệ để gửi tin nhắn!"
+
+
+"text_message_delete"   =   "Xóa"
+"text_message_forward"  =   "Chuyển tiếp"
+"text_message_recall"   =   "Thu hồi"
+"text_message_resend"   =   "Gửi lại"
+"text_message_copy"     =   "Sao chép"
+
+"text_type_to_search"   =   "Nhập để tìm kiếm"
+"text_type_to_chat"     =   "Nhập số để trò chuyện"
+"text_type_to_composte" =   "Nhập văn bản"
+"text_new_message"      =   "Tin nhắn mới"
+
+"text_no_message"           =   "Không có tin nhắn"
+"text_choose_background"    =   "Chọn hình nền"
+"text_cancel_friend"        =   "Huỷ kết bạn"
+"text_send_request_friend"  =   "Kết bạn"
+"text_pending_xmpp"         =   "Đang chờ phản hồi..."
+"text_accept_friend"        =   "Đồng ý kết bạn"
+"text_chat_not_available"   =   "Chưa sẵn sàng"
+"text_offline"              =   "Chưa kết nối"
+"text_select_contact"       =   "Chọn liên hệ"
+
+"text_destructs_5s"     =   "Tự xóa sau 5 giây"
+"text_destructs_10s"    =   "Tự xóa sau 10 giây"
+"text_destructs_30s"    =   "Tự xóa sau 30 giây"
+"text_destructs_1m"     =   "Tự xóa sau 1 phút"
+"text_destructs_30m"    =   "Tự xóa sau 30 phút"
+"text_destructs_1h"     =   "Tự xóa sau 1 giờ"
+"text_destructs_24h"    =   "Tự xóa sau 24 giờ"
+
+"text_is_typing"        =   "Đang soạn tin..."
+"text_chat_offline"     =   "Chưa kết nối"
+"text_image_gallery"    =   "Bộ sưu tập"
+"text_image_camera"     =   "Chụp ảnh"
+"text_video_gallery"    =   "Thư viện"
+"text_video_camera"     =   "Quay video"
+
+"text_expire_title" =   "Tin nhắn có thời hạn"
+"text_expire_info"  = "Tin nhắn sẽ tự động xóa sau khoảng thời gian này ngay sau khi tin nhắn này được đọc."
+
+"text_export_title"     =   "Lưu cuộc trò chuyện"
+"text_export_content"   =   "Gửi sau khi lưu"
+"text_export_success"   =   "Cuộc trò chuyện đã được lưu"
+
+"text_message_received_recall"  =   "Tin nhắn đã được thu hồi."
+"text_message_sent_recall"      =   "Tin nhắn đã được thu hồi."
+"text_message_sent_recall_fail" =   "Tin nhắn không thể thu hồi."
+"text_message_image_received"   =   "Đã nhận hình ảnh"
+"text_message_location"         =   "Tin nhắn vị trí"
+"text_audio_message_received"   =   "Nhận tin nhắn thoại"
+"text_audio_message_sent"       =   "Gửi tin nhắn thoại"
+"text_video_message_sent"       =   "Gửi video"
+"text_video_message_received"   =   "Nhận video"
+"text_image_message_sent"       =   "Đã gửi hình ảnh"
+"text_contact_message_received" =   "Nhận liên hệ"
+"text_contact_message_sent"     =   "Gửi liên hệ"
+"text_contact_message"          =   "Tin nhắn liên hệ"
+
+"not_connect_to_server"     =   "Không thể kết nối máy chủ"
+"text_joined_room_at"       =   "Bạn đã tham gia cuộc hội thoại lúc"
+"text_joined_room"          =   "Bạn đã tham gia hội thoại"
+"joined_the_room"           =   "đã tham gia vào phòng lúc"
+"left_the_room"             =   "đã rời khỏi phòng lúc"
+"change_subject_to"         =   "đổi chủ đề thành"
+
+"text_leave_room"           =   "Rời phòng"
+"text_change_subject"       =   "Đổi tên phòng"
+
+"TEXT_CHANGE_SUBJECT_TITLE"     =   "Đổi tên phòng"
+"TEXT_CHANGE_SUBJECT_PLHD"      =   "Nhập tên phòng..."
+"TEXT_CHANGE_SUBJECT_CANCEL"    =   "Hủy bỏ"
+"TEXT_CHANGE_SUBJECT_SAVE"      =   "Lưu"
+
+"text_add"          =   "Thêm"
+"text_you"          =   "Bạn"
+
+"receive_call_from" =   "Bạn có cuộc gọi từ"
+
+"text_expire_none"  =   "Không có"
+"text_expire_5s"    =   "5 giây"
+"text_expire_10s"   =   "10 giây"
+"text_expire_30s"   =   "30 giây"
+"text_expire_1m"    =   "1 phút"
+"text_expire_30m"   =   "30 phút"
+"text_expire_1h"    =   "1 giờ"
+"text_expire_24h"   =   "24 giờ"
+
+"text_warning_block_contact"    =   "Người này sẽ không thể gọi hoặc gửi tin nhắn đến bạn nữa. Chặn người này?"
+"text_warning_unblock_contact"  =   "Xoá người này ra khỏi danh sách chặn?"
+
+"text_enable_in_ear"        =   "Bật loa ngoài"
+"text_disable_in_ear"       =   "Tăt loa ngoài"
+"text_create_contact"       =   "Tạo liên hệ"
+"text_view_contact"         =   "Xem liên hệ"
+"text_expire"               =   "Đặt thời hạn"
+"text_save_conversation"    =   "Lưu"
+"text_delete_conversation"  =   "Xóa"
+"text_change_bg"            =   "Đổi hình nền"
+"text_enable_encryption"    =   "Bật mã hóa"
+"text_disable_encryption"   =   "Tắt mã hóa"
+"text_participants"         =   "Các thành viên"
+
+"LB_MESSAGE_VC_NO_MESSAGE"  =   "Không có tin nhắn"
+"LB_MESSAGE_DELETE_HEADER"  =   "Xóa tin nhắn"
+"TEXT_MESSAGE_VC_POPUP_MARK_UNREAD" =   "Đánh dấu chưa đọc"
+"TEXT_MESSAGE_VC_POPUP_MUTE_NOTIF"  =   "Tắt thông báo"
+"TEXT_MESSAGE_VC_POPUP_REMUTE_NOTIF"=   "Bật thông báo"
+"TEXT_MESSAGE_VC_POPUP_REPORT_SPAMS"=   "Thông báo Spams"
+"TEXT_MESSAGE_VC_POPUP_BLOCK_CONTACT"   =   "Chặn người này"
+"TEXT_MESSAGE_VC_POPUP_UNBLOCK_CONTACT" =   "Bỏ chặn người này"
+"TEXT_MESSAGE_VC_POPUP_VIEW_CONTACT"    =   "Xem chi tiết liên lạc"
+"TEXT_MESSAGE_VC_POPUP_ADD_CONTACT" =   "Thêm liên lạc"
+"TEXT_MESSAGE_VC_POPUP_FORWARD_CONVER"  =   "Chuyển tiếp"
+"TEXT_MESSAGE_VC_POPUP_DELETE_CONVER"   =   "Xóa"
+
+"text_signed_out"   =   "Đã đăng xuất"
+
+"can_not_send_friend_request"   =   "Không thể gửi yêu cầu kết bạn tại lúc này"
+
+"text_phone_mobile"     =   "Di động"
+"text_phone_work"       =   "Công ty"
+"text_phone_fax"        =   "Fax"
+"text_phone_home"       =   "Nhà"
+"text_phone_other"      =   "Khác"
+
+"TEXT_TYPE_INDIVIDUAL"  = "Cá nhân"
+"TEXT_TYPE_COMPANY"     = "Công ty"
+
+"text_contact_name"         =   "Họ tên"
+"text_contact_cloudfoneId"  =   "Cloudfone ID"
+"text_contact_company"      =   "Công ty"
+"text_contact_email"        =   "Email"
+"text_contact_phone"        =   "Số điện thoại"
+"text_contact_type"         =   "Loại"
+
+"text_contact_detail"       =   "Thông tin liên lạc"
+
+"text_detail_call"          = "Gọi"
+"text_detail_message"       = "Nhắn tin"
+"text_detail_video_call"    = "Video"
+"text_detail_invite"        = "Mời"
+"text_detail_block"         = "Chặn"
+"text_detail_unblock"       = "Bỏ chặn"
+
+"text_first_name"   =   "Tên"
+"text_last_name"    =   "Họ"
+"text_company"      =   "Công ty"
+
+"text_add_contact_failed"   =   "Thêm thất bại. Vui lòng thực hiện lại!"
+"text_update_contact_failed"=   "Cập nhật liên hệ thất bại"
+"text_edit_contact"         =   "Chỉnh sửa liên lạc"
+
+"text_occupiants"           =   "Thành viên"
+"text_occupiant"            =   "Thành viên"
+
+"TEXT_LEAVE_CONF_TITLE"     =   "Rời phòng"
+"TEXT_LEAVE_CONF_CONTENT"   =   "Bạn có muốn rời phòng và xoá cuộc hội thoại này không?"
+
+"text_delete_conv_title"        =   "Xóa"
+"text_delete_conv_content"      =   "Bạn có muốn xóa cuộc trò chuyện này không?"
+
+"TEXT_CAN_NOT_TRANSFER_MONEY_FOR_CS"    = "Bạn không thể chuyển tiền cho người này"
+"TEXT_FAILED_FOR_DELETE_MESSAGE"        = "Không thể xoá tin nhắn"
+"TEXT_CONTACT_EXISTS_PHONE_NUMBER"      = "Liên hệ này đã tồn tại số"
+"TEXT_RESEND_FAILED"                    = "Gửi lại thất bại! Vui lòng thử lại sau."
+"TEXT_DENY_COPY_EXPIRE_IMAGE"           = "Bạn không thể sao chép ảnh có thời hạn"
+
+"img_menu_message_def"  =   "menu_message_def.png"
+"img_menu_message_act"  =   "menu_message_act.png"
+
+"img_menu_history_def"  =   "menu_history_def.png"
+"img_menu_history_act"  =   "menu_history_act.png"
+
+"img_menu_contacts_def" =   "menu_contacts_def.png"
+"img_menu_contacts_act" =   "menu_contacts_act.png"
+
+"img_menu_keypad_def"   =   "menu_keypad_def.png"
+"img_menu_keypad_act"   =   "menu_keypad_act.png"
+
+"img_menu_more_def"     =   "menu_more_def.png"
+"img_menu_more_act"     =   "menu_more_act.png"
+
+"TEXT_COPIED"           =   "Đã sao chép"
+"TEXT_MESSSAGE_RECEIVED_RECALLED"   = "Tin nhắn đã được thu hồi."
+"TEXT_MESSSAGE_SENT_RECALLED"       = "Tin nhắn đã được thu hồi."
+"TEXT_MESSSAGE_SENT_RECALL_FAILED"  = "Tin nhắn không thể thu hồi."
+
+"TEXT_CLICK_TO_VIEW"    = "Bấm xem"
+"TEXT_HOLD_TO_VIEW"     = "Giữ để xem"
+
+"TEXT_LINK_COPY"        = "Sao chép"
+"TEXT_LINK_OPEN"        = "Mở"
+"TEXT_LINK_CALL"        = "Gọi"
+"TEXT_LINK_MAILTO"      = "Gửi mail"
+
+"TEXT_ALERT_POPUP_DELETE_CONV_TITLE"        = "Xóa"
+"TEXT_ALERT_POPUP_DELETE_CONV_CONTENT"      = "Bạn có muốn xóa tất cả các cuộc trò chuyện?"
+
+"TEXT_ALERT_POPUP_SAVE_PICTURE_TITLE"       = "Lưu ảnh"
+"TEXT_ALERT_POPUP_SAVE_PICTURE_CONTENT"     = "Bạn có muốn lưu ảnh này vào thư viện ảnh?"
+
+"CN_CONTACT_VERIFICATION_TEXT"              = "Yêu cầu kết bạn"
+"CN_CONTACT_VERIFICATION_CONTENT"           = "muốn kết bạn với bạn."
+"CN_CONTACT_VERIFICATION_ACCEPT"            = "Đồng ý"
+"CN_CONTACT_VERIFICATION_DECLINE"           = "Từ chối"
+
+"TEXT_ALERT_POPUP_DELETE_GROUP_TITLE"       = "Xóa nhóm"
+"TEXT_ALERT_POPUP_DELETE_GROUP_CONTENT"     = "Bạn có muốn xóa nhóm này không?"
+
+"TEXT_PROFILE_VC_PASS_CONFIRM"              = "Xác nhận"
+"CN_CONTACT_GROUP_VC_WHITELIST"             = "Bạn sẽ chỉ nhận được cuộc gọi và tin nhắn từ những liên lạc có trong Whitelist, bạn có muốn bật Whitelist không?"
+
+"POPUP_DELETE_PHONE_TITLE"                  = "Xoá"
+"POPUP_DELETE_PHONE_CONTENT"                = "Bạn có muốn xoá số điện thoại"
+"POPUP_DELETE_PHONE_YES"                    = "Đồng ý"
+"POPUP_DELETE_PHONE_NO"                     = "Hủy bỏ"
+
+"TEXT_PHONE_VC_HIDE_MSG"    = "Ẩn nội dung tin nhắn"
+"TEXT_CHANGE_HIDE_MESSAGE"  = "Bạn có muốn ẩn nội dung tin nhắn khi không sử dụng ứng dụng?"
+
+"text_group_vc_contacts"    = "liên hệ"
+"text_group_vc_contact"     = "liên hệ"
+
+"TEXT_GROUP_VC_CALL_BTN"        = "Gọi"
+"TEXT_GROUP_VC_NO_CONTACT"      = "Không có liên hệ"
+"TEXT_GROUP_VC_CONTACTS"        = "liên hệ"
+"TEXT_GROUP_VC_CONTACT"         = "liên hệ"
+"TEXT_GROUP_VC_EVENTS"          = "Sự kiện"
+
+"TEXT_IMPORT_ALL_CONTACT"       = "Thêm tất cả liên lạc"
+"TEXT_IMPORT_FAILED"            = "Thất bại. Vui lòng thực hiện lại!"
+
+"TEXT_DELETE_ALL_PERSON_ON_GROUP"       = "Xóa tất cả những người có trong"
+"TEXT_REMOVE_CONTACT_IN_GROUP_FAILED"   = "Xóa thất bại. Vui lòng thực hiện lại!"
+
+
+
+"text_default_error"    =   "Lỗi không xác định!"
+
+
+
+
+"text_no_recent_call"   =   "Không có cuộc gọi"
+"text_no_missed_call"   =   "Không có cuộc gọi nhỡ"
+"text_no_recorded_call" =   "Không có cuộc gọi được ghi âm"
+
+"text_today"            =   "Hôm nay"
+"text_yesterday"        =   "Hôm qua"
+
+"text_edit"             =   "Sửa"
+
+
+
+"text_blacklist"        =   "Blacklist"
+"text_whitelist"        =   "Whitelist"
+"text_favoritelist"     =   "Favorite"
+
+
+
+
+
+"text_phone_mobile"         =   "Di động"
+"text_phone_work"           =   "Công ty"
+"text_phone_fax"            =   "Fax"
+"text_phone_home"           =   "Nhà"
+
+"text_saving"               =   "Đang lưu..."
+
+
+
+
+
+"text_contact_importing"    =   "Danh bạ đang được tạo mới. Vui lòng chờ!"
+
+
+
+
+
+"text_failed_block_contact" = "Thất bại. Vui lòng thử lại sau!"
+
+
+
+"text_email"        =   "Email"
+"text_type"         = "Loại"
+"text_cloudfoneid"  = "CloudFone ID"
+
+
+
+
+
+
+
+
+
+"text_show_picture"         =   "Tin nhắn hình"
+"text_show_picture_desc"    =   "Nhấn để nhập mô tả"
+
+"text_enter_caption_header" =   "Chú thích"
+"text_enter_caption_desc"   =   "Nhập chú thích"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"text_phone_not_exists"     =   "Số điện thoại không tồn tại"
+"text_call_detail_header"   =   "Chi tiết cuộc gọi"
+
+"text_outging_call"     =   "Cuộc gọi đi"
+"text_incomming_call"   =   "Cuộc gọi đến"
+"text_minutes"          =   "phút"
+"text_minute"           =   "phút"
+"text_call_free"        =   "Miễn phí"
+"text_call_aborted"     =   "Bị hủy bỏ"
+"text_call_declined"    =   "Bị từ chối"
+"text_call_missed"      =   "Cuộc gọi nhỡ"
+
+"text_block_user"       =   "Chặn"
+"text_unblock_user"     =   "Bỏ chặn"
+
+
+
+"text_username_or_email_not_empty"  =   "Username or password can not empty!"
+
+
+
+
+
+"text_message_invite"       =   "Tôi đang sử dụng CloudFone để gọi điện và nhắn tin miễn phí.\nBạn có thể cài đặt CloudFone cho Android và trên App Store."
+
+
+
+"text_reload_app_for_change_language"   =   "Bạn có muốn khởi động lại ứng dụng để thay đổi ngôn ngữ"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"LB_FRM_TERMS_AGREE"    = "Đồng ý với"
+"LB_FRM_TERMS_CONTENT"  = "Điều khoản sử dụng"
+"BTN_FRM_CONTINUE"      = "Tiếp tục"
+"FRM_BTN_CONFIRM"       = "XÁC NHẬN"
+"FRM_TF_ENTER_CODE"     = "Nhập mã xác nhận"
+"TEXT_LOGIN"            = "ĐĂNG NHẬP"
+"TEXT_LOGIN_LOWER"      = "Đăng nhập"
+"TEXT_REGISTER_LOWER"   = "Đăng ký"
+"TEXT_WAITING"          = "Vui lòng chờ..."
+
+
+
+
+"TEXT_REGISTER_EMPTY"   = "Các trường không được để trống"
+"TEXT_EMAIL_ERROR"      = "Email sai định dạng"
+"TEXT_PHONE_ERROR"      = "7 < Chiều dài sđt < 16"
+"TEXT_TERMS_CONDITIONS" = "Vui lòng đồng ý với Điều khoản sử dụng"
+
+
+"TEXT_ERROR_EMAIL_INVALID"      = "Email sai định dạng."
+"TEXT_ERROR_EMAIL_SEND_FAILED"  = "Không thể gửi mã kích hoạt đến email của bạn. Vui lòng kiểm tra lại địa chỉ email.";
+"TEXT_ERROR_SQL"                = "Vui lòng đăng ký lại."
+"TEXT_ERROR_CONFIRM_CODE"       = "Mã kích hoạt không chính xác hoặc thời gian đăng ký quá 30phút. Vui lòng kiểm tra lại.";
+"TEXT_ERROR_PHONE_EXISTS"       = "Số điện thoại đã được đăng ký. Vui lòng kiểm tra lại."
+"TEXT_ERROR_OCCURED"            = "Đã có lỗi xảy ra."
+
+"TEXT_DID_HEADER"       = "Chọn số hiển thị"
+
+
+"TEXT_HOTLINE_VC_CONNECTING"    = "Đang kết nối"
+"POPUP_CALL_TO"                 = "Gọi đến:"
+"POPUP_CALL_FREE"               = "Miễn phí"
+"POPUP_CALL_SAVING"             = "Tiết kiệm"
+"POPUP_CALL_TRUNKING"           = "Trung kế"
+"POPUP_CALL_PREMIUM"            = "Trực tiếp"
+"POPUP_PAYMENT_HEADER"          = "Thanh toán"
+"POPUP_PAYMENT_CONTENT"         = "Tài khoản của bạn không đủ để thực hiện cuộc gọi này.\n\n Vui lòng nạp thêm tiền hoặc liên hệ với trung tâm chăm sóc khách hàng của chúng tôi để được trợ giúp."
+"POPUP_PAYMENT_BTN_CALL"        = "Gọi"
+"POPUP_PAYMENT_BTN_TOPUP"       = "Nạp thẻ"
+
+"TEXT_FAILD"                    = "Thất bại"
+
+
+
+
+"CN_INCALL_VC_VIDEO_CALL_TITLE"             = "Call update requested"
+"CN_INCALL_VC_VIDEO_CALL_INFO"              = "Your correspondent would like to add video to the current"
+"CN_INCALL_VC_VIDEO_CALL_ACCEPT"            = "Đồng ý"
+"CN_INCALL_VC_VIDEO_CALL_DECLINE"           = "Từ chối"
+
+
+
+"TEXT_CONFIRM"                              = "Xác nhận"
+"TEXT_CALL_PRE"                             = "Gọi"
+"TEXT_SETTING_PRE"                          = "Cài đặt"
+"TEXT_INCALL_VC_LB_RATE"                    = "Giá cước:"
+"TEXT_INCALL_VC_LB_DEST"                    = "Hướng gọi:"
+
+
+
+
+
+
+"TEXT_INCALL_VC_SWITCH_CAMERA"              = "Chuyển máy ảnh"
+"TEXT_INCALL_VC_CAMERA_ON"                  = "Bật"
+"TEXT_INCALL_VC_CAMERA_OFF"                 = "Tắt"
+
+
+
+
+
+"TEXT_BAR_MENU_HISTORY"         = "history_vi_default.png"
+"TEXT_BAR_MENU_HISTORY_OVER"    = "history_vi_over.png"
+
+"TEXT_BAR_MENU_CONTACT"         = "contact_vi_default.png"
+"TEXT_BAR_MENU_CONTACT_OVER"    = "contact_vi_over.png"
+
+"TEXT_BAR_MENU_KEYPAD"          = "keypad_vi_default.png"
+"TEXT_BAR_MENU_KEYPAD_OVER"     = "keypad_vi_over.png"
+
+"TEXT_BAR_MENU_MORE"            = "more_vi_default.png"
+"TEXT_BAR_MENU_MORE_OVER"       = "more_vi_over.png"
+
+
+
+"CN_CONTACT_VC_NEW_GROUP_TITLE"         = "Tạo nhóm"
+"CN_CONTACT_VC_NEW_GROUP_NAME"          = "Tên nhóm"
+"CN_CONTACT_VC_NEW_GROUP_DESCRIPTION"   = "Mô tả"
+"CN_CONTACT_VC_NEW_GROUP_OK"            = "Đồng ý"
+"CN_CONTACT_VC_NEW_GROUP_CANCEL"        = "Hủy bỏ"
+
+
+
+"TEXT_SETTINGS_VC_SYNCING"          = "Đang đồng bộ..."
+"TEXT_SETTINGS_VC_SYNC"             = "Đồng bộ danh bạ"
+"TEXT_SYNC_CONTACTS_CANCEL"         = "Đồng bộ danh bạ đã được ngừng"
+"TEXT_SYNC_CONTACTS_SUCCESSFULLY"   = "Đồng bộ thành công"
+"TEXT_SYNC_CONTACTS_FAILED"         = "Đồng bộ thất bại"
+
+"TEXT_SETTINGS_VC_SYNC_CONTACTS"    = "Liên lạc"
+
+
+
+
+"TEXT_CALL_DETAIL_VC_CALL_BTN"      =   "Gọi"
+"TEXT_CALL_DETAIL_VC_MSG_BTN"       =   "Nhắn tin"
+"TEXT_CALL_DETAIL_VC_INVITE_BTN"    =   "Mời"
+
+"TEXT_CALL_DETAIL_VC_LAST_SEEN_ON"  = "Đăng xuất lúc"
+
+
+
+
+"TEXT_CALL_HISTORY_VC_YESTERDAY"        = "HÔM QUA"
+
+
+"TEXT_PHONE_NUMBER" = "Số điện thoại"
+"TEXT_ADDRESS"      = "Địa chỉ cư trú"
+"TEXT_NONE"         = "Không"
+
+"TEXT_CS_ONLINE"            = "Tôi có thể giúp được gì cho bạn?"
+"TEXT_CALL"                 = "Gọi"
+
+"LB_EDIT_CONTACT_HEADER"    = "Chỉnh sửa liên lạc"
+"TF_EDIT_CONTACT_FIRSTNAME" = "Tên"
+"TF_EDIT_CONTACT_LASTNAME"  = "Họ"
+
+
+"TEXT_UPDATING"     =   "Đang cập nhật..."
+"TEXT_TRUNKING_OFF" =   "Đã tắt"
+"TEXT_TRUNKING_ON"  =   "Đã bật"
+"TEXT_LOADING"      =   "Đang tải..."
+
+"TEXT_NO_MESSAGES"      = "Không có tin nhắn"
+
+"TEXT_NOTES"            = "Ghi chú"
+
+"TEXT_EXPORT_POPUP_CONTENT"         = "Gửi cuộc trò chuyện"
+
+
+
+
+
+"TEXT_CHAT_CS_TITLE"    = "Chăm sóc khách hàng"
+"TEXT_NAME_AGENT"       = "Tư vấn viên"
+
+
+
+"LB_MORE_VC_HEADER"     = "Ứng dụng"
+"TEXT_MORE_VC_PROFILE"  = "Hồ sơ"
+"TEXT_MORE_VC_PHONE"    = "Điện thoại"
+"TEXT_MORE_VC_WALLET"   = "Ví tiền"
+"TEXT_MORE_VC_PLACE"    = "Địa điểm"
+"TEXT_MORE_VC_SHOPPING" = "Mua sắm"
+"TEXT_MORE_VC_SHIPMENT" = "Giao nhận"
+"TEXT_MORE_VC_ASKING"   = "Hỏi đáp"
+"TEXT_MORE_VC_SETTINGS" = "Thiết lập"
+
+"LB_PROFILE_VC_HEADER"              = "Hồ sơ"
+"TEXT_PROFILE_VC_DISPLAY_NAME"      = "Tên người dùng"
+"TEXT_PROFILE_VC_PHONE_NUMBER"      = "Số điện thoại"
+"TEXT_PROFILE_VC_ACCOUNT_ID"        = "Số tài khoản"
+"TEXT_PROFILE_VC_BALANCE"           = "Tài khoản còn"
+"TEXT_PROFILE_VC_PASSWORD"          = "Mật khẩu"
+"TEXT_PROFILE_VC_EMAIL"             = "Địa chỉ email"
+"TEXT_PROFILE_VC_ADDRESS"           = "Địa chỉ cư trú"
+
+
+
+"TEXT_PROFILE_VC_PASS_EMPTY"        = "Trường này không được để trống"
+"TEXT_PROFILE_VC_PASS_NOT_MATCH"    = "Xác nhận mật khẩu mới không chính xác"
+"TEXT_PROFILE_VC_OLD_PASS_WRONG"    = "Mật khẩu cũ không đúng"
+"TEXT_PROFILE_VC_CHANGE_EMAIL"      = "Nhập địa chỉ email"
+"TEXT_PROFILE_VC_EMAIL_CANCEL"      = "Hủy bỏ"
+"TEXT_PROFILE_VC_EMAIL_SET"         = "Thiết lập"
+"TEXT_PROFILE_VC_BALANCE_TOPUP"     = "Nạp thẻ"
+"TEXT_PROFILE_VC_BALANCE_FREE_CREDIT" = "Miễn phí"
+
+"BTN_PHONE_VC_UPDATE_ACCESS_LIST"   = "Update access list"
+"BTN_PHONE_VC_ACCESS_NUMBER_CANCEL" =   "Cancel"
+"BTN_PHONE_VC_ACCESS_NUMBER_SAVE"   =   "Save"
+
+
+
+"TEXT_TOPUP_BUY"                    = "Mua"
+"LB_PHONE_VC_HEADER"                = "Điện thoại"
+"TEXT_PHONE_VC_INTRODUCTION"        = "Giới thiệu dịch vụ"
+"TEXT_PHONE_VC_TERMS_CONDITION"     = "Điều khoản sử dụng"
+"TEXT_PHONE_VC_Q_A"                 = "Câu hỏi thường gặp"
+"TEXT_PHONE_VC_RATES"               = "Bảng giá cước"
+"TEXT_PHONE_VC_PLAN"                = "Gói cước"
+"TEXT_PHONE_VC_ACCESS_NUMBER"       = "Số địa phương"
+"TEXT_PHONE_VC_NUMBER_DID"          = "Số trực tiếp"
+"TEXT_PHONE_VC_NAT"                 = "NAT"
+"TEXT_PHONE_VC_DND"                 = "Đừng làm phiền"
+"TEXT_PHONE_VC_AUTO_ANSWER"         = "Trả lời tự động"
+"TEXT_PHONE_VC_TRUNKING"            = "Trung kế"
+"LB_PLAN_VC_HEADER"                 = "Gói cước"
+"LB_DID_VC_HEADER"                  = "Số DID"
+
+"TEXT_NOT_TRUNKING_ACCOUNT_TITLE"   = "Trung kế SIP"
+"TEXT_NOT_TRUNKING_ACCOUNT_CONTENT" = "Trung kế SIP chưa được cài đặt.\nVui lòng liên hệ dịch vụ chăm sóc khách hàng để biết thêm chi tiết."
+"TEXT_NOT_TRUNKING_ACCOUNT_CANCEL"  = "Hủy bỏ"
+"TEXT_NOT_TRUNKING_ACCOUNT_CALL"    = "Gọi"
+
+"TEXT_NO_CONTENTS"  = "Không có nội dung"
+
+
+"TEXT_SETTINGS_VC_VERSION"      = "Phiên bản ứng dụng"
+"TEXT_SETTINGS_VC_UPDATE"       = "Kiểm tra cập nhật"
+"TEXT_SETTINGS_VC_TERMS"        = "Terms and conditions"
+"TEXT_SETTINGS_VC_SYNC"         = "Đồng bộ danh bạ"
+"TEXT_SETTINGS_VC_SYNC_CONTACTS" = "Liên lạc"
+"TEXT_SETTINGS_VC_CURRENCY"     = "Chọn loại tiền tệ"
+"TEXT_SETTINGS_VC_FEEDBACK"     = "Gửi phản hồi"
+"TEXT_SETTINGS_VC_LOGOUT"       = "Đăng xuất"
+"TEXT_SETTINGS_VC_DEACTIVE"     = "Hủy bỏ tài khoản"
+"TEXT_SETTINGS_VC_EXIT"         = "Đóng ứng dụng"
+
+"LB_WALLET_VC_HEADER"           = "Ví tiền"
+"LB_WALLET_VC_ACCOUNT"          = "Tài khoản"
+"LB_WALLET_VC_RECIPIENT"        = "Người nhận"
+"LB_WALLET_VC_AMOUNT"           = "Số tiền"
+"LB_WALLET_VC_FEE"              = "Phí"
+"LB_WALLET_VC_TOTAL_PAID"       = "Tổng số tiền"
+"LB_WALLET_VC_NOTES"            = "Ghi chú"
+"LB_WALLET_VC_CANCEL"           = "Hủy bỏ"
+"LB_WALLET_VC_SEND"             = "Gửi"
+
+"TEXT_WALLET_HIS_VC_NO_DATA"    = "Không có lịch sử giao dịch"
+"CN_WALLET_HIS_VC_TITLE"        = "Chi tiết giao dịch"
+
+"TEXT_WALLET_TOPUP_AMOUNT"      = "Số tiền"
+"TEXT_WALLET_TOPUP_PAY_BY"      = "Pay by"
+
+"CN_WALLET_VC_TRANSFER_CHOOSE_RECIPIENT"    = "Vui lòng chọn người nhận trước"
+"TEXT_WALLET_TRANSFER_SUCCESSFULLY"         = "Chuyển tín dụng thành công"
+"TEXT_WALLET_TRANSFER_FAILED"               = "Chuyển tính dụng thất bại!"
+"TEXT_WALLET_TRANSFER_PASS_WRONG"           = "Mật khẩu không chính xác"
+"TEXT_WALLET_TRANSFER_NOT_ENOUGH_MONEY"     = "Tài khoản không đủ!"
+
+"TEXT_WALELT_HIS_SENT"          = "Gửi"
+"TEXT_WALELT_HIS_RECEIVED"      = "Nhận"
+
+"TEXT_CALLNEX_BALANCE"          = "Tài khoản còn"
+
+"TEXT_TRANSFERMONEY_YOU_ARE_SENDING"    = "Bạn đang gửi số tiền"
+"TEXT_TRANSFERMONEY_TO_ACCOUNT"         = "đến tài khoản"
+"TEXT_TRANSFERMONEY_PLEASE_ENTER"       = "Vui lòng nhập mật khẩu để xác nhận giao dịch"
+"TEXT_TRANSFERMONEY_FOR_MYSELF"         = "Bạn không thể chuyển tiền cho chính mình!"
+"TEXT_TRANSFERMONEY_AMOUNT"             = "Vui lòng chọn mức tiền cần chuyển!"
+"TEXT_TRANSFERMONEY_NOT_ENOUGH_MONEY"   = "Không đủ tiền để chuyển!"
+
+"LB_PAY_VC_HEADER"          = "Ví tiền"
+"TEXT_PAY_VC_BILL"          = "Hoá đơn"
+"TEXT_PAY_VC_TOPUP"         = "Nạp tiền"
+"TEXT_PAY_VC_TICKET"        = "Vé"
+"TEXT_PAY_VC_BOOKING"       = "Đặt phòng"
+"TEXT_PAY_VC_DIEN_NUOC"     = "Điện nước"
+"TEXT_PAY_VC_DTDD"          = "Điện thoại cố định"
+"TEXT_PAY_VC_DTDD"          = "Điện thoại di động"
+"TEXT_PAY_VC_INTERNET"      = "Internet"
+"TEXT_PAY_VC_TV_TRUYEN_HINH" = "TV / Truyền hình"
+"TEXT_PAY_VC_CALLNEX_PINLESS" = "Callnex Pinless"
+"TEXT_PAY_VC_XEM_PHIM"      = "Xem phim"
+"TEXT_PAY_VC_VE_VAO_CONG"   = "Vé vào cổng"
+"TEXT_PAY_VC_MAY_BAY"       = "Máy bay"
+"TEXT_PAY_VC_TAU_LUA"       = "Tàu lửa"
+"TEXT_PAY_VC_KHACH_SAN"     = "Khách sạn"
+"TEXT_PAY_VC_NHA_HANG"      = "Nhà hàng"
+"TEXT_PAY_VC_STORES"        = "Cửa hàng"
+
+"TEXT_BAR_WALLET_HISTORY" = "history_vi_default.png"
+"TEXT_BAR_WALLET_HISTORY_OVER" = "history_vi_over.png"
+"TEXT_BAR_WALLET_TOPUP" = "wallet_topup_vi_default.png"
+"TEXT_BAR_WALLET_TOPUP_OVER" = "wallet_topup_vi_over.png"
+"TEXT_BAR_WALLET_TRANSFER" = "wallet_transfer_vi_default.png"
+"TEXT_BAR_WALLET_TRANSFER_OVER" = "wallet_transfer_vi_over.png"
+"TEXT_BAR_WALLET_PAY" = "wallet_pay_vi_default.png"
+"TEXT_BAR_WALLET_PAY_OVER" = "wallet_pay_vi_over.png"
+"TEXT_BAR_WALLET_STORES" = "wallet_stores_vi_default.png"
+"TEXT_BAR_WALLET_STORES_OVER" = "wallet_stores_vi_over.png"
+
+"TEXT_BAR_SHOP_HISTORY" = "history_vi_default.png"
+"TEXT_BAR_SHOP_HISTORY_OVER" = "history_vi_over.png"
+"TEXT_BAR_SHOP_PROMOS" = "shop_promotions_vi_default.png"
+"TEXT_BAR_SHOP_PROMOS_OVER" = "shop_promotions_vi_over.png"
+"TEXT_BAR_SHOP_PRODUCTS" = "shop_products_vi_default.png"
+"TEXT_BAR_SHOP_PRODUCTS_OVER" = "shop_products_vi_over.png"
+"TEXT_BAR_SHOP_STORES" = "shop_stores_vi_default.png"
+"TEXT_BAR_SHOP_STORES_OVER" = "shop_stores_vi_over.png"
+"TEXT_BAR_SHOP_STORIES" = "shop_stories_vi_default.png"
+"TEXT_BAR_SHOP_STORIES_OVER" = "shop_stories_vi_over.png"
+
+"TEXT_ALERT_ERROR_TITLE"        = "Lỗi"
+"TEXT_ALERT_ERROR_PASS_EMPTY"   = "Vui lòng nhập mật khẩu!"
+"TEXT_ALERT_ERROR_PASS_WRONG"   = "Mật khẩu của bạn không chính xác!"
+"TEXT_ALERT_ERROR_FEE"          = "Lỗi khi lấy phí giao dịch. Vui lòng kiểm tra lại kết nối internet của bạn!"
+
+"POPUP_TEXT_CALLNEX_PINLESS_HEADER"     = "Nạp thẻ"
+"POPUP_TEXT_CALLNEX_PINLESS_CONTENT"    = "Vui lòng nhập số tiền nạp cho tài khoản"
+"POPUP_TEXT_CALLNEX_PINLESS_MONEY"      = "Số tiền"
+"CALLNEX_PINLESS_NOT_RECIPIENT"         = "Vui lòng chọn người nhận trước!"
+"TEXT_PLEASE_TRY_LATER"                 = "Vui lòng thử lại sau"
+
+"POPUP_RECIPIENTS_LB_TITLE" = "Nhập số điện thoại"
+"POPUP_RECIPIENTS_TEXTFIELD" = "Số tài khoản hoặc sđt"
+
+"TEXT_TERMS_VC_HEADER"  =   "Điều khoản sử dụng"
+"TEXT_TERMS_VC_TERMS"   =   "Điều khoản sử dụng chung"
+"TEXT_TERMS_VC_PURCHASE"=   "Mua sắm trực tuyến"
+"TEXT_TERMS_VC_PRIVACY" =   "Chính sách bảo mật"
+
+
+"TEXT_CONTACT_VC_ADDING_CONTACT"        = "Đang cập nhật"
+"TEXT_CONTACT_VC_ADDING_CONTACT_WAIT"   = "Vui lòng chờ..."
+
+"TEXT_DOWNLOAD_BG_CHAT_FAILED"          = "Tải về thất bại! Vui lòng thử lại sau."
+
+
+
+"TEXT_ENABLED_ENCRYPTION"           =   "Đã bật mã hoá"
+"TEXT_DISABLED_ENCRYPTION"          =   "Đã tắt mã hoá"
+
+
+
+
+"POPUP_MAPS_ADD_DESC_TITLE"     = "Nhập mô tả"
+"POPUP_MAPS_ADD_DESC_TEXTFIELD" = "Mô tả vị trí"
+"MAPS_VC_LB_HEADER"             = "Gửi vị trí"
+"MAPS_VC_LB_YOUR_LOCATION"      = "Vị trí của bạn"
+
+"TEXT_DISTANCE"         = "Khoảng cách"
+"TEXT_MY_LOCATION"      = "Vị trí của tôi"
+
+
+"TEXT_CHAT_VC_ENCRYPTION_ENABLED" = "Bật mã hóa"
+"TEXT_CHAT_VC_ENCRYPTION_DISABLED" = "Tắt mã hóa"
+
+
+
+
+
+"TEXT_BTN_ACCEPT"                       = "Đồng ý"
+"TEXT_BTN_DECLINE"                      = "Từ chối"
+"TEXT_PENDING"                          =   "Đang chờ phản hồi"
+"TEXT_CALLNEXID_INCORRECT"              = "CallnexID không chính xác!"
+
+"LB_ADD_CONTACT_HEADER"                 = "Tạo liên hệ"
+
+
+"TEXT_GROUP_VC_CALL_BTN"        = "Gọi"
+"TEXT_GROUP_VC_NO_CONTACT"      = "Không có liên hệ"
+"TEXT_GROUP_VC_CONTACTS"        = "liên hệ"
+"TEXT_GROUP_VC_CONTACT"         = "liên hệ"
+"TEXT_GROUP_VC_EVENTS"          = "Sự kiện"
+
+"TEXT_IMPORT_ALL_CONTACT"       = "Thêm tất cả liên lạc"
+"TEXT_IMPORT_FAILED"            = "Thất bại. Vui lòng thực hiện lại!"
+
+"TEXT_DELETE_ALL_PERSON_ON_GROUP"       = "Xóa tất cả những người có trong"
+"TEXT_REMOVE_CONTACT_IN_GROUP_FAILED"   = "Xóa thất bại. Vui lòng thực hiện lại!"
+
+
+"TEXT_DECLINE"         = "Từ chối"
+"TEXT_ANSWER"          = "Trả lời"
+
+"IMAGE_TRANSFER_CALL_DEFAULT"   = "btn_transfer_def_vi.png"
+"IMAGE_TRANSFER_CALL_OVER"      = "btn_transfer_act_vi.png"
+
+"TEXT_SAVE_VIDEO_SUCCESS"       = "Video đã được lưu"
+"TEXT_SAVE_VIDEO_FAILED"        = "Không thể lưu video"
+
+
+
+
+"TEXT_PRODUCTS_ALL"             = "Tất cả"
+"TEXT_PRODUCTS_TRENDY"          = "Xu hướng"
+"TEXT_PRODUCTS_MOST_POPULAR"    = "Ưa chuộng"
+"TEXT_PRODUCTS_BEST_DEAL"       = "Ưu đãi"
+"TEXT_PRODUCTS_FEATURED"        = "Độc đáo"
+"TEXT_PRODUCTS_JUST_POSTED"     = "Mới nhất"
+
+"TEXT_PRODUCT_EMPTY"            = "Không có dữ liệu"
+
+"TEXT_PRODUCTS_LIKE"    = "Thích"
+"TEXT_PRODUCTS_DOWN"    = "Lưu"
+"TEXT_PRODUCTS_SHARE"   = "Chia sẻ"
+"TEXT_PRODUCTS_BUY"     = "Mua"
+"TEXT_FROM"             = " - từ "
+"TEXT_COMMENTS"         = "Bình luận"
+
+// SHOPBAR MENU
+"SHOPBAR_MENU_HISTORY_DEF"   = "history_vi_default.png"
+"SHOPBAR_MENU_HISTORY_ACT"   = "history_vi_over.png"
+
+"SHOPBAR_MENU_PROMOS_DEF"    = "promos_menu_vi_def.png"
+"SHOPBAR_MENU_PROMOS_ACT"    = "promos_menu_vi_act.png"
+
+"SHOPBAR_MENU_PRODUCT_DEF"   = "products_menu_vi_def.png"
+"SHOPBAR_MENU_PRODUCT_ACT"   = "products_menu_vi_act.png"
+
+"SHOPBAR_MENU_STORES_DEF"    = "stores_menu_vi_def.png"
+"SHOPBAR_MENU_STORES_ACT"    = "stores_menu_vi_act.png"
+
+"SHOPBAR_MENU_STORIES_DEF"   = "stories_menu_vi_def.png"
+"SHOPBAR_MENU_STORIES_ACT"   = "stories_menu_vi_act.png"
+
+
+"SHOP_NO_PRODUCT"       =   "Chưa có sản phẩm"
+"TEXT_NOT_SUPPORT_SMS"  =   "Thiết bị của bạn không hỗ trợ SMS!"
+"TEXT_FAILED_SEND_SMS"  =   "Gửi tin nhắn thất bại!"
+
+"TEXT_NEW_COMMENT"      =   "Bình luận"
+"TEXT_PRODUCT_INFO"     =   "Thông tin sản phẩm"
+
+"TEXT_LIST_COMMENTS"    =   "Danh sách bình luận"
+
+"TEXT_CANNOT_GET_DATA_PRODUCT"  =   "Không thể lấy dữ liệu của sản phẩm!"
+"TEXT_PROMOTION"        =   "Khuyến mãi"
+
+"TEXT_SHOP_FILTER_SORT"         =   "Sắp xếp"
+"TEXT_SHOP_FILTER_NEARBY"       =   "Gần đây"
+"TEXT_SHOP_FILTER_NEW"          =   "Mới"
+"TEXT_SHOP_FILTER_POPULAR"      =   "Phổ biến"
+
+"TEXT_SHOP_FILTER_CATEGORIES"   =   "Danh mục"
+"TEXT_SHOP_FILTER_FOOD_DRINK"   =   "Thức ăn & Nước uống"
+"TEXT_SHOP_FILTER_BEAUTY"       =   "Làm đẹp"
+"TEXT_SHOP_FILTER_HEALTH"       =   "Sức khoẻ"
+"TEXT_SHOP_FILTER_GIFT"         =   "Quà tặng"
+"TEXT_SHOP_FILTER_MEN"          =   "Nam"
+"TEXT_SHOP_FILTER_WOMEN"        =   "Nữ"
+"TEXT_SHOP_FILTER_KIDS"         =   "Trẻ em"
+"TEXT_SHOP_FILTER_HOME"         =   "Gia đình"
+"TEXT_SHOP_FILTER_OFFICE"       =   "Văn phòng"
+
+"TEXT_NO_PRODUCT"       =   "Không có sản phẩm"
+
+
+"TEXT_FILE_AUDIO_REMOVED"   =   "Đã xoá tập tin."
+
+"TEXT_CHOOSE_CONTACT_ADD_GROUP" =   "Chọn các số liên lạc"
+
+"TEXT_PLEASE_WAIT"  =   "Vui lòng chờ!"
+
+
+
+
+"TEXT_OCCUPIANTS"           =   "Thành viên"
+"TEXT_OCCUPIANT"            =   "Thành viên"
+
+
+
+
+
+"TEXT_CHANGE_ROOMNAME_TITLE"    =   "Đổi tên phòng"
+"TEXT_CHANGE_ROOMNAME_PLHD"     =   "Nhập tên phòng..."
+"TEXT_CHANGE_ROOMNAME_CANCEL"   =   "Hủy bỏ"
+"TEXT_CHANGE_ROOMNAME_SAVE"     =   "Lưu"
+
+"TEXT_START_CHAT"   =   "Start a chat"
+
+"TEXT_KICK_USER"    =   "Kick"
+"TEXT_BAN_USER"     =   "Ban"
+
+"TEXT_FOLLOW"       =   "Theo dõi"
+"TEXT_FOLLOWING"    =   "Đang theo dõi"
+
+"TEXT_CART_TITLE"   =   "Giỏ hàng"
+
+"Anonymous"     =   "Ẩn danh"
+"Account"       =   "Tài khoản"
+"Mobile"        =   "Di động"
+
+"TEXT_REMOVE_PRODUCT_CART"      =   "Bạn có muốn xoá sản phẩm này khỏi giỏ hàng hay không?"
+"TEXT_REMOVE_PRODUCT_TITLE"     =   "Xoá sản phẩm"
+"TEXT_CHECKOUT_PRODUCT"         =   "Tiến hành thanh toán"
+"TEXT_CONTINUE_SHOPPING"        =   "Tiếp tục mua hàng"
+
+"text_can_not_send_image_for_group" =   "Gửi ảnh thất bại!"
+
+"choose_contact_for_add_group"  =   "Vui lòng chọn liên lạc để thêm vào nhóm chat!"
+
+"text_dien_day_tu_thong_tin"    =   "Vui lòng điền đầy đủ thông tin"
+
+"login_pbx_success_not_update_token" = "Đăng ký PBX thành công. Nhưng cập nhật token cho tài khoản PBX thất bại!"
+"register_pbx_failed"   =   "Đăng ký PBX thất bại!"
+"pbx_has_been_deleted"  =   "Tài khoản PBX đã được xoá!"
+"pbx_turn_off"          =   "Tài khoản PBX đã được tắt!"
+"pbx_turn_on"           =   "Tài khoản PBX đã được bật!"
+
+"future_not_support"    =   "Tính năng này chưa được hỗ trợ!"
+
+"text_calling"      =   "Đang gọi..."
+"text_ringing"      =   "Đang đổ chuông"
+"text_busy"         =   "đang bận"
+"text_terminating"  =   "Kết thúc"
+"text_terminated"   =   "Kết thúc cuộc gọi"
+
+"Close" = "Đóng"
+"Chat images" = "Hình ảnh chung"
+"Change background" = "Đổi hình nền"
+"Receive notifications" = "Báo tin nhắn mới"
+"Save conversation" = "Lưu hội thoại"
+"Burn messages after reading" = "Xoá tin nhắn sau khi đọc"
+"Block this contact" = "Chặn người này"
+"Clear chat history" = "Xoá tin nhắn"
+"Members" = "THÀNH VIÊN"
+
+"text_in"               =   "trong"
+
+"text_options" = "Tùy chọn"
+"text_send_to_friend" = "Gửi cho bạn"
+"text_save_to_gallery" = "Lưu về máy"
+"text_save_image_success" = "Ảnh đã được lưu thành công"
+"text_save_image_failed" = "Không thể lưu ảnh lúc này"
+
+"click_to_view_img" = "click_to_view_vi"
+"image_not_exists"  = "Ảnh không tồn tại!"
+
+"sent_message_to_you"   = "đã gửi tin nhắn cho bạn."
+"sent_photo_to_you"     = "đã gửi ảnh cho bạn."
+"sent_video_to_you"     = "đã gửi video cho bạn."
+
+"text_contacts_xmpp_sync_success"   =   "Danh bạ đã được đồng bộ"
+"scan_from_photo"   =   "QUÉT ẢNH CÓ SẴN"
+"text_notification" =   "Thông báo"
+"cannot_find_qrcode"=   "Không thể tìm thấy mã QR!"
+"text_close"        =   "ĐÓNG"
+"text_load_more"    =   "Đang tải..."
+"text_hi"           =   "Xin chào"
+
+"text_leave_room"   =   "Rời khỏi nhóm"
+"text_is_member"    =   "Thành viên"
+
+"text_clear_history_group_chat" =   "Bạn có muốn xoá tất cả tin nhắn?"
+"phòng"    =   "Rời phòng và xoá tin nhắn?"
+
+"check_pbx_account"         =   "Vui lòng kiểm tra tài khoản PBX"
+"clear_pbx_successfully"    =   "Xoá PBX thành công"
+
+"please_input_phone_number" =   "Vui lòng nhập số điện thoại"
+"text_message_settings" =   "TIN NHẮN"
+"text_call_settings"    =   "CUỘC GỌI"
+"text_wait_starting_app" =   "Ứng dụng đang được khởi động..."
+"text_alert"    =   "Thông báo"
+"text_close"    =   "Đóng"
+"text_cannot_send_video"    =   "Không thể gửi video!"
+"text_cannot_send_picture"  =   "Gửi ảnh không thành công!"
+"text_ok"       =   "Đồng ý"
+"text_unfriend_content" =   "Bạn có muốn huỷ kết bạn với người này?"
+"text_clear_chat_history"   =   "Xoá lịch sử tin nhắn"
+
+"can_not_reset_password" =   "Lấy lại mật khẩu thất bại. Vui lòng thử lại sau!"
+"reset_password_done"   =   "Thành công. Vui lòng kiểm tra email của bạn."
+
+"text_not_received" =   "Tôi chưa nhận được"
+"text_not_send_message" =   "Không thể gửi tin nhắn cho số điện thoại này!"
+
+"text_show_pass"    =   "HIỆN"
+"text_hide_pass"    =   "ẨN"
+"text_capture_sent" =   "Ảnh đã được gửi"

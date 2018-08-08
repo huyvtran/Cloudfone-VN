@@ -1,0 +1,1 @@
+cmd='/usr/local/Cellar/cmake/3.4.3/bin/cmake;-DENABLE_STATIC=YES;-DENABLE_SHARED=NO;-C/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64//tmp/EP_turbo-jpeg/EP_turbo-jpeg-cache-$<CONFIG>.cmake;-GUnix Makefiles;/Users/eicaptain/Desktop/linphone-iphone/submodules/externals/libjpeg-turbo'

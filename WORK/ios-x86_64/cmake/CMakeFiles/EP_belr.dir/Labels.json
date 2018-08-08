@@ -1,0 +1,55 @@
+
+{
+	"sources" : 
+	[
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/cmake/CMakeFiles/EP_belr"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/cmake/CMakeFiles/EP_belr.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/cmake/CMakeFiles/EP_belr-complete.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_belr/EP_belr-install.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_belr/EP_belr-mkdir.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_belr/EP_belr-download.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_belr/EP_belr-update.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_belr/EP_belr-patch.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_belr/EP_belr-configure.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_belr/EP_belr-build.rule"
+		},
+		
+		{
+			"file" : "/Users/eicaptain/Desktop/linphone-iphone/WORK/ios-x86_64/Stamp/EP_belr/EP_belr-force_build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : [ "EP_belr" ],
+		"name" : "EP_belr"
+	}
+}

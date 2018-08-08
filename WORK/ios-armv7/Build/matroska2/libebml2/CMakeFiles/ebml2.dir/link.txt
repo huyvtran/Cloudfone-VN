@@ -1,0 +1,2 @@
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc libebml2.a  CMakeFiles/ebml2.dir/ebmlmain.c.o CMakeFiles/ebml2.dir/ebmlelement.c.o CMakeFiles/ebml2.dir/ebmlmaster.c.o CMakeFiles/ebml2.dir/ebmlbinary.c.o CMakeFiles/ebml2.dir/ebmlstring.c.o CMakeFiles/ebml2.dir/ebmlnumber.c.o CMakeFiles/ebml2.dir/ebmlcrc.c.o CMakeFiles/ebml2.dir/ebmldate.c.o CMakeFiles/ebml2.dir/ebmlvoid.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib libebml2.a
