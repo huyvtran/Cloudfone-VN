@@ -140,12 +140,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [self addNewContactToAddressPhoneBook];
     
-    if (![detailsContact._sipPhone isEqualToString:@""]) {
-        [self checkIsCloudFoneNumber: detailsContact._sipPhone];
-    }else{
-        [waitingHud dismissAnimated:YES];
-        [[PhoneMainView instance] popCurrentView];
-    }
+    [waitingHud dismissAnimated:YES];
+    [[PhoneMainView instance] popCurrentView];
 }
 
 - (IBAction)_btnAvatarPressed:(UIButton *)sender {
@@ -358,17 +354,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)showPopupFinish {
     [[PhoneMainView instance] popCurrentView];
-}
-
-//  Kiểm tra cloudfoneID đã kết bạn hay chưa?
-- (BOOL)checkContactIsFriendOnList : (NSString *)cloudfoneID {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self CONTAINS[cd] %@", cloudfoneID];
-    NSArray *filter = [appDelegate._listFriends filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        return YES;
-    }else{
-        return NO;
-    }
 }
 
 //  Chọn loại phone
@@ -781,53 +766,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
     }
     return result;
-}
-
-//  Kiểm tra có phải số cloudfone hay không?
-- (void)checkIsCloudFoneNumber: (NSString *)cloudfone
-{
-    //  Kiểm tra trong ds chờ kết bạn có hay ko? có thì accept, ko thì thêm mới.
-    BOOL exists = [NSDatabase checkRequestFriendExistsOnList:cloudfone];
-    if (exists) {
-        NSString *user = [NSString stringWithFormat:@"%@@%@", cloudfone, xmpp_cloudfone];
-        NSString *me = [NSString stringWithFormat:@"%@@%@", USERNAME, xmpp_cloudfone];
-        [appDelegate.myBuddy.protocol acceptRequestFromUser:user toMe:me];
-        
-        [self showResultPopupFinish];
-    }else{
-        BOOL isFriend = [self checkContactIsFriendOnList: cloudfone];
-        if (!isFriend) {
-            //  Gửi request kết bạn
-            NSString *toUser = [NSString stringWithFormat:@"%@@%@", cloudfone, xmpp_cloudfone];
-            NSString *idRequest = [NSString stringWithFormat:@"requestsent_%@", [AppUtils randomStringWithLength: 10]];
-            BOOL added = [NSDatabase addUserToRequestSent:cloudfone withIdRequest:idRequest];
-            if (added) {
-                //  Gửi lệnh remove để reset lại nếu trạng thái subscrition đang là from hoặc to
-                appDelegate._cloudfoneRequestSent = toUser;
-                [appDelegate.myBuddy.protocol removeUserFromRosterList:toUser withIdMessage:idRequest];
-                
-                NSString *profileName = [NSDatabase getProfielNameOfAccount:USERNAME];
-                [appDelegate.myBuddy.protocol sendRequestUserInfoOf:appDelegate.myBuddy.accountName
-                                                             toUser:toUser
-                                                        withContent:[appDelegate.localization localizedStringForKey:text_hi]
-                                                     andDisplayName:profileName];
-            }
-            [self.view makeToast:[appDelegate.localization localizedStringForKey:text_send_request_msg]
-                        duration:1.5 position:CSToastPositionCenter];
-            
-            [NSTimer scheduledTimerWithTimeInterval:1.5 target:self
-                                           selector:@selector(showResultPopupFinish)
-                                           userInfo:nil repeats:false];
-        }else{
-            [self showResultPopupFinish];
-        }
-    }
-}
-
-- (void)showResultPopupFinish {
-    [waitingHud dismissAnimated:YES];
-    
-    [[PhoneMainView instance] popCurrentView];
 }
 
 //  Hàm loại bỏ tất cả các ký tự ko là số ra khỏi chuỗi

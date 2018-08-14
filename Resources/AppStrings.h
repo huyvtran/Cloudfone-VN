@@ -73,7 +73,6 @@
 #define playVideoMessage            @"playVideoMessage"
 #define receiveIQResultLeaveRoom    @"receiveIQResultLeaveRoom"
 #define receiveIQErrorLeaveRoom     @"receiveIQErrorLeaveRoom"
-#define getAllGroupsForAccountSuccessful    @"getAllGroupsForAccountSuccessful"
 
 #pragma mark - API
 
@@ -631,7 +630,7 @@
 #define k11DismissKeyboardInViewChat    @"k11DismissKeyboardInViewChat"
 #define activeOutgoingFileTransfer      @"activeOutgoingFileTransfer"
 #define reloadCloudFoneContactAfterSync @"reloadCloudFoneContactAfterSync"
-#define updateProfileSuccessfully       @"updateProfileSuccessfully"
+
 #define k11AcceptRequestedSuccessfully  @"k11AcceptRequestedSuccessfully"
 #define updatePreviewImageForVideo      @"updatePreviewImageForVideo"
 
@@ -646,7 +645,7 @@
 #define aUserLeaveRoomChat              @"aUserLeaveRoomChat"
 #define whenRoomDestroyed               @"whenRoomDestroyed"
 #define k11CreateGroupChatSuccessfully  @"k11CreateGroupChatSuccessfully"
-#define k11JoinGroupChatSuccessfully    @"k11JoinGroupChatSuccessfully"
+
 #define updateListMemberInRoom              @"updateListMemberInRoom"
 #define k11UpdateAllNotisWhenBecomActive    @"k11UpdateAllNotisWhenBecomActive"
 #define k11GetListUserInRoomChat            @"k11GetListUserInRoomChat"

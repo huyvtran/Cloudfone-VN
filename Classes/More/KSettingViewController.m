@@ -12,7 +12,6 @@
 #import "PhoneMainView.h"
 #import "NSDatabase.h"
 #import "SettingCell.h"
-#import "OTRProtocolManager.h"
 
 @interface KSettingViewController (){
     NSMutableArray *listTitle;

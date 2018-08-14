@@ -18,7 +18,6 @@
 #import "NSDatabase.h"
 #import "TabBarView.h"
 #import "StatusBarView.h"
-#import "OTRProtocolManager.h"
 #import "NSData+Base64.h"
 #import "JSONKit.h"
 #import "UIView+Toast.h"
@@ -87,11 +86,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [device setProximityMonitoringEnabled: NO];
     
     [self showContentWithCurrentLanguage];
-    
-    // relogin nếu mất kết nối
-    if (![LinphoneAppDelegate sharedInstance].xmppStream.isConnected) {
-        [AppUtils reconnectToXMPPServer];
-    }
     
     [self updateInformationOfUser];
 }
@@ -348,9 +342,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"loginSuccess"];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [[[[OTRProtocolManager sharedInstance] buddyList] allBuddies] removeAllObjects];
-    [[LinphoneAppDelegate sharedInstance].myBuddy.protocol disconnect];
     
     [waitingHud dismissAnimated: YES];
     [[PhoneMainView instance] changeCurrentView:[AssistantView compositeViewDescription]];

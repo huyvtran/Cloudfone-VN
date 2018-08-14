@@ -24,8 +24,6 @@
     
     NSString *strAvatar;
     UIFont *textFont;
-    
-    NSTimer *updateProfile;
 }
 
 @end
@@ -112,10 +110,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:)
                                                  name:UIKeyboardDidHideNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finishedUpdateProfile)
-                                                 name:updateProfileSuccessfully object:nil];
-    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -148,29 +142,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)changeTitleColorForButton {
     [_btnSave setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    if (!appDelegate._internetActive) {
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:text_please_check_your_connection]
-                    duration:1.5 position:CSToastPositionCenter];
-    }else{
-        [waitingHud showInView:self.view animated:YES];
-        
-        updateProfile = [NSTimer scheduledTimerWithTimeInterval:20.0 target:self
-                                                       selector:@selector(updateProfileTimeOut)
-                                                       userInfo:nil repeats:false];
-        
-        //  profile info
-        [appDelegate.myBuddy.protocol setProfileForAccountWithName: _tfFullname.text email: _tfEmail.text address: _tvAddress.text avatar: strAvatar];
-        
-        //  Cập nhật trạng thái
-        NSString *status = _tfStatus.text;
-        if ([status isEqualToString: @""]) {
-            status = welcomeToCloudFone;
-        }
-        
-        NSString *user = [NSString stringWithFormat:@"%@@%@", USERNAME, xmpp_cloudfone];
-        [appDelegate.myBuddy.protocol setStatus:status withUser: user];
-    }
 }
 
 - (IBAction)_btnAvatarPressed:(UIButton *)sender {
@@ -208,37 +179,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 #pragma mark - my functions
-
-- (void)updateProfileTimeOut {
-    [waitingHud dismissAnimated:YES];
-    [self.view makeToast:[appDelegate.localization localizedStringForKey:text_failed]
-                duration:1.5 position:CSToastPositionCenter];
-    
-    [updateProfile invalidate];
-    updateProfile = nil;
-}
-
-- (void)finishedUpdateProfile {
-    [updateProfile invalidate];
-    updateProfile = nil;
-    
-    [waitingHud dismissAnimated:YES];
-    [self.view makeToast:[appDelegate.localization localizedStringForKey:text_update_profile_success]
-                duration:1.5 position:CSToastPositionCenter];
-    
-    [NSDatabase saveProfileForAccount:USERNAME withName:_tfFullname.text
-                             andAvatar:strAvatar andAddress:_tvAddress.text
-                              andEmail:_tfEmail.text withStatus:_tfStatus.text];
-    
-    [NSTimer scheduledTimerWithTimeInterval:3.0 target:self
-                                   selector:@selector(backToPopupController)
-                                   userInfo:nil repeats:false];
-}
-
-- (void)backToPopupController {
-    appDelegate._dataCrop = nil;
-    [[PhoneMainView instance] popCurrentView];
-}
 
 - (void)showContentWithCurrentLanguage {
     _lbHeader.text = [appDelegate.localization localizedStringForKey:text_edit_profile];

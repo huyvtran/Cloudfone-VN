@@ -12,8 +12,6 @@
 
 #import "ContactObject.h"
 #import "LinphoneAppDelegate.h"
-#import "MessageEvent.h"
-#import "XMPPRoom.h"
 
 @interface AppUtils : NSObject
 
@@ -65,7 +63,6 @@
 + (void)deleteDetailsFileOfMessage: (NSString *)typeMessage andDetails: (NSString *)detail andThumb: (NSString *)thumb;
 
 // Lấy buddy trong roster list
-+ (OTRBuddy *)getBuddyOfUserOnList: (NSString *)callnexUser;
 + (NSString *)getAccountNameFromString: (NSString *)string;
 
 /*----- KIỂM TRA LOẠI CỦA FILE ĐANG NHẬN -----*/
@@ -74,11 +71,7 @@
 // Hàm crop image từ 1 image
 + (UIImage *)squareImageWithImage:(UIImage *)sourceImage withSizeWidth:(CGFloat)sideLength;
 
-// Chuyển chuỗi có emotion thành code emoji
-+ (NSMutableAttributedString *)convertMessageStringToEmojiString: (NSString *)messageString;
-
 + (UIImage *)getImageOfDirectoryWithName: (NSString *)imageName;
-+ (void)reconnectToXMPPServer;
 + (NSString *)stringTimeFromInterval: (NSTimeInterval)interval;
 + (NSString *)stringDateFromInterval: (NSTimeInterval)interval;
 
@@ -96,8 +89,6 @@
 
 //  Tạo một image được crop từ một callnex
 + (UIImage *)createImageFromDataString: (NSString *)strData withCropSize: (CGSize)cropSize;
-
-+ (void)updateBadgeForMessageOfUser: (NSString *)user isIncrease: (BOOL)increase;;
 
 //  Get thông tin của một contact
 + (NSString *)getNameOfContact: (ABRecordRef)aPerson;
@@ -120,22 +111,8 @@
 
 + (UIImage *)getImageDataWithName: (NSString *)imageName;
 
-+ (UIImage *)getImageFromVideo:(NSURL *)videoUrl atTime:(CGFloat)time;
-+ (int)getBurnMessageValueOfRemoteParty: (NSString *)remoteParty;
-+ (int)getNewMessageValueOfRemoteParty: (NSString *)remoteParty;
-
-//  Kiểm tra setting nhận tin nhắn mới cho toàn bộ remote party
-+ (BOOL)getNewMessageValueForSettingsOfAccount: (NSString *)account;
-+ (BOOL)getVibrateForMessageForSettingsOfAccount: (NSString *)account;
-
-//  save details and thumbnail image for video message
-+ (void)savePictureOfVideoToDocument: (MessageEvent *)message;
-
 //  Lấy status của user
-+ (NSArray *)getStatusOfUser: (NSString *)sipPhone;
-+ (UIImage *)createAvatarForRoom: (NSString *)roomID withSize: (int)size;
 + (UIImage *)imageWithView:(UIView *)aView withSize: (CGSize)resultSize;
-+ (XMPPRoom *) searchRoomFromId:(NSString *)roomId;
 
 + (NSString *)getDeviceModel;
 + (NSString *)getDeviceNameFromModelName: (NSString *)modelName;

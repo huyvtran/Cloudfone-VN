@@ -7,7 +7,6 @@
 //
 
 #import "SettingPopupView.h"
-#import "OTRConstants.h"
 #import "OptionsCell.h"
 #import "SettingItem.h"
 

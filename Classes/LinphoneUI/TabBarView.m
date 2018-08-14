@@ -89,25 +89,11 @@
 }
 
 - (void)updateAcceptNotificationForBar: (BOOL)appear {
-    int number = [NSDatabase getCountListFriendsForAcceptOfAccount: USERNAME];
-    if (number > 0) {
-        _contactNotificationLabel.text = [NSString stringWithFormat:@"%i", number];
-        [_contactNotificationView startAnimating:appear];
-    }else{
-        [_contactNotificationView stopAnimating:appear];
-    }
+    
 }
 
 - (void)updateUnreadMessage:(BOOL)appear {
-	int unreadMessage = [LinphoneManager unreadMessageCount];
-    unreadMessage = [NSDatabase getAllMessageUnreadForUIMainBar];
-    
-	if (unreadMessage > 0) {
-		_chatNotificationLabel.text = [NSString stringWithFormat:@"%i", unreadMessage];
-		[_chatNotificationView startAnimating:appear];
-	} else {
-		[_chatNotificationView stopAnimating:appear];
-	}
+	
 }
 
 - (void)updateMissedCall:(int)missedCall appear:(BOOL)appear {

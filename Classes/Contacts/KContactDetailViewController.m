@@ -16,9 +16,6 @@
 #import "ContactDetailObj.h"
 //  Leo Kelvin
 #import "EditContactViewController.h"
-#import "MainChatViewController.h"
-//  #import "NSDBCallnex.h"
-//  #import "OTRProtocolManager.h"
 #import "ContactDetailObj.h"
 
 @interface KContactDetailViewController (){
@@ -331,21 +328,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)btnMessageTouchDown {
-    [_btnMessage setBackgroundImage:[UIImage imageNamed:@"ic_mess_act.png"]
-                        forState:UIControlStateNormal];
     
-    [NSTimer scheduledTimerWithTimeInterval:0.05 target:self
-                                   selector:@selector(startSendMessage)
-                                   userInfo:nil repeats:false];
-}
-
-- (void)startSendMessage {
-    [_btnMessage setBackgroundImage:[UIImage imageNamed:@"ic_mess_def.png"]
-                           forState:UIControlStateNormal];
-    
-    appDelegate.reloadMessageList = YES;
-    appDelegate.friendBuddy = [AppUtils getBuddyOfUserOnList: detailsContact._sipPhone];
-    [[PhoneMainView instance] changeCurrentView:MainChatViewController.compositeViewDescription];
 }
 
 - (void)btnVideoCallTouchDown {
@@ -642,13 +625,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         [waitingHud showInView:self.view animated:YES];
-        
-        NSString *sipPhone = detailsContact._sipPhone;
-        if (sipPhone != nil && ![sipPhone isEqualToString: @""]) {
-            NSString *strUser = [NSString stringWithFormat:@"%@@%@", sipPhone, xmpp_cloudfone];
-            [appDelegate.myBuddy.protocol removeUserFromRosterList:strUser
-                                                     withIdMessage:[AppUtils randomStringWithLength: 10]];
-        }
         
         // Remove khỏi addressbook
         CFErrorRef error = NULL;

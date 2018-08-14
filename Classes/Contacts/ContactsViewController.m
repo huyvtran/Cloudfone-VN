@@ -111,11 +111,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     // Tắt màn hình cảm biến
     UIDevice *device = [UIDevice currentDevice];
     device.proximityMonitoringEnabled = NO;
-    
-    // Neu chua login thi login lai
-    if (![LinphoneAppDelegate sharedInstance].xmppStream.isConnected) {
-        [AppUtils reconnectToXMPPServer];
-    }
 }
 
 - (void)didReceiveMemoryWarning {

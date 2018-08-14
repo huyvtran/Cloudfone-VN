@@ -21,7 +21,6 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "NewContactViewController.h"
 #import "AllContactListViewController.h"
-#import "MainChatViewController.h"
 #import "LinphoneManager.h"
 #import "PhoneMainView.h"
 #import <AVFoundation/AVFoundation.h>
@@ -123,10 +122,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     UIDevice *device = [UIDevice currentDevice];
     [device setProximityMonitoringEnabled: false];
     
-    // Login xmpp neu chua connected
-    if (![LinphoneAppDelegate sharedInstance].xmppStream.isConnected) {
-        [AppUtils reconnectToXMPPServer];
-    }
     
     //  setup sound và vibrate của cuộc gọi cho user hiện tại
     [self setupSoundAndVibrateForCallOfUser];
@@ -1154,32 +1149,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)startSetupForFirstLoadApp: (NSThread *)thread {
     [AppUtils checkFolderToSaveFileInViewChat];
     
-    //  Khởi tạo danh sách emotion nếu chưa tồn tại
-    [self createEmotionListIfNotExists];
-    
     [thread cancel];
     if ([thread isCancelled]) {
         thread = nil;
     }
 }
-
-//  Khởi tạo danh sách emotion nếu chưa tồn tại
-- (void)createEmotionListIfNotExists {
-    if ([LinphoneAppDelegate sharedInstance]._listFace.count == 0) {
-        NSString* facePlistPath = [[NSBundle mainBundle] pathForResource:@"PeopleEmotion" ofType:@"plist"];
-        NSString* naturePlistPath = [[NSBundle mainBundle] pathForResource:@"NatureEmotion" ofType:@"plist"];
-        NSString* objectPlistPath = [[NSBundle mainBundle] pathForResource:@"ObjectEmotion" ofType:@"plist"];
-        NSString* placePlistPath = [[NSBundle mainBundle] pathForResource:@"PlaceEmotion" ofType:@"plist"];
-        NSString* symbolPlistPath = [[NSBundle mainBundle] pathForResource:@"SymbolEmotion" ofType:@"plist"];
-        
-        [[LinphoneAppDelegate sharedInstance]._listFace addObjectsFromArray:[NSArray arrayWithContentsOfFile: facePlistPath]];
-        [[LinphoneAppDelegate sharedInstance]._listNature addObjectsFromArray:[NSArray arrayWithContentsOfFile: naturePlistPath]];
-        [[LinphoneAppDelegate sharedInstance]._listObject addObjectsFromArray:[NSArray arrayWithContentsOfFile: objectPlistPath]];
-        [[LinphoneAppDelegate sharedInstance]._listPlace addObjectsFromArray:[NSArray arrayWithContentsOfFile: placePlistPath]];
-        [[LinphoneAppDelegate sharedInstance]._listSymbol addObjectsFromArray:[NSArray arrayWithContentsOfFile: symbolPlistPath]];
-    }
-}
-
 
 #pragma mark - UITableview Delegate
 
@@ -1241,9 +1215,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         if ([phone hasPrefix:@"778899"]) {
             cell._iconChat.hidden = NO;
             cell._iconChat.tag = indexPath.row;
-            [cell._iconChat addTarget:self
-                               action:@selector(clickOnIconGoToViewChat:)
-                     forControlEvents:UIControlEventTouchUpInside];
         }else{
             cell._iconChat.hidden = YES;
         }
@@ -1265,20 +1236,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return heightTableCell;
-}
-
-- (void)clickOnIconGoToViewChat: (UIButton *)sender {
-    NSString *value = [listPhoneSearched objectAtIndex:sender.tag];
-    NSArray *tmpArr = [value componentsSeparatedByString:@"|"];
-    if (tmpArr.count >= 3) {
-        NSString *phoneNumber = [tmpArr lastObject];
-        if ([phoneNumber hasPrefix:@"778899"]) {
-            [LinphoneAppDelegate sharedInstance].reloadMessageList = YES;
-            [LinphoneAppDelegate sharedInstance].friendBuddy = [AppUtils getBuddyOfUserOnList: phoneNumber];
-            [[PhoneMainView instance] changeCurrentView:[MainChatViewController compositeViewDescription]
-                                                   push:true];
-        }
-    }
 }
 
 //  Đăng ký lại với tài khoản

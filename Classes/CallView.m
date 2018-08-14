@@ -27,7 +27,6 @@
 #import <UserNotifications/UserNotifications.h>
 
 #import "CallView.h"
-#import "MainChatViewController.h"
 #import "CallSideMenuView.h"
 #import "LinphoneManager.h"
 #import "PhoneMainView.h"
@@ -42,7 +41,6 @@
 
 #import "NSDatabase.h"
 #import "FooterVideoCallView.h"
-#import "OTRMessage.h"
 
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES1/gl.h>
@@ -244,9 +242,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(callEnded)
                                                name:@"callEnded" object:nil];
-    
-    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(messageReceived:)
-                                               name:kOTRMessageReceived object:nil];
     
 	durationTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self
                                                    selector:@selector(callDurationUpdate)
@@ -851,7 +846,7 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
             _callPauseButton.enabled = YES;
             _microButton.enabled = YES;
             _optionsTransferButton.enabled = YES;
-            buttonMessage.enabled = YES;
+            buttonMessage.enabled = NO;
             buttonRecord.enabled = YES;
             
             lbStateVideoCall.text = [NSString stringWithFormat:@"%@", [appDelegate.localization localizedStringForKey:text_connected]];
@@ -880,7 +875,7 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
             _callPauseButton.enabled = YES;
             _microButton.enabled = YES;
             _optionsTransferButton.enabled = YES;
-            buttonMessage.enabled = YES;
+            buttonMessage.enabled = NO;
             buttonRecord.enabled = YES;
             
             // Add tất cả các cuộc gọi vào nhóm
@@ -1341,94 +1336,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
 }
 
 #pragma mark - My Functions
-
-- (void)checkForNewMessageOfUser {
-    NSString *sipPhone = [self getPhoneNumberOfCall];
-    int unread = [NSDatabase getNumberMessageUnread:USERNAME andUser:sipPhone];
-    if (unread > 0) {
-        lbMsgCount.hidden = NO;
-        lbMsgCount.text = [NSString stringWithFormat:@"%d", unread];
-    }else{
-        lbMsgCount.hidden = YES;
-    }
-}
-
-
-//  Cập nhật table khi có message mới đến
-- (void)messageReceived:(NSNotification*)notif
-{
-    id object = [notif userInfo];
-    if ([object isKindOfClass:[NSMutableDictionary class]])
-    {
-        OTRMessage *message = [object objectForKey:@"message"];
-        NSString *typeMessage = [object objectForKey:@"typeMessage"];
-        
-        NSString *user = @"";
-        if (message != nil) {
-            user = [AppUtils getSipFoneIDFromString: message.buddy.accountName];
-        }else{
-            user = [object objectForKey:@"user"];
-        }
-        
-        NSString *sipPhone = [self getPhoneNumberOfCall];
-        if (![user isEqualToString: sipPhone]) {
-            [self createMessageNotifForUser:user forMessage:message.message withTypeMessage:typeMessage];
-            return;
-        }
-        [self checkForNewMessageOfUser];
-    }
-}
-
-- (void)createMessageNotifForUser: (NSString *)user forMessage: (NSString *)message withTypeMessage: (NSString *)typeMessage
-{
-    CSToastStyle *style = [[CSToastStyle alloc] initWithDefaultStyle];
-    style.backgroundColor = [UIColor whiteColor];
-    style.imageSize = CGSizeMake(35, 35);
-    style.maxWidthPercentage = 0.9;
-    style.horizontalPadding = 5;
-    style.verticalPadding = 5;
-    style.cornerRadius = 5.0;
-    style.messageNumberOfLines = 1;
-    style.titleNumberOfLines = 1;
-    style.titleFont = [UIFont boldSystemFontOfSize:15.0];
-    style.messageFont = [UIFont systemFontOfSize:13.0];
-    
-    //  Tạo notif thông báo message đến
-    NSArray *infoArr = [NSDatabase getNameAndAvatarOfContactWithPhoneNumber: user];
-    NSString *name = [infoArr firstObject];
-    if ([name isEqualToString:@""]) {
-        name = user;
-    }
-    
-    NSString *avatar = [infoArr lastObject];
-    UIImage *imgUser = [UIImage imageNamed:@"no_avatar"];
-    if (![avatar isEqualToString:@""]) {
-        imgUser = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
-    }
-    
-    if ([typeMessage isEqualToString:imageMessage]) {
-        message = [NSString stringWithFormat:@"%@ %@", name, [appDelegate.localization localizedStringForKey:sent_photo_to_you]];
-    }else if ([typeMessage isEqualToString:videoMessage]){
-        message = [NSString stringWithFormat:@"%@ %@", name, [appDelegate.localization localizedStringForKey:sent_video_to_you]];
-    }else{
-        NSAttributedString *content = [AppUtils convertMessageStringToEmojiString: message];
-        message = content.string;
-    }
-    [self.view makeToast:message duration:1.5 position:CSToastPositionTop title:name image:imgUser style:style completion:^(BOOL didTap) {
-        if (didTap) {
-            appDelegate.reloadMessageList = YES;
-            appDelegate.friendBuddy = [AppUtils getBuddyOfUserOnList: user];
-            [[PhoneMainView instance] changeCurrentView:[MainChatViewController compositeViewDescription]
-                                                   push:true];
-        } else {
-            NSLog(@"completion without tap");
-        }
-    }];
-}
-
-
-
-
 - (void)changeCamera {
     CABasicAnimation *animationView = [CABasicAnimation animationWithKeyPath:@"transform"];
     self.view.layer.zPosition = 100;
@@ -1560,11 +1467,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
             lbAddressConf.text = fullName;
             lbAddressVideoCall.text = fullName;
             
-            if ([addressPhoneNumber hasPrefix:@"778899"]) {
-                buttonMessage.enabled = YES;
-            }else{
-                buttonMessage.enabled = NO;
-            }
             if (![avatar isEqualToString:@""]) {
                 _avatarImage.image = [UIImage imageWithData: [NSData dataFromBase64String: avatar]];
             }else{
@@ -1726,9 +1628,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
     [buttonMessage setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_message_dis]]
                              forState:UIControlStateDisabled];
     
-    [buttonMessage addTarget:self
-                      action:@selector(goToViewChatInCallView)
-            forControlEvents:UIControlEventTouchUpInside];
     [buttonMessage setEnabled:false];
     [_scrollView addSubview:buttonMessage];
     
@@ -1739,7 +1638,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
     lbMsgCount.textAlignment = NSTextAlignmentCenter;
     lbMsgCount.layer.cornerRadius = wButton/8;
     lbMsgCount.clipsToBounds = YES;
-    [self checkForNewMessageOfUser];
     
     [_scrollView addSubview: lbMsgCount];
     
@@ -2011,15 +1909,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
     appDelegate._meEnded = YES;
 }
 
-- (void)goToViewChatInCallView {
-    NSString *sipPhone = [self getPhoneNumberOfCall];
-    
-    appDelegate.reloadMessageList = YES;
-    appDelegate.friendBuddy = [AppUtils getBuddyOfUserOnList: sipPhone];
-    [[PhoneMainView instance] changeCurrentView:[MainChatViewController compositeViewDescription]
-                                           push:true];
-}
-
 #pragma mark - Call Conference
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
@@ -2241,13 +2130,7 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
 }
 
 - (IBAction)iconCaptureScreenClicked:(UIButton *)sender {
-    UIImage *screengrab = [self takeAScreenShot];
-    if (screengrab != nil) {
-        [self.view makeToast:@"Sending......"];
-        [self sendCaptureImageToUser: screengrab];
-    }else{
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:text_cannot_send_picture] duration:2.0 position:CSToastPositionCenter];
-    }
+    [self takeAScreenShot];
 }
 
 -(UIImage *)takeAScreenShot {
@@ -2291,60 +2174,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
     UIConferenceCell *curCell = (UIConferenceCell *)[collectionConference cellForItemAtIndexPath: curIndex];
     linphone_core_terminate_call([LinphoneManager getLc], curCell.call);
     changeConference = NO;
-}
-
-//  Add new by Khai Le on 07/07/2018
-- (void)startUploadImage: (UIImage *)uploadImage toServerWithMessageId: (NSString *)idMessage andName: (NSString *)imageName
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSData *imageData = UIImageJPEGRepresentation(uploadImage, 1.0);
-        UploadPicture *session = [[UploadPicture alloc] init];
-        session.idMessage = idMessage;
-        
-        [session uploadData:imageData withName:imageName beginUploadBlock:nil finishUploadBlock:^(UploadPicture *uploadSession) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if ([uploadSession.namePicture isEqualToString:@"error"])
-                {
-                    [self.view makeToast:[appDelegate.localization localizedStringForKey:text_cannot_send_picture] duration:2.0 position:CSToastPositionCenter];
-                }else{
-                    NSString *displayName = [NSDatabase getProfielNameOfAccount: USERNAME];
-                    NSString *remoteParty = [self getPhoneNumberOfCall];
-                    
-                    NSString *strPush = [appDelegate.localization localizedStringForKey:sent_message_to_you];
-                    strPush = [NSString stringWithFormat:@"%@ %@", displayName, [appDelegate.localization localizedStringForKey:sent_photo_to_you]];
-                    
-                    [AppUtils sendMessageForOfflineForUser:remoteParty fromSender:USERNAME withContent:strPush andTypeMessage:userimage withGroupID:@""];
-                    
-                    int burn = [AppUtils getBurnMessageValueOfRemoteParty: remoteParty];
-                    [appDelegate.myBuddy.protocol sendMessageMediaForUser:remoteParty withLinkImage:uploadSession.namePicture andDescription:appDelegate.titleCaption andIdMessage:idMessage andType:userimage withBurn:burn forGroup:NO];
-                    
-                    [self.view makeToast:[appDelegate.localization localizedStringForKey:text_capture_sent] duration:2.0 position:CSToastPositionCenter];
-                }
-            });
-        }];
-    });
-}
-
-- (void)sendCaptureImageToUser: (UIImage *)captureImage
-{
-    NSString *remoteParty = [self getPhoneNumberOfCall];
-    NSString *idMsgImage = [NSString stringWithFormat:@"userimage_%@", [AppUtils randomStringWithLength: 20]];
-    NSString *detailURL = [NSString stringWithFormat:@"%@_%@.jpg", USERNAME, [AppUtils randomStringWithLength:20]];
-    
-    int delivered = 0;
-    if (appDelegate.xmppStream.isConnected) {
-        delivered = 1;
-    }
-    
-    NSArray *fileNameArr = [AppUtils saveImageToFiles: captureImage withImage: detailURL];
-    detailURL = [fileNameArr objectAtIndex: 0];
-    NSString *thumbURL = [fileNameArr objectAtIndex: 1];
-    
-    int burnMessage = [AppUtils getBurnMessageValueOfRemoteParty: remoteParty];
-    [NSDatabase saveMessage:USERNAME toPhone:remoteParty withContent:@"" andStatus:NO withDelivered:delivered andIdMsg:idMsgImage detailsUrl:detailURL andThumbUrl:thumbURL withTypeMessage:imageMessage andExpireTime:burnMessage andRoomID:@"" andExtra:nil andDesc:appDelegate.titleCaption];
-    
-    //  Upload image lên server
-    [self startUploadImage:captureImage toServerWithMessageId:idMsgImage andName:detailURL];
 }
 
 @end

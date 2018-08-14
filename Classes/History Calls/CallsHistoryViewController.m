@@ -110,12 +110,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     UIDevice *device = [UIDevice currentDevice];
     device.proximityMonitoringEnabled = NO;
     
-    // Neu chua login thi login lai
-    /*  Leo Kelvin
-    if (![LinphoneAppDelegate sharedInstance].xmppStream.isConnected) {
-        [MyFunctions reconnectToXMPPServer];
-    }   */
-    
     //  Reset lại các UI khi vào màn hình
     [self resetUIForView];
     

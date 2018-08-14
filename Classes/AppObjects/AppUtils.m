@@ -8,7 +8,6 @@
 
 #import "AppUtils.h"
 #import "NSDatabase.h"
-#import "OTRProtocolManager.h"
 #import "NSData+Base64.h"
 #import "PBXContact.h"
 #import <sys/utsname.h>
@@ -351,17 +350,14 @@
  => Nếu có thì chỉ cập nhật badge
  ---*/
 + (void)createLocalNotificationWithAlertBody: (NSString *)alertBodyStr andInfoDict: (NSDictionary *)infoDict ofUser: (NSString *)user{
-    BOOL isMute = [NSDatabase checkUserExistsInMuteNotificationsList: user];
-    if (!isMute) {
-        UILocalNotification *messageNotif = [[UILocalNotification alloc] init];
-        messageNotif.fireDate = [NSDate dateWithTimeIntervalSinceNow: 0.1];
-        messageNotif.timeZone = [NSTimeZone defaultTimeZone];
-        messageNotif.timeZone = [NSTimeZone defaultTimeZone];
-        messageNotif.alertBody = alertBodyStr;
-        messageNotif.userInfo = infoDict;
-        messageNotif.soundName = UILocalNotificationDefaultSoundName;
-        [[UIApplication sharedApplication] scheduleLocalNotification: messageNotif];
-    }
+    UILocalNotification *messageNotif = [[UILocalNotification alloc] init];
+    messageNotif.fireDate = [NSDate dateWithTimeIntervalSinceNow: 0.1];
+    messageNotif.timeZone = [NSTimeZone defaultTimeZone];
+    messageNotif.timeZone = [NSTimeZone defaultTimeZone];
+    messageNotif.alertBody = alertBodyStr;
+    messageNotif.userInfo = infoDict;
+    messageNotif.soundName = UILocalNotificationDefaultSoundName;
+    [[UIApplication sharedApplication] scheduleLocalNotification: messageNotif];
 }
 
 // Xoá file details của message
@@ -400,19 +396,6 @@
         }
     }else{
         // do some thing
-    }
-}
-
-// Lấy buddy trong roster list
-+ (OTRBuddy *)getBuddyOfUserOnList: (NSString *)cloudFoneID{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountName CONTAINS[cd] %@", cloudFoneID];
-    NSMutableDictionary *listUserDict = [[[OTRProtocolManager sharedInstance] buddyList] allBuddies];
-    NSArray *listUser = [OTRBuddyList sortBuddies: listUserDict];
-    NSArray *resultArr = [listUser filteredArrayUsingPredicate: predicate];
-    if (resultArr.count > 0) {
-        return [resultArr objectAtIndex: 0];
-    }else{
-        return [[OTRBuddy alloc] initWithDisplayName:cloudFoneID accountName:[NSString stringWithFormat:@"%@@%@", cloudFoneID, xmpp_cloudfone] protocol:[LinphoneAppDelegate sharedInstance].myBuddy.protocol status:-1 groupName:@""];
     }
 }
 
@@ -499,112 +482,6 @@
     return outImage;
 }
 
-//  Chuyển chuỗi có emotion thành code emoji
-+ (NSMutableAttributedString *)convertMessageStringToEmojiString: (NSString *)messageString {
-    NSMutableAttributedString *resultStr = [[NSMutableAttributedString alloc] initWithString: messageString];
-    
-    // Set font cho toan bo chieu dai
-    UIFont *font = [UIFont systemFontOfSize:16.0];
-    [resultStr addAttribute:NSFontAttributeName
-                      value:font
-                      range:NSMakeRange(0, messageString.length)];
-    
-    NSRange rangeOfFirstMatch;
-    // Hiển thị emoticon nếu có
-    NSString *firstEmotion;
-    
-    NSError *error = nil;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"e[0-9]_[0-9]{3}" options:NSRegularExpressionCaseInsensitive error:&error];
-    rangeOfFirstMatch = [regex rangeOfFirstMatchInString:messageString options:0 range:NSMakeRange(0, [messageString length])];
-    NSArray *filterArr = nil;
-    while (!NSEqualRanges(rangeOfFirstMatch, NSMakeRange(NSNotFound, 0)))
-    {
-        firstEmotion = [resultStr.string substringWithRange:rangeOfFirstMatch];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"code LIKE[c] %@", firstEmotion];
-        filterArr = [[LinphoneAppDelegate sharedInstance]._listFace filteredArrayUsingPredicate: predicate];
-        if (filterArr.count > 0) {
-            NSString *uCode = [(NSDictionary *)[filterArr objectAtIndex: 0] objectForKey:@"u_code"];
-            NSString *totalStr = [NSString stringWithFormat:@"{\"emoji\":\"%@\"}", uCode];
-            const char *jsonString = [totalStr UTF8String];
-            NSData *jsonData = [NSData dataWithBytes:jsonString length:strlen(jsonString)];
-            NSError *error;
-            NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-            NSString *str = [jsonDict objectForKey:@"emoji"];
-            [resultStr replaceCharactersInRange:rangeOfFirstMatch withString:str];
-            [resultStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:16.0] range:NSMakeRange(rangeOfFirstMatch.location, str.length)];
-        }else{
-            filterArr = [[LinphoneAppDelegate sharedInstance]._listNature filteredArrayUsingPredicate: predicate];
-            if (filterArr.count > 0) {
-                NSString *uCode = [(NSDictionary *)[filterArr objectAtIndex: 0] objectForKey:@"u_code"];
-                NSString *totalStr = [NSString stringWithFormat:@"{\"emoji\":\"%@\"}", uCode];
-                const char *jsonString = [totalStr UTF8String];
-                NSData *jsonData = [NSData dataWithBytes:jsonString length:strlen(jsonString)];
-                NSError *error;
-                NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-                NSString *str = [jsonDict objectForKey:@"emoji"];
-                
-                [resultStr replaceCharactersInRange:rangeOfFirstMatch withString:str];
-                [resultStr addAttribute:NSFontAttributeName
-                                  value:[UIFont systemFontOfSize:16.0]
-                                  range:NSMakeRange(rangeOfFirstMatch.location, str.length)];
-            }else{
-                filterArr = [[LinphoneAppDelegate sharedInstance]._listObject filteredArrayUsingPredicate: predicate];
-                if (filterArr.count > 0) {
-                    NSString *uCode = [(NSDictionary *)[filterArr objectAtIndex: 0] objectForKey:@"u_code"];
-                    NSString *totalStr = [NSString stringWithFormat:@"{\"emoji\":\"%@\"}", uCode];
-                    const char *jsonString = [totalStr UTF8String];
-                    NSData *jsonData = [NSData dataWithBytes:jsonString length:strlen(jsonString)];
-                    NSError *error;
-                    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-                    NSString *str = [jsonDict objectForKey:@"emoji"];
-                    
-                    [resultStr replaceCharactersInRange:rangeOfFirstMatch withString:str];
-                    [resultStr addAttribute:NSFontAttributeName
-                                      value:[UIFont systemFontOfSize:16.0]
-                                      range:NSMakeRange(rangeOfFirstMatch.location, str.length)];
-                }else{
-                    filterArr = [[LinphoneAppDelegate sharedInstance]._listPlace filteredArrayUsingPredicate: predicate];
-                    if (filterArr.count > 0) {
-                        NSString *uCode = [(NSDictionary *)[filterArr objectAtIndex: 0] objectForKey:@"u_code"];
-                        NSString *totalStr = [NSString stringWithFormat:@"{\"emoji\":\"%@\"}", uCode];
-                        const char *jsonString = [totalStr UTF8String];
-                        NSData *jsonData = [NSData dataWithBytes:jsonString length:strlen(jsonString)];
-                        NSError *error;
-                        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-                        NSString *str = [jsonDict objectForKey:@"emoji"];
-                        
-                        [resultStr replaceCharactersInRange:rangeOfFirstMatch withString:str];
-                        [resultStr addAttribute:NSFontAttributeName
-                                          value:[UIFont systemFontOfSize:16.0]
-                                          range:NSMakeRange(rangeOfFirstMatch.location, str.length)];
-                    }else{
-                        filterArr = [[LinphoneAppDelegate sharedInstance]._listSymbol filteredArrayUsingPredicate: predicate];
-                        if (filterArr.count > 0) {
-                            NSString *uCode = [(NSDictionary *)[filterArr objectAtIndex: 0] objectForKey:@"u_code"];
-                            NSString *totalStr = [NSString stringWithFormat:@"{\"emoji\":\"%@\"}", uCode];
-                            const char *jsonString = [totalStr UTF8String];
-                            NSData *jsonData = [NSData dataWithBytes:jsonString length:strlen(jsonString)];
-                            NSError *error;
-                            NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-                            NSString *str = [jsonDict objectForKey:@"emoji"];
-                            
-                            [resultStr replaceCharactersInRange:rangeOfFirstMatch withString:str];
-                            [resultStr addAttribute:NSFontAttributeName
-                                              value:[UIFont systemFontOfSize:16.0]
-                                              range:NSMakeRange(rangeOfFirstMatch.location, str.length)];
-                        }else{
-                            [resultStr replaceCharactersInRange:rangeOfFirstMatch withString:@""];
-                        }
-                    }
-                }
-            }
-        }
-        regex = [NSRegularExpression regularExpressionWithPattern:@"e[0-9]_[0-9]{3}" options:NSRegularExpressionCaseInsensitive error:&error];
-        rangeOfFirstMatch = [regex rangeOfFirstMatchInString:resultStr.string options:0 range:NSMakeRange(0, [resultStr length])];
-    }
-    return resultStr;
-}
-
 //  Lấy hình ảnh với tên
 + (UIImage *)getImageOfDirectoryWithName: (NSString *)imageName{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -619,26 +496,6 @@
         UIImage *image = [UIImage imageWithData: dataImage];
         return image;
     }
-}
-
-+ (void)reconnectToXMPPServer {
-    NSString *UDID = [AppUtils uniqueIDForDevice];
-    NSString *accountName = [[NSString alloc] initWithString:[NSString stringWithFormat:@"%@@%@", USERNAME, xmpp_cloudfone]];
-    
-    OTRXMPPAccount *_myAccount = [[OTRXMPPAccount alloc] init];
-    _myAccount.username = accountName;
-    _myAccount.rememberPassword = YES;
-    _myAccount.protocol = @"xmpp";
-    _myAccount.uniqueIdentifier = UDID;
-    _myAccount.password = PASSWORD;
-    _myAccount.allowSelfSignedSSL = YES;
-    _myAccount.allowSSLHostNameMismatch = YES;
-    _myAccount.sendDeliveryReceipts = YES;
-    
-    id<OTRProtocol> protocol = [[OTRProtocolManager sharedInstance] protocolForAccount: _myAccount];
-    [protocol connectWithPassword: _myAccount.password];
-    
-    [LinphoneAppDelegate sharedInstance].myBuddy = [[OTRBuddy alloc] initWithDisplayName:USERNAME accountName:accountName protocol:protocol status:0 groupName:nil];
 }
 
 + (NSString *)stringTimeFromInterval: (NSTimeInterval)interval{
@@ -822,24 +679,6 @@
     return imgAvatar;
 }
 
-+ (void)updateBadgeForMessageOfUser: (NSString *)user isIncrease: (BOOL)increase{
-    /*--Neu tang badge thi kiem tra user nay co message unread chua, co roi thi thoi--*/
-    BOOL badge = [NSDatabase checkBadgeMessageOfUserWhenRunBackground: user];
-    if (increase) {
-        if (!badge) {
-            int currentBadge = (int)[[UIApplication sharedApplication] applicationIconBadgeNumber];
-            [[UIApplication sharedApplication] setApplicationIconBadgeNumber: currentBadge + 1];
-        }
-    }else{
-        if (badge) {
-            int currentBadge = (int)[[UIApplication sharedApplication] applicationIconBadgeNumber];
-            if (currentBadge > 0) {
-                [[UIApplication sharedApplication] setApplicationIconBadgeNumber: currentBadge - 1];
-            }
-        }
-    }
-}
-
 //  Get thông tin của một contact
 + (NSString *)getNameOfContact: (ABRecordRef)aPerson
 {
@@ -1017,328 +856,6 @@
     return [UIImage imageWithData:[NSData dataWithContentsOfFile:workSpacePath]];
 }
 
-+ (UIImage *)getImageFromVideo:(NSURL *)videoUrl atTime:(CGFloat)time {
-    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:videoUrl options:nil];
-    AVAssetImageGenerator *generateImg = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-    generateImg.appliesPreferredTrackTransform = YES;
-    NSError *error = NULL;
-    CMTime cmTime = CMTimeMake(time, 1);
-    CGImageRef refImg = [generateImg copyCGImageAtTime:cmTime actualTime:NULL error:&error];
-    NSLog(@"error==%@, Refimage==%@", error, refImg);
-    
-    UIImage *FrameImage= [[UIImage alloc] initWithCGImage:refImg];
-    return FrameImage;
-}
-
-+ (int)getBurnMessageValueOfRemoteParty: (NSString *)remoteParty {
-    NSString *keyBurnMsg = [NSString stringWithFormat:@"%@_%@_%@", prefix_CHAT_BURN, USERNAME, remoteParty];
-    NSString *burnValue = [[NSUserDefaults standardUserDefaults] objectForKey:keyBurnMsg];
-    if (burnValue == nil || [burnValue intValue] == 0) {
-        return 0;
-    }else{
-        return 1;
-    }
-}
-
-//  Kiểm tra setting nhận tin nhắn mới cho remote party
-+ (int)getNewMessageValueOfRemoteParty: (NSString *)remoteParty {
-    NSString *keyNewMsg = [NSString stringWithFormat:@"%@_%@_%@", prefix_CHAT_NOTIF, USERNAME, remoteParty];
-    NSString *newMsgValue = [[NSUserDefaults standardUserDefaults] objectForKey:keyNewMsg];
-    if (newMsgValue == nil || [newMsgValue intValue] == 1) {
-        return 1;
-    }else{
-        return 0;
-    }
-}
-
-//  Kiểm tra setting nhận tin nhắn mới cho toàn bộ remote party
-+ (BOOL)getNewMessageValueForSettingsOfAccount: (NSString *)account {
-    NSString *soundMsgKey = [NSString stringWithFormat:@"%@_%@", key_sound_message, account];
-    NSString *soundMsgValue = [[NSUserDefaults standardUserDefaults] objectForKey: soundMsgKey];
-    if (soundMsgValue == nil || [soundMsgValue isEqualToString: text_yes]) {
-        return YES;
-    }else{
-        return NO;
-    }
-}
-
-+ (BOOL)getVibrateForMessageForSettingsOfAccount: (NSString *)account {
-    NSString *vibrateUserKey = [NSString stringWithFormat:@"%@_%@", key_vibrate_message, account];
-    NSString *virateValue = [[NSUserDefaults standardUserDefaults] objectForKey: vibrateUserKey];
-    if (virateValue == nil || [virateValue isEqualToString: text_yes]) {
-        return YES;
-    }else{
-        return NO;
-    }
-}
-
-//  save details and thumbnail image for video message
-+ (void)savePictureOfVideoToDocument: (MessageEvent *)message {
-    NSString *strURL = [NSString stringWithFormat:@"%@/%@", link_picutre_chat_group, message.content];
-    NSURL *videoUrl = [NSURL URLWithString: strURL];
-    UIImage *imageVideo = [AppUtils getImageFromVideo:videoUrl atTime:1];
-    
-    NSString *imageName = [NSString stringWithFormat:@"%@_%@.jpg", USERNAME, [AppUtils randomStringWithLength:20]];
-    
-    NSArray *fileNameArr = [AppUtils saveImageToFiles: imageVideo withImage: imageName];
-    NSString *details = [fileNameArr objectAtIndex: 0];
-    NSString *thumbnail = [fileNameArr objectAtIndex: 1];
-    [NSDatabase updateImageMessageWithDetailsUrl:details andThumbUrl:thumbnail ofImageMessage:message.idMessage];
-}
-
-//  Lấy status của user
-+ (NSArray *)getStatusOfUser: (NSString *)sipPhone {
-    if (sipPhone == nil || [sipPhone isEqualToString:@""]) {
-        return [NSArray arrayWithObjects: sipPhone, [NSNumber numberWithInt:-1], nil];
-    }else{
-        int status = -1;
-        NSString *statusStr = sipPhone;
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountName contains[cd] %@", sipPhone];
-        
-        NSMutableDictionary *listUserDict = [[[OTRProtocolManager sharedInstance] buddyList] allBuddies];
-        NSArray *listUser = [OTRBuddyList sortBuddies: listUserDict];
-        NSArray *resultArr = [listUser filteredArrayUsingPredicate: predicate];
-        if (resultArr.count > 0) {
-            OTRBuddy *curBuddy = [resultArr objectAtIndex: 0];
-            if (curBuddy.status == kOTRBuddyStatusOffline) {
-                statusStr = sipPhone;
-            }else{
-                statusStr = [[LinphoneAppDelegate sharedInstance]._statusXMPPDict objectForKey: sipPhone];
-                if (statusStr == nil || [statusStr isEqualToString:@""]) {
-                    statusStr = welcomeToCloudFone;
-                }
-            }
-            status = curBuddy.status;
-        }
-        return [NSArray arrayWithObjects:statusStr,[NSNumber numberWithInt:status], nil];
-    }
-}
-
-+ (UIImage *)createAvatarForRoom: (NSString *)roomID withSize: (int)size {
-    UIImageView *avartarView = [[UIImageView alloc] init];
-    avartarView.backgroundColor = [UIColor whiteColor];
-    
-    NSMutableArray *lists = [NSDatabase getListOccupantsInGroup:roomID ofAccount:USERNAME];
-    float margin = 2;
-    float wSmall = (size - margin)/2;
-    int cornor = (int)(wSmall/2);
-    
-    switch (lists.count) {
-        case 0:
-        case 1:{
-            UIImageView *iv1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size, size)];
-            iv1.image = [UIImage imageNamed:@"groupchat_default"];
-            [avartarView addSubview:iv1];
-            return [UIImage imageNamed:@"groupchat_default"];
-            break;
-        }
-        case 2:{
-            UIImageView *iv1 = [[UIImageView alloc] initWithFrame:CGRectMake((size-wSmall)/2, 0, wSmall, wSmall)];
-            iv1.clipsToBounds = YES;
-            iv1.layer.cornerRadius = cornor;
-            
-            UIImageView *iv2 = [[UIImageView alloc] initWithFrame:CGRectMake(iv1.frame.origin.x, wSmall+margin, wSmall, wSmall)];
-            iv2.clipsToBounds = YES;
-            iv2.layer.cornerRadius = cornor;
-            
-            [iv1 setImage:[UIImage imageNamed:@"no_avatar"]];
-            [avartarView addSubview:iv1];
-            
-            [iv2 setImage:[UIImage imageNamed:@"no_avatar"]];
-            [avartarView addSubview:iv2];
-            
-            for(int i = 0; i < (int)lists.count; i++){
-                NSString *sipPhone = lists[i];
-                NSString *dataStr = [NSDatabase getAvatarOfContactWithPhoneNumber: sipPhone];
-                
-                if (i == 0) {
-                    if ([dataStr isEqualToString:@""]) {
-                        iv1.image = [UIImage imageNamed:@"no_avatar"];
-                    }else{
-                        iv1.image = [UIImage imageWithData:[NSData dataFromBase64String: dataStr]];
-                    }
-                }else if (i == 1){
-                    if ([dataStr isEqualToString:@""]) {
-                        iv2.image = [UIImage imageNamed:@"no_avatar"];
-                    }else{
-                        iv2.image = [UIImage imageWithData:[NSData dataFromBase64String: dataStr]];
-                    }
-                }
-            }
-            break;
-        }
-        case 3:{
-            UIImageView *iv1 = [[UIImageView alloc] initWithFrame:CGRectMake((size-wSmall)/2, 0, wSmall, wSmall)];
-            iv1.clipsToBounds = YES;
-            iv1.layer.cornerRadius = cornor;
-            
-            UIImageView *iv2 = [[UIImageView alloc] initWithFrame:CGRectMake(0, wSmall+margin, wSmall, wSmall)];
-            iv2.clipsToBounds = YES;
-            iv2.layer.cornerRadius = cornor;
-            
-            UIImageView *iv3 = [[UIImageView alloc] initWithFrame:CGRectMake(wSmall+margin, wSmall+margin, wSmall, wSmall)];
-            iv3.clipsToBounds = YES;
-            iv3.layer.cornerRadius = cornor;
-            
-            [iv1 setImage:[UIImage imageNamed:@"no_avatar"]];
-            [avartarView addSubview:iv1];
-            
-            [iv2 setImage:[UIImage imageNamed:@"no_avatar"]];
-            [avartarView addSubview:iv2];
-            
-            [iv3 setImage:[UIImage imageNamed:@"no_avatar"]];
-            [avartarView addSubview:iv3];
-            
-            for(int i = 0; i < (int)lists.count; i++){
-                NSString *sipPhone = lists[i];
-                NSString *dataStr = [NSDatabase getAvatarOfContactWithPhoneNumber: sipPhone];
-                
-                if (i == 0) {
-                    if ([dataStr isEqualToString:@""]) {
-                        iv1.image = [UIImage imageNamed:@"no_avatar"];
-                    }else{
-                        iv1.image = [UIImage imageWithData:[NSData dataFromBase64String: dataStr]];
-                    }
-                }else if (i == 1){
-                    if ([dataStr isEqualToString:@""]) {
-                        iv2.image = [UIImage imageNamed:@"no_avatar"];
-                    }else{
-                        iv2.image = [UIImage imageWithData:[NSData dataFromBase64String: dataStr]];
-                    }
-                }else if (i == 2){
-                    if ([dataStr isEqualToString:@""]) {
-                        iv3.image = [UIImage imageNamed:@"no_avatar"];
-                    }else{
-                        iv3.image = [UIImage imageWithData:[NSData dataFromBase64String: dataStr]];
-                    }
-                }
-            }
-            break;
-        }
-        case 4:{
-            UIImageView *iv1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, wSmall, wSmall)];
-            UIImageView *iv2 = [[UIImageView alloc] initWithFrame:CGRectMake(wSmall+margin, 0, wSmall, wSmall)];
-            UIImageView *iv3 = [[UIImageView alloc] initWithFrame:CGRectMake(0, wSmall+margin, wSmall, wSmall)];
-            UIImageView *iv4 = [[UIImageView alloc] initWithFrame:CGRectMake(wSmall+margin, wSmall+margin, wSmall, wSmall)];
-            
-            [iv1 setImage:[UIImage imageNamed:@"no_avatar"]];
-            iv1.clipsToBounds = YES;
-            iv1.layer.cornerRadius = cornor;
-            
-            [avartarView addSubview:iv1];
-            
-            [iv2 setImage:[UIImage imageNamed:@"no_avatar"]];
-            iv2.clipsToBounds = YES;
-            iv2.layer.cornerRadius = cornor;
-            
-            [avartarView addSubview:iv2];
-            
-            [iv3 setImage:[UIImage imageNamed:@"no_avatar"]];
-            iv3.clipsToBounds = YES;
-            iv3.layer.cornerRadius = cornor;
-            [avartarView addSubview:iv3];
-            
-            [iv4 setImage:[UIImage imageNamed:@"no_avatar"]];
-            iv4.clipsToBounds = YES;
-            iv4.layer.cornerRadius = cornor;
-            
-            [avartarView addSubview:iv4];
-            
-            for(int i = 0; i < (int)lists.count; i++){
-                NSString *sipPhone = lists[i];
-                NSString *dataStr = [NSDatabase getAvatarOfContactWithPhoneNumber: sipPhone];
-                
-                if (i == 0) {
-                    if ([dataStr isEqualToString:@""]) {
-                        iv1.image = [UIImage imageNamed:@"no_avatar"];
-                    }else{
-                        iv1.image = [UIImage imageWithData:[NSData dataFromBase64String: dataStr]];
-                    }
-                }else if (i == 1){
-                    if ([dataStr isEqualToString:@""]) {
-                        iv2.image = [UIImage imageNamed:@"no_avatar"];
-                    }else{
-                        iv2.image = [UIImage imageWithData:[NSData dataFromBase64String: dataStr]];
-                    }
-                }else if (i == 2){
-                    if ([dataStr isEqualToString:@""]) {
-                        iv3.image = [UIImage imageNamed:@"no_avatar"];
-                    }else{
-                        iv3.image = [UIImage imageWithData:[NSData dataFromBase64String: dataStr]];
-                    }
-                }else if (i == 3){
-                    if ([dataStr isEqualToString:@""]) {
-                        iv4.image = [UIImage imageNamed:@"no_avatar"];
-                    }else{
-                        iv4.image = [UIImage imageWithData:[NSData dataFromBase64String: dataStr]];
-                    }
-                }
-            }
-            break;
-        }
-        default:{
-            UIImageView *iv1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, wSmall, wSmall)];
-            UIImageView *iv2 = [[UIImageView alloc] initWithFrame:CGRectMake(wSmall+margin, 0, wSmall, wSmall)];
-            UIImageView *iv3 = [[UIImageView alloc] initWithFrame:CGRectMake(0, wSmall+margin, wSmall, wSmall)];
-            UILabel *lbCount = [[UILabel alloc] initWithFrame:CGRectMake(wSmall+margin, wSmall+margin, wSmall, wSmall)];
-            
-            [iv1 setImage:[UIImage imageNamed:@"no_avatar"]];
-            iv1.clipsToBounds = YES;
-            iv1.layer.cornerRadius = cornor;
-            [avartarView addSubview:iv1];
-            
-            [iv2 setImage:[UIImage imageNamed:@"no_avatar"]];
-            iv2.clipsToBounds = YES;
-            iv2.layer.cornerRadius = cornor;
-            [avartarView addSubview:iv2];
-            
-            [iv3 setImage:[UIImage imageNamed:@"no_avatar"]];
-            iv3.clipsToBounds = YES;
-            iv3.layer.cornerRadius = cornor;
-            [avartarView addSubview:iv3];
-            
-            //  [iv4 setImage:[UIImage imageNamed:@"no_avatar"]];
-            [lbCount setBackgroundColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0]];
-            lbCount.clipsToBounds = YES;
-            lbCount.layer.cornerRadius = cornor;
-            lbCount.font = [UIFont systemFontOfSize: 50.0];
-            lbCount.textColor = [UIColor whiteColor];
-            lbCount.textAlignment = NSTextAlignmentCenter;
-            [avartarView addSubview:lbCount];
-            
-            for(int i = 0; i < (int)lists.count; i++){
-                NSString *sipPhone = lists[i];
-                NSString *dataStr = [NSDatabase getAvatarOfContactWithPhoneNumber: sipPhone];
-                
-                if (i == 0) {
-                    if ([dataStr isEqualToString:@""]) {
-                        iv1.image = [UIImage imageNamed:@"no_avatar"];
-                    }else{
-                        iv1.image = [UIImage imageWithData:[NSData dataFromBase64String: dataStr]];
-                    }
-                }else if (i == 1){
-                    if ([dataStr isEqualToString:@""]) {
-                        iv2.image = [UIImage imageNamed:@"no_avatar"];
-                    }else{
-                        iv2.image = [UIImage imageWithData:[NSData dataFromBase64String: dataStr]];
-                    }
-                }else if (i == 2){
-                    if ([dataStr isEqualToString:@""]) {
-                        iv3.image = [UIImage imageNamed:@"no_avatar"];
-                    }else{
-                        iv3.image = [UIImage imageWithData:[NSData dataFromBase64String: dataStr]];
-                    }
-                }else if (i == 3){
-                    [lbCount setText:[NSString stringWithFormat:@"+%d", (int)lists.count-3]];
-                }
-            }
-            break;
-        }
-    }
-    return [self imageWithView:avartarView withSize:CGSizeMake(200, 200)];
-    //  return avartarView;
-}
-
 + (UIImage *)imageWithView:(UIView *)aView withSize: (CGSize)resultSize
 {
     UIGraphicsBeginImageContext(resultSize);
@@ -1349,20 +866,6 @@
     UIGraphicsEndImageContext();
     
     return image;
-}
-
-+ (XMPPRoom*) searchRoomFromId:(NSString *)roomId {
-    XMPPRoom *room = nil;
-    @synchronized([LinphoneAppDelegate sharedInstance].xmppChatRooms) {
-        for (int i = 0; i < [LinphoneAppDelegate sharedInstance].xmppChatRooms.count; i++) {
-            XMPPRoom *roomObj = [LinphoneAppDelegate sharedInstance].xmppChatRooms[i];
-            if ([[roomObj.roomJID bare] isEqualToString:roomId]) {
-                room = roomObj;
-                break;
-            }
-        }
-    }
-    return room;
 }
 
 + (NSString *)getDeviceModel {

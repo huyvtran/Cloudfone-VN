@@ -9,10 +9,6 @@
 #import "DetailHistoryCNViewController.h"
 #import "NewContactViewController.h"
 #import "AllContactListViewController.h"
-#import "MainChatViewController.h"
-//  Leo Kelvin
-//  #import "HotlineViewController.h"
-//  #import "OTRProtocolManager.h"
 #import "PhoneMainView.h"
 #import "JSONKit.h"
 #import "UIHistoryDetailCell.h"
@@ -637,14 +633,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)startSendMessage {
-    [_iconMessage setBackgroundImage:[UIImage imageNamed:@"ic_mess_def.png"]
-                            forState:UIControlStateNormal];
-    if (![_phoneNumberDetail hasPrefix:@"778899"]) {
-        appDelegate.friendBuddy = [AppUtils getBuddyOfUserOnList: _phoneNumberDetail];
-        [[PhoneMainView instance] changeCurrentView:[MainChatViewController compositeViewDescription] push:true];
-    }else{
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:text_not_send_message] duration:3.0 position:CSToastPositionCenter];
-    }
+    
 }
 
 - (void)btnVideoCallTouchDown {
@@ -673,8 +662,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_iconMessageClicked:(UIButton *)sender {
-    appDelegate.friendBuddy = [AppUtils getBuddyOfUserOnList: _phoneNumberDetail];
-    [[PhoneMainView instance] changeCurrentView:[MainChatViewController compositeViewDescription] push:true];
+    
 }
 
 - (IBAction)_iconVideoClicked:(UIButton *)sender {

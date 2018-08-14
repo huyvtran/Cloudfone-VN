@@ -7,7 +7,6 @@
 //
 
 #import "SipContactsViewController.h"
-#import "ListAcceptViewController.h"
 #import "KContactDetailViewController.h"
 #import "NewContactViewController.h"
 #import "RequestHeaderView.h"
@@ -17,9 +16,7 @@
 #import "NSData+Base64.h"
 #import "PhoneMainView.h"
 #import "UIImage+GKContact.h"
-#import "OTRProtocolManager.h"
 #import "NSDatabase.h"
-#import "PopupFriendRequest.h"
 
 @interface SipContactsViewController (){
     UIFont *textFont;
@@ -43,8 +40,6 @@
     int numVCard;
     int curVCard;
     BOOL isSyncing;
-    
-    PopupFriendRequest *requestPopupView;
 }
 
 @end
@@ -88,16 +83,6 @@
 
     isSearching = false;
     
-    // Cập nhật số lượng request đang đến
-    int number = [NSDatabase getCountListFriendsForAcceptOfAccount: USERNAME];
-    if (number == 0) {
-        viewRequest._lbNotifications.text = [NSString stringWithFormat:@"%d", number];
-        viewRequest._lbNotifications.hidden = YES;
-    }else{
-        viewRequest._lbNotifications.text = [NSString stringWithFormat:@"%d", number];
-        viewRequest._lbNotifications.hidden = NO;
-    }
-    
     if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
         [waitingHud showInView:[LinphoneAppDelegate sharedInstance].window animated:YES];
         
@@ -116,19 +101,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewContact)
                                                  name:addNewContactInContactView object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCloudFoneContacts)
-                                                 name:reloadCloudFoneContactAfterSync object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(buddyListUpdate)
-                                                 name:kOTRBuddyListUpdate object:nil ];
-    
-    //  Reload lại header view request kết bạn khi có kết bạn đến
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNumberFriendsRequest)
-                                                 name:k11ReloadListFriendsRequested object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(acceptFriendRequestedSuccessfully:)
-                                                 name:k11AcceptRequestedSuccessfully object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -151,46 +123,6 @@
 }
 
 #pragma mark - my functions
-
-//  Cập nhật số lượng request kết bạn
-- (void)reloadNumberFriendsRequest {
-    int number = [NSDatabase getCountListFriendsForAcceptOfAccount: USERNAME];
-    if (number == 0) {
-        viewRequest._lbNotifications.text = [NSString stringWithFormat:@"%d", number];
-        viewRequest._lbNotifications.hidden = YES;
-    }else{
-        viewRequest._lbNotifications.text = [NSString stringWithFormat:@"%d", number];
-        viewRequest._lbNotifications.hidden = NO;
-    }
-}
-
-- (void)acceptFriendRequestedSuccessfully: (NSNotification *)notif {
-    [self reloadNumberFriendsRequest];
-}
-
-//  Cập nhật lại roster list
-- (void)buddyListUpdate {
-    if(![[OTRProtocolManager sharedInstance] buddyList]) {
-        return;
-    }
-    [_tbContacts reloadData];
-}
-
-- (void)reloadCloudFoneContacts {
-    curVCard++;
-    if (curVCard == numVCard) {
-        if (timeout != nil) {
-            [timeout invalidate];
-            timeout = nil;
-        }
-        isSyncing = NO;
-        
-        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_contacts_xmpp_sync_success]
-                    duration:2.0 position:CSToastPositionCenter];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadContactAfterAdd" object:nil];
-    }
-}
 
 - (void)addNewContact {
     [[PhoneMainView instance] changeCurrentView:[NewContactViewController compositeViewDescription] push: true];
@@ -232,26 +164,7 @@
     viewRequest._lbTitle.font = textFont;
     viewRequest._lbNotifications.font = textFont;
     viewRequest.backgroundColor = [UIColor whiteColor];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToViewFriendRequest)];
-    [viewRequest addGestureRecognizer: tap];
     [self.view addSubview: viewRequest];
-}
-
-//  Di chuyển đến view request kết bạn
-- (void)goToViewFriendRequest {
-    [viewRequest setBackgroundColor:[UIColor colorWithRed:(223/255.0) green:(255/255.0)
-                                                     blue:(133/255.0) alpha:1]];
-    NSTimer *waitTimer = nil;
-    waitTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self
-                                               selector:@selector(goToListFriendRequested:)
-                                               userInfo:nil repeats:NO];
-}
-
-- (void)goToListFriendRequested: (NSTimer *)timer {
-    [viewRequest setBackgroundColor:[UIColor whiteColor]];
-    [timer invalidate];
-    [[PhoneMainView instance] changeCurrentView:[ListAcceptViewController compositeViewDescription] push:YES];
 }
 
 //  search contact
@@ -294,66 +207,6 @@
     [_searchResults addObjectsFromArray:[[LinphoneAppDelegate sharedInstance].sipContacts filteredArrayUsingPredicate:predicate]];
 }
 
-- (void)whenTapOnSyncXMPPContacts {
-    if (!isSyncing) {
-        isSyncing = YES;
-        [_viewSync setBackgroundColor:[UIColor colorWithRed:(24/255.0) green:(144/255.0)
-                                                       blue:(153/255.0) alpha:1.0]];
-        [NSTimer scheduledTimerWithTimeInterval:0.1 target:self
-                                       selector:@selector(startSyncXMPPContacts)
-                                       userInfo:nil repeats:false];
-    }else{
-        NSLog(@"-------Syncing");
-    }
-}
-
-- (void)startSyncXMPPContacts {
-    [_viewSync setBackgroundColor:[UIColor colorWithRed:(24/255.0) green:(185/255.0)
-                                                   blue:(153/255.0) alpha:1.0]];
-    if (![LinphoneAppDelegate sharedInstance]._internetActive) {
-        isSyncing = NO;
-        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_please_check_your_connection]
-                    duration:2.0 position:CSToastPositionCenter];
-    }else{
-        [waitingHud showInView:[LinphoneAppDelegate sharedInstance].window animated:YES];
-        
-        NSMutableDictionary *listUserDict = [[[OTRProtocolManager sharedInstance] buddyList] allBuddies];
-        NSArray *listFriends = [OTRBuddyList sortBuddies: listUserDict];
-        
-        if (listFriends.count > 0) {
-            numVCard = (int)listFriends.count;
-            curVCard = 0;
-            
-            timeout = [NSTimer scheduledTimerWithTimeInterval:20.0 target:self
-                                                     selector:@selector(whenSyncTimeout)
-                                                     userInfo:nil repeats:false];
-            
-            for (int iCount=0; iCount<listFriends.count; iCount++) {
-                OTRBuddy *curBuddy = [listFriends objectAtIndex: iCount];
-                NSString *account = [curBuddy accountName];
-                
-                [[LinphoneAppDelegate sharedInstance].myBuddy.protocol requestVCardFromAccount: account];
-            }
-        }else{
-            isSyncing = NO;
-            [waitingHud dismissAnimated:YES];
-            [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_contacts_xmpp_sync_success]
-                        duration:2.0 position:CSToastPositionCenter];
-        }
-    }
-}
-
-- (void)whenSyncTimeout {
-    isSyncing = NO;
-    curVCard = 0;
-    numVCard = 0;
-    [timeout invalidate];
-    timeout = nil;
-    [waitingHud dismissAnimated:YES];
-    [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_failed]
-                duration:2.0 position:CSToastPositionCenter];
-}
-
 //  setup thông tin cho tableview
 - (void)setupUIForView
 {
@@ -394,10 +247,6 @@
     //  view sync
     _viewSync.frame = CGRectMake(10, hView-hSync+5, SCREEN_WIDTH-20, hSync-10);
     _viewSync.layer.cornerRadius = 5.0;
-    
-    UITapGestureRecognizer *tapOnSync = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(whenTapOnSyncXMPPContacts)];
-    _viewSync.userInteractionEnabled = YES;
-    [_viewSync addGestureRecognizer: tapOnSync];
     
     _lbSync.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_sync_xmpp];
     _lbSync.font = textFont;
@@ -475,48 +324,10 @@
         [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"ic_offline.png"]
                                    forState:UIControlStateNormal];
         
-        //  Kiểm tra có phải là bạn hay ko?
-        BOOL isFriend = [self checkCloudfoneIDInListFriend: contact._sipPhone];
-        if (!isFriend)
-        {
-            cell.btnCallnex.enabled = YES;
-            [cell.btnCallnex addTarget:self
-                                action:@selector(onclickSendRequestToUser:)
-                      forControlEvents:UIControlEventTouchUpInside];
-            [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"add_new_callnex_contact.png"]
-                                       forState:UIControlStateNormal];
-            cell.phone.text = contact._sipPhone;
-        }else{
-            // Trạng thái online offline của user
-            NSArray *statusArr = [AppUtils getStatusOfUser: contact._sipPhone];
-            int status = [[statusArr objectAtIndex: 1] intValue];
-            NSString *statusStr = [statusArr objectAtIndex: 0];
-            
-            switch (status) {
-                case -1:{
-                    cell.btnCallnex.enabled = YES;
-                    [cell.btnCallnex addTarget:self
-                                        action:@selector(onclickSendRequestToUser:)
-                              forControlEvents:UIControlEventTouchUpInside];
-                    [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"add_new_callnex_contact.png"]
-                                               forState:UIControlStateNormal];
-                    break;
-                }
-                case kOTRBuddyStatusOffline:{
-                    cell.btnCallnex.enabled = NO;
-                    [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"ic_offline.png"]
-                                               forState:UIControlStateNormal];
-                    break;
-                }
-                default:{
-                    cell.btnCallnex.enabled = NO;
-                    [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"ic_online.png"]
-                                               forState:UIControlStateNormal];
-                    break;
-                }
-            }
-            cell.phone.text = statusStr;
-        }
+        cell.btnCallnex.enabled = YES;
+        [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"add_new_callnex_contact.png"]
+                                   forState:UIControlStateNormal];
+        cell.phone.text = contact._sipPhone;
     }
     
     [cell.btnCallnex setTag: contact._id_contact];
@@ -637,71 +448,6 @@
     }else{
         return [NSString stringWithFormat:@"%@ %@", str1, str2];
     }
-}
-
-//  Kiểm tra cloudfone có nằm trong ds bạn hay ko?
-- (BOOL)checkCloudfoneIDInListFriend: (NSString *)cloudfone {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self CONTAINS[cd] %@", cloudfone];
-    NSArray *filter = [[LinphoneAppDelegate sharedInstance]._listFriends filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        return true;
-    }else{
-        return false;
-    }
-}
-
-//  Show popup nhập lời mời kết bạn
-- (void)onclickSendRequestToUser: (UIButton *)sender {
-    if (![LinphoneAppDelegate sharedInstance]._internetActive) {
-        [LinphoneAppDelegate sharedInstance]._strRequestFriend = @"";
-        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_please_check_your_connection]
-                    duration:2.0 position:CSToastPositionCenter];
-    }else{
-        int idContact = (int)[(UIButton *)sender tag];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_id_contact = %d", idContact];
-        NSArray *filter = [[LinphoneAppDelegate sharedInstance].sipContacts filteredArrayUsingPredicate: predicate];
-        if (filter.count > 0) {
-            ContactObject *curContact = [filter objectAtIndex: 0];
-            
-            float hPopup = 133; // 4 + 40 + 10 + 30 + 10 + 35 + 4;
-            if (SCREEN_WIDTH > 320) {
-                hPopup = 4 + 40 + 10 + 40 + 10 + 40 + 4;
-            }else{
-                hPopup = 4 + 40 + 10 + 35 + 10 + 35 + 4;
-            }
-            requestPopupView = [[PopupFriendRequest alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-268)/2, (SCREEN_HEIGHT-20-hPopup)/2, 268, hPopup)];
-            [requestPopupView._btnSend addTarget:self
-                                          action:@selector(btnSendRequestPressed:)
-                                forControlEvents:UIControlEventTouchUpInside];
-            requestPopupView._lbHeader.text = [NSString stringWithFormat:@"%@ %@", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:TEXT_ADD_FRIEND_TITLE], curContact._fullName];
-            [requestPopupView set_cloudfoneID: curContact._sipPhone];
-            [requestPopupView showInView: [LinphoneAppDelegate sharedInstance].window animated: true];
-        }
-    }
-}
-
-- (void)btnSendRequestPressed: (UIButton *)sender {
-    [sender setBackgroundColor:[UIColor colorWithRed:(188/255.0) green:(188/255.0)
-                                                blue:(188/255.0) alpha:1.0]];
-    [requestPopupView fadeOut];
-    
-    //  Gửi request kết bạn
-    NSString *toUser = [NSString stringWithFormat:@"%@@%@", requestPopupView._cloudfoneID, xmpp_cloudfone];
-    NSString *idRequest = [NSString stringWithFormat:@"requestsent_%@", [AppUtils randomStringWithLength: 10]];
-    BOOL added = [NSDatabase addUserToRequestSent:requestPopupView._cloudfoneID withIdRequest:idRequest];
-    if (added) {
-        //  Gửi lệnh remove để reset lại nếu trạng thái subscrition đang là from hoặc to
-        [[LinphoneAppDelegate sharedInstance] set_cloudfoneRequestSent: toUser];
-        [[LinphoneAppDelegate sharedInstance].myBuddy.protocol removeUserFromRosterList:toUser withIdMessage:idRequest];
-        
-        NSString *profileName = [NSDatabase getProfielNameOfAccount:USERNAME];
-        [[LinphoneAppDelegate sharedInstance].myBuddy.protocol sendRequestUserInfoOf:[LinphoneAppDelegate sharedInstance].myBuddy.accountName
-                                                     toUser:toUser
-                                                withContent:[requestPopupView._tfRequest text]
-                                             andDisplayName:profileName];
-    }
-    [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_send_request_msg]
-                duration:2.0 position:CSToastPositionCenter];
 }
 
 @end

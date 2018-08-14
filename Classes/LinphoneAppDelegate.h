@@ -31,10 +31,6 @@
 #import "HMLocalization.h"
 #import "ContactObject.h"
 #import "FMDatabase.h"
-#import "XMPPStream.h"
-#import "XMPPIncomingFileTransfer.h"
-#import "OTRBuddy.h"
-#import "NSBubbleData.h"
 #import "CallsHistoryViewController.h"
 #import "UIView+Toast.h"
 #import "WebServices.h"
@@ -78,13 +74,6 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 @property (nonatomic, strong) NSString *_deviceToken;
 @property (nonatomic, assign) BOOL _updateTokenSuccess;
 
-//  Mảng chứa các emotion
-@property (nonatomic, strong) NSMutableArray *_listFace;
-@property (nonatomic, strong) NSMutableArray *_listNature;
-@property (nonatomic, strong) NSMutableArray *_listObject;
-@property (nonatomic, strong) NSMutableArray *_listPlace;
-@property (nonatomic, strong) NSMutableArray *_listSymbol;
-
 @property (nonatomic, assign) BOOL _meEnded;
 
 @property (nonatomic, assign) BOOL _acceptCall;
@@ -109,52 +98,19 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 
 @property (nonatomic, strong) UIImage *_cropAvatar;
 @property (nonatomic, strong) NSData *_dataCrop;
-// Bien cho biet truoc do o pickerViewController
 @property (nonatomic, assign) BOOL fromImagePicker;
 
 @property (nonatomic, assign) BOOL _isSyncing;
 @property (nonatomic, assign) BOOL _chooseMyAvatar;
 
 @property (nonatomic, strong) UIImage *userImage;
-
-@property (nonatomic, strong) XMPPStream *xmppStream;
 @property (nonatomic, strong) NSString *_resource;
-@property (nonatomic, strong) XMPPIncomingFileTransfer *_xmppIncomingFileTransfer;
-
-@property (nonatomic, strong) OTRBuddy *myBuddy;
-@property (nonatomic, retain) OTRBuddy *friendBuddy;
-
-//  Biến chứa cloudfone request sent
-@property (nonatomic, strong) NSString *_cloudfoneRequestSent;
-
-//  Lưu id và name của room chat
-@property (nonatomic, assign) int idRoomChat;
-@property (nonatomic, strong) NSString *roomChatName;
-@property (nonatomic, strong) NSString *_groupNameChange;
-
-@property (nonatomic, strong) NSMutableArray *_listFriends;
-
-@property (nonatomic, strong) NSMutableDictionary *_statusXMPPDict;
 
 //  Biến lưu id của videoMessage ở màn hình PlayVideo
 @property (nonatomic, strong) NSString *idVideoMessage;
 
-//  biến cho biết đang touch vào bubble nào
-@property (nonatomic, assign) int typeBubbleTouch;
-
-@property (nonatomic, strong) NSIndexPath *lastRowVisibleChat;
-@property (nonatomic, assign) BOOL reloadMessageList;
-@property (nonatomic, strong) NSString *titleCaption;
 @property (nonatomic, strong) NSString *imageChooseName;
 @property (nonatomic, strong) UIImage *imageChoose;
-
-@property (nonatomic, assign) float _heightChatTbView;
-
-// Nội dung message forward
-@property (nonatomic, strong) NSBubbleData *_msgForward;
-@property (nonatomic, strong) NSString *msgHisForward;
-@property (nonatomic, retain) NSString *idMessageRecall;
-@property (nonatomic, assign) BOOL imageCapture;
 
 @property (nonatomic, strong) ALAssetsGroup *photoGroup;
 
@@ -164,12 +120,6 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 
 @property (nonatomic, assign) BOOL contactLoaded;
 @property (nonatomic, strong) NSString *phoneNumberEnd;
-
-@property (nonatomic, strong) NSString *_strRequestFriend;
-@property (nonatomic, assign) BOOL supportGroupChat;
-@property (nonatomic, strong, readwrite) NSMutableArray *xmppChatRooms;
-
-@property (nonatomic, strong) NSTimer *bgTimer;
 
 +(LinphoneAppDelegate*) sharedInstance;
 @property (nonatomic, strong) WebServices *webService;

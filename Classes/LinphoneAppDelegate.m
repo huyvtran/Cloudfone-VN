@@ -42,12 +42,7 @@
 
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
-#import "OTRConstants.h"
-#import "RoomObject.h"
 #import "NSData+Base64.h"
-#import "MainChatViewController.h"
-#import "GroupMainChatViewController.h"
-#import "XMPPRoom.h"
 #import "LoadingViewController.h"
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
@@ -71,7 +66,6 @@
 @synthesize localization;
 @synthesize _hRegistrationState, _hStatus, _hHeader, _wSubMenu, _hTabbar;
 @synthesize _deviceToken, _updateTokenSuccess;
-@synthesize _listFace, _listPlace, _listNature, _listObject, _listSymbol;
 @synthesize _meEnded;
 @synthesize _acceptCall;
 @synthesize listContacts, sipContacts, pbxContacts;
@@ -83,14 +77,9 @@
 @synthesize _cropAvatar, _dataCrop;
 @synthesize fromImagePicker;
 @synthesize _isSyncing;
-@synthesize _chooseMyAvatar, userImage, xmppStream, _resource, _xmppIncomingFileTransfer, friendBuddy, myBuddy;
-@synthesize _cloudfoneRequestSent;
-@synthesize idRoomChat, roomChatName, _groupNameChange;
-@synthesize _listFriends, _statusXMPPDict, idVideoMessage, typeBubbleTouch, lastRowVisibleChat;
-@synthesize reloadMessageList;
-@synthesize imageChooseName, titleCaption, imageChoose, _heightChatTbView;
-@synthesize _msgForward, msgHisForward, idMessageRecall, imageCapture, photoGroup;
-@synthesize _allPhonesDict, _allIDDict, contactLoaded, _strRequestFriend, supportGroupChat, bgTimer;
+@synthesize _chooseMyAvatar, userImage, _resource;
+@synthesize imageChooseName, imageChoose;
+@synthesize _allPhonesDict, _allIDDict, contactLoaded;
 @synthesize webService, keepAwakeTimer;
 
 #pragma mark - Lifecycle Functions
@@ -400,9 +389,6 @@ void onUncaughtException(NSException* exception)
     _hasRecordCall = false;
     _recordFile = @"";
     _isSyncing = false;
-    idMessageRecall = @"";
-    supportGroupChat = YES;
-    self.xmppChatRooms = [[NSMutableArray alloc] init];
     
     _allPhonesDict = [[NSMutableDictionary alloc] init];
     _allIDDict = [[NSMutableDictionary alloc] init];
@@ -413,19 +399,6 @@ void onUncaughtException(NSException* exception)
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadContactListAfterAddSuccess)
                                                  name:@"reloadContactAfterAdd" object:nil];
-    
-    //  Đăng nhập vào xmpp service
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(protocolLoginFailed:)
-                                                 name:kOTRProtocolLoginFail object:nil ];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(protocolLoginSuccess:)
-                                                 name:kOTRProtocolLoginSuccess object:nil ];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(joinedGroupChat:)
-                                                 name:k11JoinGroupChatSuccessfully object:nil ];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(joinAllGroupGetFromServer)
-                                                 name:getAllGroupsForAccountSuccessful object:nil ];
     
     _internetReachable = [Reachability reachabilityForInternetConnection];
     [_internetReachable startNotifier];
@@ -452,13 +425,6 @@ void onUncaughtException(NSException* exception)
         _hTabbar = 50.0;
         _hHeader = 42.0;
     }
-    
-    idRoomChat = 0;
-    roomChatName = @"";
-    _groupNameChange = @"";
-    
-    _listFriends = [[NSMutableArray alloc] init];
-    _statusXMPPDict = [[NSMutableDictionary alloc] init];
     
     listNumber = [[NSArray alloc] initWithObjects: @"+", @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil];
     
@@ -504,13 +470,6 @@ void onUncaughtException(NSException* exception)
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
     }
     
-    //  List emotion
-    _listFace = [[NSMutableArray alloc] init];
-    _listNature = [[NSMutableArray alloc] init];
-    _listObject = [[NSMutableArray alloc] init];
-    _listPlace = [[NSMutableArray alloc] init];
-    _listSymbol = [[NSMutableArray alloc] init];
-    
     //  get list contact
     contactLoaded = NO;
     [self getContactsListForFirstLoad];
@@ -534,12 +493,6 @@ void onUncaughtException(NSException* exception)
 			return YES;
 		}
 	}
-    
-//    [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
-//    bgTimer = [NSTimer scheduledTimerWithTimeInterval:60 target:self
-//                                             selector:@selector(reloginToXMPPServer)
-//                                             userInfo:nil repeats:YES];
-//    [[NSRunLoop currentRunLoop] addTimer:bgTimer forMode:NSRunLoopCommonModes];
     
 	[LinphoneManager.instance startLinphoneCore];
 	LinphoneManager.instance.iapManager.notificationCategory = @"expiry_notification";
@@ -689,135 +642,86 @@ void onUncaughtException(NSException* exception)
     if (aps != nil)
     {
         NSDictionary *alert = [aps objectForKey:@"alert"];
-        NSString *xmppKey = [alert objectForKey:@"xmpp"];
-        if (xmppKey != nil && ![xmppKey isKindOfClass:[NSNull class]] && [xmppKey isEqualToString:@"yes"])
-        {
-            if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground ) {
-                NSString *content = [alert objectForKey:@"content"];
-                NSAttributedString *strContent = [AppUtils convertMessageStringToEmojiString: content];
-                
-                NSString *sender = [alert objectForKey:@"sender"];
-                NSString *groupId = [alert objectForKey:@"group-id"];
-                if ([groupId isEqualToString: @""])
-                {
-                    if (![content isEqualToString: @""] && content != nil && ![sender isEqualToString: @""] && sender != nil) {
-                        UILocalNotification *messageNotif = [[UILocalNotification alloc] init];
-                        messageNotif.fireDate = [NSDate dateWithTimeIntervalSinceNow: 0.1];
-                        messageNotif.timeZone = [NSTimeZone defaultTimeZone];
-                        messageNotif.alertBody = strContent.string;
-                        
-                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:sender, @"xmppID", @"chat", @"type", nil];
-                        messageNotif.userInfo = info;
-                        
-                        //  messageNotif.userInfo = infoDict;
-                        messageNotif.soundName = UILocalNotificationDefaultSoundName;
-                        [[UIApplication sharedApplication] scheduleLocalNotification: messageNotif];
-                    }
-                }else{
-                    NSString *sender = [alert objectForKey:@"sender"];
-                    
-                    NSString *senderName = [NSDatabase getNameOfContactWithPhoneNumber:sender];
-                    if ([senderName isEqualToString: @""]) {
-                        senderName = sender;
-                    }
-                    NSString *subject = [NSDatabase getSubjectOfRoom: groupId];
-                    NSString *msgContent = [NSString stringWithFormat:@"%@ %@ \"%@\": %@", senderName, [localization localizedStringForKey:text_in], subject, strContent.string];
-                    
-                    UILocalNotification *messageNotif = [[UILocalNotification alloc] init];
-                    messageNotif.fireDate = [NSDate dateWithTimeIntervalSinceNow: 0.1];
-                    messageNotif.timeZone = [NSTimeZone defaultTimeZone];
-                    messageNotif.alertBody = msgContent;
-                    
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:groupId, @"xmppID", @"groupchat", @"type", nil];
-                    messageNotif.userInfo = info;
-                    
-                    //  messageNotif.userInfo = infoDict;
-                    messageNotif.soundName = UILocalNotificationDefaultSoundName;
-                    [[UIApplication sharedApplication] scheduleLocalNotification: messageNotif];
-                }
+        [[LinphoneManager instance] refreshRegisters];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:aps forKey:@"testkey"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        NSString *loc_key = [aps objectForKey:@"loc-key"];
+        NSString *callId = [aps objectForKey:@"call-id"];
+        
+        NSString *address = [self getNameForCurrentPhoneNumber: callId];
+        if ([address isEqualToString: callId]) {
+            address = [self getNameOfContactWithPhoneNumber: callId];
+            if ([address isEqualToString:@""]) {
+                address = callId;
             }
-        }else{
-            [[LinphoneManager instance] refreshRegisters];
-            
-            [[NSUserDefaults standardUserDefaults] setObject:aps forKey:@"testkey"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            NSString *loc_key = [aps objectForKey:@"loc-key"];
-            NSString *callId = [aps objectForKey:@"call-id"];
-            
-            NSString *address = [self getNameForCurrentPhoneNumber: callId];
-            if ([address isEqualToString: callId]) {
-                address = [self getNameOfContactWithPhoneNumber: callId];
-                if ([address isEqualToString:@""]) {
-                    address = callId;
+        }
+        
+        UILocalNotification *messageNotif = [[UILocalNotification alloc] init];
+        messageNotif.fireDate = [NSDate dateWithTimeIntervalSinceNow: 0.1];
+        messageNotif.timeZone = [NSTimeZone defaultTimeZone];
+        messageNotif.timeZone = [NSTimeZone defaultTimeZone];
+        messageNotif.alertBody = [NSString stringWithFormat:@"%@ %@", [localization localizedStringForKey:receive_call_from], address];
+        messageNotif.soundName = UILocalNotificationDefaultSoundName;
+        [[UIApplication sharedApplication] scheduleLocalNotification: messageNotif];
+        
+        
+        //            NSString *loc_key = [aps objectForKey:@"loc-key"];
+        //            NSString *callId = [aps objectForKey:@"call-id"];
+        if (alert != nil) {
+            loc_key = [alert objectForKey:@"loc-key"];
+            /*if we receive a remote notification, it is probably because our TCP background socket was no more working.
+             As a result, break it and refresh registers in order to make sure to receive incoming INVITE or MESSAGE*/
+            if (linphone_core_get_calls(LC) == NULL) { // if there are calls, obviously our TCP socket shall be working
+                //linphone_core_set_network_reachable(LC, FALSE);
+                if (!linphone_core_is_network_reachable(LC)) {
+                    LinphoneManager.instance.connectivity = none; //Force connectivity to be discovered again
+                    [LinphoneManager.instance setupNetworkReachabilityCallback];
                 }
-            }
-            
-            UILocalNotification *messageNotif = [[UILocalNotification alloc] init];
-            messageNotif.fireDate = [NSDate dateWithTimeIntervalSinceNow: 0.1];
-            messageNotif.timeZone = [NSTimeZone defaultTimeZone];
-            messageNotif.timeZone = [NSTimeZone defaultTimeZone];
-            messageNotif.alertBody = [NSString stringWithFormat:@"%@ %@", [localization localizedStringForKey:receive_call_from], address];
-            messageNotif.soundName = UILocalNotificationDefaultSoundName;
-            [[UIApplication sharedApplication] scheduleLocalNotification: messageNotif];
-            
-            
-//            NSString *loc_key = [aps objectForKey:@"loc-key"];
-//            NSString *callId = [aps objectForKey:@"call-id"];
-            if (alert != nil) {
-                loc_key = [alert objectForKey:@"loc-key"];
-                /*if we receive a remote notification, it is probably because our TCP background socket was no more working.
-                 As a result, break it and refresh registers in order to make sure to receive incoming INVITE or MESSAGE*/
-                if (linphone_core_get_calls(LC) == NULL) { // if there are calls, obviously our TCP socket shall be working
-                    //linphone_core_set_network_reachable(LC, FALSE);
-                    if (!linphone_core_is_network_reachable(LC)) {
-                        LinphoneManager.instance.connectivity = none; //Force connectivity to be discovered again
-                        [LinphoneManager.instance setupNetworkReachabilityCallback];
-                    }
-                    if (loc_key != nil) {
-                        
-                        //  callId = [userInfo objectForKey:@"call-id"];
-                        if (callId != nil) {
-                            if ([callId isEqualToString:@""]){
-                                //Present apn pusher notifications for info
-                                if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max) {
-                                    UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
-                                    content.title = @"APN Pusher";
-                                    content.body = @"Push notification received !";
-                                    
-                                    UNNotificationRequest *req = [UNNotificationRequest requestWithIdentifier:@"call_request" content:content trigger:NULL];
-                                    [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:req withCompletionHandler:^(NSError * _Nullable error) {
-                                        // Enable or disable features based on authorization.
-                                        if (error) {
-                                            NSLog(@"Error while adding notification request :%@", error.description);
-                                        }
-                                    }];
-                                } else {
-                                    UILocalNotification *notification = [[UILocalNotification alloc] init];
-                                    notification.repeatInterval = 0;
-                                    notification.alertBody = @"Push notification received !";
-                                    notification.alertTitle = @"APN Pusher";
-                                    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
-                                }
+                if (loc_key != nil) {
+                    
+                    //  callId = [userInfo objectForKey:@"call-id"];
+                    if (callId != nil) {
+                        if ([callId isEqualToString:@""]){
+                            //Present apn pusher notifications for info
+                            if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max) {
+                                UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
+                                content.title = @"APN Pusher";
+                                content.body = @"Push notification received !";
+                                
+                                UNNotificationRequest *req = [UNNotificationRequest requestWithIdentifier:@"call_request" content:content trigger:NULL];
+                                [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:req withCompletionHandler:^(NSError * _Nullable error) {
+                                    // Enable or disable features based on authorization.
+                                    if (error) {
+                                        NSLog(@"Error while adding notification request :%@", error.description);
+                                    }
+                                }];
                             } else {
-                                [LinphoneManager.instance addPushCallId:callId];
+                                UILocalNotification *notification = [[UILocalNotification alloc] init];
+                                notification.repeatInterval = 0;
+                                notification.alertBody = @"Push notification received !";
+                                notification.alertTitle = @"APN Pusher";
+                                [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
                             }
-                        } else  if ([callId  isEqual: @""]) {
-                            NSLog(@"PushNotification: does not have call-id yet, fix it !");
+                        } else {
+                            [LinphoneManager.instance addPushCallId:callId];
                         }
+                    } else  if ([callId  isEqual: @""]) {
+                        NSLog(@"PushNotification: does not have call-id yet, fix it !");
                     }
                 }
             }
-            
-            if (callId && [self addLongTaskIDforCallID:callId]) {
-                if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive && loc_key &&
-                    index > 0) {
-                    if ([loc_key isEqualToString:@"IC_MSG"]) {
-                        [LinphoneManager.instance startPushLongRunningTask:FALSE];
-                        [self fixRing];
-                    } else if ([loc_key isEqualToString:@"IM_MSG"]) {
-                        [LinphoneManager.instance startPushLongRunningTask:TRUE];
-                    }
+        }
+        
+        if (callId && [self addLongTaskIDforCallID:callId]) {
+            if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive && loc_key &&
+                index > 0) {
+                if ([loc_key isEqualToString:@"IC_MSG"]) {
+                    [LinphoneManager.instance startPushLongRunningTask:FALSE];
+                    [self fixRing];
+                } else if ([loc_key isEqualToString:@"IM_MSG"]) {
+                    [LinphoneManager.instance startPushLongRunningTask:TRUE];
                 }
             }
         }
@@ -1041,9 +945,6 @@ void onUncaughtException(NSException* exception)
         }else{
             _updateTokenSuccess = false;
         }
-        //  744e8f8435674614426eec31f936fb7f285709ddc87219332224fff1856452df
-        //  744e8f8435674614426eec31f936fb7f285709ddc87219332224fff1856452df
-        //  [LinphoneManager.instance setPushNotificationToken:credentials.token];
 	});
 }
 
@@ -1056,27 +957,6 @@ void onUncaughtException(NSException* exception)
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
     LOGD(@"UN : response received");
     LOGD(response.description);
-    
-    NSString *type = (NSString *)[response.notification.request.content.userInfo objectForKey:@"type"];
-    if (type != nil && [type isEqualToString:@"chat"]) {
-        NSString *cloudfoneID = (NSString *)[response.notification.request.content.userInfo objectForKey:@"xmppID"];
-        if (cloudfoneID != nil && ![cloudfoneID isEqualToString:@""]) {
-            reloadMessageList = YES;
-            friendBuddy = [AppUtils getBuddyOfUserOnList: cloudfoneID];
-            [[PhoneMainView instance] changeCurrentView:[MainChatViewController compositeViewDescription]
-                                                   push:true];
-            return;
-        }
-    }else if (type != nil && [type isEqualToString:@"groupchat"]){
-        NSString *groupId = (NSString *)[response.notification.request.content.userInfo objectForKey:@"xmppID"];
-        if (groupId != nil && ![groupId isEqualToString:@""]) {
-            reloadMessageList = YES;
-            roomChatName = groupId;
-            [[PhoneMainView instance] changeCurrentView:[GroupMainChatViewController compositeViewDescription] push:true];
-            
-            return;
-        }
-    }
     
     NSString *callId = (NSString *)[response.notification.request.content.userInfo objectForKey:@"CallId"];
     if (!callId) {
@@ -1568,48 +1448,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 }
 
 #pragma mark - Khai Le functions
-
-//  Login thất bại
-- (void)protocolLoginFailed:(NSNotification*)notification {
-    NSLog(@"Failed to login xmpp");
-}
-
-//  Sau khi login thành công thì active Blacklist
-- (void)protocolLoginSuccess: (NSNotification*)notification
-{
-    [self.xmppChatRooms removeAllObjects];
-    
-    //  Xoá các user trong request list để thêm lại
-    [NSDatabase removeAllUserFromRequestList];
-    
-    // Send tất cả msg fail của user
-    [NSDatabase resendAllFailedMessageOfAccount: USERNAME];
-    [self createAndActiveBlacklist];
-    
-    [NSTimer scheduledTimerWithTimeInterval:5.0 target:self
-                                   selector:@selector(updateStatusForAccount)
-                                   userInfo:nil repeats:false];
-}
-
-//  Cập nhật trạng thái
-- (void)updateStatusForAccount {
-    NSString *status = [NSDatabase getStatusXmppOfAccount: USERNAME];
-    
-    if (status == nil || [status isEqualToString: @""]) {
-        status = welcomeToCloudFone;
-    }
-    NSString *user = [NSString stringWithFormat:@"%@@%@", USERNAME, xmpp_cloudfone];
-    [myBuddy.protocol setStatus: status withUser: user];
-}
-
-//  Active blacklist
-- (void)createAndActiveBlacklist {
-    NSArray *blackList = [NSDatabase getAllUserInCallnexBlacklist];
-    if (blackList.count > 0) {
-        [myBuddy.protocol createBlackListOfMe: blackList];
-        [myBuddy.protocol activeBlackListOfMe];
-    }
-}
 
 - (void)checkNetworkStatus:(NSNotification *)notice
 {
@@ -2240,112 +2078,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     CFRelease(addressBook);
 }
 
-- (void)joinedGroupChat: (NSNotification *)notif {
-    id object = [notif object];
-    if ([object isKindOfClass:[XMPPRoom class]]) {
-        XMPPRoom *room = (XMPPRoom *)object;
-        [self getUserInChatRoom: room.roomJID.user];
-    }
-}
-
-- (void)getUserInChatRoom: (NSString *)roomName
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        //  CFRunLoopWakeUp(CFRunLoopGetCurrent());
-        NSString *strURL = [NSString stringWithFormat:@"%@/%@", link_api, GetUserInChatRoom];
-        NSURL *URL = [NSURL URLWithString:strURL];
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: URL];
-        [request setTimeoutInterval: 60];
-        
-        NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
-        [jsonDict setObject:AuthUser forKey:@"AuthUser"];
-        [jsonDict setObject:AuthKey forKey:@"AuthKey"];
-        [jsonDict setObject:roomName forKey:@"ID"];
-        
-        NSString *jsonRequest = [jsonDict JSONString];
-        NSData *requestData = [jsonRequest dataUsingEncoding:NSUTF8StringEncoding];
-        
-        [request setHTTPMethod:@"POST"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        
-        [request setValue:[NSString stringWithFormat:@"%d", (int)[requestData length]] forHTTPHeaderField:@"Content-Length"];
-        [request setHTTPBody: requestData];
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
-            if (data){
-                //do something with data
-                NSString *value = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                id object = [value objectFromJSONString];
-                NSString *result = [object objectForKey:@"result"];
-                if (result != nil && [result isEqualToString:@"success"]) {
-                    id data = [object objectForKey:@"data"];
-                    if ([data isKindOfClass:[NSArray class]]) {
-                        [self saveListMember: data forRoomChat: roomName];
-                    }
-                }
-            }
-            else if (error)
-                NSLog(@"%@",error);
-        }];
-    });
-}
-
-- (void)saveListMember: (NSArray *)listMembers forRoomChat: (NSString *)roomName
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [NSDatabase removeAllUserInGroupChat: roomName];
-        for (int iCount=0; iCount<listMembers.count; iCount++) {
-            NSDictionary *member = [listMembers objectAtIndex: iCount];
-            NSString *userName = [member objectForKey:@"userName"];
-            if (userName != nil) {
-                NSString *user = [AppUtils getSipFoneIDFromString: userName];
-                [NSDatabase saveUser:user toRoomChat:roomName forAccount:USERNAME];
-            }
-        }
-    });
-}
-
-- (void)joinAllGroupGetFromServer {
-    //  Xoa cac user da luu
-    [NSDatabase removeAllUserInGroupChat];
-    
-    NSString *key = [NSString stringWithFormat:@"GROUPS_%@", USERNAME];
-    NSString *groupIds = [[NSUserDefaults standardUserDefaults] objectForKey: key];
-    
-    if (groupIds != nil && ![groupIds isEqualToString:@""]) {
-        NSArray *roomArr = [groupIds componentsSeparatedByString:@","];
-        for (int iCount=0; iCount<roomArr.count; iCount++) {
-            NSString *roomId = [roomArr objectAtIndex: iCount];
-            [myBuddy.protocol acceptJoinToRoomChat: roomId];
-        }
-    }
-}
-
-- (void)reloginToXMPPServer {
-    [self pingForConnectToXMPPServer];
-}
-
-- (void)pingForConnectToXMPPServer {
-    UILocalNotification *messageNotif = [[UILocalNotification alloc] init];
-    messageNotif.fireDate = [NSDate dateWithTimeIntervalSinceNow: 0.1];
-    messageNotif.timeZone = [NSTimeZone defaultTimeZone];
-    messageNotif.timeZone = [NSTimeZone defaultTimeZone];
-    messageNotif.soundName = UILocalNotificationDefaultSoundName;
-    
-    if (!xmppStream.isConnected) {
-        messageNotif.alertBody = @"reconnectToXMPPServer";
-        [[UIApplication sharedApplication] scheduleLocalNotification: messageNotif];
-        
-        [AppUtils reconnectToXMPPServer];
-    }else{
-        messageNotif.alertBody = @"pingForConnectToServer";
-        [[UIApplication sharedApplication] scheduleLocalNotification: messageNotif];
-        
-        [myBuddy.protocol pingForConnectToServer];
-    }
-}
-
 +(LinphoneAppDelegate*) sharedInstance{
     return ((LinphoneAppDelegate*) [[UIApplication sharedApplication] delegate]);
 }
@@ -2375,48 +2107,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 -(void)receivedResponeCode:(NSString *)link withCode:(int)responeCode {
     
-}
-
-
--(void) startKeepAwake
-{
-    // the iOS4 device will sleep after 10seconds of inactivity
-    // On iOS4, playing the sound each 10seconds doesn't work as the system will imediately frozen
-    // if you stop playing the sound. The only solution is to play it in loop. This is why
-    // the 'repeats' parameter is equal to 'NO'.
-    keepAwakeTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:0]
-                                              interval:6.f
-                                                target:self
-                                              selector:@selector(keepAwakeCallback)
-                                              userInfo:nil
-                                               repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:keepAwakeTimer forMode:NSRunLoopCommonModes];
-}
-
--(void)keepAwakeCallback{
-    AVAudioPlayer *playerKeepAwake;
-    if(!playerKeepAwake){
-        playerKeepAwake = [self createPlayerWithPath:@"keepawake.wav"];
-    }
-    if(playerKeepAwake){
-        //        UInt32 doSetProperty = TRUE;
-        //        [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayAndRecord error: nil];
-        //        AudioSessionSetProperty (kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(doSetProperty), &doSetProperty);
-        
-        playerKeepAwake.numberOfLoops = -1;
-        [playerKeepAwake play];
-    }
-}
-
--(AVAudioPlayer*)createPlayerWithPath:(NSString*)path{
-    NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], path]];
-    
-    NSError *error;
-    AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-    if (player == nil){
-        NSLog(@"Failed to create audio player(%@): %@", path, error);
-    }
-    return player;
 }
 
 @end
