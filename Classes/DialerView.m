@@ -35,6 +35,7 @@
 
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
+#import "Masonry.h"
 
 @interface DialerView (){
     float wIcon;
