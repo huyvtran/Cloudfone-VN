@@ -8,8 +8,9 @@
 #import <UIKit/UIKit.h>
 #import "UICompositeView.h"
 #import "WebServices.h"
+#import "QRCodeReaderDelegate.h"
 
-@interface PBXSettingViewController : UIViewController<UICompositeViewDelegate, WebServicesDelegate>
+@interface PBXSettingViewController : UIViewController<UICompositeViewDelegate, WebServicesDelegate, QRCodeReaderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIView *_viewHeader;
 @property (weak, nonatomic) IBOutlet UIButton *_iconBack;
 @property (weak, nonatomic) IBOutlet UILabel *_lbTitle;

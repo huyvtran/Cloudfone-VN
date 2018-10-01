@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -17,7 +17,6 @@
                 <outlet property="_imgSync" destination="jrY-KV-44l" id="FD4-FM-Gp5"/>
                 <outlet property="_lbContacts" destination="YLM-ng-UfX" id="kAy-8q-D6T"/>
                 <outlet property="_lbSearch" destination="5Az-VP-NdX" id="wk2-32-CI6"/>
-                <outlet property="_lbSepa" destination="gd9-6z-k52" id="bzN-X2-18H"/>
                 <outlet property="_lbSync" destination="WrF-ia-laB" id="qjV-69-Q2C"/>
                 <outlet property="_tbContacts" destination="mwM-Gf-INW" id="8NK-MS-yTd"/>
                 <outlet property="_tfSearch" destination="Y6e-S7-WGF" id="jlX-ya-2bv"/>
@@ -84,14 +83,6 @@
                     <rect key="frame" x="0.0" y="318" width="320" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gd9-6z-k52">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icon_phone_sync" id="jrY-KV-44l">
                             <rect key="frame" x="78" y="10" width="30" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

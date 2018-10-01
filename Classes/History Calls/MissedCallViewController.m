@@ -49,13 +49,20 @@
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
     }
     
-    [_lbNoCalls setFont: textFont];
-    [_lbNoCalls setTextColor:[UIColor grayColor]];
-    [_lbNoCalls setTextAlignment:NSTextAlignmentCenter];
+    _lbNoCalls.font = textFont;
+    _lbNoCalls.textColor = UIColor.grayColor;
+    _lbNoCalls.textAlignment = NSTextAlignmentCenter;
+    [_lbNoCalls mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self.view);
+    }];
     
-    [_tbListCalls setDelegate: self];
-    [_tbListCalls setDataSource: self];
-    [_tbListCalls setSeparatorStyle: UITableViewCellSeparatorStyleNone];
+    //  tableview
+    _tbListCalls.delegate = self;
+    _tbListCalls.dataSource = self;
+    _tbListCalls.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [_tbListCalls mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self.view);
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

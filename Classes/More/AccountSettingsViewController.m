@@ -154,7 +154,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     typeReset = 0;
     loginWithQRCode = NO;
     
-    //  notifications
+    [_tbContent reloadData];
     
     //  Hiển thị popup trunking pbx khi switch button
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenSwitchPBXChanged:)
@@ -260,8 +260,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)scanQRCodeForPBX {
     if ([QRCodeReader supportsMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]]) {
-        
-        
         QRCodeReader *reader = [QRCodeReader readerWithMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]];
         scanQRCodeVC = [QRCodeReaderViewController readerWithCancelButtonTitle:@"Cancel" codeReader:reader startScanningAtLoad:YES showSwitchCameraButton:YES showTorchButton:YES];
         scanQRCodeVC.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -298,13 +296,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)btnScanFromPhotoPressed {
-    btnScanFromPhoto.backgroundColor = [UIColor whiteColor];
-    [btnScanFromPhoto setTitleColor:[UIColor colorWithRed:(2/255.0) green:(164/255.0)
-                                                     blue:(247/255.0) alpha:1.0]
-                           forState:UIControlStateNormal];
-    [NSTimer scheduledTimerWithTimeInterval:0.05 target:self
-                                   selector:@selector(choosePictureForScanQRCode)
-                                   userInfo:nil repeats:NO];
+    
 }
 
 
@@ -329,57 +321,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - Khải Lê functions
 
 - (void)loginPBXFromStringHashCodeResult: (NSString *)message {
-    NSArray *tmpArr = [message componentsSeparatedByString:@"/"];
-    if (tmpArr.count == 3) {
-        
-        NSString *pbxID = [tmpArr objectAtIndex: 0];
-        NSString *pbxUsername = [tmpArr objectAtIndex: 1];
-        NSString *pbxPassword = [tmpArr objectAtIndex: 2];
-        
-        if (![pbxID isEqualToString:@""] && ![pbxUsername isEqualToString:@""] && ![pbxPassword isEqualToString:@""])
-        {
-            loginWithQRCode = YES;
-            timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self
-                                                          selector:@selector(registerPBXTimeOut)
-                                                          userInfo:nil repeats:false];
-            //  Lưu thông tin PBX nếu đăng nhập thất bại
-            tmpPBXID = pbxID;
-            tmpPBXUsername = pbxUsername;
-            tmpPBXPassword = pbxPassword;
-            //  ----------
-            
-            _tfPBXInfoID.text = pbxID;
-            _tfPBXInfoAcc.text = pbxUsername;
-            _tfPBXInfoPass.text = pbxPassword;
-            
-            _imgTrunking.image = [UIImage imageNamed:@"icon-next.png"];
-            
-            [UIView animateWithDuration:0.2 animations:^{
-                _viewPBXState.frame = CGRectMake(0, _viewTrunking.frame.origin.y+_viewTrunking.frame.size.height, _viewTrunking.frame.size.width, 0);
-                _viewPBXInfo.frame = CGRectMake(0, _viewPBXState.frame.origin.y+_viewPBXState.frame.size.height, _viewPBXState.frame.size.width, 0);
-                _viewChangePassword.frame = CGRectMake(0, _viewPBXInfo.frame.origin.y+_viewPBXInfo.frame.size.height+1, _viewPBXState.frame.size.width, hItem);
-            } completion:^(BOOL finished) {
-                _scrollViewContent.contentSize = CGSizeMake(_scrollViewContent.frame.size.width, _viewChangePassword.frame.origin.y+_viewChangePassword.frame.size.height);
-                [self.view endEditing: true];
-                
-                [waitingView startAnimating];
-                
-                //  Lưu thông tin PBX nếu đăng nhập thất bại
-                tmpPBXID = [_tfPBXInfoID text];
-                tmpPBXUsername = [_tfPBXInfoAcc text];
-                tmpPBXPassword = [_tfPBXInfoPass text];
-                //  ----------
-                
-                [self getInfoForPBXWithServerName: _tfPBXInfoID.text];
-            }];
-        }else {
-            [self.view makeToast:[appDelegate.localization localizedStringForKey:text_dien_day_tu_thong_tin]
-                        duration:2.0 position:CSToastPositionCenter];
-        }
-    }else{
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_notification] message:[appDelegate.localization localizedStringForKey:cannot_find_qrcode] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_close] otherButtonTitles: nil];
-        [alertView show];
-    }
+    
 }
 
 - (void)whenClearPBXSuccessfully {
@@ -1094,39 +1036,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - API Processs
 
-- (void)getPBXInformationWithHashString: (NSString *)hashString
-{
-    NSString *strURL = [NSString stringWithFormat:@"%@/%@", link_api, DecryptRSA];
-    NSURL *URL = [NSURL URLWithString:strURL];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: URL];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
-    [request setTimeoutInterval: 60];
-    
-    NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
-    [jsonDict setObject:AuthUser forKey:@"AuthUser"];
-    [jsonDict setObject:AuthKey forKey:@"AuthKey"];
-    [jsonDict setObject:hashString forKey:@"HashString"];
-    
-    NSString *jsonRequest = [jsonDict JSONString];
-    NSData *requestData = [jsonRequest dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    
-    [request setValue:[NSString stringWithFormat:@"%d", (int)[requestData length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody: requestData];
-    
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    if(connection) {
-        NSLog(@"Connection Successful");
-    }else {
-        [waitingView stopAnimating];
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:text_error_connection]
-                    duration:2.0 position:CSToastPositionCenter];
-    }
-}
+- (void)getPBXInformationWithHashString: (NSString *)hashString{}
 
 - (void)getInfoForPBXWithServerName: (NSString *)serverName
 {
@@ -1199,7 +1109,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     NSString *strURL = [[[connection currentRequest] URL] absoluteString];
     NSString *strLogin = [NSString stringWithFormat:@"%@/%@", link_api, getServerInfoFunc];
     NSString *updateToken = [NSString stringWithFormat:@"%@/%@", link_api, ChangeCustomerIOSToken];
-    NSString *strDecryptRSA = [NSString stringWithFormat:@"%@/%@", link_api, DecryptRSA];
     
     if ([strURL isEqualToString: strLogin]) {
         if (serverInfoData == nil) {
@@ -1211,13 +1120,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             receiveData = [[NSMutableData alloc] init];
         }
         [receiveData appendData: data];
-    }else if ([strURL isEqualToString: strDecryptRSA]){
-        if (qrCodeData == nil) {
-            qrCodeData = [[NSMutableData alloc] init];
-        }
-        [qrCodeData appendData: data];
-    }
-    else{
+    }else{
         [waitingView stopAnimating];
     }
 }
@@ -1227,7 +1130,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     NSString *strURL = [[[connection currentRequest] URL] absoluteString];
     NSString *strServerInfo = [NSString stringWithFormat:@"%@/%@", link_api, getServerInfoFunc];
     NSString *updateToken = [NSString stringWithFormat:@"%@/%@", link_api, ChangeCustomerIOSToken];
-    NSString *strDecryptRSA = [NSString stringWithFormat:@"%@/%@", link_api, DecryptRSA];
     
     if ([strURL isEqualToString: strServerInfo]) {
         NSString *value = [[NSString alloc] initWithData:serverInfoData encoding:NSUTF8StringEncoding];
@@ -1322,27 +1224,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         //  reset data
         receiveData = nil;
-    }else if ([strURL isEqualToString:strDecryptRSA]){
-        NSString *value = [[NSString alloc] initWithData:qrCodeData encoding:NSUTF8StringEncoding];
-        qrCodeData = nil;
-        id object = [value objectFromJSONString];
-        if ([object isKindOfClass:[NSDictionary class]]) {
-            NSString *result = [object objectForKey:@"result"];
-            if (result != nil && [result isEqualToString:@"success"]) {
-                NSString *message = [object objectForKey:@"message"];
-                
-                [self loginPBXFromStringHashCodeResult: message];
-            }else{
-                [waitingView stopAnimating];
-                [self.view makeToast:[appDelegate.localization localizedStringForKey:login_pbx_success_not_update_token] duration:2.0 position:CSToastPositionCenter];
-            }
-        }else{
-            [waitingView stopAnimating];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_notification] message:[appDelegate.localization localizedStringForKey:cannot_find_qrcode] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_close] otherButtonTitles: nil];
-            [alertView show];
-        }
-    }
-    else{
+    }else{
         [waitingView stopAnimating];
         [self.view makeToast:[appDelegate.localization localizedStringForKey:text_failed] duration:2.0 position:CSToastPositionCenter];
     }
@@ -1350,32 +1232,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - QR CODE
 
-- (void)reader:(QRCodeReaderViewController *)reader didScanResult:(NSString *)result
-{
-    [reader stopScanning];
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self getPBXInformationWithHashString: result];
-    }];
-}
+- (void)reader:(QRCodeReaderViewController *)reader didScanResult:(NSString *)result{}
+- (void)readerDidCancel:(QRCodeReaderViewController *)reader{}
 
-- (void)readerDidCancel:(QRCodeReaderViewController *)reader
-{
-    [self dismissViewControllerAnimated:YES completion:NULL];
-}
-
-- (void)choosePictureForScanQRCode {
-    btnScanFromPhoto.backgroundColor = [UIColor colorWithRed:(2/255.0) green:(164/255.0)
-                                                        blue:(247/255.0) alpha:1.0];
-    [btnScanFromPhoto setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
-    pickerController.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil];
-    pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-    pickerController.allowsEditing = NO;
-    pickerController.delegate = self;
-    [scanQRCodeVC presentViewController:pickerController animated:YES completion:nil];
-}
+- (void)choosePictureForScanQRCode {}
 
 - (void)getQRCodeContentFromImage: (UIImage *)image {
     NSArray *qrcodeContent = [self detectQRCode: image];

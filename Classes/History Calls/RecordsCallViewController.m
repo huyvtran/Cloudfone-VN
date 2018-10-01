@@ -120,16 +120,21 @@
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
     }
     
-    [_lbNoCalls setFrame: CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-[LinphoneAppDelegate sharedInstance]._hStatus-[LinphoneAppDelegate sharedInstance]._hHeader-[LinphoneAppDelegate sharedInstance]._hTabbar)];
-    [_lbNoCalls setFont: textFont];
-    [_lbNoCalls setTextColor:[UIColor grayColor]];
-    [_lbNoCalls setText:[localization localizedStringForKey:text_no_recorded_call]];
-    [_lbNoCalls setTextAlignment:NSTextAlignmentCenter];
+    _lbNoCalls.text = [localization localizedStringForKey:@"No recorded call in your history"];
+    _lbNoCalls.font = textFont;
+    _lbNoCalls.textColor = UIColor.grayColor;
+    _lbNoCalls.textAlignment = NSTextAlignmentCenter;
+    [_lbNoCalls mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self.view);
+    }];
     
-    [_tbRecordCall setFrame: _lbNoCalls.frame];
-    [_tbRecordCall setDelegate: self];
-    [_tbRecordCall setDataSource: self];
-    [_tbRecordCall setSeparatorStyle: UITableViewCellSeparatorStyleNone];
+    //  tableview
+    _tbRecordCall.delegate = self;
+    _tbRecordCall.dataSource = self;
+    _tbRecordCall.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [_tbRecordCall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self.view);
+    }];
 }
 
 //  Click trên button xoá tất cả

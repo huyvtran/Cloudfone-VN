@@ -193,7 +193,6 @@
 
 #define text_delete             @"text_delete"
 #define text_cancel             @"text_cancel"
-#define text_finish             @"text_finish"
 #define text_setup              @"text_setup"
 #define text_edit_profile       @"text_edit_profile"
 

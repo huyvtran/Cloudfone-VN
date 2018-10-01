@@ -47,15 +47,21 @@
         hSection = 35.0;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
     }
-    _lbNoCalls.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-([LinphoneAppDelegate sharedInstance]._hStatus+[LinphoneAppDelegate sharedInstance]._hHeader+[LinphoneAppDelegate sharedInstance]._hTabbar));
+    
     _lbNoCalls.font = textFont;
     _lbNoCalls.textColor = UIColor.grayColor;
     _lbNoCalls.textAlignment = NSTextAlignmentCenter;
+    [_lbNoCalls mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self.view);
+    }];
     
-    _tbListCalls.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-([LinphoneAppDelegate sharedInstance]._hStatus+[LinphoneAppDelegate sharedInstance]._hHeader+[LinphoneAppDelegate sharedInstance]._hTabbar));
+    //  tableview
     _tbListCalls.delegate = self;
     _tbListCalls.dataSource = self;
     _tbListCalls.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [_tbListCalls mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self.view);
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -26,7 +26,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import "PhoneBookContactCell.h"
 #import "NSData+Base64.h"
-#import "ViewPopupTrunking.h"
 #import <objc/runtime.h>
 #import "NSDatabase.h"
 #import "ContactDetailObj.h"
@@ -49,7 +48,6 @@
     
     UITapGestureRecognizer *tapOnScreen;
     
-    ViewPopupTrunking *popupTrunking;
     BOOL showResult;
     NSAttributedString *firstContactName;
     float viewSearchHeight;
@@ -156,9 +154,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showPopupWhenCallFailed:)
                                                  name:@"showPopupWhenCallFail" object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showPopupNotPBX)
-                                                 name:@"showPopupNotPBX" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationStateUpdate:)
                                                  name:k11RegistrationUpdate object:nil];
@@ -917,24 +912,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-
-//  Tap để chọn account
-- (void)showPopupRegistrationOnView {
-    popupTrunking = [[ViewPopupTrunking alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - 268)/2, (SCREEN_HEIGHT-163)/2 , 268, 163)];
-    [popupTrunking._btnRefresh addTarget:self
-                                  action:@selector(refreshTrunking)
-                        forControlEvents:UIControlEventTouchUpInside];
-    
-    [popupTrunking showInView:[LinphoneAppDelegate sharedInstance].window animated:true];
-}
-
-//  refresh
-- (void)refreshTrunking {
-    [popupTrunking fadeOut];
-    
-    linphone_core_refresh_registers([LinphoneManager getLc]);
-}
-
 - (void)enableNAT
 {
     LinphoneNatPolicy *LNP = linphone_core_get_nat_policy(LC);
@@ -947,11 +924,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     if ([object isKindOfClass:[NSString class]]) {
         [self.view makeToast:object duration:2.5 position:CSToastPositionCenter];
     }
-}
-
-- (void)showPopupNotPBX {
-    [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_not_setup_pbx]
-                duration:2.5 position:CSToastPositionCenter];
 }
 
 - (void)setupUIForView
@@ -970,11 +942,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [_lbStatus setFrame: CGRectMake(_viewStatus.frame.size.width/2, 0, _viewStatus.frame.size.width/2-_imgLogoSmall.frame.origin.x, _viewStatus.frame.size.height)];
     [_lbStatus setFont: textFont];
-    
-    //  Tap tren trang thai
-    [_lbStatus setUserInteractionEnabled: true];
-    UITapGestureRecognizer *tapOnStatus = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showPopupRegistrationOnView)];
-    [_lbStatus addGestureRecognizer: tapOnStatus];
     
     //  Number view
     [_viewNumber setFrame: CGRectMake(0, _viewStatus.frame.origin.y+_viewStatus.frame.size.height, SCREEN_WIDTH, hBgNumber)];
@@ -1463,16 +1430,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
         NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
-        if (defaultUsername != nil && ![defaultUsername hasPrefix:@"778899"]) {
-            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:1] forKey:callnexPBXFlag];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            NSString *pbxUsername = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_USERNAME];
-            _lbAccount.text = pbxUsername;
-        }else{
-            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:0] forKey:callnexPBXFlag];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            _lbAccount.text = USERNAME;
+        if (defaultUsername != nil) {
+            _lbAccount.text = defaultUsername;
         }
     }
 }

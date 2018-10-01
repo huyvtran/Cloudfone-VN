@@ -692,6 +692,7 @@
 		842E03E21FFCD57C00BA16BD /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842E03DF1FFCD57B00BA16BD /* Fabric.framework */; };
 		842E03E31FFCD57C00BA16BD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842E03E01FFCD57B00BA16BD /* Security.framework */; };
 		842E03E41FFCD57C00BA16BD /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842E03E11FFCD57C00BA16BD /* Crashlytics.framework */; };
+		842FA3B52162687800C59DDA /* qr-code-scan.png in Resources */ = {isa = PBXBuildFile; fileRef = 842FA3AE2162687700C59DDA /* qr-code-scan.png */; };
 		8438E2A21FF37BBC0044C884 /* FooterVideoCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8438E2A11FF37BBC0044C884 /* FooterVideoCallView.m */; };
 		8438E2AA1FF37BD00044C884 /* FooterVideoCallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8438E2A91FF37BD00044C884 /* FooterVideoCallView.xib */; };
 		843ED6601FB658F9005FE1C1 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 843ED65E1FB658F9005FE1C1 /* MoreViewController.m */; };
@@ -1897,6 +1898,7 @@
 		842E03DF1FFCD57B00BA16BD /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = SOURCE_ROOT; };
 		842E03E01FFCD57B00BA16BD /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		842E03E11FFCD57C00BA16BD /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = SOURCE_ROOT; };
+		842FA3AE2162687700C59DDA /* qr-code-scan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qr-code-scan.png"; sourceTree = "<group>"; };
 		8438E2A01FF37BBC0044C884 /* FooterVideoCallView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FooterVideoCallView.h; path = AppUI/FooterVideoCallView.h; sourceTree = "<group>"; };
 		8438E2A11FF37BBC0044C884 /* FooterVideoCallView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = FooterVideoCallView.m; path = AppUI/FooterVideoCallView.m; sourceTree = "<group>"; };
 		8438E2A91FF37BD00044C884 /* FooterVideoCallView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = FooterVideoCallView.xib; path = AppUI/FooterVideoCallView.xib; sourceTree = "<group>"; };
@@ -3224,6 +3226,7 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				842FA3AE2162687700C59DDA /* qr-code-scan.png */,
 				8489DED32160B5FA00A7A1DD /* right-arrow.png */,
 				8489DED12160B2EC00A7A1DD /* icon-next.png */,
 				8462F40320E73BAA005964D7 /* bg_chat_default.jpg */,
@@ -5411,6 +5414,7 @@
 				633FEF2F1D3CD55A0014B822 /* route_speaker_default@2x.png in Resources */,
 				633FEDDD1D3CD5590014B822 /* call_start_body_disabled~ipad@2x.png in Resources */,
 				633FEEBD1D3CD55A0014B822 /* numpad_4_over.png in Resources */,
+				842FA3B52162687800C59DDA /* qr-code-scan.png in Resources */,
 				633FEEF11D3CD55A0014B822 /* numpad_hash~ipad.png in Resources */,
 				633FEE781D3CD5590014B822 /* history_chat_indicator.png in Resources */,
 				633FEF431D3CD55A0014B822 /* select_all_disabled@2x.png in Resources */,

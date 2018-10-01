@@ -26,6 +26,5 @@
 @property (weak, nonatomic) IBOutlet UIView *_viewSync;
 @property (weak, nonatomic) IBOutlet UIImageView *_imgSync;
 @property (weak, nonatomic) IBOutlet UILabel *_lbSync;
-@property (weak, nonatomic) IBOutlet UILabel *_lbSepa;
 
 @end

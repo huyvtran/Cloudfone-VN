@@ -60,9 +60,9 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aRu-a7-KHf">
-                            <rect key="frame" x="266" y="6" width="46" height="30"/>
+                            <rect key="frame" x="284" y="6" width="36" height="36"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Button"/>
+                            <state key="normal" backgroundImage="qr-code-scan.png"/>
                             <connections>
                                 <action selector="_iconQRCodeClicked:" destination="-1" eventType="touchUpInside" id="KT2-Gu-YDB"/>
                             </connections>
@@ -166,5 +166,6 @@
     </objects>
     <resources>
         <image name="ic_back_def" width="200" height="200"/>
+        <image name="qr-code-scan.png" width="256" height="256"/>
     </resources>
 </document>

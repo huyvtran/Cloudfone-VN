@@ -6,10 +6,15 @@
 //
 
 #import "PBXSettingViewController.h"
+#import "QRCodeReaderViewController.h"
+#import "QRCodeReader.h"
+#import <MobileCoreServices/MobileCoreServices.h>
 
 @interface PBXSettingViewController (){
     LinphoneAppDelegate *appDelegate;
     NSTimer *timeoutTimer;
+    UIButton *btnScanFromPhoto;
+    QRCodeReaderViewController *scanQRCodeVC;
 }
 
 @end
@@ -216,6 +221,39 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_iconQRCodeClicked:(UIButton *)sender {
+    if ([QRCodeReader supportsMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]]) {
+        QRCodeReader *reader = [QRCodeReader readerWithMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]];
+        scanQRCodeVC = [QRCodeReaderViewController readerWithCancelButtonTitle:@"Cancel" codeReader:reader startScanningAtLoad:YES showSwitchCameraButton:YES showTorchButton:YES];
+        scanQRCodeVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        scanQRCodeVC.delegate = self;
+        
+        btnScanFromPhoto = [UIButton buttonWithType: UIButtonTypeCustom];
+        btnScanFromPhoto.frame = CGRectMake((SCREEN_WIDTH-250)/2, SCREEN_HEIGHT-38-60, 250, 38);
+        btnScanFromPhoto.backgroundColor = [UIColor colorWithRed:(2/255.0) green:(164/255.0)
+                                                            blue:(247/255.0) alpha:1.0];
+        [btnScanFromPhoto setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        btnScanFromPhoto.layer.cornerRadius = btnScanFromPhoto.frame.size.height/2;
+        btnScanFromPhoto.layer.borderColor = btnScanFromPhoto.backgroundColor.CGColor;
+        btnScanFromPhoto.layer.borderWidth = 1.0;
+        [btnScanFromPhoto setTitle:[appDelegate.localization localizedStringForKey:scan_from_photo]
+                          forState:UIControlStateNormal];
+        btnScanFromPhoto.titleLabel.font = [UIFont systemFontOfSize: 16.0];
+        [btnScanFromPhoto addTarget:self
+                             action:@selector(btnScanFromPhotoPressed)
+                   forControlEvents:UIControlEventTouchUpInside];
+        
+        [scanQRCodeVC.view addSubview: btnScanFromPhoto];
+        
+        [scanQRCodeVC setCompletionWithBlock:^(NSString *resultAsString) {
+            NSLog(@"Completion with result: %@", resultAsString);
+        }];
+        [self presentViewController:scanQRCodeVC animated:YES completion:NULL];
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Reader not supported by the current device" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+    }
 }
 
 - (IBAction)_btnClearPressed:(UIButton *)sender {
@@ -322,6 +360,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         [self startLoginPBXWithInfo: data];
     }else if ([link isEqualToString: ChangeCustomerIOSToken]){
         [self whenTurnOnPBXSuccessfully];
+    }else if ([link isEqualToString: DecryptRSA]) {
+        [self receiveDataFromQRCode: data];
     }
 }
 
@@ -418,6 +458,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)whenTurnOnPBXSuccessfully {
+    [[NSUserDefaults standardUserDefaults] setObject:_tfServerID.text forKey:PBX_ID];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
     [_swChange setOn:YES animated:YES];
@@ -458,5 +501,89 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)popCurrentView {
     [[PhoneMainView instance] popCurrentView];
 }
+
+- (void)btnScanFromPhotoPressed {
+    btnScanFromPhoto.backgroundColor = [UIColor whiteColor];
+    [btnScanFromPhoto setTitleColor:[UIColor colorWithRed:(2/255.0) green:(164/255.0)
+                                                     blue:(247/255.0) alpha:1.0]
+                           forState:UIControlStateNormal];
+    [self performSelector:@selector(choosePictureForScanQRCode) withObject:nil afterDelay:0.05];
+}
+
+- (void)choosePictureForScanQRCode {
+    btnScanFromPhoto.backgroundColor = [UIColor colorWithRed:(2/255.0) green:(164/255.0)
+                                                        blue:(247/255.0) alpha:1.0];
+    [btnScanFromPhoto setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
+    pickerController.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil];
+    pickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    pickerController.allowsEditing = NO;
+    pickerController.delegate = self;
+    [scanQRCodeVC presentViewController:pickerController animated:YES completion:nil];
+}
+
+- (void)receiveDataFromQRCode: (NSDictionary *)data {
+    [_icWaiting stopAnimating];
+    _icWaiting.hidden = YES;
+    
+    if (data != nil) {
+        NSString *result = [data objectForKey:@"result"];
+        if (result != nil && [result isEqualToString:@"success"]) {
+            NSString *message = [data objectForKey:@"message"];
+            
+            [self loginPBXFromStringHashCodeResult: message];
+        }
+        return;
+    }
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Notification"] message:[appDelegate.localization localizedStringForKey:@"Can not find QR Code!"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Close"] otherButtonTitles: nil];
+    [alertView show];
+}
+
+- (void)loginPBXFromStringHashCodeResult: (NSString *)message {
+    NSArray *tmpArr = [message componentsSeparatedByString:@"/"];
+    if (tmpArr.count == 3)
+    {
+        NSString *pbxDomain = [tmpArr objectAtIndex: 0];
+        NSString *pbxAccount = [tmpArr objectAtIndex: 1];
+        NSString *pbxPassword = [tmpArr objectAtIndex: 2];
+        
+        if (![pbxDomain isEqualToString:@""] && ![pbxAccount isEqualToString:@""] && ![pbxPassword isEqualToString:@""])
+        {
+            [self getInfoForPBXWithServerName: pbxDomain];
+        }else {
+            [self.view makeToast:[appDelegate.localization localizedStringForKey:text_dien_day_tu_thong_tin]
+                        duration:2.0 position:CSToastPositionCenter];
+        }
+    }else{
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_notification] message:[appDelegate.localization localizedStringForKey:cannot_find_qrcode] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_close] otherButtonTitles: nil];
+        [alertView show];
+    }
+}
+
+#pragma mark - QR CODE
+- (void)readerDidCancel:(QRCodeReaderViewController *)reader {
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+- (void)reader:(QRCodeReaderViewController *)reader didScanResult:(NSString *)result {
+    [reader stopScanning];
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self getPBXInformationWithHashString: result];
+    }];
+}
+
+#pragma mark - Web service
+
+- (void)getPBXInformationWithHashString: (NSString *)hashString
+{
+    NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
+    [jsonDict setObject:AuthUser forKey:@"AuthUser"];
+    [jsonDict setObject:AuthKey forKey:@"AuthKey"];
+    [jsonDict setObject:hashString forKey:@"HashString"];
+    
+    [webService callWebServiceWithLink:DecryptRSA withParams:jsonDict];
+}
+
 
 @end

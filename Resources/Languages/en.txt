@@ -80,7 +80,6 @@
 
 "text_delete"       =   "Delete"
 "text_cancel"       =   "Cancel"
-"text_finish"       =   "Done"
 "text_setup"        =   "Set"
 
 "text_edit_profile" =   "Edit profile"

@@ -103,12 +103,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [self showContentWithCurrentLanguage];
     
-    CGSize textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_edit]
-                                          withFont:textFont];
-    _btnEdit.frame = CGRectMake(_lbDelete.frame.origin.x, 0, textSize.width, [LinphoneAppDelegate sharedInstance]._hHeader);
+    CGSize textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Edit"] withFont:textFont];
+    _btnEdit.frame = CGRectMake(10, 0, textSize.width, [LinphoneAppDelegate sharedInstance]._hHeader);
     
-    textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_finish]
-                                   withFont:textFont];
+    textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Done"] withFont:textFont];
     _btnDone.frame = CGRectMake(_viewHeader.frame.size.width-textSize.width-_lbDelete.frame.origin.x, _btnEdit.frame.origin.y, textSize.width, _btnEdit.frame.size.height);
     
     // Tắt màn hình cảm biến
@@ -215,7 +213,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - My functions
 
 - (void)showContentWithCurrentLanguage {
-    [_btnDone setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_finish] forState:UIControlStateNormal];
+    [_btnDone setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Done"] forState:UIControlStateNormal];
     [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_edit] forState:UIControlStateNormal];
 }
 
@@ -262,32 +260,42 @@ static UICompositeViewDescription *compositeDescription = nil;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
     }
     
-    _viewHeader.frame = CGRectMake(0, 0, SCREEN_WIDTH, [LinphoneAppDelegate sharedInstance]._hHeader);
+    [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+    }];
+    
     _lbDelete.font = textFont;
-    _lbDelete.frame = CGRectMake(10, 0, 120, [LinphoneAppDelegate sharedInstance]._hHeader);
     _lbDelete.textAlignment = NSTextAlignmentLeft;
     _lbDelete.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_delete];
+    [_lbDelete mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewHeader).offset(10);
+        make.top.bottom.equalTo(_viewHeader);
+        make.width.mas_equalTo(120.0);
+    }];
     
     _btnEdit.titleLabel.font = textFont;
     _btnDone.titleLabel.font = textFont;
     
-    _iconRecord.frame = CGRectMake(_viewHeader.frame.size.width-[LinphoneAppDelegate sharedInstance]._hHeader, 0, [LinphoneAppDelegate sharedInstance]._hHeader, [LinphoneAppDelegate sharedInstance]._hHeader);
-    [_iconRecord setBackgroundImage:[UIImage imageNamed:@"recording_act.png"]
-                           forState:UIControlStateSelected];
-    [_iconRecord setBackgroundImage:[UIImage imageNamed:@"recording_def.png"]
-                           forState:UIControlStateNormal];
+    [_iconRecord mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(_viewHeader.mas_right);
+        make.centerY.equalTo(_viewHeader.mas_centerY);
+        make.width.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+    }];
     
-    _iconMissed.frame = CGRectMake(_iconRecord.frame.origin.x-_iconRecord.frame.size.width, _iconRecord.frame.origin.y, _iconRecord.frame.size.width, _iconRecord.frame.size.height);
-    [_iconMissed setBackgroundImage:[UIImage imageNamed:@"missed_act.png"]
-                           forState:UIControlStateSelected];
-    [_iconMissed setBackgroundImage:[UIImage imageNamed:@"missed_def.png"]
-                           forState:UIControlStateNormal];
+    [_iconMissed mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(_iconRecord.mas_left);
+        make.top.equalTo(_iconRecord);
+        make.width.equalTo(_iconRecord.mas_width);
+        make.height.equalTo(_iconRecord.mas_height);
+    }];
     
-    _iconAll.frame = CGRectMake(_iconMissed.frame.origin.x-_iconMissed.frame.size.width, _iconMissed.frame.origin.y, _iconMissed.frame.size.width, _iconMissed.frame.size.height);
-    [_iconAll setBackgroundImage:[UIImage imageNamed:@"recent_act.png"]
-                        forState:UIControlStateSelected];
-    [_iconAll setBackgroundImage:[UIImage imageNamed:@"recent_def.png"]
-                        forState:UIControlStateNormal];
+    [_iconAll mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(_iconMissed.mas_left);
+        make.top.equalTo(_iconMissed);
+        make.width.equalTo(_iconMissed.mas_width);
+        make.height.equalTo(_iconMissed.mas_height);
+    }];
 }
 
 //  Cập nhật giá trị delete

@@ -37,7 +37,7 @@
 @end
 
 @implementation PBXContactsViewController
-@synthesize _viewSearch, _imgBgSearch, _iconSearch, _tfSearch, _lbSearch, _iconClear, _lbContacts, _tbContacts, _viewSync, _lbSync, _imgSync, _lbSepa;
+@synthesize _viewSearch, _imgBgSearch, _iconSearch, _tfSearch, _lbSearch, _iconClear, _lbContacts, _tbContacts, _viewSync, _lbSync, _imgSync;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -290,11 +290,6 @@
     
     UITapGestureRecognizer *tapToSync = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickSyncPBXContacts)];
     [_viewSync addGestureRecognizer: tapToSync];
-    
-    [_lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(_viewSync);
-        make.height.mas_equalTo(1.0);
-    }];
     
     CGSize textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_sync_pbx_contact] withFont:textFont];
     
