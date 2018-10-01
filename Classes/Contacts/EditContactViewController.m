@@ -333,15 +333,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         [appDelegate.listContacts removeObjectsInArray: filter];
     }
     [appDelegate.listContacts addObject: aContact];
-    
-    //  remove ra khoi contact sip
-    if (![aContact._sipPhone isEqualToString: @""] && [aContact._sipPhone hasPrefix:@"778899"]) {
-        filter = [appDelegate.sipContacts filteredArrayUsingPredicate: predicate];
-        if (filter.count > 0) {
-            [appDelegate.sipContacts removeObjectsInArray: filter];
-        }
-        [appDelegate.sipContacts addObject: aContact];
-    }
 }
 
 - (void)showContentWithCurrentLanguage {

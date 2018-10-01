@@ -28,7 +28,6 @@
     
     YBHud *waitingHud;
     UIFont *textFont;
-    float hView;
     
     NSMutableArray *listSearch;
     
@@ -47,7 +46,7 @@
     webService = [[WebServices alloc] init];
     webService.delegate = self;
     
-    [self setupUIForView];
+    [self autoLayoutForView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -218,7 +217,7 @@
 }
 
 //  setup thông tin cho tableview
-- (void)setupUIForView {
+- (void)autoLayoutForView {
     float hSearch = 60.0;
     
     float wIconSync;
@@ -234,59 +233,104 @@
     
     hCell = 65.0;
     
-    hView = SCREEN_HEIGHT - ([LinphoneAppDelegate sharedInstance]._hStatus + [LinphoneAppDelegate sharedInstance]._hHeader + [LinphoneAppDelegate sharedInstance]._hTabbar);
-    
     //  view search
-    [_viewSearch setFrame: CGRectMake(0, 0, SCREEN_WIDTH, hSearch)];
-    [_imgBgSearch setFrame: CGRectMake(0, 0, _viewSearch.frame.size.width, _viewSearch.frame.size.height)];
-    [_iconSearch setFrame: CGRectMake(10, (hSearch-30)/2, 30, 30)];
-    [_tfSearch setFrame: CGRectMake(_iconSearch.frame.origin.x+_iconSearch.frame.size.width+5, _iconSearch.frame.origin.y, _viewSearch.frame.size.width-(3*_iconSearch.frame.origin.x+_iconSearch.frame.size.width), _iconSearch.frame.size.height)];
-    [_tfSearch setFont: textFont];
-    [_tfSearch setBorderStyle: UITextBorderStyleNone];
+    _viewSearch.backgroundColor = UIColor.redColor;
+    [_viewSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo(hSearch);
+    }];
+    
+    [_imgBgSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewSearch);
+    }];
+    
+    [_iconSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewSearch).offset(10);
+        make.centerY.equalTo(_viewSearch.mas_centerY);
+        make.width.height.mas_equalTo(30.0);
+    }];
+    
+    _iconClear.hidden = YES;
+    [_iconClear mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(_viewSearch.mas_right).offset(-10);
+        make.centerY.equalTo(_viewSearch.mas_centerY);
+        make.width.height.mas_equalTo(30.0);
+    }];
+    
+    [_tfSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_iconSearch.mas_right).offset(5);
+        make.right.equalTo(_iconClear.mas_left).offset(-5);
+        make.centerY.equalTo(_viewSearch.mas_centerY);
+        make.height.mas_equalTo(30.0);
+    }];
+    _tfSearch.font = textFont;
+    _tfSearch.borderStyle = UITextBorderStyleNone;
     
     [_tfSearch addTarget:self
                   action:@selector(onSearchContactChange:)
         forControlEvents:UIControlEventEditingChanged];
     
-    [_lbSearch setFrame: _tfSearch.frame];
-    [_lbSearch setFont: textFont];
-    
-    [_iconClear setFrame: CGRectMake(_tfSearch.frame.origin.x+_tfSearch.frame.size.width-_tfSearch.frame.size.height, _tfSearch.frame.origin.y, _tfSearch.frame.size.height, _tfSearch.frame.size.height)];
-    [_iconClear setHidden: true];
+    _lbSearch.font = textFont;
+    [_lbSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_iconSearch.mas_right).offset(5);
+        make.right.equalTo(_iconClear.mas_left).offset(-5);
+        make.centerY.equalTo(_viewSearch.mas_centerY);
+        make.height.mas_equalTo(30.0);
+    }];
     
     //  view sync
-    [_viewSync setFrame: CGRectMake(10, hView-hSync+5, SCREEN_WIDTH-20, hSync-10)];
-    [_viewSync.layer setCornerRadius: 5.0];
+    [_viewSync mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(10);
+        make.right.equalTo(self.view).offset(-10);
+        make.bottom.equalTo(self.view).offset(-5);
+        make.height.mas_equalTo(hSync-10);
+    }];
+    _viewSync.layer.cornerRadius = 5.0;
+    _viewSync.userInteractionEnabled = YES;
     
-    [_viewSync setUserInteractionEnabled: true];
     UITapGestureRecognizer *tapToSync = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickSyncPBXContacts)];
     [_viewSync addGestureRecognizer: tapToSync];
     
-    [_lbSepa setFrame: CGRectMake(0, 0, _viewSync.frame.size.width, 1)];
+    [_lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(_viewSync);
+        make.height.mas_equalTo(1.0);
+    }];
     
-    CGSize textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_sync_pbx_contact]
-                                          withFont:textFont];
+    CGSize textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_sync_pbx_contact] withFont:textFont];
     
-    float marginX = (_viewSync.frame.size.width - (30+10+textSize.width))/2;
-    [_imgSync setFrame: CGRectMake(marginX, (_viewSync.frame.size.height-30)/2, 30, 30)];
-    [_imgSync setImage:[UIImage imageNamed:@"icon_phone_sync.png"]];
+    [_imgSync mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(_viewSync.mas_centerY);
+        make.width.height.mas_equalTo(30.0);
+        make.centerX.equalTo(_viewSync.mas_centerX).offset(-15.0-5.0/2-textSize.width/2);
+    }];
     
-    [_lbSync setFrame: CGRectMake(_imgSync.frame.origin.x+_imgSync.frame.size.width+10, _imgSync.frame.origin.y, textSize.width, _imgSync.frame.size.height)];
-    [_lbSync setText: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_sync_pbx_contact]];
-    [_lbSync setFont: textFont];
-    [_lbSync setTextColor:[UIColor whiteColor]];
-    
+    _lbSync.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_sync_pbx_contact];
+    _lbSync.font = textFont;
+    _lbSync.textColor = UIColor.whiteColor;
+    [_lbSync mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(_viewSync);
+        make.left.equalTo(_imgSync.mas_right).offset(5);
+        make.width.mas_equalTo(textSize.width);
+    }];
     
     //  table contacts
-    [_tbContacts setFrame: CGRectMake(0, _viewSearch.frame.origin.y+_viewSearch.frame.size.height, SCREEN_WIDTH, hView-hSearch-hSync)];
-    [_tbContacts setDelegate:self];
-    [_tbContacts setDataSource:self];
-    [_tbContacts setSeparatorStyle: UITableViewCellSeparatorStyleNone];
+    _tbContacts.delegate = self;
+    _tbContacts.dataSource = self;
+    _tbContacts.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [_tbContacts mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewSearch.mas_bottom);
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(self.view).offset(-hSync);
+    }];
     
-    //  khong co lien he
-    [_lbContacts setFrame: _tbContacts.frame];
-    [_lbContacts setFont:textFont];
-    [_lbContacts setTextColor:[UIColor grayColor]];
+    //  no contact label
+    _lbContacts.font = textFont;
+    _lbContacts.textColor = UIColor.darkGrayColor;
+    [_lbContacts mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewSearch.mas_bottom);
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(self.view).offset(-hSync);
+    }];
 }
 
 //  search contact

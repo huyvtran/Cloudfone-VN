@@ -714,8 +714,6 @@
 		8442A3651FB1321D00F08F11 /* MYRIADPRO-REGULAR.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 8442A3631FB1321D00F08F11 /* MYRIADPRO-REGULAR.OTF */; };
 		8442A36A1FB13C0F00F08F11 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8442A3681FB13C0F00F08F11 /* ContactsViewController.m */; };
 		8442A36B1FB13C0F00F08F11 /* ContactsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8442A3691FB13C0F00F08F11 /* ContactsViewController.xib */; };
-		8442A36F1FB13CC900F08F11 /* SipContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8442A36D1FB13CC900F08F11 /* SipContactsViewController.m */; };
-		8442A3701FB13CC900F08F11 /* SipContactsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8442A36E1FB13CC900F08F11 /* SipContactsViewController.xib */; };
 		8442A3791FB13D0D00F08F11 /* PBXContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8442A3771FB13D0D00F08F11 /* PBXContactsViewController.m */; };
 		8442A37A1FB13D0D00F08F11 /* PBXContactsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8442A3781FB13D0D00F08F11 /* PBXContactsViewController.xib */; };
 		845056CC1FE596200035B6B3 /* OutgoingCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845056CA1FE596200035B6B3 /* OutgoingCallViewController.m */; };
@@ -1932,9 +1930,6 @@
 		8442A3671FB13C0F00F08F11 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsViewController.h; path = Contacts/ContactsViewController.h; sourceTree = "<group>"; };
 		8442A3681FB13C0F00F08F11 /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactsViewController.m; path = Contacts/ContactsViewController.m; sourceTree = "<group>"; };
 		8442A3691FB13C0F00F08F11 /* ContactsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ContactsViewController.xib; path = Contacts/ContactsViewController.xib; sourceTree = "<group>"; };
-		8442A36C1FB13CC900F08F11 /* SipContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SipContactsViewController.h; path = Contacts/SipContactsViewController.h; sourceTree = "<group>"; };
-		8442A36D1FB13CC900F08F11 /* SipContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SipContactsViewController.m; path = Contacts/SipContactsViewController.m; sourceTree = "<group>"; };
-		8442A36E1FB13CC900F08F11 /* SipContactsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SipContactsViewController.xib; path = Contacts/SipContactsViewController.xib; sourceTree = "<group>"; };
 		8442A3761FB13D0D00F08F11 /* PBXContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PBXContactsViewController.h; path = Contacts/PBXContactsViewController.h; sourceTree = "<group>"; };
 		8442A3771FB13D0D00F08F11 /* PBXContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PBXContactsViewController.m; path = Contacts/PBXContactsViewController.m; sourceTree = "<group>"; };
 		8442A3781FB13D0D00F08F11 /* PBXContactsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PBXContactsViewController.xib; path = Contacts/PBXContactsViewController.xib; sourceTree = "<group>"; };
@@ -3828,9 +3823,6 @@
 				8442A3671FB13C0F00F08F11 /* ContactsViewController.h */,
 				8442A3681FB13C0F00F08F11 /* ContactsViewController.m */,
 				8442A3691FB13C0F00F08F11 /* ContactsViewController.xib */,
-				8442A36C1FB13CC900F08F11 /* SipContactsViewController.h */,
-				8442A36D1FB13CC900F08F11 /* SipContactsViewController.m */,
-				8442A36E1FB13CC900F08F11 /* SipContactsViewController.xib */,
 				84D032151FB52E7A002D2524 /* AllContactsViewController.h */,
 				84D032161FB52E7A002D2524 /* AllContactsViewController.m */,
 				84D032171FB52E7A002D2524 /* AllContactsViewController.xib */,
@@ -5186,7 +5178,6 @@
 				633FEE5B1D3CD5590014B822 /* edit_default@2x.png in Resources */,
 				633FEDE11D3CD5590014B822 /* call_start_body_over~ipad@2x.png in Resources */,
 				84C54BAF1FAFE6A300651151 /* countries.plist in Resources */,
-				8442A3701FB13CC900F08F11 /* SipContactsViewController.xib in Resources */,
 				633FEF4F1D3CD55A0014B822 /* valid_default@2x.png in Resources */,
 				84D0321E1FB52F6C002D2524 /* ContactNormalCell.xib in Resources */,
 				633FEE241D3CD5590014B822 /* chat_start_body_over~ipad.png in Resources */,
@@ -5836,7 +5827,6 @@
 				84C1E2101FAEB43100EED0B9 /* LoginView.m in Sources */,
 				84C4436E1FBE01680015854C /* PolicyViewController.m in Sources */,
 				84E286CE1FC9E1AC009CBA27 /* UIImage+GIF.m in Sources */,
-				8442A36F1FB13CC900F08F11 /* SipContactsViewController.m in Sources */,
 				84C1E2401FAEBB5300EED0B9 /* JSONKit.m in Sources */,
 				84C1E2611FAEBE4B00EED0B9 /* FMDatabasePool.m in Sources */,
 				84EDEE421FB7121C00FF665C /* KSettingViewController.m in Sources */,

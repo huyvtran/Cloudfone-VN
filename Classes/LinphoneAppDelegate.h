@@ -79,7 +79,6 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 @property (nonatomic, assign) BOOL _acceptCall;
 
 @property (nonatomic, strong) NSMutableArray *listContacts;
-@property (nonatomic, strong) NSMutableArray *sipContacts;
 @property (nonatomic, strong) NSMutableArray *pbxContacts;
 @property (nonatomic, assign) int idContact;
 

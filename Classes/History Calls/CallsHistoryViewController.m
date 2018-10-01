@@ -73,7 +73,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                           navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
                                                                         options:nil];
     
-    _pageViewController.view.frame = CGRectMake(0, [LinphoneAppDelegate sharedInstance]._hHeader, SCREEN_WIDTH, SCREEN_HEIGHT-[LinphoneAppDelegate sharedInstance]._hStatus-[LinphoneAppDelegate sharedInstance]._hHeader);
     _pageViewController.view.backgroundColor = UIColor.clearColor;
     _pageViewController.delegate = self;
     _pageViewController.dataSource = self;
@@ -91,6 +90,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     _pageViewController.view.layer.borderWidth = 0;
     [self addChildViewController:_pageViewController];
     [self.view addSubview:_pageViewController.view];
+    
+    [_pageViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset([LinphoneAppDelegate sharedInstance]._hHeader);
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

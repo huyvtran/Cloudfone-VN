@@ -68,7 +68,6 @@
 "text_menu_feedback"        =   "Gửi phản hồi"
 "text_menu_privacy_policy"  =   "Chính sách"
 "text_menu_introduce"       =   "Giới thiệu"
-"text_logout"               =   "Đăng xuất"
 
 "text_gallery"      = "Thư viện"
 "text_camera"       = "Chụp ảnh"
@@ -413,8 +412,6 @@
 "text_contact_email"        =   "Email"
 "text_contact_phone"        =   "Số điện thoại"
 "text_contact_type"         =   "Loại"
-
-"text_contact_detail"       =   "Thông tin liên lạc"
 
 "text_detail_call"          = "Gọi"
 "text_detail_message"       = "Nhắn tin"

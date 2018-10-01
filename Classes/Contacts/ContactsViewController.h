@@ -10,9 +10,8 @@
 #import "UICompositeView.h"
 
 typedef enum eContact{
-    eContactSip,
-    eContactAll,
     eContactPBX,
+    eContactAll,
 }eContact;
 
 @interface ContactsViewController : UIViewController<UICompositeViewDelegate, UIPageViewControllerDelegate, UIPageViewControllerDataSource, UITextFieldDelegate>
@@ -21,12 +20,10 @@ typedef enum eContact{
 
 @property (weak, nonatomic) IBOutlet UIView *_viewHeader;
 @property (weak, nonatomic) IBOutlet UIButton *_iconAddNew;
-@property (weak, nonatomic) IBOutlet UIButton *_iconODS;
 @property (weak, nonatomic) IBOutlet UIButton *_iconAll;
 @property (weak, nonatomic) IBOutlet UIButton *_iconPBX;
 
 - (IBAction)_iconAddNewClicked:(id)sender;
-- (IBAction)_iconODSClicked:(id)sender;
 - (IBAction)_iconAllClicked:(id)sender;
 - (IBAction)_iconPBXClicked:(UIButton *)sender;
 

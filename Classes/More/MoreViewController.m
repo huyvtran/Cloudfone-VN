@@ -104,7 +104,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)showContentWithCurrentLanguage {
     _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: text_more];
-    [_btnSignOut setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_logout]
+    [_btnSignOut setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Logout"]
                  forState:UIControlStateNormal];
     [self createDataForMenuView];
     [_tbContent reloadData];

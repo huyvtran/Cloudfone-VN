@@ -67,7 +67,7 @@
 @synthesize _deviceToken, _updateTokenSuccess;
 @synthesize _meEnded;
 @synthesize _acceptCall;
-@synthesize listContacts, sipContacts, pbxContacts;
+@synthesize listContacts, pbxContacts;
 @synthesize idContact;
 @synthesize _database, _databasePath, _threadDatabase;
 @synthesize _busyForCall;
@@ -1473,11 +1473,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     }
     [listContacts removeAllObjects];
     
-    if (sipContacts == nil) {
-        sipContacts = [[NSMutableArray alloc] init];
-    }
-    [sipContacts removeAllObjects];
-    
     if (pbxContacts == nil) {
         pbxContacts = [[NSMutableArray alloc] init];
     }
@@ -1525,13 +1520,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         aContact._avatar = [self getAvatarOfContact: aPerson];
         aContact._listPhone = [self getListPhoneOfContactPerson: aPerson withName: aContact._fullName];
         [listContacts addObject: aContact];
-        
-        if (![aContact._sipPhone isEqualToString: @""] && [aContact._sipPhone hasPrefix:@"778899"]) {
-            [sipContacts addObject: aContact];
-            
-            [_allPhonesDict setObject:[NSString stringWithFormat:@"%@|%@|%@", aContact._fullName, [AppUtils getNameForSearchOfConvertName: aContact._fullName], aContact._sipPhone] forKey:aContact._sipPhone];
-            [_allIDDict setObject:[NSString stringWithFormat:@"%d", idOfContact] forKey:aContact._sipPhone];
-        }
         
         //  Kiem tra co phai la contact pbx hay ko?
         NSString *sipNumber = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNamePhoneticProperty);

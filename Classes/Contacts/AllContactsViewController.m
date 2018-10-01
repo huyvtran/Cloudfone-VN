@@ -11,9 +11,6 @@
 #import "KContactDetailViewController.h"
 #import "NewContactViewController.h"
 #import "UIImage+GKContact.h"
-#import "PhoneMainView.h"
-//  Leo Kelvin
-//  #import "PopupFriendRequest.h"
 //  #import "NSDBCallnex.h"
 
 #import "NSData+Base64.h"
@@ -36,8 +33,6 @@
     BOOL transfer_popup;
     
     UIRefreshControl *refreshControl;
-    //  Leo Kelvin
-    //  PopupFriendRequest *requestPopupView;
     NSArray *listCharacter;
     
     NSMutableArray *filterContactList;
@@ -64,10 +59,9 @@
     
     _contactSections = [[NSMutableDictionary alloc] init];
     
-    [self setupUIForView];
+    [self autoLayoutForView];
     
-    //  Kéo xuống để refresh lại list
-    
+    //  Pull to refresh contact list
     refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl setTintColor:[UIColor magentaColor]];
     [refreshControl setBackgroundColor:[UIColor whiteColor]];
@@ -120,9 +114,6 @@
     /*  Leo Kelvin
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableScrolledForTableView:)
                                                  name:k11EnableScrolledForTableView object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenAcceptSendRequestToUser)
-                                                 name:k11AcceptSendRequestToUser object:nil];
     */
     //  Add notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenLoadContactFinish)
@@ -183,7 +174,7 @@
     [[PhoneMainView instance] changeCurrentView:[NewContactViewController compositeViewDescription] push: true];
 }
 
-- (void)setupUIForView {
+- (void)autoLayoutForView {
     float hSearch = 60.0;
     
     if (SCREEN_WIDTH > 320) {
@@ -193,25 +184,53 @@
     }
     
     //  view search
-    _viewSearch.frame = CGRectMake(0, 0, SCREEN_WIDTH, hSearch);
-    _imgBgSearch.frame = CGRectMake(0, 0, _viewSearch.frame.size.width, _viewSearch.frame.size.height);
-    _iconSearch.frame = CGRectMake(10, (hSearch-30)/2, 30, 30);
-    _tfSearch.frame = CGRectMake(_iconSearch.frame.origin.x+_iconSearch.frame.size.width+5, _iconSearch.frame.origin.y, _viewSearch.frame.size.width-(3*_iconSearch.frame.origin.x+_iconSearch.frame.size.width), _iconSearch.frame.size.height);
+    [_viewSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo(hSearch);
+    }];
     
+    [_imgBgSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewSearch);
+    }];
+    
+    [_iconSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewSearch).offset(10);
+        make.centerY.equalTo(_viewSearch.mas_centerY);
+        make.width.height.mas_equalTo(30.0);
+    }];
+    
+    _iconClear.hidden = YES;
+    [_iconClear mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(_viewSearch.mas_right).offset(-10);
+        make.centerY.equalTo(_viewSearch.mas_centerY);
+        make.width.height.mas_equalTo(30.0);
+    }];
+    
+    [_tfSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_iconSearch.mas_right).offset(5);
+        make.right.equalTo(_iconClear.mas_left).offset(-5);
+        make.centerY.equalTo(_viewSearch.mas_centerY);
+        make.height.mas_equalTo(30.0);
+    }];
     _tfSearch.font = textFont;
     _tfSearch.borderStyle = UITextBorderStyleNone;
     [_tfSearch addTarget:self
                   action:@selector(onSearchContactChange:)
         forControlEvents:UIControlEventEditingChanged];
     
-    _lbSearch.frame = _tfSearch.frame;
     _lbSearch.font = textFont;
+    [_lbSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_iconSearch.mas_right).offset(5);
+        make.right.equalTo(_iconClear.mas_left).offset(-5);
+        make.centerY.equalTo(_viewSearch.mas_centerY);
+        make.height.mas_equalTo(30.0);
+    }];
     
-    _iconClear.frame = CGRectMake(_tfSearch.frame.origin.x+_tfSearch.frame.size.width-_tfSearch.frame.size.height, _tfSearch.frame.origin.y, _tfSearch.frame.size.height, _tfSearch.frame.size.height);
-    _iconClear.hidden = YES;
-    
-    float hView = SCREEN_HEIGHT - ([LinphoneAppDelegate sharedInstance]._hStatus + [LinphoneAppDelegate sharedInstance]._hHeader + [LinphoneAppDelegate sharedInstance]._hTabbar);
-    _tbContacts.frame = CGRectMake(0, _viewSearch.frame.origin.y+_viewSearch.frame.size.height, SCREEN_WIDTH, hView-hSearch);
+    [_tbContacts mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewSearch.mas_bottom);
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
+    }];
     _tbContacts.delegate = self;
     _tbContacts.dataSource = self;
     _tbContacts.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -236,13 +255,6 @@
         }else{
             _tbContacts.scrollEnabled = NO;
         }
-    }
-}
-
-//  Sự kiện call
-- (void)onCallInCallnex {
-    if (stringForCall.length > 0) {
-        
     }
 }
 
@@ -301,22 +313,6 @@
         if (filter.count > 0) {
             [_searchResults addObject: contact];
         }
-    }
-}
-
-//  Show popup nhập lời mời kết bạn
-- (void)onclickSendRequestToUser: (UIButton *)sender {
-    
-}
-
-- (void)btnSendRequestPressed: (UIButton *)sender {
-    
-}
-
-//  Nhập lời mời kết bạn và nhấn request
-- (void)whenAcceptSendRequestToUser {
-    if ([[[PhoneMainView instance] currentView] isEqual:[ContactsViewController compositeViewDescription]]) {
-        
     }
 }
 
@@ -443,15 +439,7 @@
             NSString *statusStr = [statusArr objectAtIndex: 0];
             
             switch (status) {
-                case -1:{
-                    [cell.btnCallnex setEnabled: true];
-                    [cell.btnCallnex addTarget:self
-                                        action:@selector(onclickSendRequestToUser:)
-                              forControlEvents:UIControlEventTouchUpInside];
-                    [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"add_new_callnex_contact.png"]
-                                               forState:UIControlStateNormal];
-                    break;
-                }
+         
                 case kOTRBuddyStatusOffline:{
                     [cell.btnCallnex setEnabled: false];
                     [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"ic_offline.png"]

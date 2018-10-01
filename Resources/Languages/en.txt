@@ -70,7 +70,6 @@
 "text_menu_feedback"        =   "Feedback"
 "text_menu_privacy_policy"  =   "Privacy Policy"
 "text_menu_introduce"       =   "Introduction"
-"text_logout"               =   "Logout"
 
 "text_gallery"      = "Gallery"
 "text_camera"       = "Camera"
@@ -415,7 +414,6 @@
 "text_contact_phone"        =   "Phone number"
 "text_contact_type"         =   "Type"
 
-"text_contact_detail"       = "Contact info"
 
 "text_detail_call"          = "Call"
 "text_detail_message"       = "Message"

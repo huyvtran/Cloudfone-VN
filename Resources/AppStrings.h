@@ -263,7 +263,6 @@
 #define text_unknown            @"text_unknown"
 #define text_pull_to_refresh    @"text_pull_to_refresh"
 
-#define text_contact_detail     @"text_contact_detail"
 #define text_detail_call        @"text_detail_call"
 #define text_detail_message     @"text_detail_message"
 #define text_detail_invite      @"text_detail_invite"
@@ -299,7 +298,6 @@
 
 #define text_more               @"text_more"
 #define text_settings           @"text_settings"
-#define text_logout             @"text_logout"
 
 #define text_menu_settings          @"text_menu_settings"
 #define text_menu_feedback          @"text_menu_feedback"

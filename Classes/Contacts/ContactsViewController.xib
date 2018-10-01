@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,7 +13,6 @@
             <connections>
                 <outlet property="_iconAddNew" destination="g1t-6d-zpK" id="PQJ-Bz-12W"/>
                 <outlet property="_iconAll" destination="mTT-24-mhG" id="xJ6-4l-V1m"/>
-                <outlet property="_iconODS" destination="Y6m-Cc-BVU" id="sRk-u6-Pl2"/>
                 <outlet property="_iconPBX" destination="I3y-t2-myS" id="2mt-Vf-sXe"/>
                 <outlet property="_viewHeader" destination="aRW-A3-MKf" id="wYp-sX-hZd"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -37,18 +36,11 @@
                                 <action selector="_iconAddNewClicked:" destination="-1" eventType="touchUpInside" id="4oA-xR-Po4"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Y6m-Cc-BVU">
-                            <rect key="frame" x="196" y="0.0" width="40" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" backgroundImage="ic_ods_act"/>
-                            <connections>
-                                <action selector="_iconODSClicked:" destination="-1" eventType="touchUpInside" id="U0c-SO-pkT"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mTT-24-mhG">
                             <rect key="frame" x="272" y="1" width="40" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" backgroundImage="ic_contact_def"/>
+                            <state key="selected" backgroundImage="ic_contact_act"/>
                             <connections>
                                 <action selector="_iconAllClicked:" destination="-1" eventType="touchUpInside" id="Y6M-OY-A02"/>
                             </connections>
@@ -57,6 +49,7 @@
                             <rect key="frame" x="235" y="1" width="40" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" backgroundImage="ic_PBX_def"/>
+                            <state key="selected" backgroundImage="ic_PBX_act"/>
                             <connections>
                                 <action selector="_iconPBXClicked:" destination="-1" eventType="touchUpInside" id="V70-xO-2dB"/>
                             </connections>
@@ -72,15 +65,11 @@
         </view>
     </objects>
     <resources>
+        <image name="ic_PBX_act" width="201" height="201"/>
         <image name="ic_PBX_def" width="201" height="201"/>
         <image name="ic_add_act" width="200" height="200"/>
         <image name="ic_add_def" width="200" height="200"/>
+        <image name="ic_contact_act" width="200" height="200"/>
         <image name="ic_contact_def" width="200" height="200"/>
-        <image name="ic_ods_act" width="200" height="200"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>
