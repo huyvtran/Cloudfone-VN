@@ -680,12 +680,12 @@
 		84183A902053857D00DA23F0 /* HotlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84183A8E2053857D00DA23F0 /* HotlineViewController.m */; };
 		84183A912053857D00DA23F0 /* HotlineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84183A8F2053857D00DA23F0 /* HotlineViewController.xib */; };
 		8419017620EAA01B003F524C /* PulsingHaloLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8419016E20EAA01B003F524C /* PulsingHaloLayer.m */; };
+		841D338C216112ED00FFCD72 /* ManagerPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841D338A216112ED00FFCD72 /* ManagerPasswordViewController.m */; };
+		841D338D216112ED00FFCD72 /* ManagerPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 841D338B216112ED00FFCD72 /* ManagerPasswordViewController.xib */; };
 		841F97E61FB4B2DC00A9A8CD /* UIConferenceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 841F97E41FB4B2DC00A9A8CD /* UIConferenceCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		841F97E71FB4B2DC00A9A8CD /* UIConferenceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 841F97E51FB4B2DC00A9A8CD /* UIConferenceCell.xib */; };
 		842529C9201F0F9A00BF4385 /* AllContactListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842529C7201F0F9A00BF4385 /* AllContactListViewController.m */; };
 		842529CA201F0F9A00BF4385 /* AllContactListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 842529C8201F0F9A00BF4385 /* AllContactListViewController.xib */; };
-		842C72FB2027654D009C4F9C /* LoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C72F92027654D009C4F9C /* LoadingViewController.m */; };
-		842C72FC2027654D009C4F9C /* LoadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 842C72FA2027654D009C4F9C /* LoadingViewController.xib */; };
 		842C73052027744D009C4F9C /* YBHud.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C73042027744C009C4F9C /* YBHud.m */; };
 		842DEC431FC478F300E7F74D /* UIMiniKeypad.m in Sources */ = {isa = PBXBuildFile; fileRef = 842DEC411FC478F300E7F74D /* UIMiniKeypad.m */; };
 		842DEC441FC478F300E7F74D /* UIMiniKeypad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 842DEC421FC478F300E7F74D /* UIMiniKeypad.xib */; };
@@ -728,8 +728,6 @@
 		846586961FCA9AC900C5142C /* KMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846586931FCA9AC700C5142C /* KMessageViewController.m */; };
 		846586991FCA9BD600C5142C /* SwipeableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 846586981FCA9BD600C5142C /* SwipeableTableViewCell.m */; };
 		846B716920E240410019AD41 /* SipUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 846B716120E240400019AD41 /* SipUtils.m */; };
-		8482CE1F2115483700E26650 /* NewAccountSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CE1D2115483700E26650 /* NewAccountSettingsViewController.m */; };
-		8482CE202115483700E26650 /* NewAccountSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8482CE1E2115483700E26650 /* NewAccountSettingsViewController.xib */; };
 		8482CE2A2115554000E26650 /* PBXSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CE282115554000E26650 /* PBXSettingViewController.m */; };
 		8482CE2B2115554000E26650 /* PBXSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8482CE292115554000E26650 /* PBXSettingViewController.xib */; };
 		848725B91FC9C6AA008F4BE8 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 848725B61FC9C6AA008F4BE8 /* GTMNSString+HTML.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -738,6 +736,10 @@
 		848725E41FC9C721008F4BE8 /* libCrittercismCrashOnly_v3_3_4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 848725CA1FC9C721008F4BE8 /* libCrittercismCrashOnly_v3_3_4.a */; };
 		8487278D1FC9D1B0008F4BE8 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 63EEE4091BBA9B110087D3AF /* libxml2.tbd */; };
 		8487DA6020E3879E006307BF /* WebServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 8487DA5820E3879D006307BF /* WebServices.m */; };
+		8489DECF2160B16100A7A1DD /* NewSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8489DECD2160B16100A7A1DD /* NewSettingCell.m */; };
+		8489DED02160B16100A7A1DD /* NewSettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8489DECE2160B16100A7A1DD /* NewSettingCell.xib */; };
+		8489DED22160B2EC00A7A1DD /* icon-next.png in Resources */ = {isa = PBXBuildFile; fileRef = 8489DED12160B2EC00A7A1DD /* icon-next.png */; };
+		8489DED42160B5FA00A7A1DD /* right-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 8489DED32160B5FA00A7A1DD /* right-arrow.png */; };
 		84A768CD1FBBC4CC0048CF7F /* RecordCallPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A768CC1FBBC4CC0048CF7F /* RecordCallPopupView.m */; };
 		84AEA9241FC4FD5500DAA68A /* EditContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEA9221FC4FD5500DAA68A /* EditContactViewController.m */; };
 		84AEA9251FC4FD5500DAA68A /* EditContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AEA9231FC4FD5500DAA68A /* EditContactViewController.xib */; };
@@ -840,8 +842,6 @@
 		84D032231FB531B5002D2524 /* KContactDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D032211FB531B5002D2524 /* KContactDetailViewController.xib */; };
 		84D1EC2D2000E4C500AF337C /* NSString+Emojize.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D1EC2C2000E4C500AF337C /* NSString+Emojize.m */; };
 		84D219101FE6D39800025988 /* ChangePasswordPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D2190F1FE6D39800025988 /* ChangePasswordPopupView.m */; };
-		84D2295C1FCD98E3006B2837 /* EditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D2295A1FCD98E3006B2837 /* EditProfileViewController.m */; };
-		84D2295D1FCD98E3006B2837 /* EditProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D2295B1FCD98E3006B2837 /* EditProfileViewController.xib */; };
 		84E066731FBE626300C49F66 /* TypePhoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E066711FBE626300C49F66 /* TypePhoneCell.m */; };
 		84E066741FBE626300C49F66 /* TypePhoneCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E066721FBE626300C49F66 /* TypePhoneCell.xib */; };
 		84E067111FBE63B500C49F66 /* PBXContactPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E067101FBE63B500C49F66 /* PBXContactPopupView.m */; };
@@ -1882,15 +1882,15 @@
 		8419016B20EAA01B003F524C /* PulsingHaloLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulsingHaloLayer.h; sourceTree = "<group>"; };
 		8419016D20EAA01B003F524C /* PulsingHalo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulsingHalo.h; sourceTree = "<group>"; };
 		8419016E20EAA01B003F524C /* PulsingHaloLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PulsingHaloLayer.m; sourceTree = "<group>"; };
+		841D3389216112ED00FFCD72 /* ManagerPasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ManagerPasswordViewController.h; path = More/ManagerPasswordViewController.h; sourceTree = "<group>"; };
+		841D338A216112ED00FFCD72 /* ManagerPasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ManagerPasswordViewController.m; path = More/ManagerPasswordViewController.m; sourceTree = "<group>"; };
+		841D338B216112ED00FFCD72 /* ManagerPasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ManagerPasswordViewController.xib; path = More/ManagerPasswordViewController.xib; sourceTree = "<group>"; };
 		841F97E31FB4B2DC00A9A8CD /* UIConferenceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIConferenceCell.h; path = AppUI/UIConferenceCell.h; sourceTree = "<group>"; };
 		841F97E41FB4B2DC00A9A8CD /* UIConferenceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIConferenceCell.m; path = AppUI/UIConferenceCell.m; sourceTree = "<group>"; };
 		841F97E51FB4B2DC00A9A8CD /* UIConferenceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UIConferenceCell.xib; path = AppUI/UIConferenceCell.xib; sourceTree = "<group>"; };
 		842529C6201F0F9A00BF4385 /* AllContactListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AllContactListViewController.h; path = Contacts/AllContactListViewController.h; sourceTree = "<group>"; };
 		842529C7201F0F9A00BF4385 /* AllContactListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AllContactListViewController.m; path = Contacts/AllContactListViewController.m; sourceTree = "<group>"; };
 		842529C8201F0F9A00BF4385 /* AllContactListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AllContactListViewController.xib; path = Contacts/AllContactListViewController.xib; sourceTree = "<group>"; };
-		842C72F82027654D009C4F9C /* LoadingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingViewController.h; sourceTree = "<group>"; };
-		842C72F92027654D009C4F9C /* LoadingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingViewController.m; sourceTree = "<group>"; };
-		842C72FA2027654D009C4F9C /* LoadingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingViewController.xib; sourceTree = "<group>"; };
 		842C73032027744A009C4F9C /* YBHud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBHud.h; sourceTree = "<group>"; };
 		842C73042027744C009C4F9C /* YBHud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBHud.m; sourceTree = "<group>"; };
 		842DEC401FC478F300E7F74D /* UIMiniKeypad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIMiniKeypad.h; path = AppUI/UIMiniKeypad.h; sourceTree = "<group>"; };
@@ -1954,9 +1954,6 @@
 		846586981FCA9BD600C5142C /* SwipeableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwipeableTableViewCell.m; path = AppUI/SwipeableTableViewCell.m; sourceTree = "<group>"; };
 		846B716120E240400019AD41 /* SipUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SipUtils.m; path = AppObjects/SipUtils.m; sourceTree = "<group>"; };
 		846B716820E240410019AD41 /* SipUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SipUtils.h; path = AppObjects/SipUtils.h; sourceTree = "<group>"; };
-		8482CE1C2115483700E26650 /* NewAccountSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NewAccountSettingsViewController.h; path = More/NewAccountSettingsViewController.h; sourceTree = "<group>"; };
-		8482CE1D2115483700E26650 /* NewAccountSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NewAccountSettingsViewController.m; path = More/NewAccountSettingsViewController.m; sourceTree = "<group>"; };
-		8482CE1E2115483700E26650 /* NewAccountSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = NewAccountSettingsViewController.xib; path = More/NewAccountSettingsViewController.xib; sourceTree = "<group>"; };
 		8482CE272115554000E26650 /* PBXSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PBXSettingViewController.h; path = More/PBXSettingViewController.h; sourceTree = "<group>"; };
 		8482CE282115554000E26650 /* PBXSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PBXSettingViewController.m; path = More/PBXSettingViewController.m; sourceTree = "<group>"; };
 		8482CE292115554000E26650 /* PBXSettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PBXSettingViewController.xib; path = More/PBXSettingViewController.xib; sourceTree = "<group>"; };
@@ -1998,6 +1995,11 @@
 		848725E31FC9C721008F4BE8 /* PLCrashSysctl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLCrashSysctl.h; path = CrittercismSDK/PLCrashSysctl.h; sourceTree = "<group>"; };
 		8487DA5820E3879D006307BF /* WebServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebServices.m; sourceTree = "<group>"; };
 		8487DA5920E3879D006307BF /* WebServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebServices.h; sourceTree = "<group>"; };
+		8489DECC2160B16100A7A1DD /* NewSettingCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NewSettingCell.h; path = AppUI/NewSettingCell.h; sourceTree = "<group>"; };
+		8489DECD2160B16100A7A1DD /* NewSettingCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NewSettingCell.m; path = AppUI/NewSettingCell.m; sourceTree = "<group>"; };
+		8489DECE2160B16100A7A1DD /* NewSettingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = NewSettingCell.xib; path = AppUI/NewSettingCell.xib; sourceTree = "<group>"; };
+		8489DED12160B2EC00A7A1DD /* icon-next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-next.png"; sourceTree = "<group>"; };
+		8489DED32160B5FA00A7A1DD /* right-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right-arrow.png"; sourceTree = "<group>"; };
 		84A768CB1FBBC4CC0048CF7F /* RecordCallPopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecordCallPopupView.h; path = AppUI/RecordCallPopupView.h; sourceTree = "<group>"; };
 		84A768CC1FBBC4CC0048CF7F /* RecordCallPopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecordCallPopupView.m; path = AppUI/RecordCallPopupView.m; sourceTree = "<group>"; };
 		84AEA9211FC4FD5500DAA68A /* EditContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditContactViewController.h; path = Contacts/EditContactViewController.h; sourceTree = "<group>"; };
@@ -2168,9 +2170,6 @@
 		84D1EC2C2000E4C500AF337C /* NSString+Emojize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Emojize.m"; path = "OutSources/NSStringEmojize/NSString+Emojize.m"; sourceTree = "<group>"; };
 		84D2190E1FE6D39800025988 /* ChangePasswordPopupView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ChangePasswordPopupView.h; path = AppUI/ChangePasswordPopupView.h; sourceTree = "<group>"; };
 		84D2190F1FE6D39800025988 /* ChangePasswordPopupView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ChangePasswordPopupView.m; path = AppUI/ChangePasswordPopupView.m; sourceTree = "<group>"; };
-		84D229531FCD98E2006B2837 /* EditProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditProfileViewController.h; path = More/EditProfileViewController.h; sourceTree = "<group>"; };
-		84D2295A1FCD98E3006B2837 /* EditProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditProfileViewController.m; path = More/EditProfileViewController.m; sourceTree = "<group>"; };
-		84D2295B1FCD98E3006B2837 /* EditProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditProfileViewController.xib; path = More/EditProfileViewController.xib; sourceTree = "<group>"; };
 		84E066701FBE626300C49F66 /* TypePhoneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TypePhoneCell.h; path = AppUI/TypePhoneCell.h; sourceTree = "<group>"; };
 		84E066711FBE626300C49F66 /* TypePhoneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TypePhoneCell.m; path = AppUI/TypePhoneCell.m; sourceTree = "<group>"; };
 		84E066721FBE626300C49F66 /* TypePhoneCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TypePhoneCell.xib; path = AppUI/TypePhoneCell.xib; sourceTree = "<group>"; };
@@ -2767,9 +2766,6 @@
 				22E0A81D111C44E100B04932 /* AboutView.h */,
 				22E0A81C111C44E100B04932 /* AboutView.m */,
 				636316D31A1DEBCB0009B839 /* AboutView.xib */,
-				842C72F82027654D009C4F9C /* LoadingViewController.h */,
-				842C72F92027654D009C4F9C /* LoadingViewController.m */,
-				842C72FA2027654D009C4F9C /* LoadingViewController.xib */,
 				633E417F1D74258F00320475 /* AssistantLinkView.h */,
 				633E41801D74258F00320475 /* AssistantLinkView.m */,
 				63EC8D3B1D7438660066547B /* AssistantLinkView.xib */,
@@ -3233,6 +3229,8 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				8489DED32160B5FA00A7A1DD /* right-arrow.png */,
+				8489DED12160B2EC00A7A1DD /* icon-next.png */,
 				8462F40320E73BAA005964D7 /* bg_chat_default.jpg */,
 				8C300D981E40E0CC00728EF3 /* lime_ko.png */,
 				8C300D991E40E0CC00728EF3 /* lime_ko@2x.png */,
@@ -3791,9 +3789,9 @@
 				8482CE272115554000E26650 /* PBXSettingViewController.h */,
 				8482CE282115554000E26650 /* PBXSettingViewController.m */,
 				8482CE292115554000E26650 /* PBXSettingViewController.xib */,
-				8482CE1C2115483700E26650 /* NewAccountSettingsViewController.h */,
-				8482CE1D2115483700E26650 /* NewAccountSettingsViewController.m */,
-				8482CE1E2115483700E26650 /* NewAccountSettingsViewController.xib */,
+				841D3389216112ED00FFCD72 /* ManagerPasswordViewController.h */,
+				841D338A216112ED00FFCD72 /* ManagerPasswordViewController.m */,
+				841D338B216112ED00FFCD72 /* ManagerPasswordViewController.xib */,
 				84EDEE3F1FB7121C00FF665C /* KSettingViewController.h */,
 				84EDEE401FB7121C00FF665C /* KSettingViewController.m */,
 				84EDEE411FB7121C00FF665C /* KSettingViewController.xib */,
@@ -3809,9 +3807,6 @@
 				84C4436B1FBE01680015854C /* PolicyViewController.h */,
 				84C4436C1FBE01680015854C /* PolicyViewController.m */,
 				84C4436D1FBE01680015854C /* PolicyViewController.xib */,
-				84D229531FCD98E2006B2837 /* EditProfileViewController.h */,
-				84D2295A1FCD98E3006B2837 /* EditProfileViewController.m */,
-				84D2295B1FCD98E3006B2837 /* EditProfileViewController.xib */,
 			);
 			name = More;
 			sourceTree = "<group>";
@@ -3984,6 +3979,9 @@
 				8438E2A01FF37BBC0044C884 /* FooterVideoCallView.h */,
 				8438E2A11FF37BBC0044C884 /* FooterVideoCallView.m */,
 				8438E2A91FF37BD00044C884 /* FooterVideoCallView.xib */,
+				8489DECC2160B16100A7A1DD /* NewSettingCell.h */,
+				8489DECD2160B16100A7A1DD /* NewSettingCell.m */,
+				8489DECE2160B16100A7A1DD /* NewSettingCell.xib */,
 				84D2190E1FE6D39800025988 /* ChangePasswordPopupView.h */,
 				84D2190F1FE6D39800025988 /* ChangePasswordPopupView.m */,
 				84F26B8D1FD6FE1D008852ED /* BlockContactView.h */,
@@ -5002,6 +5000,7 @@
 				633FEF341D3CD55A0014B822 /* routes_default.png in Resources */,
 				633FEE061D3CD5590014B822 /* chat_add_default.png in Resources */,
 				8438E2AA1FF37BD00044C884 /* FooterVideoCallView.xib in Resources */,
+				8489DED22160B2EC00A7A1DD /* icon-next.png in Resources */,
 				633FEDF21D3CD5590014B822 /* call_video_start_default.png in Resources */,
 				633FEF491D3CD55A0014B822 /* speaker_selected@2x.png in Resources */,
 				633FEF541D3CD55A0014B822 /* waiting_time.png in Resources */,
@@ -5079,7 +5078,6 @@
 				633FEF311D3CD55A0014B822 /* route_speaker_disabled@2x.png in Resources */,
 				633FEEE41D3CD55A0014B822 /* numpad_9_default@2x.png in Resources */,
 				84C47D171FB632640015695E /* IncomingCallViewController.xib in Resources */,
-				842C72FC2027654D009C4F9C /* LoadingViewController.xib in Resources */,
 				843ED67B1FB66AF2005FE1C1 /* ViewTrunking.xib in Resources */,
 				633FEDA31D3CD5590014B822 /* avatar~ipad@2x.png in Resources */,
 				633FEF461D3CD55A0014B822 /* speaker_disabled.png in Resources */,
@@ -5178,6 +5176,7 @@
 				633FEF171D3CD55A0014B822 /* pause_small_disabled@2x.png in Resources */,
 				D38187DD15FE348A00C3EDCA /* AssistantView.xib in Resources */,
 				633FEDA61D3CD5590014B822 /* back_disabled.png in Resources */,
+				8489DED02160B16100A7A1DD /* NewSettingCell.xib in Resources */,
 				633FEED61D3CD55A0014B822 /* numpad_7_over@2x.png in Resources */,
 				638F1A881C2167C2004B8E02 /* CallView~ipad.xib in Resources */,
 				633FEDA11D3CD5590014B822 /* avatar@2x.png in Resources */,
@@ -5209,6 +5208,7 @@
 				633FEEE91D3CD55A0014B822 /* numpad_9~ipad.png in Resources */,
 				633FEE331D3CD5590014B822 /* color_M.png in Resources */,
 				633FEE811D3CD5590014B822 /* led_connected@2x.png in Resources */,
+				8489DED42160B5FA00A7A1DD /* right-arrow.png in Resources */,
 				633FEE881D3CD5590014B822 /* linphone_logo.png in Resources */,
 				633FEE9B1D3CD55A0014B822 /* numpad_0_default.png in Resources */,
 				633FEE591D3CD5590014B822 /* dialer_background@2x.png in Resources */,
@@ -5343,9 +5343,9 @@
 				633FEDCB1D3CD5590014B822 /* call_outgoing@2x.png in Resources */,
 				633FEE8B1D3CD5590014B822 /* linphone_user@2x.png in Resources */,
 				633FEF501D3CD55A0014B822 /* valid_disabled.png in Resources */,
-				84D2295D1FCD98E3006B2837 /* EditProfileViewController.xib in Resources */,
 				631348321B6FA53300C6BDCB /* rootca.pem in Resources */,
 				633FEEB31D3CD55A0014B822 /* numpad_3_default.png in Resources */,
+				841D338D216112ED00FFCD72 /* ManagerPasswordViewController.xib in Resources */,
 				633FEE1C1D3CD5590014B822 /* chat_start_body_default~ipad.png in Resources */,
 				633FEE011D3CD5590014B822 /* camera_switch_over@2x.png in Resources */,
 				633FEEA01D3CD55A0014B822 /* numpad_0_over~ipad@2x.png in Resources */,
@@ -5373,7 +5373,6 @@
 				633FEEFB1D3CD55A0014B822 /* numpad_star~ipad@2x.png in Resources */,
 				633FED9F1D3CD5590014B822 /* add_field_over@2x.png in Resources */,
 				633FEEB71D3CD55A0014B822 /* numpad_3_over~ipad.png in Resources */,
-				8482CE202115483700E26650 /* NewAccountSettingsViewController.xib in Resources */,
 				84C4435E1FBE00B90015854C /* IntroduceViewController.xib in Resources */,
 				633FEEF51D3CD55A0014B822 /* numpad_star_default@2x.png in Resources */,
 				639E9CA91C0DB7FB00019A75 /* UIConfirmationDialog.xib in Resources */,
@@ -5613,6 +5612,7 @@
 				2248E90E12F7E4CF00220D9C /* UIDigitButton.m in Sources */,
 				84E286C11FC9E1AC009CBA27 /* UIImageView+WebCache.m in Sources */,
 				633756391B67BAF400E21BAD /* SideMenuTableView.m in Sources */,
+				841D338C216112ED00FFCD72 /* ManagerPasswordViewController.m in Sources */,
 				2214EB7A12F846B1002A5394 /* UICallButton.m in Sources */,
 				84C4438F1FBE105F0015854C /* NewPhoneCell.m in Sources */,
 				8442A3591FB12CCA00F08F11 /* ChooseAccountCell.m in Sources */,
@@ -5632,7 +5632,6 @@
 				84E286E61FC9FA76009CBA27 /* ChatProfileCell.m in Sources */,
 				84B889E51FAF6C1D008D88C5 /* PhoneBookObject.m in Sources */,
 				2214EBF312F86360002A5394 /* UIMutedMicroButton.m in Sources */,
-				8482CE1F2115483700E26650 /* NewAccountSettingsViewController.m in Sources */,
 				22968A5F12F875C600588287 /* UISpeakerButton.m in Sources */,
 				84C47CF61FB628540015695E /* MissedCallViewController.m in Sources */,
 				63701DDF1BA32039006A9AE3 /* UIConfirmationDialog.m in Sources */,
@@ -5657,7 +5656,6 @@
 				84BCC9E81FC1E162001F26FE /* PEResizeControl.m in Sources */,
 				84E286C01FC9E1AC009CBA27 /* SDWebImagePrefetcher.m in Sources */,
 				848725B91FC9C6AA008F4BE8 /* GTMNSString+HTML.m in Sources */,
-				84D2295C1FCD98E3006B2837 /* EditProfileViewController.m in Sources */,
 				8C2595DD1DEDC92D007A6424 /* ProviderDelegate.m in Sources */,
 				63F1DF4B1BCE983200EDED90 /* CallConferenceTableView.m in Sources */,
 				84EFFE031FF3E6B60085A9F4 /* DGActivityIndicatorTripleRingsAnimation.m in Sources */,
@@ -5681,13 +5679,13 @@
 				843ED6651FB65989005FE1C1 /* MenuCell.m in Sources */,
 				84D032221FB531B5002D2524 /* KContactDetailViewController.m in Sources */,
 				84C443931FBE10840015854C /* SettingItem.m in Sources */,
+				8489DECF2160B16100A7A1DD /* NewSettingCell.m in Sources */,
 				84EDEE531FB7136200FF665C /* LanguageObject.m in Sources */,
 				84EDEE571FB7137200FF665C /* LanguageCell.m in Sources */,
 				D35497FE15875372000081D8 /* ContactsListView.m in Sources */,
 				840B574220061FD300DCBA7E /* QRCodeReader.m in Sources */,
 				635173F91BA082A40095EB0A /* UIChatBubblePhotoCell.m in Sources */,
 				D3549816158761D0000081D8 /* ContactsListTableView.m in Sources */,
-				842C72FB2027654D009C4F9C /* LoadingViewController.m in Sources */,
 				845056CC1FE596200035B6B3 /* OutgoingCallViewController.m in Sources */,
 				8419017620EAA01B003F524C /* PulsingHaloLayer.m in Sources */,
 				84C1E28D1FAEC2F900EED0B9 /* Reachability.m in Sources */,

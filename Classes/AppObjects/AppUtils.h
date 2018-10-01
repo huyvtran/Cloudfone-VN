@@ -55,15 +55,10 @@
 + (UIImage*)cropImageWithSize:(CGSize)targetSize fromImage: (UIImage *)sourceImage;
 + (ContactObject *)getContactWithId: (int)idContact;
 
-+ (NSString *)getSipFoneIDFromString: (NSString *)string;
-
 + (void)createLocalNotificationWithAlertBody: (NSString *)alertBodyStr andInfoDict: (NSDictionary *)infoDict ofUser: (NSString *)user;
 
 /* Xoá file details của message */
 + (void)deleteDetailsFileOfMessage: (NSString *)typeMessage andDetails: (NSString *)detail andThumb: (NSString *)thumb;
-
-// Lấy buddy trong roster list
-+ (NSString *)getAccountNameFromString: (NSString *)string;
 
 /*----- KIỂM TRA LOẠI CỦA FILE ĐANG NHẬN -----*/
 + (NSString *)checkFileExtension: (NSString *)fileName;

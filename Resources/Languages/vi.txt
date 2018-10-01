@@ -64,7 +64,6 @@
 
 "text_more"                 =   "Thêm"
 
-"text_menu_edit_profile"    =   "Chỉnh sửa hồ sơ"
 "text_menu_settings"        =   "Thiết lập"
 "text_menu_feedback"        =   "Gửi phản hồi"
 "text_menu_privacy_policy"  =   "Chính sách"

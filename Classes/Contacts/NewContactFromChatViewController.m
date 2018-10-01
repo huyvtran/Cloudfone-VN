@@ -464,56 +464,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)afterAddContactSuccessfully
 {
-    if (![appDelegate._newContact._sipPhone isEqualToString:@""])
-    {   // Nếu thêm mới thông thường thì gửi request kết bạn đến
-        [self checkIsCloudFoneNumber: appDelegate._newContact._sipPhone];
-    }
-    
     // Ẩn HUD
     [waitingHUD hide: true];
     
     [[PhoneMainView instance] popCurrentView];
-}
-
-//  Kiểm tra có phải số cloudFoneID hay không?
-- (void)checkIsCloudFoneNumber: (NSString *)string {
-    /*  Leo Kelvin
-    BOOL isFriend = [self checkContactIsFriendOnList: string];
-    if (!isFriend) {
-        NSString *toUser = [NSString stringWithFormat:@"%@@%@", string, xmpp_cloudfone];
-        NSString *idRequest = [NSString stringWithFormat:@"requestsent_%@", [MyFunctions randomStringWithLength: 10]];
-        BOOL added = [NSDBCallnex addUserToRequestSent:string withIdRequest:idRequest];
-        if (added) {
-            [appDelegate set_cloudfoneRequestSent: toUser];
-            [appDelegate.myBuddy.protocol removeUserFromRosterList:toUser withIdMessage:idRequest];
-            
-            NSString *profileName = [NSDBCallnex getProfielNameOfAccount:USERNAME];
-            [appDelegate.myBuddy.protocol sendRequestUserInfoOf:appDelegate.myBuddy.accountName
-                                                         toUser:toUser
-                                                    withContent:appDelegate._strRequestFriend
-                                                 andDisplayName:profileName];
-        }
-        
-        [self showMessagePopupUp:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_send_request_msg]
-                    withTimeShow:1.0 andHide:2.0];
-        
-        
-    }   */
-}
-
-//  Kiểm tra cloudfoneID đã kết bạn hay chưa?
-- (BOOL)checkContactIsFriendOnList : (NSString *)callnexStr {
-    /*  Leo Kelvin
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountName contains[cd] %@", callnexStr];
-    NSMutableDictionary *listUserDict = [[[OTRProtocolManager sharedInstance] buddyList] allBuddies];
-    NSArray *listUser = [OTRBuddyList sortBuddies: listUserDict];
-    NSArray *resultArr = [listUser filteredArrayUsingPredicate: predicate];
-    if (resultArr.count > 0) {
-        return true;
-    }else{
-        return false;
-    }   */
-    return FALSE;
 }
 
 //  Time out

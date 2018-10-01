@@ -11,7 +11,6 @@
 #import "WebServices.h"
 
 enum moreValue{
-    eEditProfile,
     eSettingsAccount,
     eSettings,
     eFeedback,
@@ -32,7 +31,6 @@ enum stateLogout {
 @property (weak, nonatomic) IBOutlet UIView *_viewInfo;
 @property (weak, nonatomic) IBOutlet UIImageView *_imgAvatar;
 @property (weak, nonatomic) IBOutlet UILabel *_lbName;
-@property (weak, nonatomic) IBOutlet UILabel *_lbEmail;
 
 @property (weak, nonatomic) IBOutlet UITableView *_tbContent;
 @property (weak, nonatomic) IBOutlet UIButton *_btnSignOut;

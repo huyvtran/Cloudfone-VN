@@ -10,7 +10,6 @@
 #import "MenuCell.h"
 #import "AccountSettingsViewController.h"
 #import "KSettingViewController.h"
-#import "EditProfileViewController.h"
 #import "FeedbackViewController.h"
 #import "PolicyViewController.h"
 #import "IntroduceViewController.h"
@@ -39,7 +38,7 @@
 @end
 
 @implementation MoreViewController
-@synthesize _viewHeader, _lbHeader, _viewInfo, _imgAvatar, _lbName, _lbEmail, _tbContent, _btnSignOut;
+@synthesize _viewHeader, _lbHeader, _viewInfo, _imgAvatar, _lbName, _tbContent, _btnSignOut;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -76,7 +75,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     waitingHud.dimAmount = 0.5;
     
     [self createDataForMenuView];
-    [self setupUIForView];
+    [self autoLayoutForMainView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -128,16 +127,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         }else{
             _lbName.text = USERNAME;
         }
-        
-        NSString *status = [info objectForKey:@"status"];
-        if (status != nil && ![status isKindOfClass:[NSNull class]] && ![status isEqualToString: @""]) {
-            _lbEmail.text = status;
-        }else{
-            _lbEmail.text = welcomeToCloudFone;
-        }
     }else{
         _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-        _lbEmail.text = welcomeToCloudFone;
     }
 }
 
@@ -151,11 +142,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 //  Cập nhật vị trí cho view
-- (void)setupUIForView
-{
+- (void)autoLayoutForMainView {
     if (SCREEN_WIDTH > 320) {
         hCell = 55.0;
-        hInfo = 90.0;
+        hInfo = 70.0;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
         _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
     }else{
@@ -165,36 +155,52 @@ static UICompositeViewDescription *compositeDescription = nil;
         _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }
     
-    //  header view
-    _viewHeader.frame = CGRectMake(0, 0, SCREEN_WIDTH, [LinphoneAppDelegate sharedInstance]._hHeader);
-    _lbHeader.frame = CGRectMake(0, 0, _viewHeader.frame.size.width, _viewHeader.frame.size.height);
+    //  Header view
+    [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+    }];
     
-    //  view info
-    _viewInfo.frame = CGRectMake(0, _viewHeader.frame.origin.y+_viewHeader.frame.size.height, SCREEN_WIDTH, hInfo);
-    _imgAvatar.frame = CGRectMake(10, 10, hInfo-20, hInfo-20);
+    [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewHeader);
+    }];
+    
+    //  Info view
+    [_viewInfo mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.top.equalTo(_viewHeader.mas_bottom);
+        make.height.mas_equalTo(hInfo);
+    }];
+    
+    [_imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.equalTo(_viewInfo).offset(10);
+        make.bottom.equalTo(_viewInfo).offset(-10);
+        make.width.mas_equalTo(hInfo-20);
+    }];
     _imgAvatar.clipsToBounds = YES;
     _imgAvatar.layer.cornerRadius = (hInfo-20)/2;
     
-    _lbName.frame = CGRectMake(_imgAvatar.frame.origin.x+_imgAvatar.frame.size.width+10, _imgAvatar.frame.origin.y, _viewInfo.frame.size.width-(_imgAvatar.frame.origin.x+_imgAvatar.frame.size.width+10+10), _imgAvatar.frame.size.height/2);
-    _lbName.font = textFont;
+    [_lbName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(_imgAvatar);
+        make.right.equalTo(_viewInfo.mas_right).offset(10);
+        make.left.equalTo(_imgAvatar.mas_right).offset(5);
+    }];
     
-    _lbEmail.frame = CGRectMake(_lbName.frame.origin.x, _lbName.frame.origin.y+_lbName.frame.size.height, _lbName.frame.size.width, _lbName.frame.size.height);
-    if (SCREEN_WIDTH > 320) {
-        _lbEmail.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
-    }else{
-        _lbEmail.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:14.0];
-    }
-    _lbEmail.textColor = UIColor.darkGrayColor;
-
-    //  tableview
-    _tbContent.frame = CGRectMake(0, _viewInfo.frame.origin.y+_viewInfo.frame.size.height+7, SCREEN_WIDTH, (listTitle.count+1)*hCell);
+    [_tbContent mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewInfo.mas_bottom).offset(5);
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(self.view).offset(-50);
+    }];
     _tbContent.delegate = self;
     _tbContent.dataSource = self;
     _tbContent.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tbContent.scrollEnabled = NO;
     
-    //  logout button
-    _btnSignOut.frame = CGRectMake(0, SCREEN_HEIGHT-([LinphoneAppDelegate sharedInstance]._hStatus+[LinphoneAppDelegate sharedInstance]._hTabbar+50), SCREEN_WIDTH, 50);
+    //  signout button
+    [_btnSignOut mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_tbContent.mas_bottom);
+        make.left.right.bottom.equalTo(self.view);
+    }];
     _btnSignOut.titleLabel.font = textFont;
     _btnSignOut.backgroundColor = UIColor.whiteColor;
     [_btnSignOut setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
@@ -208,9 +214,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 //  Khoi tao du lieu cho view
 - (void)createDataForMenuView {
-    listTitle = [[NSArray alloc] initWithObjects:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_menu_edit_profile], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_acc_setting], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_menu_settings], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_menu_feedback], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_menu_privacy_policy], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_menu_introduce], nil];
+    listTitle = [[NSArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_acc_setting], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_menu_settings], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_menu_feedback], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_menu_privacy_policy], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_menu_introduce], nil];
     
-    listIcon = [[NSArray alloc] initWithObjects: @"ic_edit_profile.png",  @"ic_account_settings.png", @"ic_menu_settings.png", @"ic_feedback.png", @"ic_privacy_policy.png", @"ic_introduce.png", nil];
+    listIcon = [[NSArray alloc] initWithObjects: @"ic_account_settings.png", @"ic_menu_settings.png", @"ic_feedback.png", @"ic_privacy_policy.png", @"ic_introduce.png", nil];
 }
 
 #pragma mark - uitableview delegate
@@ -252,10 +258,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.row) {
-        case eEditProfile:{
-            [[PhoneMainView instance] changeCurrentView:[EditProfileViewController compositeViewDescription] push:true];
-            break;
-        }
         case eSettings:{
             [[PhoneMainView instance] changeCurrentView:[KSettingViewController compositeViewDescription] push:true];
             break;

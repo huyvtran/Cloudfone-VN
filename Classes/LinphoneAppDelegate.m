@@ -43,7 +43,6 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import "NSData+Base64.h"
-#import "LoadingViewController.h"
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -370,10 +369,6 @@ void onUncaughtException(NSException* exception)
     
     NSSetUncaughtExceptionHandler(&onUncaughtException);
     
-    NSString* Identifier = [[[UIDevice currentDevice] identifierForVendor] UUIDString]; // IOS 6+
-    NSLog(@"output is : %@", Identifier);
-    //  21C07341-DDB5-4925-9FFF-F7CA54E8CEA9
-    
     //  Khoi tao
     webService = [[WebServices alloc] init];
     webService.delegate = self;
@@ -500,11 +495,9 @@ void onUncaughtException(NSException* exception)
 	[self.window makeKeyAndVisible];
 	[RootViewManager setupWithPortrait:(PhoneMainView *)self.window.rootViewController];
 	//  [PhoneMainView.instance startUp];
-    [[PhoneMainView instance] changeCurrentView:[LoadingViewController compositeViewDescription] push:YES];
-	[PhoneMainView.instance updateStatusBar:nil];
+    [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
     
-//    if (bgStartId != UIBackgroundTaskInvalid)
-//        [[UIApplication sharedApplication] endBackgroundTask:bgStartId];
+	[PhoneMainView.instance updateStatusBar:nil];
     
     
     //  Enable all notification type. VoIP Notifications don't present a UI but we will use this to show local nofications later
@@ -513,16 +506,8 @@ void onUncaughtException(NSException* exception)
     //register the notification settings
     [application registerUserNotificationSettings:notificationSettings];
     
-    //output what state the app is in. This will be used to see when the app is started in the background
-    NSLog(@"app launched with state : %li", (long)application.applicationState);
-    NSLog(@"FINISH LAUNCHING WITH OPTION : %@", launchOptions.description);
-    
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCustomerTokenIOS)
                                                  name:updateTokenForXmpp object:nil];
-    //  thêm contact khi sync xmpp
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addContactFromSyncXMPP:)
-                                                 name:@"addNewContactFromSyncXMPP" object:nil];
     
     // Request authorization to Address Book
     ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, NULL);
@@ -545,8 +530,6 @@ void onUncaughtException(NSException* exception)
         // The user has previously denied access
         // Send an alert telling user to change privacy setting in settings app
     }
-    
-    
     
 	return YES;
 }
@@ -1861,132 +1844,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 
 #pragma mark - sync contact xmpp
-
-- (void)addContactFromSyncXMPP: (NSNotification *)notif {
-    id object = [notif object];
-    if ([object isKindOfClass:[NSDictionary class]]) {
-        NSString *Name = [object objectForKey:@"Name"];
-        NSString *Avatar = [object objectForKey:@"Avatar"];
-        NSString *Address = [object objectForKey:@"Address"];
-        NSString *Email = [object objectForKey:@"Email"];
-        NSString *sipPhone = [object objectForKey:@"CloudFoneID"];
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_sipPhone == %@", sipPhone];
-        NSArray *filter = [listContacts filteredArrayUsingPredicate: predicate];
-        if (filter.count == 0) {
-            //  Thêm contact mới vào phone book
-            [self addNewContactToPhoneBookWithFirstName:Name LastName:@"" Company:@"" SipPhone:sipPhone Email:Email Avatar:Avatar ListPhone:nil Address:Address withContactId: 0];
-        }else{
-            //  Edit contact
-            ContactObject *curContact = [filter objectAtIndex: 0];
-            if (curContact != nil) {
-                int idPerson = curContact._id_contact;
-                ABRecordRef aPerson = ABAddressBookGetPersonWithRecordID(addressListBook, (int)idPerson);
-                if (aPerson != nil)
-                {
-                    CFErrorRef  anError = NULL;
-                    
-                    //  Nếu tồn tại Name (của xmpp) thì cập nhật
-                    if (Name != nil && ![Name isEqualToString: @""]) {
-                        // Lưu thông tin
-                        ABRecordSetValue(aPerson, kABPersonFirstNameProperty, (__bridge CFTypeRef)(Name), &anError);
-                        ABRecordSetValue(aPerson, kABPersonLastNameProperty, (__bridge CFTypeRef)(@""), &anError);
-                        
-                    }
-                    ABRecordSetValue(aPerson, kABPersonFirstNamePhoneticProperty, (__bridge CFTypeRef)(sipPhone), &anError);
-                    
-                    NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                @"SIP", (NSString*)kABPersonInstantMessageServiceKey,
-                                                sipPhone, (NSString*)kABPersonInstantMessageUsernameKey, nil];
-                    CFStringRef label = NULL; // in this case 'IM' will be set. But you could use something like = CFSTR("Personal IM");
-                    CFErrorRef errorf = NULL;
-                    ABMutableMultiValueRef values =  ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
-                    BOOL didAdd = ABMultiValueAddValueAndLabel(values, (__bridge CFTypeRef)(dictionary), label, NULL);
-                    BOOL didSet = ABRecordSetValue(aPerson, kABPersonInstantMessageProperty, values, &errorf);
-                    
-                    if (!didAdd || !didSet) {
-                        CFStringRef errorDescription = CFErrorCopyDescription(errorf);
-                        NSLog(@"%s error %@ while inserting multi dictionary property %@ into ABRecordRef", __FUNCTION__, dictionary, errorDescription);
-                        CFRelease(errorDescription);
-                    }
-                    CFRelease(values);
-                    
-                    if (Email != nil && ![Email isEqualToString: @""]) {
-                        // Lưu thông tin
-                        ABMutableMultiValueRef email = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-                        ABMultiValueAddValueAndLabel(email, (__bridge CFTypeRef)(Email), CFSTR("email"), NULL);
-                        ABRecordSetValue(aPerson, kABPersonEmailProperty, email, &anError);
-                    }
-                    
-                    if (Avatar != nil && ![Avatar isEqualToString: @""]) {
-                        NSData *AvatarData = [NSData dataFromBase64String: Avatar];
-                        if (AvatarData != nil) {
-                            CFDataRef cfdata = CFDataCreate(NULL,[AvatarData bytes], [AvatarData length]);
-                            ABPersonSetImageData(aPerson, cfdata, &anError);
-                        }
-                    }
-                    
-                    if (Address != nil && ![Address isEqualToString: @""]) {
-                        ABMutableMultiValueRef address = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
-                        NSMutableDictionary *addressDict = [[NSMutableDictionary alloc] init];
-                        [addressDict setObject:Address forKey:(NSString *)kABPersonAddressStreetKey];
-                        [addressDict setObject:@"" forKey:(NSString *)kABPersonAddressZIPKey];
-                        [addressDict setObject:@"" forKey:(NSString *)kABPersonAddressStateKey];
-                        [addressDict setObject:@"" forKey:(NSString *)kABPersonAddressCityKey];
-                        [addressDict setObject:@"" forKey:(NSString *)kABPersonAddressCountryKey];
-                        ABMultiValueAddValueAndLabel(address, (__bridge CFTypeRef)(addressDict), kABWorkLabel, NULL);
-                        ABRecordSetValue(aPerson, kABPersonAddressProperty, address, &anError);
-                    }
-                    //  Danh sach contact hien tai
-                    ABMutableMultiValueRef multiPhone = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-                    NSMutableArray *listPhone = [[NSMutableArray alloc] init];
-                    
-                    for (int iCount=0; iCount<curContact._listPhone.count; iCount++) {
-                        ContactDetailObj *aPhone = [curContact._listPhone objectAtIndex: iCount];
-                        if ([aPhone._typePhone isEqualToString: type_phone_mobile]) {
-                            ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)(aPhone._valueStr), kABPersonPhoneMobileLabel, NULL);
-                            [listPhone addObject: aPhone];
-                        }else if ([aPhone._typePhone isEqualToString: type_phone_work]){
-                            ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)(aPhone._valueStr), kABWorkLabel, NULL);
-                            [listPhone addObject: aPhone];
-                        }else if ([aPhone._typePhone isEqualToString: type_phone_fax]){
-                            ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)(aPhone._valueStr), kABPersonPhoneHomeFAXLabel, NULL);
-                            [listPhone addObject: aPhone];
-                        }else if ([aPhone._typePhone isEqualToString: type_phone_home]){
-                            ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)(aPhone._valueStr), kABHomeLabel, NULL);
-                            [listPhone addObject: aPhone];
-                        }else if ([aPhone._typePhone isEqualToString: type_phone_other]){
-                            ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)(aPhone._valueStr), kABOtherLabel, NULL);
-                            [listPhone addObject: aPhone];
-                        }
-                    }
-                    ABRecordSetValue(aPerson, kABPersonPhoneProperty, multiPhone,nil);
-                    CFRelease(multiPhone);
-                    
-                    anError = nil;
-                    BOOL isAdded = ABAddressBookAddRecord (addressListBook, aPerson,&anError);
-                    
-                    if(isAdded){
-                        NSLog(@"added..");
-                    }
-                    if (anError != NULL) {
-                        NSLog(@"ABAddressBookAddRecord %@", anError);
-                    }
-                    anError = NULL;
-                    
-                    BOOL isSaved = ABAddressBookSave (addressListBook,&anError);
-                    if(isSaved){
-                        NSLog(@"saved..");
-                    }
-                    
-                    if (anError != NULL) {
-                        NSLog(@"ABAddressBookSave %@", anError);
-                    }
-                }
-            }
-        }
-    }
-}
 
 - (void)addNewContactToPhoneBookWithFirstName: (NSString *)FirstName LastName: (NSString *)LastName Company: (NSString *)Company SipPhone: (NSString *)SipPhone Email: (NSString *)Email Avatar: (NSString *)Avatar ListPhone: (NSArray *)ListPhone Address: (NSString *)Address withContactId: (int)contactId
 {

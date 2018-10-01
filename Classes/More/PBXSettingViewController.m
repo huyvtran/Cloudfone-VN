@@ -7,15 +7,70 @@
 
 #import "PBXSettingViewController.h"
 
-@interface PBXSettingViewController ()
+@interface PBXSettingViewController (){
+    LinphoneAppDelegate *appDelegate;
+    NSTimer *timeoutTimer;
+}
 
 @end
 
 @implementation PBXSettingViewController
+@synthesize _viewHeader, _iconBack, _lbTitle, _iconQRCode, _icWaiting;
+@synthesize _viewContent, _lbPBX, _swChange, _lbSepa, _lbServerID, _tfServerID, _lbAccount, _tfAccount, _lbPassword, _tfPassword, _btnClear, _btnSave;
+@synthesize webService;
+
+#pragma mark - UICompositeViewDelegate Functions
+static UICompositeViewDescription *compositeDescription = nil;
++ (UICompositeViewDescription *)compositeViewDescription {
+    if (compositeDescription == nil) {
+        compositeDescription = [[UICompositeViewDescription alloc] init:self.class
+                                                              statusBar:nil
+                                                                 tabBar:nil
+                                                               sideMenu:nil
+                                                             fullscreen:FALSE
+                                                         isLeftFragment:YES
+                                                           fragmentWith:0];
+        //        compositeDescription.darkBackground = true;
+    }
+    return compositeDescription;
+}
+
+- (UICompositeViewDescription *)compositeViewDescription {
+    return self.class.compositeViewDescription;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    //  Init for webservice
+    webService = [[WebServices alloc] init];
+    webService.delegate = self;
+    
+    [self autoLayoutForMainView];
+    
+    UITapGestureRecognizer *tapOnScreen = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
+    [self.view addGestureRecognizer: tapOnScreen];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear: animated];
+    
+    [self showContentForView];
+    
+    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+    if (defaultConfig == NULL) {
+        [_swChange setOn: NO];
+    }
+    
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(registrationUpdateEvent:)
+                                               name:kLinphoneRegistrationUpdate object:nil];
+}
+
+-(void)viewDidDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -23,14 +78,385 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)autoLayoutForMainView {
+    float marginX = 20.0;
+    
+    _icWaiting.backgroundColor = UIColor.whiteColor;
+    _icWaiting.alpha = 0.5;
+    [_icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.bottom.equalTo(self.view);
+    }];
+    
+    
+    //  Header view
+    [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+    }];
+    
+    [_lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(_viewHeader);
+        make.centerX.equalTo(_viewHeader.mas_centerX);
+        make.width.mas_equalTo(200);
+    }];
+    
+    [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.equalTo(_viewHeader);
+        make.width.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+    }];
+    
+    [_iconQRCode mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader);
+        make.right.equalTo(_viewHeader.mas_right);
+        make.width.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+    }];
+    
+    //  content view
+    [_viewContent mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader.mas_bottom);
+        make.left.right.bottom.equalTo(self.view);
+    }];
+    
+    _lbPBX.textColor = UIColor.darkGrayColor;
+    [_lbPBX mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewContent).offset(marginX);
+        make.top.equalTo(_viewContent);
+        make.height.mas_equalTo(70.0);
+        make.right.equalTo(_viewContent.mas_centerX);
+    }];
+    
+    [_swChange mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(_viewContent).offset(-marginX);
+        make.centerY.equalTo(_lbPBX.mas_centerY);
+        make.height.mas_equalTo(31.0);
+        make.width.mas_equalTo(49.0);
+    }];
+    
+    [_lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbPBX.mas_bottom);
+        make.left.equalTo(_lbPBX);
+        make.right.equalTo(_swChange.mas_right);
+        make.height.mas_equalTo(1.0);
+    }];
+    
+    //  server ID
+    _lbServerID.textColor = _lbPBX.textColor;
+    [_lbServerID mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbSepa.mas_bottom).offset(20);
+        make.left.right.equalTo(_lbSepa);
+        make.height.mas_equalTo(35.0);
+    }];
+    
+    [_tfServerID mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbServerID.mas_bottom);
+        make.left.right.equalTo(_lbServerID);
+        make.height.mas_equalTo(_lbServerID.mas_height);
+    }];
+    
+    //  account
+    _lbAccount.textColor = _lbPBX.textColor;
+    [_lbAccount mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_tfServerID.mas_bottom).offset(20);
+        make.left.right.equalTo(_tfServerID);
+        make.height.mas_equalTo(_lbServerID.mas_height);
+    }];
+    
+    [_tfAccount mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbAccount.mas_bottom);
+        make.left.right.equalTo(_lbAccount);
+        make.height.mas_equalTo(_tfServerID.mas_height);
+    }];
+    
+    //  password
+    _lbPassword.textColor = _lbPBX.textColor;
+    [_lbPassword mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_tfAccount.mas_bottom).offset(20);
+        make.left.right.equalTo(_tfAccount);
+        make.height.mas_equalTo(_lbServerID.mas_height);
+    }];
+    
+    [_tfPassword mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbPassword.mas_bottom);
+        make.left.right.equalTo(_lbPassword);
+        make.height.mas_equalTo(_tfServerID.mas_height);
+    }];
+    
+    //  footer button
+    [_btnClear mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_tfPassword.mas_bottom).offset(50);
+        make.left.equalTo(_tfPassword);
+        make.right.equalTo(_viewContent.mas_centerX).offset(-20);
+        make.height.mas_equalTo(45.0);
+    }];
+    _btnClear.layer.cornerRadius = 45.0/2;
+    [_btnClear setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    _btnClear.titleLabel.font = [UIFont systemFontOfSize: 16.0];
+    _btnClear.backgroundColor = [UIColor colorWithRed:(248/255.0) green:(83/255.0)
+                                                 blue:(86/255.0) alpha:1.0];
+    
+    [_btnSave mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_btnClear);
+        make.left.equalTo(_viewContent.mas_centerX).offset(20);
+        make.right.equalTo(_tfPassword.mas_right);
+        make.height.mas_equalTo(_btnClear.mas_height);
+    }];
+    _btnSave.layer.cornerRadius = 45.0/2;
+    [_btnSave setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    _btnSave.titleLabel.font = [UIFont systemFontOfSize: 16.0];
+    _btnSave.backgroundColor = [UIColor colorWithRed:(25/255.0) green:(86/255.0)
+                                                blue:(108/255.0) alpha:1.0];
+    
 }
-*/
+
+- (IBAction)_iconBackClicked:(UIButton *)sender {
+    [self.view endEditing: true];
+    [[PhoneMainView instance] popCurrentView];
+}
+
+- (IBAction)_iconQRCodeClicked:(UIButton *)sender {
+}
+
+- (IBAction)_btnClearPressed:(UIButton *)sender {
+    const MSList *proxies = linphone_core_get_proxy_config_list(LC);
+    int numAcc = ms_list_size(proxies);
+    if (numAcc == 0) {
+        NSLog(@"What the hell");
+        return;
+    }
+    
+    linphone_core_clear_proxy_config(LC);
+    [[LinphoneManager instance] removeAllAccounts];
+    
+    
+    
+    timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self
+                                                  selector:@selector(registerPBXTimeOut)
+                                                  userInfo:nil repeats:false];
+    
+    [_icWaiting startAnimating];
+    _icWaiting.hidden = NO;
+    [self clearAllProxyConfigAndAccount];
+}
+
+- (IBAction)_btnSavePressed:(UIButton *)sender {
+    if ([_tfServerID.text isEqualToString:@""]) {
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Server ID can't empty"] duration:2.0 position:CSToastPositionCenter];
+    }else if ([_tfAccount.text isEqualToString:@""]){
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Account can't empty"] duration:2.0 position:CSToastPositionCenter];
+    }else if ([_tfPassword.text isEqualToString:@""]){
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Password can't empty"] duration:2.0 position:CSToastPositionCenter];
+    }else{
+        _icWaiting.hidden = NO;
+        [_icWaiting startAnimating];
+        [self getInfoForPBXWithServerName: _tfServerID.text];
+    }
+}
+
+- (void)closeKeyboard {
+    [self.view endEditing: YES];
+}
+
+- (void)showContentForView {
+    _lbPBX.text = [appDelegate.localization localizedStringForKey:@"PBX"];
+    _lbServerID.text = [appDelegate.localization localizedStringForKey:@"Server ID"];
+    _lbAccount.text = [appDelegate.localization localizedStringForKey:@"Account"];
+    _lbPassword.text = [appDelegate.localization localizedStringForKey:@"Password"];
+    
+    [_btnClear setTitle:[appDelegate.localization localizedStringForKey:@"Clear"]
+               forState:UIControlStateNormal];
+    [_btnSave setTitle:[appDelegate.localization localizedStringForKey:@"Save"]
+              forState:UIControlStateNormal];
+    
+    _tfServerID.text = @"CF-BS-3165";
+    _tfAccount.text = @"14951";
+    _tfPassword.text = @"cloudfone@123";
+    
+    [_icWaiting stopAnimating];
+    _icWaiting.hidden = YES;
+}
+
+- (void)getInfoForPBXWithServerName: (NSString *)serverName
+{
+    NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
+    [jsonDict setObject:AuthUser forKey:@"AuthUser"];
+    [jsonDict setObject:AuthKey forKey:@"AuthKey"];
+    [jsonDict setObject:serverName forKey:@"ServerName"];
+    
+    [webService callWebServiceWithLink:getServerInfoFunc withParams:jsonDict];
+}
+
+- (void)updateCustomerTokenIOSForPBX: (NSString *)pbxService andUsername: (NSString *)pbxUsername withTokenValue: (NSString *)tokenValue
+{
+    NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
+    [jsonDict setObject:AuthUser forKey:@"AuthUser"];
+    [jsonDict setObject:AuthKey forKey:@"AuthKey"];
+    [jsonDict setObject:USERNAME forKey:@"UserName"];
+    [jsonDict setObject:tokenValue forKey:@"IOSToken"];
+    [jsonDict setObject:pbxService forKey:@"PBXID"];
+    [jsonDict setObject:pbxUsername forKey:@"PBXExt"];
+    
+    [webService callWebServiceWithLink:ChangeCustomerIOSToken withParams:jsonDict];
+}
+
+
+#pragma mark - Webservice Delegate
+
+- (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
+    [_icWaiting stopAnimating];
+    _icWaiting.hidden = YES;
+    if ([link isEqualToString:getServerInfoFunc]) {
+        [self.view makeToast:error duration:2.0 position:CSToastPositionCenter];
+    }else if ([link isEqualToString: ChangeCustomerIOSToken]){
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Can not update push token"]
+                    duration:2.0 position:CSToastPositionCenter];
+        
+        [self whenTurnOnPBXSuccessfully];
+    }
+}
+
+- (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
+    [_icWaiting stopAnimating];
+    if ([link isEqualToString:getServerInfoFunc]) {
+        [self startLoginPBXWithInfo: data];
+    }else if ([link isEqualToString: ChangeCustomerIOSToken]){
+        [self whenTurnOnPBXSuccessfully];
+    }
+}
+
+- (void)receivedResponeCode:(NSString *)link withCode:(int)responeCode {
+    NSLog(@"%d", responeCode);
+}
+
+- (void)startLoginPBXWithInfo: (NSDictionary *)info
+{
+    NSString *pbxIp = [info objectForKey:@"ipAddress"];
+    NSString *pbxPort = [info objectForKey:@"port"];
+    
+    if (pbxIp != nil && ![pbxIp isEqualToString: @""] && pbxPort != nil && ![pbxPort isEqualToString: @""])
+    {
+        [self registerPBXAccount:_tfAccount.text password:_tfPassword.text ipAddress:pbxIp port:pbxPort];
+    }else{
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your information again!"]
+                    duration:2.0 position:CSToastPositionCenter];
+    }
+}
+
+- (void)registerPBXAccount: (NSString *)pbxAccount password: (NSString *)password ipAddress: (NSString *)address port: (NSString *)portID
+{
+    NSArray *data = @[address, pbxAccount, password, portID];
+    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(startRegisterPBX:) userInfo:data repeats:NO];
+}
+
+- (void)startRegisterPBX: (NSTimer *)timer {
+    id data = [timer userInfo];
+    if ([data isKindOfClass:[NSArray class]] && [data count] == 4) {
+        NSString *pbxDomain = [data objectAtIndex: 0];
+        NSString *pbxAccount = [data objectAtIndex: 1];
+        NSString *pbxPassword = [data objectAtIndex: 2];
+        NSString *pbxPort = [data objectAtIndex: 3];
+        
+        BOOL success = [SipUtils loginSipWithDomain:pbxDomain username:pbxAccount password:pbxPassword port:pbxPort];
+        if (success) {
+            [SipUtils registerProxyWithUsername:pbxAccount password:pbxPassword domain:pbxDomain port:pbxPort];
+        }
+    }
+}
+
+- (void)registrationUpdateEvent:(NSNotification *)notif {
+    NSString *message = [notif.userInfo objectForKey:@"message"];
+    [self registrationUpdate:[[notif.userInfo objectForKey:@"state"] intValue]
+                    forProxy:[[notif.userInfo objectForKeyedSubscript:@"cfg"] pointerValue]
+                     message:message];
+}
+
+- (void)registrationUpdate:(LinphoneRegistrationState)state forProxy:(LinphoneProxyConfig *)proxy message:(NSString *)message {
+    switch (state) {
+        case LinphoneRegistrationOk: {
+            if (![_tfAccount.text isEqualToString:@""] && ![_tfPassword.text isEqualToString:@""]) {
+                [[NSUserDefaults standardUserDefaults] setObject:_tfAccount.text forKey:key_login];
+                [[NSUserDefaults standardUserDefaults] setObject:_tfPassword.text forKey:key_password];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
+                    [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
+                }else{
+                    [self whenTurnOnPBXSuccessfully];
+                }
+            }
+            
+            NSLog(@"LinphoneRegistrationOk");
+            break;
+        }
+        case LinphoneRegistrationNone:{
+            NSLog(@"LinphoneRegistrationNone");
+            break;
+        }
+        case LinphoneRegistrationCleared: {
+            NSLog(@"LinphoneRegistrationCleared");
+            // _waitView.hidden = true;
+            break;
+        }
+        case LinphoneRegistrationFailed: {
+            const MSList *proxies = linphone_core_get_proxy_config_list(LC);
+            int numAccount = ms_list_size(proxies);
+            if (numAccount == 0) {
+                [self whenClearPBXSuccessfully];
+            }
+            NSLog(@"LinphoneRegistrationFailed");
+            break;
+        }
+        case LinphoneRegistrationProgress: {
+            NSLog(@"LinphoneRegistrationProgress");
+            // _waitView.hidden = false;
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)whenTurnOnPBXSuccessfully {
+    [_icWaiting stopAnimating];
+    _icWaiting.hidden = YES;
+    [_swChange setOn:YES animated:YES];
+    
+    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Turn on PBX account successful."]
+                duration:2.0 position:CSToastPositionCenter];
+}
+
+- (void)registerPBXTimeOut {
+    [_icWaiting stopAnimating];
+    _icWaiting.hidden = YES;
+    
+    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Register PBX failed"]
+                duration:2.0 position:CSToastPositionCenter];
+    [timeoutTimer invalidate];
+    timeoutTimer = nil;
+}
+
+//  Clear tất cả các proxy config và account của nó
+- (void)clearAllProxyConfigAndAccount {
+    linphone_core_clear_proxy_config(LC);
+    [[LinphoneManager instance] removeAllAccounts];
+}
+
+- (void)whenClearPBXSuccessfully {
+    [_icWaiting stopAnimating];
+    _icWaiting.hidden = YES;
+    
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:key_login];
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:key_password];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Clear PBX successfully"]
+                duration:2.0 position:CSToastPositionCenter];
+    [self performSelector:@selector(popCurrentView) withObject:nil afterDelay:2.0];
+}
+
+- (void)popCurrentView {
+    [[PhoneMainView instance] popCurrentView];
+}
 
 @end

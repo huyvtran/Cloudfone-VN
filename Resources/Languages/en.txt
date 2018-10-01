@@ -66,7 +66,6 @@
 
 "text_more"                 =   "More"
 
-"text_menu_edit_profile"    =   "Edit profile"
 "text_menu_settings"        =   "Settings"
 "text_menu_feedback"        =   "Feedback"
 "text_menu_privacy_policy"  =   "Privacy Policy"

@@ -97,25 +97,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
     
+    //  Added by Khai Le on 30/09/2018
+    [self checkAccountForApp];
+    
     typeAccountChoosed = 0;
-    
-    //  Add new by Khai Le on 23/02/2018
-    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-    const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
-    NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
-    if (defaultUsername != nil && ![defaultUsername hasPrefix:@"778899"]) {
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:1] forKey:callnexPBXFlag];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        NSString *pbxUsername = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_USERNAME];
-        _lbAccount.text = pbxUsername;
-    }else{
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:0] forKey:callnexPBXFlag];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        _lbAccount.text = USERNAME;
-    }
-    //  -----------
-    
     //  setup cho key login
     [[LinphoneManager instance] lpConfigSetBool:FALSE forKey:@"enable_first_login_view_preference"];
     
@@ -151,7 +136,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         hBgNumber = SCREEN_WIDTH * 445/1280;
         _bgNumber.image = [UIImage imageNamed:@"bg_number.png"];
     }
-    _lbAccount.text = USERNAME;
     [self setupUIForView];
     
     //  Cập nhật token push
@@ -218,22 +202,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 	}
     
     [self enableNAT];
-    
-    // setup account khi có và ko có PBX
-    NSNumber *pbxFlag = [[NSUserDefaults standardUserDefaults] objectForKey: callnexPBXFlag];
-    if (pbxFlag == nil || [pbxFlag intValue] == 0) {
-        _lbAccount.text = USERNAME;
-    }else{
-        NSString *pbxAccount = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_USERNAME];
-        if (pbxAccount == nil || [pbxAccount isEqualToString:@""]) {
-            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:0]
-                                                      forKey:callnexPBXFlag];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            _lbAccount.text = USERNAME;
-        }else{
-            _lbAccount.text = pbxAccount;
-        }
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -1482,6 +1450,29 @@ static UICompositeViewDescription *compositeDescription = nil;
             linphone_core_enable_ipv6(LC, NO);
             [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"hasFirstSetting"];
             [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+}
+
+//  Added by Khai Le on 30/09/2018
+- (void)checkAccountForApp {
+    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+    if (defaultConfig == NULL) {
+        _lbAccount.text = NSLocalizedString(@"", nil);
+        _lbStatus.text = NSLocalizedString(@"No account", nil);
+    }else{
+        const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
+        NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
+        if (defaultUsername != nil && ![defaultUsername hasPrefix:@"778899"]) {
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:1] forKey:callnexPBXFlag];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            NSString *pbxUsername = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_USERNAME];
+            _lbAccount.text = pbxUsername;
+        }else{
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:0] forKey:callnexPBXFlag];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            _lbAccount.text = USERNAME;
         }
     }
 }

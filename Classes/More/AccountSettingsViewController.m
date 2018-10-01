@@ -7,7 +7,6 @@
 //
 
 #import "AccountSettingsViewController.h"
-#import "PhoneMainView.h"
 #import "SettingCell.h"
 #import "JSONKit.h"
 #import <CommonCrypto/CommonDigest.h>
@@ -15,6 +14,9 @@
 #import "ChangePasswordPopupView.h"
 #import "QRCodeReaderViewController.h"
 #import "QRCodeReader.h"
+#import "NewSettingCell.h"
+#import "PBXSettingViewController.h"
+#import "ManagerPasswordViewController.h"
 
 @interface AccountSettingsViewController (){
     LinphoneAppDelegate *appDelegate;
@@ -75,7 +77,7 @@
 @end
 
 @implementation AccountSettingsViewController
-@synthesize _viewHeader, _iconBack, _lbHeader;
+@synthesize _viewHeader, _iconBack, _lbHeader, _tbContent;
 @synthesize _viewTrunking, _lbTrunking, _imgTrunking, _lbPBXStatus, _viewChangePassword, _lbChangePassword, _imgChangePassword, _scrollViewContent;
 @synthesize _viewPBXState, _lbPBXState, _swPBX;
 @synthesize _viewPBXInfo, _tfPBXInfoID, _tfPBXInfoAcc, _tfPBXInfoPass, _btnPBXClear, _icQRCode, _btnPBXSave, _viewPBXInfoFooter;
@@ -123,7 +125,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [self settingForPBXAccountIfDontExists];
     
-    [self setupUIForView];
+    [self autoLayoutForMainView];
     
     bgStatus = [[UILabel alloc] initWithFrame: CGRectMake(0, -[UIApplication sharedApplication].statusBarFrame.size.height, SCREEN_WIDTH, [UIApplication sharedApplication].statusBarFrame.size.height)];
     bgStatus.backgroundColor = UIColor.blackColor;
@@ -137,25 +139,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     [self.view addSubview: waitingView];
     
     hPBXDetail = 180.0;
-    
-    UITapGestureRecognizer *tapOnScreen = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(whenTapOnMainScreen)];
-    [self.view addGestureRecognizer: tapOnScreen];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
     [self showContentWithCurrentMessage];
-    
-    //  Add new by Khai Le on 23/02/2018
-    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-    const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
-    NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
-    if (defaultUsername != nil && ![defaultUsername hasPrefix:@"778899"]) {
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:1] forKey:callnexPBXFlag];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    //  -----------
     
     [self showCurrentPBXInformation];
     
@@ -254,79 +243,20 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)btnChangePasswordPressed
 {
-    NSString *oldPass = popupChangePass._tfOldPass.text;
-    NSString *newPass = popupChangePass._tfNewPass.text;
-    NSString *confirmPass = popupChangePass._tfConfirmPass.text;
     
-    if ([oldPass isEqualToString: @""] || [newPass isEqualToString: @""] || [confirmPass isEqualToString: @""])
-    {
-        popupChangePass._lbError.text = [appDelegate.localization localizedStringForKey:text_change_pass_empty];
-    }
-    else if (oldPass.length < 6 || newPass.length < 6 || confirmPass.length < 6)
-    {
-        popupChangePass._lbError.text = [appDelegate.localization localizedStringForKey:text_change_pass_len];
-    }
-    else if (![oldPass isEqualToString:PASSWORD])
-    {
-        popupChangePass._lbError.text = [appDelegate.localization localizedStringForKey:text_old_pass_incorrect];
-    }
-    else if(![newPass isEqualToString: confirmPass])
-    {
-        popupChangePass._lbError.text = [appDelegate.localization localizedStringForKey:text_confirm_pass_not_match];
-    }
-    else{
-        [popupChangePass fadeOut];
-        [self.view endEditing: true];
-        
-        [waitingView startAnimating];
-        [self startChangePasswordForUser: popupChangePass._tfNewPass.text];
-    }
 }
 
 - (void)startChangePasswordForUser: (NSString *)password
 {
-    NSString *requestString = [AppUtils randomStringWithLength: 10];
-    NSString *totalString = [NSString stringWithFormat:@"%@%@%@", PASSWORD, requestString, USERNAME];
-    
-    NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
-    [jsonDict setObject:AuthUser forKey:@"AuthUser"];
-    [jsonDict setObject:AuthKey forKey:@"AuthKey"];
-    [jsonDict setObject:requestString forKey:@"RequestString"];
-    [jsonDict setObject:USERNAME forKey:@"LoginUser"];
-    [jsonDict setObject:[[totalString MD5String] lowercaseString] forKey:@"MD5String"];
-    [jsonDict setObject:password forKey:@"NewPassword"];
-    
-    [webService callWebServiceWithLink:changePasswordFunc withParams:jsonDict];
 }
 
 - (void)registerPBXTimeOut {
-    //  Clear pbx accout đã register nhưng thất bại
-    NSString *pbxUsername = [_tfPBXInfoAcc text];
-    if (![pbxUsername isEqualToString:@""] && pbxUsername != nil) {
-        [self removeProxyConfigWithAccount: pbxUsername];
-        
-        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_ID];
-        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_USERNAME];
-        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_PASSWORD];
-        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_IP_ADDRESSS];
-        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_PORT];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
     
-    [waitingView stopAnimating];
-    [self.view makeToast:[appDelegate.localization localizedStringForKey:register_pbx_failed]
-                duration:2.0 position:CSToastPositionCenter];
-    [timeoutTimer invalidate];
-    timeoutTimer = nil;
 }
 
 
 
 #pragma mark - LE KHAI
-
-- (void)whenTapOnMainScreen {
-    [self.view endEditing: YES];
-}
 
 - (void)scanQRCodeForPBX {
     if ([QRCodeReader supportsMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]]) {
@@ -646,7 +576,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)setupUIForView {
+- (void)autoLayoutForMainView {
     if (SCREEN_WIDTH > 320) {
         hItem = 55.0;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
@@ -656,14 +586,41 @@ static UICompositeViewDescription *compositeDescription = nil;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
         _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:18.0];
     }
-    //  header view
-    _viewHeader.frame = CGRectMake(0, 0, SCREEN_WIDTH, appDelegate._hHeader);
-    _iconBack.frame = CGRectMake(0, 0, appDelegate._hHeader, appDelegate._hHeader);
-    [_iconBack setBackgroundImage:[UIImage imageNamed:@"ic_back_act.png"]
-                         forState:UIControlStateHighlighted];
+    self.view.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
+                                                 blue:(235/255.0) alpha:1.0];
+
+    //  Header view
+    [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+    }];
     
-     _lbHeader.frame = CGRectMake(_iconBack.frame.origin.x+_iconBack.frame.size.width+5, 0, _viewHeader.frame.size.width-2*(_iconBack.frame.origin.x+_iconBack.frame.size.width+10), appDelegate._hHeader);
+    [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(_viewHeader);
+        make.centerX.equalTo(_viewHeader.mas_centerX);
+        make.width.mas_equalTo(200);
+    }];
     
+    [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.equalTo(_viewHeader);
+        make.width.mas_equalTo(appDelegate._hHeader);
+        make.height.mas_equalTo(appDelegate._hHeader);
+    }];
+    
+    _scrollViewContent.hidden = YES;
+    
+    _tbContent.delegate = self;
+    _tbContent.dataSource = self;
+    _tbContent.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tbContent.scrollEnabled = NO;
+    _tbContent.backgroundColor = UIColor.clearColor;
+    [_tbContent mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader.mas_bottom);
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
+    }];
+    
+    return;
     //  content
     marginX = 15.0;
     
@@ -857,41 +814,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)btnClearTrunkingPBX: (UIButton *)sender {
-    timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self
-                                                  selector:@selector(registerPBXTimeOut)
-                                                  userInfo:nil repeats:false];
     
-    [sender setBackgroundColor:[UIColor colorWithRed:(237/255.0) green:(32/255.0)
-                                                blue:(36/255.0) alpha:1.0]];
-    [sender setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    tmpPBXID = @"";
-    tmpPBXUsername = @"";
-    tmpPBXPassword = @"";
-    
-    NSString *pbxID = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
-    NSString *pbxUsername = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_USERNAME];
-    NSString *pbxPassword = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_PASSWORD];
-    NSString *pbxIP = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_IP_ADDRESSS];
-    NSString *pbxPort = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_PORT];
-    
-    if (pbxID != nil && ![pbxID isEqualToString:@""] && pbxUsername != nil && ![pbxUsername isEqualToString:@""] && pbxPassword != nil && ![pbxPassword isEqualToString:@""] && pbxIP != nil && ![pbxIP isEqualToString:@""] && pbxPort != nil && ![pbxPort isEqualToString:@""])
-    {
-        [UIView animateWithDuration:0.2 animations:^{
-            _imgTrunking.image = [UIImage imageNamed:@"icon-next.png"];
-            _viewPBXState.frame = CGRectMake(0, _viewTrunking.frame.origin.y+_viewTrunking.frame.size.height, _viewTrunking.frame.size.width, 0);
-            _viewPBXInfo.frame = CGRectMake(0, _viewPBXState.frame.origin.y+_viewPBXState.frame.size.height, _viewPBXState.frame.size.width, 0);
-            _viewChangePassword.frame = CGRectMake(0, _viewPBXInfo.frame.origin.y+_viewPBXInfo.frame.size.height+1, _viewPBXState.frame.size.width, hItem);
-        } completion:^(BOOL finished) {
-            _scrollViewContent.contentSize = CGSizeMake(_scrollViewContent.frame.size.width, _viewChangePassword.frame.origin.y+_viewChangePassword.frame.size.height);
-            [self.view endEditing: true];
-            
-            //  Clear PBX
-            typeReset = eClearPBX;
-            [waitingView startAnimating];
-            [self clearAllProxyConfigAndAccount];
-        }];
-    }
 }
 
 - (void)btnSaveTrunkingPBX: (UIButton *)sender {
@@ -1495,28 +1418,86 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - WebServices delegate
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
-    if ([link isEqualToString:changePasswordFunc]) {
-        [waitingView stopAnimating];
-        [self.view makeToast:error duration:2.0 position:CSToastPositionCenter];
-    }
+    
 }
 
 - (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
-    if ([link isEqualToString:changePasswordFunc]) {
-        if ([data isKindOfClass:[NSString class]]) {
-            NSLog(@"%@", popupChangePass._tfNewPass);
-            [[NSUserDefaults standardUserDefaults] setObject:[popupChangePass._tfNewPass text]
-                                                      forKey:key_password];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            [waitingView stopAnimating];
-            [self.view makeToast:(NSString *)data duration:2.0 position:CSToastPositionCenter];
-        }
-    }
+    
 }
 
 - (void)receivedResponeCode:(NSString *)link withCode:(int)responeCode {
     
 }
+
+#pragma mark - UITableview Delegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier = @"NewSettingCell";
+    NewSettingCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+    if (cell == nil) {
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"NewSettingCell" owner:self options:nil];
+        cell = topLevelObjects[0];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    switch (indexPath.section) {
+        case 0:{
+            cell.lbTitle.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Trunking"];
+            [self showStatusOfAccount: cell];
+            break;
+        }
+        case 1:{
+            cell.lbTitle.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Change password"];
+            cell.lbDescription.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Cập nhật lần cuối 22/08/2018"];
+            break;
+        }
+        default:
+            break;
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        [[PhoneMainView instance] changeCurrentView:[PBXSettingViewController compositeViewDescription] push:YES];
+    }else if (indexPath.section == 1){
+        LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+        if (defaultConfig == NULL) {
+            [self.view makeToast:[appDelegate.localization localizedStringForKey:@"No account. Please register an account to change password"] duration:3.0 position:CSToastPositionCenter];
+            return;
+        }
+        [[PhoneMainView instance] changeCurrentView:[ManagerPasswordViewController compositeViewDescription] push:YES];
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return 0;
+    }
+    return 10;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 70.0;
+}
+
+- (void)showStatusOfAccount: (NewSettingCell *)cell {
+    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+    if (defaultConfig == NULL) {
+        cell.lbDescription.text = [appDelegate.localization localizedStringForKey:@"Off"];
+    }else{
+        cell.lbDescription.text = [appDelegate.localization localizedStringForKey:@"On"];
+    }
+}
+
 
 @end

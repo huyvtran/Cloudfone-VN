@@ -301,7 +301,6 @@
 #define text_settings           @"text_settings"
 #define text_logout             @"text_logout"
 
-#define text_menu_edit_profile      @"text_menu_edit_profile"
 #define text_menu_settings          @"text_menu_settings"
 #define text_menu_feedback          @"text_menu_feedback"
 #define text_menu_privacy_policy    @"text_menu_privacy_policy"

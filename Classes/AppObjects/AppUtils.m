@@ -329,21 +329,6 @@
     return nil;
 }
 
-// Lấy cloudfone id từ một chuỗi
-+ (NSString *)getSipFoneIDFromString: (NSString *)string {
-    NSRange range = [string rangeOfString:[NSString stringWithFormat:@"@%@", xmpp_cloudfone]];
-    if (range.location != NSNotFound) {
-        return [string substringToIndex: range.location];
-    }else{
-        string = [string stringByReplacingOccurrencesOfString:single_cloudfone withString:xmpp_cloudfone];
-        range = [string rangeOfString:[NSString stringWithFormat:@"@%@", xmpp_cloudfone]];
-        if (range.location != NSNotFound) {
-            return [string substringToIndex: range.location];
-        }
-    }
-    return @"";
-}
-
 /*---
  Cập nhật badge và tạo notifications khi đang chạy background
  => Nếu không bị mute notifications thì tạo localnotifications và cập nhật badge
@@ -397,22 +382,6 @@
     }else{
         // do some thing
     }
-}
-
-+ (NSString *)getAccountNameFromString: (NSString *)string {
-    NSString *result = @"";
-    NSRange range = [string rangeOfString:[NSString stringWithFormat:@"@%@", xmpp_cloudfone]];
-    
-    if (range.location != NSNotFound) {
-        result = [string substringToIndex: range.location];
-    }else{
-        string = [string stringByReplacingOccurrencesOfString:single_cloudfone withString:xmpp_cloudfone];
-        range = [string rangeOfString:[NSString stringWithFormat:@"@%@", xmpp_cloudfone]];
-        if (range.location != NSNotFound) {
-            result = [string substringToIndex: range.location];
-        }
-    }
-    return result;
 }
 
 + (NSString *)checkFileExtension: (NSString *)fileName{

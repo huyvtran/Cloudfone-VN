@@ -25,7 +25,7 @@ typedef enum eTypeProxyConfig{
     loginPBX,
 }eTypeProxyConfig;
 
-@interface AccountSettingsViewController : UIViewController<UICompositeViewDelegate, QRCodeReaderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, WebServicesDelegate>{
+@interface AccountSettingsViewController : UIViewController<UICompositeViewDelegate, QRCodeReaderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, WebServicesDelegate, UITableViewDelegate, UITableViewDataSource>{
 @private
     LinphoneProxyConfig *new_config;
     int number_of_configs_before;
@@ -34,6 +34,7 @@ typedef enum eTypeProxyConfig{
 @property (weak, nonatomic) IBOutlet UIView *_viewHeader;
 @property (weak, nonatomic) IBOutlet UIButton *_iconBack;
 @property (weak, nonatomic) IBOutlet UILabel *_lbHeader;
+@property (weak, nonatomic) IBOutlet UITableView *_tbContent;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *_scrollViewContent;
 
