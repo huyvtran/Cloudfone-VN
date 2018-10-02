@@ -80,14 +80,32 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     
     //  header view
-    _viewHeader.frame = CGRectMake(0, 0, SCREEN_WIDTH, [LinphoneAppDelegate sharedInstance]._hHeader);
-    _iconBack.frame = CGRectMake(0, 0, [LinphoneAppDelegate sharedInstance]._hHeader, [LinphoneAppDelegate sharedInstance]._hHeader);
+    [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+    }];
+    
     [_iconBack setBackgroundImage:[UIImage imageNamed:@"ic_back_act.png"]
                          forState:UIControlStateHighlighted];
-    _lbHeader.frame = CGRectMake(_iconBack.frame.origin.x+_iconBack.frame.size.width+5, 0, _viewHeader.frame.size.width-2*(_iconBack.frame.origin.x+_iconBack.frame.size.width+5), [LinphoneAppDelegate sharedInstance]._hHeader);
+    [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewHeader);
+        make.centerY.equalTo(_viewHeader.mas_centerY);
+        make.width.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+    }];
+    
+    [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_viewHeader.mas_centerX);
+        make.centerY.equalTo(_viewHeader.mas_centerY);
+        make.width.mas_equalTo(200);
+        make.height.mas_equalTo(40);
+    }];
     
     float tmpMargin = 15.0;
-    _wvPolicy.frame = CGRectMake(tmpMargin, _viewHeader.frame.origin.y+_viewHeader.frame.size.height+tmpMargin, SCREEN_WIDTH-2*tmpMargin, SCREEN_HEIGHT-([LinphoneAppDelegate sharedInstance]._hStatus+[LinphoneAppDelegate sharedInstance]._hHeader+2*tmpMargin));
+    [_wvPolicy mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader.mas_bottom).offset(tmpMargin);
+        make.left.equalTo(self.view).offset(tmpMargin);
+        make.bottom.right.equalTo(self.view).offset(-tmpMargin);
+    }];
     _wvPolicy.layer.borderColor = [UIColor colorWithRed:(200/255.0) green:(200/255.0)
                                                    blue:(200/255.0) alpha:1.0].CGColor;
     _wvPolicy.layer.borderWidth = 1.0;

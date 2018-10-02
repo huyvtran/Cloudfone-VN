@@ -350,9 +350,6 @@
 #define text_confirm_pass_not_match @"text_confirm_pass_not_match"
 
 #define text_reload_app_for_change_language @"text_reload_app_for_change_language"
-#define text_change_language    @"text_change_language"
-#define text_lang_vi            @"text_lang_vi"
-#define text_lang_en            @"text_lang_en"
 
 #define text_notif_setting  @"text_notif_setting"
 #define text_acc_setting    @"text_acc_setting"
@@ -383,7 +380,6 @@
 #define text_policy_title3      @"text_policy_title3"
 #define text_policy_content3    @"text_policy_content3"
 
-#define text_introduce          @"text_introduce"
 #define text_ods_company        @"text_ods_company"
 #define text_introduce_content  @"text_introduce_content"
 
@@ -409,8 +405,6 @@
 
 #define text_name_number_not_empty  @"text_name_number_not_empty"
 #define text_sync_pbx_contact       @"text_sync_pbx_contact"
-#define text_syncing                @"text_syncing"
-#define text_contact_syncing        @"text_contact_syncing"
 #define text_pbx_contact_exists     @"text_pbx_contact_exists"
 #define text_please_check_your_connection   @"text_please_check_your_connection"
 

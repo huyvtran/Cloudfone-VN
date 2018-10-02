@@ -76,12 +76,15 @@
                 [delegate failedToCallWebService:function andError:message];
             }else if([result isEqualToString:@"success"])
             {
-                //  Lưu thời gian quá bắt đầu cho nhập confirm code 5 phút
                 id data = [object objectForKey:@"data"];
                 if ([data isKindOfClass:[NSDictionary class]]) {
                     [delegate successfulToCallWebService:function withData:data];
                 }else{
-                    [delegate successfulToCallWebService:function withData:data];
+                    if (data == nil && [object isKindOfClass:[NSDictionary class]]) {
+                        [delegate successfulToCallWebService:function withData:object];
+                    }else{
+                        [delegate successfulToCallWebService:function withData:data];
+                    }
                 }
             }
         }else{

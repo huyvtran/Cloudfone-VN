@@ -10,6 +10,11 @@
 #import "WebServices.h"
 #import "QRCodeReaderDelegate.h"
 
+typedef enum{
+    normalLogin,
+    qrCodeLogin,
+}typeLoginPBX;
+
 @interface PBXSettingViewController : UIViewController<UICompositeViewDelegate, WebServicesDelegate, QRCodeReaderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIView *_viewHeader;
 @property (weak, nonatomic) IBOutlet UIButton *_iconBack;

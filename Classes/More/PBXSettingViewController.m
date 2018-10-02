@@ -15,6 +15,11 @@
     NSTimer *timeoutTimer;
     UIButton *btnScanFromPhoto;
     QRCodeReaderViewController *scanQRCodeVC;
+    //  For register pbx with qrcode
+    int typeRegister;
+    NSString *serverPBX;
+    NSString *accountPBX;
+    NSString *passwordPBX;
 }
 
 @end
@@ -286,8 +291,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else if ([_tfPassword.text isEqualToString:@""]){
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Password can't empty"] duration:2.0 position:CSToastPositionCenter];
     }else{
+        typeRegister = normalLogin;
+        
         _icWaiting.hidden = NO;
         [_icWaiting startAnimating];
+        
         [self getInfoForPBXWithServerName: _tfServerID.text];
     }
 }
@@ -376,10 +384,14 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     if (pbxIp != nil && ![pbxIp isEqualToString: @""] && pbxPort != nil && ![pbxPort isEqualToString: @""])
     {
-        [self registerPBXAccount:_tfAccount.text password:_tfPassword.text ipAddress:pbxIp port:pbxPort];
+        if (typeRegister == normalLogin) {
+            serverPBX = pbxIp;
+            accountPBX = _tfAccount.text;
+            passwordPBX = _tfPassword.text;
+        }
+        [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:serverPBX port:pbxPort];
     }else{
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your information again!"]
-                    duration:2.0 position:CSToastPositionCenter];
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your information again!"] duration:2.0 position:CSToastPositionCenter];
     }
 }
 
@@ -414,17 +426,33 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)registrationUpdate:(LinphoneRegistrationState)state forProxy:(LinphoneProxyConfig *)proxy message:(NSString *)message {
     switch (state) {
         case LinphoneRegistrationOk: {
-            if (![_tfAccount.text isEqualToString:@""] && ![_tfPassword.text isEqualToString:@""]) {
-                [[NSUserDefaults standardUserDefaults] setObject:_tfAccount.text forKey:key_login];
-                [[NSUserDefaults standardUserDefaults] setObject:_tfPassword.text forKey:key_password];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                
-                if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
-                    [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
-                }else{
-                    [self whenTurnOnPBXSuccessfully];
+            if (typeRegister == normalLogin)
+            {
+                if (![_tfAccount.text isEqualToString:@""] && ![_tfPassword.text isEqualToString:@""]) {
+                    [[NSUserDefaults standardUserDefaults] setObject:_tfAccount.text forKey:key_login];
+                    [[NSUserDefaults standardUserDefaults] setObject:_tfPassword.text forKey:key_password];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                    if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
+                        [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
+                    }else{
+                        [self whenTurnOnPBXSuccessfully];
+                    }
+                }
+            }else if (typeRegister == qrCodeLogin){
+                if (![accountPBX isEqualToString:@""] && ![passwordPBX isEqualToString:@""]) {
+                    [[NSUserDefaults standardUserDefaults] setObject:accountPBX forKey:key_login];
+                    [[NSUserDefaults standardUserDefaults] setObject:passwordPBX forKey:key_password];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                    if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
+                        [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
+                    }else{
+                        [self whenTurnOnPBXSuccessfully];
+                    }
                 }
             }
+            
             
             NSLog(@"LinphoneRegistrationOk");
             break;
@@ -458,8 +486,15 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)whenTurnOnPBXSuccessfully {
-    [[NSUserDefaults standardUserDefaults] setObject:_tfServerID.text forKey:PBX_ID];
+    [[NSUserDefaults standardUserDefaults] setObject:serverPBX forKey:PBX_ID];
+    [[NSUserDefaults standardUserDefaults] setObject:accountPBX forKey:key_login];
+    [[NSUserDefaults standardUserDefaults] setObject:passwordPBX forKey:key_password];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    //  Added by Khai Le on 02/10/2018
+    _tfServerID.text = serverPBX;
+    _tfAccount.text = accountPBX;
+    _tfPassword.text = passwordPBX;
     
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
@@ -550,7 +585,18 @@ static UICompositeViewDescription *compositeDescription = nil;
         
         if (![pbxDomain isEqualToString:@""] && ![pbxAccount isEqualToString:@""] && ![pbxPassword isEqualToString:@""])
         {
-            [self getInfoForPBXWithServerName: pbxDomain];
+            if ([pbxAccount isEqualToString:USERNAME]) {
+                //  Hiển thị thông báo nếu account từ QRCode trùng với account đã đc login hiện tại
+                [self.view makeToast:[appDelegate.localization localizedStringForKey:@"This account has been registered"] duration:3.0 position:CSToastPositionCenter];
+            }else{
+                typeRegister = qrCodeLogin;
+                
+                serverPBX = pbxDomain;
+                accountPBX = pbxAccount;
+                passwordPBX = pbxPassword;
+                
+                [self getInfoForPBXWithServerName: pbxDomain];
+            }
         }else {
             [self.view makeToast:[appDelegate.localization localizedStringForKey:text_dien_day_tu_thong_tin]
                         duration:2.0 position:CSToastPositionCenter];

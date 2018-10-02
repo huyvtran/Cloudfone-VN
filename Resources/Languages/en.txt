@@ -108,7 +108,6 @@
 "text_policy_title3"        =   "Regulations require privacy policies"
 "text_policy_content3"      =   "Services like Google Analytics or AdSense require you to have a privacy stating the use of their service"
 
-"text_introduce"            =   "Introduce"
 "text_ods_company"          =   "ONLINE DATA SERVICES J.S.C"
 "text_introduce_content"    =   "Là Doanh Nghiệp sở hữu một trong những trung tâm dữ liệu (DataCenter) được đầu tư bài bản tại số 54 đường C1, Phường 13, Quận Tân Bình. ODS đã có hơn 06 năm tham gia thị trường công nghệ thông tin, viễn thông và Internet, ODS đã tạo dựng được thương hiệu và chỗ đứng vững chắc ở Việt Nam, đặc biệt trong lĩnh vực Internet, DataCenter, VoIP-Cloudfone, giải pháp ảo hoá hạ tầng điện toán đám mây (IaaS) và bản quyền phần mềm,… Việc kinh doanh của chúng tôi phát triển nhanh chóng với các lĩnh vực mới và đa dạng, ODS đã tạo được thế mạnh, hình ảnh và thương hiệu của mình."
 
@@ -155,9 +154,6 @@
 "text_login_failed"         =   "Check your username and password or internet connection"
 "text_update_failed"        =   "Update password failed"
 
-"text_lang_vi"              =   "Vietnamese"
-"text_lang_en"              =   "English"
-"text_change_language"      =   "Change language"
 
 "text_add_new_contact"      =   "Create new contact"
 "text_add_exists_contact"   =   "Add to existing contact"
@@ -197,8 +193,6 @@
 "text_pbx_edit"             =   "Edit"
 
 "text_sync_pbx_contact"     =   "Sync PBX contacts"
-"text_syncing"              =   "Syncing..."
-"text_contact_syncing"      =   "PBX contacts are syncing!"
 
 "text_name_number_not_empty" =   "Name and Number can not empty"
 "text_pbx_contact_exists"   =   "This contact already exists!"

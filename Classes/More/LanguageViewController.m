@@ -8,7 +8,6 @@
 
 #import "LanguageViewController.h"
 #import "LanguageCell.h"
-#import "PhoneMainView.h"
 #import "LanguageObject.h"
 
 @interface LanguageViewController (){
@@ -49,7 +48,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidLoad {
     [super viewDidLoad];
     //  my code here
-    [self setupUIForView];
+    [self autoLayoutForView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -79,7 +78,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - my functions
 
 - (void)showContentOfCurrentLanguage {
-    _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_change_language];
+    _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Change language"];
     [self createDataForLanguageView];
 }
 
@@ -91,20 +90,20 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     LanguageObject *viLang = [[LanguageObject alloc] init];
     viLang._code = @"vi";
-    viLang._title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_lang_vi];
+    viLang._title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Vietnamese"];
     viLang._flag = @"flag_vietnam";
     [listLanguage addObject: viLang];
     
     LanguageObject *enLang = [[LanguageObject alloc] init];
     enLang._code = @"en";
-    enLang._title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_lang_en];
+    enLang._title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"English"];
     enLang._flag = @"flag_usa";
     [listLanguage addObject: enLang];
     
     [_tbLanguage reloadData];
 }
 
-- (void)setupUIForView
+- (void)autoLayoutForView
 {
     if (SCREEN_WIDTH > 320) {
         _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:20.0];
@@ -115,15 +114,30 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     
     //  header view
-    _viewHeader.frame = CGRectMake(0, 0, SCREEN_WIDTH, [LinphoneAppDelegate sharedInstance]._hHeader);
-    _iconBack.frame = CGRectMake(0, 0, [LinphoneAppDelegate sharedInstance]._hHeader, [LinphoneAppDelegate sharedInstance]._hHeader);
-    [_iconBack setBackgroundImage:[UIImage imageNamed:@"ic_back_act.png"]
-                         forState:UIControlStateHighlighted];
+    [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+    }];
     
-    _lbHeader.frame = CGRectMake(_iconBack.frame.origin.x+_iconBack.frame.size.width+5, 0, _viewHeader.frame.size.width-2*(_iconBack.frame.origin.x+_iconBack.frame.size.width+5), [LinphoneAppDelegate sharedInstance]._hHeader);
+    [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewHeader);
+        make.centerY.equalTo(_viewHeader.mas_centerY);
+        make.width.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+    }];
+    
+    [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_viewHeader.mas_centerX);
+        make.centerY.equalTo(_viewHeader.mas_centerY);
+        make.width.mas_equalTo(200);
+        make.height.mas_equalTo(40);
+    }];
     
     //  tableview
-    _tbLanguage.frame = CGRectMake(0, _viewHeader.frame.origin.y+_viewHeader.frame.size.height, SCREEN_WIDTH, hCell*2);
+    [_tbLanguage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader.mas_bottom);
+        make.left.right.equalTo(self.view);
+        make.height.mas_equalTo(hCell*2);
+    }];
     _tbLanguage.delegate = self;
     _tbLanguage.dataSource = self;
     _tbLanguage.separatorStyle = UITableViewCellSeparatorStyleNone;

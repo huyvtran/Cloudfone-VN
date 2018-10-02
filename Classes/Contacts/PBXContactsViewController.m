@@ -370,8 +370,8 @@
 
 //  Click sync pbx contact
 - (void)clickSyncPBXContacts {
-    [_viewSync setBackgroundColor:[UIColor colorWithRed:(24/255.0) green:(185/255.0)
-                                                   blue:(153/255.0) alpha:1.0]];
+    _viewSync.backgroundColor = [UIColor colorWithRed:(24/255.0) green:(185/255.0)
+                                                 blue:(153/255.0) alpha:1.0];
     
     NSString *service = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
     if ([service isKindOfClass:[NSNull class]] || service == nil || [service isEqualToString: @""]) {
@@ -387,12 +387,14 @@
             }
             
             if (![LinphoneAppDelegate sharedInstance]._isSyncing) {
-                [[LinphoneAppDelegate sharedInstance] set_isSyncing: true];
+                [LinphoneAppDelegate sharedInstance]._isSyncing = YES;
                 [self startSyncPBXContacts];
-                [self getPBXContactsWithServerName: service];
+                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    [self getPBXContactsWithServerName: service];
+                });
             }else{
-                [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_contact_syncing]
-                                     duration:2.0 position:CSToastPositionCenter];
+                [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"PBX contacts is being synchronized!"] duration:2.0 position:CSToastPositionCenter];
             }
         }
     }
@@ -407,7 +409,7 @@
     [spin setRepeatCount: HUGE_VALF];   // HUGE_VALF means infinite repeatCount
     
     [_imgSync.layer addAnimation:spin forKey:@"Spin"];
-    [_lbSync setText: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_syncing]];
+    _lbSync.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Syncing..."];
 }
 
 - (void)getPBXContactsWithServerName: (NSString *)serverName
