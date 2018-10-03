@@ -350,13 +350,19 @@
 
 void onUncaughtException(NSException* exception)
 {
+    NSString *reason = exception.reason;
     NSString *crashContent = [NSString stringWithFormat:@"%@",[exception callStackSymbols]];
     NSString *device = [AppUtils getDeviceNameFromModelName:[AppUtils getDeviceModel]];
     NSString *osVersion = [AppUtils getCurrentOSVersionOfDevice];
     NSString *appVersion = [AppUtils getCurrentVersionApplicaton];
     NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
     
-    NSString *messageSend = [NSString stringWithFormat:@"------------------------------\nDevice: %@\nOS Version: %@\nApp version: %@\nApp bundle ID: %@\n------------------------------\nAccount ID: %@\n------------------------------\nReason: %@\n------------------------------\n%@", device, osVersion, appVersion, bundleIdentifier, USERNAME, exception.reason, crashContent];
+    id info = [exception.userInfo objectForKey:@"NSTargetObjectUserInfoKey"];
+    if (info != nil) {
+        reason = [NSString stringWithFormat:@"%@: %@", NSStringFromClass([info class]), reason];
+    }
+    
+    NSString *messageSend = [NSString stringWithFormat:@"------------------------------\nDevice: %@\nOS Version: %@\nApp version: %@\nApp bundle ID: %@\n------------------------------\nAccount ID: %@\n------------------------------\nReason: %@\n------------------------------\n%@", device, osVersion, appVersion, bundleIdentifier, USERNAME, reason, crashContent];
     
     NSString *totalEmail = [NSString stringWithFormat:@"mailto:%@?subject=%@&body=%@", @"lekhai0212@gmail.com,cfreport@cloudfone.vn", [NSString stringWithFormat:@"Report crash from %@", USERNAME], messageSend];
     NSString *url = [totalEmail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -404,20 +410,20 @@ void onUncaughtException(NSException* exception)
     
     _hStatus = [application statusBarFrame].size.height;
     
+    float wMenu = SCREEN_WIDTH/4;
+    _hTabbar = wMenu * 130/250;
+    
     if (SCREEN_WIDTH <= 375 && SCREEN_WIDTH > 320) {
         _hRegistrationState = 45.0;
         _wSubMenu = 60.0;
-        _hTabbar = 58.0;
         _hHeader = 50.0;
     }else if (SCREEN_WIDTH > 375){
         _hRegistrationState = 45.0;
         _wSubMenu = 100.0;
-        _hTabbar = 65.0;
         _hHeader = 50.0;
     }else{
         _hRegistrationState = 35.0;
         _wSubMenu = 40.0;
-        _hTabbar = 50.0;
         _hHeader = 42.0;
     }
     
@@ -1929,13 +1935,15 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 #pragma mark - Web services delegate
 - (void)updateCustomerTokenIOS {
-    NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
-    [jsonDict setObject:AuthUser forKey:@"AuthUser"];
-    [jsonDict setObject:AuthKey forKey:@"AuthKey"];
-    [jsonDict setObject:USERNAME forKey:@"UserName"];
-    [jsonDict setObject:_deviceToken forKey:@"IOSToken"];
-    
-    [webService callWebServiceWithLink:ChangeCustomerIOSToken withParams:jsonDict];
+    if (USERNAME != nil) {
+        NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
+        [jsonDict setObject:AuthUser forKey:@"AuthUser"];
+        [jsonDict setObject:AuthKey forKey:@"AuthKey"];
+        [jsonDict setObject:USERNAME forKey:@"UserName"];
+        [jsonDict setObject:_deviceToken forKey:@"IOSToken"];
+        
+        [webService callWebServiceWithLink:ChangeCustomerIOSToken withParams:jsonDict];
+    }
 }
 
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {

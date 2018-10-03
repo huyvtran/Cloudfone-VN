@@ -27,15 +27,10 @@
 @property(nonatomic, strong) IBOutlet UIButton *historyButton;
 @property(nonatomic, strong) IBOutlet UIButton *contactsButton;
 @property(nonatomic, strong) IBOutlet UIButton *dialerButton;
-@property(nonatomic, strong) IBOutlet UIButton *chatButton;
 @property(nonatomic, strong) IBOutlet UIBouncingView *historyNotificationView;
-@property(nonatomic, strong) IBOutlet UIBouncingView *chatNotificationView;
-@property(nonatomic, strong) IBOutlet UILabel *chatNotificationLabel;
 @property(nonatomic, strong) IBOutlet UILabel *historyNotificationLabel;
-@property(weak, nonatomic) IBOutlet UIImageView *selectedButtonImage;
 @property (weak, nonatomic) IBOutlet UIIconButton *moreButton;
-@property (weak, nonatomic) IBOutlet UIBouncingView *contactNotificationView;
-@property (weak, nonatomic) IBOutlet UILabel *contactNotificationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *lbTopSepa;
 
 - (void)update:(BOOL)appear;
 

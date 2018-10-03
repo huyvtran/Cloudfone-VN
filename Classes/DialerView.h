@@ -46,9 +46,6 @@
 @property(nonatomic, strong) IBOutlet UIDigitButton *starButton;
 @property(nonatomic, strong) IBOutlet UIDigitButton *zeroButton;
 @property(nonatomic, strong) IBOutlet UIDigitButton *hashButton;
-@property(nonatomic, strong) IBOutlet UIView *backgroundView;
-@property(nonatomic, strong) IBOutlet UIView *videoPreview;
-@property(nonatomic, strong) IBOutlet UICamSwitch *videoCameraSwitch;
 @property(weak, nonatomic) IBOutlet UIView *padView;
 
 - (IBAction)onAddContactClick:(id)event;
@@ -62,7 +59,6 @@
 @property(nonatomic, strong) IBOutlet UITextField *addressField;
 @property(nonatomic, strong) IBOutlet UIButton *addContactButton;
 @property (weak, nonatomic) IBOutlet UIButton *_iconClear;
-@property (weak, nonatomic) IBOutlet UIImageView *_bgNumber;
 
 @property (weak, nonatomic) IBOutlet UIView *_viewSearch;
 @property (weak, nonatomic) IBOutlet UIImageView *_imgAvatar;
@@ -78,8 +74,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *_btnAddCall;
 @property (weak, nonatomic) IBOutlet UIButton *_btnTransferCall;
 
-@property (weak, nonatomic) IBOutlet UIView *_viewFooter;
-@property (weak, nonatomic) IBOutlet UIView *_viewCallButton;
 @property (weak, nonatomic) IBOutlet UIButton *_btnHotline;
 
 @property (weak, nonatomic) IBOutlet UIView *_viewStatus;

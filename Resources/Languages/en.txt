@@ -438,14 +438,11 @@
 "TEXT_RESEND_FAILED"                    = "Failed to send! Please try again later."
 "TEXT_DENY_COPY_EXPIRE_IMAGE"           = "You can not copy image have expire time"
 
-"img_menu_message_def"  =   "menu_message_en_def.png"
-"img_menu_message_act"  =   "menu_message_en_act.png"
-
 "img_menu_history_def"  =   "menu_history_en_def.png"
 "img_menu_history_act"  =   "menu_history_en_act.png"
 
 "img_menu_contacts_def" =   "menu_contacts_en_def.png"
-"img_menu_contacts_act" =   "menu_contacts_en_act.png"
+"img_menu_contacts_act" =   "menu_contacts_act.png"
 
 "img_menu_keypad_def"   =   "menu_keypad_en_def.png"
 "img_menu_keypad_act"   =   "menu_keypad_en_act.png"

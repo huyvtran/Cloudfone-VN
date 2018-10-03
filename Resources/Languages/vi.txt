@@ -436,9 +436,6 @@
 "TEXT_RESEND_FAILED"                    = "Gửi lại thất bại! Vui lòng thử lại sau."
 "TEXT_DENY_COPY_EXPIRE_IMAGE"           = "Bạn không thể sao chép ảnh có thời hạn"
 
-"img_menu_message_def"  =   "menu_message_def.png"
-"img_menu_message_act"  =   "menu_message_act.png"
-
 "img_menu_history_def"  =   "menu_history_def.png"
 "img_menu_history_act"  =   "menu_history_act.png"
 

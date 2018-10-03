@@ -165,10 +165,6 @@
 #define text_username_or_email_not_empty    @"text_username_or_email_not_empty"
 #define not_connect_to_server   @"not_connect_to_server"
 
-
-#define img_menu_message_def    @"img_menu_message_def"
-#define img_menu_message_act    @"img_menu_message_act"
-
 #define img_menu_history_def    @"img_menu_history_def"
 #define img_menu_history_act    @"img_menu_history_act"
 

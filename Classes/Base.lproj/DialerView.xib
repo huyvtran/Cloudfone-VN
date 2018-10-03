@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14269.12" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14252.5"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DialerView">
             <connections>
-                <outlet property="_bgNumber" destination="56Z-ia-Pln" id="6e2-mR-zkt"/>
                 <outlet property="_btnAddCall" destination="mZY-R6-lzQ" id="24w-DW-gJO"/>
                 <outlet property="_btnHotline" destination="ocP-fY-nj8" id="ouO-pt-ZbR"/>
                 <outlet property="_btnSearchNum" destination="0EU-3N-XdP" id="ZOn-Ax-aMD"/>
@@ -26,8 +25,6 @@
                 <outlet property="_lbSepa" destination="vZZ-aS-3Gm" id="DN3-zC-hAV"/>
                 <outlet property="_lbStatus" destination="BOg-lD-Kub" id="KuU-aT-eAU"/>
                 <outlet property="_tbSearch" destination="eLV-4e-k7a" id="zlj-CI-LQy"/>
-                <outlet property="_viewCallButton" destination="DSt-pe-66P" id="gP1-f8-kBl"/>
-                <outlet property="_viewFooter" destination="182" id="N1z-sv-cS7"/>
                 <outlet property="_viewNumber" destination="178" id="EBB-hK-kwf"/>
                 <outlet property="_viewSearch" destination="Ufi-1q-g7e" id="ZGa-9K-jff"/>
                 <outlet property="_viewStatus" destination="0oU-AO-Xma" id="2XX-qY-puK"/>
@@ -92,10 +89,6 @@
                             <rect key="frame" x="0.0" y="35" width="320" height="58"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_number" id="56Z-ia-Pln" userLabel="backgroundColor">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="222" userLabel="addContactButton">
                                     <rect key="frame" x="8" y="14" width="30" height="30"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -174,7 +167,7 @@
                             </subviews>
                         </view>
                         <view contentMode="scaleToFill" misplaced="YES" id="180" userLabel="pad">
-                            <rect key="frame" x="0.0" y="93" width="320" height="253"/>
+                            <rect key="frame" x="0.0" y="93" width="320" height="317"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="38" userLabel="1" customClass="UIDigitButton">
@@ -183,7 +176,7 @@
                                     <color key="backgroundColor" red="0.40000001000000002" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" label="1"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" image="numpad_one_default">
+                                    <state key="normal" image="numpad_one_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="highlighted" image="numpad_one_hover"/>
@@ -197,7 +190,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="2"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" image="numpad_two_default">
+                                    <state key="normal" image="numpad_two_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="highlighted" image="numpad_two_hover"/>
@@ -211,7 +204,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="3"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" image="numpad_three_default">
+                                    <state key="normal" image="numpad_three_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="highlighted" image="numpad_three_hover"/>
@@ -225,7 +218,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="4"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" image="numpad_four_default">
+                                    <state key="normal" image="numpad_four_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="highlighted" image="numpad_four_hover"/>
@@ -239,7 +232,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" image="numpad_five_default">
+                                    <state key="normal" image="numpad_five_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="highlighted" image="numpad_five_hover"/>
@@ -249,11 +242,11 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="33" userLabel="6" customClass="UIDigitButton">
-                                    <rect key="frame" x="213" y="63" width="107" height="63"/>
+                                    <rect key="frame" x="213" y="79" width="107" height="79"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="6"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" image="numpad_six_default">
+                                    <state key="normal" image="numpad_six_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="highlighted" image="numpad_six_hover"/>
@@ -267,7 +260,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="7"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" image="numpad_seven_default">
+                                    <state key="normal" image="numpad_seven_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="highlighted" image="numpad_over_background"/>
@@ -281,7 +274,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="8"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" image="numpad_eight_default">
+                                    <state key="normal" image="numpad_eight_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="highlighted" image="numpad_eight_hover"/>
@@ -295,7 +288,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="9"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" image="numpad_nine_default">
+                                    <state key="normal" image="numpad_nine_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="highlighted" image="numpad_nine_hover"/>
@@ -305,11 +298,11 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="39" userLabel="*" customClass="UIDigitButton">
-                                    <rect key="frame" x="0.0" y="189" width="107" height="63"/>
+                                    <rect key="frame" x="0.0" y="181" width="107" height="79"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Star"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" image="numpad_star_default">
+                                    <state key="normal" image="numpad_star_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="highlighted" image="numpad_star_hover"/>
@@ -323,7 +316,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="0"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" image="numpad_zero_default">
+                                    <state key="normal" image="numpad_zero_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="highlighted" image="numpad_zero_hover"/>
@@ -337,7 +330,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Hash"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" image="numpad_sharp_default">
+                                    <state key="normal" image="numpad_sharp_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="highlighted" image="numpad_sharp_hover"/>
@@ -346,20 +339,8 @@
                                         <outlet property="addressField" destination="4" id="251"/>
                                     </connections>
                                 </button>
-                            </subviews>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </view>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="eLV-4e-k7a">
-                            <rect key="frame" x="0.0" y="93" width="320" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </tableView>
-                        <view contentMode="scaleToFill" misplaced="YES" id="182" userLabel="bottomBar">
-                            <rect key="frame" x="0.0" y="345" width="320" height="65"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="183" userLabel="backButton">
-                                    <rect key="frame" x="0.0" y="0.0" width="107" height="65"/>
+                                    <rect key="frame" x="106" y="118" width="107" height="81"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Back"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -372,52 +353,47 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ocP-fY-nj8">
-                                    <rect key="frame" x="0.0" y="0.0" width="107" height="65"/>
+                                    <rect key="frame" x="0.0" y="252" width="107" height="65"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" backgroundImage="hotline_default"/>
+                                    <state key="normal" backgroundImage="hotline_default.png"/>
+                                    <state key="highlighted" backgroundImage="hotline_hover.png"/>
                                     <connections>
                                         <action selector="_btnHotlinePressed:" destination="-1" eventType="touchUpInside" id="vrM-99-Clu"/>
                                     </connections>
                                 </button>
-                                <view contentMode="scaleToFill" misplaced="YES" id="DSt-pe-66P">
-                                    <rect key="frame" x="107" y="0.0" width="106" height="65"/>
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mZY-R6-lzQ">
+                                    <rect key="frame" x="206" y="167" width="106" height="65"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mZY-R6-lzQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="106" height="65"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" backgroundImage="btn_add_call_def"/>
-                                            <connections>
-                                                <action selector="_btnAddCallPressed:" destination="-1" eventType="touchUpInside" id="lA4-Hw-1D6"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="SWb-OV-7Fe">
-                                            <rect key="frame" x="0.0" y="0.0" width="106" height="65"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" backgroundImage="btn_transfer_def"/>
-                                            <connections>
-                                                <action selector="_btnTransferPressed:" destination="-1" eventType="touchUpInside" id="vtO-xY-hz9"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="224" userLabel="callButton" customClass="UICallButton">
-                                            <rect key="frame" x="0.0" y="0.0" width="105" height="65"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                            <accessibility key="accessibilityConfiguration" label="Call"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <state key="normal" image="call_default">
-                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
-                                            <connections>
-                                                <outlet property="addressField" destination="4" id="235"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </view>
+                                    <state key="normal" backgroundImage="btn_add_call_def"/>
+                                    <connections>
+                                        <action selector="_btnAddCallPressed:" destination="-1" eventType="touchUpInside" id="lA4-Hw-1D6"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="SWb-OV-7Fe">
+                                    <rect key="frame" x="197" y="105" width="106" height="65"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" backgroundImage="btn_transfer_def"/>
+                                    <connections>
+                                        <action selector="_btnTransferPressed:" destination="-1" eventType="touchUpInside" id="vtO-xY-hz9"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="224" userLabel="callButton" customClass="UICallButton">
+                                    <rect key="frame" x="115" y="236" width="105" height="81"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                    <accessibility key="accessibilityConfiguration" label="Call"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <state key="normal" image="call_default.png">
+                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <state key="highlighted" image="call_hover.png"/>
+                                    <connections>
+                                        <outlet property="addressField" destination="4" id="235"/>
+                                    </connections>
+                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8dc-hj-rvt" userLabel="backspaceButton" customClass="UIIconButton">
-                                    <rect key="frame" x="213" y="0.0" width="107" height="65"/>
+                                    <rect key="frame" x="213" y="252" width="107" height="65"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" backgroundImage="backspace_default_1">
+                                    <state key="normal" backgroundImage="numpad_clear.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="highlighted" image="backspace_hover_1"/>
@@ -426,8 +402,13 @@
                                     </connections>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="eLV-4e-k7a">
+                            <rect key="frame" x="0.0" y="93" width="320" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </tableView>
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
@@ -435,47 +416,48 @@
             <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-294" y="-280"/>
+            <point key="canvasLocation" x="-111" y="-277"/>
         </view>
     </objects>
     <resources>
-        <image name="backspace_default_1" width="240" height="148"/>
         <image name="backspace_hover_1" width="241" height="149"/>
-        <image name="bg_number" width="1280" height="445"/>
         <image name="btn_add_call_def" width="240" height="148"/>
         <image name="btn_transfer_def" width="240" height="148"/>
         <image name="button_back_dialer" width="240" height="148"/>
         <image name="call_alt_back_disabled.png" width="51" height="36"/>
-        <image name="call_default" width="240" height="148"/>
+        <image name="call_default.png" width="201" height="201"/>
+        <image name="call_hover.png" width="16" height="16"/>
         <image name="contact_add_disabled.png" width="34" height="29"/>
-        <image name="hotline_default" width="240" height="148"/>
+        <image name="hotline_default.png" width="201" height="201"/>
+        <image name="hotline_hover.png" width="16" height="16"/>
         <image name="ic_logo" width="200" height="200"/>
         <image name="iconX" width="100" height="100"/>
         <image name="iconadd" width="100" height="100"/>
         <image name="no_avatar" width="166" height="166"/>
-        <image name="numpad_eight_default" width="240" height="148"/>
+        <image name="numpad_clear.png" width="201" height="201"/>
+        <image name="numpad_eight_default.png" width="201" height="201"/>
         <image name="numpad_eight_hover" width="241" height="149"/>
-        <image name="numpad_five_default" width="240" height="148"/>
+        <image name="numpad_five_default.png" width="201" height="201"/>
         <image name="numpad_five_hover" width="241" height="149"/>
-        <image name="numpad_four_default" width="240" height="148"/>
+        <image name="numpad_four_default.png" width="201" height="201"/>
         <image name="numpad_four_hover" width="241" height="149"/>
-        <image name="numpad_nine_default" width="240" height="148"/>
+        <image name="numpad_nine_default.png" width="201" height="201"/>
         <image name="numpad_nine_hover" width="241" height="149"/>
-        <image name="numpad_one_default" width="240" height="148"/>
+        <image name="numpad_one_default.png" width="201" height="201"/>
         <image name="numpad_one_hover" width="241" height="149"/>
         <image name="numpad_over_background" width="16" height="16"/>
-        <image name="numpad_seven_default" width="240" height="148"/>
-        <image name="numpad_sharp_default" width="240" height="140"/>
+        <image name="numpad_seven_default.png" width="201" height="201"/>
+        <image name="numpad_sharp_default.png" width="201" height="201"/>
         <image name="numpad_sharp_hover" width="241" height="141"/>
-        <image name="numpad_six_default" width="240" height="148"/>
+        <image name="numpad_six_default.png" width="201" height="201"/>
         <image name="numpad_six_hover" width="241" height="149"/>
-        <image name="numpad_star_default" width="240" height="140"/>
+        <image name="numpad_star_default.png" width="201" height="201"/>
         <image name="numpad_star_hover" width="241" height="141"/>
-        <image name="numpad_three_default" width="240" height="148"/>
+        <image name="numpad_three_default.png" width="201" height="201"/>
         <image name="numpad_three_hover" width="241" height="149"/>
-        <image name="numpad_two_default" width="240" height="148"/>
+        <image name="numpad_two_default.png" width="201" height="201"/>
         <image name="numpad_two_hover" width="241" height="149"/>
-        <image name="numpad_zero_default" width="240" height="140"/>
+        <image name="numpad_zero_default.png" width="201" height="201"/>
         <image name="numpad_zero_hover" width="241" height="141"/>
         <image name="phonebook_close" width="32" height="32"/>
     </resources>

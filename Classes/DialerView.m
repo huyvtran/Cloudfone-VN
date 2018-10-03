@@ -63,9 +63,8 @@
 
 @implementation DialerView
 @synthesize _viewStatus, _imgLogoSmall, _lbAccount, _lbStatus;
-@synthesize _viewNumber, _bgNumber, _iconClear;
-@synthesize _viewFooter, _viewCallButton, _btnHotline;
-@synthesize _btnAddCall, _btnTransferCall;
+@synthesize _viewNumber, _iconClear;
+@synthesize _btnHotline, _btnAddCall, _btnTransferCall;
 @synthesize _viewSearch, _imgAvatar, _lbName, _lbSepa, _btnSearchNum, _iconShowSearch, _tbSearch, _lbPhone;
 
 #pragma mark - UICompositeViewDelegate Functions
@@ -124,17 +123,13 @@ static UICompositeViewDescription *compositeDescription = nil;
         
         minus = 10.0;
         wIcon = 40.0;
-        hBgNumber = SCREEN_WIDTH * 332/1280;
-        _bgNumber.image = [UIImage imageNamed:@"bg_number_ip4.png"];
     }else{
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:15.0];
         
         minus = 10.0;
         wIcon = 30.0;
-        hBgNumber = SCREEN_WIDTH * 445/1280;
-        _bgNumber.image = [UIImage imageNamed:@"bg_number.png"];
     }
-    [self setupUIForView];
+    [self autoLayoutForView];
     
     //  Cập nhật token push
     if (![LinphoneAppDelegate sharedInstance]._updateTokenSuccess && [LinphoneAppDelegate sharedInstance]._deviceToken != nil && ![[LinphoneAppDelegate sharedInstance]._deviceToken isEqualToString: @""]) {
@@ -148,9 +143,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 	// Set observer
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(callUpdateEvent:)
 											   name:kLinphoneCallUpdate object:nil];
-
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(coreUpdateEvent:)
-											   name:kLinphoneCoreUpdate object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showPopupWhenCallFailed:)
                                                  name:@"showPopupWhenCallFail" object:nil];
@@ -170,32 +162,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     
 	// Update on show
 	LinphoneCall *call = linphone_core_get_current_call(LC);
-    LinphoneManager *mgr = LinphoneManager.instance;
 	LinphoneCallState state = (call != NULL) ? linphone_call_get_state(call) : 0;
 	[self callUpdate:call state:state];
 
-	if (IPAD) {
-		BOOL videoEnabled = linphone_core_video_display_enabled(LC);
-		BOOL previewPref = [mgr lpConfigBoolForKey:@"preview_preference"];
-
-		if (videoEnabled && previewPref) {
-			linphone_core_set_native_preview_window_id(LC, (__bridge void *)(_videoPreview));
-
-			if (!linphone_core_video_preview_enabled(LC)) {
-				linphone_core_enable_video_preview(LC, TRUE);
-			}
-            _backgroundView.hidden = NO;
-			_videoCameraSwitch.hidden = NO;
-		} else {
-			linphone_core_set_native_preview_window_id(LC, NULL);
-			linphone_core_enable_video_preview(LC, FALSE);
-            _backgroundView.hidden = YES;
-            _videoCameraSwitch.hidden = YES;
-		}
-	} else {
-		linphone_core_enable_video_preview(LC, FALSE);
-	}
-    
     [self enableNAT];
 }
 
@@ -252,13 +221,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     tapOnScreen.delegate = self;
 	[self.view addGestureRecognizer: tapOnScreen];
 
-	if (IPAD) {
-		if (LinphoneManager.instance.frontCamId != nil) {
-			// only show camera switch button if we have more than 1 camera
-            _videoCameraSwitch.hidden = YES;
-		}
-	}
-    
     heightTableCell = 55.0;
     _lbStatus.text = @"";
     
@@ -272,23 +234,17 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	switch (toInterfaceOrientation) {
 		case UIInterfaceOrientationPortrait:
-			[_videoPreview setTransform:CGAffineTransformMakeRotation(0)];
+			
 			break;
 		case UIInterfaceOrientationPortraitUpsideDown:
-			[_videoPreview setTransform:CGAffineTransformMakeRotation(M_PI)];
 			break;
 		case UIInterfaceOrientationLandscapeLeft:
-			[_videoPreview setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
 			break;
 		case UIInterfaceOrientationLandscapeRight:
-			[_videoPreview setTransform:CGAffineTransformMakeRotation(-M_PI / 2)];
 			break;
 		default:
 			break;
 	}
-	CGRect frame = self.view.frame;
-	frame.origin = CGPointMake(0, 0);
-	_videoPreview.frame = frame;
 	_padView.hidden = !IPAD && UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
 	if (linphone_core_get_calls_nb(LC)) {
 		_backButton.hidden = NO;
@@ -310,20 +266,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 	LinphoneCall *call = [[notif.userInfo objectForKey:@"call"] pointerValue];
 	LinphoneCallState state = [[notif.userInfo objectForKey:@"state"] intValue];
 	[self callUpdate:call state:state];
-}
-
-- (void)coreUpdateEvent:(NSNotification *)notif {
-	if (IPAD) {
-		if (linphone_core_video_display_enabled(LC) && linphone_core_video_preview_enabled(LC)) {
-			linphone_core_set_native_preview_window_id(LC, (__bridge void *)(_videoPreview));
-            _backgroundView.hidden = NO;
-            _videoCameraSwitch.hidden = NO;
-		} else {
-			linphone_core_set_native_preview_window_id(LC, NULL);
-            _backgroundView.hidden = YES;
-            _videoCameraSwitch.hidden = YES;
-		}
-	}
 }
 
 #pragma mark - Debug Functions
@@ -926,120 +868,239 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)setupUIForView
+- (void)autoLayoutForView
 {
     //  view status
-    _viewStatus.frame = CGRectMake(0, 0, SCREEN_WIDTH, [LinphoneAppDelegate sharedInstance]._hRegistrationState);
     _viewStatus.backgroundColor = [UIColor colorWithRed:(21/255.0) green:(41/255.0)
                                                    blue:(52/255.0) alpha:1.0];
+    [_viewStatus mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState);
+    }];
     
-    float hStatus = _viewStatus.frame.size.height;
-    [_imgLogoSmall setFrame: CGRectMake(hStatus/4, hStatus/4, hStatus/2, hStatus/2)];
+    [_imgLogoSmall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewStatus).offset([LinphoneAppDelegate sharedInstance]._hRegistrationState/4);
+        make.centerY.equalTo(_viewStatus.mas_centerY);
+        make.width.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState/2);
+    }];
     
-    [_lbAccount setFrame: CGRectMake((_viewStatus.frame.size.width-150)/2, 0, 150, hStatus)];
-    [_lbAccount setFont: [UIFont fontWithName:MYRIADPRO_BOLD size:18.0]];
-    [_lbAccount setTextAlignment: NSTextAlignmentCenter];
+    //  account label
+    _lbAccount.font = [UIFont fontWithName:MYRIADPRO_BOLD size:18.0];
+    _lbAccount.textAlignment = NSTextAlignmentCenter;
+    [_lbAccount mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(_viewStatus);
+        make.centerX.equalTo(_viewStatus.mas_centerX);
+        make.width.mas_equalTo(150);
+    }];
     
-    [_lbStatus setFrame: CGRectMake(_viewStatus.frame.size.width/2, 0, _viewStatus.frame.size.width/2-_imgLogoSmall.frame.origin.x, _viewStatus.frame.size.height)];
-    [_lbStatus setFont: textFont];
+    //  status label
+    _lbStatus.font = textFont;
+    [_lbStatus mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewStatus.mas_centerX);
+        make.top.bottom.right.equalTo(_viewStatus);
+    }];
+    
+    //  Number keypad
+    float wEndCall = 70.0;
+    float wIcon = 65.0;
+    float spaceMarginY = 10.0;
+    float spaceMarginX = 20.0;
+    
+    float hKeypad = 4*wIcon + wEndCall + 6*spaceMarginY;
+    _padView.backgroundColor = UIColor.whiteColor;
+    [_padView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.view);
+        make.height.mas_equalTo(hKeypad);
+    }];
+    
+    //  first layer
+    _twoButton.layer.cornerRadius = wIcon/2;
+    _twoButton.clipsToBounds = YES;
+    [_twoButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_padView).offset(spaceMarginY);
+        make.centerX.equalTo(_padView.mas_centerX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
+    
+    _oneButton.layer.cornerRadius = wIcon/2;
+    _oneButton.clipsToBounds = YES;
+    [_oneButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_twoButton.mas_top);
+        make.right.equalTo(_twoButton.mas_left).offset(-spaceMarginX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
+    
+    _threeButton.layer.cornerRadius = wIcon/2;
+    _threeButton.clipsToBounds = YES;
+    [_threeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_twoButton.mas_top);
+        make.left.equalTo(_twoButton.mas_right).offset(spaceMarginX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
+    
+    //  second layer
+    _fiveButton.layer.cornerRadius = wIcon/2;
+    _fiveButton.clipsToBounds = YES;
+    [_fiveButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_twoButton.mas_bottom).offset(spaceMarginY);
+        make.centerX.equalTo(_padView.mas_centerX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
+    
+    _fourButton.layer.cornerRadius = wIcon/2;
+    _fourButton.clipsToBounds = YES;
+    [_fourButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_fiveButton.mas_top);
+        make.right.equalTo(_fiveButton.mas_left).offset(-spaceMarginX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
+    
+    _sixButton.layer.cornerRadius = wIcon/2;
+    _sixButton.clipsToBounds = YES;
+    [_sixButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_fiveButton.mas_top);
+        make.left.equalTo(_fiveButton.mas_right).offset(spaceMarginX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
+    
+    //  third layer
+    _eightButton.layer.cornerRadius = wIcon/2;
+    _eightButton.clipsToBounds = YES;
+    [_eightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_fiveButton.mas_bottom).offset(spaceMarginY);
+        make.centerX.equalTo(_padView.mas_centerX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
+    
+    _sevenButton.layer.cornerRadius = wIcon/2;
+    _sevenButton.clipsToBounds = YES;
+    [_sevenButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_eightButton.mas_top);
+        make.right.equalTo(_eightButton.mas_left).offset(-spaceMarginX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
+    
+    _nineButton.layer.cornerRadius = wIcon/2;
+    _nineButton.clipsToBounds = YES;
+    [_nineButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_eightButton.mas_top);
+        make.left.equalTo(_eightButton.mas_right).offset(spaceMarginX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
+    
+    //  fourth layer
+    _zeroButton.layer.cornerRadius = wIcon/2;
+    _zeroButton.clipsToBounds = YES;
+    [_zeroButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_eightButton.mas_bottom).offset(spaceMarginY);
+        make.centerX.equalTo(_padView.mas_centerX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
+    
+    _starButton.layer.cornerRadius = wIcon/2;
+    _starButton.clipsToBounds = YES;
+    [_starButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_zeroButton.mas_top);
+        make.right.equalTo(_zeroButton.mas_left).offset(-spaceMarginX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
+    
+    _hashButton.layer.cornerRadius = wIcon/2;
+    _hashButton.clipsToBounds = YES;
+    [_hashButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_zeroButton.mas_top);
+        make.left.equalTo(_zeroButton.mas_right).offset(spaceMarginX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
+    
+    //  fifth layer
+    _callButton.layer.cornerRadius = wEndCall/2;
+    _callButton.clipsToBounds = YES;
+    [_callButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_zeroButton.mas_bottom).offset(spaceMarginY);
+        make.centerX.equalTo(_padView.mas_centerX);
+        make.width.height.mas_equalTo(wEndCall);
+    }];
+    
+    _btnTransferCall.layer.cornerRadius = wEndCall/2;
+    _btnTransferCall.clipsToBounds = YES;
+    [_btnTransferCall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_callButton);
+    }];
+    
+    _btnAddCall.layer.cornerRadius = wEndCall/2;
+    _btnAddCall.clipsToBounds = YES;
+    [_btnAddCall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_callButton);
+    }];
+    
+    _btnHotline.layer.cornerRadius = wIcon/2;
+    _btnHotline.clipsToBounds = YES;
+    [_btnHotline mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_callButton.mas_top);
+        make.right.equalTo(_callButton.mas_left).offset(-spaceMarginX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
+    
+    _backButton.layer.cornerRadius = wIcon/2;
+    _backButton.clipsToBounds = YES;
+    [_backButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_btnHotline);
+    }];
+    
+    _backspaceButton.layer.cornerRadius = wIcon/2;
+    _backspaceButton.clipsToBounds = YES;
+    [_backspaceButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_callButton.mas_top);
+        make.left.equalTo(_callButton.mas_right).offset(spaceMarginX);
+        make.width.height.mas_equalTo(wIcon);
+    }];
     
     //  Number view
-    [_viewNumber setFrame: CGRectMake(0, _viewStatus.frame.origin.y+_viewStatus.frame.size.height, SCREEN_WIDTH, hBgNumber)];
-    [_bgNumber setFrame: CGRectMake(0, 0, _viewNumber.frame.size.width, _viewNumber.frame.size.height)];
-    [_addContactButton setFrame: CGRectMake(10, (hBgNumber-wIcon)/2, wIcon, wIcon)];
-    [_addressField setFrame:CGRectMake(_addContactButton.frame.origin.x+_addContactButton.frame.size.width+10, 10, _viewNumber.frame.size.width-(_addContactButton.frame.origin.x+10+_addContactButton.frame.size.width+10+_addContactButton.frame.size.width+_addContactButton.frame.origin.x), hBgNumber-20)];
-    [_addressField setKeyboardType: UIKeyboardTypePhonePad];
-    [_addressField setEnabled: true];
-    [_addressField setTextAlignment: NSTextAlignmentCenter];
-    [_addressField setFont:[UIFont fontWithName:MYRIADPRO_REGULAR size:45.0]];
-    [_addressField setDelegate: self];
-    [_addressField setAdjustsFontSizeToFitWidth: YES]; // Not put it in IB: issue with placeholder size
+    [_viewNumber mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.top.equalTo(_viewStatus.mas_bottom);
+        make.bottom.equalTo(_padView.mas_top);
+    }];
     
-    [_iconClear setFrame: CGRectMake(_addressField.frame.origin.x+_addressField.frame.size.width+5, _addContactButton.frame.origin.y, _addContactButton.frame.size.width, _addContactButton.frame.size.height)];
+    float wSmallIcon = 40.0;
+    [_addContactButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.equalTo(_viewNumber).offset(10);
+        make.width.height.mas_equalTo(wSmallIcon);
+    }];
     
+    [_iconClear mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewNumber).offset(10);
+        make.right.equalTo(_viewNumber.mas_right).offset(-10);
+        make.width.height.mas_equalTo(wSmallIcon);
+    }];
     
-    [_tbSearch setDelegate: self];
-    [_tbSearch setDataSource: self];
-    [_tbSearch setHidden: YES];
-    [_tbSearch setBackgroundColor:[UIColor whiteColor]];
-    [_tbSearch setSeparatorStyle: UITableViewCellSeparatorStyleNone];
-    [_tbSearch setSeparatorColor: [UIColor colorWithRed:(245/255.0) green:(245/255.0)
-                                                   blue:(246/255.0) alpha: 1]];
+    [_addressField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewNumber).offset(10);
+        make.left.equalTo(_addContactButton.mas_right).offset(10);
+        make.right.equalTo(_iconClear.mas_left).offset(-10);
+        make.height.mas_equalTo(wSmallIcon);
+    }];
+    _addressField.keyboardType = UIKeyboardTypePhonePad;
+    _addressField.enabled = YES;
+    _addressField.textAlignment = NSTextAlignmentCenter;
+    _addressField.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:45.0];
+    _addressField.adjustsFontSizeToFitWidth = YES;
+    _addressField.delegate = self;
     
-    //  Keypad view
-    float tmpHeight = (SCREEN_HEIGHT - [LinphoneAppDelegate sharedInstance]._hStatus - [LinphoneAppDelegate sharedInstance]._hTabbar - ([LinphoneAppDelegate sharedInstance]._hRegistrationState + _viewNumber.frame.size.height));
+    //  search tableview
+    _tbSearch.delegate = self;
+    _tbSearch.dataSource = self;
+    _tbSearch.hidden = YES;
+    _tbSearch.backgroundColor = UIColor.whiteColor;
+    _tbSearch.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    //  Chiều cao của 1 button
-    float hButton = (tmpHeight - minus)/5;
-    float wButton = hButton * 240/148;
-    
-    //  Tính margin giữa các button
-    float margin = (SCREEN_WIDTH - 3*wButton)/4;
-    
-    //  view keypad
-    [_padView setFrame: CGRectMake(0, _viewNumber.frame.origin.y+_viewNumber.frame.size.height, SCREEN_WIDTH, 4*hButton)];
-    
-    //  1, 2, 3
-    [_oneButton setFrame: CGRectMake(margin, 0, wButton, hButton)];
-    [_twoButton setFrame: CGRectMake(_oneButton.frame.origin.x+_oneButton.frame.size.width+margin, 0, wButton, hButton)];
-    [_threeButton setFrame: CGRectMake(_twoButton.frame.origin.x+_twoButton.frame.size.width+margin, 0, wButton, hButton)];
-    
-    float lineMarginX = _oneButton.frame.origin.x+_oneButton.frame.size.width/2-15;
-    UILabel *lbLine1 = [[UILabel alloc] initWithFrame: CGRectMake(lineMarginX, _oneButton.frame.origin.y+_oneButton.frame.size.height, SCREEN_WIDTH-2*lineMarginX, 1)];
-    [lbLine1 setBackgroundColor:[UIColor colorWithRed:(240/255.0) green:(240/255.0)
-                                                 blue:(240/255.0) alpha:1.0]];
-    [_padView addSubview: lbLine1];
-    
-    //  4, 5, 6
-    [_fourButton setFrame: CGRectMake(_oneButton.frame.origin.x, lbLine1.frame.origin.y+lbLine1.frame.size.height, _oneButton.frame.size.width, hButton)];
-    [_fiveButton setFrame: CGRectMake(_twoButton.frame.origin.x, _fourButton.frame.origin.y, _twoButton.frame.size.width, hButton)];
-    [_sixButton setFrame: CGRectMake(_threeButton.frame.origin.x, _fourButton.frame.origin.y, _threeButton.frame.size.width, hButton)];
-    
-    UILabel *lbLine2 = [[UILabel alloc] initWithFrame: CGRectMake(lbLine1.frame.origin.x, _fourButton.frame.origin.y+_fourButton.frame.size.height, lbLine1.frame.size.width, lbLine1.frame.size.height)];
-    [lbLine2 setBackgroundColor:[UIColor colorWithRed:(240/255.0) green:(240/255.0)
-                                                 blue:(240/255.0) alpha:1.0]];
-    [_padView addSubview: lbLine2];
-    
-    //  7, 8, 9
-    [_sevenButton setFrame: CGRectMake(_fourButton.frame.origin.x, lbLine2.frame.origin.y+lbLine2.frame.size.height, _fourButton.frame.size.width, hButton)];
-    [_eightButton setFrame: CGRectMake(_fiveButton.frame.origin.x, _sevenButton.frame.origin.y, _fiveButton.frame.size.width, hButton)];
-    [_nineButton setFrame: CGRectMake(_sixButton.frame.origin.x, _sevenButton.frame.origin.y, _sixButton.frame.size.width, hButton)];
-    
-    UILabel *lbLine3 = [[UILabel alloc] initWithFrame: CGRectMake(lbLine1.frame.origin.x, _sevenButton.frame.origin.y+_sevenButton.frame.size.height, lbLine1.frame.size.width, lbLine1.frame.size.height)];
-    [lbLine3 setBackgroundColor:[UIColor colorWithRed:(240/255.0) green:(240/255.0)
-                                                 blue:(240/255.0) alpha:1.0]];
-    [_padView addSubview: lbLine3];
-    
-    //  *, 0, #
-    [_starButton setFrame: CGRectMake(_sevenButton.frame.origin.x, lbLine3.frame.origin.y+lbLine3.frame.size.height, _sevenButton.frame.size.width, hButton)];
-    [_zeroButton setFrame: CGRectMake(_eightButton.frame.origin.x, _starButton.frame.origin.y, _eightButton.frame.size.width, hButton)];
-    [_hashButton setFrame: CGRectMake(_nineButton.frame.origin.x, _starButton.frame.origin.y, _nineButton.frame.size.width, hButton)];
-    
-    UILabel *lbLine4 = [[UILabel alloc] initWithFrame: CGRectMake(lbLine1.frame.origin.x, _starButton.frame.origin.y+_starButton.frame.size.height, lbLine1.frame.size.width, lbLine1.frame.size.height)];
-    [lbLine4 setBackgroundColor:[UIColor colorWithRed:(240/255.0) green:(240/255.0)
-                                                 blue:(240/255.0) alpha:1.0]];
-    [_padView addSubview: lbLine4];
-    
-    //  view footer
-    [_viewFooter setFrame: CGRectMake(0, _padView.frame.origin.y+_padView.frame.size.height, SCREEN_WIDTH, hButton+minus)];
-    
-    [_backButton setFrame: CGRectMake(margin, minus/2, wButton, hButton)];
-    [_btnHotline setFrame: _backButton.frame];
-    
-    [_viewCallButton setFrame: CGRectMake(_btnHotline.frame.origin.x+_btnHotline.frame.size.width+margin, _backButton.frame.origin.y, wButton, hButton)];
-    [_callButton setFrame: CGRectMake(0, 0, _viewCallButton.frame.size.width, _viewCallButton.frame.size.height)];
-    [_callButton setBackgroundColor:[UIColor whiteColor]];
-    _callButton.delegate = self;
-    
-    [_btnAddCall setFrame: _callButton.frame];
-    [_btnTransferCall setFrame: _callButton.frame];
-    
-    [_backspaceButton setFrame:CGRectMake(_viewCallButton.frame.origin.x+_viewCallButton.frame.size.width+margin, _viewCallButton.frame.origin.y, wButton, hButton)];
-    
-    // set font
-    [_addressField setFont:[UIFont fontWithName:MYRIADPRO_REGULAR size:45.0]];
-    [_addressField setDelegate: self];
-    [_addressField setAdjustsFontSizeToFitWidth: YES]; // Not put it in IB: issue with placeholder size
+    [_tbSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_addressField.mas_bottom).offset(10);
+        make.centerX.equalTo(_viewNumber.mas_centerX);
+        make.width.mas_equalTo(200.0);
+        make.height.mas_equalTo(60.0);
+    }];
     
     //  view search
     UITapGestureRecognizer *tapOnSearch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(whenTapOnSearchResult)];

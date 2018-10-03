@@ -34,6 +34,15 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
+    //  Added by Khai Le on 03/10/2018
+    [self.lbTopSepa.backgroundColor = [UIColor colorWithRed:(220/255.0) green:(220/255.0)
+                                                       blue:(220/255.0) alpha:1.0];
+    [self.lbTopSepa mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo(1);
+    }];
+    //  ---
+    
     [self setBackgroundForTabBarButton];
     
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(changeViewEvent:)
@@ -112,42 +121,7 @@
 	_contactsButton.selected = [view equal:ContactsViewController.compositeViewDescription] ||
 							   [view equal:KContactDetailViewController.compositeViewDescription];
 	_dialerButton.selected = [view equal:DialerView.compositeViewDescription];
-    _chatButton.selected = [view equal:KMessageViewController.compositeViewDescription] || [view equal:ChatConversationCreateView.compositeViewDescription] ||
-    [view equal:ChatConversationView.compositeViewDescription];
-    
     _moreButton.selected = [view equal:MoreViewController.compositeViewDescription];
-    
-	CGRect selectedNewFrame = _selectedButtonImage.frame;
-	if ([self viewIsCurrentlyPortrait]) {
-		selectedNewFrame.origin.x =
-			(_historyButton.selected
-				 ? _historyButton.frame.origin.x
-				 : (_contactsButton.selected
-						? _contactsButton.frame.origin.x
-						: (_dialerButton.selected
-							   ? _dialerButton.frame.origin.x
-							   : (_chatButton.selected
-									  ? _chatButton.frame.origin.x
-									  : -selectedNewFrame.size.width /*hide it if none is selected*/))));
-	} else {
-		selectedNewFrame.origin.y =
-			(_historyButton.selected
-				 ? _historyButton.frame.origin.y
-				 : (_contactsButton.selected
-						? _contactsButton.frame.origin.y
-						: (_dialerButton.selected
-							   ? _dialerButton.frame.origin.y
-							   : (_chatButton.selected
-									  ? _chatButton.frame.origin.y
-									  : -selectedNewFrame.size.height /*hide it if none is selected*/))));
-	}
-
-	CGFloat delay = ANIMATED ? 0.3 : 0;
-	[UIView animateWithDuration:delay
-					 animations:^{
-					   _selectedButtonImage.frame = selectedNewFrame;
-
-					 }];
 }
 
 #pragma mark - Action Functions
@@ -189,10 +163,6 @@
 
 - (void)setBackgroundForTabBarButton
 {
-    [_chatButton setBackgroundImage:[UIImage imageNamed:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:img_menu_message_def]] forState:UIControlStateNormal];
-    [_chatButton setBackgroundImage:[UIImage imageNamed:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:img_menu_message_act]] forState:UIControlStateHighlighted];
-    [_chatButton setBackgroundImage:[UIImage imageNamed:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:img_menu_message_act]] forState:UIControlStateSelected];
-    
     [_historyButton setBackgroundImage:[UIImage imageNamed: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:img_menu_history_def]] forState:UIControlStateNormal];
     [_historyButton setBackgroundImage:[UIImage imageNamed: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:img_menu_history_act]] forState:UIControlStateHighlighted];
     [_historyButton setBackgroundImage:[UIImage imageNamed: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:img_menu_history_act]] forState:UIControlStateSelected];

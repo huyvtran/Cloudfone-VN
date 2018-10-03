@@ -82,6 +82,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UIView *view = [[UIView alloc] init];
+    view.backgroundColor = UIColor.redColor;
+    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self.view);
+    }];
+    
     //  MY CODE HERE
     appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
     listNumber = [[NSArray alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5",
