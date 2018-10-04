@@ -414,15 +414,15 @@ void onUncaughtException(NSException* exception)
     _hTabbar = wMenu * 130/250;
     
     if (SCREEN_WIDTH <= 375 && SCREEN_WIDTH > 320) {
-        _hRegistrationState = 65.0;
+        _hRegistrationState = 44.0 + _hStatus;
         _wSubMenu = 60.0;
         _hHeader = 50.0;
     }else if (SCREEN_WIDTH > 375){
-        _hRegistrationState = 45.0;
+        _hRegistrationState = 44.0 + _hStatus;
         _wSubMenu = 100.0;
         _hHeader = 50.0;
     }else{
-        _hRegistrationState = 35.0;
+        _hRegistrationState = 34.0 + _hStatus;
         _wSubMenu = 40.0;
         _hHeader = 42.0;
     }

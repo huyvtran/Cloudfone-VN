@@ -100,6 +100,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     // invisible icon add contact & icon delete address
     _addContactButton.hidden = YES;
     _addressField.text = @"";
+    searchView.hidden = YES;
     
     if (SCREEN_WIDTH > 320) {
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
@@ -636,15 +637,15 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [_imgLogoSmall mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewStatus).offset([LinphoneAppDelegate sharedInstance]._hRegistrationState/4);
-        make.centerY.equalTo(_viewStatus.mas_centerY);
-        make.width.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState/2);
+        make.centerY.equalTo(_viewStatus.mas_centerY).offset([LinphoneAppDelegate sharedInstance]._hStatus/2);
+        make.width.height.mas_equalTo(30.0);
     }];
     
     //  account label
     _lbAccount.font = [UIFont fontWithName:MYRIADPRO_BOLD size:18.0];
     _lbAccount.textAlignment = NSTextAlignmentCenter;
     [_lbAccount mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(_viewStatus);
+        make.top.bottom.equalTo(_imgLogoSmall);
         make.centerX.equalTo(_viewStatus.mas_centerX);
         make.width.mas_equalTo(150);
     }];
@@ -653,7 +654,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     _lbStatus.font = textFont;
     [_lbStatus mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewStatus.mas_centerX);
-        make.top.bottom.equalTo(_viewStatus);
+        make.top.bottom.equalTo(_lbAccount);
         make.right.equalTo(_viewStatus).offset(-[LinphoneAppDelegate sharedInstance]._hRegistrationState/4);
     }];
     

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14269.12" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14252.5"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,14 +13,11 @@
             <connections>
                 <outlet property="_bgHeader" destination="GMh-zO-OpD" id="hTM-wz-WIq"/>
                 <outlet property="_bgHeaderConf" destination="0ky-1V-9Xa" id="JuJ-PJ-nak"/>
-                <outlet property="_icLogo" destination="I0N-Zw-r4J" id="G3u-Zd-8F7"/>
                 <outlet property="_lbConferenceDuration" destination="sew-Rp-XZW" id="Rck-8v-Tiq"/>
                 <outlet property="_lbQuality" destination="SwD-uY-YBl" id="JPJ-Uh-9fH"/>
                 <outlet property="_lbState" destination="QMp-dE-aSC" id="93M-k5-KsU"/>
-                <outlet property="_lbVideoTime" destination="Xb3-PZ-pCb" id="fzB-dd-SoU"/>
                 <outlet property="_scrollView" destination="7Jo-XY-4I5" id="1Wq-6k-Vuw"/>
                 <outlet property="_viewCommand" destination="HXB-GW-SZF" id="0WT-Ed-4P6"/>
-                <outlet property="_viewHeader" destination="Pbz-bO-a33" id="ZtH-sf-OPp"/>
                 <outlet property="_viewInfo" destination="9zY-em-MKN" id="7jC-gC-jJX"/>
                 <outlet property="avatarConference" destination="Lig-TQ-472" id="Qly-XQ-zJQ"/>
                 <outlet property="avatarImage" destination="fZy-K5-yQp" id="hOl-IQ-c9B"/>
@@ -42,11 +39,8 @@
                 <outlet property="fourButton" destination="653-Vb-YzA" id="x6R-Cq-7iJ"/>
                 <outlet property="hangupButton" destination="Xpw-A4-BZO" id="3hc-8p-CLb"/>
                 <outlet property="hashButton" destination="DqJ-35-h1Y" id="bVr-gn-5yW"/>
-                <outlet property="iconCaptureScreen" destination="dNq-CH-fkT" id="82Y-wc-fqG"/>
                 <outlet property="landscapeView" destination="mPH-MF-S0K" id="Qnt-pg-nbO"/>
                 <outlet property="lbAddressConf" destination="pWG-pD-l54" id="HCs-0B-529"/>
-                <outlet property="lbAddressVideoCall" destination="oPD-Bq-5bL" id="34w-VK-A4a"/>
-                <outlet property="lbStateVideoCall" destination="H1V-9Y-ZiB" id="hQ6-Z1-HFj"/>
                 <outlet property="microButton" destination="pRH-Ao-h65" id="F5a-sf-J7B"/>
                 <outlet property="nameLabel" destination="KPa-Rm-Qni" id="KiX-oL-MUd"/>
                 <outlet property="nineButton" destination="b8R-7P-jHK" id="LNS-eb-9bc"/>
@@ -73,11 +67,7 @@
                 <outlet property="threeButton" destination="R2h-PD-GN2" id="6DQ-Cw-Okc"/>
                 <outlet property="twoButton" destination="U6v-Cg-9b8" id="Re4-oW-yjl"/>
                 <outlet property="videoButton" destination="HDb-mD-sWV" id="EUO-MD-lae"/>
-                <outlet property="videoPreview" destination="127" id="130"/>
-                <outlet property="videoView" destination="132" id="133"/>
-                <outlet property="videoWaitingForFirstImage" destination="144" id="145"/>
                 <outlet property="view" destination="lzH-M1-NdV" id="POo-R0-w8I"/>
-                <outlet property="viewVideoCall" destination="OAF-i3-Q5T" id="yyj-Sz-tgg"/>
                 <outlet property="zeroButton" destination="CUt-2U-nro" id="x70-o1-VIq"/>
             </connections>
         </placeholder>
@@ -104,28 +94,17 @@
                     <rect key="frame" x="0.0" y="42" width="375" height="625"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
-                        <view contentMode="scaleToFill" misplaced="YES" id="Pbz-bO-a33">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <view clearsContextBeforeDrawing="NO" tag="6" contentMode="scaleToFill" misplaced="YES" id="9" userLabel="callView">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="625"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ic_logo" id="I0N-Zw-r4J">
-                                    <rect key="frame" x="10" y="10" width="30" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SwD-uY-YBl">
-                                    <rect key="frame" x="229" y="10" width="138" height="30"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SwD-uY-YBl">
+                                    <rect key="frame" x="118" y="297" width="138" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                            </subviews>
-                            <color key="backgroundColor" red="0.08235294118" green="0.16078431369999999" blue="0.20392156859999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </view>
-                        <view clearsContextBeforeDrawing="NO" tag="6" contentMode="scaleToFill" misplaced="YES" id="9" userLabel="callView">
-                            <rect key="frame" x="0.0" y="50" width="375" height="625"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                            <subviews>
                                 <view contentMode="scaleToFill" misplaced="YES" id="9zY-em-MKN">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -699,60 +678,6 @@
                                     <state key="selected" image="pause_big_over_selected.png"/>
                                     <state key="highlighted" image="pause_big_over_selected.png"/>
                                 </button>
-                            </subviews>
-                            <color key="backgroundColor" red="0.0039215686269999999" green="0.18039215689999999" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
-                        </view>
-                        <view contentMode="scaleToFill" misplaced="YES" id="OAF-i3-Q5T">
-                            <rect key="frame" x="0.0" y="50" width="375" height="575"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <view tag="10" contentMode="scaleToFill" misplaced="YES" id="132" userLabel="display">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="575"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <accessibility key="accessibilityConfiguration">
-                                        <accessibilityTraits key="traits" notEnabled="YES"/>
-                                    </accessibility>
-                                </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Khai Le 0005" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oPD-Bq-5bL">
-                                    <rect key="frame" x="10" y="20" width="190" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Connected" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="H1V-9Y-ZiB">
-                                    <rect key="frame" x="10" y="100" width="150" height="20"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xb3-PZ-pCb">
-                                    <rect key="frame" x="10" y="60" width="207" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                    <color key="textColor" red="0.066666666669999999" green="0.72941176470000002" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <view tag="11" contentMode="scaleAspectFit" misplaced="YES" id="127" userLabel="preview">
-                                    <rect key="frame" x="275" y="20" width="77" height="104"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="dNq-CH-fkT">
-                                    <rect key="frame" x="164" y="500" width="50" height="50"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" backgroundImage="capture_screen"/>
-                                    <connections>
-                                        <action selector="iconCaptureScreenClicked:" destination="-1" eventType="touchUpInside" id="2zV-Aj-dbM"/>
-                                    </connections>
-                                </button>
-                                <activityIndicatorView hidden="YES" opaque="NO" tag="12" contentMode="scaleToFill" misplaced="YES" animating="YES" style="whiteLarge" id="144" userLabel="waitIndicator">
-                                    <rect key="frame" x="169" y="257" width="37" height="37"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                </activityIndicatorView>
                             </subviews>
                             <color key="backgroundColor" red="0.0039215686269999999" green="0.18039215689999999" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
@@ -1372,7 +1297,6 @@
         <image name="camera_switch_default.png" width="52" height="51"/>
         <image name="camera_switch_disabled.png" width="52" height="51"/>
         <image name="camera_switch_over.png" width="52" height="51"/>
-        <image name="capture_screen" width="300" height="300"/>
         <image name="color_A.png" width="2" height="2"/>
         <image name="color_C.png" width="2" height="2"/>
         <image name="color_D.png" width="2" height="2"/>
@@ -1385,7 +1309,6 @@
         <image name="footer_dialer_default.png" width="27" height="27"/>
         <image name="footer_dialer_disabled.png" width="27" height="27"/>
         <image name="history_chat_indicator.png" width="14" height="13"/>
-        <image name="ic_logo" width="200" height="200"/>
         <image name="micro_default.png" width="29" height="37"/>
         <image name="micro_disabled.png" width="29" height="37"/>
         <image name="micro_selected.png" width="29" height="37"/>
@@ -1413,7 +1336,7 @@
         <image name="numpad_hash_default.png" width="53" height="49"/>
         <image name="numpad_hash_over.png" width="53" height="49"/>
         <image name="numpad_over_background.png" width="2" height="2"/>
-        <image name="numpad_star_default.png" width="53" height="51"/>
+        <image name="numpad_star_default.png" width="201" height="201"/>
         <image name="numpad_star_over.png" width="53" height="51"/>
         <image name="options_add_call_default.png" width="30" height="30"/>
         <image name="options_add_call_disabled.png" width="30" height="30"/>

@@ -45,7 +45,7 @@
 @end
 
 @implementation AllContactsViewController
-@synthesize _iconClear, _tfSearch, _tbContacts, _viewSearch, _lbSearch, _imgBgSearch, _iconSearch, _lbNoContacts;
+@synthesize _tbContacts, _lbNoContacts;
 @synthesize _searchResults, _contactSections;
 
 - (void)viewDidLoad {
@@ -80,8 +80,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self showContentWithCurrentLanguage];
-    
     if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
         [waitingHud showInView:[LinphoneAppDelegate sharedInstance].window animated:YES];
         
@@ -90,24 +88,6 @@
     }else{
         [waitingHud dismissAnimated:YES];
         _tbContacts.hidden = NO;
-        
-        if ([_tfSearch.text isEqualToString:@""]) {
-            _iconClear.hidden = YES;
-            isSearching = NO;
-            
-            if ([LinphoneAppDelegate sharedInstance].listContacts.count > 0) {
-                _lbSearch.hidden = YES;
-            }else{
-                _lbSearch.hidden = NO;
-            }
-            [_tbContacts reloadData];
-        }else{
-            _iconClear.hidden = NO;
-            _lbSearch.hidden = YES;
-            isSearching = YES;
-            
-            [self startSearchPhoneBook];
-        }
     }
     
     //  notifications
@@ -121,6 +101,9 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewContact)
                                                  name:addNewContactInContactView object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchContactWithValue:)
+                                                 name:@"searchContactWithValue" object:nil];
     //  ---------
 }
 
@@ -132,15 +115,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)_iconClearClicked:(id)sender {
-    isSearching = false;
-    _tfSearch.text = @"";
-    [_tfSearch endEditing: true];
-    _iconClear.hidden = YES;
-    _lbSearch.hidden = NO;
-    [_tbContacts reloadData];
 }
 
 #pragma mark - My Functions
@@ -166,69 +140,19 @@
     [refreshControl endRefreshing];
 }
 
-- (void)showContentWithCurrentLanguage {
-    _lbSearch.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_search_contact];
-}
-
 - (void)addNewContact {
     [[PhoneMainView instance] changeCurrentView:[NewContactViewController compositeViewDescription] push: true];
 }
 
 - (void)autoLayoutForView {
-    float hSearch = 60.0;
-    
     if (SCREEN_WIDTH > 320) {
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }else{
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
     }
     
-    //  view search
-    [_viewSearch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo(hSearch);
-    }];
-    
-    [_imgBgSearch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(_viewSearch);
-    }];
-    
-    [_iconSearch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_viewSearch).offset(10);
-        make.centerY.equalTo(_viewSearch.mas_centerY);
-        make.width.height.mas_equalTo(30.0);
-    }];
-    
-    _iconClear.hidden = YES;
-    [_iconClear mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_viewSearch.mas_right).offset(-10);
-        make.centerY.equalTo(_viewSearch.mas_centerY);
-        make.width.height.mas_equalTo(30.0);
-    }];
-    
-    [_tfSearch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_iconSearch.mas_right).offset(5);
-        make.right.equalTo(_iconClear.mas_left).offset(-5);
-        make.centerY.equalTo(_viewSearch.mas_centerY);
-        make.height.mas_equalTo(30.0);
-    }];
-    _tfSearch.font = textFont;
-    _tfSearch.borderStyle = UITextBorderStyleNone;
-    [_tfSearch addTarget:self
-                  action:@selector(onSearchContactChange:)
-        forControlEvents:UIControlEventEditingChanged];
-    
-    _lbSearch.font = textFont;
-    [_lbSearch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_iconSearch.mas_right).offset(5);
-        make.right.equalTo(_iconClear.mas_left).offset(-5);
-        make.centerY.equalTo(_viewSearch.mas_centerY);
-        make.height.mas_equalTo(30.0);
-    }];
-    
     [_tbContacts mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_viewSearch.mas_bottom);
-        make.left.right.equalTo(self.view);
+        make.top.left.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
     }];
     _tbContacts.delegate = self;
@@ -254,64 +178,6 @@
             _tbContacts.scrollEnabled = YES;
         }else{
             _tbContacts.scrollEnabled = NO;
-        }
-    }
-}
-
-//  search contact
-- (void)onSearchContactChange: (UITextField *)textField {
-    if (textField.text.length == 0) {
-        isSearching = false;
-        _iconClear.hidden = YES;
-        _lbSearch.hidden = NO;
-        [_tbContacts reloadData];
-    }else{
-        _iconClear.hidden = NO;
-        _lbSearch.hidden = YES;
-        
-        isSearching = true;
-        
-        [searchTimer invalidate];
-        searchTimer = nil;
-        searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self
-                                                     selector:@selector(startSearchPhoneBook)
-                                                     userInfo:nil repeats:NO];
-    }
-}
-
-- (void)startSearchPhoneBook {
-    NSString *strSearch = _tfSearch.text;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [self searchPhoneBook: strSearch];
-        dispatch_async(dispatch_get_main_queue(), ^(void){
-            [_tbContacts reloadData];
-        });
-    });
-}
-
-- (void)searchPhoneBook: (NSString *)strSearch
-{
-    if (_searchResults == nil) {
-        _searchResults = [[NSMutableArray alloc] init];
-    }
-    
-    NSMutableArray *tmpList = [[NSMutableArray alloc] initWithArray: [LinphoneAppDelegate sharedInstance].listContacts];
-    
-    //  search theo ten va sipPhone
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_fullName contains[cd] %@ OR _sipPhone contains[cd] %@", strSearch, strSearch];
-    [_searchResults removeAllObjects];
-    NSArray *filter = [tmpList filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        [_searchResults addObjectsFromArray: filter];
-        [tmpList removeObjectsInArray: filter];
-    }
-    
-    predicate = [NSPredicate predicateWithFormat:@"_valueStr contains[cd] %@", strSearch];
-    for (int iCount=0; iCount<tmpList.count; iCount++) {
-        ContactObject *contact = [tmpList objectAtIndex: iCount];
-        NSArray *filter = [contact._listPhone filteredArrayUsingPredicate: predicate];
-        if (filter.count > 0) {
-            [_searchResults addObject: contact];
         }
     }
 }
@@ -576,6 +442,47 @@
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
     [self.view endEditing: true];
+}
+
+//  Added by Khai Le on 04/10/2018
+- (void)searchContactWithValue: (NSNotification *)notif {
+    id object = [notif object];
+    if ([object isKindOfClass:[NSString class]])
+    {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            [self searchPhoneBook: object];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [_tbContacts reloadData];
+            });
+        });
+    }
+}
+
+- (void)searchPhoneBook: (NSString *)strSearch
+{
+    if (_searchResults == nil) {
+        _searchResults = [[NSMutableArray alloc] init];
+    }
+    
+    NSMutableArray *tmpList = [[NSMutableArray alloc] initWithArray: [LinphoneAppDelegate sharedInstance].listContacts];
+    
+    //  search theo ten va sipPhone
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_fullName contains[cd] %@ OR _sipPhone contains[cd] %@", strSearch, strSearch];
+    [_searchResults removeAllObjects];
+    NSArray *filter = [tmpList filteredArrayUsingPredicate: predicate];
+    if (filter.count > 0) {
+        [_searchResults addObjectsFromArray: filter];
+        [tmpList removeObjectsInArray: filter];
+    }
+    
+    predicate = [NSPredicate predicateWithFormat:@"_valueStr contains[cd] %@", strSearch];
+    for (int iCount=0; iCount<tmpList.count; iCount++) {
+        ContactObject *contact = [tmpList objectAtIndex: iCount];
+        NSArray *filter = [contact._listPhone filteredArrayUsingPredicate: predicate];
+        if (filter.count > 0) {
+            [_searchResults addObject: contact];
+        }
+    }
 }
 
 @end

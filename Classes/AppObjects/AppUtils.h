@@ -117,4 +117,8 @@
 + (UIColor *)randomColorWithAlpha: (float)alpha;
 + (void)sendMessageForOfflineForUser: (NSString *)IDRecipient fromSender: (NSString *)Sender withContent: (NSString *)content andTypeMessage: (NSString *)typeMessage withGroupID: (NSString *)GroupID;
 
+//  Added by Khai Le on 04/10/2018
++ (void)addCornerRadiusTopLeftAndBottomLeftForButton: (id)view radius: (float)radius withColor: (UIColor *)borderColor border: (float)borderWidth;
++ (void)addCornerRadiusTopRightAndBottomRightForButton: (id)view radius: (float)radius withColor: (UIColor *)borderColor border: (float)borderWidth;
+
 @end

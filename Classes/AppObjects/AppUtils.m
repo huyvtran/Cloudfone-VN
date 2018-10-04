@@ -973,5 +973,55 @@
         NSLog(@"Connection Successful");
     }
 }
+//  Added by Khai Le on 04/10/2018
++ (void)addCornerRadiusTopLeftAndBottomLeftForButton: (id)view radius: (float)radius withColor: (UIColor *)borderColor border: (float)borderWidth{
+    if ([view isKindOfClass:[UIView class]]) {
+        CAShapeLayer * maskLayer = [CAShapeLayer layer];
+        maskLayer.path = [UIBezierPath bezierPathWithRoundedRect: [(UIView *)view bounds] byRoundingCorners: UIRectCornerTopLeft | UIRectCornerBottomLeft cornerRadii: (CGSize){radius, radius}].CGPath;
+        [(UIView *)view layer].mask = maskLayer;
+        
+        //Give Border
+        //Create path for border
+        UIBezierPath *borderPath = [UIBezierPath bezierPathWithRoundedRect:[(UIView *)view bounds]
+                                                         byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft
+                                                               cornerRadii:CGSizeMake(radius, radius)];
+        // Create the shape layer and set its path
+        CAShapeLayer *borderLayer = [CAShapeLayer layer];
+        
+        borderLayer.frame       = [(UIView *)view bounds];
+        borderLayer.path        = borderPath.CGPath;
+        borderLayer.strokeColor = borderColor.CGColor;
+        borderLayer.fillColor   = UIColor.clearColor.CGColor;
+        borderLayer.lineWidth   = borderWidth;
+        
+        //Add this layer to give border.
+        [[(UIView *)view layer] addSublayer:borderLayer];
+    }
+}
+
++ (void)addCornerRadiusTopRightAndBottomRightForButton: (id)view radius: (float)radius withColor: (UIColor *)borderColor border: (float)borderWidth {
+    if ([view isKindOfClass:[UIView class]]) {
+        CAShapeLayer * maskLayer = [CAShapeLayer layer];
+        maskLayer.path = [UIBezierPath bezierPathWithRoundedRect: [(UIView *)view bounds] byRoundingCorners: UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii: (CGSize){radius, radius}].CGPath;
+        [(UIView *)view layer].mask = maskLayer;
+        
+        //Give Border
+        //Create path for border
+        UIBezierPath *borderPath = [UIBezierPath bezierPathWithRoundedRect:[(UIView *)view bounds]
+                                                         byRoundingCorners:UIRectCornerTopRight | UIRectCornerBottomRight
+                                                               cornerRadii:CGSizeMake(radius, radius)];
+        // Create the shape layer and set its path
+        CAShapeLayer *borderLayer = [CAShapeLayer layer];
+        
+        borderLayer.frame       = [(UIView *)view bounds];
+        borderLayer.path        = borderPath.CGPath;
+        borderLayer.strokeColor = borderColor.CGColor;
+        borderLayer.fillColor   = UIColor.clearColor.CGColor;
+        borderLayer.lineWidth   = borderWidth;
+        
+        //Add this layer to give border.
+        [[(UIView *)view layer] addSublayer:borderLayer];
+    }
+}
 
 @end

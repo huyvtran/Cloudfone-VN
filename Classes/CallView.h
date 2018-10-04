@@ -45,16 +45,11 @@ typedef enum typeCall{
   @private
 	UITapGestureRecognizer *singleFingerTap;
 	NSTimer *hideControlsTimer;
-	NSTimer *videoDismissTimer;
 	BOOL videoHidden;
 	VideoZoomHandler *videoZoomHandler;
 }
 
 @property(nonatomic, strong) IBOutlet CallPausedTableView *pausedCallsTable;
-
-@property(nonatomic, strong) IBOutlet UIView *videoView;
-@property(nonatomic, strong) IBOutlet UIView *videoPreview;
-@property(nonatomic, strong) IBOutlet UIActivityIndicatorView *videoWaitingForFirstImage;
 @property(weak, nonatomic) IBOutlet UIView *callView;
 
 @property(nonatomic, strong) IBOutlet UIPauseButton *callPauseButton;
@@ -110,8 +105,6 @@ typedef enum typeCall{
 - (IBAction)onNumpadClick:(id)sender;
 - (IBAction)onChatClick:(id)sender;
 
-@property (weak, nonatomic) IBOutlet UIView *_viewHeader;
-@property (weak, nonatomic) IBOutlet UIImageView *_icLogo;
 @property (weak, nonatomic) IBOutlet UILabel *_lbQuality;
 
 @property (weak, nonatomic) IBOutlet UIView *_viewInfo;
@@ -120,14 +113,6 @@ typedef enum typeCall{
 
 @property (weak, nonatomic) IBOutlet UIView *_viewCommand;
 @property (weak, nonatomic) IBOutlet UIScrollView *_scrollView;
-
-
-@property (weak, nonatomic) IBOutlet UIView *viewVideoCall;
-
-@property (weak, nonatomic) IBOutlet UILabel *_lbVideoTime;
-@property (weak, nonatomic) IBOutlet UILabel *lbAddressVideoCall;
-@property (weak, nonatomic) IBOutlet UILabel *lbStateVideoCall;
-@property (weak, nonatomic) IBOutlet UIButton *iconCaptureScreen;
 
 //  Conference view
 @property (weak, nonatomic) IBOutlet UIView *detailConference;
@@ -139,7 +124,6 @@ typedef enum typeCall{
 @property (weak, nonatomic) IBOutlet UIButton *btnEndCallConf;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionConference;
-- (IBAction)iconCaptureScreenClicked:(UIButton *)sender;
 
 @property (nonatomic, strong) NSTimer *durationTimer;
 

@@ -40,7 +40,6 @@
 #import "UIMiniKeypad.h"
 
 #import "NSDatabase.h"
-#import "FooterVideoCallView.h"
 
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES1/gl.h>
@@ -74,23 +73,13 @@ const NSInteger SECURE_BUTTON_TAG = 5;
     
     const MSList *list;
     
-    UITapGestureRecognizer *tapOnVideoCall;
-    
     NSTimer *updateTimeConf;
-    
-    NSMutableAttributedString *videoStateString;
     
     //  End call trong add keypad
     UIHangUpButton *btEndCall;
     UIButton *btHideKeypad;
     
     float hIconEndCall;
-    FooterVideoCallView *videoCallFooterView;
-    
-    UIImageView *icVideoCall;
-    UIImageView *icWaveVideo;
-    UIImageView *icOffCameraForPreview;
-    UILabel *lbMsgCount;
 }
 
 @end
@@ -98,9 +87,8 @@ const NSInteger SECURE_BUTTON_TAG = 5;
 @implementation CallView {
 	BOOL hiddenVolume;
 }
-@synthesize _viewHeader, _icLogo, _lbQuality, _viewInfo, _lbState, _bgHeader, _viewCommand, _scrollView;
+@synthesize _lbQuality, _viewInfo, _lbState, _bgHeader, _viewCommand, _scrollView;
 @synthesize detailConference, _bgHeaderConf, lbAddressConf, _lbConferenceDuration, btnAddCallConf, btnEndCallConf, avatarConference, collectionConference;
-@synthesize viewVideoCall, _lbVideoTime, lbAddressVideoCall, lbStateVideoCall, iconCaptureScreen;
 @synthesize durationTimer;
 
 #pragma mark - Lifecycle Functions
@@ -147,25 +135,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 // TODO: fixme! video preview frame is too big compared to openGL preview
 // frame, so until this is fixed, temporary disabled it.
 #if 0
-	_videoPreview.layer.borderColor = UIColor.whiteColor.CGColor;
-	_videoPreview.layer.borderWidth = 1;
 #endif
-    
-    
-    tapOnVideoCall = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(whenTapOnVideoCall)];
-    tapOnVideoCall.delegate = self;
-    [viewVideoCall addGestureRecognizer: tapOnVideoCall];
-    
-    [tapOnVideoCall requireGestureRecognizerToFail: singleFingerTap];
     singleFingerTap.numberOfTapsRequired = 2;
     singleFingerTap.cancelsTouchesInView = NO;
-	[viewVideoCall addGestureRecognizer:singleFingerTap];
-	[videoZoomHandler setup: viewVideoCall];
-
-	UIPanGestureRecognizer *dragndrop =
-		[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveVideoPreview:)];
-	dragndrop.minimumNumberOfTouches = 1;
-	[_videoPreview addGestureRecognizer:dragndrop];
 
 	[_zeroButton setDigit:'0'];
 	[_zeroButton setDtmf:true];
@@ -226,11 +198,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[self hideSpeaker:LinphoneManager.instance.bluetoothAvailable];
 	[self callDurationUpdate];
 	[self onCurrentCallChange];
-	// Set windows (warn memory leaks)
-	linphone_core_set_native_video_window_id(LC, (__bridge void *)(_videoView));
-	linphone_core_set_native_preview_window_id(LC, (__bridge void *)(_videoPreview));
-
-	[self previewTouchLift];
+	
 	// Enable tap
     singleFingerTap.enabled = YES;
     
@@ -259,14 +227,9 @@ static UICompositeViewDescription *compositeDescription = nil;
         
         _callView.hidden = NO;
         _conferenceView.hidden = YES;
-        viewVideoCall.hidden = YES;
-        
-        //  Leo Kelvin
-        //  updateTime = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(updateCall) userInfo:nil repeats:YES];
     }else{
         _callView.hidden = YES;
         _conferenceView.hidden = NO;
-        viewVideoCall.hidden = YES;
     }
 }
 
@@ -285,55 +248,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[self callUpdate:call state:state animated:FALSE];
 }
 
-- (void)testPressed {
-    linphone_core_enable_chat(LC);
-    
-    LinphoneContent *content = linphone_core_create_content(LC);
-    linphone_content_set_string_buffer(content, "KL");
-    linphone_content_set_type(content, "text/plain");
-
-    LinphoneInfoMessage *msg = linphone_core_create_info_message(LC);
-    linphone_info_message_set_content(msg, content);
-
-    LinphoneCall *call = linphone_core_get_current_call(LC);
-    linphone_call_send_info_message(call, msg);
-    [self.view makeToast:@"SEND LINPHONE INFO MESSAGE" duration:2.0 position:CSToastPositionCenter];
-    
-    //  NSString *username = USERNAME;
-    NSString *phone = [self getPhoneNumberOfCall];
-    NSString *uri;
-    LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress: phone];
-    if (addr) {
-        uri = [NSString stringWithUTF8String:linphone_address_as_string(addr)];
-    } else {
-        uri = phone;
-    }
-    LinphoneChatRoom *chat_room = linphone_core_get_chat_room_from_uri(LC, uri.UTF8String);
-    LinphoneChatMessage *msg1 = linphone_chat_room_create_message(chat_room, "LQK");
-    linphone_chat_room_send_chat_message(chat_room, msg1);
-    
-    [self.view makeToast:@"SEND ROOM MESSAGE" duration:2.0 position:CSToastPositionCenter];
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-    
-	[self disableVideoDisplay:TRUE animated:NO];
-
-	if (hideControlsTimer != nil) {
-		[hideControlsTimer invalidate];
-		hideControlsTimer = nil;
-	}
 
 	if (hiddenVolume) {
 		[PhoneMainView.instance setVolumeHidden:FALSE];
 		hiddenVolume = FALSE;
-	}
-
-	if (videoDismissTimer) {
-		[self dismissVideoActionSheet:videoDismissTimer];
-		[videoDismissTimer invalidate];
-		videoDismissTimer = nil;
 	}
 
 	// Remove observer
@@ -343,8 +263,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 
-    [lbMsgCount removeFromSuperview];
-    
 	[[UIApplication sharedApplication] setIdleTimerDisabled:false];
 	UIDevice.currentDevice.proximityMonitoringEnabled = NO;
 
@@ -360,19 +278,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-	[self previewTouchLift];
 	[self hideStatusBar:!videoHidden && (_nameLabel.alpha <= 0.f)];
-}
-
-#pragma mark - UI modification
-
-- (void)hideSpinnerIndicator:(LinphoneCall *)call {
-	_videoWaitingForFirstImage.hidden = TRUE;
-}
-
-static void hideSpinner(LinphoneCall *call, void *user_data) {
-	CallView *thiz = (__bridge CallView *)user_data;
-	[thiz hideSpinnerIndicator:call];
 }
 
 - (void)updateBottomBar:(LinphoneCall *)call state:(LinphoneCallState)state {
@@ -411,122 +317,7 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
 }
 
 - (void)toggleControls:(id)sender {
-	bool controlsHidden = (_bottomBar.alpha == 0.0);
-	[self hideControls:!controlsHidden sender:sender];
-}
-
-- (void)timerHideControls:(id)sender {
-	[self hideControls:TRUE sender:sender];
-}
-
-- (void)hideControls:(BOOL)hidden sender:(id)sender {
-	if (videoHidden && hidden)
-		return;
-
-	if (hideControlsTimer) {
-		[hideControlsTimer invalidate];
-		hideControlsTimer = nil;
-	}
-
-	if ([[PhoneMainView.instance currentView] equal:CallView.compositeViewDescription]) {
-		// show controls
-		[UIView beginAnimations:nil context:nil];
-		[UIView setAnimationDuration:0.35];
-        
-		_nameLabel.alpha = _durationLabel.alpha = (hidden ? 0 : .8f);
-
-		[self hideStatusBar:hidden];
-
-		[UIView commitAnimations];
-
-		[PhoneMainView.instance hideTabBar:hidden];
-
-		if (!hidden) {
-			// hide controls in 5 sec
-			hideControlsTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
-																 target:self
-															   selector:@selector(timerHideControls:)
-															   userInfo:nil
-																repeats:NO];
-		}
-	}
-}
-
-- (void)disableVideoDisplay:(BOOL)disabled animated:(BOOL)animation {
-	if (disabled == videoHidden && animation)
-		return;
-	videoHidden = disabled;
-
-	if (!disabled) {
-		[videoZoomHandler resetZoom];
-	}
-	if (animation) {
-		[UIView beginAnimations:nil context:nil];
-		[UIView setAnimationDuration:1.0];
-	}
-
-    //  Leo Kelvin
-    if (disabled) {
-        _callView.hidden = NO;
-        viewVideoCall.hidden = YES;
-    }else{
-        _callView.hidden = YES;
-        viewVideoCall.hidden = NO;
-    }
-
-	[self hideControls:!disabled sender:nil];
-
-	if (animation) {
-		[UIView commitAnimations];
-	}
-
-	// only show camera switch button if we have more than 1 camera
-	_videoPreview.hidden = (disabled || !linphone_core_self_view_enabled(LC));
-
-	if (hideControlsTimer != nil) {
-		[hideControlsTimer invalidate];
-		hideControlsTimer = nil;
-	}
-
-    [[PhoneMainView instance] fullScreen: false];
-    /*  Leo Kelvin
-	[PhoneMainView.instance fullScreen:!disabled];
-	[PhoneMainView.instance hideTabBar:!disabled];
-    */
-
-	if (!disabled) {
-#ifdef TEST_VIDEO_VIEW_CHANGE
-		[NSTimer scheduledTimerWithTimeInterval:5.0
-										 target:self
-									   selector:@selector(_debugChangeVideoView)
-									   userInfo:nil
-										repeats:YES];
-#endif
-		// [self batteryLevelChanged:nil];
-
-		[_videoWaitingForFirstImage setHidden:NO];
-		[_videoWaitingForFirstImage startAnimating];
-
-		LinphoneCall *call = linphone_core_get_current_call(LC);
-		// linphone_call_params_get_used_video_codec return 0 if no video stream enabled
-		if (call != NULL && linphone_call_params_get_used_video_codec(linphone_call_get_current_params(call))) {
-			linphone_call_set_next_video_frame_decoded_callback(call, hideSpinner, (__bridge void *)(self));
-		}
-	}
-}
-
-- (void)displayVideoCall:(BOOL)animated {
-    float x = 0.5;
-    float y = 0.5;
-    linphone_call_zoom_video(linphone_core_get_current_call(LC), 1.32, &x, &y);
-    
-    [self addFooterViewForVideoCall];
-    
-	[self disableVideoDisplay:FALSE animated:animated];
-}
-
-- (void)displayAudioCall:(BOOL)animated {
-	[self disableVideoDisplay:TRUE animated:animated];
+	
 }
 
 - (void)hideStatusBar:(BOOL)hide {
@@ -550,7 +341,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
         duration = 0;
     }
 	_durationLabel.text = [LinphoneUtils durationToString:duration];
-    _lbVideoTime.text = [LinphoneUtils durationToString:duration];
 
     if (duration > 0) {
         _lbState.text = [appDelegate.localization localizedStringForKey:text_connected];
@@ -577,60 +367,14 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
         float quality = linphone_call_get_average_quality(call);
         if(quality < 1) {
             _lbQuality.text = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:text_quality], [appDelegate.localization localizedStringForKey:text_quality_worse]];
-            
-            NSRange range = [_lbQuality.text rangeOfString:[appDelegate.localization localizedStringForKey:text_quality_worse]];
-            if (range.location != NSNotFound) {
-                videoStateString = [[NSMutableAttributedString alloc] initWithString:_lbQuality.text];
-                [videoStateString addAttribute:NSForegroundColorAttributeName
-                               value:[UIColor redColor]
-                               range:NSMakeRange(range.location, range.length)];
-                lbStateVideoCall.attributedText = videoStateString;
-            }
         } else if (quality < 2) {
             _lbQuality.text = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:text_quality], [appDelegate.localization localizedStringForKey:text_quality_very_low]];
-            lbStateVideoCall.text = _lbQuality.text;
-            
-            NSRange range = [_lbQuality.text rangeOfString:[appDelegate.localization localizedStringForKey:text_quality_very_low]];
-            if (range.location != NSNotFound) {
-                videoStateString = [[NSMutableAttributedString alloc] initWithString:_lbQuality.text];
-                [videoStateString addAttribute:NSForegroundColorAttributeName
-                                         value:[UIColor orangeColor]
-                                         range:NSMakeRange(range.location, range.length)];
-                lbStateVideoCall.attributedText = videoStateString;
-            }
         } else if (quality < 3) {
             _lbQuality.text = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:text_quality], [appDelegate.localization localizedStringForKey:text_quality_low]];
-            
-            NSRange range = [_lbQuality.text rangeOfString:[appDelegate.localization localizedStringForKey:text_quality_low]];
-            if (range.location != NSNotFound) {
-                videoStateString = [[NSMutableAttributedString alloc] initWithString:_lbQuality.text];
-                [videoStateString addAttribute:NSForegroundColorAttributeName
-                                         value:[UIColor orangeColor]
-                                         range:NSMakeRange(range.location, range.length)];
-                lbStateVideoCall.attributedText = videoStateString;
-            }
         } else if(quality < 4){
             _lbQuality.text = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:text_quality], [appDelegate.localization localizedStringForKey:text_quality_average]];
-            
-            NSRange range = [_lbQuality.text rangeOfString:[appDelegate.localization localizedStringForKey:text_quality_average]];
-            if (range.location != NSNotFound) {
-                videoStateString = [[NSMutableAttributedString alloc] initWithString:_lbQuality.text];
-                [videoStateString addAttribute:NSForegroundColorAttributeName
-                                         value:[UIColor yellowColor]
-                                         range:NSMakeRange(range.location, range.length)];
-                lbStateVideoCall.attributedText = videoStateString;
-            }
         } else{
             _lbQuality.text = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:text_quality], [appDelegate.localization localizedStringForKey:text_quality_good]];
-            
-            NSRange range = [_lbQuality.text rangeOfString:[appDelegate.localization localizedStringForKey:text_quality_good]];
-            if (range.location != NSNotFound) {
-                videoStateString = [[NSMutableAttributedString alloc] initWithString:_lbQuality.text];
-                [videoStateString addAttribute:NSForegroundColorAttributeName
-                                         value:[UIColor colorWithRed:(17/255.0) green:(186/255.0) blue:(153/255.0) alpha:1.0]
-                                         range:NSMakeRange(range.location, range.length)];
-                lbStateVideoCall.attributedText = videoStateString;
-            }
         }
     }
 }
@@ -764,18 +508,11 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
     if(linphone_core_get_calls_nb([LinphoneManager getLc]) < 2 ){
         [self btnHideKeypadPressed];
         
-        //  Neu dang goi video call thi thoi
-        if (viewVideoCall == nil || viewVideoCall.hidden) {
-            _callView.hidden = NO;
-            _conferenceView.hidden = YES;
-            viewVideoCall.hidden = YES;
-        }else{
-            NSLog(@"Dang bat video call");
-        }
+        _callView.hidden = NO;
+        _conferenceView.hidden = YES;
     }else{
         _callView.hidden = YES;
         _conferenceView.hidden = NO;
-        viewVideoCall.hidden = YES;
     }
 
 	static LinphoneCall *currentCall = NULL;
@@ -787,16 +524,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
 	// Fake call update
 	if (call == NULL) {
 		return;
-	}
-
-	BOOL shouldDisableVideo =
-		(!currentCall || !linphone_call_params_video_enabled(linphone_call_get_current_params(currentCall)));
-	if (videoHidden != shouldDisableVideo) {
-		if (!shouldDisableVideo) {
-			[self displayVideoCall:animated];
-		} else {
-			[self displayAudioCall:animated];
-		}
 	}
 
 	if (state != LinphoneCallPausedByRemote) {
@@ -849,8 +576,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
             buttonMessage.enabled = NO;
             buttonRecord.enabled = YES;
             
-            lbStateVideoCall.text = [NSString stringWithFormat:@"%@", [appDelegate.localization localizedStringForKey:text_connected]];
-            
             // Add tất cả các cuộc gọi vào nhóm
             if (linphone_core_get_calls_nb(LC) >= 2) {
                 linphone_core_add_all_to_conference([LinphoneManager getLc]);
@@ -896,20 +621,17 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
 				 (([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) &&
 				  floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max))) {
 				linphone_core_defer_call_update(LC, call);
-				[self displayAskToEnableVideoCall:call];
+				
 			} else if (linphone_call_params_video_enabled(current) && !linphone_call_params_video_enabled(remote)) {
-				[self displayAudioCall:animated];
+				
 			}
 			break;
 		}
 		case LinphoneCallPausing:
         case LinphoneCallPaused:{
-            //  Close by Khai Le
-            //  [self displayAudioCall:animated];
             break;
         }
 		case LinphoneCallPausedByRemote:
-			[self displayAudioCall:animated];
 			if (call == linphone_core_get_current_call(LC)) {
 				//  _pausedByRemoteView.hidden = NO;
 			}
@@ -928,108 +650,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
         }
 		default:
 			break;
-	}
-}
-
-#pragma mark - ActionSheet Functions
-
-- (void)displayAskToEnableVideoCall:(LinphoneCall *)call {
-	if (linphone_core_get_video_policy(LC)->automatically_accept &&
-		!([UIApplication sharedApplication].applicationState == UIApplicationStateBackground))
-		return;
-
-	NSString *username = [FastAddressBook displayNameForAddress:linphone_call_get_remote_address(call)];
-	NSString *title = [NSString stringWithFormat:NSLocalizedString(@"%@ would like to enable video", nil), username];
-	if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground &&
-		floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max) {
-		UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-		content.title = NSLocalizedString(@"Video request", nil);
-		content.body = title;
-		content.categoryIdentifier = @"video_request";
-		content.userInfo = @{
-			@"CallId" : [NSString stringWithUTF8String:linphone_call_log_get_call_id(linphone_call_get_call_log(call))]
-		};
-
-		UNNotificationRequest *req =
-			[UNNotificationRequest requestWithIdentifier:@"video_request" content:content trigger:NULL];
-		[[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:req
-															   withCompletionHandler:^(NSError *_Nullable error) {
-																 // Enable or disable features based on authorization.
-																 if (error) {
-																	 NSLog(@"Error while adding notification request :");
-																	 NSLog(@"%@", error.description);
-																 }
-															   }];
-	} else {
-		UIConfirmationDialog *sheet = [UIConfirmationDialog ShowWithMessage:title
-			cancelMessage:nil
-			confirmMessage:NSLocalizedString(@"ACCEPT", nil)
-			onCancelClick:^() {
-			  NSLog(@"User declined video proposal");
-			  if (call == linphone_core_get_current_call(LC)) {
-				  LinphoneCallParams *params = linphone_core_create_call_params(LC, call);
-				  linphone_core_accept_call_update(LC, call, params);
-				  linphone_call_params_destroy(params);
-				  [videoDismissTimer invalidate];
-				  videoDismissTimer = nil;
-			  }
-			}
-			onConfirmationClick:^() {
-			  NSLog(@"User accept video proposal");
-			  if (call == linphone_core_get_current_call(LC)) {
-				  LinphoneCallParams *params = linphone_core_create_call_params(LC, call);
-				  linphone_call_params_enable_video(params, TRUE);
-				  linphone_core_accept_call_update(LC, call, params);
-				  linphone_call_params_destroy(params);
-				  [videoDismissTimer invalidate];
-				  videoDismissTimer = nil;
-			  }
-			}
-			inController:self];
-		videoDismissTimer = [NSTimer scheduledTimerWithTimeInterval:30
-															 target:self
-														   selector:@selector(dismissVideoActionSheet:)
-														   userInfo:sheet
-															repeats:NO];
-	}
-}
-
-- (void)dismissVideoActionSheet:(NSTimer *)timer {
-	UIConfirmationDialog *sheet = (UIConfirmationDialog *)timer.userInfo;
-	[sheet dismiss];
-}
-
-#pragma mark VideoPreviewMoving
-
-- (void)moveVideoPreview:(UIPanGestureRecognizer *)dragndrop {
-	CGPoint center = [dragndrop locationInView:_videoPreview.superview];
-	_videoPreview.center = center;
-	if (dragndrop.state == UIGestureRecognizerStateEnded) {
-		[self previewTouchLift];
-	}
-}
-
-- (CGFloat)coerce:(CGFloat)value betweenMin:(CGFloat)min andMax:(CGFloat)max {
-	return MAX(min, MIN(value, max));
-}
-
-- (void)previewTouchLift {
-	CGRect previewFrame = _videoPreview.frame;
-	previewFrame.origin.x = [self coerce:previewFrame.origin.x
-							  betweenMin:5
-								  andMax:(UIScreen.mainScreen.bounds.size.width - 5 - previewFrame.size.width)];
-	previewFrame.origin.y = [self coerce:previewFrame.origin.y
-							  betweenMin:5
-								  andMax:(UIScreen.mainScreen.bounds.size.height - 5 - previewFrame.size.height)];
-
-	if (!CGRectEqualToRect(previewFrame, _videoPreview.frame)) {
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-		  [UIView animateWithDuration:0.3
-						   animations:^{
-                               NSLog(@"Recentering preview to %@", NSStringFromCGRect(previewFrame));
-                               _videoPreview.frame = previewFrame;
-						   }];
-		});
 	}
 }
 
@@ -1060,7 +680,7 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
         hKeyboard = 200;
     }
     
-    float keypadY = _viewHeader.frame.origin.y+_viewHeader.frame.size.height + (SCREEN_HEIGHT-appDelegate._hStatus-_viewHeader.frame.size.height-hKeyboard)/2;
+    float keypadY = (SCREEN_HEIGHT-appDelegate._hStatus-hKeyboard)/2;
     
     viewKeypad.frame = CGRectMake((SCREEN_WIDTH-320)/2, keypadY, 320, hKeyboard);
     viewKeypad.tag = 10;
@@ -1142,7 +762,7 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
         hKeyboard = 200;
     }
     
-    float keypadY = _viewHeader.frame.origin.y+_viewHeader.frame.size.height + (SCREEN_HEIGHT-appDelegate._hStatus-_viewHeader.frame.size.height-hKeyboard)/2;
+    float keypadY = (SCREEN_HEIGHT-appDelegate._hStatus-hKeyboard)/2;
     
     viewKeypad.frame = CGRectMake((SCREEN_WIDTH-320)/2, keypadY, 320, hKeyboard);
     viewKeypad.tag = 10;
@@ -1336,19 +956,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
 }
 
 #pragma mark - My Functions
-- (void)changeCamera {
-    CABasicAnimation *animationView = [CABasicAnimation animationWithKeyPath:@"transform"];
-    self.view.layer.zPosition = 100;
-    CATransform3D transform = CATransform3DMakeRotation(M_PI, 0, 1, 0);
-    transform.m34 = 1.0/800.0;
-    [animationView setToValue:[NSValue valueWithCATransform3D:transform]];
-    [animationView setDuration:0.2];
-    [animationView setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-    [animationView setFillMode:kCAFillModeBoth];
-    [animationView setRemovedOnCompletion:YES];
-    //[animationView setDelegate:self];
-    [_videoPreview.layer addAnimation:animationView forKey:nil];
-}
 
 - (void)callEnded {
     buttonRecord.selected = NO;
@@ -1383,28 +990,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
     LinphoneCall* currentcall = linphone_core_get_current_call(lc);
     if (currentcall != nil) {
         linphone_core_terminate_call(lc, currentcall);
-    }
-}
-
-- (void)whenTapOnVideoCall {
-    if (videoCallFooterView.hidden) {
-        lbAddressVideoCall.hidden = NO;
-        icWaveVideo.hidden = NO;
-        lbStateVideoCall.hidden = NO;
-        icVideoCall.hidden = NO;
-        _lbVideoTime.hidden = NO;
-        videoCallFooterView.hidden = NO;
-        
-        iconCaptureScreen.hidden = YES;
-    }else{
-        lbAddressVideoCall.hidden = YES;
-        icWaveVideo.hidden = YES;
-        lbStateVideoCall.hidden = YES;
-        icVideoCall.hidden = YES;
-        _lbVideoTime.hidden = YES;
-        videoCallFooterView.hidden = YES;
-        
-        iconCaptureScreen.hidden = NO;
     }
 }
 
@@ -1463,9 +1048,7 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
         }
         dispatch_async(dispatch_get_main_queue(), ^(void){
             _nameLabel.text = fullName;
-            lbAddressVideoCall.text = fullName;
             lbAddressConf.text = fullName;
-            lbAddressVideoCall.text = fullName;
             
             if (![avatar isEqualToString:@""]) {
                 _avatarImage.image = [UIImage imageWithData: [NSData dataFromBase64String: avatar]];
@@ -1631,16 +1214,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
     [buttonMessage setEnabled:false];
     [_scrollView addSubview:buttonMessage];
     
-    lbMsgCount = [[UILabel alloc] initWithFrame: CGRectMake(buttonMessage.center.x+wButton/8, buttonMessage.frame.origin.y, wButton/4, wButton/4)];
-    lbMsgCount.backgroundColor = [UIColor redColor];
-    lbMsgCount.font = textFont;
-    lbMsgCount.textColor = [UIColor whiteColor];
-    lbMsgCount.textAlignment = NSTextAlignmentCenter;
-    lbMsgCount.layer.cornerRadius = wButton/8;
-    lbMsgCount.clipsToBounds = YES;
-    
-    [_scrollView addSubview: lbMsgCount];
-    
     // Send file button
     buttonSendfile = [[UIButton alloc] initWithFrame:CGRectMake(4*wButton, wButton, wButton, wButton)];
     [buttonSendfile setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_send]]
@@ -1752,14 +1325,11 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
     }
     
     //  View call binh thuong
-    [_viewHeader setFrame: CGRectMake(0, 0, SCREEN_WIDTH, 35.0)];
     
-    [_icLogo setFrame: CGRectMake(10, (_viewHeader.frame.size.height-22)/2, 22.0, 22.0)];
-    [_lbQuality setFrame: CGRectMake(_viewHeader.frame.size.width-_icLogo.frame.origin.x-200, 0, 200, _viewHeader.frame.size.height)];
     [_lbQuality setFont:[UIFont fontWithName:HelveticaNeue size:14.0]];
     [_lbQuality setTextColor: [UIColor whiteColor]];
     
-    [_callView setFrame: CGRectMake(0, _viewHeader.frame.origin.y+_viewHeader.frame.size.height, SCREEN_WIDTH, SCREEN_HEIGHT-(_viewHeader.frame.size.height+appDelegate._hStatus))];
+    [_callView setFrame: CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-appDelegate._hStatus)];
     
     //  float hHeader = SCREEN_WIDTH*445/1280;
     
@@ -1809,7 +1379,7 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
     [_viewCommand setBackgroundColor:[UIColor clearColor]];
     
     //  conference
-    [_conferenceView setFrame: CGRectMake(0, _viewHeader.frame.origin.y+_viewHeader.frame.size.height, SCREEN_WIDTH, _callView.frame.size.height)];
+    [_conferenceView setFrame: CGRectMake(0, 0, SCREEN_WIDTH, _callView.frame.size.height)];
     
     marginX = 5.0;
     wCollection = (SCREEN_WIDTH - 6*marginX)/2;
@@ -1855,36 +1425,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
     [btnEndCallConf addTarget:self
                        action:@selector(endConferenceCall)
              forControlEvents:UIControlEventTouchUpInside];
-    
-    //  video call
-    [viewVideoCall setFrame: CGRectMake(0, 0, SCREEN_WIDTH, _callView.frame.size.height+_viewHeader.frame.size.height)];
-    
-    if (SCREEN_WIDTH > 320) {
-        [_lbVideoTime setFont: [UIFont fontWithName:MYRIADPRO_REGULAR size:15.0]];
-    }else{
-        [_lbVideoTime setFont:[UIFont fontWithName:MYRIADPRO_REGULAR size:15.0]];
-    }
-    [_lbVideoTime setTextColor:[UIColor whiteColor]];
-    [_lbVideoTime setBackgroundColor:[UIColor clearColor]];
-    [_lbVideoTime setTextAlignment: NSTextAlignmentLeft];
-    
-    float wPreviewVideo;
-    if (SCREEN_WIDTH > 320) {
-        wPreviewVideo = 100.0;
-    }else{
-        wPreviewVideo = 80.0;
-    }
-    
-    //  _videoPreview.clipsToBounds = true;
-    [_videoPreview setFrame: CGRectMake(SCREEN_WIDTH-20-100, 20, 100, 135)];
-    _videoPreview.layer.cornerRadius = 10;
-    _videoPreview.layer.borderColor = [UIColor whiteColor].CGColor;
-    _videoPreview.layer.borderWidth = 1.0;
-    _videoPreview.clipsToBounds = YES;
-    
-    _videoView.frame = CGRectMake(0, 0, viewVideoCall.frame.size.width, viewVideoCall.frame.size.height);
-    
-    iconCaptureScreen.frame = CGRectMake((viewVideoCall.frame.size.width-50)/2, viewVideoCall.frame.size.height-50-15, 50.0, 50.0);
 }
 
 - (void)onAddCallForConference
@@ -1986,120 +1526,7 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    if (touch.view == _videoPreview)
-    {
-        return FALSE;
-    }
-    else
-    {
-
-        // here is remove keyBoard code
-        return TRUE;
-    }
-}
-
-- (void)turnOnOrTurnOffCamera
-{
-    /*  Leo Kelvin
-    LinphoneCall *call = linphone_core_get_current_call(LC);
-    BOOL enabled = linphone_call_camera_enabled(call);
-    if (enabled) {
-        if (call != NULL)
-        {
-            //  LinphoneCallParams *call_params = linphone_core_create_call_params(LC,call);
-            LinphoneCallParams* call_params = linphone_call_params_copy(linphone_call_get_current_params(call));
-            linphone_call_enable_camera(call, FALSE);
-            linphone_core_update_call(LC, call, call_params);
-            //linphone_call_accept_update(call, call_params);
-            
-            [videoCallFooterView.footerCameraOff setBackgroundImage:[UIImage imageNamed:@"call_camera_off_selected"]
-                                      forState:UIControlStateNormal];
-            icOffCameraForPreview.hidden = NO;
-        }
-    }else{
-        if (call != NULL) {
-            linphone_call_enable_camera(call, TRUE);
-            //linphone_core_update_call(LC, call, NULL);
-            [videoCallFooterView.footerCameraOff setBackgroundImage:[UIImage imageNamed:@"call_camera_off"]
-                                      forState:UIControlStateNormal];
-            icOffCameraForPreview.hidden = YES;
-        }
-    }   */
-    [[UIApplication sharedApplication] setIdleTimerDisabled: NO];
-    
-    if (!linphone_core_video_display_enabled(LC))
-        return;
-    
-    LinphoneCall *call = linphone_core_get_current_call(LC);
-    if (call) {
-        //  LinphoneCallParams *call_params = linphone_core_create_call_params(LC,call);
-        LinphoneCallParams* call_params = linphone_call_params_copy(linphone_call_get_current_params(call));
-        linphone_call_params_enable_video(call_params, FALSE);
-        linphone_core_update_call(LC, call, call_params);
-        linphone_call_params_destroy(call_params);
-    } else {
-        NSLog(@"Cannot toggle video button, because no current call");
-    }
-    [self displayAudioCall: true];
-}
-
-- (void)addFooterViewForVideoCall
-{
-    float hFooterView = 10 + hIconEndCall + 10;
-    if (videoCallFooterView == nil) {
-        NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"FooterVideoCallView" owner:nil options:nil];
-        for(id currentObject in toplevelObject){
-            if ([currentObject isKindOfClass:[FooterVideoCallView class]]) {
-                videoCallFooterView = (FooterVideoCallView *) currentObject;
-                break;
-            }
-        }
-        videoCallFooterView.frame = CGRectMake(0, viewVideoCall.frame.size.height-hFooterView, viewVideoCall.frame.size.width, hFooterView);
-        [videoCallFooterView setupUIForView];
-        
-        [videoCallFooterView.footerCameraOff addTarget:self
-                                                action:@selector(turnOnOrTurnOffCamera)
-                                      forControlEvents:UIControlEventTouchUpInside];
-        [videoCallFooterView.footerEndCall addTarget:self
-                                              action:@selector(endVideoCall)
-                                    forControlEvents:UIControlEventTouchUpInside];
-        
-        [viewVideoCall addSubview: videoCallFooterView];
-    }
-    videoCallFooterView.hidden = YES;
-    iconCaptureScreen.hidden = NO;
-    
-    //  Address video
-    lbAddressVideoCall.frame = CGRectMake(10, _videoPreview.frame.origin.y, 150, 30);
-    lbAddressVideoCall.textColor = [UIColor whiteColor];
-    lbAddressVideoCall.hidden = YES;
-    
-    if (icVideoCall == nil) {
-        icVideoCall = [[UIImageView alloc] initWithFrame: CGRectMake(lbAddressVideoCall.frame.origin.x, lbAddressVideoCall.frame.origin.y+lbAddressVideoCall.frame.size.height+(lbAddressVideoCall.frame.size.height-18)/2, 18, 18)];
-        icVideoCall.image = [UIImage imageNamed:@"white_video_call"];
-        [viewVideoCall addSubview: icVideoCall];
-    }
-    icVideoCall.hidden = YES;
-    
-    _lbVideoTime.frame = CGRectMake(icVideoCall.frame.origin.x+icVideoCall.frame.size.width+5, lbAddressVideoCall.frame.origin.y+lbAddressVideoCall.frame.size.height, lbAddressVideoCall.frame.size.width, lbAddressVideoCall.frame.size.height);
-    _lbVideoTime.hidden = YES;
-    
-    if (icWaveVideo == nil) {
-        icWaveVideo = [[UIImageView alloc] initWithFrame: CGRectMake(icVideoCall.frame.origin.x, _lbVideoTime.frame.origin.y+_lbVideoTime.frame.size.height+(_lbVideoTime.frame.size.height-18)/2, 18.0, 18.0)];
-        icWaveVideo.image = [UIImage imageNamed:@"white_wave_call"];
-        [viewVideoCall addSubview: icWaveVideo];
-    }
-    icWaveVideo.hidden = YES;
-    
-    lbStateVideoCall.frame = CGRectMake(_lbVideoTime.frame.origin.x, _lbVideoTime.frame.origin.y+_lbVideoTime.frame.size.height, _lbVideoTime.frame.size.width, _lbVideoTime.frame.size.height);
-    lbStateVideoCall.hidden = YES;
-    
-    if (icOffCameraForPreview == nil) {
-        icOffCameraForPreview = [[UIImageView alloc] initWithFrame: CGRectMake((_videoPreview.frame.size.width-60)/2, (_videoPreview.frame.size.height-60)/2, 60, 60)];
-        icOffCameraForPreview.image = [UIImage imageNamed:@"call_camera_off"];
-        [_videoPreview addSubview: icOffCameraForPreview];
-    }
-    icOffCameraForPreview.hidden = YES;
+    return TRUE;
 }
 
 - (NSString *)getPhoneNumberOfCall {
@@ -2127,33 +1554,6 @@ static void hideSpinner(LinphoneCall *call, void *user_data) {
         }
     }
     return @"";
-}
-
-- (IBAction)iconCaptureScreenClicked:(UIButton *)sender {
-    [self takeAScreenShot];
-}
-
--(UIImage *)takeAScreenShot {
-    CGFloat scale = [[UIScreen mainScreen] scale];
-    CGSize size = CGSizeMake(_videoView.bounds.size.width*scale, _videoView.bounds.size.height*scale);
-    CGRect rect = CGRectMake(0, 0, size.width, size.height);
-    
-    UIGraphicsBeginImageContextWithOptions(size, NO, 1);
-    [_videoView drawViewHierarchyInRect:rect afterScreenUpdates:NO];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
-}
-
-- (void)imageSavedToPhotosAlbum:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
-{
-    if (!error) {
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:text_save_image_success]
-               duration:2.0 position:CSToastPositionCenter];
-    } else {
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:text_save_image_failed]
-               duration:2.0 position:CSToastPositionCenter];
-    }
 }
 
 /*----- Pasuse and resume call -----*/
