@@ -570,7 +570,9 @@
     
 	// Compute frame for each elements
 	CGRect viewFrame = self.view.frame;
-	int origin = currentViewDescription.fullscreen ? 0 : IPHONE_STATUSBAR_HEIGHT;
+    //  Edit by Khai Le on 03/10/2018
+	//  int origin = currentViewDescription.fullscreen ? 0 : IPHONE_STATUSBAR_HEIGHT;
+    int origin = 0;
 
 	// 1. status bar - fixed size on top
 	//  CGRect statusBarFrame = self.statusBarView.frame;

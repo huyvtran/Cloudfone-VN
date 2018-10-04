@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -13,20 +13,11 @@
             <connections>
                 <outlet property="_btnAddCall" destination="mZY-R6-lzQ" id="24w-DW-gJO"/>
                 <outlet property="_btnHotline" destination="ocP-fY-nj8" id="ouO-pt-ZbR"/>
-                <outlet property="_btnSearchNum" destination="0EU-3N-XdP" id="ZOn-Ax-aMD"/>
                 <outlet property="_btnTransferCall" destination="SWb-OV-7Fe" id="Hg8-PI-SE8"/>
-                <outlet property="_iconClear" destination="8eJ-yR-vag" id="PTn-LG-9WK"/>
-                <outlet property="_iconShowSearch" destination="wXm-sv-wbX" id="TJH-dO-lRF"/>
-                <outlet property="_imgAvatar" destination="cpo-5f-zQL" id="LFX-QD-ARZ"/>
                 <outlet property="_imgLogoSmall" destination="yhv-yL-2EO" id="8Ry-1K-x40"/>
                 <outlet property="_lbAccount" destination="4VA-OR-95g" id="RCj-I5-9Rd"/>
-                <outlet property="_lbName" destination="bod-fj-ytf" id="WyD-9m-JUl"/>
-                <outlet property="_lbPhone" destination="SkA-Hn-Wh6" id="xiZ-Tk-yOO"/>
-                <outlet property="_lbSepa" destination="vZZ-aS-3Gm" id="DN3-zC-hAV"/>
                 <outlet property="_lbStatus" destination="BOg-lD-Kub" id="KuU-aT-eAU"/>
-                <outlet property="_tbSearch" destination="eLV-4e-k7a" id="zlj-CI-LQy"/>
                 <outlet property="_viewNumber" destination="178" id="EBB-hK-kwf"/>
-                <outlet property="_viewSearch" destination="Ufi-1q-g7e" id="ZGa-9K-jff"/>
                 <outlet property="_viewStatus" destination="0oU-AO-Xma" id="2XX-qY-puK"/>
                 <outlet property="addContactButton" destination="222" id="225"/>
                 <outlet property="addressField" destination="4" id="205"/>
@@ -64,6 +55,10 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="35"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="background_header.png" id="KJs-GJ-xOQ">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="35"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </imageView>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ic_logo" id="yhv-yL-2EO">
                                     <rect key="frame" x="8" y="9" width="25" height="25"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -83,7 +78,6 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.08235294118" green="0.16078431369999999" blue="0.20392156859999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <view clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" id="178" userLabel="dialer">
                             <rect key="frame" x="0.0" y="35" width="320" height="58"/>
@@ -105,7 +99,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" label="Enter an address"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="textColor" red="0.078431372549019607" green="0.078431372549019607" blue="0.078431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="33"/>
                                     <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="alphabet" returnKeyType="join"/>
                                     <connections>
@@ -113,57 +107,6 @@
                                         <outlet property="delegate" destination="-1" id="190"/>
                                     </connections>
                                 </textField>
-                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8eJ-yR-vag">
-                                    <rect key="frame" x="282" y="14" width="30" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" backgroundImage="iconX"/>
-                                    <connections>
-                                        <action selector="_iconClearClicked:" destination="-1" eventType="touchUpInside" id="f2v-fX-e5v"/>
-                                    </connections>
-                                </button>
-                                <view contentMode="scaleToFill" misplaced="YES" id="Ufi-1q-g7e">
-                                    <rect key="frame" x="0.0" y="23" width="320" height="35"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="no_avatar" id="cpo-5f-zQL">
-                                            <rect key="frame" x="5" y="2" width="30" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bod-fj-ytf">
-                                            <rect key="frame" x="45" y="2" width="155" height="17"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vZZ-aS-3Gm">
-                                            <rect key="frame" x="213" y="2" width="1" height="29"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" red="0.62745098040000002" green="0.62745098040000002" blue="0.62745098040000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="0EU-3N-XdP">
-                                            <rect key="frame" x="212" y="-1" width="64" height="34"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <state key="normal" title="9999"/>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="wXm-sv-wbX">
-                                            <rect key="frame" x="279" y="3" width="29" height="29"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" backgroundImage="phonebook_close"/>
-                                        </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SkA-Hn-Wh6">
-                                            <rect key="frame" x="45" y="19" width="155" height="14"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </view>
                             </subviews>
                         </view>
                         <view contentMode="scaleToFill" misplaced="YES" id="180" userLabel="pad">
@@ -404,11 +347,6 @@
                             </subviews>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="eLV-4e-k7a">
-                            <rect key="frame" x="0.0" y="93" width="320" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </tableView>
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
@@ -416,24 +354,23 @@
             <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-111" y="-277"/>
+            <point key="canvasLocation" x="-41" y="-414"/>
         </view>
     </objects>
     <resources>
+        <image name="background_header.png" width="750" height="360"/>
         <image name="backspace_hover_1" width="241" height="149"/>
         <image name="btn_add_call_def" width="240" height="148"/>
         <image name="btn_transfer_def" width="240" height="148"/>
         <image name="button_back_dialer" width="240" height="148"/>
         <image name="call_alt_back_disabled.png" width="51" height="36"/>
         <image name="call_default.png" width="201" height="201"/>
-        <image name="call_hover.png" width="16" height="16"/>
+        <image name="call_hover.png" width="201" height="201"/>
         <image name="contact_add_disabled.png" width="34" height="29"/>
         <image name="hotline_default.png" width="201" height="201"/>
-        <image name="hotline_hover.png" width="16" height="16"/>
+        <image name="hotline_hover.png" width="201" height="201"/>
         <image name="ic_logo" width="200" height="200"/>
-        <image name="iconX" width="100" height="100"/>
         <image name="iconadd" width="100" height="100"/>
-        <image name="no_avatar" width="166" height="166"/>
         <image name="numpad_clear.png" width="201" height="201"/>
         <image name="numpad_eight_default.png" width="201" height="201"/>
         <image name="numpad_eight_hover" width="241" height="149"/>
@@ -459,6 +396,5 @@
         <image name="numpad_two_hover" width="241" height="149"/>
         <image name="numpad_zero_default.png" width="201" height="201"/>
         <image name="numpad_zero_hover" width="241" height="141"/>
-        <image name="phonebook_close" width="32" height="32"/>
     </resources>
 </document>

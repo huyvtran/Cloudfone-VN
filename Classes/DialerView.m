@@ -37,35 +37,24 @@
 #import "Masonry.h"
 
 @interface DialerView (){
-    float wIcon;
-    float hBgNumber;
-    float minus;
-    
     UIFont *textFont;
-    
     NSMutableArray *listPhoneSearched;
-    float heightTableCell;
     
     UITapGestureRecognizer *tapOnScreen;
-    
-    BOOL showResult;
-    NSAttributedString *firstContactName;
-    float viewSearchHeight;
-    
     NSTimer *pressTimer;
-    int totalAccount;
-    int curIndex;
-    int typeAccountChoosed;
-    BOOL nextStepPBX;
-    int stateLogin;
+    
+    UIView *searchView;
+    UIImageView *imgSearchAvatar;
+    UILabel *lbSearchName;
+    UILabel *lbSearchPhone;
+    float hSearch;
 }
 @end
 
 @implementation DialerView
 @synthesize _viewStatus, _imgLogoSmall, _lbAccount, _lbStatus;
-@synthesize _viewNumber, _iconClear;
+@synthesize _viewNumber;
 @synthesize _btnHotline, _btnAddCall, _btnTransferCall;
-@synthesize _viewSearch, _imgAvatar, _lbName, _lbSepa, _btnSearchNum, _iconShowSearch, _tbSearch, _lbPhone;
 
 #pragma mark - UICompositeViewDelegate Functions
 
@@ -97,7 +86,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  Added by Khai Le on 30/09/2018
     [self checkAccountForApp];
     
-    typeAccountChoosed = 0;
     //  setup cho key login
     [[LinphoneManager instance] lpConfigSetBool:FALSE forKey:@"enable_first_login_view_preference"];
     
@@ -110,24 +98,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     [self setupSoundAndVibrateForCallOfUser];
     
     // invisible icon add contact & icon delete address
-    _viewSearch.hidden = YES;
-    _tbSearch.hidden = YES;
     _addContactButton.hidden = YES;
-    _iconClear.hidden = YES;
     _addressField.text = @"";
-    
-    [self movingDownAddressFieldNumber];
     
     if (SCREEN_WIDTH > 320) {
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
-        
-        minus = 10.0;
-        wIcon = 40.0;
     }else{
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:15.0];
-        
-        minus = 10.0;
-        wIcon = 30.0;
     }
     [self autoLayoutForView];
     
@@ -149,10 +126,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationStateUpdate:)
                                                  name:k11RegistrationUpdate object:nil];
-    
-    //  KHi chọn tài khoản trong popup account
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenSelectAccountForRegister:)
-                                                 name:registerWithAccount object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkDown)
                                                  name:@"NetworkDown" object:nil];
@@ -221,7 +194,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     tapOnScreen.delegate = self;
 	[self.view addGestureRecognizer: tapOnScreen];
 
-    heightTableCell = 55.0;
     _lbStatus.text = @"";
     
     // Kiểm tra folder chứa ảnh và tạo list emotion
@@ -258,6 +230,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[LinphoneManager.instance shouldPresentLinkPopup];
+    
+    [self addBoxShadowForView:searchView withColor:[UIColor colorWithRed:(220/255.0) green:(220/255.0)
+                                                                    blue:(220/255.0) alpha:1.0]];
 }
 
 #pragma mark - Event Functions
@@ -266,72 +241,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 	LinphoneCall *call = [[notif.userInfo objectForKey:@"call"] pointerValue];
 	LinphoneCallState state = [[notif.userInfo objectForKey:@"state"] intValue];
 	[self callUpdate:call state:state];
-}
-
-#pragma mark - Debug Functions
-
-- (BOOL)displayDebugPopup:(NSString *)address {
-	LinphoneManager *mgr = LinphoneManager.instance;
-	NSString *debugAddress = [mgr lpConfigStringForKey:@"debug_popup_magic" withDefault:@""];
-	if (![debugAddress isEqualToString:@""] && [address isEqualToString:debugAddress]) {
-		UIAlertController *errView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Debug", nil)
-																		 message:NSLocalizedString(@"Choose an action", nil)
-																  preferredStyle:UIAlertControllerStyleAlert];
-		
-		UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
-																style:UIAlertActionStyleDefault
-															  handler:^(UIAlertAction * action) {}];
-		
-		[errView addAction:defaultAction];
-
-		int debugLevel = [LinphoneManager.instance lpConfigIntForKey:@"debugenable_preference"];
-		BOOL debugEnabled = (debugLevel >= ORTP_DEBUG && debugLevel < ORTP_ERROR);
-
-		if (debugEnabled) {
-			
-		}
-		NSString *actionLog =
-			(debugEnabled ? NSLocalizedString(@"Disable logs", nil) : NSLocalizedString(@"Enable logs", nil));
-		
-		UIAlertAction* logAction = [UIAlertAction actionWithTitle:actionLog
-															style:UIAlertActionStyleDefault
-														  handler:^(UIAlertAction * action) {
-																   int newDebugLevel = debugEnabled ? 0 : ORTP_DEBUG;
-																   [LinphoneManager.instance lpConfigSetInt:newDebugLevel forKey:@"debugenable_preference"];
-																   //   [Log enableLogs:newDebugLevel];
-															   }];
-		[errView addAction:logAction];
-		
-		UIAlertAction* remAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Remove account(s) and self destruct", nil)
-															style:UIAlertActionStyleDefault
-														  handler:^(UIAlertAction * action) {
-															  linphone_core_clear_proxy_config([LinphoneManager getLc]);
-															  linphone_core_clear_all_auth_info([LinphoneManager getLc]);
-															  @try {
-																  [LinphoneManager.instance destroyLinphoneCore];
-															  } @catch (NSException *e) {
-																  NSLog(@"Exception while destroying linphone core: %@", e);
-															  } @finally {
-																  if ([NSFileManager.defaultManager
-																	   isDeletableFileAtPath:[LinphoneManager documentFile:@"linphonerc"]] == YES) {
-																	  [NSFileManager.defaultManager
-																	   removeItemAtPath:[LinphoneManager documentFile:@"linphonerc"]
-																	   error:nil];
-																  }
-#ifdef DEBUG
-																  [LinphoneManager instanceRelease];
-#endif
-															  }
-															  [UIApplication sharedApplication].keyWindow.rootViewController = nil;
-															  // make the application crash to be sure that user restart it properly
-															  NSLog(@"Self-destructing in 3..2..1..0!");
-														  }];
-		[errView addAction:remAction];
-		
-		[self presentViewController:errView animated:YES completion:nil];
-		return true;
-	}
-	return false;
 }
 
 #pragma mark -
@@ -374,8 +283,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - UITextFieldDelegate Functions
 
-- (BOOL)textField:(UITextField *)textField
-	shouldChangeCharactersInRange:(NSRange)range
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range
 				replacementString:(NSString *)string {
     [self performSelector:@selector(searchPhoneBookWithThread) withObject:nil afterDelay:0.25];
 	return YES;
@@ -426,9 +334,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)onAddressChange:(id)sender {
-	if ([self displayDebugPopup:_addressField.text]) {
-		_addressField.text = @"";
-	}
 	_addContactButton.enabled = _backspaceButton.enabled = ([[_addressField text] length] > 0);
     if ([_addressField.text length] == 0) {
         [self.view endEditing:YES];
@@ -448,27 +353,15 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                     selector:@selector(searchPhoneBookWithThread)
                                                     userInfo:nil repeats:false];
     }else{
-        _iconClear.hidden = YES;
         _addContactButton.hidden = YES;
-        
-        showResult = false;
-        [self setPhoneBookHidden];
-        [_iconShowSearch setBackgroundImage:[UIImage imageNamed:@"phonebook_open.png"]
-                                   forState:UIControlStateNormal];
+        searchView.hidden = YES;
     }
 }
 
 - (void)onBackspaceLongClick:(id)sender {
     _addressField.text = @"";
-    _iconClear.hidden = YES;
     _addContactButton.hidden = YES;
-    _viewSearch.hidden = YES;
-    _tbSearch.hidden = YES;
-    showResult = NO;
-    [_iconShowSearch setBackgroundImage:[UIImage imageNamed:@"phonebook_open.png"]
-                               forState:UIControlStateNormal];
-    
-    [self movingDownAddressFieldNumber];
+    searchView.hidden = YES;
 }
 
 - (void)onZeroLongClick:(id)sender {
@@ -555,19 +448,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  [[PhoneMainView instance] changeCurrentView:[HotlineViewController compositeViewDescription] push:YES];
 }
 
-- (IBAction)_iconClearClicked:(UIButton *)sender {
-    _addressField.text = @"";
-    _iconClear.hidden = YES;
-    _addContactButton.hidden = YES;
-    _viewSearch.hidden = YES;
-    _tbSearch.hidden = YES;
-    showResult = NO;
-    [_iconShowSearch setBackgroundImage:[UIImage imageNamed:@"phonebook_open.png"]
-                               forState:UIControlStateNormal];
-    
-    [self movingDownAddressFieldNumber];
-}
-
 - (IBAction)_btnNumberPressed:(id)sender {
     [self.view endEditing: true];
     
@@ -610,46 +490,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     _lbStatus.textColor = UIColor.orangeColor;
 }
 
-//  Đóng và mở kết quả seach
-- (void)showSearchResultPressed:(id)sender {
-    if (showResult == NO) {
-        _tbSearch.hidden = NO;
-        if (listPhoneSearched.count > 0) {
-            [self setHeightForTableSearchResult: [listPhoneSearched count]];
-        }
-        showResult = YES;
-        [_iconShowSearch setBackgroundImage:[UIImage imageNamed:@"phonebook_open.png"]
-                                   forState:UIControlStateNormal];
-    }else{
-        _tbSearch.hidden = YES;
-        showResult = NO;
-        [_iconShowSearch setBackgroundImage:[UIImage imageNamed:@"phonebook_close.png"]
-                                   forState:UIControlStateNormal];
-    }
-}
-
-//  Set chiều cao cho table search result
-- (void)setHeightForTableSearchResult: (long)searchCount {
-    float maxHeight = _padView.frame.size.height;
-    if (searchCount*heightTableCell > maxHeight) {
-        [_tbSearch setFrame: _padView.frame];
-        [_tbSearch setScrollEnabled: YES];
-    }else{
-        CGRect newFrame = CGRectMake(_padView.frame.origin.x, _padView.frame.origin.y, _padView.frame.size.width, searchCount*heightTableCell);
-        [_tbSearch setFrame: newFrame];
-        [_tbSearch setScrollEnabled: NO];
-    }
-    [_tbSearch reloadData];
-}
-
-//  Di chuyển addressField khi search có kết quả
-- (void)movingUpAddressFieldNumber {
-    float tmpHeight = _viewNumber.frame.size.height-_viewSearch.frame.size.height;
-    [_addressField setFrame: CGRectMake(_addressField.frame.origin.x, (tmpHeight-_addressField.frame.size.height)/2, _addressField.frame.size.width, _addressField.frame.size.height)];
-    [_addContactButton setFrame: CGRectMake(_addContactButton.frame.origin.x, (tmpHeight-_addContactButton.frame.size.height)/2, _addContactButton.frame.size.width, _addContactButton.frame.size.height)];
-    [_iconClear setFrame: CGRectMake(_iconClear.frame.origin.x, _addContactButton.frame.origin.y, _iconClear.frame.size.width, _iconClear.frame.size.height)];
-}
-
 - (void)searchPhoneBookWithThread {
     NSString *searchStr = _addressField.text;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -684,18 +524,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)afterGetContactPhoneBookSuccessfully
 {
     if ([_addressField.text length] == 0) {
-        [self setPhoneBookHidden];
-        
-        showResult = false;
         _addContactButton.hidden = YES;
-        _iconClear.hidden = YES;
-        [_iconShowSearch setBackgroundImage:[UIImage imageNamed:@"phonebook_open.png"]
-                                   forState:UIControlStateNormal];
     }else{
-        _iconClear.hidden = NO;
         _addContactButton.hidden = NO;
         
-        _tbSearch.frame = CGRectMake(_padView.frame.origin.x, _padView.frame.origin.y, _padView.frame.size.width, 0);
         if (listPhoneSearched.count > 0) {
             NSString *value = [listPhoneSearched objectAtIndex: 0];
             
@@ -714,11 +546,13 @@ static UICompositeViewDescription *compositeDescription = nil;
                                       value:[UIColor colorWithRed:(244/255.0) green:(179/255.0)
                                                              blue:(15/255.0) alpha:1.0]
                                       range:NSMakeRange(firstRange.location, _addressField.text.length)];
-                    firstContactName = nameColor;
-                    _lbName.attributedText = firstContactName;
                 }else{
-                    _lbName.text = name;
+                    [nameColor addAttribute:NSForegroundColorAttributeName
+                                      value:[UIColor colorWithRed:(20/255.0) green:(20/255.0)
+                                                             blue:(20/255.0) alpha:1.0]
+                                      range:NSMakeRange(0, name.length)];
                 }
+                lbSearchName.attributedText = nameColor;
                 
                 //  to mau cho phone number
                 NSMutableAttributedString *phoneColor = [[NSMutableAttributedString alloc] initWithString: phone];
@@ -729,44 +563,27 @@ static UICompositeViewDescription *compositeDescription = nil;
                                       value:[UIColor colorWithRed:(244/255.0) green:(179/255.0)
                                                              blue:(15/255.0) alpha:1.0]
                                       range:NSMakeRange(phoneRange.location, _addressField.text.length)];
-                    _lbPhone.attributedText = phoneColor;
                 }else{
-                    _lbPhone.text = phone;
+                    [phoneColor addAttribute:NSForegroundColorAttributeName
+                                       value:[UIColor colorWithRed:(20/255.0) green:(20/255.0)
+                                                              blue:(20/255.0) alpha:1.0]
+                                       range:NSMakeRange(0, phone.length)];
                 }
+                lbSearchPhone.attributedText = phoneColor;
                 
                 // setup avatar
                 NSString *avatar = [NSDatabase getAvatarOfContactWithPhoneNumber: phone];
                 if (![avatar isEqualToString:@""]) {
-                    _imgAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
+                    imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
                 }else{
-                    _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                    imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
                 }
+                searchView.hidden = NO;
+            }else{
+                searchView.hidden = YES;
             }
-            _viewSearch.hidden = NO;
-            
-            [_btnSearchNum setTitle:[NSString stringWithFormat:@"%lu", (unsigned long)listPhoneSearched.count]
-                           forState:UIControlStateNormal];
-            [_btnSearchNum addTarget:self
-                              action:@selector(showSearchResultPressed:)
-                    forControlEvents:UIControlEventTouchUpInside];
-            [_iconShowSearch setBackgroundImage:[UIImage imageNamed:@"phonebook_close.png"]
-                                       forState:UIControlStateNormal];
-            [_iconShowSearch addTarget:self
-                                action:@selector(showSearchResultPressed:)
-                      forControlEvents:UIControlEventTouchUpInside];
-            _tbSearch.hidden = YES;
-
-            viewSearchHeight = 40.0;
-            _viewSearch.frame = CGRectMake(_viewSearch.frame.origin.x, _viewNumber.frame.size.height-viewSearchHeight, _viewSearch.frame.size.width, viewSearchHeight);
-            _imgAvatar.clipsToBounds = YES;
-            _imgAvatar.layer.cornerRadius = _imgAvatar.frame.size.height/2;
-            
-            [self movingUpAddressFieldNumber];
         }else{
-            [self movingDownAddressFieldNumber];
-            
-            _tbSearch.hidden = YES;
-            _viewSearch.hidden = YES;
+            searchView.hidden = YES;
         }
     }
 }
@@ -777,75 +594,15 @@ static UICompositeViewDescription *compositeDescription = nil;
         LinphoneRegistrationState state = [object intValue];
         switch (state) {
             case LinphoneRegistrationOk:{
-                if (typeAccountChoosed == 1) {
-                    [_lbStatus setText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_status_online]];
-                    [_lbStatus setTextColor:[UIColor greenColor]];
-                    
-                    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:0]
-                                                              forKey:callnexPBXFlag];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    
-                    [_lbAccount setText: USERNAME];
-                }else if (typeAccountChoosed == 2){
-                    if (!nextStepPBX) {
-                        nextStepPBX = YES;
-                        
-                        NSString *pbxUsername = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_USERNAME];
-                        NSString *pbxPassword = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_PASSWORD];
-                        NSString *ipAddress = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_IP_ADDRESSS];
-                        NSString *pbxPort = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_PORT];
-                        [self registerPBXAccount: pbxUsername password: pbxPassword ipAddress: ipAddress port: pbxPort];
-                    }else{
-                        [_lbStatus setText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_status_online]];
-                        [_lbStatus setTextColor:[UIColor greenColor]];
-                        
-                        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:1]
-                                                                                      forKey:callnexPBXFlag];
-                        [[NSUserDefaults standardUserDefaults] synchronize];
-                        
-                        NSString *pbxUsername = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_USERNAME];
-                        [_lbAccount setText: pbxUsername];
-                    }
-                }else{
-                    [_lbStatus setText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_status_online]];
-                    [_lbStatus setTextColor:[UIColor greenColor]];
-                }
-                
                 break;
             }
             case LinphoneRegistrationProgress:{
-                [_lbStatus setText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_status_connecting]];
-                [_lbStatus setTextColor:[UIColor whiteColor]];
                 break;
             }
             case LinphoneRegistrationNone:
             case LinphoneRegistrationCleared:
             case LinphoneRegistrationFailed:{
                 NSLog(@"LinphoneRegistrationFailed");
-//                if (curIndex == totalAccount && totalAccount > 0) {
-//                    if (stateLogin == 1) {
-//                        //  Nếu chọn login SIP mà bị thất bại
-//                        [self networkDown];
-//                        [_lbAccount setText: USERNAME];
-//                    }else if (stateLogin == 2){
-//                        //  Nếu chọn login PBX mà bị thất bại
-//                        [self networkDown];
-//                        NSString *pbxUsername = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_USERNAME];
-//                        [_lbAccount setText: pbxUsername];
-//
-//                        [self removeProxyConfigWithAccount: pbxUsername];
-//                        [self setDefaultProxyConfigWithAccount:USERNAME];
-//                    }else{
-//                        if (typeAccountChoosed == 1) {
-//                            stateLogin = 1;
-//                        }else if (typeAccountChoosed == 2){
-//                            stateLogin = 2;
-//                        }
-//                        [self reloginToSipAccount];
-//                    }
-//                }else{
-//                    curIndex++;
-//                }
                 break;
             }
             default:
@@ -854,8 +611,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)enableNAT
-{
+- (void)enableNAT {
     LinphoneNatPolicy *LNP = linphone_core_get_nat_policy(LC);
     linphone_nat_policy_enable_ice(LNP, FALSE);
 }
@@ -868,8 +624,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)autoLayoutForView
-{
+- (void)autoLayoutForView {
+    self.view.backgroundColor = UIColor.whiteColor;
     //  view status
     _viewStatus.backgroundColor = [UIColor colorWithRed:(21/255.0) green:(41/255.0)
                                                    blue:(52/255.0) alpha:1.0];
@@ -897,7 +653,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     _lbStatus.font = textFont;
     [_lbStatus mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewStatus.mas_centerX);
-        make.top.bottom.right.equalTo(_viewStatus);
+        make.top.bottom.equalTo(_viewStatus);
+        make.right.equalTo(_viewStatus).offset(-[LinphoneAppDelegate sharedInstance]._hRegistrationState/4);
     }];
     
     //  Number keypad
@@ -907,7 +664,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     float spaceMarginX = 20.0;
     
     float hKeypad = 4*wIcon + wEndCall + 6*spaceMarginY;
-    _padView.backgroundColor = UIColor.whiteColor;
+    _padView.backgroundColor = UIColor.clearColor;
     [_padView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(self.view);
         make.height.mas_equalTo(hKeypad);
@@ -1063,22 +820,16 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.bottom.equalTo(_padView.mas_top);
     }];
     
-    float wSmallIcon = 40.0;
+    float wSmallIcon = 60.0;
     [_addContactButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.equalTo(_viewNumber).offset(10);
         make.width.height.mas_equalTo(wSmallIcon);
     }];
     
-    [_iconClear mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_viewNumber).offset(10);
-        make.right.equalTo(_viewNumber.mas_right).offset(-10);
-        make.width.height.mas_equalTo(wSmallIcon);
-    }];
-    
     [_addressField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_viewNumber).offset(10);
+        make.top.equalTo(_viewNumber).offset(20);
         make.left.equalTo(_addContactButton.mas_right).offset(10);
-        make.right.equalTo(_iconClear.mas_left).offset(-10);
+        make.right.equalTo(_viewNumber).offset(-20-wSmallIcon);
         make.height.mas_equalTo(wSmallIcon);
     }];
     _addressField.keyboardType = UIKeyboardTypePhonePad;
@@ -1088,30 +839,57 @@ static UICompositeViewDescription *compositeDescription = nil;
     _addressField.adjustsFontSizeToFitWidth = YES;
     _addressField.delegate = self;
     
-    //  search tableview
-    _tbSearch.delegate = self;
-    _tbSearch.dataSource = self;
-    _tbSearch.hidden = YES;
-    _tbSearch.backgroundColor = UIColor.whiteColor;
-    _tbSearch.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //  search contact
+    hSearch = 60.0;
+    searchView = [[UIView alloc] init];
+    searchView.backgroundColor = UIColor.whiteColor;
+    searchView.layer.cornerRadius = 5.0;
     
-    [_tbSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_viewNumber addSubview: searchView];
+    [searchView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_addressField.mas_bottom).offset(10);
         make.centerX.equalTo(_viewNumber.mas_centerX);
-        make.width.mas_equalTo(200.0);
-        make.height.mas_equalTo(60.0);
+        make.height.mas_equalTo(hSearch);
+        make.width.mas_equalTo(220);
     }];
     
-    //  view search
-    UITapGestureRecognizer *tapOnSearch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(whenTapOnSearchResult)];
-    [_viewSearch addGestureRecognizer: tapOnSearch];
-}
-
-- (void)movingDownAddressFieldNumber{
-    [_addContactButton setFrame: CGRectMake(10, (hBgNumber-wIcon)/2, wIcon, wIcon)];
-    [_addressField setFrame:CGRectMake(_addContactButton.frame.origin.x+_addContactButton.frame.size.width+10, 10, _viewNumber.frame.size.width-(_addContactButton.frame.origin.x+10+_addContactButton.frame.size.width+10+_addContactButton.frame.size.width+_addContactButton.frame.origin.x), _viewNumber.frame.size.height-20)];
+    imgSearchAvatar = [[UIImageView alloc] init];
+    imgSearchAvatar.backgroundColor = UIColor.redColor;
+    imgSearchAvatar.clipsToBounds = YES;
+    imgSearchAvatar.layer.cornerRadius = 45.0/2;
+    [searchView addSubview: imgSearchAvatar];
+    [imgSearchAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(searchView).offset((hSearch-45.0)/2);
+        make.centerY.equalTo(searchView.mas_centerY);
+        make.width.height.mas_equalTo(45.0);
+    }];
     
-    [_iconClear setFrame: CGRectMake(_addressField.frame.origin.x+_addressField.frame.size.width+5, _addContactButton.frame.origin.y, _addContactButton.frame.size.width, _addContactButton.frame.size.height)];
+    lbSearchName = [[UILabel alloc] init];
+    lbSearchName.text = @"Khai Le";
+    lbSearchName.textColor = [UIColor colorWithRed:(20/255.0) green:(20/255.0)
+                                              blue:(20/255.0) alpha:1.0];
+    [searchView addSubview: lbSearchName];
+    [lbSearchName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(imgSearchAvatar.mas_right).offset(10);
+        make.right.equalTo(searchView).offset(-(hSearch-45.0)/2);
+        make.top.equalTo(imgSearchAvatar.mas_top);
+        make.bottom.equalTo(imgSearchAvatar.mas_centerY);
+    }];
+    
+    lbSearchPhone = [[UILabel alloc] init];
+    lbSearchPhone.text = @"+841663430737";
+    lbSearchPhone.textColor = [UIColor colorWithRed:(20/255.0) green:(20/255.0)
+                                               blue:(20/255.0) alpha:1.0];
+    [searchView addSubview: lbSearchPhone];
+    [lbSearchPhone mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(lbSearchName);
+        make.top.equalTo(lbSearchName.mas_bottom);
+        make.bottom.equalTo(imgSearchAvatar.mas_bottom);
+    }];
+    
+    UITapGestureRecognizer *tapOnSearch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(whenTapOnSearchResult)];
+    [searchView addGestureRecognizer: tapOnSearch];
+    searchView.hidden = YES;
 }
 
 - (void)whenTapOnSearchResult {
@@ -1122,17 +900,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             NSString *phone = [tmpArr lastObject];
             _addressField.text = phone;
         }
-        // ẩn search phonebook
-        [self setPhoneBookHidden];
-        
-        [self movingDownAddressFieldNumber];
     }
-}
-
-//  Ẩn phonebook
-- (void)setPhoneBookHidden{
-    [_viewSearch setHidden: YES];
-    [_tbSearch setHidden: YES];
 }
 
 //  Kiểm tra folder chứa ảnh và tạo list emotion
@@ -1150,108 +918,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     if ([thread isCancelled]) {
         thread = nil;
     }
-}
-
-#pragma mark - UITableview Delegate
-
-#pragma mark - UITableview
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [listPhoneSearched count];
-}
-
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"PhoneBookContactCell";
-    PhoneBookContactCell *cell = (PhoneBookContactCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"PhoneBookContactCell" owner:self options:nil];
-        cell = topLevelObjects[0];
-        [cell setupUIForCell];
-    }
-    [cell setFrame: CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbSearch.frame.size.width, heightTableCell)];
-    [cell setupUIForCell];
-    
-    NSString *value = [listPhoneSearched objectAtIndex: indexPath.row];
-    NSArray *tmpArr = [value componentsSeparatedByString:@"|"];
-    if (tmpArr.count >= 3) {
-        NSString *name = [tmpArr firstObject];
-        NSString *phone = [tmpArr lastObject];
-        
-        // Tô màu cho name
-        NSMutableAttributedString *nameColor = [[NSMutableAttributedString alloc] initWithString:name];
-        NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName: name];
-        NSRange nameRange = [nameForSearch rangeOfString: _addressField.text];
-        if (nameRange.location != NSNotFound) {
-            [nameColor addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:(244/255.0) green:(179/255.0) blue:(15/255.0) alpha:1.0] range:NSMakeRange(nameRange.location, [_addressField text].length)];
-        }else{
-            [nameColor addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:(244/255.0) green:(179/255.0) blue:(15/255.0) alpha:1.0] range:NSMakeRange(0, 0)];
-        }
-        cell.name.attributedText = nameColor;
-        
-        // Tô màu cho phone number
-        NSMutableAttributedString *phoneColor = [[NSMutableAttributedString alloc] initWithString: phone];
-        NSRange phoneRange = [phone rangeOfString: _addressField.text];
-        if (phoneRange.location != NSNotFound) {
-            [phoneColor addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:(244/255.0) green:(179/255.0) blue:(15/255.0) alpha:1.0] range:NSMakeRange(phoneRange.location , [_addressField text].length)];
-        }else{
-            [phoneColor addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:(244/255.0) green:(179/255.0) blue:(15/255.0) alpha:1.0] range:NSMakeRange(0, 0)];
-        }
-        cell.phone.attributedText = phoneColor;
-        
-        NSString *avatar = [NSDatabase getAvatarOfContactWithPhoneNumber: phone];
-        if ([avatar isEqualToString:@""]) {
-            [cell.imgAvatar setImage:[UIImage imageNamed:@"no_avatar.png"]];
-        }else{
-            NSData *imgData = [NSData dataFromBase64String: avatar];
-            cell.imgAvatar.image = [UIImage imageWithData: imgData];
-        }
-        
-        if ([phone hasPrefix:@"778899"]) {
-            cell._iconChat.hidden = NO;
-            cell._iconChat.tag = indexPath.row;
-        }else{
-            cell._iconChat.hidden = YES;
-        }
-    }
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    PhoneBookContactCell *cell = (PhoneBookContactCell *)[tableView cellForRowAtIndexPath:indexPath];
-    // format phone string
-    NSString *phoneString = cell.phone.text;
-    [_addressField setText: phoneString];
-    
-    // ẩn search phonebook
-    [self setPhoneBookHidden];
-    
-    [self movingDownAddressFieldNumber];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return heightTableCell;
-}
-
-//  Đăng ký lại với tài khoản
-- (void)whenSelectAccountForRegister: (NSNotification *)notif
-{
-    id object = [notif object];
-    if ([object isKindOfClass:[NSNumber class]]) {
-        stateLogin = 0;
-        if ([object intValue] == 0)
-        {
-            typeAccountChoosed = 1;
-            [self clearAllProxyConfigAndAccount];
-        }else{
-            typeAccountChoosed = 2;
-            nextStepPBX = NO;
-            [self clearAllProxyConfigAndAccount];
-        }
-    }
-    //  [LinphoneManager.instance refreshRegisters];
 }
 
 - (void)displayAssistantConfigurationError {
@@ -1290,57 +956,15 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - Tap Gesture delegate
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    if ([touch.view isDescendantOfView: _tbSearch]) {
-        return NO;
-    }
+//    if ([touch.view isDescendantOfView: _tbSearch]) {
+//        return NO;
+//    }
     return YES;
 }
 
 #pragma mark - Call Button Delegate
 - (void)textfieldAddressChanged:(NSString *)number {
     [self searchPhoneBookWithThread];
-}
-
-//  Clear tất cả các proxy config và account của nó
-- (void)clearAllProxyConfigAndAccount {
-    const MSList *proxies = linphone_core_get_proxy_config_list(LC);
-    totalAccount = ms_list_size(proxies);
-    if (totalAccount == 0) {
-        return;
-    }
-    curIndex = 1;
-    
-    linphone_core_clear_proxy_config(LC);
-    [[LinphoneManager instance] removeAllAccounts];
-}
-
-- (void)reloginToSipAccount
-{
-    BOOL success = [SipUtils loginSipWithDomain:SIP_DOMAIN username:USERNAME password:PASSWORD port:PORT];
-    if (success) {
-        [SipUtils registerProxyWithUsername:USERNAME password:PASSWORD domain:SIP_DOMAIN port:PORT];
-    }
-}
-
-- (void)registerPBXAccount: (NSString *)pbxAccount password: (NSString *)password ipAddress: (NSString *)address port: (NSString *)portID
-{
-    NSArray *data = @[address, pbxAccount, password, portID];
-    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(startRegisterPBX:) userInfo:data repeats:NO];
-}
-
-- (void)startRegisterPBX: (NSTimer *)timer {
-    id data = [timer userInfo];
-    if ([data isKindOfClass:[NSArray class]] && [data count] == 4) {
-        NSString *pbxDomain = [data objectAtIndex: 0];
-        NSString *pbxAccount = [data objectAtIndex: 1];
-        NSString *pbxPassword = [data objectAtIndex: 2];
-        NSString *pbxPort = [data objectAtIndex: 3];
-        
-        BOOL success = [SipUtils loginSipWithDomain:pbxDomain username:pbxAccount password:pbxPassword port:pbxPort];
-        if (success) {
-            [SipUtils registerProxyWithUsername:pbxAccount password:pbxPassword domain:pbxDomain port:pbxPort];
-        }
-    }
 }
 
 //  125.253.125.196
@@ -1388,33 +1012,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)registrationUpdate:(LinphoneRegistrationState)state forProxy:(LinphoneProxyConfig *)proxy message:(NSString *)message {
     switch (state) {
         case LinphoneRegistrationOk: {
-            if (typeAccountChoosed == 1) {
-                [_lbStatus setText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_status_online]];
-                [_lbStatus setTextColor:[UIColor greenColor]];
-            }else if (typeAccountChoosed == 2){
-                if (!nextStepPBX) {
-                    nextStepPBX = YES;
-                    
-                    NSString *pbxUsername = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_USERNAME];
-                    NSString *pbxPassword = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_PASSWORD];
-                    NSString *ipAddress = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_IP_ADDRESSS];
-                    NSString *pbxPort = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_PORT];
-                    [self registerPBXAccount: pbxUsername password: pbxPassword ipAddress: ipAddress port: pbxPort];
-                }else{
-                    [_lbStatus setText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_status_online]];
-                    [_lbStatus setTextColor:[UIColor greenColor]];
-                    
-                    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:1]
-                                                              forKey:callnexPBXFlag];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    
-                    NSString *pbxUsername = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_USERNAME];
-                    [_lbAccount setText: pbxUsername];
-                }
-            }else{
-                [_lbStatus setText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_status_online]];
-                [_lbStatus setTextColor:[UIColor greenColor]];
-            }
             break;
         }
         case LinphoneRegistrationNone:{
@@ -1423,40 +1020,13 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         case LinphoneRegistrationCleared: {
             NSLog(@"LinphoneRegistrationCleared");
-            // _waitView.hidden = true;
             break;
         }
         case LinphoneRegistrationFailed: {
-            NSLog(@"LinphoneRegistrationFailed");
-            if (curIndex == totalAccount && totalAccount > 0) {
-                if (stateLogin == 1) {
-                    //  Nếu chọn login SIP mà bị thất bại
-                    [self networkDown];
-                    [_lbAccount setText: USERNAME];
-                }else if (stateLogin == 2){
-                    //  Nếu chọn login PBX mà bị thất bại
-                    [self networkDown];
-                    NSString *pbxUsername = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_USERNAME];
-                    [_lbAccount setText: pbxUsername];
-
-                    [self removeProxyConfigWithAccount: pbxUsername];
-                    [self setDefaultProxyConfigWithAccount:USERNAME];
-                }else{
-                    if (typeAccountChoosed == 1) {
-                        stateLogin = 1;
-                    }else if (typeAccountChoosed == 2){
-                        stateLogin = 2;
-                    }
-                    [self reloginToSipAccount];
-                }
-            }else{
-                curIndex++;
-            }
             break;
         }
         case LinphoneRegistrationProgress: {
             NSLog(@"LinphoneRegistrationProgress");
-            // _waitView.hidden = false;
             break;
         }
         default:
@@ -1495,6 +1065,19 @@ static UICompositeViewDescription *compositeDescription = nil;
             _lbAccount.text = defaultUsername;
         }
     }
+}
+
+//  Added by Khai Le on 03/10/2018
+- (void)addBoxShadowForView: (UIView *)view withColor: (UIColor *)color{
+    view.layer.shadowRadius  = 5.0f;
+    view.layer.shadowColor   = color.CGColor;
+    view.layer.shadowOffset  = CGSizeMake(0.0f, 0.0f);
+    view.layer.shadowOpacity = 0.9f;
+    view.layer.masksToBounds = NO;
+    
+    UIEdgeInsets shadowInsets     = UIEdgeInsetsMake(0, 0, -5.0f, 0);
+    UIBezierPath *shadowPath      = [UIBezierPath bezierPathWithRect:UIEdgeInsetsInsetRect(view.bounds, shadowInsets)];
+    view.layer.shadowPath    = shadowPath.CGPath;
 }
 
 @end

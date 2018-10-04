@@ -26,7 +26,7 @@
 
 @class UICallButton;
 @interface DialerView
-	: TPMultiLayoutViewController <UITextFieldDelegate, UICompositeViewDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UIActionSheetDelegate, UICallButtonDelegate> {
+	: TPMultiLayoutViewController <UITextFieldDelegate, UICompositeViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UICallButtonDelegate> {
 }
 
 
@@ -58,18 +58,6 @@
 @property (weak, nonatomic) IBOutlet UIView *_viewNumber;
 @property(nonatomic, strong) IBOutlet UITextField *addressField;
 @property(nonatomic, strong) IBOutlet UIButton *addContactButton;
-@property (weak, nonatomic) IBOutlet UIButton *_iconClear;
-
-@property (weak, nonatomic) IBOutlet UIView *_viewSearch;
-@property (weak, nonatomic) IBOutlet UIImageView *_imgAvatar;
-@property (weak, nonatomic) IBOutlet UILabel *_lbName;
-@property (weak, nonatomic) IBOutlet UILabel *_lbPhone;
-
-@property (weak, nonatomic) IBOutlet UILabel *_lbSepa;
-@property (weak, nonatomic) IBOutlet UIButton *_btnSearchNum;
-@property (weak, nonatomic) IBOutlet UIButton *_iconShowSearch;
-
-@property (weak, nonatomic) IBOutlet UITableView *_tbSearch;
 
 @property (weak, nonatomic) IBOutlet UIButton *_btnAddCall;
 @property (weak, nonatomic) IBOutlet UIButton *_btnTransferCall;
@@ -84,7 +72,6 @@
 - (IBAction)_btnAddCallPressed:(UIButton *)sender;
 - (IBAction)_btnTransferPressed:(UIButton *)sender;
 - (IBAction)_btnHotlinePressed:(UIButton *)sender;
-- (IBAction)_iconClearClicked:(UIButton *)sender;
 
 - (IBAction)_btnNumberPressed:(id)sender;
 - (IBAction)_btnCallPressed:(UIButton *)sender;

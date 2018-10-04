@@ -35,8 +35,7 @@
 	[super viewWillAppear:animated];
 
     //  Added by Khai Le on 03/10/2018
-    [self.lbTopSepa.backgroundColor = [UIColor colorWithRed:(220/255.0) green:(220/255.0)
-                                                       blue:(220/255.0) alpha:1.0];
+    self.lbTopSepa.backgroundColor = [UIColor colorWithRed:(220/255.0) green:(220/255.0) blue:(220/255.0) alpha:1.0];
     [self.lbTopSepa mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.mas_equalTo(1);

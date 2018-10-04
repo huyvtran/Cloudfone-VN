@@ -701,6 +701,7 @@
 		84BCC9E71FC1E162001F26FE /* PECropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BCC9E01FC1E162001F26FE /* PECropViewController.m */; };
 		84BCC9E81FC1E162001F26FE /* PEResizeControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BCC9E21FC1E162001F26FE /* PEResizeControl.m */; };
 		84BCC9E91FC1E162001F26FE /* UIImage+PECrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BCC9E41FC1E162001F26FE /* UIImage+PECrop.m */; };
+		84BE100221651F5B00831E36 /* background_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BE0FFB21651F5A00831E36 /* background_header.png */; };
 		84C1E20B1FAEB3EB00EED0B9 /* HMLocalization.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E20A1FAEB3EB00EED0B9 /* HMLocalization.m */; };
 		84C1E2101FAEB43100EED0B9 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E20E1FAEB43100EED0B9 /* LoginView.m */; };
 		84C1E2111FAEB43100EED0B9 /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C1E20F1FAEB43100EED0B9 /* LoginView.xib */; };
@@ -1918,6 +1919,7 @@
 		84BCC9E21FC1E162001F26FE /* PEResizeControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PEResizeControl.m; path = OutSources/PEPhotoCropEditor/Lib/PEResizeControl.m; sourceTree = "<group>"; };
 		84BCC9E31FC1E162001F26FE /* UIImage+PECrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+PECrop.h"; path = "OutSources/PEPhotoCropEditor/Lib/UIImage+PECrop.h"; sourceTree = "<group>"; };
 		84BCC9E41FC1E162001F26FE /* UIImage+PECrop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+PECrop.m"; path = "OutSources/PEPhotoCropEditor/Lib/UIImage+PECrop.m"; sourceTree = "<group>"; };
+		84BE0FFB21651F5A00831E36 /* background_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_header.png; sourceTree = "<group>"; };
 		84C1E2091FAEB3EB00EED0B9 /* HMLocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HMLocalization.h; path = OutSources/HMLocalization/HMLocalization.h; sourceTree = "<group>"; };
 		84C1E20A1FAEB3EB00EED0B9 /* HMLocalization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HMLocalization.m; path = OutSources/HMLocalization/HMLocalization.m; sourceTree = "<group>"; };
 		84C1E20D1FAEB43100EED0B9 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginView.h; path = AppUI/LoginView.h; sourceTree = "<group>"; };
@@ -3178,6 +3180,7 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				84BE0FFB21651F5A00831E36 /* background_header.png */,
 				153DFFFD2164A663007B69B3 /* keypad */,
 				842FA3AE2162687700C59DDA /* qr-code-scan.png */,
 				8489DED32160B5FA00A7A1DD /* right-arrow.png */,
@@ -5109,6 +5112,7 @@
 				633FEF081D3CD55A0014B822 /* options_start_conference_disabled.png in Resources */,
 				63F1DF511BCE986A00EDED90 /* UICallConferenceCell.xib in Resources */,
 				633FEE301D3CD5590014B822 /* color_H.png in Resources */,
+				84BE100221651F5B00831E36 /* background_header.png in Resources */,
 				633FEE7D1D3CD5590014B822 /* history_missed_disabled@2x.png in Resources */,
 				633FEE941D3CD55A0014B822 /* micro_default.png in Resources */,
 				84C47D121FB631710015695E /* DetailHistoryCNViewController.xib in Resources */,
