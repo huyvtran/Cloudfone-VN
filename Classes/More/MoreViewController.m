@@ -31,14 +31,12 @@
     UIFont *textFont;
     
     int logoutState;
-    YBHud *waitingHud;
-    WebServices *webService;
 }
 
 @end
 
 @implementation MoreViewController
-@synthesize _viewHeader, _lbHeader, _viewInfo, _imgAvatar, _lbName, _tbContent, _btnSignOut;
+@synthesize _viewHeader, bgHeader, _imgAvatar, _lbName, lbPBXAccount, icEdit, _tbContent;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -64,15 +62,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    //  my code here
-    webService = [[WebServices alloc] init];
-    webService.delegate = self;
-    
-    //  add waiting view
-    waitingHud = [[YBHud alloc] initWithHudType:DGActivityIndicatorAnimationTypeLineScale andText:@""];
-    waitingHud.tintColor = [UIColor whiteColor];
-    waitingHud.dimAmount = 0.5;
     
     [self createDataForMenuView];
     [self autoLayoutForMainView];
@@ -103,9 +92,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - my functions
 
 - (void)showContentWithCurrentLanguage {
-    _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: text_more];
-    [_btnSignOut setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Logout"]
-                 forState:UIControlStateNormal];
     [self createDataForMenuView];
     [_tbContent reloadData];
 }
@@ -132,78 +118,67 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)startLogout
-{
-    //  Cập nhật token XMPP trước
-    [LinphoneAppDelegate sharedInstance]._updateTokenSuccess = NO;
-    logoutState = eRemoveTokenSIP;
-    
-    [self updateCustomerTokenIOS: @"logout"];
-}
-
 //  Cập nhật vị trí cho view
 - (void)autoLayoutForMainView {
     if (SCREEN_WIDTH > 320) {
         hCell = 55.0;
-        hInfo = 70.0;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
-        _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
     }else{
         hCell = 45.0;
-        hInfo = 70.0;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
-        _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }
+    
+    hInfo = [LinphoneAppDelegate sharedInstance]._hRegistrationState + 50;
     
     //  Header view
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
-    }];
-    
-    [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(_viewHeader);
-    }];
-    
-    //  Info view
-    [_viewInfo mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self.view);
-        make.top.equalTo(_viewHeader.mas_bottom);
         make.height.mas_equalTo(hInfo);
     }];
     
+    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewHeader);
+    }];
+    
     [_imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.equalTo(_viewInfo).offset(10);
-        make.bottom.equalTo(_viewInfo).offset(-10);
-        make.width.mas_equalTo(hInfo-20);
+        make.left.equalTo(_viewHeader).offset(10);
+        make.centerY.equalTo(_viewHeader.mas_centerY).offset([LinphoneAppDelegate sharedInstance]._hStatus/2);
+        make.width.height.mas_equalTo(55.0);
     }];
     _imgAvatar.clipsToBounds = YES;
-    _imgAvatar.layer.cornerRadius = (hInfo-20)/2;
+    _imgAvatar.layer.cornerRadius = 55.0/2;
     
+    //  Edit icon
+    [icEdit mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_imgAvatar);
+        make.right.equalTo(_viewHeader).offset(-10);
+        make.width.height.mas_equalTo(35.0);
+    }];
+    
+    _lbName.textColor = UIColor.whiteColor;
     [_lbName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(_imgAvatar);
-        make.right.equalTo(_viewInfo.mas_right).offset(10);
+        make.top.equalTo(_imgAvatar);
         make.left.equalTo(_imgAvatar.mas_right).offset(5);
+        make.right.equalTo(icEdit.mas_left).offset(-5);
+        make.bottom.equalTo(_imgAvatar.mas_centerY);
+    }];
+    
+    lbPBXAccount.textColor = UIColor.whiteColor;
+    [lbPBXAccount mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbName.mas_bottom);
+        make.left.right.equalTo(_lbName);
+        make.bottom.equalTo(_imgAvatar.mas_bottom);
     }];
     
     [_tbContent mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_viewInfo.mas_bottom).offset(5);
+        make.top.equalTo(_viewHeader.mas_bottom).offset(5);
         make.left.right.equalTo(self.view);
-        make.bottom.equalTo(self.view).offset(-50);
+        make.bottom.equalTo(self.view);
     }];
     _tbContent.delegate = self;
     _tbContent.dataSource = self;
     _tbContent.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tbContent.scrollEnabled = NO;
-    
-    //  signout button
-    [_btnSignOut mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_tbContent.mas_bottom);
-        make.left.right.bottom.equalTo(self.view);
-    }];
-    _btnSignOut.titleLabel.font = textFont;
-    _btnSignOut.backgroundColor = UIColor.whiteColor;
-    [_btnSignOut setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning
@@ -292,122 +267,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     return hCell;
 }
 
-#pragma mark - API
-
-- (void)updateCustomerTokenIOS: (NSString *)token
-{
-    NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
-    [jsonDict setObject:AuthUser forKey:@"AuthUser"];
-    [jsonDict setObject:AuthKey forKey:@"AuthKey"];
-    [jsonDict setObject:USERNAME forKey:@"UserName"];
-    [jsonDict setObject:token forKey:@"IOSToken"];
-    
-    [webService callWebServiceWithLink:ChangeCustomerIOSToken withParams:jsonDict];
-}
-
-- (void)updateCustomerTokenIOSForPBX: (NSString *)pbxService andUsername: (NSString *)pbxUsername withToken: (NSString *)token
-{
-    NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
-    [jsonDict setObject:AuthUser forKey:@"AuthUser"];
-    [jsonDict setObject:AuthKey forKey:@"AuthKey"];
-    [jsonDict setObject:USERNAME forKey:@"UserName"];
-    [jsonDict setObject:token forKey:@"IOSToken"];
-    [jsonDict setObject:pbxService forKey:@"PBXID"];
-    [jsonDict setObject:pbxUsername forKey:@"PBXExt"];
-    
-    [webService callWebServiceWithLink:ChangeCustomerIOSToken withParams:jsonDict];
-}
-
-- (void)startResetValueWhenLogout
-{
-    //  logout SIP
-    LinphoneProxyConfig* proxyCfg = linphone_core_get_default_proxy_config([LinphoneManager getLc]);
-    linphone_proxy_config_edit(proxyCfg);
-    linphone_proxy_config_enable_publish(proxyCfg, TRUE);
-    linphone_proxy_config_set_publish_expires(proxyCfg, 0);
-    linphone_proxy_config_enable_register(proxyCfg,FALSE);
-    
-    linphone_proxy_config_done(proxyCfg);
-    
-    [[LinphoneManager instance] lpConfigSetBool:true forKey:@"enable_first_login_view_preference"];
-    
-    [self removeSipProxyConfig: USERNAME];
-    
-    // insert last logout cho user
-    BOOL result = [NSDatabase insertLastLogoutForUser:USERNAME passWord:PASSWORD andRelogin:1];
-    if (!result) {
-        NSLog(@"Can not save state logout for user....");
-    }
-    
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key_login];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key_password];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"loginSuccess"];
-    
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [waitingHud dismissAnimated: YES];
-    [[PhoneMainView instance] changeCurrentView:[AssistantView compositeViewDescription]];
-}
-
-- (void)removeSipProxyConfig: (NSString *)username
-{
-    const MSList *proxies = linphone_core_get_proxy_config_list(LC);
-    while (proxies) {
-        if (proxies->data != NULL) {
-            const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(proxies->data));
-            if (strcmp(username.UTF8String, proxyUsername) == 0) {
-                const LinphoneAuthInfo *ai = linphone_proxy_config_find_auth_info(proxies->data);
-                linphone_core_remove_proxy_config(LC, proxies->data);
-                if (ai) {
-                    linphone_core_remove_auth_info(LC, ai);
-                }
-                NSLog(@"%s", proxyUsername);
-                break;
-            }
-        }
-        proxies = proxies->next;
-    }
-}
-
-#pragma mark - Alertview Delegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        [waitingHud showInView:self.view animated:YES];
-        
-        [self startLogout];
-    }
-}
-
-#pragma mark - WebServices delegate
-- (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
-    if ([link isEqualToString:ChangeCustomerIOSToken]) {
-        [waitingHud dismissAnimated: YES];
-        
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed! Please try a later!"] duration:3.0 position:CSToastPositionCenter];
-    }
-}
-
-- (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
-    if ([link isEqualToString:ChangeCustomerIOSToken]) {
-        if (logoutState == eRemoveTokenSIP)
-        {
-            NSLog(@"----Remove token SIP thành công");
-            logoutState = eRemoveTokenPBX;
-            
-            NSString *pbxID = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
-            NSString *pbxUsername = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_USERNAME];
-            if (pbxID != nil && ![pbxID isEqualToString:@""] && pbxUsername != nil && ![pbxUsername isEqualToString:@""]) {
-                [self updateCustomerTokenIOSForPBX:pbxID andUsername:pbxUsername withToken: @"tokenPBX"];
-            }else{
-                [self startResetValueWhenLogout];
-            }
-        }else if (logoutState == eRemoveTokenPBX){
-            [self startResetValueWhenLogout];
-        }
-    }
-}
-
-- (void)receivedResponeCode:(NSString *)link withCode:(int)responeCode {
+- (IBAction)icEditClicked:(UIButton *)sender {
     
 }
 

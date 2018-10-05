@@ -27,10 +27,10 @@
     
     int i;
     float hCell;
-    float hInfo;
     
     YBHud *waitingHud;
     UIFont *textFont;
+    BOOL isPBXContact;
 }
 @end
 
@@ -53,10 +53,8 @@
 @end
 
 @implementation KContactDetailViewController
-@synthesize _viewHeader, _iconBack, _lbTitle, _iconEdit, _iconDelete;
-@synthesize _scrollViewContent;
-@synthesize _viewInfo, _imgAvatar, _lbContactName;
-@synthesize _tbContactInfo;
+@synthesize _viewHeader, _iconBack, _lbTitle, _iconEdit, _imgAvatar, _lbContactName;
+@synthesize _tbContactInfo, buttonCallPBX;
 @synthesize detailsContact;
 
 #pragma mark - UICompositeViewDelegate Functions
@@ -82,17 +80,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIView *view = [[UIView alloc] init];
-    view.backgroundColor = UIColor.redColor;
-    [view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(self.view);
-    }];
-    
     //  MY CODE HERE
     appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
     listNumber = [[NSArray alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5",
                   @"6", @"7", @"8", @"9",nil];
-    [self setupUIForView];
+    [self autoLayoutForView];
     
     //  add waiting view
     waitingHud = [[YBHud alloc] initWithHudType:DGActivityIndicatorAnimationTypeLineScale andText:@""];
@@ -110,6 +102,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     [device setProximityMonitoringEnabled: NO];
     
     detailsContact = [AppUtils getContactWithId: appDelegate.idContact];
+    if (detailsContact._sipPhone != nil && ![detailsContact._sipPhone isEqualToString:@""]) {
+        isPBXContact = YES;
+    }else{
+        isPBXContact = NO;
+    }
+    
     [self showContactInformation];
     [_tbContactInfo reloadData];
 }
@@ -130,7 +128,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidUnload {
     [self set_iconBack:nil];
     [self set_lbTitle:nil];
-    [self set_iconDelete:nil];
     [self set_iconEdit:nil];
     [self set_imgAvatar:nil];
     [self set_lbContactName:nil];
@@ -157,32 +154,20 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[PhoneMainView instance] changeCurrentView:[EditContactViewController compositeViewDescription] push:true];
 }
 
+- (IBAction)buttonCallPBXPressed:(UIButton *)sender {
+}
+
 //  Gọi trên icon call trong từng cell
 - (void)callOnPhoneDetail: (UIButton *)sender {
     NSString *phoneNumber = sender.titleLabel.text;
     [self makeCallWithPhoneNumber: phoneNumber];
 }
 
-- (IBAction)_btnMessagePressed:(id)sender {
-    
-}
-
-- (IBAction)_btnInvitePressed:(id)sender
-{
-    
-}
-
-- (IBAction)_btnBlockPressed:(id)sender {
-    
-}
-
-- (IBAction)_btnVideoCallPressed:(UIButton *)sender {
-    
-}
-
 #pragma mark - my functions
 
-- (void)setupUIForView {
+- (void)autoLayoutForView
+{
+    self.view.backgroundColor = UIColor.whiteColor;
     if (SCREEN_WIDTH > 320) {
         hCell = 55.0;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
@@ -196,77 +181,70 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  header
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo(appDelegate._hHeader);
+        make.height.mas_equalTo(235+[LinphoneAppDelegate sharedInstance]._hStatus);
     }];
     
-    [_iconBack setBackgroundImage:[UIImage imageNamed:@"ic_back_act.png"]
-                         forState:UIControlStateHighlighted];
+    [_bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewHeader);
+    }];
+    
     [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_viewHeader);
-        make.centerY.equalTo(_viewHeader.mas_centerY);
-        make.width.height.mas_equalTo(40.0);
+        make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus+5.0);
+        make.left.equalTo(_viewHeader).offset(5.0);
+        make.width.height.mas_equalTo(35.0);
     }];
     
     [_iconEdit mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_viewHeader);
-        make.centerY.equalTo(_viewHeader.mas_centerY);
-        make.width.equalTo(_iconBack.mas_width);
-        make.height.equalTo(_iconBack.mas_height);
-    }];
-    
-    [_iconDelete mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_iconEdit.mas_left);
-        make.centerY.equalTo(_viewHeader.mas_centerY);
+        make.top.equalTo(_iconBack);
+        make.right.equalTo(_viewHeader).offset(-5);
         make.width.equalTo(_iconBack.mas_width);
         make.height.equalTo(_iconBack.mas_height);
     }];
     
     [_lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(_viewHeader);
-        make.centerX.equalTo(_viewHeader.mas_centerX);
-        make.width.mas_equalTo(100);
+        make.top.bottom.equalTo(_iconBack);
+        make.left.equalTo(_iconBack.mas_right).offset(5);
+        make.right.equalTo(_iconEdit.mas_left).offset(-5);
     }];
     
-    //  content
-    [_scrollViewContent mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_viewHeader.mas_bottom);
-        make.left.right.bottom.equalTo(self.view);
-        make.width.mas_equalTo(100);
-    }];
-    
-    //  view info
-    hInfo = 110.0;
-    [_viewInfo mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(_scrollViewContent);
-        make.height.mas_equalTo(hInfo);
-    }];
-    
-    [_imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_viewInfo).offset(5);
-        make.centerX.equalTo(_viewInfo.mas_centerX);
-        make.width.height.mas_equalTo(65.0);
-    }];
-    _imgAvatar.layer.cornerRadius = 65.0/2;
+    _imgAvatar.layer.cornerRadius = 100.0/2;
+    _imgAvatar.layer.borderWidth = 2.0;
+    _imgAvatar.layer.borderColor = UIColor.whiteColor.CGColor;
     _imgAvatar.clipsToBounds = YES;
+    [_imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbTitle.mas_bottom).offset(10);
+        make.centerX.equalTo(_viewHeader.mas_centerX);
+        make.width.height.mas_equalTo(100.0);
+    }];
     
     [_lbContactName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(_viewInfo);
         make.top.equalTo(_imgAvatar.mas_bottom);
-        make.width.height.mas_equalTo(30.0);
+        make.left.right.equalTo(_viewHeader);
+        make.height.mas_equalTo(40.0);
     }];
     _lbContactName.marqueeType = MLContinuous;
     _lbContactName.scrollDuration = 15.0;
     _lbContactName.animationCurve = UIViewAnimationOptionCurveEaseInOut;
     _lbContactName.fadeLength = 10.0;
     _lbContactName.continuousMarqueeExtraBuffer = 10.0f;
-    _lbContactName.font = [UIFont fontWithName:HelveticaNeue size:16.0];
-    _lbContactName.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
-                                                blue:(50/255.0) alpha:1.0];
+    _lbContactName.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightSemibold];
+    _lbContactName.textColor = UIColor.whiteColor;
     
-    //  table info
+    //  button call
+    buttonCallPBX.layer.cornerRadius = 70.0/2;
+    buttonCallPBX.clipsToBounds = YES;
+    buttonCallPBX.layer.borderWidth = 2.0;
+    buttonCallPBX.layer.borderColor = UIColor.whiteColor.CGColor;
+    [buttonCallPBX mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.centerY.equalTo(_viewHeader.mas_bottom);
+        make.width.height.mas_equalTo(70.0);
+    }];
+    
+    //  content
     [_tbContactInfo mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.right.equalTo(self.view);
-        make.top.equalTo(_viewInfo.mas_bottom);
+        make.top.equalTo(buttonCallPBX.mas_bottom).offset(10);
+        make.left.right.bottom.equalTo(self.view);
     }];
     _tbContactInfo.delegate = self;
     _tbContactInfo.dataSource = self;
@@ -345,6 +323,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    int numRow = [self getRowForSection];
+    return numRow;
+    
     if (detailsContact._sipPhone != nil && ![detailsContact._sipPhone isEqualToString:@""]) {
         return detailsContact._listPhone.count + 1;
     }else{
@@ -352,7 +333,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *CellIdentifier = @"UIKContactCell";
     
     UIKContactCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
@@ -361,51 +343,27 @@ static UICompositeViewDescription *compositeDescription = nil;
         cell = topLevelObjects[0];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbContactInfo.frame.size.width, hCell);
-    [cell setupUIForCell];
     
-    ContactDetailObj *anItem;
-    if (detailsContact._sipPhone != nil && ![detailsContact._sipPhone isEqualToString:@""]) {
-        if (indexPath.row == 0) {
-            anItem = [[ContactDetailObj alloc] init];
-            anItem._typePhone = type_cloudfone_id;
-            anItem._titleStr = [appDelegate.localization localizedStringForKey:text_contact_cloudfoneId];
-            anItem._valueStr = detailsContact._sipPhone;
-            anItem._buttonStr = @"contact_detail_icon_call.png";
-            anItem._iconStr = @"";
-        }else{
-            anItem = [detailsContact._listPhone objectAtIndex: (indexPath.row-1)];
-        }
-    }else{
-        anItem = [detailsContact._listPhone objectAtIndex: indexPath.row];
-    }
-    
-    //image for cell
-    cell.typeImage.image = [UIImage imageNamed: anItem._iconStr];
-    cell.typeImage.hidden = YES;
-    
-    cell.lbTitle.text = anItem._titleStr;
-    cell.lbValue.text = anItem._valueStr;
-    
-    //set background button
-    if ([anItem._buttonStr isEqualToString: @""]) {
-        cell._imageDetails.hidden = YES;
-        cell._btnCall.hidden = YES;
-    }else{
-        cell._imageDetails.hidden = YES;
-        cell._btnCall.hidden = NO;
-        [cell._btnCall addTarget:self
-                          action:@selector(callOnPhoneDetail:)
-                forControlEvents:UIControlEventTouchUpInside];
+    if (indexPath.row < detailsContact._listPhone.count)
+    {
+        ContactDetailObj *anItem = [detailsContact._listPhone objectAtIndex: indexPath.row];
+        cell.lbTitle.text = anItem._titleStr;
+        cell.lbValue.text = anItem._valueStr;
         
-        cell._imageDetails.image = [UIImage imageNamed:anItem._buttonStr];
-        cell._btnCall.tag = indexPath.row;
+    }else if (indexPath.row == detailsContact._listPhone.count) {
+        if (detailsContact._company != nil && ![detailsContact._company isEqualToString:@""]) {
+            cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Company"];
+            cell.lbValue.text = detailsContact._company;
+        }else if (detailsContact._email != nil && ![detailsContact._email isEqualToString:@""]){
+            cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Email"];
+            cell.lbValue.text = detailsContact._email;
+        }
+    }else if (indexPath.row == detailsContact._listPhone.count + 1){
+        if (detailsContact._email != nil && ![detailsContact._email isEqualToString:@""]){
+            cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Email"];
+            cell.lbValue.text = detailsContact._email;
+        }
     }
-    [cell._btnCall setTitle:anItem._valueStr forState:UIControlStateNormal];
-    [cell._btnCall setTitleColor:[UIColor clearColor] forState:UIControlStateNormal];
-    
-    cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbContactInfo.frame.size.width, hCell);
-    [cell setupFrameForContactDetail];
     
     return cell;
 }
@@ -435,6 +393,19 @@ static UICompositeViewDescription *compositeDescription = nil;
         
         [[PhoneMainView instance] popCurrentView];
     }
+}
+
+//  Added by Khai Le on 05/10/2018
+- (int)getRowForSection {
+    int result = (int)detailsContact._listPhone.count;
+    
+    if (detailsContact._company != nil && ![detailsContact._company isEqualToString:@""]) {
+        result = result + 1;
+    }
+    if (detailsContact._email != nil && ![detailsContact._email isEqualToString:@""]) {
+        result = result + 1;
+    }
+    return result;
 }
 
 @end

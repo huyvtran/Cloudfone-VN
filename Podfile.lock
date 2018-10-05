@@ -14,7 +14,7 @@ DEPENDENCIES:
   - Toast
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - CocoaLumberjack
     - Masonry
     - Toast
@@ -26,4 +26,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 5b5a6acbb65f8e6750394592287af446834c83bf
 
-COCOAPODS: 1.5.2
+COCOAPODS: 1.5.0

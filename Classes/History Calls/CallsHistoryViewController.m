@@ -9,24 +9,20 @@
 #import "CallsHistoryViewController.h"
 #import "AllCallsViewController.h"
 #import "MissedCallViewController.h"
-#import "RecordsCallViewController.h"
 #import "TabBarView.h"
 
-@interface CallsHistoryViewController ()
-{
+@interface CallsHistoryViewController () {
     int currentView;
-    
     AllCallsViewController *allCallsVC;
     MissedCallViewController *missedCallsVC;
-    RecordsCallViewController *recordCallsVC;
-    
     UIFont *textFont;
+    float hIcon;
 }
 
 @end
 
 @implementation CallsHistoryViewController
-@synthesize _viewHeader, _btnEdit, _lbDelete, _btnDone, _iconAll, _iconMissed, _iconRecord;
+@synthesize _viewHeader, _btnEdit, _lbDelete, _btnDone, _iconAll, _iconMissed, bgHeader;
 @synthesize _pageViewController, _vcIndex;
 
 #pragma mark - UICompositeViewDelegate Functions
@@ -59,13 +55,14 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  Sau khi xoá tất cả các cuộc gọi
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetUIForView)
                                                  name:k11ReloadAfterDeleteAllCall object:nil];
+    
     //  Cập nhật nhãn delete khi xoá lịch sử cuộc gọi
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateValueNumberCallRemove:)
                                                  name:updateNumberHistoryCallRemove object:nil];
     self.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-[LinphoneAppDelegate sharedInstance]._hStatus);
     self.view.backgroundColor = UIColor.clearColor;
     
-    [self setupUIForView];
+    [self autoLayoutForView];
     currentView = eAllCalls;
     [self updateStateIconWithView: currentView];
     
@@ -79,7 +76,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     allCallsVC = [[AllCallsViewController alloc] init];
     missedCallsVC = [[MissedCallViewController alloc] init];
-    recordCallsVC = [[RecordsCallViewController alloc] init];
     
     NSArray *viewControllers = [NSArray arrayWithObject:allCallsVC];
     [_pageViewController setViewControllers:viewControllers
@@ -92,7 +88,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [self.view addSubview:_pageViewController.view];
     
     [_pageViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset([LinphoneAppDelegate sharedInstance]._hHeader);
+        make.top.equalTo(_viewHeader.mas_bottom);
         make.left.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
     }];
@@ -123,6 +119,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:kLinphoneCallUpdate object:self];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear: animated];
+    
+    [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:_iconAll radius:(hIcon-10)/2 withColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0] border:2.0];
+    [AppUtils addCornerRadiusTopRightAndBottomRightForButton:_iconMissed radius:(hIcon-10)/2 withColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0] border:2.0];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -144,19 +147,10 @@ static UICompositeViewDescription *compositeDescription = nil;
                                    animated: false completion: nil];
 }
 
-- (IBAction)_iconRecordClicked:(id)sender {
-    currentView = eRecordCalls;
-    [self updateStateIconWithView:currentView];
-    [_pageViewController setViewControllers: @[recordCallsVC]
-                                  direction: UIPageViewControllerNavigationDirectionForward
-                                   animated: false completion: nil];
-}
-
 - (IBAction)_btnEditPressed:(id)sender {
     _btnEdit.hidden = YES;
     _iconAll.hidden = YES;
     _iconMissed.hidden = YES;
-    _iconRecord.hidden = YES;
     
     _btnDone.hidden = NO;
     _lbDelete.hidden = NO;
@@ -168,7 +162,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnEdit.hidden = NO;
     _iconAll.hidden = NO;
     _iconMissed.hidden = NO;
-    _iconRecord.hidden = NO;
     
     _btnDone.hidden = YES;
     _lbDelete.hidden = YES;
@@ -183,14 +176,10 @@ static UICompositeViewDescription *compositeDescription = nil;
         currentView = eAllCalls;
         [self updateStateIconWithView: currentView];
         return nil;
-    }else if (viewController == missedCallsVC){
+    }else{
         currentView = eMissedCalls;
         [self updateStateIconWithView: currentView];
         return allCallsVC;
-    }else{
-        currentView = eRecordCalls;
-        [self updateStateIconWithView: currentView];
-        return missedCallsVC;
     }
 }
 
@@ -199,12 +188,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         currentView = eAllCalls;
         [self updateStateIconWithView: currentView];
         return missedCallsVC;
-    }else if (viewController == missedCallsVC){
-        currentView = eMissedCalls;
-        [self updateStateIconWithView: currentView];
-        return recordCallsVC;
     }else{
-        currentView = eRecordCalls;
+        currentView = eMissedCalls;
         [self updateStateIconWithView: currentView];
         return nil;
     }
@@ -222,48 +207,71 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnEdit.hidden = NO;
     _iconAll.hidden = NO;
     _iconMissed.hidden = NO;
-    _iconRecord.hidden = NO;
     
     _btnDone.hidden = YES;
     _lbDelete.hidden = YES;
 }
 
 //  Cập nhật trạng thái của các icon trên header
-- (void)updateStateIconWithView: (int)view {
-    //  Khi chuyển view thì huỷ trạng thái xoá
-    [self resetUIForView];
-    
-    //  cập nhật background các icon
-    if (view == eAllCalls) {
-        _iconAll.selected = YES;
-        _iconMissed.selected = NO;
-        _iconRecord.selected = NO;
-    }
-    else if (view == eMissedCalls)
-    {
-        _iconAll.selected = NO;
-        _iconMissed.selected = YES;
-        _iconRecord.selected = NO;
+- (void)updateStateIconWithView: (int)view
+{
+    if (view == eAllCalls){
+        [self setSelected: YES forButton: _iconAll];
+        [self setSelected: NO forButton: _iconMissed];
     }else{
-        _iconAll.selected = NO;
-        _iconMissed.selected = NO;
-        _iconRecord.selected = YES;
+        [self setSelected: NO forButton: _iconAll];
+        [self setSelected: YES forButton: _iconMissed];
+    }
+}
+
+- (void)setSelected: (BOOL)selected forButton: (UIButton *)button {
+    if (selected) {
+        button.backgroundColor = [UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0];
+    }else{
+        button.backgroundColor = UIColor.clearColor;
     }
 }
 
 //  setup trạng thái cho các button
-- (void)setupUIForView {
-    
+- (void)autoLayoutForView {
     if (SCREEN_WIDTH > 320) {
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }else{
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
     }
     
+    hIcon = [LinphoneAppDelegate sharedInstance]._hRegistrationState - [LinphoneAppDelegate sharedInstance]._hStatus;
+    
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState);
     }];
+    
+    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewHeader);
+    }];
+    
+    _iconAll.backgroundColor = [UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0];
+    [_iconAll setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"All"] forState:UIControlStateNormal];
+    [_iconAll setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    [_iconAll mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus+5);
+        make.right.equalTo(_viewHeader.mas_centerX);
+        make.height.mas_equalTo(hIcon-10);
+        make.width.mas_equalTo(SCREEN_WIDTH/4);
+    }];
+    
+    _iconMissed.backgroundColor = UIColor.clearColor;
+    [_iconMissed setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Missed"] forState:UIControlStateNormal];
+    [_iconMissed setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    [_iconMissed mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewHeader.mas_centerX);
+        make.top.bottom.equalTo(_iconAll);
+        make.width.equalTo(_iconAll.mas_width);
+        make.height.equalTo(_iconAll.mas_height);
+    }];
+    
+    
     
     _lbDelete.font = textFont;
     _lbDelete.textAlignment = NSTextAlignmentLeft;
@@ -276,26 +284,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     _btnEdit.titleLabel.font = textFont;
     _btnDone.titleLabel.font = textFont;
-    
-    [_iconRecord mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_viewHeader.mas_right);
-        make.centerY.equalTo(_viewHeader.mas_centerY);
-        make.width.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
-    }];
-    
-    [_iconMissed mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_iconRecord.mas_left);
-        make.top.equalTo(_iconRecord);
-        make.width.equalTo(_iconRecord.mas_width);
-        make.height.equalTo(_iconRecord.mas_height);
-    }];
-    
-    [_iconAll mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_iconMissed.mas_left);
-        make.top.equalTo(_iconMissed);
-        make.width.equalTo(_iconMissed.mas_width);
-        make.height.equalTo(_iconMissed.mas_height);
-    }];
 }
 
 //  Cập nhật giá trị delete

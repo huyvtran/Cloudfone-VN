@@ -196,43 +196,6 @@
 #define text_status_offline     @"text_status_offline"
 #define text_status_connecting  @"text_status_connecting"
 
-#define img_conference          @"img_conference"
-#define img_conference_over     @"img_conference_over"
-#define img_conference_dis      @"img_conference_dis"
-
-
-#define img_speaker             @"img_speaker"
-#define img_speaker_over        @"img_speaker_over"
-#define img_speaker_dis         @"img_speaker_dis"
-
-#define img_video               @"img_video"
-#define img_video_over          @"img_video_over"
-#define img_video_dis           @"img_video_dis"
-
-#define img_hold                @"img_hold"
-#define img_hold_over           @"img_hold_over"
-#define img_hold_dis            @"img_hold_dis"
-
-#define img_record              @"img_record"
-#define img_record_over         @"img_record_over"
-#define img_record_dis          @"img_record_dis"
-
-#define img_mute                @"img_mute"
-#define img_mute_over           @"img_mute_over"
-#define img_mute_dis            @"img_mute_dis"
-
-#define img_transfer            @"img_transfer"
-#define img_transfer_over       @"img_transfer_over"
-#define img_transfer_dis        @"img_transfer_dis"
-
-#define img_message             @"img_message"
-#define img_message_over        @"img_message_over"
-#define img_message_dis         @"img_message_dis"
-
-#define img_send                @"img_send"
-#define img_send_over           @"img_send_over"
-#define img_send_dis            @"img_send_dis"
-
 #define text_connected          @"text_connected"
 #define text_quality_good       @"text_quality_good"
 #define text_quality_average    @"text_quality_average"

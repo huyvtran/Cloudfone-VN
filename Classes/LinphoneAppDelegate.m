@@ -1522,6 +1522,33 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             aContact._nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
         }
         
+        //  Email
+        ABMultiValueRef map = ABRecordCopyValue(aPerson, kABPersonEmailProperty);
+        if (map) {
+            for (int i = 0; i < ABMultiValueGetCount(map); ++i) {
+                ABMultiValueIdentifier identifier = ABMultiValueGetIdentifierAtIndex(map, i);
+                NSInteger index = ABMultiValueGetIndexForIdentifier(map, identifier);
+                if (index != -1) {
+                    NSString *valueRef = CFBridgingRelease(ABMultiValueCopyValueAtIndex(map, index));
+                    if (valueRef != NULL && ![valueRef isEqualToString:@""]) {
+                        //  just get one email for contact
+                        aContact._email = valueRef;
+                        break;
+                    }
+                }
+            }
+            CFRelease(map);
+        }
+        
+        //  Company
+        CFStringRef companyRef  = ABRecordCopyValue(aPerson, kABPersonOrganizationProperty);
+        if (companyRef != NULL && companyRef != nil){
+            NSString *company = (__bridge NSString *)companyRef;
+            if (company != nil && ![company isEqualToString:@""]){
+                aContact._company = company;
+            }
+        }
+        
         aContact._sipPhone = [self getSipIdOfContact: aPerson];
         aContact._avatar = [self getAvatarOfContact: aPerson];
         aContact._listPhone = [self getListPhoneOfContactPerson: aPerson withName: aContact._fullName];

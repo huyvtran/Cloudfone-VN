@@ -11,13 +11,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MoreViewController">
             <connections>
-                <outlet property="_btnSignOut" destination="BwJ-Z6-EOh" id="eNv-80-zCy"/>
                 <outlet property="_imgAvatar" destination="D5a-FM-ayU" id="yMa-wN-f0U"/>
-                <outlet property="_lbHeader" destination="B5R-6i-73O" id="Cpr-s2-jEY"/>
                 <outlet property="_lbName" destination="DaB-pN-F6c" id="mgV-kw-9pS"/>
                 <outlet property="_tbContent" destination="YUO-pX-n0L" id="w9i-Of-ci7"/>
                 <outlet property="_viewHeader" destination="y5I-aF-LNa" id="JAk-TN-iyT"/>
-                <outlet property="_viewInfo" destination="DLZ-TZ-54b" id="S6c-p3-X6X"/>
+                <outlet property="bgHeader" destination="FSI-6e-MoN" id="0eI-WL-loi"/>
+                <outlet property="icEdit" destination="TRM-vo-ZOX" id="Nkn-rL-JEd"/>
+                <outlet property="lbPBXAccount" destination="2Sd-2v-HZr" id="fEH-pt-4EE"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -26,59 +26,55 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="459"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="y5I-aF-LNa" userLabel="toolBar">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="y5I-aF-LNa" userLabel="toolBar">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="More" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="B5R-6i-73O">
-                            <rect key="frame" x="98" y="10" width="124" height="21"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="background_header.png" id="FSI-6e-MoN">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="17"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" red="0.08235294118" green="0.16078431369999999" blue="0.20392156859999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                </view>
-                <view contentMode="scaleToFill" misplaced="YES" id="DLZ-TZ-54b">
-                    <rect key="frame" x="0.0" y="42" width="320" height="70"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
+                        </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="no_avatar" id="D5a-FM-ayU">
-                            <rect key="frame" x="10" y="10" width="50" height="50"/>
+                            <rect key="frame" x="8" y="9" width="50" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Fullname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DaB-pN-F6c">
-                            <rect key="frame" x="68" y="23" width="244" height="25"/>
+                            <rect key="frame" x="66" y="9" width="203" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2Sd-2v-HZr">
+                            <rect key="frame" x="66" y="41" width="203" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="TRM-vo-ZOX">
+                            <rect key="frame" x="282" y="9" width="30" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <connections>
+                                <action selector="icEditClicked:" destination="-1" eventType="touchUpInside" id="hYw-F5-ycj"/>
+                            </connections>
+                        </button>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="YUO-pX-n0L">
-                    <rect key="frame" x="0.0" y="120" width="320" height="267"/>
+                    <rect key="frame" x="0.0" y="120" width="320" height="339"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="BwJ-Z6-EOh">
-                    <rect key="frame" x="0.0" y="416" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Sign Out"/>
-                    <connections>
-                        <action selector="_btnSignOutPressed:" destination="-1" eventType="touchUpInside" id="sE5-m6-tOH"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-91" y="-73"/>
+            <point key="canvasLocation" x="-258" y="-255.5"/>
         </view>
     </objects>
     <resources>
+        <image name="background_header.png" width="750" height="360"/>
         <image name="no_avatar" width="166" height="166"/>
     </resources>
 </document>

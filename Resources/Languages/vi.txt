@@ -221,42 +221,6 @@
 
 "TEXT_INCALL_VC_AUDIO_CALL"                 = "Gọi tiếng"
 
-"img_conference"        = "btn_conference.png"
-"img_conference_over"   = "btn_conference_over.png"
-"img_conference_dis"    = "btn_conference_dis.png"
-
-"img_speaker"           = "btn_speaker.png"
-"img_speaker_over"      = "btn_speaker_over.png"
-"img_speaker_dis"       = "btn_speaker_dis.png"
-
-"img_video"             = "btn_video.png"
-"img_video_over"        = "btn_video_over.png"
-"img_video_dis"         = "btn_video_dis.png"
-
-"img_hold"              = "btn_hold.png"
-"img_hold_over"         = "btn_hold_over.png"
-"img_hold_dis"          = "btn_hold_dis.png"
-
-"img_record"            = "btn_record.png"
-"img_record_over"       = "btn_record_over.png"
-"img_record_dis"        = "btn_record_dis.png"
-
-"img_mute"              = "btn_mute.png"
-"img_mute_over"         = "btn_mute_over.png"
-"img_mute_dis"          = "btn_mute_dis.png"
-
-"img_transfer"          = "btn_transfer.png"
-"img_transfer_over"     = "btn_transfer_over.png"
-"img_transfer_dis"      = "btn_transfer_dis.png"
-
-"img_message"           = "btn_message.png"
-"img_message_over"      = "btn_message_over.png"
-"img_message_dis"       = "btn_message_dis.png"
-
-"img_send"              = "btn_send.png"
-"img_send_over"         = "btn_send_over.png"
-"img_send_dis"          = "btn_send_dis.png"
-
 "text_confirm_content1"      =   "Chúng tôi đã gửi mã xác nhận."
 "text_confirm_content2"      =   "Vui lòng kiểm tra tin nhắn của bạn."
 "text_enter_confirmation"   =   "Nhập mã xác nhận"

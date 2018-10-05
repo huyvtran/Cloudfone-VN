@@ -177,6 +177,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_icClearSearchClicked:(UIButton *)sender {
+    _tfSearch.text = @"";
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"searchContactWithValue" object:_tfSearch.text];
 }
 
 //  setup trạng thái cho các button

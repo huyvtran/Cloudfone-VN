@@ -874,8 +874,6 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 	// Disable speaker when no more call
 	if ((state == LinphoneCallEnd || state == LinphoneCallError))
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"callEnded" object:nil];
-        
         LinphoneCallLog* callLog = linphone_call_get_call_log(call);
         LinphoneAddress* addr =linphone_call_log_get_remote_address(callLog);
         

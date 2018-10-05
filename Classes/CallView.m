@@ -62,12 +62,6 @@ const NSInteger SECURE_BUTTON_TAG = 5;
     float wCollection;
     float marginX;
     
-    UIButton *btnConference;
-    UIButton *buttonRecord;
-    UIButton *buttonMessage;
-    UIButton *buttonSendfile;
-    UIButton *btnNumpad;
-    
     int typeCurrentCall;
     BOOL changeConference;
     
@@ -208,9 +202,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(callUpdateEvent:)
 											   name:kLinphoneCallUpdate object:nil];
-
-    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(callEnded)
-                                               name:@"callEnded" object:nil];
     
 	durationTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self
                                                    selector:@selector(callDurationUpdate)
@@ -257,6 +248,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 		hiddenVolume = FALSE;
 	}
 
+    if (durationTimer != nil) {
+        [durationTimer invalidate];
+        durationTimer = nil;
+    }
+    
 	// Remove observer
     [NSNotificationCenter.defaultCenter removeObserver:self];
 }
@@ -533,15 +529,12 @@ static UICompositeViewDescription *compositeDescription = nil;
             
             // Nếu không phải Outgoing trong conference thì set disable các button
             if (!changeConference) {
-                btnConference.enabled = NO;
-                btnNumpad.enabled = NO;
+                icAddCall.enabled = NO;
+                _numpadButton.enabled = NO;
                 _videoButton.enabled = NO;
                 _callPauseButton.enabled = NO;
-                buttonRecord.enabled = NO;
                 _microButton.enabled = NO;
                 _optionsTransferButton.enabled = NO;
-                buttonMessage.enabled = NO;
-                buttonSendfile.enabled = NO;
             }
             break;
         }
@@ -559,15 +552,13 @@ static UICompositeViewDescription *compositeDescription = nil;
             NSLog(@"File : %s",linphone_call_params_get_record_file(paramsCopy));
             linphone_call_start_recording(currentCall);
             
-            btnConference.enabled = YES;
-            btnNumpad.enabled = YES;
+            icAddCall.enabled = YES;
+            _numpadButton.enabled = YES;
             _routesSpeakerButton.enabled = YES;
             _videoButton.enabled = YES;
             _callPauseButton.enabled = YES;
             _microButton.enabled = YES;
             _optionsTransferButton.enabled = YES;
-            buttonMessage.enabled = NO;
-            buttonRecord.enabled = YES;
             
             // Add tất cả các cuộc gọi vào nhóm
             if (linphone_core_get_calls_nb(LC) >= 2) {
@@ -586,15 +577,13 @@ static UICompositeViewDescription *compositeDescription = nil;
 					linphone_call_params_low_bandwidth_enabled(param)) {
 				}
 			}
-            btnConference.enabled = YES;
-            btnNumpad.enabled = YES;
+            icAddCall.enabled = YES;
+            _numpadButton.enabled = YES;
             _routesSpeakerButton.enabled = YES;
             _videoButton.enabled = YES;
             _callPauseButton.enabled = YES;
             _microButton.enabled = YES;
             _optionsTransferButton.enabled = YES;
-            buttonMessage.enabled = NO;
-            buttonRecord.enabled = YES;
             
             // Add tất cả các cuộc gọi vào nhóm
             if (linphone_core_get_calls_nb(LC) >= 2) {
@@ -630,8 +619,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 			}
 			break;
         case LinphoneCallEnd:{
-            buttonRecord.selected = NO;
-            
             if (durationTimer != nil) {
                 [durationTimer invalidate];
                 durationTimer = nil;
@@ -950,10 +937,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - My Functions
 
-- (void)callEnded {
-    buttonRecord.selected = NO;
-}
-
 //  Hide keypad mini
 - (void)btnHideKeypadPressed{
     _viewCommand.hidden = NO;
@@ -1072,18 +1055,19 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.mas_equalTo(wFeatureIcon);
     }];
     lbKeypad.backgroundColor = UIColor.orangeColor;
+    lbKeypad.text = [appDelegate.localization localizedStringForKey:@"Keypad"];
     
     [_numpadButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(lbKeypad.mas_top);
         make.centerX.equalTo(_scrollView.mas_centerX);
         make.width.height.mas_equalTo(wFeatureIcon);
     }];
-    [btnNumpad setBackgroundImage:[UIImage imageNamed:@"ic_keypad_def.png"] forState:UIControlStateNormal];
-    [btnNumpad setBackgroundImage:[UIImage imageNamed:@"ic_keypad_act.png"] forState:UIControlStateSelected];
-    [btnNumpad setBackgroundImage:[UIImage imageNamed:@"ic_keypad_dis.png"] forState:UIControlStateDisabled];
-    btnNumpad.backgroundColor = UIColor.clearColor;
-    btnNumpad.enabled = NO;
-    [btnNumpad addTarget:self
+    [_numpadButton setBackgroundImage:[UIImage imageNamed:@"ic_keypad_def.png"] forState:UIControlStateNormal];
+    [_numpadButton setBackgroundImage:[UIImage imageNamed:@"ic_keypad_act.png"] forState:UIControlStateSelected];
+    [_numpadButton setBackgroundImage:[UIImage imageNamed:@"ic_keypad_dis.png"] forState:UIControlStateDisabled];
+    _numpadButton.backgroundColor = UIColor.clearColor;
+    _numpadButton.enabled = NO;
+    [_numpadButton addTarget:self
                   action:@selector(btnKeypadPressed)
         forControlEvents:UIControlEventTouchUpInside];
     
@@ -1105,11 +1089,12 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.equalTo(lbKeypad.mas_width);
     }];
     lbMute.backgroundColor = UIColor.orangeColor;
+    lbMute.text = [appDelegate.localization localizedStringForKey:@"Mute"];
     
     //  speaker
     [_speakerButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_numpadButton);
-        make.left.equalTo(_numpadButton.mas_left).offset(marginX);
+        make.left.equalTo(_numpadButton.mas_right).offset(marginX);
         make.width.height.mas_equalTo(wFeatureIcon);
     }];
     [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_def.png"] forState:UIControlStateNormal];
@@ -1124,7 +1109,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.equalTo(lbKeypad.mas_width);
     }];
     lbSpeaker.backgroundColor = UIColor.orangeColor;
-    
+    lbSpeaker.text = [appDelegate.localization localizedStringForKey:@"Speaker"];
     
     //  Hold call
     [_callPauseButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1144,6 +1129,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.equalTo(lbKeypad.mas_width);
     }];
     lbPause.backgroundColor = UIColor.orangeColor;
+    lbPause.text = [appDelegate.localization localizedStringForKey:@"Hold"];
     
     //  Add call
     [icAddCall mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1163,11 +1149,12 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.equalTo(lbKeypad.mas_width);
     }];
     lbAddCall.backgroundColor = UIColor.orangeColor;
+    lbAddCall.text = [appDelegate.localization localizedStringForKey:@"Add call"];
     
     //  transfer call
     [_optionsTransferButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_callPauseButton);
-        make.left.equalTo(_callPauseButton.mas_right).offset(-marginX);
+        make.left.equalTo(_callPauseButton.mas_right).offset(marginX);
         make.width.height.mas_equalTo(wFeatureIcon);
     }];
     [_optionsTransferButton setBackgroundImage:[UIImage imageNamed:@"ic_addcall_def.png"] forState:UIControlStateNormal];
@@ -1182,145 +1169,20 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.equalTo(lbKeypad.mas_width);
     }];
     lbTransfer.backgroundColor = UIColor.orangeColor;
-    
-    // Conference button
-    btnConference = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, wButton, wButton) ];
-    [btnConference setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_conference]]
-                             forState:UIControlStateNormal];
-    [btnConference setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_conference_over]]
-                             forState: UIControlStateHighlighted];
-    [btnConference setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_conference_dis]]
-                             forState:UIControlStateDisabled];
-    
-    [btnConference addTarget:self
-                      action:@selector(onConference)
-            forControlEvents:UIControlEventTouchUpInside];
-    btnConference.enabled = NO;
-    [_scrollView addSubview:btnConference];
-    
-    
-    // Speaker button
-    _routesSpeakerButton.frame = CGRectMake(2*wButton, 0, wButton, wButton);
-    [_routesSpeakerButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_speaker]]
-                              forState:UIControlStateNormal ] ;
-    [_routesSpeakerButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_speaker_over]]
-                              forState: UIControlStateHighlighted];
-    [_routesSpeakerButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_speaker_over]]
-                              forState: UIControlStateSelected];
-    [_routesSpeakerButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_speaker_dis]]
-                              forState:UIControlStateDisabled];
-    [_routesSpeakerButton setEnabled: false];
-    //  [self.scrollView addSubview:buttonSpeaker];
-    
-    // Video button
-    _videoButton.frame = CGRectMake(0, wButton, wButton, wButton);
-    [_videoButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_video]]
-                            forState:UIControlStateNormal ] ;
-    [_videoButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_video_over]]
-                            forState: UIControlStateHighlighted];
-    [_videoButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_video_over]]
-                            forState: UIControlStateSelected];
-    [_videoButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_video_dis]]
-                            forState: UIControlStateDisabled];
-    //  Tạm thời đóng
-    _videoButton.enabled = NO;
-    
-    // Pause button
-    _callPauseButton.frame = CGRectMake(wButton, wButton, wButton, wButton);
-    [_callPauseButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_hold]]
-                                forState:UIControlStateNormal] ;
-    [_callPauseButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_hold_over]]
-                                forState: UIControlStateHighlighted];
-    [_callPauseButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_hold_over]]
-                                forState: UIControlStateSelected];
-    [_callPauseButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_hold_dis]]
-                                forState: UIControlStateDisabled];
-    [_callPauseButton setEnabled: false];
-    //  [self.scrollView addSubview: pauseButton];
-    
-    // Record button
-    buttonRecord = [[UIButton alloc] initWithFrame:CGRectMake(2*wButton, wButton, wButton, wButton) ];
-    [buttonRecord setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_record]]
-                            forState:UIControlStateNormal] ;
-//    [buttonRecord setBackgroundImage:[UIImage imageNamed:[localization localizedStringForKey:img_record_over]]
-//                            forState: UIControlStateHighlighted];
-    [buttonRecord setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_record_over]]
-                            forState: UIControlStateSelected];
-    [buttonRecord setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_record_dis]]
-                            forState:UIControlStateDisabled];
-    [buttonRecord setEnabled:false];
-    [buttonRecord setBackgroundColor: [UIColor clearColor]];
-    
-    [buttonRecord addTarget:self
-                     action:@selector(btnRecordPressed:)
-           forControlEvents:UIControlEventTouchUpInside];
-    
-    [_scrollView addSubview:buttonRecord];
-    
-    // Mute button
-    _microButton.frame = CGRectMake(3*wButton, 0, wButton, wButton);
-    [_microButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_mute]]
-                            forState:UIControlStateNormal ] ;
-    [_microButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_mute_over]]
-                            forState: UIControlStateHighlighted];
-    [_microButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_mute_over]]
-                            forState: UIControlStateSelected];
-    [_microButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_mute_dis]]
-                            forState:UIControlStateDisabled];
-    [_microButton setEnabled: false];
-    //  [self.scrollView addSubview:buttonMute];
-    
-    // Transfer button
-    _optionsTransferButton.frame = CGRectMake(4*wButton, 0, wButton, wButton);
-    [_optionsTransferButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_transfer]]
-                                      forState:UIControlStateNormal ] ;
-    [_optionsTransferButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_transfer_over]]
-                                      forState: UIControlStateHighlighted];
-    [_optionsTransferButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_transfer_over]]
-                                      forState: UIControlStateSelected];
-    [_optionsTransferButton setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_transfer_dis]]
-                                      forState:UIControlStateDisabled];
-    _optionsTransferButton.enabled = NO;
-    
+    lbTransfer.text = [appDelegate.localization localizedStringForKey:@"Transfer"];
+
     /*  Leo Kelvin
      [buttonTransfer addTarget:self action:@selector(onTransfer)
      forControlEvents:UIControlEventTouchUpInside];
      */
     //  [self.scrollView addSubview:buttonTransfer];
-    
-    // Message button
-    buttonMessage = [[UIButton alloc] initWithFrame:CGRectMake(3*wButton, wButton, wButton, wButton)  ];
-    [buttonMessage setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_message]]
-                             forState:UIControlStateNormal ] ;
-    [buttonMessage setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_message_over]]
-                             forState: UIControlStateHighlighted];
-    [buttonMessage setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_message_over]]
-                             forState: UIControlStateSelected];
-    [buttonMessage setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_message_dis]]
-                             forState:UIControlStateDisabled];
-    
-    [buttonMessage setEnabled:false];
-    [_scrollView addSubview:buttonMessage];
-    
-    // Send file button
-    buttonSendfile = [[UIButton alloc] initWithFrame:CGRectMake(4*wButton, wButton, wButton, wButton)];
-    [buttonSendfile setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_send]]
-                              forState:UIControlStateNormal ] ;
-    [buttonSendfile setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_send_over]]
-                              forState: UIControlStateHighlighted];
-    [buttonSendfile setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_send_over]]
-                              forState: UIControlStateSelected];
-    [buttonSendfile setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_send_dis]]
-                              forState:UIControlStateDisabled];
-    buttonSendfile.enabled = NO;
-    [_scrollView addSubview:buttonSendfile];
 }
 
 /*----- Click vao button conference trong scrollView  -----*/
 -(void)onConference {
     changeConference = YES;
     _lbConferenceDuration.text = [appDelegate.localization localizedStringForKey:text_connected];
-    btnConference.backgroundColor = UIColor.clearColor;
+    icAddCall.backgroundColor = UIColor.clearColor;
     _callView.hidden = YES;
     _conferenceView.hidden = NO;
     
@@ -1376,32 +1238,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)hiddenConference{
     [_callView setHidden: NO];
     [_conferenceView setHidden: YES];
-}
-
-- (void)btnRecordPressed: (UIButton *)sender
-{
-    if (sender.tag == 0) {
-        [sender setTag: 1];
-        [sender setSelected: true];
-        
-        //  Bật cờ ghi âm
-        if (appDelegate == nil) {
-            appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
-        }
-        [appDelegate set_hasRecordCall: true];
-        
-        NSLog(@"On Record");
-        LinphoneCore *lc = [LinphoneManager getLc];
-        LinphoneCall *currentCall = linphone_core_get_current_call(lc);
-        linphone_call_start_recording(currentCall);
-    }else{
-        [sender setTag: 0];
-        [sender setSelected: false];
-        
-        LinphoneCore* lc = [LinphoneManager getLc];
-        LinphoneCall* currentCall = linphone_core_get_current_call(lc);
-        linphone_call_stop_recording(currentCall);
-    }
 }
 
 - (void)setupUIForView
@@ -1473,9 +1309,10 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.height.mas_equalTo(40.0);
     }];
     _nameLabel.text = @"Khai Le Quang";
-    _nameLabel.font = textFont;
+    _nameLabel.font = [UIFont systemFontOfSize:22.0 weight:UIFontWeightSemibold];
     _nameLabel.textColor = UIColor.whiteColor;
     _nameLabel.backgroundColor = UIColor.redColor;
+    _nameLabel.textAlignment = NSTextAlignmentCenter;
     
     [lbPhoneNumber mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_nameLabel.mas_bottom);
@@ -1484,6 +1321,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.height.mas_equalTo(40.0);
     }];
     lbPhoneNumber.text = @"+01663430737";
+    lbPhoneNumber.textAlignment = NSTextAlignmentCenter;
+    lbPhoneNumber.textColor = UIColor.lightGrayColor;
     
     [_durationLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbPhoneNumber.mas_bottom).offset(10);
