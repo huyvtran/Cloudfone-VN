@@ -52,7 +52,7 @@
     [super viewDidLoad];
     //  MY CODE HERE
     hCell = 60.0;
-    hSection = 25.0;
+    hSection = 35.0;
     
     listCharacter = [[NSArray alloc] initWithObjects: @"A", @"B", @"C", @"D", @"E", @"F",
                   @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
@@ -437,11 +437,11 @@
 #pragma mark -
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [self.view endEditing: true];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"closeKeyboard" object:nil];
 }
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
-    [self.view endEditing: true];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"closeKeyboard" object:nil];
 }
 
 //  Added by Khai Le on 04/10/2018
@@ -449,6 +449,11 @@
     id object = [notif object];
     if ([object isKindOfClass:[NSString class]])
     {
+        if ([object isEqualToString:@""]) {
+            isSearching = NO;
+        }else{
+            isSearching = YES;
+        }
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             [self searchPhoneBook: object];
             dispatch_async(dispatch_get_main_queue(), ^(void){

@@ -677,6 +677,8 @@
 		846586961FCA9AC900C5142C /* KMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846586931FCA9AC700C5142C /* KMessageViewController.m */; };
 		846586991FCA9BD600C5142C /* SwipeableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 846586981FCA9BD600C5142C /* SwipeableTableViewCell.m */; };
 		846B716920E240410019AD41 /* SipUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 846B716120E240400019AD41 /* SipUtils.m */; };
+		84767D6121664BCA00561A85 /* call-background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84767D5A21664BC900561A85 /* call-background.jpg */; };
+		84767D6321664C2900561A85 /* ic_call_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 84767D6221664C2900561A85 /* ic_call_back.png */; };
 		8482CE2A2115554000E26650 /* PBXSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CE282115554000E26650 /* PBXSettingViewController.m */; };
 		8482CE2B2115554000E26650 /* PBXSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8482CE292115554000E26650 /* PBXSettingViewController.xib */; };
 		848725B91FC9C6AA008F4BE8 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 848725B61FC9C6AA008F4BE8 /* GTMNSString+HTML.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -829,6 +831,26 @@
 		84E87DDA1FC1DE3B0074A54C /* NewContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E87DD81FC1DE3B0074A54C /* NewContactViewController.m */; };
 		84E87DDB1FC1DE3B0074A54C /* NewContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E87DD91FC1DE3B0074A54C /* NewContactViewController.xib */; };
 		84EA0AE21FE9243000C3C78E /* ringbacktone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84EA0ADB1FE9243000C3C78E /* ringbacktone.mp3 */; };
+		84ECF9A821666C840067B4B6 /* decline_call_def.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9A021666C810067B4B6 /* decline_call_def.png */; };
+		84ECF9A921666C840067B4B6 /* decline_call_over.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9A721666C820067B4B6 /* decline_call_over.png */; };
+		84ECF9BC216679A70067B4B6 /* ic_transfer_def.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9AA216679A20067B4B6 /* ic_transfer_def.png */; };
+		84ECF9BD216679A70067B4B6 /* ic_keypad_def.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9AB216679A30067B4B6 /* ic_keypad_def.png */; };
+		84ECF9BE216679A70067B4B6 /* ic_speaker_def.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9AC216679A30067B4B6 /* ic_speaker_def.png */; };
+		84ECF9BF216679A70067B4B6 /* ic_speaker_dis.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9AD216679A30067B4B6 /* ic_speaker_dis.png */; };
+		84ECF9C0216679A70067B4B6 /* ic_pause_dis.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9AE216679A40067B4B6 /* ic_pause_dis.png */; };
+		84ECF9C1216679A70067B4B6 /* ic_transfer_dis.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9AF216679A40067B4B6 /* ic_transfer_dis.png */; };
+		84ECF9C2216679A70067B4B6 /* ic_keypad_act.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9B0216679A40067B4B6 /* ic_keypad_act.png */; };
+		84ECF9C3216679A70067B4B6 /* ic_mute_act.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9B1216679A40067B4B6 /* ic_mute_act.png */; };
+		84ECF9C4216679A70067B4B6 /* ic_addcall_def.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9B2216679A40067B4B6 /* ic_addcall_def.png */; };
+		84ECF9C5216679A70067B4B6 /* ic_pause_def.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9B3216679A50067B4B6 /* ic_pause_def.png */; };
+		84ECF9C6216679A70067B4B6 /* ic_addcall_dis.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9B4216679A50067B4B6 /* ic_addcall_dis.png */; };
+		84ECF9C7216679A70067B4B6 /* ic_keypad_dis.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9B5216679A50067B4B6 /* ic_keypad_dis.png */; };
+		84ECF9C8216679A70067B4B6 /* ic_mute_dis.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9B6216679A50067B4B6 /* ic_mute_dis.png */; };
+		84ECF9C9216679A70067B4B6 /* ic_speaker_act.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9B7216679A60067B4B6 /* ic_speaker_act.png */; };
+		84ECF9CA216679A70067B4B6 /* ic_addcall_act.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9B8216679A60067B4B6 /* ic_addcall_act.png */; };
+		84ECF9CB216679A70067B4B6 /* ic_mute_def.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9B9216679A60067B4B6 /* ic_mute_def.png */; };
+		84ECF9CC216679A70067B4B6 /* ic_transfer_act.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9BA216679A60067B4B6 /* ic_transfer_act.png */; };
+		84ECF9CD216679A70067B4B6 /* ic_pause_act.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9BB216679A60067B4B6 /* ic_pause_act.png */; };
 		84EDEE421FB7121C00FF665C /* KSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EDEE401FB7121C00FF665C /* KSettingViewController.m */; };
 		84EDEE431FB7121C00FF665C /* KSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84EDEE411FB7121C00FF665C /* KSettingViewController.xib */; };
 		84EDEE461FB7126B00FF665C /* AlertPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EDEE451FB7126B00FF665C /* AlertPopupView.m */; };
@@ -1851,6 +1873,8 @@
 		846586981FCA9BD600C5142C /* SwipeableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwipeableTableViewCell.m; path = AppUI/SwipeableTableViewCell.m; sourceTree = "<group>"; };
 		846B716120E240400019AD41 /* SipUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SipUtils.m; path = AppObjects/SipUtils.m; sourceTree = "<group>"; };
 		846B716820E240410019AD41 /* SipUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SipUtils.h; path = AppObjects/SipUtils.h; sourceTree = "<group>"; };
+		84767D5A21664BC900561A85 /* call-background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "call-background.jpg"; sourceTree = "<group>"; };
+		84767D6221664C2900561A85 /* ic_call_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_back.png; sourceTree = "<group>"; };
 		8482CE272115554000E26650 /* PBXSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PBXSettingViewController.h; path = More/PBXSettingViewController.h; sourceTree = "<group>"; };
 		8482CE282115554000E26650 /* PBXSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PBXSettingViewController.m; path = More/PBXSettingViewController.m; sourceTree = "<group>"; };
 		8482CE292115554000E26650 /* PBXSettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PBXSettingViewController.xib; path = More/PBXSettingViewController.xib; sourceTree = "<group>"; };
@@ -2129,6 +2153,26 @@
 		84E87DD81FC1DE3B0074A54C /* NewContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewContactViewController.m; path = Contacts/NewContactViewController.m; sourceTree = "<group>"; };
 		84E87DD91FC1DE3B0074A54C /* NewContactViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewContactViewController.xib; path = Contacts/NewContactViewController.xib; sourceTree = "<group>"; };
 		84EA0ADB1FE9243000C3C78E /* ringbacktone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringbacktone.mp3; sourceTree = "<group>"; };
+		84ECF9A021666C810067B4B6 /* decline_call_def.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = decline_call_def.png; sourceTree = "<group>"; };
+		84ECF9A721666C820067B4B6 /* decline_call_over.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = decline_call_over.png; sourceTree = "<group>"; };
+		84ECF9AA216679A20067B4B6 /* ic_transfer_def.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_transfer_def.png; path = Resources/images/keypad/ic_transfer_def.png; sourceTree = SOURCE_ROOT; };
+		84ECF9AB216679A30067B4B6 /* ic_keypad_def.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_keypad_def.png; path = Resources/images/keypad/ic_keypad_def.png; sourceTree = SOURCE_ROOT; };
+		84ECF9AC216679A30067B4B6 /* ic_speaker_def.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_speaker_def.png; path = Resources/images/keypad/ic_speaker_def.png; sourceTree = SOURCE_ROOT; };
+		84ECF9AD216679A30067B4B6 /* ic_speaker_dis.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_speaker_dis.png; path = Resources/images/keypad/ic_speaker_dis.png; sourceTree = SOURCE_ROOT; };
+		84ECF9AE216679A40067B4B6 /* ic_pause_dis.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_pause_dis.png; path = Resources/images/keypad/ic_pause_dis.png; sourceTree = SOURCE_ROOT; };
+		84ECF9AF216679A40067B4B6 /* ic_transfer_dis.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_transfer_dis.png; path = Resources/images/keypad/ic_transfer_dis.png; sourceTree = SOURCE_ROOT; };
+		84ECF9B0216679A40067B4B6 /* ic_keypad_act.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_keypad_act.png; path = Resources/images/keypad/ic_keypad_act.png; sourceTree = SOURCE_ROOT; };
+		84ECF9B1216679A40067B4B6 /* ic_mute_act.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_mute_act.png; path = Resources/images/keypad/ic_mute_act.png; sourceTree = SOURCE_ROOT; };
+		84ECF9B2216679A40067B4B6 /* ic_addcall_def.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_addcall_def.png; path = Resources/images/keypad/ic_addcall_def.png; sourceTree = SOURCE_ROOT; };
+		84ECF9B3216679A50067B4B6 /* ic_pause_def.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_pause_def.png; path = Resources/images/keypad/ic_pause_def.png; sourceTree = SOURCE_ROOT; };
+		84ECF9B4216679A50067B4B6 /* ic_addcall_dis.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_addcall_dis.png; path = Resources/images/keypad/ic_addcall_dis.png; sourceTree = SOURCE_ROOT; };
+		84ECF9B5216679A50067B4B6 /* ic_keypad_dis.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_keypad_dis.png; path = Resources/images/keypad/ic_keypad_dis.png; sourceTree = SOURCE_ROOT; };
+		84ECF9B6216679A50067B4B6 /* ic_mute_dis.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_mute_dis.png; path = Resources/images/keypad/ic_mute_dis.png; sourceTree = SOURCE_ROOT; };
+		84ECF9B7216679A60067B4B6 /* ic_speaker_act.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_speaker_act.png; path = Resources/images/keypad/ic_speaker_act.png; sourceTree = SOURCE_ROOT; };
+		84ECF9B8216679A60067B4B6 /* ic_addcall_act.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_addcall_act.png; path = Resources/images/keypad/ic_addcall_act.png; sourceTree = SOURCE_ROOT; };
+		84ECF9B9216679A60067B4B6 /* ic_mute_def.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_mute_def.png; path = Resources/images/keypad/ic_mute_def.png; sourceTree = SOURCE_ROOT; };
+		84ECF9BA216679A60067B4B6 /* ic_transfer_act.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_transfer_act.png; path = Resources/images/keypad/ic_transfer_act.png; sourceTree = SOURCE_ROOT; };
+		84ECF9BB216679A60067B4B6 /* ic_pause_act.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_pause_act.png; path = Resources/images/keypad/ic_pause_act.png; sourceTree = SOURCE_ROOT; };
 		84EDEE3F1FB7121C00FF665C /* KSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSettingViewController.h; path = More/KSettingViewController.h; sourceTree = "<group>"; };
 		84EDEE401FB7121C00FF665C /* KSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KSettingViewController.m; path = More/KSettingViewController.m; sourceTree = "<group>"; };
 		84EDEE411FB7121C00FF665C /* KSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KSettingViewController.xib; path = More/KSettingViewController.xib; sourceTree = "<group>"; };
@@ -2793,6 +2837,24 @@
 		153DFFFD2164A663007B69B3 /* keypad */ = {
 			isa = PBXGroup;
 			children = (
+				84ECF9B8216679A60067B4B6 /* ic_addcall_act.png */,
+				84ECF9B2216679A40067B4B6 /* ic_addcall_def.png */,
+				84ECF9B4216679A50067B4B6 /* ic_addcall_dis.png */,
+				84ECF9B0216679A40067B4B6 /* ic_keypad_act.png */,
+				84ECF9AB216679A30067B4B6 /* ic_keypad_def.png */,
+				84ECF9B5216679A50067B4B6 /* ic_keypad_dis.png */,
+				84ECF9B1216679A40067B4B6 /* ic_mute_act.png */,
+				84ECF9B9216679A60067B4B6 /* ic_mute_def.png */,
+				84ECF9B6216679A50067B4B6 /* ic_mute_dis.png */,
+				84ECF9BB216679A60067B4B6 /* ic_pause_act.png */,
+				84ECF9B3216679A50067B4B6 /* ic_pause_def.png */,
+				84ECF9AE216679A40067B4B6 /* ic_pause_dis.png */,
+				84ECF9B7216679A60067B4B6 /* ic_speaker_act.png */,
+				84ECF9AC216679A30067B4B6 /* ic_speaker_def.png */,
+				84ECF9AD216679A30067B4B6 /* ic_speaker_dis.png */,
+				84ECF9BA216679A60067B4B6 /* ic_transfer_act.png */,
+				84ECF9AA216679A20067B4B6 /* ic_transfer_def.png */,
+				84ECF9AF216679A40067B4B6 /* ic_transfer_dis.png */,
 				153D00022164A679007B69B3 /* call_default.png */,
 				153D00082164A67C007B69B3 /* hotline_default.png */,
 				153D00062164A67B007B69B3 /* numpad_clear.png */,
@@ -3181,6 +3243,10 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				84ECF9A021666C810067B4B6 /* decline_call_def.png */,
+				84ECF9A721666C820067B4B6 /* decline_call_over.png */,
+				84767D6221664C2900561A85 /* ic_call_back.png */,
+				84767D5A21664BC900561A85 /* call-background.jpg */,
 				1575279921661D43007D789A /* tf_close_bg.png */,
 				1575279721661D1A007D789A /* ic_search.png */,
 				1575278A2166028A007D789A /* ic_sync.png */,
@@ -4738,13 +4804,18 @@
 				633FEDC51D3CD5590014B822 /* call_hangup_disabled@2x.png in Resources */,
 				633FEE071D3CD5590014B822 /* chat_add_default@2x.png in Resources */,
 				633FEF551D3CD55A0014B822 /* waiting_time@2x.png in Resources */,
+				84767D6321664C2900561A85 /* ic_call_back.png in Resources */,
+				84ECF9C8216679A70067B4B6 /* ic_mute_dis.png in Resources */,
 				633FEE541D3CD5590014B822 /* dialer_back_default.png in Resources */,
 				633FEF0B1D3CD55A0014B822 /* options_transfer_call_default@2x.png in Resources */,
 				633FEDE81D3CD5590014B822 /* call_status_missed~ipad.png in Resources */,
+				84ECF9C2216679A70067B4B6 /* ic_keypad_act.png in Resources */,
 				63AADBFF1B6A0FF200AA16FD /* assistant_external_sip.rc in Resources */,
 				634610121B6140A500548952 /* CallOutgoingView.xib in Resources */,
 				633FEDC21D3CD5590014B822 /* call_hangup_default.png in Resources */,
+				84ECF9A921666C840067B4B6 /* decline_call_over.png in Resources */,
 				8442A37A1FB13D0D00F08F11 /* PBXContactsViewController.xib in Resources */,
+				84ECF9C7216679A70067B4B6 /* ic_keypad_dis.png in Resources */,
 				633FEE471D3CD5590014B822 /* contacts_sip_selected@2x.png in Resources */,
 				84E07EF72025DD8A0000CD12 /* callnex_ring.wav in Resources */,
 				153D00152164A67E007B69B3 /* numpad_clear.png in Resources */,
@@ -4773,8 +4844,10 @@
 				633FEE6A1D3CD5590014B822 /* footer_dialer_default.png in Resources */,
 				153D00502164D9D3007B69B3 /* numpad_one_hover.png in Resources */,
 				633FEE441D3CD5590014B822 /* contacts_sip_disabled.png in Resources */,
+				84767D6121664BCA00561A85 /* call-background.jpg in Resources */,
 				633FEDFA1D3CD5590014B822 /* camera_selected.png in Resources */,
 				633FEF451D3CD55A0014B822 /* speaker_default@2x.png in Resources */,
+				84ECF9C9216679A70067B4B6 /* ic_speaker_act.png in Resources */,
 				633FEDD41D3CD5590014B822 /* call_quality_indicator_4.png in Resources */,
 				633FEF241D3CD55A0014B822 /* route_bluetooth_disabled.png in Resources */,
 				84C1E22A1FAEB94500EED0B9 /* vi.txt in Resources */,
@@ -4830,8 +4903,10 @@
 				633FEE1F1D3CD5590014B822 /* chat_start_body_disabled@2x.png in Resources */,
 				633FEF301D3CD55A0014B822 /* route_speaker_disabled.png in Resources */,
 				639CEAFD1A1DF4D9004DE38F /* StatusBarView.xib in Resources */,
+				84ECF9CC216679A70067B4B6 /* ic_transfer_act.png in Resources */,
 				153D004B2164D9D3007B69B3 /* numpad_start_hover.png in Resources */,
 				633FEDE91D3CD5590014B822 /* call_status_missed~ipad@2x.png in Resources */,
+				84ECF9BE216679A70067B4B6 /* ic_speaker_def.png in Resources */,
 				84E066741FBE626300C49F66 /* TypePhoneCell.xib in Resources */,
 				84515E67200EEE1A007246E9 /* msg.wav in Resources */,
 				639E9CAC1C0DB80300019A75 /* UIContactDetailsCell.xib in Resources */,
@@ -4853,6 +4928,7 @@
 				843ED6611FB658F9005FE1C1 /* MoreViewController.xib in Resources */,
 				633FEE4B1D3CD5590014B822 /* delete_disabled@2x.png in Resources */,
 				633FEE181D3CD5590014B822 /* chat_send_over.png in Resources */,
+				84ECF9BC216679A70067B4B6 /* ic_transfer_def.png in Resources */,
 				633FEDED1D3CD5590014B822 /* call_status_outgoing~ipad@2x.png in Resources */,
 				153D00392164D537007B69B3 /* menu_history_act.png in Resources */,
 				633FEE2D1D3CD5590014B822 /* color_E.png in Resources */,
@@ -4876,6 +4952,7 @@
 				633FEDEA1D3CD5590014B822 /* call_status_outgoing.png in Resources */,
 				633FEF511D3CD55A0014B822 /* valid_disabled@2x.png in Resources */,
 				633FEF2B1D3CD55A0014B822 /* route_earpiece_disabled@2x.png in Resources */,
+				84ECF9BF216679A70067B4B6 /* ic_speaker_dis.png in Resources */,
 				639E9CA31C0DB7EA00019A75 /* UIChatBubbleTextCell.xib in Resources */,
 				633FEDD21D3CD5590014B822 /* call_quality_indicator_3.png in Resources */,
 				633FEDAF1D3CD5590014B822 /* call_add_default@2x.png in Resources */,
@@ -4908,6 +4985,7 @@
 				633FEDFD1D3CD5590014B822 /* camera_switch_default@2x.png in Resources */,
 				633FEE721D3CD5590014B822 /* history_all_default.png in Resources */,
 				633FEF0A1D3CD55A0014B822 /* options_transfer_call_default.png in Resources */,
+				84ECF9CA216679A70067B4B6 /* ic_addcall_act.png in Resources */,
 				633FEDA51D3CD5590014B822 /* back_default@2x.png in Resources */,
 				633FEF311D3CD55A0014B822 /* route_speaker_disabled@2x.png in Resources */,
 				84C47D171FB632640015695E /* IncomingCallViewController.xib in Resources */,
@@ -4919,6 +4997,7 @@
 				153D00302164D537007B69B3 /* menu_more_en_act.png in Resources */,
 				63AADC011B6A0FF200AA16FD /* assistant_linphone_existing.rc in Resources */,
 				633FEE5A1D3CD5590014B822 /* edit_default.png in Resources */,
+				84ECF9CD216679A70067B4B6 /* ic_pause_act.png in Resources */,
 				633FEDD11D3CD5590014B822 /* call_quality_indicator_2@2x.png in Resources */,
 				633FEDBC1D3CD5590014B822 /* call_audio_start_disabled.png in Resources */,
 				633FEE481D3CD5590014B822 /* delete_default.png in Resources */,
@@ -4953,6 +5032,7 @@
 				153D001A2164A67E007B69B3 /* numpad_three_default.png in Resources */,
 				633FEE1A1D3CD5590014B822 /* chat_start_body_default.png in Resources */,
 				153D00572164D9D3007B69B3 /* numpad_eight_hover.png in Resources */,
+				84ECF9C5216679A70067B4B6 /* ic_pause_def.png in Resources */,
 				633FEF041D3CD55A0014B822 /* options_selected.png in Resources */,
 				63E27A521C50EDB000D332AE /* hold.mkv in Resources */,
 				84D032231FB531B5002D2524 /* KContactDetailViewController.xib in Resources */,
@@ -4971,6 +5051,7 @@
 				633FEEFC1D3CD55A0014B822 /* options_add_call_default.png in Resources */,
 				633FEF441D3CD55A0014B822 /* speaker_default.png in Resources */,
 				639CEB031A1DF4EB004DE38F /* UICompositeView.xib in Resources */,
+				84ECF9C3216679A70067B4B6 /* ic_mute_act.png in Resources */,
 				84EDEE501FB712F200FF665C /* NotificationSettingsViewController.xib in Resources */,
 				633FEF3A1D3CD55A0014B822 /* security_ko.png in Resources */,
 				633FEDA01D3CD5590014B822 /* avatar.png in Resources */,
@@ -5021,6 +5102,7 @@
 				842DEC441FC478F300E7F74D /* UIMiniKeypad.xib in Resources */,
 				633FEE091D3CD5590014B822 /* chat_add_disabled@2x.png in Resources */,
 				633FEE191D3CD5590014B822 /* chat_send_over@2x.png in Resources */,
+				84ECF9C6216679A70067B4B6 /* ic_addcall_dis.png in Resources */,
 				633FEF181D3CD55A0014B822 /* pause_small_over_selected.png in Resources */,
 				633FEE001D3CD5590014B822 /* camera_switch_over.png in Resources */,
 				633FEF401D3CD55A0014B822 /* select_all_default.png in Resources */,
@@ -5054,6 +5136,7 @@
 				840531E81FCB097C00A27A03 /* ContactAddGroupCell.xib in Resources */,
 				633FEDE41D3CD5590014B822 /* call_status_incoming~ipad.png in Resources */,
 				633FEF4D1D3CD55A0014B822 /* splashscreen~ipad@2x.png in Resources */,
+				84ECF9CB216679A70067B4B6 /* ic_mute_def.png in Resources */,
 				633FEE4C1D3CD5590014B822 /* delete_field_default.png in Resources */,
 				633FEE391D3CD5590014B822 /* contact_add_default@2x.png in Resources */,
 				153D003A2164D537007B69B3 /* menu_more_act.png in Resources */,
@@ -5071,8 +5154,10 @@
 				633FEF1C1D3CD55A0014B822 /* presence_offline.png in Resources */,
 				84C1E22F1FAEBA4C00EED0B9 /* RegisterView.xib in Resources */,
 				633FEE901D3CD55A0014B822 /* list_details_over.png in Resources */,
+				84ECF9C0216679A70067B4B6 /* ic_pause_dis.png in Resources */,
 				633FEDE31D3CD5590014B822 /* call_status_incoming@2x.png in Resources */,
 				84C1E21D1FAEB74600EED0B9 /* SignInView.xib in Resources */,
+				84ECF9BD216679A70067B4B6 /* ic_keypad_def.png in Resources */,
 				153D00582164D9D3007B69B3 /* numpad_zero_hover.png in Resources */,
 				633FEE821D3CD5590014B822 /* led_disconnected.png in Resources */,
 				633FEDB01D3CD5590014B822 /* call_add_disabled.png in Resources */,
@@ -5132,6 +5217,7 @@
 				633FEE7B1D3CD5590014B822 /* history_missed_default@2x.png in Resources */,
 				633FEDEC1D3CD5590014B822 /* call_status_outgoing~ipad.png in Resources */,
 				633FEDE51D3CD5590014B822 /* call_status_incoming~ipad@2x.png in Resources */,
+				84ECF9A821666C840067B4B6 /* decline_call_def.png in Resources */,
 				633FEF101D3CD55A0014B822 /* pause_big_disabled.png in Resources */,
 				633FEE221D3CD5590014B822 /* chat_start_body_over.png in Resources */,
 				633FEE601D3CD5590014B822 /* edit_list_disabled.png in Resources */,
@@ -5191,6 +5277,7 @@
 				8462F40A20E73BAB005964D7 /* bg_chat_default.jpg in Resources */,
 				633FEDB41D3CD5590014B822 /* call_alt_back_disabled.png in Resources */,
 				633FEE631D3CD5590014B822 /* footer_chat_default@2x.png in Resources */,
+				84ECF9C1216679A70067B4B6 /* ic_transfer_dis.png in Resources */,
 				843ED6661FB65989005FE1C1 /* MenuCell.xib in Resources */,
 				633FEE661D3CD5590014B822 /* footer_contacts_default.png in Resources */,
 				633FEDC11D3CD5590014B822 /* call_back_disabled@2x.png in Resources */,
@@ -5215,6 +5302,7 @@
 				633FEDCE1D3CD5590014B822 /* call_quality_indicator_1.png in Resources */,
 				84EDEE581FB7137200FF665C /* LanguageCell.xib in Resources */,
 				633FEF4E1D3CD55A0014B822 /* valid_default.png in Resources */,
+				84ECF9C4216679A70067B4B6 /* ic_addcall_def.png in Resources */,
 				570742581D5A0691004B9C84 /* ShopView.xib in Resources */,
 				633FEE361D3CD5590014B822 /* conference_exit_over.png in Resources */,
 				633FEDAA1D3CD5590014B822 /* backspace_disabled.png in Resources */,

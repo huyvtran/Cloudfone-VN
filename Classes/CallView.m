@@ -87,7 +87,8 @@ const NSInteger SECURE_BUTTON_TAG = 5;
 @implementation CallView {
 	BOOL hiddenVolume;
 }
-@synthesize _lbQuality, _viewInfo, _lbState, _bgHeader, _viewCommand, _scrollView;
+@synthesize bgCall, icBack, lbPhoneNumber, lbMute, lbKeypad, lbSpeaker, icAddCall, lbAddCall, lbPause, lbTransfer;
+@synthesize _lbQuality, _viewCommand, _scrollView;
 @synthesize detailConference, _bgHeaderConf, lbAddressConf, _lbConferenceDuration, btnAddCallConf, btnEndCallConf, avatarConference, collectionConference;
 @synthesize durationTimer;
 
@@ -343,15 +344,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 	_durationLabel.text = [LinphoneUtils durationToString:duration];
 
     if (duration > 0) {
-        _lbState.text = [appDelegate.localization localizedStringForKey:text_connected];
-        _lbState.textColor = [UIColor colorWithRed:(27/255.0) green:(175/255.0)
-                                              blue:(153/255.0) alpha:1.0];
-        
         [self callQualityUpdate];
-        
-    }else{
-        _lbState.text = [appDelegate.localization localizedStringForKey:text_status_connecting];
-        _lbState.textColor = UIColor.whiteColor;
     }
 }
 
@@ -1060,21 +1053,135 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 //  add scroll view khi goi
-- (void)addScrollview {
-    //  Add scroll View
-    _scrollView.frame = CGRectMake((_viewCommand.frame.size.width-3*wButton)/2, (_viewCommand.frame.size.height-2*wButton)/2, 3*wButton, 2*wButton);
-    _scrollView.pagingEnabled = YES;
-    _scrollView.accessibilityActivationPoint = CGPointMake(wButton, wButton);
-    
-    UIImageView *imgView;
-    imgView = [[UIImageView alloc]initWithImage:
-               [UIImage imageNamed:@"background_option_call.png"]];
+- (void)addScrollview
+{
+    float wFeatureIcon = 70.0;
+    float marginX = (SCREEN_WIDTH - 3*wFeatureIcon)/4;
     
     _scrollView.minimumZoomScale = 0.5;
     _scrollView.maximumZoomScale = 3;
     _scrollView.contentSize = CGSizeMake(5*wButton, 2*wButton);
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.showsVerticalScrollIndicator = NO;
+    
+    //  numpad button
+    [lbKeypad mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(_scrollView.mas_centerY);
+        make.centerX.equalTo(_scrollView.mas_centerX);
+        make.height.mas_equalTo(40);
+        make.width.mas_equalTo(wFeatureIcon);
+    }];
+    lbKeypad.backgroundColor = UIColor.orangeColor;
+    
+    [_numpadButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(lbKeypad.mas_top);
+        make.centerX.equalTo(_scrollView.mas_centerX);
+        make.width.height.mas_equalTo(wFeatureIcon);
+    }];
+    [btnNumpad setBackgroundImage:[UIImage imageNamed:@"ic_keypad_def.png"] forState:UIControlStateNormal];
+    [btnNumpad setBackgroundImage:[UIImage imageNamed:@"ic_keypad_act.png"] forState:UIControlStateSelected];
+    [btnNumpad setBackgroundImage:[UIImage imageNamed:@"ic_keypad_dis.png"] forState:UIControlStateDisabled];
+    btnNumpad.backgroundColor = UIColor.clearColor;
+    btnNumpad.enabled = NO;
+    [btnNumpad addTarget:self
+                  action:@selector(btnKeypadPressed)
+        forControlEvents:UIControlEventTouchUpInside];
+    
+    //  mute
+    [_microButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_numpadButton);
+        make.right.equalTo(_numpadButton.mas_left).offset(-marginX);
+        make.width.height.mas_equalTo(wFeatureIcon);
+    }];
+    [_microButton setBackgroundImage:[UIImage imageNamed:@"ic_mute_def.png"] forState:UIControlStateNormal];
+    [_microButton setBackgroundImage:[UIImage imageNamed:@"ic_mute_act.png"] forState:UIControlStateSelected];
+    [_microButton setBackgroundImage:[UIImage imageNamed:@"ic_mute_dis.png"] forState:UIControlStateDisabled];
+    _microButton.backgroundColor = UIColor.clearColor;
+    
+    [lbMute mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(lbKeypad.mas_top);
+        make.centerX.equalTo(_microButton.mas_centerX);
+        make.height.equalTo(lbKeypad.mas_height);
+        make.width.equalTo(lbKeypad.mas_width);
+    }];
+    lbMute.backgroundColor = UIColor.orangeColor;
+    
+    //  speaker
+    [_speakerButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_numpadButton);
+        make.left.equalTo(_numpadButton.mas_left).offset(marginX);
+        make.width.height.mas_equalTo(wFeatureIcon);
+    }];
+    [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_def.png"] forState:UIControlStateNormal];
+    [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_act.png"] forState:UIControlStateSelected];
+    [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_dis.png"] forState:UIControlStateDisabled];
+    _speakerButton.backgroundColor = UIColor.clearColor;
+    
+    [lbSpeaker mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(lbKeypad.mas_top);
+        make.centerX.equalTo(_speakerButton.mas_centerX);
+        make.height.equalTo(lbKeypad.mas_height);
+        make.width.equalTo(lbKeypad.mas_width);
+    }];
+    lbSpeaker.backgroundColor = UIColor.orangeColor;
+    
+    
+    //  Hold call
+    [_callPauseButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_scrollView.mas_centerY).offset(10);
+        make.centerX.equalTo(_scrollView.mas_centerX);
+        make.width.height.mas_equalTo(wFeatureIcon);
+    }];
+    [_callPauseButton setBackgroundImage:[UIImage imageNamed:@"ic_pause_def.png"] forState:UIControlStateNormal];
+    [_callPauseButton setBackgroundImage:[UIImage imageNamed:@"ic_pause_act.png"] forState:UIControlStateSelected];
+    [_callPauseButton setBackgroundImage:[UIImage imageNamed:@"ic_pause_dis.png"] forState:UIControlStateDisabled];
+    _callPauseButton.backgroundColor = UIColor.clearColor;
+    
+    [lbPause mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_callPauseButton.mas_bottom);
+        make.centerX.equalTo(_callPauseButton.mas_centerX);
+        make.height.equalTo(lbKeypad.mas_height);
+        make.width.equalTo(lbKeypad.mas_width);
+    }];
+    lbPause.backgroundColor = UIColor.orangeColor;
+    
+    //  Add call
+    [icAddCall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_callPauseButton);
+        make.right.equalTo(_callPauseButton.mas_left).offset(-marginX);
+        make.width.height.mas_equalTo(wFeatureIcon);
+    }];
+    [icAddCall setBackgroundImage:[UIImage imageNamed:@"ic_addcall_def.png"] forState:UIControlStateNormal];
+    [icAddCall setBackgroundImage:[UIImage imageNamed:@"ic_addcall_act.png"] forState:UIControlStateSelected];
+    [icAddCall setBackgroundImage:[UIImage imageNamed:@"ic_addcall_dis.png"] forState:UIControlStateDisabled];
+    icAddCall.backgroundColor = UIColor.clearColor;
+    
+    [lbAddCall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(lbPause.mas_top);
+        make.centerX.equalTo(icAddCall.mas_centerX);
+        make.height.equalTo(lbKeypad.mas_height);
+        make.width.equalTo(lbKeypad.mas_width);
+    }];
+    lbAddCall.backgroundColor = UIColor.orangeColor;
+    
+    //  transfer call
+    [_optionsTransferButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_callPauseButton);
+        make.left.equalTo(_callPauseButton.mas_right).offset(-marginX);
+        make.width.height.mas_equalTo(wFeatureIcon);
+    }];
+    [_optionsTransferButton setBackgroundImage:[UIImage imageNamed:@"ic_addcall_def.png"] forState:UIControlStateNormal];
+    [_optionsTransferButton setBackgroundImage:[UIImage imageNamed:@"ic_addcall_act.png"] forState:UIControlStateSelected];
+    [_optionsTransferButton setBackgroundImage:[UIImage imageNamed:@"ic_addcall_dis.png"] forState:UIControlStateDisabled];
+    _optionsTransferButton.backgroundColor = UIColor.clearColor;
+    
+    [lbTransfer mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(lbPause.mas_top);
+        make.centerX.equalTo(_optionsTransferButton.mas_centerX);
+        make.height.equalTo(lbKeypad.mas_height);
+        make.width.equalTo(lbKeypad.mas_width);
+    }];
+    lbTransfer.backgroundColor = UIColor.orangeColor;
     
     // Conference button
     btnConference = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, wButton, wButton) ];
@@ -1091,25 +1198,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     btnConference.enabled = NO;
     [_scrollView addSubview:btnConference];
     
-    // Keypad button
-    _numpadButton.hidden = YES;
-    btnNumpad = [[UIButton alloc] init];
-    [btnNumpad setFrame: CGRectMake(wButton, 0, wButton, wButton)];
-    [btnNumpad setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_keypad]]
-                             forState:UIControlStateNormal] ;
-    [btnNumpad setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_keypad_over]]
-                             forState: UIControlStateHighlighted];
-    [btnNumpad setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_keypad_over]]
-                             forState: UIControlStateSelected];
-    [btnNumpad setBackgroundImage:[UIImage imageNamed:[appDelegate.localization localizedStringForKey:img_keypad_dis]]
-                             forState:UIControlStateDisabled];
-    [btnNumpad setBackgroundColor:[UIColor clearColor]];
-    [btnNumpad setEnabled:false];
-    [btnNumpad addTarget:self
-                  action:@selector(btnKeypadPressed)
-        forControlEvents:UIControlEventTouchUpInside];
-    
-    [_scrollView addSubview:btnNumpad];
     
     // Speaker button
     _routesSpeakerButton.frame = CGRectMake(2*wButton, 0, wButton, wButton);
@@ -1316,7 +1404,22 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)setupUIForView {
+- (void)setupUIForView
+{
+    float hInfo;
+    if (SCREEN_WIDTH > 320) {
+        hIconEndCall = 60.0;
+        hInfo = 120.0;
+        wButton = 100.0;
+        
+        [_hangupButton setFrame: CGRectMake((SCREEN_WIDTH-60)/2, _callView.frame.size.height-hIconEndCall-35, hIconEndCall, hIconEndCall)];
+    }else{
+        hIconEndCall = 60.0;
+        hInfo = 90.0;
+        wButton = 90.0;
+        
+        [_hangupButton setFrame: CGRectMake((SCREEN_WIDTH-60)/2, _callView.frame.size.height-hIconEndCall-25, hIconEndCall, hIconEndCall)];
+    }
     
     if (SCREEN_WIDTH > 320) {
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
@@ -1325,58 +1428,83 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     
     //  View call binh thuong
+    float wEndCall = 70.0;
+    [_callView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self.view);
+    }];
     
-    [_lbQuality setFont:[UIFont fontWithName:HelveticaNeue size:14.0]];
-    [_lbQuality setTextColor: [UIColor whiteColor]];
-    
-    [_callView setFrame: CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-appDelegate._hStatus)];
-    
-    //  float hHeader = SCREEN_WIDTH*445/1280;
-    
-    float hInfo;
-    if (SCREEN_WIDTH > 320) {
-        hIconEndCall = 60.0;
-        hInfo = 120.0;
-        wButton = 100.0;
-        [_lbState setFont:[UIFont fontWithName:HelveticaNeue size:17.0]];
-        
-        [_hangupButton setFrame: CGRectMake((SCREEN_WIDTH-60)/2, _callView.frame.size.height-hIconEndCall-35, hIconEndCall, hIconEndCall)];
-    }else{
-        hIconEndCall = 60.0;
-        hInfo = 90.0;
-        wButton = 90.0;
-        [_lbState setFont:[UIFont fontWithName:HelveticaNeue size:15.0]];
-        
-        [_hangupButton setFrame: CGRectMake((SCREEN_WIDTH-60)/2, _callView.frame.size.height-hIconEndCall-25, hIconEndCall, hIconEndCall)];
-    }
-    
+    [_hangupButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(_callView).offset(-20);
+        make.centerX.equalTo(_callView.mas_centerX);
+        make.width.height.mas_equalTo(wEndCall);
+    }];
     [_hangupButton addTarget:self
                       action:@selector(btnHangupButtonPressed)
             forControlEvents:UIControlEventTouchUpInside];
     
-    [_viewInfo setFrame: CGRectMake(0, 0, SCREEN_WIDTH, hInfo)];
-    [_bgHeader setFrame: CGRectMake(0, 0, _viewInfo.frame.size.width, _viewInfo.frame.size.height)];
+    [bgCall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_callView);
+    }];
     
-    [_avatarImage setFrame: CGRectMake(10, 10, hInfo-20, hInfo-20)];
-    [_avatarImage.layer setCornerRadius: 0];
+    [icBack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.equalTo(_callView).offset(20);
+        make.width.height.mas_equalTo(40.0);
+    }];
     
-    [_nameLabel setFrame: CGRectMake(_avatarImage.frame.origin.x+_avatarImage.frame.size.width+10, _avatarImage.frame.origin.y, SCREEN_WIDTH-(_avatarImage.frame.origin.x+_avatarImage.frame.size.width+10+60), _avatarImage.frame.size.height/2)];
-    [_nameLabel setFont: textFont];
-    [_nameLabel setTextColor:[UIColor whiteColor]];
-    [_nameLabel setBackgroundColor:[UIColor clearColor]];
+    _lbQuality.font = [UIFont fontWithName:HelveticaNeue size:14.0];
+    _lbQuality.textColor = UIColor.whiteColor;
+    [_lbQuality mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(icBack);
+        make.centerX.equalTo(_callView.mas_centerX);
+        make.width.mas_equalTo(200);
+    }];
     
-    [_lbState setFrame: CGRectMake(_nameLabel.frame.origin.x, _nameLabel.frame.origin.y+_nameLabel.frame.size.height, _viewInfo.frame.size.width-(2*_avatarImage.frame.origin.x+_avatarImage.frame.size.width+5), _nameLabel.frame.size.height)];
-    [_lbState setTextColor:[UIColor whiteColor]];
+    [_avatarImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbQuality.mas_bottom).offset(20);
+        make.centerX.equalTo(_callView.mas_centerX);
+        make.width.height.mas_equalTo(hInfo-20);
+    }];
+    _avatarImage.layer.cornerRadius = (hInfo-20)/2;
     
-    [_durationLabel setFrame: CGRectMake(0, _viewInfo.frame.origin.y+_viewInfo.frame.size.height+5, SCREEN_WIDTH, 50)];
-    [_durationLabel setFont:[UIFont fontWithName:HelveticaNeue size:40.0]];
-    [_durationLabel setBackgroundColor:[UIColor clearColor]];
+    [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_avatarImage.mas_bottom).offset(10);
+        make.left.equalTo(_callView).offset(20);
+        make.right.equalTo(_callView).offset(-20);
+        make.height.mas_equalTo(40.0);
+    }];
+    _nameLabel.text = @"Khai Le Quang";
+    _nameLabel.font = textFont;
+    _nameLabel.textColor = UIColor.whiteColor;
+    _nameLabel.backgroundColor = UIColor.redColor;
     
-    [_hangupButton setBackgroundImage:[UIImage imageNamed:@"decline_call_over.png"]
-                             forState:UIControlStateHighlighted];
+    [lbPhoneNumber mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_nameLabel.mas_bottom);
+        make.left.equalTo(_callView).offset(20);
+        make.right.equalTo(_callView).offset(-20);
+        make.height.mas_equalTo(40.0);
+    }];
+    lbPhoneNumber.text = @"+01663430737";
     
-    [_viewCommand setFrame: CGRectMake(0, _durationLabel.frame.origin.y+_durationLabel.frame.size.height, SCREEN_WIDTH, _hangupButton.frame.origin.y-25-(_durationLabel.frame.origin.y+_durationLabel.frame.size.height+25))];
-    [_viewCommand setBackgroundColor:[UIColor clearColor]];
+    [_durationLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(lbPhoneNumber.mas_bottom).offset(10);
+        make.left.equalTo(_callView).offset(20);
+        make.right.equalTo(_callView).offset(-20);
+        make.height.mas_equalTo(60.0);
+    }];
+    _durationLabel.font = [UIFont fontWithName:HelveticaNeue size:40.0];
+    _durationLabel.backgroundColor = UIColor.clearColor;
+    _durationLabel.text = @"+01663430737";
+    
+    [_viewCommand mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(lbPhoneNumber.mas_bottom).offset(10);
+        make.left.right.equalTo(_callView);
+        make.bottom.equalTo(_hangupButton.mas_top).offset(-10);
+    }];
+    _viewCommand.backgroundColor = UIColor.orangeColor;
+    
+    [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewCommand);
+    }];
     
     //  conference
     [_conferenceView setFrame: CGRectMake(0, 0, SCREEN_WIDTH, _callView.frame.size.height)];

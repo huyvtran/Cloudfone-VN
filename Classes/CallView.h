@@ -49,6 +49,17 @@ typedef enum typeCall{
 	VideoZoomHandler *videoZoomHandler;
 }
 
+@property (weak, nonatomic) IBOutlet UIImageView *bgCall;
+@property (weak, nonatomic) IBOutlet UIButton *icBack;
+@property (weak, nonatomic) IBOutlet UILabel *lbPhoneNumber;
+@property (weak, nonatomic) IBOutlet UILabel *lbMute;
+@property (weak, nonatomic) IBOutlet UILabel *lbKeypad;
+@property (weak, nonatomic) IBOutlet UILabel *lbSpeaker;
+@property (weak, nonatomic) IBOutlet UILabel *lbPause;
+@property (weak, nonatomic) IBOutlet UILabel *lbTransfer;
+@property (weak, nonatomic) IBOutlet UIButton *icAddCall;
+@property (weak, nonatomic) IBOutlet UILabel *lbAddCall;
+
 @property(nonatomic, strong) IBOutlet CallPausedTableView *pausedCallsTable;
 @property(weak, nonatomic) IBOutlet UIView *callView;
 
@@ -106,10 +117,6 @@ typedef enum typeCall{
 - (IBAction)onChatClick:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UILabel *_lbQuality;
-
-@property (weak, nonatomic) IBOutlet UIView *_viewInfo;
-@property (weak, nonatomic) IBOutlet UIImageView *_bgHeader;
-@property (weak, nonatomic) IBOutlet UILabel *_lbState;
 
 @property (weak, nonatomic) IBOutlet UIView *_viewCommand;
 @property (weak, nonatomic) IBOutlet UIScrollView *_scrollView;

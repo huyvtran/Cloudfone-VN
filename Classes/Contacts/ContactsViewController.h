@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "UICompositeView.h"
+#import "WebServices.h"
 
 typedef enum eContact{
     eContactPBX,
     eContactAll,
 }eContact;
 
-@interface ContactsViewController : UIViewController<UICompositeViewDelegate, UIPageViewControllerDelegate, UIPageViewControllerDataSource, UITextFieldDelegate>
+@interface ContactsViewController : UIViewController<UICompositeViewDelegate, UIPageViewControllerDelegate, UIPageViewControllerDataSource, UITextFieldDelegate, WebServicesDelegate>
 
 @property (nonatomic, retain) UIPageViewController *_pageViewController;
 

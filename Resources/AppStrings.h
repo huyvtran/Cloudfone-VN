@@ -200,9 +200,6 @@
 #define img_conference_over     @"img_conference_over"
 #define img_conference_dis      @"img_conference_dis"
 
-#define img_keypad              @"img_keypad"
-#define img_keypad_over         @"img_keypad_over"
-#define img_keypad_dis          @"img_keypad_dis"
 
 #define img_speaker             @"img_speaker"
 #define img_speaker_over        @"img_speaker_over"

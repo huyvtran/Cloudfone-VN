@@ -225,10 +225,6 @@
 "img_conference_over"   = "btn_conference_over.png"
 "img_conference_dis"    = "btn_conference_dis.png"
 
-"img_keypad"            = "btn_keypad.png"
-"img_keypad_over"       = "btn_keypad_over.png"
-"img_keypad_dis"        = "btn_keypad_dis.png"
-
 "img_speaker"           = "btn_speaker.png"
 "img_speaker_over"      = "btn_speaker_over.png"
 "img_speaker_dis"       = "btn_speaker_dis.png"
