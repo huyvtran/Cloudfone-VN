@@ -65,6 +65,9 @@
 		1579B72421674989002BECE3 /* ic_add_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 1579B71D21674988002BECE3 /* ic_add_contact.png */; };
 		1579B72521674989002BECE3 /* ic_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 1579B71E21674988002BECE3 /* ic_back.png */; };
 		1579B72721674A6B002BECE3 /* call_disable.png in Resources */ = {isa = PBXBuildFile; fileRef = 1579B72621674A67002BECE3 /* call_disable.png */; };
+		159002D72168618E00CECB7A /* ic_call_missed.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002CE2168618B00CECB7A /* ic_call_missed.png */; };
+		159002D82168618E00CECB7A /* ic_call_outgoing.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002D52168618C00CECB7A /* ic_call_outgoing.png */; };
+		159002D92168618E00CECB7A /* ic_call_incoming.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002D62168618D00CECB7A /* ic_call_incoming.png */; };
 		15F728741B16FF9A00A1C901 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 152F22351B15E889008C0621 /* libxml2.dylib */; };
 		1D3623260D0F684500981E51 /* LinphoneAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* LinphoneAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -1164,6 +1167,9 @@
 		1579B71D21674988002BECE3 /* ic_add_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_add_contact.png; sourceTree = "<group>"; };
 		1579B71E21674988002BECE3 /* ic_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_back.png; sourceTree = "<group>"; };
 		1579B72621674A67002BECE3 /* call_disable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = call_disable.png; path = Resources/images/keypad/call_disable.png; sourceTree = SOURCE_ROOT; };
+		159002CE2168618B00CECB7A /* ic_call_missed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_missed.png; sourceTree = "<group>"; };
+		159002D52168618C00CECB7A /* ic_call_outgoing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_outgoing.png; sourceTree = "<group>"; };
+		159002D62168618D00CECB7A /* ic_call_incoming.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_incoming.png; sourceTree = "<group>"; };
 		179F852E5AE85EE2824C8985 /* Pods-linphone.distributionadhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-linphone.distributionadhoc.xcconfig"; path = "Pods/Target Support Files/Pods-linphone/Pods-linphone.distributionadhoc.xcconfig"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* LinphoneAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinphoneAppDelegate.h; sourceTree = "<group>"; };
@@ -3255,6 +3261,9 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				159002D62168618D00CECB7A /* ic_call_incoming.png */,
+				159002CE2168618B00CECB7A /* ic_call_missed.png */,
+				159002D52168618C00CECB7A /* ic_call_outgoing.png */,
 				1579B71D21674988002BECE3 /* ic_add_contact.png */,
 				1579B71921674985002BECE3 /* ic_add_contact@2x.png */,
 				1579B71E21674988002BECE3 /* ic_back.png */,
@@ -4823,6 +4832,7 @@
 				633FEE071D3CD5590014B822 /* chat_add_default@2x.png in Resources */,
 				633FEF551D3CD55A0014B822 /* waiting_time@2x.png in Resources */,
 				84767D6321664C2900561A85 /* ic_call_back.png in Resources */,
+				159002D92168618E00CECB7A /* ic_call_incoming.png in Resources */,
 				84ECF9C8216679A70067B4B6 /* ic_mute_dis.png in Resources */,
 				633FEE541D3CD5590014B822 /* dialer_back_default.png in Resources */,
 				633FEF0B1D3CD55A0014B822 /* options_transfer_call_default@2x.png in Resources */,
@@ -4945,6 +4955,7 @@
 				633FEDFC1D3CD5590014B822 /* camera_switch_default.png in Resources */,
 				843ED6611FB658F9005FE1C1 /* MoreViewController.xib in Resources */,
 				633FEE4B1D3CD5590014B822 /* delete_disabled@2x.png in Resources */,
+				159002D72168618E00CECB7A /* ic_call_missed.png in Resources */,
 				633FEE181D3CD5590014B822 /* chat_send_over.png in Resources */,
 				84ECF9BC216679A70067B4B6 /* ic_transfer_def.png in Resources */,
 				633FEDED1D3CD5590014B822 /* call_status_outgoing~ipad@2x.png in Resources */,
@@ -5292,6 +5303,7 @@
 				633FEDB81D3CD5590014B822 /* call_alt_start_disabled.png in Resources */,
 				633FEF3C1D3CD55A0014B822 /* security_ok.png in Resources */,
 				633FED9F1D3CD5590014B822 /* add_field_over@2x.png in Resources */,
+				159002D82168618E00CECB7A /* ic_call_outgoing.png in Resources */,
 				84C4435E1FBE00B90015854C /* IntroduceViewController.xib in Resources */,
 				639E9CA91C0DB7FB00019A75 /* UIConfirmationDialog.xib in Resources */,
 				153D00162164A67E007B69B3 /* numpad_seven_default.png in Resources */,

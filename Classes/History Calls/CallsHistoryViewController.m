@@ -22,7 +22,7 @@
 @end
 
 @implementation CallsHistoryViewController
-@synthesize _viewHeader, _btnEdit, _lbDelete, _btnDone, _iconAll, _iconMissed, bgHeader;
+@synthesize _viewHeader, _btnEdit, _iconAll, _iconMissed, bgHeader;
 @synthesize _pageViewController, _vcIndex;
 
 #pragma mark - UICompositeViewDelegate Functions
@@ -99,12 +99,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [self showContentWithCurrentLanguage];
     
-    CGSize textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Edit"] withFont:textFont];
-    _btnEdit.frame = CGRectMake(10, 0, textSize.width, [LinphoneAppDelegate sharedInstance]._hHeader);
-    
-    textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Done"] withFont:textFont];
-    _btnDone.frame = CGRectMake(_viewHeader.frame.size.width-textSize.width-_lbDelete.frame.origin.x, _btnEdit.frame.origin.y, textSize.width, _btnEdit.frame.size.height);
-    
     // Tắt màn hình cảm biến
     UIDevice *device = [UIDevice currentDevice];
     device.proximityMonitoringEnabled = NO;
@@ -152,9 +146,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     _iconAll.hidden = YES;
     _iconMissed.hidden = YES;
     
-    _btnDone.hidden = NO;
-    _lbDelete.hidden = NO;
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:editHistoryCallView object:nil];
 }
 
@@ -162,9 +153,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnEdit.hidden = NO;
     _iconAll.hidden = NO;
     _iconMissed.hidden = NO;
-    
-    _btnDone.hidden = YES;
-    _lbDelete.hidden = YES;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:finishRemoveHistoryCall object:nil];
 }
@@ -198,8 +186,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - My functions
 
 - (void)showContentWithCurrentLanguage {
-    [_btnDone setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Done"] forState:UIControlStateNormal];
-    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_edit] forState:UIControlStateNormal];
+    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Edit"] forState:UIControlStateNormal];
+    [_iconAll setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"All"] forState:UIControlStateNormal];
+    [_iconMissed setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Missed"] forState:UIControlStateNormal];
 }
 
 //  Reset lại các UI khi vào màn hình
@@ -207,9 +196,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnEdit.hidden = NO;
     _iconAll.hidden = NO;
     _iconMissed.hidden = NO;
-    
-    _btnDone.hidden = YES;
-    _lbDelete.hidden = YES;
 }
 
 //  Cập nhật trạng thái của các icon trên header
@@ -271,19 +257,13 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.height.equalTo(_iconAll.mas_height);
     }];
     
-    
-    
-    _lbDelete.font = textFont;
-    _lbDelete.textAlignment = NSTextAlignmentLeft;
-    _lbDelete.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_delete];
-    [_lbDelete mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_viewHeader).offset(10);
-        make.top.bottom.equalTo(_viewHeader);
-        make.width.mas_equalTo(120.0);
+    [_btnEdit mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(_viewHeader.mas_right).offset(-10);
+        make.centerY.equalTo(_iconAll.mas_centerY);
+        make.height.equalTo(_iconAll.mas_height);
+        make.width.mas_lessThanOrEqualTo(100);
     }];
-    
     _btnEdit.titleLabel.font = textFont;
-    _btnDone.titleLabel.font = textFont;
 }
 
 //  Cập nhật giá trị delete
@@ -291,16 +271,16 @@ static UICompositeViewDescription *compositeDescription = nil;
     id object = [notif object];
     if ([object isKindOfClass:[NSNumber class]]) {
         if ([object intValue] == 0) {
-            _lbDelete.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_delete];
-            
-            CGSize textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_delete] withFont:textFont];
-            _btnEdit.frame = CGRectMake(_lbDelete.frame.origin.x, 0, textSize.width, [LinphoneAppDelegate sharedInstance]._hHeader);
+//            _lbDelete.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_delete];
+//
+//            CGSize textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_delete] withFont:textFont];
+//            _btnEdit.frame = CGRectMake(_lbDelete.frame.origin.x, 0, textSize.width, [LinphoneAppDelegate sharedInstance]._hHeader);
         }else{
-            NSString *str = [NSString stringWithFormat:@"%@(%d)", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_delete], [object intValue]];
-            _lbDelete.text = str;
-            
-            CGSize textSize = [AppUtils getSizeWithText:str withFont:textFont];
-            _btnEdit.frame = CGRectMake(_lbDelete.frame.origin.x, 0, textSize.width, [LinphoneAppDelegate sharedInstance]._hHeader);
+//            NSString *str = [NSString stringWithFormat:@"%@(%d)", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_delete], [object intValue]];
+//            _lbDelete.text = str;
+//
+//            CGSize textSize = [AppUtils getSizeWithText:str withFont:textFont];
+//            _btnEdit.frame = CGRectMake(_lbDelete.frame.origin.x, 0, textSize.width, [LinphoneAppDelegate sharedInstance]._hHeader);
         }
     }
 }

@@ -29,6 +29,6 @@
 @property (nonatomic, strong) NSString *_phoneName;
 @property (nonatomic, strong) NSString *_prefixPhone;
 @property (nonatomic, strong) NSString *_phoneAvatar;
-@property (nonatomic, strong) NSString *_recordFile;
+@property (nonatomic, assign) long duration;
 
 @end

@@ -9,14 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @interface UIHistoryDetailCell : UITableViewCell
-@property (nonatomic, retain) IBOutlet UIView *viewContent;
-@property (nonatomic, retain) IBOutlet UIView *viewTitle;
+
 @property (nonatomic, retain) IBOutlet UILabel *lbTitle;
+
+@property (nonatomic, retain) IBOutlet UIView *viewContent;
+@property (weak, nonatomic) IBOutlet UIImageView *imgStatus;
+@property (weak, nonatomic) IBOutlet UILabel *lbStateCall;
 @property (nonatomic, retain) IBOutlet UILabel *lbTime;
 @property (nonatomic, retain) IBOutlet UILabel *lbDuration;
-@property (nonatomic, retain) IBOutlet UILabel *lbRate;
-@property (retain, nonatomic) IBOutlet UIImageView *_imageClock;
-
-- (void)setupUIForCell;
 
 @end

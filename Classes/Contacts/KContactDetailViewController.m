@@ -181,7 +181,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  header
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo(235+[LinphoneAppDelegate sharedInstance]._hStatus);
+        make.height.mas_equalTo(230+[LinphoneAppDelegate sharedInstance]._hStatus);
     }];
     
     [_bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {

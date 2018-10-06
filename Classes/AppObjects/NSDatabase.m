@@ -137,6 +137,7 @@ HMLocalization *localization;
         aCall._callDate = callDate;
         aCall._phoneName = [infos objectAtIndex: 0];
         aCall._phoneAvatar = [infos objectAtIndex: 1];
+        aCall.duration = [[rsDict objectForKey:@"duration"] intValue];
         
         [resultArr addObject: aCall];
     }
@@ -370,23 +371,6 @@ HMLocalization *localization;
     return userId;
 }
 
-// Lấy tổng số phút gọi đến 1 số
-+ (NSArray *)getTotalDurationAndRateOfCallWithPhone: (NSString *)phoneNumber{
-    NSString *tSQL = [NSString stringWithFormat:@"SELECT duration,rate FROM history WHERE my_sip = '%@' AND call_direction='Outgoing' AND status = 'Success' AND phone_number LIKE '%%%@%%'", USERNAME, phoneNumber];
-    FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
-    int totalDuration = 0;
-    float totalRate = 0;
-    while ([rs next]) {
-        NSDictionary *rsDict = [rs resultDictionary];
-        int duration = [[rsDict objectForKey:@"duration"] intValue];
-        float rate = [[rsDict objectForKey:@"rate"] floatValue];
-        totalDuration = totalDuration + duration;
-        totalRate = totalRate + rate;
-    }
-    [rs close];
-    return [[NSArray alloc] initWithObjects:[NSNumber numberWithInt: totalDuration], [NSNumber numberWithFloat: totalRate], nil];
-}
-
 //  kiểm tra cloudfoneId có trong blacklist hay ko?
 + (BOOL)checkCloudFoneIDInBlackList: (NSString *)cloudfoneID ofAccount: (NSString *)account {
     BOOL result = false;
@@ -401,16 +385,16 @@ HMLocalization *localization;
 }
 
 // Get danh sách cuộc gọi với một số
-+ (NSMutableArray *)getAllListCallOfMe: (NSString *)mySip withPhoneNumber: (NSString *)phoneNumber andCallDirection: (NSString *)callDirection{
++ (NSMutableArray *)getAllListCallOfMe: (NSString *)mySip withPhoneNumber: (NSString *)phoneNumber{
     
     NSMutableArray *resultArr = [[NSMutableArray alloc] init];
     
     NSString *dateSQL = @"";
     // Viết câu truy vấn cho get hotline history
     if ([phoneNumber isEqualToString: hotline]) {
-        dateSQL = [NSString stringWithFormat:@"SELECT date FROM history WHERE my_sip='%@' AND phone_number = '%@' AND call_direction='%@' GROUP BY date ORDER BY _id DESC", mySip, phoneNumber, callDirection];
+        dateSQL = [NSString stringWithFormat:@"SELECT date FROM history WHERE my_sip='%@' AND phone_number = '%@' GROUP BY date ORDER BY _id DESC", mySip, phoneNumber];
     }else{
-        dateSQL = [NSString stringWithFormat:@"SELECT date FROM history WHERE my_sip='%@' AND phone_number LIKE '%%%@%%' AND call_direction='%@' GROUP BY date ORDER BY _id DESC", mySip, phoneNumber, callDirection];
+        dateSQL = [NSString stringWithFormat:@"SELECT date FROM history WHERE my_sip='%@' AND phone_number LIKE '%%%@%%' GROUP BY date ORDER BY _id DESC", mySip, phoneNumber];
     }
     
     FMResultSet *rs = [appDelegate._database executeQuery: dateSQL];
@@ -423,21 +407,21 @@ HMLocalization *localization;
         aCall._rate = -1;
         aCall._duration = -1;
         [resultArr addObject: aCall];
-        [resultArr addObjectsFromArray:[self getAllCallOfMe:mySip withPhone:phoneNumber andCallDirection:callDirection onDate:dateStr]];
+        [resultArr addObjectsFromArray:[self getAllCallOfMe:mySip withPhone:phoneNumber onDate:dateStr]];
     }
     [rs close];
     return resultArr;
 }
 
-+ (NSMutableArray *)getAllCallOfMe: (NSString *)mySip withPhone: (NSString *)phoneNumber andCallDirection: (NSString *)callDirection onDate: (NSString *)dateStr{
++ (NSMutableArray *)getAllCallOfMe: (NSString *)mySip withPhone: (NSString *)phoneNumber onDate: (NSString *)dateStr{
     NSMutableArray *resultArr = [[NSMutableArray alloc] init];
     
     NSString *tSQL = @"";
     // Viết câu truy vấn cho get hotline history
     if ([phoneNumber isEqualToString: hotline]) {
-        tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number = '%@' AND call_direction='%@' AND date='%@' ORDER BY _id DESC", mySip, phoneNumber, callDirection, dateStr];
+        tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number = '%@' AND date='%@' ORDER BY _id DESC", mySip, phoneNumber, dateStr];
     }else{
-        tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number LIKE '%%%@%%' AND call_direction='%@' AND date='%@' ORDER BY _id DESC", mySip, phoneNumber, callDirection, dateStr];
+        tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number LIKE '%%%@%%' AND date='%@' ORDER BY _id DESC", mySip, phoneNumber, dateStr];
     }
     
     FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
@@ -551,7 +535,6 @@ HMLocalization *localization;
         NSString *callTime      = [rsDict objectForKey:@"time"];
         NSString *callDate      = [rsDict objectForKey:@"date"];
         NSString *phoneNumber = [rsDict objectForKey:@"phone_number"];
-        NSString *recordFile = [rsDict objectForKey:@"record_files"];
         
         aCall._prefixPhone = @"";
         aCall._phoneNumber = phoneNumber;
@@ -563,7 +546,6 @@ HMLocalization *localization;
         aCall._callDate = callDate;
         aCall._phoneName = [infos objectAtIndex: 0];
         aCall._phoneAvatar = [infos objectAtIndex: 1];
-        aCall._recordFile = recordFile;
         
         [resultArr addObject: aCall];
     }

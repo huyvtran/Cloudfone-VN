@@ -21,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *_lbPhone;
 
 @property (nonatomic, strong) NSString *_phoneNumber;
+@property (weak, nonatomic) IBOutlet UILabel *lbTime;
+@property (weak, nonatomic) IBOutlet UILabel *lbDuration;
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 

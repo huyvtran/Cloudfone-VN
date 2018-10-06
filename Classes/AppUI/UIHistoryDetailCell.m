@@ -9,28 +9,53 @@
 #import "UIHistoryDetailCell.h"
 
 @implementation UIHistoryDetailCell
-@synthesize lbTime,lbDuration,lbRate,viewContent,viewTitle,lbTitle, _imageClock;
+@synthesize lbTitle, viewContent, imgStatus, lbStateCall, lbTime, lbDuration;
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     // Initialization code
-    lbDuration.textColor = [UIColor colorWithRed:(142/255.0) green:(193/255.0)
-                                            blue:(5/255.0) alpha:1];
+    
+    lbTitle.font = [UIFont systemFontOfSize:16.0 weight:UIFontWeightSemibold];
+    [lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(self);
+        make.left.equalTo(self).offset(20);
+        make.right.equalTo(self).offset(-20);
+    }];
+    
+    [viewContent mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self);
+    }];
+    
+    [imgStatus mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(viewContent).offset(20);
+        make.centerY.equalTo(viewContent.mas_centerY);
+        make.width.height.mas_equalTo(20.0);
+    }];
+    
+    [lbTime mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(viewContent.mas_centerX);
+        make.top.equalTo(viewContent).offset(5);
+        make.bottom.equalTo(viewContent).offset(-5);
+        make.width.mas_equalTo(70.0);
+    }];
+    
+    [lbStateCall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(imgStatus.mas_right).offset(5);
+        make.right.equalTo(lbTime.mas_left).offset(-5);
+        make.top.bottom.equalTo(lbTime);
+    }];
+    
+    [lbDuration mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(lbTime.mas_right).offset(5);
+        make.right.equalTo(viewContent).offset(-20);
+        make.top.bottom.equalTo(lbTime);
+    }];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
     // Configure the view for the selected state
-}
-
-- (void)setupUIForCell
-{
-    _imageClock.frame = CGRectMake(5, (self.frame.size.height-15)/2, 15.0, 15.0);
-    lbRate.frame = CGRectMake(self.frame.size.width-_imageClock.frame.origin.x-70, 0, 70, self.frame.size.height);
-    lbTime.frame = CGRectMake(_imageClock.frame.origin.x+_imageClock.frame.size.width+5, 0, 100, self.frame.size.height);
-    lbDuration.frame = CGRectMake(lbTime.frame.origin.x+lbTime.frame.size.width+5, 0, lbRate.frame.origin.x-5-(lbTime.frame.origin.x+lbTime.frame.size.width+5), self.frame.size.height);
 }
 
 -(void) dealloc{

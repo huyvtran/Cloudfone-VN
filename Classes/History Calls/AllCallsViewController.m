@@ -250,6 +250,7 @@
         cell._imgAvatar.image = [UIImage imageWithData: imgData];
     }
     cell._lbDateTime.text = aCall._callTime;
+    cell.lbDuration.text = [NSString stringWithFormat:@"%ld s", aCall.duration];
     
     if (isDeleted) {
         cell._cbDelete.hidden = NO;
@@ -259,10 +260,10 @@
             if ([aCall._status isEqualToString: missed_call]) {
                 cell._imgStatus.image = [UIImage imageNamed:@"ic_call_missed.png"];
             }else{
-                cell._imgStatus.image = [UIImage imageNamed:@"ic_call.png"];
+                cell._imgStatus.image = [UIImage imageNamed:@"ic_call_incoming.png"];
             }
         }else{
-            cell._imgStatus.image = [UIImage imageNamed:@"ic_call_to.png"];
+            cell._imgStatus.image = [UIImage imageNamed:@"ic_call_outgoing.png"];
         }
     }
     cell._cbDelete._indexPath = indexPath;
@@ -274,8 +275,7 @@
     [cell._btnCall addTarget:self
                       action:@selector(btnCallOnCellPressed:)
             forControlEvents:UIControlEventTouchUpInside];
-    cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbListCalls.frame.size.width, hCell);
-    [cell setupUIForViewWithStatus: isDeleted];
+    
     return cell;
 }
 

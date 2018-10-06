@@ -50,16 +50,13 @@
 + (BOOL)insertLastLogoutForUser: (NSString *)account passWord: (NSString *)password andRelogin: (int)relogin;
 + (NSString *)getUserAccountForLastLogin;
 
-/* Lấy tổng số phút gọi đến 1 số */
-+ (NSArray *)getTotalDurationAndRateOfCallWithPhone: (NSString *)phoneNumber;
-
 //  kiểm tra cloudfoneId có trong blacklist hay ko?
 + (BOOL)checkCloudFoneIDInBlackList: (NSString *)cloudfoneID ofAccount: (NSString *)account ;
 
-+ (NSMutableArray *)getAllListCallOfMe: (NSString *)mySip withPhoneNumber: (NSString *)phoneNumber andCallDirection: (NSString *)callDirection;
++ (NSMutableArray *)getAllListCallOfMe: (NSString *)mySip withPhoneNumber: (NSString *)phoneNumber;
 
 /* Get lịch sử cuộc gọi trong 1 ngày với callDirection */
-+ (NSMutableArray *)getAllCallOfMe: (NSString *)mySip withPhone: (NSString *)phoneNumber andCallDirection: (NSString *)callDirection onDate: (NSString *)dateStr;
++ (NSMutableArray *)getAllCallOfMe: (NSString *)mySip withPhone: (NSString *)phoneNumber onDate: (NSString *)dateStr;
 
 +(NSArray *) getAllRowsByCallDirection : (NSString *)direction phone:(NSString *)phoneCall;
 

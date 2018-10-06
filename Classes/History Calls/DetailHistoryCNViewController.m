@@ -22,26 +22,12 @@
 @interface DetailHistoryCNViewController ()
 {
     LinphoneAppDelegate *appDelegate;
-    float hInfo;
-    
-    BOOL transfer_popup;
-    
     // list history call
     NSArray *arrOugoingcalls;
     NSArray *arrIncommingcalls;
     int historySection;
     
-    NSMutableArray *listOutgoing;
-    NSMutableArray *listIncomming;
-    
-    BOOL checkSection;
-    
-    int totalDuration;
-    
-    int originXTotalMinites;
-    
-    float hCell;
-    float hSection;
+    NSMutableArray *listHistoryCalls;
     
     UIFont *textFont;
     UIFont *textFontDes;
@@ -67,10 +53,10 @@
 @end
 
 @implementation DetailHistoryCNViewController
-@synthesize _viewHeader, _iconBack, _lbHeader, _iconAddNew;
-@synthesize _viewInfo, _imgAvatar, _lbName, _lbPhone;
-@synthesize _viewButton, _iconCall, _lbCall, _iconMessage, _lbMessage, _iconVideo, _lbVideo, _iconBlockUnblock, _lbBlockUnblock;
-@synthesize _tbHistory, _refreshControl;
+
+@synthesize _viewHeader, bgHeader, _iconBack, _lbHeader, _iconAddNew, _imgAvatar, _lbName;
+@synthesize btnCall, _tbHistory;
+@synthesize _refreshControl;
 @synthesize phoneNumber, _phoneNumberDetail;
 
 #pragma mark - UICompositeViewDelegate Functions
@@ -95,16 +81,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 #pragma mark - View controllers
-
-//  View không bị thay đổi sau khi vào pickerview controller
-- (void) viewDidLayoutSubviews {
-    if(floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-        CGRect viewBounds = self.view.bounds;
-        CGFloat topBarOffset = self.topLayoutGuide.length;
-        viewBounds.origin.y = topBarOffset * -1;
-        self.view.bounds = viewBounds;
-    }
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -149,29 +125,17 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)showContentWithCurrentLanguage {
     _lbHeader.text = [appDelegate.localization localizedStringForKey:text_call_detail_header];
-    _lbCall.text = [appDelegate.localization localizedStringForKey:text_detail_call];
-    _lbMessage.text = [appDelegate.localization localizedStringForKey:text_detail_message];
-    _lbVideo.text = [appDelegate.localization localizedStringForKey:text_detail_video_call];
 }
 
 //  Cập nhật view sau khi get xong phone number
 - (void)updateView {
     // Lấy tổng tiền và số phút gọi
-    totalDuration = 0;
-    
-    NSArray *infosCall = [NSDatabase getTotalDurationAndRateOfCallWithPhone: _phoneNumberDetail];
-    totalDuration = [[infosCall firstObject] intValue];
-  
     NSArray *infos = [NSDatabase getNameAndAvatarOfContactWithPhoneNumber: _phoneNumberDetail];
     if ([[infos objectAtIndex: 0] isEqualToString: @""]) {
-        _lbName.text = [appDelegate.localization localizedStringForKey: text_unknown];
-        _lbPhone.text = [NSString stringWithFormat:@"(%@)", _phoneNumberDetail];
-        
+        _lbName.text = _phoneNumberDetail;
         _iconAddNew.hidden = NO;
     }else{
-        _lbName.text = [infos objectAtIndex: 0];
-        _lbPhone.text = [NSString stringWithFormat:@"(%@)", _phoneNumberDetail];
-        
+        _lbName.text = [NSString stringWithFormat:@"%@ - %@", [infos objectAtIndex: 0], _phoneNumberDetail];
         _iconAddNew.hidden = YES;
     }
     
@@ -183,40 +147,9 @@ static UICompositeViewDescription *compositeDescription = nil;
         _imgAvatar.image = [UIImage imageWithData: imgData];
     }
     
-    //  Kiểm tra cloudFoneID có đang bị block hay ko?
-    BOOL block = [NSDatabase checkCloudFoneIDInBlackList: _phoneNumberDetail ofAccount: USERNAME];
-    if (block) {
-        [_iconBlockUnblock setBackgroundImage:[UIImage imageNamed:@"ic_unblock_def.png"]
-                                     forState:UIControlStateNormal];
-        [_iconBlockUnblock setBackgroundImage:[UIImage imageNamed:@"ic_unblock_act.png"]
-                                     forState:UIControlStateHighlighted];
-        _lbBlockUnblock.text = [appDelegate.localization localizedStringForKey:text_unblock_user];
-    }else{
-        [_iconBlockUnblock setBackgroundImage:[UIImage imageNamed:@"ic_block_def.png"]
-                                     forState:UIControlStateNormal];
-        [_iconBlockUnblock setBackgroundImage:[UIImage imageNamed:@"ic_block_act.png"]
-                                     forState:UIControlStateHighlighted];
-        _lbBlockUnblock.text = [appDelegate.localization localizedStringForKey:text_block_user];
-    }
-    
-    if ([_phoneNumberDetail hasPrefix:@"778899"]) {
-        _iconMessage.enabled = YES;
-    }else{
-        _iconMessage.enabled = NO;
-    }
-    
     // Check section
-    [listOutgoing removeAllObjects];
-    [listOutgoing addObjectsFromArray: [NSDatabase getAllListCallOfMe:USERNAME withPhoneNumber:_phoneNumberDetail andCallDirection:outgoing_call]];
-    
-    [listIncomming removeAllObjects];
-    [listIncomming addObjectsFromArray: [NSDatabase getAllListCallOfMe:USERNAME withPhoneNumber:_phoneNumberDetail andCallDirection: incomming_call]];
-    
-    if (listOutgoing.count > 0 && listIncomming.count > 0) {
-        checkSection = YES;
-    }else{
-        checkSection = NO;
-    }
+    [listHistoryCalls removeAllObjects];
+    [listHistoryCalls addObjectsFromArray: [NSDatabase getAllListCallOfMe:USERNAME withPhoneNumber:_phoneNumberDetail]];
     [_tbHistory reloadData];
 }
 
@@ -224,6 +157,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)setupUIForView
 {
+    self.view.backgroundColor = UIColor.whiteColor;
     if (SCREEN_WIDTH > 320) {
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
         textFontDes = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
@@ -238,86 +172,73 @@ static UICompositeViewDescription *compositeDescription = nil;
         _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }
     //  header
-    _viewHeader.frame = CGRectMake(0, 0, SCREEN_WIDTH, appDelegate._hHeader);
-    _iconBack.frame = CGRectMake(0, 0, appDelegate._hHeader, appDelegate._hHeader);
-    [_iconBack setBackgroundImage:[UIImage imageNamed:@"ic_back_act.png"]
-                         forState:UIControlStateHighlighted];
-    _iconAddNew.frame = CGRectMake(_viewHeader.frame.size.width-appDelegate._hHeader, 0, appDelegate._hHeader, appDelegate._hHeader);
-    _lbHeader.frame = CGRectMake(_iconBack.frame.origin.x+_iconBack.frame.size.width+5, 0, _viewHeader.frame.size.width-(2*appDelegate._hHeader+10), appDelegate._hHeader);
+    [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo(230+[LinphoneAppDelegate sharedInstance]._hStatus);
+    }];
     
-    //  view info
-    hInfo = 140.0;
-    _viewInfo.frame = CGRectMake(0, _viewHeader.frame.origin.y+_viewHeader.frame.size.height, SCREEN_WIDTH, hInfo);
-    _imgAvatar.frame = CGRectMake((_viewInfo.frame.size.width-65)/2, 5, 65, 65);
-    _imgAvatar.layer.cornerRadius = _imgAvatar.frame.size.width/2;
+    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewHeader);
+    }];
+    
+    [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus+5.0);
+        make.left.equalTo(_viewHeader).offset(5.0);
+        make.width.height.mas_equalTo(35.0);
+    }];
+    
+    [_iconAddNew mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_iconBack);
+        make.right.equalTo(_viewHeader).offset(-5);
+        make.width.equalTo(_iconBack.mas_width);
+        make.height.equalTo(_iconBack.mas_height);
+    }];
+    
+    [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(_iconBack);
+        make.left.equalTo(_iconBack.mas_right).offset(5);
+        make.right.equalTo(_iconAddNew.mas_left).offset(-5);
+    }];
+    
+    _imgAvatar.layer.cornerRadius = 100.0/2;
+    _imgAvatar.layer.borderWidth = 2.0;
+    _imgAvatar.layer.borderColor = UIColor.whiteColor.CGColor;
     _imgAvatar.clipsToBounds = YES;
+    [_imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbHeader.mas_bottom).offset(10);
+        make.centerX.equalTo(_viewHeader.mas_centerX);
+        make.width.height.mas_equalTo(100.0);
+    }];
     
-    _lbName.frame = CGRectMake(0, _imgAvatar.frame.origin.y+_imgAvatar.frame.size.height, _viewInfo.frame.size.width, 30);
     _lbName.font = textFont;
+    _lbName.textColor = UIColor.whiteColor;
+    [_lbName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_imgAvatar.mas_bottom);
+        make.left.right.equalTo(_viewHeader);
+        make.height.mas_equalTo(40.0);
+    }];
     
-    _lbPhone.frame = CGRectMake(_lbName.frame.origin.x, _lbName.frame.origin.y+_lbName.frame.size.height, _lbName.frame.size.width, _lbName.frame.size.height);
-    _lbPhone.textColor = [UIColor grayColor];
-    if (SCREEN_WIDTH > 320) {
-        _lbPhone.font = [UIFont fontWithName:HelveticaNeueItalic size:16.0];
-    }else{
-        _lbPhone.font = [UIFont fontWithName:HelveticaNeueItalic size:14.0];
-    }    
+    //  button call
+    btnCall.layer.cornerRadius = 70.0/2;
+    btnCall.clipsToBounds = YES;
+    btnCall.layer.borderWidth = 2.0;
+    btnCall.layer.borderColor = UIColor.whiteColor.CGColor;
+    [btnCall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.centerY.equalTo(_viewHeader.mas_bottom);
+        make.width.height.mas_equalTo(70.0);
+    }];
     
-    //  view action
-    float hAction = 70.0;
-    float wIcon = 35.0;
-    _viewButton.frame = CGRectMake(0, _viewInfo.frame.origin.y+_viewInfo.frame.size.height, SCREEN_WIDTH, hAction);
-    
-    float marginX = (_viewButton.frame.size.width - 4*wIcon)/5;
-    _iconCall.frame = CGRectMake(marginX, (hAction-(wIcon+25))/2, wIcon, wIcon);
-    [_iconCall addTarget:self
-                  action:@selector(btnCallTouchDown)
-        forControlEvents:UIControlEventTouchDown];
-    
-    _lbCall.frame = CGRectMake(_iconCall.frame.origin.x-marginX/2, _iconCall.frame.origin.y+wIcon, wIcon+marginX, 25);
-    [_iconCall setBackgroundImage:[UIImage imageNamed:@"ic_call_act.png"]
-                         forState:UIControlStateHighlighted];
-    _lbCall.font = textFont;
-    
-    //  message
-    _iconMessage.frame = CGRectMake(_iconCall.frame.origin.x+wIcon+marginX, _iconCall.frame.origin.y, wIcon, wIcon);
-    [_iconMessage addTarget:self
-                     action:@selector(btnMessageTouchDown)
-           forControlEvents:UIControlEventTouchDown];
-    
-    _lbMessage.frame = CGRectMake(_iconMessage.frame.origin.x-marginX/2, _lbCall.frame.origin.y, _lbCall.frame.size.width, _lbCall.frame.size.height);
-    _lbMessage.font = textFont;
-    [_iconMessage setBackgroundImage:[UIImage imageNamed:@"ic_mess_act.png"]
-                            forState:UIControlStateHighlighted];
-    [_iconMessage setBackgroundImage:[UIImage imageNamed:@"ic_mess_dis.png"]
-                            forState:UIControlStateDisabled];
-    
-    //  video call
-    _iconVideo.frame = CGRectMake(_iconMessage.frame.origin.x+wIcon+marginX, _iconMessage.frame.origin.y, wIcon, wIcon);
-    [_iconVideo addTarget:self
-                   action:@selector(btnVideoCallTouchDown)
-         forControlEvents:UIControlEventTouchDown];
-    _lbVideo.frame = CGRectMake(_iconVideo.frame.origin.x-marginX/2, _lbMessage.frame.origin.y, _lbMessage.frame.size.width, _lbMessage.frame.size.height);
-    
-    [_iconVideo setBackgroundImage:[UIImage imageNamed:@"ic_call_video_act.png"]
-                          forState:UIControlStateHighlighted];
-    _lbVideo.font = textFont;
-    
-    //  invite
-    _iconBlockUnblock.frame = CGRectMake(_iconVideo.frame.origin.x+wIcon+marginX, _iconVideo.frame.origin.y, wIcon, wIcon);
-    _lbBlockUnblock.frame = CGRectMake(_iconBlockUnblock.frame.origin.x-marginX/2, _lbVideo.frame.origin.y, _lbVideo.frame.size.width, _lbVideo.frame.size.height);
-    [_iconBack setBackgroundImage:[UIImage imageNamed:@"ic_back_act.png"]
-                         forState:UIControlStateHighlighted];
-    [_iconAddNew setBackgroundImage:[UIImage imageNamed:@"ic_add_act.png"]
-                           forState:UIControlStateHighlighted];
-
-    _tbHistory.frame = CGRectMake(0, _viewButton.frame.origin.y+_viewButton.frame.size.height, SCREEN_WIDTH, SCREEN_HEIGHT-(appDelegate._hStatus+appDelegate._hHeader+hInfo+hAction));
+    //  content
+    [_tbHistory mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(btnCall.mas_bottom).offset(10);
+        make.left.right.bottom.equalTo(self.view);
+    }];
     _tbHistory.delegate = self;
     _tbHistory.dataSource = self;
     _tbHistory.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    listOutgoing = [[NSMutableArray alloc] init];
-    listIncomming = [[NSMutableArray alloc] init];
+    listHistoryCalls = [[NSMutableArray alloc] init];
     
     // Refreshing.....
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -329,11 +250,6 @@ static UICompositeViewDescription *compositeDescription = nil;
               forControlEvents:UIControlEventValueChanged];
     [_refreshControl endRefreshing];
     [_tbHistory addSubview: _refreshControl];
-    
-    originXTotalMinites = 0;
-    
-    hCell = 30.0;
-    hSection = 30.0;
 }
 
 #pragma mark - tableview delegate
@@ -391,37 +307,15 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (checkSection) {
-        return 2;
-    }else if (listOutgoing.count > 0 || listIncomming.count > 0){
-        return 1;
-    }else{
-        return 0;
-    }
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (checkSection) {
-        if (section == 0) {
-            return listOutgoing.count;
-        }else{
-            return listIncomming.count;
-        }
-    }else if (listOutgoing.count > 0 && listIncomming.count == 0){
-        return listOutgoing.count;
-    }else if(listOutgoing.count == 0 && listIncomming.count > 0){
-        return listIncomming.count;
-    }else{
-        return 0;
-    }
+    return listHistoryCalls.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return hCell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return hSection;
+    return 35.0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -432,27 +326,9 @@ static UICompositeViewDescription *compositeDescription = nil;
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UIHistoryDetailCell" owner:self options:nil];
         cell = topLevelObjects[0];
     }
-    cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbHistory.frame.size.width, hCell);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.lbTime.font = textFontDes;
-    cell.lbDuration.font = textFontDes;
-    cell.lbTitle.font = textFontDes;
-    [cell setupUIForCell];
     
-    CallHistoryObject *aCall = [[CallHistoryObject alloc] init];
-    if (checkSection) {
-        if (indexPath.section == 0) {
-            aCall = [listOutgoing objectAtIndex: indexPath.row];
-        }else{
-            aCall = [listIncomming objectAtIndex: indexPath.row];
-        }
-    }else if (listOutgoing.count > 0 && listIncomming.count == 0){
-        aCall = [listOutgoing objectAtIndex: indexPath.row];
-    }else if(listOutgoing.count == 0 && listIncomming.count > 0){
-        aCall = [listIncomming objectAtIndex: indexPath.row];
-    }else{
-        return nil;
-    }
+    CallHistoryObject *aCall = [listHistoryCalls objectAtIndex: indexPath.row];
     
     if (![aCall._date isEqualToString:@"date"]) {
         NSString *dateStr = [AppUtils checkTodayForHistoryCall: aCall._date];
@@ -465,22 +341,12 @@ static UICompositeViewDescription *compositeDescription = nil;
         }else{
             dateStr = [appDelegate.localization localizedStringForKey:text_today];
         }
-        cell._imageClock.hidden = YES;
-        cell.lbTime.hidden = YES;
-        cell.lbDuration.hidden = YES;
-        cell.lbRate.hidden = YES;
-        
-        UILabel *lbDate = [[UILabel alloc] initWithFrame:cell.frame];
-        lbDate.text = dateStr;
-        lbDate.textAlignment = NSTextAlignmentCenter;
-        lbDate.font = textFontBold;
-        lbDate.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
-                                            blue:(50/255.0) alpha:1];
-        [cell addSubview: lbDate];
+        cell.viewContent.hidden = YES;
+        cell.lbTitle.hidden = NO;
     }else{
-        if (originXTotalMinites == 0) {
-            originXTotalMinites = cell.lbDuration.frame.origin.x + cell.lbDuration.frame.size.width;
-        }
+        cell.viewContent.hidden = NO;
+        cell.lbTitle.hidden = YES;
+        
         
         if ([aCall._status isEqualToString: success_call])
         {
@@ -498,87 +364,20 @@ static UICompositeViewDescription *compositeDescription = nil;
             }else{
                 cell.lbDuration.text = [NSString stringWithFormat:@"%d %@", timeValue, [appDelegate.localization localizedStringForKey:text_minutes]];
             }
-            cell.lbDuration.font = textFontDes;
-            cell.lbDuration.textColor = [UIColor colorWithRed:(142/255.0) green:(193/255.0) blue:(5/255.0) alpha:1];
             cell.lbTime.text = aCall._time;
-            if (aCall._rate == -1) {
-                cell.lbRate.text = @"N/A";
-            }else if (aCall._rate == 0) {
-                cell.lbRate.text = [appDelegate.localization localizedStringForKey:text_call_free];
-            }else{
-                cell.lbRate.text = [NSString stringWithFormat:@"%f", aCall._rate];
-            }
-            cell.lbRate.font = textFontDes;
-            cell.lbRate.hidden = NO;
         }else{
             if ([aCall._status isEqualToString: aborted_call]) {
-                cell.lbDuration.text = [appDelegate.localization localizedStringForKey:text_call_aborted];
-                cell.lbDuration.textColor = UIColor.redColor;
+                cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:text_call_aborted];
+                cell.lbDuration.text = @"";
             }else if ([aCall._status isEqualToString: declined_call]){
-                cell.lbDuration.text = [appDelegate.localization localizedStringForKey:text_call_aborted];
-                cell.lbDuration.textColor = UIColor.redColor;
+                cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:text_call_aborted];
             }else{
-                cell.lbDuration.text = [appDelegate.localization localizedStringForKey:text_call_missed];
-                cell.lbDuration.textColor = UIColor.redColor;
+                cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:text_call_missed];
             }
             cell.lbTime.text = aCall._time;
-            cell.lbRate.text = @"N/A";
         }
-    }
-    if (indexPath.section == 1) {
-        cell.lbRate.text = @"N/A";
     }
     return cell;
-}
-
-- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    NSString *titleHeader = @"";
-    if (checkSection) {
-        if (section == 0) {
-            titleHeader = [appDelegate.localization localizedStringForKey:text_outging_call];
-        }else{
-            titleHeader = [appDelegate.localization localizedStringForKey:text_incomming_call];
-        }
-    }else if (listOutgoing.count > 0 && listIncomming.count == 0){
-        titleHeader = [appDelegate.localization localizedStringForKey:text_outging_call];
-    }else if(listOutgoing.count == 0 && listIncomming.count > 0){
-        titleHeader = [appDelegate.localization localizedStringForKey:text_incomming_call];
-    }else{
-        titleHeader = @"";
-    }
-    
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, hSection)];
-    [headerView setBackgroundColor:[UIColor colorWithRed:(240/255.0) green:(240/255.0)
-                                                    blue:(240/255.0) alpha:1.0]];
-    
-    //  Add label incoming outgoing
-    UILabel *descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, headerView.frame.size.width, hSection)];
-    [descLabel setBackgroundColor:[UIColor clearColor]];
-    [descLabel setTextColor: [UIColor colorWithRed:(50/255.0) green:(50/255.0)
-                                              blue:(50/255.0) alpha:1.0]];
-    [descLabel setFont:textFontBold];
-    [descLabel setText: titleHeader];
-    [headerView addSubview: descLabel];
-    
-    //  Add label tong so phut goi
-    if (section == 0) {
-        UILabel *lbMinute = [[UILabel alloc] initWithFrame:CGRectMake(originXTotalMinites-90, 0, 90, hSection)];
-        [lbMinute setTextAlignment: NSTextAlignmentRight];
-        if (totalDuration > 0) {
-            if ((int)totalDuration/60 == 1) {
-                [lbMinute setText:[NSString stringWithFormat:@"%d %@", (int)totalDuration/60, [appDelegate.localization localizedStringForKey:text_minute]]];
-            }else{
-                [lbMinute setText:[NSString stringWithFormat:@"%d %@", (int)totalDuration/60, [appDelegate.localization localizedStringForKey:text_minutes]]];
-            }
-        }
-        [lbMinute setFont: textFontDes];
-        [lbMinute setTextAlignment:NSTextAlignmentRight];
-        [lbMinute setTextColor:[UIColor colorWithRed:(142/255.0) green:(193/255.0) blue:(5/255.0) alpha:1]];
-        [lbMinute setBackgroundColor:[UIColor clearColor]];
-        [headerView addSubview: lbMinute];
-    }
-    
-    return headerView;
 }
 
 - (IBAction)_iconBackClicked:(UIButton *)sender {
@@ -595,22 +394,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [popupAddContact showInView:self.view];
 }
 
-- (IBAction)_iconCallClicked:(UIButton *)sender {
-    
-}
-
-- (void)btnCallTouchDown {
-    [_iconCall setBackgroundImage:[UIImage imageNamed:@"ic_call_act.png"]
-                         forState:UIControlStateNormal];
-    [NSTimer scheduledTimerWithTimeInterval:0.05 target:self
-                                   selector:@selector(startCall)
-                                   userInfo:nil repeats:false];
-}
-
 - (void)startCall {
-    [_iconCall setBackgroundImage:[UIImage imageNamed:@"ic_call_def.png"]
-                         forState:UIControlStateNormal];
-    
     LinphoneAddress *addr = linphone_core_interpret_url(LC, _phoneNumberDetail.UTF8String);
     [LinphoneManager.instance call:addr];
     if (addr)
@@ -621,101 +405,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         [controller setPhoneNumberForView: _phoneNumberDetail];
     }
     [[PhoneMainView instance] changeCurrentView:[OutgoingCallViewController compositeViewDescription] push:TRUE];
-}
-
-- (void)btnMessageTouchDown {
-    [_iconMessage setBackgroundImage:[UIImage imageNamed:@"ic_mess_act.png"]
-                            forState:UIControlStateNormal];
-    
-    [NSTimer scheduledTimerWithTimeInterval:0.05 target:self
-                                   selector:@selector(startSendMessage)
-                                   userInfo:nil repeats:false];
-}
-
-- (void)startSendMessage {
-    
-}
-
-- (void)btnVideoCallTouchDown {
-    [_iconVideo setBackgroundImage:[UIImage imageNamed:@"ic_call_video_act.png"]
-                          forState:UIControlStateNormal];
-    
-    [NSTimer scheduledTimerWithTimeInterval:0.05 target:self
-                                   selector:@selector(startVideoCall)
-                                   userInfo:nil repeats:false];
-}
-
-- (void)startVideoCall {
-    [_iconVideo setBackgroundImage:[UIImage imageNamed:@"ic_call_video_def.png"]
-                          forState:UIControlStateNormal];
-    
-    LinphoneAddress *addr = linphone_core_interpret_url(LC, _phoneNumberDetail.UTF8String);
-    [LinphoneManager.instance call:addr];
-    if (addr)
-        linphone_address_destroy(addr);
-    
-    OutgoingCallViewController *controller = VIEW(OutgoingCallViewController);
-    if (controller != nil) {
-        [controller setPhoneNumberForView: _phoneNumberDetail];
-    }
-    [[PhoneMainView instance] changeCurrentView:[OutgoingCallViewController compositeViewDescription] push:TRUE];
-}
-
-- (IBAction)_iconMessageClicked:(UIButton *)sender {
-    
-}
-
-- (IBAction)_iconVideoClicked:(UIButton *)sender {
-    
-}
-
-- (IBAction)_iconBlockUnblockClicked:(UIButton *)sender {
-    /*  Leo Kelvin
-    if (appDelegate.xmppStream.isConnected)
-    {
-        BOOL isBlock = [NSDBCallnex checkCloudFoneIDInBlackList: _phoneNumberDetail ofAccount: USERNAME];
-        
-        NSMutableArray *blackList = [NSDBCallnex getAllUserInCallnexBlacklist];
-        if (isBlock) {
-            //  Xoá các cloudfoneID bị block ra khỏi danh sách
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_callnexContact = %@", _phoneNumberDetail];
-            NSArray *filter = [blackList filteredArrayUsingPredicate: predicate];
-            if (filter.count > 0) {
-                [blackList removeObjectsInArray: filter];
-                
-                [NSDBCallnex removeCloudFoneFromBlackList: _phoneNumberDetail ofAccount: USERNAME];
-                
-                [appDelegate.myBuddy.protocol blockUserInCallnexBlacklist: blackList];
-                
-                //
-                [_iconBlockUnblock setBackgroundImage:[UIImage imageNamed:@"ic_block_def.png"]
-                                             forState:UIControlStateNormal];
-                [_iconBlockUnblock setBackgroundImage:[UIImage imageNamed:@"ic_block_act.png"]
-                                             forState:UIControlStateHighlighted];
-                [_lbBlockUnblock setText: [appDelegate.localization localizedStringForKey:text_block_user]];
-            }
-        }else{
-            int idContact = [NSDBCallnex getContactIDWithCloudFoneID: _phoneNumberDetail];
-            
-            contactBlackListCell *curContact = [[contactBlackListCell alloc] init];
-            [curContact set_idContact: idContact];
-            [curContact set_callnexContact: _phoneNumberDetail];
-            [blackList addObject: curContact];
-            
-            [NSDBCallnex addCloudFoneIDToBlackList: _phoneNumberDetail andIdContact: idContact ofAccount: USERNAME];
-            
-            [appDelegate.myBuddy.protocol blockUserInCallnexBlacklist: blackList];
-            
-            [_iconBlockUnblock setBackgroundImage:[UIImage imageNamed:@"ic_unblock_def.png"]
-                                         forState:UIControlStateNormal];
-            [_iconBlockUnblock setBackgroundImage:[UIImage imageNamed:@"ic_unblock_act.png"]
-                                         forState:UIControlStateHighlighted];
-            
-            [_lbBlockUnblock setText: [appDelegate.localization localizedStringForKey:text_unblock_user]];
-        }
-    }else{
-        [self showMessagePopupWithContent: [appDelegate.localization localizedStringForKey:text_failed]];
-    }   */
 }
 
 #pragma mark - My Functions
@@ -725,62 +414,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)updateHistoryWithPhoneNumber {
     [_refreshControl endRefreshing];
     
-    // Lấy tổng tiền và số phút gọi
-    totalDuration = 0;
-    
-    NSArray *infosCall = [NSDatabase getTotalDurationAndRateOfCallWithPhone: _phoneNumberDetail];
-    totalDuration = [[infosCall firstObject] intValue];
-    
     // Check section
-    [listOutgoing removeAllObjects];
-    [listOutgoing addObjectsFromArray: [NSDatabase getAllListCallOfMe:USERNAME withPhoneNumber:_phoneNumberDetail andCallDirection:outgoing_call]];
+    [listHistoryCalls removeAllObjects];
+    [listHistoryCalls addObjectsFromArray: [NSDatabase getAllListCallOfMe:USERNAME withPhoneNumber:_phoneNumberDetail]];
     
-    [listIncomming removeAllObjects];
-    [listIncomming addObjectsFromArray: [NSDatabase getAllListCallOfMe:USERNAME withPhoneNumber:_phoneNumberDetail andCallDirection:incomming_call]];
-    
-    if (listOutgoing.count > 0 && listIncomming.count > 0) {
-        checkSection = YES;
-    }else{
-        checkSection = NO;
-    }
     [_tbHistory reloadData];
-}
-
-- (NSString *)getStatusOfUser: (NSString *)callnexUser
-{
-    return welcomeToCloudFone;
-    /*  Leo Kelvin
-    if (![callnexUser isEqualToString: @""]) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountName CONTAINS[cd] %@", callnexUser];
-        NSMutableDictionary *listUserDict = [[[OTRProtocolManager sharedInstance] buddyList] allBuddies];
-        NSArray *listUser = [OTRBuddyList sortBuddies: listUserDict];
-        NSArray *resultArr = [listUser filteredArrayUsingPredicate: predicate];
-        if (resultArr.count > 0) {
-            OTRBuddy *curBuddy = [resultArr objectAtIndex: 0];
-            if (curBuddy.status == kOTRBuddyStatusOffline) {
-                //  ssss
-                // NSString *lastLogout = [appDelegate.timeLogoutUserDict objectForKey: callnexUser];
-                NSString *lastLogout = @"";
-                if (lastLogout == nil) {
-                    return [appDelegate.localization localizedStringForKey:text_chat_offline];
-                }else{
-                    return [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:CN_CALL_DETAIL_VC_LAST_SEEN_ON], lastLogout];
-                }
-            }else{
-                NSString *status = [appDelegate._statusXMPPDict objectForKey: callnexUser];
-                if (status == nil || [status isEqualToString: @""]) {
-                    return welcomeToCloudFone;
-                }else{
-                    return status;
-                }
-            }
-        }else{
-            return welcomeToCloudFone;
-        }
-    }else{
-        return welcomeToCloudFone;
-    }
-    */
 }
 
 //  Hàm chuyển chuỗi phone thành phone mặc định ban đầu
@@ -800,37 +438,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
     }
     return result;
-}
-
-- (void)blockThisContact {
-    /*  Leo Kelvin
-    int idContact = [NSDBCallnex getContactIDWithCloudFoneID: _phoneNumberDetail];
-    BOOL isBlocked = [NSDBCallnex addContactToBlacklist:idContact andCloudFoneID:_phoneNumberDetail];
-    
-    //  kiem tra co block thanh cong hay ko roi moi them vao db
-    
-    if (isBlocked) {
-//        // Thay đổi trạng thái của button block
-//        [_btnBlock setBackgroundImage:[UIImage imageNamed:@"ic_unblock_def.png"]
-//                             forState:UIControlStateNormal];
-//        
-//        [_btnBlock setBackgroundImage:[UIImage imageNamed:@"ic_unblock_act.png"]
-//                             forState:UIControlStateHighlighted];
-//        
-//        [_btnBlock removeTarget:self action:@selector(blockThisContact)
-//               forControlEvents:UIControlEventTouchUpInside];
-//        
-//        [_btnBlock addTarget:self action:@selector(unblockThisContact)
-//            forControlEvents:UIControlEventTouchUpInside];
-//        
-//        [_lbBlock setText:NSLocalizedString(text_detail_unblock, nil)];
-        
-        NSArray *blackList = [NSDBCallnex getAllUserInCallnexBlacklist];
-        [appDelegate.myBuddy.protocol blockUserInCallnexBlacklist: blackList];
-        [appDelegate.myBuddy.protocol activeBlackListOfMe];
-    }else{
-        [self showMessagePopupWithContent: [appDelegate.localization localizedStringForKey:text_failed_block_contact]];
-    }   */
 }
 
 #pragma mark - Actionsheet Delegate
