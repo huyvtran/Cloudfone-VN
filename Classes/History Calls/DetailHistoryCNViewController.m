@@ -9,7 +9,6 @@
 #import "DetailHistoryCNViewController.h"
 #import "NewContactViewController.h"
 #import "AllContactListViewController.h"
-#import "PhoneMainView.h"
 #import "JSONKit.h"
 #import "UIHistoryDetailCell.h"
 #import "CallHistoryObject.h"
@@ -22,11 +21,6 @@
 @interface DetailHistoryCNViewController ()
 {
     LinphoneAppDelegate *appDelegate;
-    // list history call
-    NSArray *arrOugoingcalls;
-    NSArray *arrIncommingcalls;
-    int historySection;
-    
     NSMutableArray *listHistoryCalls;
     
     UIFont *textFont;
@@ -254,13 +248,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - tableview delegate
 
-- (void)reloadData {
-    arrOugoingcalls = [[NSArray alloc] initWithArray:[NSDatabase getAllRowsByCallDirection:outgoing_call phone:phoneNumber]];
-    arrIncommingcalls = [[NSArray alloc] initWithArray:[NSDatabase getAllRowsByCallDirection:incomming_call phone:phoneNumber]];
-    
-    [_tbHistory reloadData];
-}
-
 - (NSString *)convertIntToTime : (int) time{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSDate *startData = [NSDate dateWithTimeIntervalSince1970:time];
@@ -293,7 +280,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     NSDate *yesterday = [cal dateByAddingComponents:components toDate: today options:0];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"dd-MM-yyyy";
+    dateFormatter.dateFormat = @"dd/MM/yyyy";
     
     if ([strTime isEqualToString:[dateFormatter stringFromDate:yesterday] ]) {
         return [appDelegate.localization localizedStringForKey:text_yesterday];
@@ -336,7 +323,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         if (![dateStr isEqualToString:@"Today"]) {
             dateStr = [AppUtils checkYesterdayForHistoryCall: aCall._date];
             if ([dateStr isEqualToString:@"Yesterday"]) {
-                dateStr = [appDelegate.localization localizedStringForKey:text_yesterday];
+                dateStr = [appDelegate.localization localizedStringForKey:@"YESTERDAY"];
             }
         }else{
             dateStr = [appDelegate.localization localizedStringForKey:text_today];

@@ -30,7 +30,6 @@
 @property (strong, nonatomic) UIRefreshControl *_refreshControl;
 @property (nonatomic, strong) NSString *_phoneNumberDetail;
 
-- (void)reloadData;
 - (void)setPhoneNumberForView:(NSString *)phoneNumberStr;
 
 @end

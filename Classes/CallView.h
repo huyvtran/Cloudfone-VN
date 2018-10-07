@@ -65,8 +65,8 @@ typedef enum typeCall{
 
 @property(nonatomic, strong) IBOutlet UIPauseButton *callPauseButton;
 @property(nonatomic, strong) IBOutlet UIButton *optionsConferenceButton;
-@property(nonatomic, strong) IBOutlet UIVideoButton *videoButton;
 @property(nonatomic, strong) IBOutlet UIMutedMicroButton *microButton;
+
 @property(nonatomic, strong) IBOutlet UISpeakerButton *speakerButton;
 @property(nonatomic, strong) IBOutlet UIToggleButton *routesButton;
 @property(nonatomic, strong) IBOutlet UIToggleButton *optionsButton;
@@ -75,7 +75,6 @@ typedef enum typeCall{
 @property(nonatomic, strong) IBOutlet UIView *routesView;
 @property(nonatomic, strong) IBOutlet UIView *optionsView;
 @property(nonatomic, strong) IBOutlet UIButton *routesEarpieceButton;
-@property(nonatomic, strong) IBOutlet UIButton *routesSpeakerButton;
 @property(nonatomic, strong) IBOutlet UIButton *routesBluetoothButton;
 @property(nonatomic, strong) IBOutlet UIButton *optionsAddButton;
 @property(nonatomic, strong) IBOutlet UIButton *optionsTransferButton;
@@ -117,6 +116,7 @@ typedef enum typeCall{
 - (IBAction)onChatClick:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UILabel *_lbQuality;
+@property (weak, nonatomic) IBOutlet UILabel *lbQualityValue;
 
 @property (weak, nonatomic) IBOutlet UIView *_viewCommand;
 @property (weak, nonatomic) IBOutlet UIScrollView *_scrollView;
@@ -133,6 +133,7 @@ typedef enum typeCall{
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionConference;
 
 @property (nonatomic, strong) NSTimer *durationTimer;
+@property (nonatomic, strong) NSString *phoneNumber;
 
 
 @end

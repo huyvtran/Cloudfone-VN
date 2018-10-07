@@ -27,7 +27,7 @@
     _imgAvatar.clipsToBounds = YES;
     _imgAvatar.layer.cornerRadius = 50.0/2;
     [_imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self).offset(10);
+        make.left.equalTo(self).offset(20);
         make.centerY.equalTo(self.mas_centerY);
         make.width.height.mas_equalTo(50.0);
     }];
@@ -41,7 +41,7 @@
     [_btnCall setBackgroundImage:[UIImage imageNamed:@"ic_call_history_over.png"]
                         forState:UIControlStateHighlighted];
     [_btnCall mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self).offset(-10);
+        make.right.equalTo(self).offset(-20);
         make.centerY.equalTo(self.mas_centerY);
         make.width.height.mas_equalTo(35.0);
     }];

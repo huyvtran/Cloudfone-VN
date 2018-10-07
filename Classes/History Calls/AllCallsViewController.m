@@ -335,23 +335,23 @@
     NSString *currentDate = [[listCalls objectAtIndex: section] valueForKey:@"title"];
     NSString *today = [AppUtils checkTodayForHistoryCall: currentDate];
     if ([today isEqualToString: @"Today"]) {
-        titleHeader =  [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_today];
+        titleHeader =  [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"TODAY"];
     }else{
         NSString *yesterday = [AppUtils checkYesterdayForHistoryCall:currentDate];
         if ([yesterday isEqualToString:@"Yesterday"]) {
-            titleHeader =  [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_yesterday];
+            titleHeader =  [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"YESTERDAY"];
         }else{
             titleHeader = currentDate;
         }
     }
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, hSection)];
-    headerView.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
-                                                  blue:(240/255.0) alpha:1.0];
+    headerView.backgroundColor = [UIColor colorWithRed:(243/255.0) green:(244/255.0)
+                                                  blue:(248/255.0) alpha:1.0];
     
     UILabel *descLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 150, hSection)];
     descLabel.textColor = UIColor.darkGrayColor;
-    descLabel.font = textFont;
+    descLabel.font = [UIFont systemFontOfSize:16.0 weight:UIFontWeightSemibold];
     descLabel.text = titleHeader;
     [headerView addSubview: descLabel];
     return headerView;

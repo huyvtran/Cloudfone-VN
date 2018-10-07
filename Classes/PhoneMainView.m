@@ -793,6 +793,9 @@ static RootViewManager *rootViewManagerInstance = nil;
 }
 
 - (void)displayCallError:(LinphoneCall *)call message:(NSString *)message {
+    //  Added by Khai Le on 07/10/2018
+    return;
+    
 	const char *lUserNameChars = linphone_address_get_username(linphone_call_get_remote_address(call));
 	NSString *lUserName =
 		lUserNameChars ? [[NSString alloc] initWithUTF8String:lUserNameChars] : NSLocalizedString(@"Unknown", nil);

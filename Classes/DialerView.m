@@ -130,6 +130,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkDown)
                                                  name:@"NetworkDown" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenNetworkChanged)
+                                                 name:networkChanged object:nil];
+    
     
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(registrationUpdateEvent:)
                                                name:kLinphoneRegistrationUpdate object:nil];
@@ -487,7 +490,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)networkDown {
-    _lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_status_offline];
+    _lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No network"];
     _lbStatus.textColor = UIColor.orangeColor;
 }
 
@@ -595,15 +598,20 @@ static UICompositeViewDescription *compositeDescription = nil;
         LinphoneRegistrationState state = [object intValue];
         switch (state) {
             case LinphoneRegistrationOk:{
+                _lbStatus.textColor = UIColor.greenColor;
+                _lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Online"];
                 break;
             }
             case LinphoneRegistrationProgress:{
+                _lbStatus.textColor = UIColor.whiteColor;
+                _lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Connecting"];
                 break;
             }
             case LinphoneRegistrationNone:
             case LinphoneRegistrationCleared:
             case LinphoneRegistrationFailed:{
-                NSLog(@"LinphoneRegistrationFailed");
+                _lbStatus.textColor = UIColor.orangeColor;
+                _lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Offline"];
                 break;
             }
             default:
@@ -1058,7 +1066,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
     if (defaultConfig == NULL) {
         _lbAccount.text = NSLocalizedString(@"", nil);
-        _lbStatus.text = NSLocalizedString(@"No account", nil);
+        _lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"];
     }else{
         const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
         NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
@@ -1079,6 +1087,16 @@ static UICompositeViewDescription *compositeDescription = nil;
     UIEdgeInsets shadowInsets     = UIEdgeInsetsMake(0, 0, -5.0f, 0);
     UIBezierPath *shadowPath      = [UIBezierPath bezierPathWithRect:UIEdgeInsetsInsetRect(view.bounds, shadowInsets)];
     view.layer.shadowPath    = shadowPath.CGPath;
+}
+
+- (void)whenNetworkChanged {
+    NetworkStatus internetStatus = [[LinphoneAppDelegate sharedInstance]._internetReachable currentReachabilityStatus];
+    if (internetStatus == NotReachable) {
+        _lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No network"];
+        _lbStatus.textColor = UIColor.orangeColor;
+    }else{
+        [self checkAccountForApp];
+    }
 }
 
 @end

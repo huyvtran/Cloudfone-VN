@@ -104,13 +104,11 @@
 			linphone_address_destroy(addr);
 	}
     
+    CallView *controller = VIEW(CallView);
+    if (controller != nil) {
+        controller.phoneNumber = address;
+    }
     [[PhoneMainView instance] changeCurrentView:[CallView compositeViewDescription] push:TRUE];
-    
-//    OutgoingCallViewController *controller = VIEW(OutgoingCallViewController);
-//    if (controller != nil) {
-//        [controller setPhoneNumberForView: address];
-//    }
-//    [[PhoneMainView instance] changeCurrentView:[OutgoingCallViewController compositeViewDescription] push:TRUE];
 }
 
 - (void)updateIcon {

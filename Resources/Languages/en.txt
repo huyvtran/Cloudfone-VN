@@ -1120,3 +1120,9 @@
 "text_hide_pass"    =   "HIDE"
 
 "text_capture_sent" =   "Image was sent"
+
+
+
+"Ringing" = "Ringing..."
+"Calling" = "Calling..."
+

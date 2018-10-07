@@ -1059,7 +1059,8 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 			}
 		}
 		if (state == LinphoneCallError) {
-			[PhoneMainView.instance popCurrentView];
+            //  Closed by Khai Le on 07/10/2018
+			//  [PhoneMainView.instance popCurrentView];
 		}
 	}
 

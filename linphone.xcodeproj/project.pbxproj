@@ -645,6 +645,10 @@
 		8419017620EAA01B003F524C /* PulsingHaloLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8419016E20EAA01B003F524C /* PulsingHaloLayer.m */; };
 		841D338C216112ED00FFCD72 /* ManagerPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841D338A216112ED00FFCD72 /* ManagerPasswordViewController.m */; };
 		841D338D216112ED00FFCD72 /* ManagerPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 841D338B216112ED00FFCD72 /* ManagerPasswordViewController.xib */; };
+		841EB1642169818E00B59B8E /* add_call@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 841EB15A2169818C00B59B8E /* add_call@2x.png */; };
+		841EB1652169818E00B59B8E /* transfer_call@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 841EB1612169818D00B59B8E /* transfer_call@2x.png */; };
+		841EB1662169818E00B59B8E /* add_call.png in Resources */ = {isa = PBXBuildFile; fileRef = 841EB1622169818D00B59B8E /* add_call.png */; };
+		841EB1672169818E00B59B8E /* transfer_call.png in Resources */ = {isa = PBXBuildFile; fileRef = 841EB1632169818D00B59B8E /* transfer_call.png */; };
 		841F97E61FB4B2DC00A9A8CD /* UIConferenceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 841F97E41FB4B2DC00A9A8CD /* UIConferenceCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		841F97E71FB4B2DC00A9A8CD /* UIConferenceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 841F97E51FB4B2DC00A9A8CD /* UIConferenceCell.xib */; };
 		842529C9201F0F9A00BF4385 /* AllContactListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842529C7201F0F9A00BF4385 /* AllContactListViewController.m */; };
@@ -1829,6 +1833,10 @@
 		841D3389216112ED00FFCD72 /* ManagerPasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ManagerPasswordViewController.h; path = More/ManagerPasswordViewController.h; sourceTree = "<group>"; };
 		841D338A216112ED00FFCD72 /* ManagerPasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ManagerPasswordViewController.m; path = More/ManagerPasswordViewController.m; sourceTree = "<group>"; };
 		841D338B216112ED00FFCD72 /* ManagerPasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ManagerPasswordViewController.xib; path = More/ManagerPasswordViewController.xib; sourceTree = "<group>"; };
+		841EB15A2169818C00B59B8E /* add_call@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add_call@2x.png"; path = "Resources/images/keypad/add_call@2x.png"; sourceTree = SOURCE_ROOT; };
+		841EB1612169818D00B59B8E /* transfer_call@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "transfer_call@2x.png"; path = "Resources/images/keypad/transfer_call@2x.png"; sourceTree = SOURCE_ROOT; };
+		841EB1622169818D00B59B8E /* add_call.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = add_call.png; path = Resources/images/keypad/add_call.png; sourceTree = SOURCE_ROOT; };
+		841EB1632169818D00B59B8E /* transfer_call.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = transfer_call.png; path = Resources/images/keypad/transfer_call.png; sourceTree = SOURCE_ROOT; };
 		841F97E31FB4B2DC00A9A8CD /* UIConferenceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIConferenceCell.h; path = AppUI/UIConferenceCell.h; sourceTree = "<group>"; };
 		841F97E41FB4B2DC00A9A8CD /* UIConferenceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIConferenceCell.m; path = AppUI/UIConferenceCell.m; sourceTree = "<group>"; };
 		841F97E51FB4B2DC00A9A8CD /* UIConferenceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UIConferenceCell.xib; path = AppUI/UIConferenceCell.xib; sourceTree = "<group>"; };
@@ -2854,6 +2862,10 @@
 		153DFFFD2164A663007B69B3 /* keypad */ = {
 			isa = PBXGroup;
 			children = (
+				841EB1622169818D00B59B8E /* add_call.png */,
+				841EB15A2169818C00B59B8E /* add_call@2x.png */,
+				841EB1632169818D00B59B8E /* transfer_call.png */,
+				841EB1612169818D00B59B8E /* transfer_call@2x.png */,
 				84ECF9B8216679A60067B4B6 /* ic_addcall_act.png */,
 				84ECF9B2216679A40067B4B6 /* ic_addcall_def.png */,
 				84ECF9B4216679A50067B4B6 /* ic_addcall_dis.png */,
@@ -4859,6 +4871,7 @@
 				633FEE2F1D3CD5590014B822 /* color_G.png in Resources */,
 				633FEDAB1D3CD5590014B822 /* backspace_disabled@2x.png in Resources */,
 				633FEDD91D3CD5590014B822 /* call_start_body_default~ipad@2x.png in Resources */,
+				841EB1672169818E00B59B8E /* transfer_call.png in Resources */,
 				633FEE401D3CD5590014B822 /* contacts_all_selected.png in Resources */,
 				84C54BB21FAFE6A300651151 /* PeopleEmotion.plist in Resources */,
 				633FEE0C1D3CD5590014B822 /* chat_attachment_disabled.png in Resources */,
@@ -4891,6 +4904,7 @@
 				633FEDE61D3CD5590014B822 /* call_status_missed.png in Resources */,
 				633FEE7A1D3CD5590014B822 /* history_missed_default.png in Resources */,
 				153D00532164D9D3007B69B3 /* numpad_nine_hover.png in Resources */,
+				841EB1642169818E00B59B8E /* add_call@2x.png in Resources */,
 				633FEF121D3CD55A0014B822 /* pause_big_over_selected.png in Resources */,
 				633FED9D1D3CD5590014B822 /* add_field_default@2x.png in Resources */,
 				153D00122164A67E007B69B3 /* numpad_eight_default.png in Resources */,
@@ -4939,6 +4953,7 @@
 				84515E67200EEE1A007246E9 /* msg.wav in Resources */,
 				639E9CAC1C0DB80300019A75 /* UIContactDetailsCell.xib in Resources */,
 				633FEE511D3CD5590014B822 /* deselect_all@2x.png in Resources */,
+				841EB1662169818E00B59B8E /* add_call.png in Resources */,
 				84C443741FBE03640015854C /* FeedbackViewController.xib in Resources */,
 				F088488A19FF8C41007FFCF3 /* UIContactCell.xib in Resources */,
 				633FEE381D3CD5590014B822 /* contact_add_default.png in Resources */,
@@ -5228,6 +5243,7 @@
 				633FEDBE1D3CD5590014B822 /* call_back_default.png in Resources */,
 				633FEF0F1D3CD55A0014B822 /* pause_big_default@2x.png in Resources */,
 				633FEF081D3CD55A0014B822 /* options_start_conference_disabled.png in Resources */,
+				841EB1652169818E00B59B8E /* transfer_call@2x.png in Resources */,
 				157527912166028B007D789A /* ic_sync.png in Resources */,
 				63F1DF511BCE986A00EDED90 /* UICallConferenceCell.xib in Resources */,
 				633FEE301D3CD5590014B822 /* color_H.png in Resources */,

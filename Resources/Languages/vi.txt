@@ -1149,3 +1149,8 @@
 "text_show_pass"    =   "HIỆN"
 "text_hide_pass"    =   "ẨN"
 "text_capture_sent" =   "Ảnh đã được gửi"
+
+
+"Ringing" = "Đang đổ chuông...";"
+"Calling" = "Đang gọi..."
+

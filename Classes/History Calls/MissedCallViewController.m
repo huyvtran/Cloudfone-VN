@@ -350,11 +350,11 @@
     NSString *currentDate = [[listCalls objectAtIndex: section] valueForKey:@"title"];
     NSString *today = [AppUtils checkTodayForHistoryCall: currentDate];
     if ([today isEqualToString: @"Today"]) {
-        titleHeader =  [localization localizedStringForKey:text_today];
+        titleHeader =  [localization localizedStringForKey:@"TODAY"];
     }else{
         NSString *yesterday = [AppUtils checkYesterdayForHistoryCall:currentDate];
         if ([yesterday isEqualToString:@"Yesterday"]) {
-            titleHeader =  [localization localizedStringForKey:text_yesterday];
+            titleHeader =  [localization localizedStringForKey:@"YESTERDAY"];
         }else{
             titleHeader = currentDate;
         }

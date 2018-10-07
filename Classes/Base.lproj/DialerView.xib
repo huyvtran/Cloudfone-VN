@@ -88,7 +88,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Add to contact"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                    <state key="normal" backgroundImage="iconadd"/>
+                                    <state key="normal" backgroundImage="ic_add_def"/>
                                     <state key="disabled" image="contact_add_disabled.png"/>
                                     <connections>
                                         <action selector="onAddContactClick:" destination="-1" eventType="touchUpInside" id="230"/>
@@ -113,8 +113,8 @@
                             <rect key="frame" x="0.0" y="93" width="320" height="317"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="38" userLabel="1" customClass="UIDigitButton">
-                                    <rect key="frame" x="0.0" y="0.0" width="103" height="60"/>
+                                <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="38" userLabel="1" customClass="UIDigitButton">
+                                    <rect key="frame" x="64" y="0.0" width="60" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.40000001000000002" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" label="1"/>
@@ -129,7 +129,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="37" userLabel="2" customClass="UIDigitButton">
-                                    <rect key="frame" x="107" y="0.0" width="106" height="63"/>
+                                    <rect key="frame" x="137" y="0.0" width="60" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="2"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -143,7 +143,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="29" userLabel="3" customClass="UIDigitButton">
-                                    <rect key="frame" x="213" y="0.0" width="106" height="63"/>
+                                    <rect key="frame" x="210" y="0.0" width="60" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="3"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -157,7 +157,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="30" userLabel="4" customClass="UIDigitButton">
-                                    <rect key="frame" x="0.0" y="63" width="107" height="63"/>
+                                    <rect key="frame" x="64" y="63" width="60" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="4"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -171,7 +171,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="31" userLabel="5" customClass="UIDigitButton">
-                                    <rect key="frame" x="107" y="63" width="106" height="63"/>
+                                    <rect key="frame" x="137" y="63" width="60" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -185,7 +185,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="33" userLabel="6" customClass="UIDigitButton">
-                                    <rect key="frame" x="213" y="79" width="107" height="79"/>
+                                    <rect key="frame" x="210" y="63" width="60" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="6"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -199,7 +199,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="34" userLabel="7" customClass="UIDigitButton">
-                                    <rect key="frame" x="0.0" y="126" width="107" height="63"/>
+                                    <rect key="frame" x="64" y="128" width="60" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="7"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -213,7 +213,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="35" userLabel="8" customClass="UIDigitButton">
-                                    <rect key="frame" x="107" y="126" width="106" height="63"/>
+                                    <rect key="frame" x="137" y="128" width="60" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="8"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -227,7 +227,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="36" userLabel="9" customClass="UIDigitButton">
-                                    <rect key="frame" x="213" y="126" width="107" height="63"/>
+                                    <rect key="frame" x="210" y="128" width="60" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="9"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -241,7 +241,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="39" userLabel="*" customClass="UIDigitButton">
-                                    <rect key="frame" x="0.0" y="181" width="107" height="79"/>
+                                    <rect key="frame" x="64" y="196" width="60" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Star"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -255,7 +255,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="40" userLabel="0" customClass="UIDigitButton">
-                                    <rect key="frame" x="107" y="189" width="106" height="63"/>
+                                    <rect key="frame" x="137" y="196" width="60" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="0"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -269,7 +269,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="41" userLabel="#" customClass="UIDigitButton">
-                                    <rect key="frame" x="213" y="189" width="107" height="63"/>
+                                    <rect key="frame" x="210" y="196" width="60" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Hash"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -282,21 +282,8 @@
                                         <outlet property="addressField" destination="4" id="251"/>
                                     </connections>
                                 </button>
-                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="183" userLabel="backButton">
-                                    <rect key="frame" x="106" y="118" width="107" height="81"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                    <accessibility key="accessibilityConfiguration" label="Back"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                    <state key="normal" image="button_back_dialer">
-                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </state>
-                                    <state key="disabled" image="call_alt_back_disabled.png"/>
-                                    <connections>
-                                        <action selector="onBackClick:" destination="-1" eventType="touchUpInside" id="233"/>
-                                    </connections>
-                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ocP-fY-nj8">
-                                    <rect key="frame" x="0.0" y="252" width="107" height="65"/>
+                                    <rect key="frame" x="59" y="247" width="70" height="70"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <state key="normal" backgroundImage="hotline_default.png"/>
                                     <state key="highlighted" backgroundImage="hotline_hover.png"/>
@@ -305,23 +292,23 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mZY-R6-lzQ">
-                                    <rect key="frame" x="206" y="167" width="106" height="65"/>
+                                    <rect key="frame" x="132" y="247" width="70" height="70"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" backgroundImage="btn_add_call_def"/>
+                                    <state key="normal" backgroundImage="add_call.png"/>
                                     <connections>
                                         <action selector="_btnAddCallPressed:" destination="-1" eventType="touchUpInside" id="lA4-Hw-1D6"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="SWb-OV-7Fe">
-                                    <rect key="frame" x="197" y="105" width="106" height="65"/>
+                                    <rect key="frame" x="132" y="247" width="70" height="70"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" backgroundImage="btn_transfer_def"/>
+                                    <state key="normal" backgroundImage="transfer_call.png"/>
                                     <connections>
                                         <action selector="_btnTransferPressed:" destination="-1" eventType="touchUpInside" id="vtO-xY-hz9"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="224" userLabel="callButton" customClass="UICallButton">
-                                    <rect key="frame" x="115" y="236" width="105" height="81"/>
+                                    <rect key="frame" x="132" y="247" width="70" height="70"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Call"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -334,7 +321,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8dc-hj-rvt" userLabel="backspaceButton" customClass="UIIconButton">
-                                    <rect key="frame" x="213" y="252" width="107" height="65"/>
+                                    <rect key="frame" x="205" y="247" width="70" height="70"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <state key="normal" backgroundImage="numpad_clear.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -342,6 +329,19 @@
                                     <state key="highlighted" image="backspace_hover_1"/>
                                     <connections>
                                         <action selector="onBackspaceClick:" destination="-1" eventType="touchUpInside" id="sWE-Ch-kAr"/>
+                                    </connections>
+                                </button>
+                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="183" userLabel="backButton">
+                                    <rect key="frame" x="64" y="257" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                    <accessibility key="accessibilityConfiguration" label="Back"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <state key="normal" image="button_back_dialer">
+                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <state key="disabled" image="call_alt_back_disabled.png"/>
+                                    <connections>
+                                        <action selector="onBackClick:" destination="-1" eventType="touchUpInside" id="233"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -354,14 +354,13 @@
             <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-41" y="-414"/>
+            <point key="canvasLocation" x="14" y="-457"/>
         </view>
     </objects>
     <resources>
+        <image name="add_call.png" width="200" height="200"/>
         <image name="background_header.png" width="750" height="360"/>
         <image name="backspace_hover_1" width="241" height="149"/>
-        <image name="btn_add_call_def" width="240" height="148"/>
-        <image name="btn_transfer_def" width="240" height="148"/>
         <image name="button_back_dialer" width="240" height="148"/>
         <image name="call_alt_back_disabled.png" width="51" height="36"/>
         <image name="call_default.png" width="201" height="201"/>
@@ -369,8 +368,8 @@
         <image name="contact_add_disabled.png" width="34" height="29"/>
         <image name="hotline_default.png" width="201" height="201"/>
         <image name="hotline_hover.png" width="201" height="201"/>
+        <image name="ic_add_def" width="200" height="200"/>
         <image name="ic_logo" width="200" height="200"/>
-        <image name="iconadd" width="100" height="100"/>
         <image name="numpad_clear.png" width="201" height="201"/>
         <image name="numpad_eight_default.png" width="201" height="201"/>
         <image name="numpad_eight_hover" width="241" height="149"/>
@@ -396,5 +395,6 @@
         <image name="numpad_two_hover" width="241" height="149"/>
         <image name="numpad_zero_default.png" width="201" height="201"/>
         <image name="numpad_zero_hover" width="241" height="141"/>
+        <image name="transfer_call.png" width="200" height="200"/>
     </resources>
 </document>
