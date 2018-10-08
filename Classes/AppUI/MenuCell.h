@@ -16,7 +16,4 @@
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 
-- (void)setupUIForCell;
-- (void)setupCellForPopupView;
-
 @end

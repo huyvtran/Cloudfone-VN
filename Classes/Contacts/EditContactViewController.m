@@ -890,7 +890,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         [cell setSelectionStyle: UITableViewCellSelectionStyleNone];
         [cell setFrame: CGRectMake(cell.frame.origin.x, cell.frame.origin.y, popupChooseAvatar._optionsTableView.frame.size.width, hCell)];
-        [cell setupCellForPopupView];
         
         [cell setTag: indexPath.row];
         

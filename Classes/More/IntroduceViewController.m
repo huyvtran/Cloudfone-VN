@@ -15,7 +15,7 @@
 @end
 
 @implementation IntroduceViewController
-@synthesize _viewHeader, _iconBack, _wvIntroduce, _lbIntroduce;
+@synthesize _viewHeader, bgHeader, _iconBack, _wvIntroduce, _lbIntroduce;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -83,23 +83,25 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  header view
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState);
     }];
     
-    [_iconBack setBackgroundImage:[UIImage imageNamed:@"ic_back_act.png"]
-                         forState:UIControlStateHighlighted];
-    [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_viewHeader);
-        make.centerY.equalTo(_viewHeader.mas_centerY);
-        make.width.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self.view);
     }];
     
     _lbIntroduce.font = textFont;
     [_lbIntroduce mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus);
+        make.bottom.equalTo(_viewHeader);
         make.centerX.equalTo(_viewHeader.mas_centerX);
-        make.centerY.equalTo(_viewHeader.mas_centerY);
         make.width.mas_equalTo(200);
-        make.height.mas_equalTo(40);
+    }];
+    
+    [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewHeader).offset(5);
+        make.centerY.equalTo(_lbIntroduce.mas_centerY);
+        make.width.height.mas_equalTo(40.0);
     }];
     
     float tmpMargin = 15.0;

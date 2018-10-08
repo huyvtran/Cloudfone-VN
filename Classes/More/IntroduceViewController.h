@@ -12,6 +12,7 @@
 @interface IntroduceViewController : UIViewController<UICompositeViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *_viewHeader;
+@property (weak, nonatomic) IBOutlet UIImageView *bgHeader;
 @property (weak, nonatomic) IBOutlet UIButton *_iconBack;
 @property (weak, nonatomic) IBOutlet UILabel *_lbIntroduce;
 @property (weak, nonatomic) IBOutlet UIWebView *_wvIntroduce;

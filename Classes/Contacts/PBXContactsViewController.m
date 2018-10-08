@@ -13,7 +13,6 @@
 #import "PBXContact.h"
 #import "PBXContactTableCell.h"
 #import "DeleteContactPBXPopupView.h"
-#import "PhoneMainView.h"
 #import "UIImage+GKContact.h"
 
 @interface PBXContactsViewController (){

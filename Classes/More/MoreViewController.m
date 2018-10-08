@@ -13,13 +13,13 @@
 #import "FeedbackViewController.h"
 #import "PolicyViewController.h"
 #import "IntroduceViewController.h"
-#import "PhoneMainView.h"
 #import "NSDatabase.h"
 #import "TabBarView.h"
 #import "StatusBarView.h"
 #import "NSData+Base64.h"
 #import "JSONKit.h"
 #import "UIView+Toast.h"
+#import "CustomTextAttachment.h"
 
 @interface MoreViewController () {
     float hInfo;
@@ -36,7 +36,7 @@
 @end
 
 @implementation MoreViewController
-@synthesize _viewHeader, bgHeader, _imgAvatar, _lbName, lbPBXAccount, icEdit, _tbContent;
+@synthesize _viewHeader, bgHeader, _imgAvatar, _lbName, lbPBXAccount, icEdit, _tbContent, lbVersion;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -128,6 +128,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
     }
     
+    self.view.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
+                                                 blue:(230/255.0) alpha:1.0];
     hInfo = [LinphoneAppDelegate sharedInstance]._hRegistrationState + 50;
     
     //  Header view
@@ -170,15 +172,38 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.bottom.equalTo(_imgAvatar.mas_bottom);
     }];
     
+    //  label version
+    lbVersion.backgroundColor = UIColor.clearColor;
+    [lbVersion mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.view);
+        make.height.mas_equalTo(40);
+    }];
+    
+    _tbContent.backgroundColor = UIColor.clearColor;
     [_tbContent mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_viewHeader.mas_bottom).offset(5);
         make.left.right.equalTo(self.view);
-        make.bottom.equalTo(self.view);
+        make.bottom.equalTo(lbVersion.mas_top);
     }];
     _tbContent.delegate = self;
     _tbContent.dataSource = self;
     _tbContent.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tbContent.scrollEnabled = NO;
+    
+    CustomTextAttachment *attachment = [[CustomTextAttachment alloc] init];
+    attachment.image = [UIImage imageNamed:@"ic_about.png"];
+    [attachment setImageHeight: 24.0];
+    
+    NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
+    
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSString *content = [NSString stringWithFormat:@" %@: %@", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Version"], version];
+    NSMutableAttributedString *contentString = [[NSMutableAttributedString alloc] initWithString:content];
+    
+    NSMutableAttributedString *verString = [[NSMutableAttributedString alloc] initWithAttributedString: attachmentString];
+    //
+    [verString appendAttributedString: contentString];
+    lbVersion.attributedText = verString;
 }
 
 - (void)didReceiveMemoryWarning
@@ -189,9 +214,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 //  Khoi tao du lieu cho view
 - (void)createDataForMenuView {
-    listTitle = [[NSArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_acc_setting], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_menu_settings], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_menu_feedback], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_menu_privacy_policy], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_menu_introduce], nil];
+    listTitle = [[NSArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Account settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Feedback"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Privacy Policy"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Introduction"], nil];
     
-    listIcon = [[NSArray alloc] initWithObjects: @"ic_account_settings.png", @"ic_menu_settings.png", @"ic_feedback.png", @"ic_privacy_policy.png", @"ic_introduce.png", nil];
+    listIcon = [[NSArray alloc] initWithObjects: @"ic_setup.png", @"ic_setting.png", @"ic_support.png", @"ic_term.png", @"ic_introduce.png", nil];
 }
 
 #pragma mark - uitableview delegate
@@ -200,7 +225,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return listTitle.count + 1;
+    return listTitle.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -211,34 +236,23 @@ static UICompositeViewDescription *compositeDescription = nil;
         cell = topLevelObjects[0];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbContent.frame.size.width, hCell);
-    [cell setupUIForCell];
     
-    if (indexPath.row == listTitle.count) {
-        NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-        //  NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-        cell._lbTitle.text = [NSString stringWithFormat:@"%@: %@", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_version], version];
-        cell._lbTitle.frame = CGRectMake(0, 0, _tbContent.frame.size.width, hCell);
-        cell._lbTitle.textAlignment = NSTextAlignmentCenter;
-        cell._iconImage.hidden = YES;
-    }else{
-        cell._iconImage.image = [UIImage imageNamed:[listIcon objectAtIndex: indexPath.row]];
-        cell._lbTitle.text = [listTitle objectAtIndex:indexPath.row];
-        cell._iconImage.hidden = NO;
-        cell._lbTitle.textAlignment = NSTextAlignmentLeft;
-    }
+    cell._iconImage.image = [UIImage imageNamed:[listIcon objectAtIndex: indexPath.row]];
+    cell._lbTitle.text = [listTitle objectAtIndex:indexPath.row];
+    cell._iconImage.hidden = NO;
+    cell._lbTitle.textAlignment = NSTextAlignmentLeft;
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.row) {
-        case eSettings:{
-            [[PhoneMainView instance] changeCurrentView:[KSettingViewController compositeViewDescription] push:true];
-            break;
-        }
         case eSettingsAccount:{
             [[PhoneMainView instance] changeCurrentView:[AccountSettingsViewController compositeViewDescription] push:true];
+            break;
+        }
+        case eSettings:{
+            [[PhoneMainView instance] changeCurrentView:[KSettingViewController compositeViewDescription] push:true];
             break;
         }
         case eFeedback:{

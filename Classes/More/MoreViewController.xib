@@ -18,6 +18,7 @@
                 <outlet property="bgHeader" destination="FSI-6e-MoN" id="0eI-WL-loi"/>
                 <outlet property="icEdit" destination="TRM-vo-ZOX" id="Nkn-rL-JEd"/>
                 <outlet property="lbPBXAccount" destination="2Sd-2v-HZr" id="fEH-pt-4EE"/>
+                <outlet property="lbVersion" destination="XUZ-1b-UhY" id="e2v-Kn-BZt"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -30,7 +31,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="background_header.png" id="FSI-6e-MoN">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="background_more.png" id="FSI-6e-MoN">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
@@ -62,10 +63,17 @@
                     </subviews>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="YUO-pX-n0L">
-                    <rect key="frame" x="0.0" y="120" width="320" height="339"/>
+                    <rect key="frame" x="0.0" y="120" width="320" height="292"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XUZ-1b-UhY">
+                    <rect key="frame" x="0.0" y="432" width="320" height="27"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.19607843137254902" green="0.19607843137254902" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
@@ -74,7 +82,7 @@
         </view>
     </objects>
     <resources>
-        <image name="background_header.png" width="750" height="360"/>
+        <image name="background_more.png" width="750" height="360"/>
         <image name="no_avatar" width="166" height="166"/>
     </resources>
 </document>

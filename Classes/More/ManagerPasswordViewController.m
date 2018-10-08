@@ -32,7 +32,7 @@
 @end
 
 @implementation ManagerPasswordViewController
-@synthesize _viewHeader, _icBack, _lbHeader;
+@synthesize _viewHeader, bgHeader, _icBack, _lbHeader;
 @synthesize _viewContent, _lbPassword, _tfPassword, _lbNewPassword, _tfNewPassword, _lbConfirmPassword, _tfConfirmPassword, _lbPasswordDesc, _btnCancel, _btnSave, _icWaiting;
 
 #pragma mark - UICompositeViewDelegate Functions
@@ -132,19 +132,24 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  Header view
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState);
+    }];
+    
+    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewHeader);
     }];
     
     [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(_viewHeader);
+        make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus);
+        make.bottom.equalTo(_viewHeader);
         make.centerX.equalTo(_viewHeader.mas_centerX);
         make.width.mas_equalTo(200);
     }];
     
     [_icBack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.equalTo(_viewHeader);
-        make.width.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
-        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+        make.left.equalTo(_viewHeader).offset(5);
+        make.centerY.equalTo(_lbHeader.mas_centerY);
+        make.width.height.mas_equalTo(40.0);
     }];
     
     //  content view

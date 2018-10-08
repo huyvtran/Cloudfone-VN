@@ -7,14 +7,12 @@
 //
 
 #import "KContactDetailViewController.h"
-#import "PhoneMainView.h"
 #import "UIKContactCell.h"
 #import "JSONKit.h"
 #import "NSData+Base64.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "TypePhoneContact.h"
 #import "ContactDetailObj.h"
-//  Leo Kelvin
 #import "EditContactViewController.h"
 #import "ContactDetailObj.h"
 

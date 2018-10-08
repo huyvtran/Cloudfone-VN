@@ -31,6 +31,7 @@ enum stateLogout {
 @property (weak, nonatomic) IBOutlet UILabel *lbPBXAccount;
 @property (weak, nonatomic) IBOutlet UIButton *icEdit;
 @property (weak, nonatomic) IBOutlet UITableView *_tbContent;
+@property (weak, nonatomic) IBOutlet UILabel *lbVersion;
 
 - (IBAction)icEditClicked:(UIButton *)sender;
 

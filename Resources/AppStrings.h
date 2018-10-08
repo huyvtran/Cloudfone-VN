@@ -252,20 +252,13 @@
 #define text_no_recorded_call   @"text_no_recorded_call"
 
 #define text_more               @"text_more"
-#define text_settings           @"text_settings"
 
-#define text_menu_settings          @"text_menu_settings"
-#define text_menu_feedback          @"text_menu_feedback"
-#define text_menu_privacy_policy    @"text_menu_privacy_policy"
-#define text_menu_introduce         @"text_menu_introduce"
 
 #define text_alert_logout_title     @"text_alert_logout_title"
 #define text_alert_logout_content   @"text_alert_logout_content"
 
 #define text_notif_setting      @"text_notif_setting"
-#define text_acc_setting        @"text_acc_setting"
 #define text_sync_contact       @"text_sync_contact"
-#define text_lang_setting       @"text_lang_setting"
 
 #define key_sound_call          @"key_sound_call"
 #define key_sound_message       @"key_sound_message"
@@ -273,7 +266,6 @@
 
 #define welcomeToCloudFone      @"Welcome to CloudFone"
 
-#define text_version            @"text_version"
 #define text_pbx_on             @"text_pbx_on"
 #define text_pbx_off            @"text_pbx_off"
 
@@ -308,7 +300,6 @@
 #define text_reload_app_for_change_language @"text_reload_app_for_change_language"
 
 #define text_notif_setting  @"text_notif_setting"
-#define text_acc_setting    @"text_acc_setting"
 #define text_sync_contact   @"text_sync_contact"
 #define text_lang_setting   @"text_lang_setting"
 #define text_app_settings   @"text_app_settings"

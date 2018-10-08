@@ -9,22 +9,16 @@
 #import "KSettingViewController.h"
 #import "NotificationSettingsViewController.h"
 #import "LanguageViewController.h"
-#import "PhoneMainView.h"
 #import "NSDatabase.h"
 #import "SettingCell.h"
 
 @interface KSettingViewController (){
     NSMutableArray *listTitle;
-    NSArray *listIcon;
-    AlertPopupView *logoutPopupView;
-    float hCell;
-    UIFont *textFont;
 }
-
 @end
 
 @implementation KSettingViewController
-@synthesize _iconBack, _lbHeader, _tbSettings, _viewHeader;
+@synthesize _iconBack, bgHeader, _lbHeader, _tbSettings, _viewHeader;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -50,14 +44,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     // MY CODE HERE
-    listIcon = [[NSArray alloc] initWithObjects: @"ic_notif_settings.png", @"ic_language.png", @"ic_menu_settings.png", @"ic_account_settings.png", nil];
-    
     [self setupUIForView];
-    
-    //  Logout popup
-    [logoutPopupView setDelegate: self];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -80,34 +68,48 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - My functions
 
 - (void)showContentWithCurrentLanguage {
-    _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_settings];
+    _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Settings"];
     
-    listTitle = [[NSMutableArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_notif_setting], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_lang_setting], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_app_settings], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_outbot_proxy], nil];
+    listTitle = [[NSMutableArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Language"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Call settings"], nil];
     [_tbSettings reloadData];
 }
 
 - (void)setupUIForView
 {
     if (SCREEN_WIDTH > 320) {
-        hCell = 55.0;
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
         _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:20.0];
     }else{
-        hCell = 45.0;
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
         _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:18.0];
     }
     
     //  header view
-    _viewHeader.frame = CGRectMake(0, 0, SCREEN_WIDTH, [LinphoneAppDelegate sharedInstance]._hHeader);
-    _iconBack.frame = CGRectMake(0, 0, [LinphoneAppDelegate sharedInstance]._hHeader, [LinphoneAppDelegate sharedInstance]._hHeader);
-    [_iconBack setBackgroundImage:[UIImage imageNamed:@"ic_back_act.png"]
-                         forState:UIControlStateHighlighted];
+    [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState);
+    }];
     
-    _lbHeader.frame = CGRectMake(_iconBack.frame.origin.x+_iconBack.frame.size.width+5, 0, _viewHeader.frame.size.width-(2*_iconBack.frame.origin.x+2*_iconBack.frame.size.width+10), [LinphoneAppDelegate sharedInstance]._hHeader);
+    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewHeader);
+    }];
+    
+    [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus);
+        make.bottom.equalTo(_viewHeader);
+        make.centerX.equalTo(_viewHeader.mas_centerX);
+        make.width.mas_equalTo(200.0);
+    }];
+    
+    [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewHeader).offset(5);
+        make.centerY.equalTo(_lbHeader.mas_centerY);
+        make.width.height.mas_equalTo(40.0);
+    }];
     
     //  tableview
-    _tbSettings.frame = CGRectMake(0, _viewHeader.frame.origin.y+_viewHeader.frame.size.height, SCREEN_WIDTH, SCREEN_HEIGHT-([LinphoneAppDelegate sharedInstance]._hStatus+[LinphoneAppDelegate sharedInstance]._hHeader));
+    [_tbSettings mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader.mas_bottom);
+        make.left.right.bottom.equalTo(self.view);
+    }];
     _tbSettings.delegate = self;
     _tbSettings.dataSource = self;
     _tbSettings.scrollEnabled = NO;
@@ -131,13 +133,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         cell = topLevelObjects[0];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbSettings.frame.size.width, hCell);
-    
-    [cell setupUIForView];
-    cell._lbTitle.font = textFont;
     
     cell._lbTitle.text = [listTitle objectAtIndex: indexPath.row];
-    cell._iconImage.image = [UIImage imageNamed:[listIcon objectAtIndex: indexPath.row]];
     
     return cell;
 }
@@ -145,16 +142,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.row) {
         case 0:{
-            [[PhoneMainView instance] changeCurrentView:[NotificationSettingsViewController compositeViewDescription]
-                                                   push:true];
-            break;
-        }
-        case 1:{
             [[PhoneMainView instance] changeCurrentView:[LanguageViewController compositeViewDescription]
                                                    push:true];
             break;
         }
-        case 2:{
+        case 1:{
             [[PhoneMainView instance] changeCurrentView:[SettingsView compositeViewDescription]
                                                    push:true];
             break;
@@ -165,7 +157,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return hCell;
+    return 50.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 5.0;
 }
 
 @end

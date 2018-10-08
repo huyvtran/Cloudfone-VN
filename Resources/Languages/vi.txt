@@ -64,11 +64,6 @@
 
 "text_more"                 =   "Thêm"
 
-"text_menu_settings"        =   "Thiết lập"
-"text_menu_feedback"        =   "Gửi phản hồi"
-"text_menu_privacy_policy"  =   "Chính sách"
-"text_menu_introduce"       =   "Giới thiệu"
-
 "text_gallery"      = "Thư viện"
 "text_camera"       = "Chụp ảnh"
 "text_remove"       = "Hủy ảnh đại diện"
@@ -86,11 +81,8 @@
 "text_address"      =   "Địa chỉ"
 "text_save"         =   "Lưu"
 
-"text_settings"         =   "Cài đặt"
 "text_notif_setting"    =   "Cài đặt thông báo"
-"text_acc_setting"      =   "Cài đặt tài khoản"
 "text_sync_contact"     =   "Đồng bộ danh bạ"
-"text_lang_setting"     =   "Cài đặt ngôn ngữ"
 "text_app_settings"     =   "Cài đặt ứng dụng"
 "text_outbot_proxy"     =   "Outbound Proxy"
 
@@ -159,8 +151,6 @@
 
 "text_sync_xmpp"            =   "ĐỒNG BỘ DANH BẠ"
 "text_pull_to_refresh"      = "Kéo để tải lại"
-
-"text_version"              =   "Phiên bản"
 
 "text_search_contact"       =   "Tìm kiếm liên hệ..."
 "text_no_contact"           =   "Không có liên hệ"
@@ -1153,4 +1143,7 @@
 
 "Ringing" = "Đang đổ chuông...";"
 "Calling" = "Đang gọi..."
-
+"Feedback" = "Gửi phản hồi"
+"Privacy Policy" = "Chính sách"
+"Introduction" = "Giới thiệu"
+"Version" = "Phiên bản"

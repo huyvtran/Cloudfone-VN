@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "UICompositeView.h"
-#import "AlertPopupView.h"
 
-@interface KSettingViewController : UIViewController<UICompositeViewDelegate, UITableViewDataSource, UITableViewDelegate, AlertPopupViewDelegate>
+@interface KSettingViewController : UIViewController<UICompositeViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *_viewHeader;
+@property (weak, nonatomic) IBOutlet UIImageView *bgHeader;
 @property (retain, nonatomic) IBOutlet UIButton *_iconBack;
 @property (retain, nonatomic) IBOutlet UILabel *_lbHeader;
 @property (weak, nonatomic) IBOutlet UITableView *_tbSettings;

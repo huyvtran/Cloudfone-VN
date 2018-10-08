@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "UICompositeView.h"
-//  Leo Kelvin
-//  #import "AlertPopupView.h"
 #import "MarqueeLabel.h"
 #import "ContactObject.h"
 

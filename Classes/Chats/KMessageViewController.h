@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "UICompositeView.h"
-#import "AlertPopupView.h"
 #import "BEMCheckBox.h"
 
 @interface KMessageViewController : UIViewController<UICompositeViewDelegate>

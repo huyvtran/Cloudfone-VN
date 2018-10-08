@@ -66,11 +66,6 @@
 
 "text_more"                 =   "More"
 
-"text_menu_settings"        =   "Settings"
-"text_menu_feedback"        =   "Feedback"
-"text_menu_privacy_policy"  =   "Privacy Policy"
-"text_menu_introduce"       =   "Introduction"
-
 "text_gallery"      = "Gallery"
 "text_camera"       = "Camera"
 "text_remove"       = "Remove Avatar"
@@ -87,11 +82,8 @@
 "text_address"      =   "Address"
 "text_save"         =   "Save"
 
-"text_settings"             =   "Settings"
 "text_notif_setting"        =   "Notification settings"
-"text_acc_setting"          =   "Account settings"
 "text_sync_contact"         =   "Sync contacts"
-"text_lang_setting"         =   "Language settings"
 "text_app_settings"         =   "App settings"
 "text_outbot_proxy"         =   "Outbound Proxy"
 
@@ -161,8 +153,6 @@
 "text_sync_xmpp"            =   "SYNC CONTACTS"
 
 "text_pull_to_refresh"      = "Pull to refresh"
-
-"text_version"              =   "Version"
 
 "text_search_contact"       =   "Search contacts..."
 "text_no_contact"           =   "No contacts"
@@ -1125,4 +1115,7 @@
 
 "Ringing" = "Ringing..."
 "Calling" = "Calling..."
-
+"Feedback" = "Feedback"
+"Privacy Policy" = "Privacy Policy"
+"Introduction" = "Introduction"
+"Version" = "Version"

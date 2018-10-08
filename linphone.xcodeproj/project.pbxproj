@@ -68,6 +68,15 @@
 		159002D72168618E00CECB7A /* ic_call_missed.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002CE2168618B00CECB7A /* ic_call_missed.png */; };
 		159002D82168618E00CECB7A /* ic_call_outgoing.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002D52168618C00CECB7A /* ic_call_outgoing.png */; };
 		159002D92168618E00CECB7A /* ic_call_incoming.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002D62168618D00CECB7A /* ic_call_incoming.png */; };
+		15F2E5F5216B56F60076CB1F /* ic_setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 15F2E5F1216B56E30076CB1F /* ic_setting.png */; };
+		15F2E5F6216B56F60076CB1F /* ic_term.png in Resources */ = {isa = PBXBuildFile; fileRef = 15F2E5F2216B56E50076CB1F /* ic_term.png */; };
+		15F2E5F7216B56F60076CB1F /* ic_setup.png in Resources */ = {isa = PBXBuildFile; fileRef = 15F2E5F3216B56E60076CB1F /* ic_setup.png */; };
+		15F2E5F8216B56F60076CB1F /* ic_support.png in Resources */ = {isa = PBXBuildFile; fileRef = 15F2E5F4216B56F20076CB1F /* ic_support.png */; };
+		15F2E5FC216B575D0076CB1F /* background_more.png in Resources */ = {isa = PBXBuildFile; fileRef = 15F2E5F9216B57570076CB1F /* background_more.png */; };
+		15F2E5FD216B575D0076CB1F /* background_header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15F2E5FA216B575A0076CB1F /* background_header@2x.png */; };
+		15F2E5FE216B575D0076CB1F /* background_more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15F2E5FB216B575B0076CB1F /* background_more@2x.png */; };
+		15F2E600216B66830076CB1F /* ic_about.png in Resources */ = {isa = PBXBuildFile; fileRef = 15F2E5FF216B66830076CB1F /* ic_about.png */; };
+		15F2E603216B6DA60076CB1F /* CustomTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 15F2E602216B6DA60076CB1F /* CustomTextAttachment.m */; };
 		15F728741B16FF9A00A1C901 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 152F22351B15E889008C0621 /* libxml2.dylib */; };
 		1D3623260D0F684500981E51 /* LinphoneAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* LinphoneAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -806,7 +815,6 @@
 		84D032221FB531B5002D2524 /* KContactDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D032201FB531B5002D2524 /* KContactDetailViewController.m */; };
 		84D032231FB531B5002D2524 /* KContactDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D032211FB531B5002D2524 /* KContactDetailViewController.xib */; };
 		84D1EC2D2000E4C500AF337C /* NSString+Emojize.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D1EC2C2000E4C500AF337C /* NSString+Emojize.m */; };
-		84D219101FE6D39800025988 /* ChangePasswordPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D2190F1FE6D39800025988 /* ChangePasswordPopupView.m */; };
 		84E066731FBE626300C49F66 /* TypePhoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E066711FBE626300C49F66 /* TypePhoneCell.m */; };
 		84E066741FBE626300C49F66 /* TypePhoneCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E066721FBE626300C49F66 /* TypePhoneCell.xib */; };
 		84E067111FBE63B500C49F66 /* PBXContactPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E067101FBE63B500C49F66 /* PBXContactPopupView.m */; };
@@ -866,7 +874,6 @@
 		84ECF9CD216679A70067B4B6 /* ic_pause_act.png in Resources */ = {isa = PBXBuildFile; fileRef = 84ECF9BB216679A60067B4B6 /* ic_pause_act.png */; };
 		84EDEE421FB7121C00FF665C /* KSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EDEE401FB7121C00FF665C /* KSettingViewController.m */; };
 		84EDEE431FB7121C00FF665C /* KSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84EDEE411FB7121C00FF665C /* KSettingViewController.xib */; };
-		84EDEE461FB7126B00FF665C /* AlertPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EDEE451FB7126B00FF665C /* AlertPopupView.m */; };
 		84EDEE4D1FB712F200FF665C /* LanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EDEE481FB712F200FF665C /* LanguageViewController.m */; };
 		84EDEE4E1FB712F200FF665C /* LanguageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84EDEE491FB712F200FF665C /* LanguageViewController.xib */; };
 		84EDEE4F1FB712F200FF665C /* NotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EDEE4B1FB712F200FF665C /* NotificationSettingsViewController.m */; };
@@ -1174,6 +1181,16 @@
 		159002CE2168618B00CECB7A /* ic_call_missed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_missed.png; sourceTree = "<group>"; };
 		159002D52168618C00CECB7A /* ic_call_outgoing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_outgoing.png; sourceTree = "<group>"; };
 		159002D62168618D00CECB7A /* ic_call_incoming.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_incoming.png; sourceTree = "<group>"; };
+		15F2E5F1216B56E30076CB1F /* ic_setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_setting.png; sourceTree = "<group>"; };
+		15F2E5F2216B56E50076CB1F /* ic_term.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_term.png; sourceTree = "<group>"; };
+		15F2E5F3216B56E60076CB1F /* ic_setup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_setup.png; sourceTree = "<group>"; };
+		15F2E5F4216B56F20076CB1F /* ic_support.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_support.png; sourceTree = "<group>"; };
+		15F2E5F9216B57570076CB1F /* background_more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_more.png; sourceTree = "<group>"; };
+		15F2E5FA216B575A0076CB1F /* background_header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background_header@2x.png"; sourceTree = "<group>"; };
+		15F2E5FB216B575B0076CB1F /* background_more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background_more@2x.png"; sourceTree = "<group>"; };
+		15F2E5FF216B66830076CB1F /* ic_about.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_about.png; sourceTree = "<group>"; };
+		15F2E601216B6DA60076CB1F /* CustomTextAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CustomTextAttachment.h; path = AppObjects/CustomTextAttachment.h; sourceTree = "<group>"; };
+		15F2E602216B6DA60076CB1F /* CustomTextAttachment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CustomTextAttachment.m; path = AppObjects/CustomTextAttachment.m; sourceTree = "<group>"; };
 		179F852E5AE85EE2824C8985 /* Pods-linphone.distributionadhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-linphone.distributionadhoc.xcconfig"; path = "Pods/Target Support Files/Pods-linphone/Pods-linphone.distributionadhoc.xcconfig"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* LinphoneAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinphoneAppDelegate.h; sourceTree = "<group>"; };
@@ -2115,8 +2132,6 @@
 		84D1EC2A2000E4C400AF337C /* emojis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = emojis.h; path = OutSources/NSStringEmojize/emojis.h; sourceTree = "<group>"; };
 		84D1EC2B2000E4C400AF337C /* NSString+Emojize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Emojize.h"; path = "OutSources/NSStringEmojize/NSString+Emojize.h"; sourceTree = "<group>"; };
 		84D1EC2C2000E4C500AF337C /* NSString+Emojize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Emojize.m"; path = "OutSources/NSStringEmojize/NSString+Emojize.m"; sourceTree = "<group>"; };
-		84D2190E1FE6D39800025988 /* ChangePasswordPopupView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ChangePasswordPopupView.h; path = AppUI/ChangePasswordPopupView.h; sourceTree = "<group>"; };
-		84D2190F1FE6D39800025988 /* ChangePasswordPopupView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ChangePasswordPopupView.m; path = AppUI/ChangePasswordPopupView.m; sourceTree = "<group>"; };
 		84E066701FBE626300C49F66 /* TypePhoneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TypePhoneCell.h; path = AppUI/TypePhoneCell.h; sourceTree = "<group>"; };
 		84E066711FBE626300C49F66 /* TypePhoneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TypePhoneCell.m; path = AppUI/TypePhoneCell.m; sourceTree = "<group>"; };
 		84E066721FBE626300C49F66 /* TypePhoneCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TypePhoneCell.xib; path = AppUI/TypePhoneCell.xib; sourceTree = "<group>"; };
@@ -2201,8 +2216,6 @@
 		84EDEE3F1FB7121C00FF665C /* KSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSettingViewController.h; path = More/KSettingViewController.h; sourceTree = "<group>"; };
 		84EDEE401FB7121C00FF665C /* KSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KSettingViewController.m; path = More/KSettingViewController.m; sourceTree = "<group>"; };
 		84EDEE411FB7121C00FF665C /* KSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KSettingViewController.xib; path = More/KSettingViewController.xib; sourceTree = "<group>"; };
-		84EDEE441FB7126B00FF665C /* AlertPopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertPopupView.h; path = AppUI/AlertPopupView.h; sourceTree = "<group>"; };
-		84EDEE451FB7126B00FF665C /* AlertPopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlertPopupView.m; path = AppUI/AlertPopupView.m; sourceTree = "<group>"; };
 		84EDEE471FB712F200FF665C /* LanguageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LanguageViewController.h; path = More/LanguageViewController.h; sourceTree = "<group>"; };
 		84EDEE481FB712F200FF665C /* LanguageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LanguageViewController.m; path = More/LanguageViewController.m; sourceTree = "<group>"; };
 		84EDEE491FB712F200FF665C /* LanguageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LanguageViewController.xib; path = More/LanguageViewController.xib; sourceTree = "<group>"; };
@@ -3273,6 +3286,11 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				15F2E5FF216B66830076CB1F /* ic_about.png */,
+				15F2E5F1216B56E30076CB1F /* ic_setting.png */,
+				15F2E5F3216B56E60076CB1F /* ic_setup.png */,
+				15F2E5F4216B56F20076CB1F /* ic_support.png */,
+				15F2E5F2216B56E50076CB1F /* ic_term.png */,
 				159002D62168618D00CECB7A /* ic_call_incoming.png */,
 				159002CE2168618B00CECB7A /* ic_call_missed.png */,
 				159002D52168618C00CECB7A /* ic_call_outgoing.png */,
@@ -3291,6 +3309,9 @@
 				1575279921661D43007D789A /* tf_close_bg.png */,
 				1575279721661D1A007D789A /* ic_search.png */,
 				84BE0FFB21651F5A00831E36 /* background_header.png */,
+				15F2E5FA216B575A0076CB1F /* background_header@2x.png */,
+				15F2E5F9216B57570076CB1F /* background_more.png */,
+				15F2E5FB216B575B0076CB1F /* background_more@2x.png */,
 				153DFFFD2164A663007B69B3 /* keypad */,
 				842FA3AE2162687700C59DDA /* qr-code-scan.png */,
 				8489DED32160B5FA00A7A1DD /* right-arrow.png */,
@@ -3943,8 +3964,6 @@
 				8489DECC2160B16100A7A1DD /* NewSettingCell.h */,
 				8489DECD2160B16100A7A1DD /* NewSettingCell.m */,
 				8489DECE2160B16100A7A1DD /* NewSettingCell.xib */,
-				84D2190E1FE6D39800025988 /* ChangePasswordPopupView.h */,
-				84D2190F1FE6D39800025988 /* ChangePasswordPopupView.m */,
 				84F26B8D1FD6FE1D008852ED /* BlockContactView.h */,
 				84F26B8E1FD6FE1E008852ED /* BlockContactView.m */,
 				840531E61FCB097B00A27A03 /* ContactAddGroupCell.h */,
@@ -3994,8 +4013,6 @@
 				843ED6721FB66A36005FE1C1 /* SettingCell.h */,
 				843ED6731FB66A36005FE1C1 /* SettingCell.m */,
 				843ED6741FB66A36005FE1C1 /* SettingCell.xib */,
-				84EDEE441FB7126B00FF665C /* AlertPopupView.h */,
-				84EDEE451FB7126B00FF665C /* AlertPopupView.m */,
 				843ED6811FB66BBC005FE1C1 /* CallnexSwitchButton.h */,
 				843ED6821FB66BBC005FE1C1 /* CallnexSwitchButton.m */,
 				843ED67C1FB66B16005FE1C1 /* ViewChangePassword.h */,
@@ -4102,6 +4119,8 @@
 				846B716120E240400019AD41 /* SipUtils.m */,
 				84C47D001FB62A750015695E /* NSDatabase.h */,
 				84C47D011FB62A750015695E /* NSDatabase.m */,
+				15F2E601216B6DA60076CB1F /* CustomTextAttachment.h */,
+				15F2E602216B6DA60076CB1F /* CustomTextAttachment.m */,
 			);
 			name = AppObjects;
 			sourceTree = "<group>";
@@ -4829,6 +4848,7 @@
 				638F1A621C2021B2004B8E02 /* DialerView~ipad.xib in Resources */,
 				633FEEFF1D3CD55A0014B822 /* options_add_call_disabled@2x.png in Resources */,
 				633FEF091D3CD55A0014B822 /* options_start_conference_disabled@2x.png in Resources */,
+				15F2E600216B66830076CB1F /* ic_about.png in Resources */,
 				633FEE051D3CD5590014B822 /* cancel_edit_disabled@2x.png in Resources */,
 				633FEE5F1D3CD5590014B822 /* edit_list_default@2x.png in Resources */,
 				633FEF371D3CD55A0014B822 /* routes_disabled@2x.png in Resources */,
@@ -4885,6 +4905,7 @@
 				153D00502164D9D3007B69B3 /* numpad_one_hover.png in Resources */,
 				633FEE441D3CD5590014B822 /* contacts_sip_disabled.png in Resources */,
 				84767D6121664BCA00561A85 /* call-background.jpg in Resources */,
+				15F2E5F8216B56F60076CB1F /* ic_support.png in Resources */,
 				633FEDFA1D3CD5590014B822 /* camera_selected.png in Resources */,
 				633FEF451D3CD55A0014B822 /* speaker_default@2x.png in Resources */,
 				84ECF9C9216679A70067B4B6 /* ic_speaker_act.png in Resources */,
@@ -4916,6 +4937,7 @@
 				633FEDB61D3CD5590014B822 /* call_alt_start_default.png in Resources */,
 				6352A5761BE0D4B800594C1C /* CallSideMenuView.xib in Resources */,
 				633FEF0D1D3CD55A0014B822 /* options_transfer_call_disabled@2x.png in Resources */,
+				15F2E5FD216B575D0076CB1F /* background_header@2x.png in Resources */,
 				633FEDEF1D3CD5590014B822 /* call_transfer_default@2x.png in Resources */,
 				153D004F2164D9D3007B69B3 /* call_hover.png in Resources */,
 				633FEF391D3CD55A0014B822 /* routes_selected@2x.png in Resources */,
@@ -5001,6 +5023,7 @@
 				84ECF9BF216679A70067B4B6 /* ic_speaker_dis.png in Resources */,
 				639E9CA31C0DB7EA00019A75 /* UIChatBubbleTextCell.xib in Resources */,
 				633FEDD21D3CD5590014B822 /* call_quality_indicator_3.png in Resources */,
+				15F2E5F6216B56F60076CB1F /* ic_term.png in Resources */,
 				633FEDAF1D3CD5590014B822 /* call_add_default@2x.png in Resources */,
 				633FEE931D3CD55A0014B822 /* menu@2x.png in Resources */,
 				633FEF3D1D3CD55A0014B822 /* security_ok@2x.png in Resources */,
@@ -5131,6 +5154,7 @@
 				8489DED02160B16100A7A1DD /* NewSettingCell.xib in Resources */,
 				638F1A881C2167C2004B8E02 /* CallView~ipad.xib in Resources */,
 				153D00322164D537007B69B3 /* menu_more_en_def.png in Resources */,
+				15F2E5F5216B56F60076CB1F /* ic_setting.png in Resources */,
 				633FEDA11D3CD5590014B822 /* avatar@2x.png in Resources */,
 				633FED9E1D3CD5590014B822 /* add_field_over.png in Resources */,
 				633FEE0A1D3CD5590014B822 /* chat_attachment_default.png in Resources */,
@@ -5150,6 +5174,7 @@
 				633FEE191D3CD5590014B822 /* chat_send_over@2x.png in Resources */,
 				84ECF9C6216679A70067B4B6 /* ic_addcall_dis.png in Resources */,
 				633FEF181D3CD55A0014B822 /* pause_small_over_selected.png in Resources */,
+				15F2E5FC216B575D0076CB1F /* background_more.png in Resources */,
 				633FEE001D3CD5590014B822 /* camera_switch_over.png in Resources */,
 				633FEF401D3CD55A0014B822 /* select_all_default.png in Resources */,
 				153D00382164D537007B69B3 /* menu_keypad_act.png in Resources */,
@@ -5274,6 +5299,7 @@
 				D37EE10D16035793003608A6 /* ImageView.xib in Resources */,
 				1579B71F21674989002BECE3 /* ic_edit@2x.png in Resources */,
 				84D0320D1FB51C50002D2524 /* ContactCell.xib in Resources */,
+				15F2E5F7216B56F60076CB1F /* ic_setup.png in Resources */,
 				633FEE561D3CD5590014B822 /* dialer_back_disabled.png in Resources */,
 				633FEDBF1D3CD5590014B822 /* call_back_default@2x.png in Resources */,
 				633FEE141D3CD5590014B822 /* chat_send_default.png in Resources */,
@@ -5368,6 +5394,7 @@
 				633FEDDD1D3CD5590014B822 /* call_start_body_disabled~ipad@2x.png in Resources */,
 				842FA3B52162687800C59DDA /* qr-code-scan.png in Resources */,
 				633FEE781D3CD5590014B822 /* history_chat_indicator.png in Resources */,
+				15F2E5FE216B575D0076CB1F /* background_more@2x.png in Resources */,
 				633FEF431D3CD55A0014B822 /* select_all_disabled@2x.png in Resources */,
 				633FEE771D3CD5590014B822 /* history_all_selected@2x.png in Resources */,
 				633FEF031D3CD55A0014B822 /* options_disabled@2x.png in Resources */,
@@ -5639,7 +5666,6 @@
 				633888461BFB2C49001D5E7B /* HPTextViewInternal.m in Sources */,
 				84E286CB1FC9E1AC009CBA27 /* SDWebImageDownloader.m in Sources */,
 				846586991FCA9BD600C5142C /* SwipeableTableViewCell.m in Sources */,
-				84EDEE461FB7126B00FF665C /* AlertPopupView.m in Sources */,
 				D35498211587716B000081D8 /* StatusBarView.m in Sources */,
 				84E286EC1FC9FC52009CBA27 /* PhoneCell.m in Sources */,
 				84EFFE011FF3E6B60085A9F4 /* DGActivityIndicatorTriangleSkewSpinAnimation.m in Sources */,
@@ -5731,7 +5757,6 @@
 				8442A3791FB13D0D00F08F11 /* PBXContactsViewController.m in Sources */,
 				845A13311FE2C70300640B51 /* PBXContactTableCell.m in Sources */,
 				635775251B6673EC00C8B704 /* HistoryDetailsTableView.m in Sources */,
-				84D219101FE6D39800025988 /* ChangePasswordPopupView.m in Sources */,
 				84EFFE071FF3E6B60085A9F4 /* DGActivityIndicatorBallClipRotatePulseAnimation.m in Sources */,
 				84C1E26B1FAEBEA500EED0B9 /* ContactObject.m in Sources */,
 				84C47CD71FB5E8B60015695E /* UIKContactCell.m in Sources */,
@@ -5807,6 +5832,7 @@
 				84E286C41FC9E1AC009CBA27 /* SDWebImageCompat.m in Sources */,
 				22405F001601C19200B92522 /* ImageView.m in Sources */,
 				84EFFE1E1FF3E6B60085A9F4 /* DGActivityIndicatorBallScaleAnimation.m in Sources */,
+				15F2E603216B6DA60076CB1F /* CustomTextAttachment.m in Sources */,
 				84D0321D1FB52F6C002D2524 /* ContactNormalCell.m in Sources */,
 				84C8B24D1FBBBE6E0080D673 /* CallHistoryObject.m in Sources */,
 				63BC49E21BA2CDFC004EC273 /* UICallPausedCell.m in Sources */,
