@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIView *_viewHeader;
 @property (weak, nonatomic) IBOutlet UIButton *_iconBack;
 @property (weak, nonatomic) IBOutlet UILabel *_lbHeader;
+@property (weak, nonatomic) IBOutlet UIImageView *bgHeader;
 
 @property (weak, nonatomic) IBOutlet UITableView *_tbLanguage;
 

@@ -10,11 +10,8 @@
 
 @interface LanguageCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UIImageView *_imgFlag;
 @property (weak, nonatomic) IBOutlet UILabel *_lbTitle;
 @property (weak, nonatomic) IBOutlet UIImageView *_imgSelect;
 @property (weak, nonatomic) IBOutlet UILabel *_lbSepa;
-
-- (void)setupUIForCell;
 
 @end

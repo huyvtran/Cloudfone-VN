@@ -22,7 +22,7 @@
     [_iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(20);
         make.centerY.equalTo(self.mas_centerY);
-        make.width.height.mas_equalTo(24.0);
+        make.width.height.mas_equalTo(22.0);
     }];
     
     [_lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -31,8 +31,8 @@
         make.top.bottom.equalTo(self);
     }];
     
-    _lbSepa.backgroundColor = [UIColor colorWithRed:(220/255.0) green:(220/255.0)
-                                               blue:(220/255.0) alpha:1.0];
+    _lbSepa.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
+                                               blue:(240/255.0) alpha:1.0];
     [_lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_iconImage);
         make.bottom.right.equalTo(self);

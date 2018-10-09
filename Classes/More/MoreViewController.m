@@ -23,7 +23,6 @@
 
 @interface MoreViewController () {
     float hInfo;
-    float hCell;
     
     NSArray *listTitle;
     NSArray *listIcon;
@@ -121,10 +120,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 //  Cập nhật vị trí cho view
 - (void)autoLayoutForMainView {
     if (SCREEN_WIDTH > 320) {
-        hCell = 55.0;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }else{
-        hCell = 45.0;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
     }
     
@@ -176,12 +173,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     lbVersion.backgroundColor = UIColor.clearColor;
     [lbVersion mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(self.view);
-        make.height.mas_equalTo(40);
+        make.height.mas_equalTo(45.0);
     }];
     
     _tbContent.backgroundColor = UIColor.clearColor;
     [_tbContent mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_viewHeader.mas_bottom).offset(5);
+        make.top.equalTo(_viewHeader.mas_bottom);
         make.left.right.equalTo(self.view);
         make.bottom.equalTo(lbVersion.mas_top);
     }];
@@ -278,7 +275,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return hCell;
+    return 60.0;
 }
 
 - (IBAction)icEditClicked:(UIButton *)sender {

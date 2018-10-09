@@ -82,6 +82,10 @@ static UICompositeViewDescription *compositeDescription = nil;
         _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:18.0];
     }
     
+    self.view.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
+                                                 blue:(230/255.0) alpha:1.0];
+    _tbSettings.backgroundColor = UIColor.clearColor;
+    
     //  header view
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
@@ -100,9 +104,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_viewHeader).offset(5);
+        make.left.equalTo(_viewHeader);
         make.centerY.equalTo(_lbHeader.mas_centerY);
-        make.width.height.mas_equalTo(40.0);
+        make.width.height.mas_equalTo(35.0);
     }];
     
     //  tableview
@@ -157,11 +161,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 50.0;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 5.0;
+    return 68.0;
 }
 
 @end

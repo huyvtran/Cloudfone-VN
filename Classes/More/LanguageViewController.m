@@ -11,8 +11,6 @@
 #import "LanguageObject.h"
 
 @interface LanguageViewController (){
-    float hCell;
-    
     NSMutableArray *listLanguage;
     NSString *curLanguage;
 }
@@ -20,7 +18,7 @@
 @end
 
 @implementation LanguageViewController
-@synthesize _viewHeader, _iconBack, _lbHeader, _tbLanguage;
+@synthesize _viewHeader, bgHeader, _iconBack, _lbHeader, _tbLanguage;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -107,44 +105,44 @@ static UICompositeViewDescription *compositeDescription = nil;
 {
     if (SCREEN_WIDTH > 320) {
         _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:20.0];
-        hCell = 55.0;
     }else{
         _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:18.0];
-        hCell = 45.0;
     }
     
     //  header view
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState);
+    }];
+    
+    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewHeader);
+    }];
+    
+    [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus);
+        make.bottom.equalTo(_viewHeader);
+        make.width.mas_equalTo(200);
+        make.centerX.equalTo(_viewHeader.mas_centerX);
     }];
     
     [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewHeader);
-        make.centerY.equalTo(_viewHeader.mas_centerY);
-        make.width.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
-    }];
-    
-    [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(_viewHeader.mas_centerX);
-        make.centerY.equalTo(_viewHeader.mas_centerY);
-        make.width.mas_equalTo(200);
-        make.height.mas_equalTo(40);
+        make.centerY.equalTo(_lbHeader.mas_centerY);
+        make.width.height.mas_equalTo(35.0);
     }];
     
     //  tableview
     [_tbLanguage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_viewHeader.mas_bottom);
-        make.left.right.equalTo(self.view);
-        make.height.mas_equalTo(hCell*2);
+        make.left.bottom.right.equalTo(self.view);
     }];
     _tbLanguage.delegate = self;
     _tbLanguage.dataSource = self;
     _tbLanguage.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tbLanguage.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
-                                                   blue:(240/255.0) alpha:1.0];
-    self.view.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
-                                                 blue:(240/255.0) alpha:1.0];
+    _tbLanguage.backgroundColor = UIColor.clearColor;
+    self.view.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
+                                                 blue:(230/255.0) alpha:1.0];
 }
 
 #pragma mark - UITableview delegate
@@ -164,8 +162,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         cell = topLevelObjects[0];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbLanguage.frame.size.width, hCell);
-    [cell setupUIForCell];
     
     LanguageObject *langObj = [listLanguage objectAtIndex: indexPath.row];
     [cell._lbTitle setText: langObj._title];
@@ -174,7 +170,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         cell._imgSelect.image = [UIImage imageNamed:@"menu_select_did_not_check.png"];
     }
-    cell._imgFlag.image = [UIImage imageNamed: langObj._flag];
     
     return cell;
 }
@@ -191,7 +186,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return hCell;
+    return 60.0;
 }
 
 @end

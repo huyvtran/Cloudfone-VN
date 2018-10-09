@@ -739,16 +739,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
     }
     
-    float hKeyboard;
-    if (SCREEN_WIDTH > 320) {
-        hKeyboard = 280;
-    }else{
-        hKeyboard = 200;
-    }
-    
-    float keypadY = (SCREEN_HEIGHT-appDelegate._hStatus-hKeyboard)/2;
-    
-    viewKeypad.frame = CGRectMake((SCREEN_WIDTH-320)/2, keypadY, 320, hKeyboard);
     viewKeypad.tag = 10;
     [viewKeypad.zeroButton setDigit:'0'];
     [viewKeypad.zeroButton setDtmf:true] ;
@@ -779,6 +769,14 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_viewCommand setHidden: true];
     [_callView addSubview:viewKeypad];
     [self fadeIn:viewKeypad];
+    
+    
+    [viewKeypad mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_callView);
+    }];
+    [viewKeypad setupUIForView];
+    
+    return;
     
     float wIcon = 60.0;
     float tmpMargin = (SCREEN_WIDTH - 2*wIcon)/3;

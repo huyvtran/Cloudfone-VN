@@ -86,7 +86,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(self.view);
+        make.top.left.bottom.right.equalTo(_viewHeader);
     }];
     
     [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -97,9 +97,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_viewHeader).offset(5);
+        make.left.equalTo(_viewHeader);
         make.centerY.equalTo(_lbHeader.mas_centerY);
-        make.width.height.mas_equalTo(40.0);
+        make.width.height.mas_equalTo(35.0);
     }];
     
     float tmpMargin = 15.0;

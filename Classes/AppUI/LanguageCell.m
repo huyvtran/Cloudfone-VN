@@ -9,25 +9,36 @@
 #import "LanguageCell.h"
 
 @implementation LanguageCell
-@synthesize _imgFlag, _lbTitle, _imgSelect, _lbSepa;
+@synthesize _lbTitle, _imgSelect, _lbSepa;
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    
+    [_imgSelect mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self).offset(-10.0);
+        make.centerY.equalTo(self.mas_centerY);
+        make.width.height.mas_equalTo(24.0);
+    }];
+    
+    self.contentView.backgroundColor = UIColor.whiteColor;
+    [_lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self).offset(20.0);
+        make.top.bottom.equalTo(self);
+        make.right.equalTo(_imgSelect.mas_left).offset(-10);
+    }];
+    
+    _lbSepa.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
+                                               blue:(235/255.0) alpha:1.0];
+    [_lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self);
+        make.height.mas_equalTo(1.0);
+    }];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
     // Configure the view for the selected state
-}
-
-- (void)setupUIForCell {
-    _imgFlag.frame = CGRectMake(10, (self.frame.size.height-25)/2, 25.0, 25.0);
-    _imgSelect.frame = CGRectMake(self.frame.size.width-10-30.0, (self.frame.size.height-25.0)/2, 25.0, 25.0);
-    
-    _lbTitle.frame = CGRectMake(_imgFlag.frame.origin.x+_imgFlag.frame.size.width+10, (self.frame.size.height-30)/2, self.frame.size.width-10*4-25.0-30.0, 30.0);
-    
-    _lbSepa.frame = CGRectMake(0, self.frame.size.height, self.frame.size.width, 1);
 }
 
 @end

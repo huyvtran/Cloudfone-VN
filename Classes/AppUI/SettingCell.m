@@ -9,23 +9,33 @@
 #import "SettingCell.h"
 
 @implementation SettingCell
-@synthesize _iconArrow, _lbTitle;
+@synthesize _iconArrow, _lbTitle, lbSepa;
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     //  my code here
-    _lbTitle.font = [UIFont systemFontOfSize: 16.0];
+    self.contentView.backgroundColor = UIColor.whiteColor;
+    _lbTitle.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     _lbTitle.textColor = UIColor.darkGrayColor;
     
+    lbSepa.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
+                                              blue:(230/255.0) alpha:1.0];
+    
+    [lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self);
+        make.height.mas_equalTo(8.0);
+    }];
+    
     [_iconArrow mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self).offset(-20.0);
-        make.centerY.equalTo(self.mas_centerY);
+        make.right.equalTo(self).offset(-10.0);
+        make.centerY.equalTo(self.mas_centerY).offset(-4);
         make.width.height.mas_equalTo(25.0);
     }];
     
     [_lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(20.0);
-        make.top.bottom.equalTo(self);
+        make.top.equalTo(self);
+        make.bottom.equalTo(lbSepa.mas_top);
         make.right.equalTo(_iconArrow.mas_left).offset(-10);
     }];
 }

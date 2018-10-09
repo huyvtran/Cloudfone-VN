@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "UIDigitButton.h"
+#import "UIAddressTextField.h"
 
 @interface UIMiniKeypad : UIView
 @property (nonatomic, retain) IBOutlet UIDigitButton* oneButton;
@@ -22,4 +23,14 @@
 @property (nonatomic, retain) IBOutlet UIDigitButton* starButton;
 @property (nonatomic, retain) IBOutlet UIDigitButton* zeroButton;
 @property (nonatomic, retain) IBOutlet UIDigitButton* sharpButton;
+@property (weak, nonatomic) IBOutlet UIButton *iconBack;
+@property (weak, nonatomic) IBOutlet UIButton *iconMiniKeypadEndCall;
+@property (weak, nonatomic) IBOutlet UIAddressTextField *tfNumber;
+@property (weak, nonatomic) IBOutlet UILabel *lbQuality;
+@property (weak, nonatomic) IBOutlet UILabel *lbQualityValue;
+@property (weak, nonatomic) IBOutlet UIView *viewKeypad;
+@property (weak, nonatomic) IBOutlet UIImageView *bgCall;
+
+- (void)setupUIForView;
+
 @end
