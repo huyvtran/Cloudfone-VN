@@ -240,13 +240,19 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     //  content
+    
     [_tbContactInfo mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(buttonCallPBX.mas_bottom).offset(10);
+        make.top.equalTo(_viewHeader.mas_bottom);
         make.left.right.bottom.equalTo(self.view);
     }];
     _tbContactInfo.delegate = self;
     _tbContactInfo.dataSource = self;
     _tbContactInfo.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    UIView *headerView = [[UIView alloc] init];
+    headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 70.0/2);
+    headerView.backgroundColor = UIColor.clearColor;
+    _tbContactInfo.tableHeaderView = headerView;
 }
 
 - (void)btnCallPressed: (UIButton *)sender {

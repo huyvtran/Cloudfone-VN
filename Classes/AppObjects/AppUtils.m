@@ -675,8 +675,8 @@
         
         // Lưu tên contact cho search phonebook
         NSString *fullname = @"";
-        if (![firstName isEqualToString:@""]) {
-            fullname = firstName;
+        if (![lastName isEqualToString:@""]) {
+            fullname = lastName;
         }
         
         if (![middleName isEqualToString:@""]) {
@@ -687,11 +687,11 @@
             }
         }
         
-        if (![lastName isEqualToString:@""]) {
+        if (![firstName isEqualToString:@""]) {
             if ([fullname isEqualToString:@""]) {
-                fullname = lastName;
+                fullname = firstName;
             }else{
-                fullname = [NSString stringWithFormat:@"%@ %@", fullname, lastName];
+                fullname = [NSString stringWithFormat:@"%@ %@", fullname, firstName];
             }
         }
         return fullname;

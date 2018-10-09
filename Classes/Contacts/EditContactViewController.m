@@ -842,8 +842,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             cell = topLevelObjects[0];
         }
         [cell setSelectionStyle: UITableViewCellSelectionStyleNone];
-        [cell setFrame: CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbPhones.frame.size.width, hCell)];
-        [cell setupUIForCell];
         
         [cell._tfPhone setPlaceholder: [appDelegate.localization localizedStringForKey:text_phone]];
         

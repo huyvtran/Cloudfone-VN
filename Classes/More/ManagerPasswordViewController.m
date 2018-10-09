@@ -147,9 +147,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     [_icBack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_viewHeader).offset(5);
+        make.left.equalTo(_viewHeader);
         make.centerY.equalTo(_lbHeader.mas_centerY);
-        make.width.height.mas_equalTo(40.0);
+        make.width.height.mas_equalTo(35.0);
     }];
     
     //  content view

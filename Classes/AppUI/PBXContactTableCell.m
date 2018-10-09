@@ -8,33 +8,54 @@
 #import "PBXContactTableCell.h"
 
 @implementation PBXContactTableCell
-@synthesize _imgAvatar, _lbName, _lbPhone, _lbSepa;
+@synthesize _imgAvatar, _lbName, _lbPhone, _lbSepa, icCall;
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
-- (void)updateUIForCell {
-    _imgAvatar.frame = CGRectMake(8, 8, self.frame.size.height-16, self.frame.size.height-16);
-    _imgAvatar.clipsToBounds = YES;
-    _imgAvatar.layer.cornerRadius = (self.frame.size.height-16)/2;
     
-    _lbName.frame = CGRectMake(2*_imgAvatar.frame.origin.x+_imgAvatar.frame.size.width, _imgAvatar.frame.origin.y, self.frame.size.width-3*_imgAvatar.frame.origin.x, _imgAvatar.frame.size.height/2);
-    _lbPhone.frame = CGRectMake(_lbName.frame.origin.x, _lbName.frame.origin.y+_lbName.frame.size.height, _lbName.frame.size.width, _lbName.frame.size.height);
-    _lbSepa.frame = CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1);
+    _imgAvatar.clipsToBounds = YES;
+    _imgAvatar.layer.cornerRadius = 45.0/2;
+    [_imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.mas_centerY);
+        make.left.equalTo(self).offset(20.0);
+        make.width.height.mas_equalTo(45.0);
+    }];
+    
+    [icCall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.mas_centerY);
+        make.right.equalTo(self).offset(-25.0);
+        make.width.height.mas_equalTo(35.0);
+    }];
+    
+    _lbName.font = [UIFont fontWithName:HelveticaNeue size:17.0];
+    [_lbName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_imgAvatar);
+        make.left.equalTo(_imgAvatar.mas_right).offset(10);
+        make.right.equalTo(icCall.mas_left).offset(-10);
+        make.bottom.equalTo(_imgAvatar.mas_centerY);
+    }];
+    
+    _lbPhone.font = [UIFont fontWithName:HelveticaNeue size:14.0];
+    [_lbPhone mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbName.mas_bottom);
+        make.left.right.equalTo(_lbName);
+        make.bottom.equalTo(_imgAvatar);
+    }];
+    
+    _lbSepa.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
+                                               blue:(240/255.0) alpha:1.0];
+    [_lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_imgAvatar);
+        make.right.bottom.equalTo(self);
+        make.height.mas_equalTo(1.0);
+    }];
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     if (highlighted) {
-        self.backgroundColor = [UIColor colorWithRed:(223/255.0) green:(255/255.0)
-                                                blue:(133/255.0) alpha:1];
+        self.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
+                                                blue:(240/255.0) alpha:1.0];
     }else{
         self.backgroundColor = UIColor.clearColor;
     }

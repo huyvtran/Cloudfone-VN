@@ -8,44 +8,39 @@
 
 #import "NewPhoneCell.h"
 
-@interface NewPhoneCell (){
-    float hTextfield;
-}
-
-@end
-
 @implementation NewPhoneCell
 @synthesize _iconTypePhone, _tfPhone, _iconNewPhone;
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     
-    if (SCREEN_WIDTH > 320) {
-        hTextfield = 35.0;
-        _tfPhone.font = [UIFont fontWithName:HelveticaNeue size:18.0];
-    }else{
-        hTextfield = 30.0;
-        _tfPhone.font = [UIFont fontWithName:HelveticaNeue size:16.0];
-    }
-    _tfPhone.leftView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 5, hTextfield)];
-    _tfPhone.leftViewMode = UITextFieldViewModeAlways;
+    [_iconNewPhone mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self).offset(20.0);
+        make.centerY.equalTo(self.mas_centerY);
+        make.width.height.mas_equalTo(35.0);
+    }];
     
-    //  my code here
+    [_iconTypePhone mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self).offset(-20.0);
+        make.centerY.equalTo(self.mas_centerY);
+        make.width.height.mas_equalTo(35.0);
+    }];
+    
+    _tfPhone.font = [UIFont fontWithName:HelveticaNeue size:16.0];
     _tfPhone.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
                                           blue:(50/255.0) alpha:1.0];
     _tfPhone.keyboardType = UIKeyboardTypePhonePad;
+    [_tfPhone mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_iconNewPhone.mas_right).offset(10.0);
+        make.right.equalTo(_iconTypePhone.mas_left).offset(-10.0);
+        make.centerY.equalTo(self.mas_centerY);
+        make.height.mas_equalTo(38.0);
+    }];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
     // Configure the view for the selected state
-}
-
-- (void)setupUIForCell {
-    float marginX = 10.0;
-    _iconNewPhone.frame = CGRectMake(marginX, (self.frame.size.height-hTextfield)/2, hTextfield, hTextfield);
-    _iconTypePhone.frame = CGRectMake(self.frame.size.width - (_iconNewPhone.frame.size.width+marginX), _iconNewPhone.frame.origin.y, hTextfield, hTextfield);
-    _tfPhone.frame = CGRectMake(_iconNewPhone.frame.origin.x+_iconNewPhone.frame.size.width+marginX, _iconNewPhone.frame.origin.y, _iconTypePhone.frame.origin.x-marginX-(_iconNewPhone.frame.origin.x+_iconNewPhone.frame.size.width+marginX), hTextfield);
 }
 
 @end

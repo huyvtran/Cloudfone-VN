@@ -225,12 +225,17 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     //  content
     [_tbHistory mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(btnCall.mas_bottom).offset(10);
+        make.top.equalTo(_viewHeader.mas_bottom);
         make.left.right.bottom.equalTo(self.view);
     }];
     _tbHistory.delegate = self;
     _tbHistory.dataSource = self;
     _tbHistory.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    UIView *headerView = [[UIView alloc] init];
+    headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 70.0/2);
+    headerView.backgroundColor = UIColor.clearColor;
+    _tbHistory.tableHeaderView = headerView;
     
     listHistoryCalls = [[NSMutableArray alloc] init];
     

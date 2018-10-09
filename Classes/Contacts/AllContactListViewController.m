@@ -338,8 +338,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             cell = topLevelObjects[0];
         }
         [cell setSelectionStyle: UITableViewCellSelectionStyleNone];
-        [cell setFrame: CGRectMake(cell.frame.origin.x, cell.frame.origin.y, tbContacts.frame.size.width, hCell)];
-        [cell setupUIForCell];
         
         // Tên contact
         if (contact._fullName != nil) {
@@ -349,46 +347,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                 [cell.name setText: contact._fullName];
             }
         }
-        [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"ic_offline.png"]
-                                   forState:UIControlStateNormal];
-        
-        /*  Leo Kelvin
-         if (![LinphoneAppDelegate sharedInstance].xmppStream.isConnected) {
-         [cell.btnCallnex setHidden: true];
-         [cell.phone setText: contact._cloudFoneID];
-         }else{
-         [cell.btnCallnex setHidden: false];
-         
-         // Trạng thái online offline của user
-         NSArray *statusArr = [AppFunctions getStatusOfUser: contact._cloudFoneID];
-         int status = [[statusArr objectAtIndex: 1] intValue];
-         NSString *statusStr = [statusArr objectAtIndex: 0];
-         
-         switch (status) {
-         case -1:{
-         [cell.btnCallnex setEnabled: true];
-         [cell.btnCallnex addTarget:self
-         action:@selector(onclickSendRequestToUser:)
-         forControlEvents:UIControlEventTouchUpInside];
-         [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"add_new_callnex_contact.png"]
-         forState:UIControlStateNormal];
-         break;
-         }
-         case kOTRBuddyStatusOffline:{
-         [cell.btnCallnex setEnabled: false];
-         [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"ic_offline.png"]
-         forState:UIControlStateNormal];
-         break;
-         }
-         default:{
-         [cell.btnCallnex setEnabled: false];
-         [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"ic_online.png"]
-         forState:UIControlStateNormal];
-         break;
-         }
-         }
-         [cell.phone setText: statusStr];
-         }   */
         
         if (contact._avatar != nil && ![contact._avatar isEqualToString:@""] && ![contact._avatar isEqualToString:@"<null>"] && ![contact._avatar isEqualToString:@"(null)"] && ![contact._avatar isEqualToString:@"null"])
         {

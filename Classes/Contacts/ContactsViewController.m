@@ -7,6 +7,7 @@
 //
 
 #import "ContactsViewController.h"
+#import "NewContactViewController.h"
 #import "AllContactsViewController.h"
 #import "PBXContactsViewController.h"
 #import "JSONKit.h"
@@ -152,8 +153,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_iconAddNewClicked:(id)sender {
-    [[NSNotificationCenter defaultCenter] postNotificationName:addNewContactInContactView
-                                                        object:nil];
+    [[PhoneMainView instance] changeCurrentView:[NewContactViewController compositeViewDescription] push: true];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:addNewContactInContactView
+//                                                        object:nil];
 }
 
 - (IBAction)_iconAllClicked:(id)sender {

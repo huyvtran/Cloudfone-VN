@@ -24,12 +24,7 @@
 @property (nonatomic, strong) NSString *avatarStr;
 @property (weak, nonatomic) IBOutlet UILabel *_lbSepa;
 
-@property (retain, nonatomic) IBOutlet UIButton *btnCallnex;
-
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
-
-- (void)setupUIForCell;
-
 @property(nonatomic, assign) Contact *contact;
 
 @end

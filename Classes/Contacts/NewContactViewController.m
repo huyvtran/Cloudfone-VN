@@ -14,10 +14,13 @@
 #import "NSData+Base64.h"
 #import "PhoneMainView.h"
 #import "ContactDetailObj.h"
-//  Leo Kelvin
-//  #import "OTRProtocolManager.h"
+#import "InfoForNewContactTableCell.h"
 #import "TypePhoneCell.h"
 #import "PECropViewController.h"
+
+#define ROW_CONTACT_NAME    0
+#define ROW_CONTACT_EMAIL   1
+#define ROW_CONTACT_COMPANY 2
 
 @interface NewContactViewController ()<PECropViewControllerDelegate>{
     LinphoneAppDelegate *appDelegate;
@@ -40,7 +43,7 @@
 @end
 
 @implementation NewContactViewController
-@synthesize _viewHeader, _iconBack, _lbHeader, _iconDone;
+@synthesize _viewHeader, bgHeader, _iconBack, _lbHeader, _iconDone;
 @synthesize _scrollViewContent, _viewInfo, _imgAvatar, _imgChangePicture, _btnAvatar, _tfFullName, _tfCloudFoneID, _tfCompany;
 @synthesize _iconType, _tfType, _btnType, _iconEmail, _tfEmail, _tbPhones;
 @synthesize currentSipPhone, currentPhoneNumber, currentName;
@@ -69,16 +72,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - my controller
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-}
-
-//  View không bị thay đổi sau khi vào pickerview controller
-- (void) viewDidLayoutSubviews {
-    if(floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-        CGRect viewBounds = self.view.bounds;
-        CGFloat topBarOffset = self.topLayoutGuide.length;
-        viewBounds.origin.y = topBarOffset * -1;
-        self.view.bounds = viewBounds;
-    }
 }
 
 - (void)viewDidLoad {
@@ -148,6 +141,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
         _imgChangePicture.hidden = NO;
     }
+    
+    [_tbContents reloadData];
     
     //  notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:)
@@ -488,16 +483,16 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)setupUIForView {
     //  Tap vào màn hình để đóng bàn phím
-    float wAvatar;
+    float wAvatar = 110.0;
     
     if (SCREEN_WIDTH > 320) {
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
         hTextfield = 35.0;
-        wAvatar = 80.0;
+        _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
     }else{
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
         hTextfield = 30.0;
-        wAvatar = 75.0;
+        _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }
     
     //  Tap vào màn hình để đóng bàn phím
@@ -511,36 +506,81 @@ static UICompositeViewDescription *compositeDescription = nil;
     hCell = hTextfield + 10;
     
     //  view header
-    _viewHeader.frame = CGRectMake(0, -appDelegate._hStatus, SCREEN_WIDTH, appDelegate._hStatus+appDelegate._hHeader);
+    [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo(appDelegate._hRegistrationState + 60.0);
+    }];
     
-    _iconBack.frame = CGRectMake(0, appDelegate._hStatus, appDelegate._hHeader, appDelegate._hHeader);
-    [_iconBack setBackgroundImage:[UIImage imageNamed:@"ic_back_act.png"]
-                         forState:UIControlStateHighlighted];
+    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewHeader);
+    }];
     
-    _iconDone.frame = CGRectMake(_viewHeader.frame.size.width-appDelegate._hHeader, _iconBack.frame.origin.y, _iconBack.frame.size.width, _iconBack.frame.size.height);
-    [_iconDone setBackgroundImage:[UIImage imageNamed:@"ic_done_act.png"]
-                         forState:UIControlStateHighlighted];
+    [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader).offset(appDelegate._hStatus);
+        make.centerX.equalTo(_viewHeader.mas_centerX);
+        make.width.mas_equalTo(200.0);
+        make.height.mas_equalTo(44.0);
+    }];
     
-    _lbHeader.frame = CGRectMake(_iconBack.frame.origin.x+_iconBack.frame.size.width+5, appDelegate._hStatus, (_viewHeader.frame.size.width-2*_iconBack.frame.size.width-10), appDelegate._hHeader);
-    if (SCREEN_WIDTH > 320) {
-        _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
-    }else{
-        _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
-    }
+    [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewHeader);
+        make.centerY.equalTo(_lbHeader.mas_centerY);
+        make.width.height.mas_equalTo(35.0);
+    }];
+    
+    [_iconDone mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(_viewHeader);
+        make.centerY.equalTo(_lbHeader.mas_centerY);
+        make.width.height.mas_equalTo(35.0);
+    }];
+    
+    _imgAvatar.layer.borderColor = UIColor.whiteColor.CGColor;
+    _imgAvatar.layer.borderWidth = 2.0;
+    _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+    _imgAvatar.layer.cornerRadius = wAvatar/2;
+    _imgAvatar.clipsToBounds = YES;
+    [_imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.centerY.equalTo(_viewHeader.mas_bottom);
+        make.width.height.mas_equalTo(wAvatar);
+    }];
+    
+    [_btnAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_imgAvatar);
+    }];
+    
+    [_imgChangePicture mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_imgAvatar.mas_centerX);
+        make.bottom.equalTo(_imgAvatar.mas_bottom).offset(-10.0);
+        make.width.height.mas_equalTo(20.0);
+    }];
+    
+    [_tbContents mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader.mas_bottom);
+        make.left.right.bottom.equalTo(self.view);
+    }];
+    _tbContents.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tbContents.delegate = self;
+    _tbContents.dataSource = self;
+    _tbContents.scrollEnabled = NO;
+    
+    UIView *viewHeader = [[UIView alloc] init];
+    viewHeader.frame = CGRectMake(0, 0, SCREEN_WIDTH, wAvatar/2);
+    viewHeader.backgroundColor = UIColor.clearColor;
+    _tbContents.tableHeaderView = viewHeader;
+    
+    _scrollViewContent.hidden = YES;
+    return;
     
     //  scroll view content
     _scrollViewContent.frame = CGRectMake(0, _viewHeader.frame.origin.y+_viewHeader.frame.size.height, SCREEN_WIDTH, SCREEN_HEIGHT-appDelegate._hHeader-appDelegate._hStatus);
+    
     
     //  view info
     float hInfo = 7 + hTextfield + 7 + hTextfield + 7 + hTextfield + 7;
     _viewInfo.frame = CGRectMake(0, 0, _scrollViewContent.frame.size.width, hInfo);
     
-    _imgAvatar.frame = CGRectMake((hInfo-wAvatar)/2, (hInfo-wAvatar)/2, wAvatar, wAvatar);
-    _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-    _imgAvatar.layer.cornerRadius = wAvatar/2;
-    _imgAvatar.clipsToBounds = YES;
     
-    _imgChangePicture.frame = CGRectMake(_imgAvatar.frame.origin.x+(wAvatar-25)/2, _imgAvatar.frame.origin.y+wAvatar-25-5, 25, 25);
     
     _btnAvatar.frame = _imgAvatar.frame;
     
@@ -758,6 +798,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return (3 + [appDelegate._newContact._listPhone count] + 1);
+    
     if (tableView == _tbPhones) {
         return [appDelegate._newContact._listPhone count] + 1;
     }else{
@@ -766,7 +808,30 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == _tbPhones) {
+    if (indexPath.row == ROW_CONTACT_NAME || indexPath.row == ROW_CONTACT_EMAIL || indexPath.row == ROW_CONTACT_COMPANY)
+    {
+        static NSString *identifier = @"InfoForNewContactTableCell";
+        InfoForNewContactTableCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+        if (cell == nil) {
+            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"InfoForNewContactTableCell" owner:self options:nil];
+            cell = topLevelObjects[0];
+        }
+        switch (indexPath.row) {
+            case ROW_CONTACT_NAME:{
+                cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Full name:"];
+                break;
+            }
+            case ROW_CONTACT_EMAIL:{
+                cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Email:"];
+                break;
+            }
+            case ROW_CONTACT_COMPANY:{
+                cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Company:"];
+                break;
+            }
+        }
+        return cell;
+    }else{
         static NSString *identifier = @"NewPhoneCell";
         NewPhoneCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
         if (cell == nil) {
@@ -774,11 +839,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             cell = topLevelObjects[0];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbPhones.frame.size.width, hCell);
-        [cell setupUIForCell];
-        cell._tfPhone.placeholder = [appDelegate.localization localizedStringForKey:text_phone];
         
-        if (indexPath.row == appDelegate._newContact._listPhone.count) {
+        if (indexPath.row == appDelegate._newContact._listPhone.count + 3) {
             cell._tfPhone.text = @"";
             
             [cell._iconNewPhone setBackgroundImage:[UIImage imageNamed:@"ic_add_phone.png"]
@@ -811,6 +873,15 @@ static UICompositeViewDescription *compositeDescription = nil;
                       forControlEvents:UIControlEventTouchUpInside];
         
         return cell;
+    }
+    
+    
+    
+    
+    
+    if (tableView == _tbPhones) {
+        
+        
     }else{
         static NSString *cellIdentifier = @"Cell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellIdentifier];
@@ -843,6 +914,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == ROW_CONTACT_NAME || indexPath.row == ROW_CONTACT_EMAIL || indexPath.row == ROW_CONTACT_COMPANY) {
+        return 83.0;
+    }
+    return hCell;
+    
     if (tableView == _tbPhones) {
         return hCell;
     }else{

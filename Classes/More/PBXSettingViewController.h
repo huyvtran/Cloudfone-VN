@@ -20,6 +20,7 @@ typedef enum{
 @property (weak, nonatomic) IBOutlet UIButton *_iconBack;
 @property (weak, nonatomic) IBOutlet UILabel *_lbTitle;
 @property (weak, nonatomic) IBOutlet UIButton *_iconQRCode;
+@property (weak, nonatomic) IBOutlet UIImageView *bgHeader;
 
 @property (weak, nonatomic) IBOutlet UIView *_viewContent;
 @property (weak, nonatomic) IBOutlet UILabel *_lbPBX;

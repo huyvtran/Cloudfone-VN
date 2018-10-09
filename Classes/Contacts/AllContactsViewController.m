@@ -269,117 +269,39 @@
     NSString *key = [[[_contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section];
     contact = [[_contactSections objectForKey: key] objectAtIndex:indexPath.row];
     
-    if (contact._sipPhone != nil && ![contact._sipPhone isKindOfClass:[NSNull class]] && ![contact._sipPhone isEqualToString:@""])
-    {
-        static NSString *identifier = @"ContactCell";
-        ContactCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
-        if (cell == nil) {
-            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ContactCell" owner:self options:nil];
-            cell = topLevelObjects[0];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbContacts.frame.size.width, hCell);
-        [cell setupUIForCell];
-        
-        // Tên contact
-        if (contact._fullName != nil) {
-            if ([contact._fullName isEqualToString: @""]) {
-                cell.name.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_unknown];
-            }else{
-                cell.name.text = contact._fullName;
-            }
-        }
-        [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"ic_offline.png"]
-                                   forState:UIControlStateNormal];
-        
-        /*  Leo Kelvin
-        if (![LinphoneAppDelegate sharedInstance].xmppStream.isConnected) {
-            [cell.btnCallnex setHidden: true];
-            [cell.phone setText: contact._cloudFoneID];
-        }else{
-            [cell.btnCallnex setHidden: false];
-            
-            // Trạng thái online offline của user
-            NSArray *statusArr = [AppFunctions getStatusOfUser: contact._cloudFoneID];
-            int status = [[statusArr objectAtIndex: 1] intValue];
-            NSString *statusStr = [statusArr objectAtIndex: 0];
-            
-            switch (status) {
-         
-                case kOTRBuddyStatusOffline:{
-                    [cell.btnCallnex setEnabled: false];
-                    [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"ic_offline.png"]
-                                               forState:UIControlStateNormal];
-                    break;
-                }
-                default:{
-                    [cell.btnCallnex setEnabled: false];
-                    [cell.btnCallnex setBackgroundImage:[UIImage imageNamed:@"ic_online.png"]
-                                               forState:UIControlStateNormal];
-                    break;
-                }
-            }
-            [cell.phone setText: statusStr];
-        }   */
-        
-        if (contact._avatar != nil && ![contact._avatar isEqualToString:@""] && ![contact._avatar isEqualToString:@"<null>"] && ![contact._avatar isEqualToString:@"(null)"] && ![contact._avatar isEqualToString:@"null"])
-        {
-            NSData *imageData = [NSData dataFromBase64String:contact._avatar];
-            cell.image.image = [UIImage imageWithData: imageData];
-        }else {
-            UIImage *avatar = [UIImage imageForName:[key uppercaseString] size: CGSizeMake(60, 60)];
-            cell.image.image = avatar;
-        }
-        
-        cell.tag = contact._id_contact;
-        cell.phone.text = contact._sipPhone;
-        
-        return cell;
-    }else{
-        static NSString *cellIdentifier = @"ContactNormalCell";
-        ContactNormalCell *contactCell = [tableView dequeueReusableCellWithIdentifier: cellIdentifier];
-        if (contactCell == nil) {
-            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ContactNormalCell" owner:self options:nil];
-            contactCell = topLevelObjects[0];
-        }
-        [contactCell setSelectionStyle: UITableViewCellSelectionStyleNone];
-        [contactCell setFrame: CGRectMake(contactCell.frame.origin.x, contactCell.frame.origin.y, _tbContacts.frame.size.width, hCell)];
-        [contactCell setupUIForCell];
-        
-        // Tên contact
-        if (![contact._fullName isEqualToString:@""]) {
-            contactCell._contactName.text = contact._fullName;
-        }else{
-            if (contact._listPhone.count > 0) {
-                ContactDetailObj *firstPhone = [contact._listPhone firstObject];
-                if (firstPhone != nil && [firstPhone isKindOfClass:[ContactDetailObj class]]) {
-                    contactCell._contactName.text = firstPhone._valueStr;
-                }
-            }
-        }
-        
-        if (contact._avatar != nil && ![contact._avatar isEqualToString:@""] && ![contact._avatar isEqualToString:@"<null>"] && ![contact._avatar isEqualToString:@"(null)"] && ![contact._avatar isEqualToString:@"null"])
-        {
-            NSData *imageData = [NSData dataFromBase64String:contact._avatar];
-            contactCell._contactAvatar.image = [UIImage imageWithData: imageData];
-        }else {
-            UIImage *avatar;
-            if ([key isEqualToString:@"z#"]) {
-                avatar = [UIImage imageForName:@"#" size: CGSizeMake(60, 60)];
-            }else{
-                /*
-                avatar = [UIImage imageForName:[key uppercaseString] size:CGSizeMake(60, 60)
-                               backgroundColor:[AppUtils randomColorWithAlpha:1.0]
-                                     textColor:UIColor.whiteColor font:nil];
-                */
-                avatar = [UIImage imageForName:[key uppercaseString] size: CGSizeMake(60, 60)];
-            }
-            //  contactCell._contactAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-            contactCell._contactAvatar.image = avatar;
-        }
-        contactCell.tag = contact._id_contact;
-        return contactCell;
+    static NSString *identifier = @"ContactCell";
+    ContactCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+    if (cell == nil) {
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ContactCell" owner:self options:nil];
+        cell = topLevelObjects[0];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    // Tên contact
+    if (contact._fullName != nil) {
+        if ([contact._fullName isEqualToString: @""]) {
+            cell.name.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_unknown];
+        }else{
+            cell.name.text = contact._fullName;
+        }
+    }
+    
+    if (contact._avatar != nil && ![contact._avatar isEqualToString:@""] && ![contact._avatar isEqualToString:@"<null>"] && ![contact._avatar isEqualToString:@"(null)"] && ![contact._avatar isEqualToString:@"null"])
+    {
+        NSData *imageData = [NSData dataFromBase64String:contact._avatar];
+        cell.image.image = [UIImage imageWithData: imageData];
+    }else {
+        UIImage *avatar = [UIImage imageForName:[key uppercaseString] size:CGSizeMake(60.0, 60.0)
+                                backgroundColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0]
+                                      textColor:UIColor.whiteColor
+                                           font:[UIFont fontWithName:HelveticaNeue size:30.0]];
+        cell.image.image = avatar;
+    }
+    
+    cell.tag = contact._id_contact;
+    cell.phone.text = contact._sipPhone;
+    
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -1548,11 +1548,17 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 aContact._company = company;
             }
         }
-        
-        aContact._sipPhone = [self getSipIdOfContact: aPerson];
+        //  Closed by Khai Le on 09/10/2018
+        //  aContact._sipPhone = [self getSipIdOfContact: aPerson];
         aContact._avatar = [self getAvatarOfContact: aPerson];
         aContact._listPhone = [self getListPhoneOfContactPerson: aPerson withName: aContact._fullName];
         [listContacts addObject: aContact];
+        
+        //  Added by Khai Le on 09/10/2018
+        if (aContact._listPhone.count > 0) {
+            ContactDetailObj *anItem = [aContact._listPhone firstObject];
+            aContact._sipPhone = anItem._valueStr;
+        }
         
         //  Kiem tra co phai la contact pbx hay ko?
         NSString *sipNumber = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNamePhoneticProperty);

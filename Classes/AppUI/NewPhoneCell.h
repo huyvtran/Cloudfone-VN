@@ -14,6 +14,4 @@
 @property (weak, nonatomic) IBOutlet UITextField *_tfPhone;
 @property (weak, nonatomic) IBOutlet UIButton *_iconNewPhone;
 
-- (void)setupUIForCell;
-
 @end

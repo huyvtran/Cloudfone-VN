@@ -68,6 +68,12 @@
         make.right.equalTo(self).offset(-20);
         make.height.mas_equalTo(60.0);
     }];
+    tfNumber.keyboardType = UIKeyboardTypePhonePad;
+    tfNumber.enabled = NO;
+    tfNumber.textAlignment = NSTextAlignmentCenter;
+    tfNumber.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:45.0];
+    tfNumber.adjustsFontSizeToFitWidth = YES;
+    tfNumber.backgroundColor = UIColor.clearColor;
     
     [viewKeypad mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self);

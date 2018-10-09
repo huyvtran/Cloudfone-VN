@@ -25,7 +25,7 @@
 @end
 
 @implementation PBXSettingViewController
-@synthesize _viewHeader, _iconBack, _lbTitle, _iconQRCode, _icWaiting;
+@synthesize _viewHeader, bgHeader, _iconBack, _lbTitle, _iconQRCode, _icWaiting;
 @synthesize _viewContent, _lbPBX, _swChange, _lbSepa, _lbServerID, _tfServerID, _lbAccount, _tfAccount, _lbPassword, _tfPassword, _btnClear, _btnSave;
 @synthesize webService;
 
@@ -101,26 +101,31 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  Header view
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState);
+    }];
+    
+    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewHeader);
     }];
     
     [_lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(_viewHeader);
+        make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus);
+        make.bottom.equalTo(_viewHeader);
         make.centerX.equalTo(_viewHeader.mas_centerX);
         make.width.mas_equalTo(200);
     }];
     
     [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.equalTo(_viewHeader);
-        make.width.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
-        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+        make.left.equalTo(_viewHeader);
+        make.centerY.equalTo(_lbTitle.mas_centerY);
+        make.width.height.mas_equalTo(35.0);
     }];
     
     [_iconQRCode mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_viewHeader);
+        make.top.equalTo(_iconBack);
         make.right.equalTo(_viewHeader.mas_right);
-        make.width.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
-        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hHeader);
+        make.width.equalTo(_iconBack.mas_width);
+        make.height.equalTo(_iconBack.mas_height);
     }];
     
     //  content view
@@ -381,15 +386,16 @@ static UICompositeViewDescription *compositeDescription = nil;
 {
     NSString *pbxIp = [info objectForKey:@"ipAddress"];
     NSString *pbxPort = [info objectForKey:@"port"];
+    NSString *serverName = [info objectForKey:@"serverName"];
     
-    if (pbxIp != nil && ![pbxIp isEqualToString: @""] && pbxPort != nil && ![pbxPort isEqualToString: @""])
+    if (pbxIp != nil && ![pbxIp isEqualToString: @""] && pbxPort != nil && ![pbxPort isEqualToString: @""] && serverName != nil)
     {
         if (typeRegister == normalLogin) {
-            serverPBX = pbxIp;
+            serverPBX = serverName;
             accountPBX = _tfAccount.text;
             passwordPBX = _tfPassword.text;
         }
-        [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:serverPBX port:pbxPort];
+        [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:pbxIp port:pbxPort];
     }else{
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your information again!"] duration:2.0 position:CSToastPositionCenter];
     }

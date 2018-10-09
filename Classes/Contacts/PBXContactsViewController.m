@@ -25,6 +25,12 @@
     UIFont *textFont;
     
     NSMutableArray *listSearch;
+    NSMutableDictionary *contactSections;
+    NSArray *listCharacter;
+    BOOL isFound;
+    BOOL found;
+    
+    float hSection;
 }
 
 @end
@@ -34,8 +40,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     //  my code here
+    hSection = 35.0;
+    
     [self autoLayoutForView];
+    
+    contactSections = [[NSMutableDictionary alloc] init];
+    listCharacter = [[NSArray alloc] initWithObjects: @"A", @"B", @"C", @"D", @"E", @"F",
+                     @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -146,22 +159,23 @@
 #pragma mark - UITableview
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (isSearching) {
+        [self getSectionsForContactsList: listSearch];
+    }else{
+        [self getSectionsForContactsList: [LinphoneAppDelegate sharedInstance].pbxContacts];
+    }
+    return [[contactSections allKeys] count];
+    
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (isSearching) {
-        return [listSearch count];
-    }else{
-        NSSortDescriptor *sorter = [[NSSortDescriptor alloc]
-                                     initWithKey:@"_name"
-                                     ascending:YES
-                                     selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSArray *sortDescriptors = [NSArray arrayWithObject: sorter];
-        [[LinphoneAppDelegate sharedInstance].pbxContacts sortUsingDescriptors:sortDescriptors];
-        
-        return [[LinphoneAppDelegate sharedInstance].pbxContacts count];
+    if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
+        return 0;
     }
+    
+    NSString *str = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section];
+    return [[contactSections objectForKey:str] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -173,12 +187,8 @@
         cell = topLevelObjects[0];
     }
     
-    PBXContact *contact;
-    if (isSearching) {
-        contact = [listSearch objectAtIndex:indexPath.row];
-    }else{
-        contact = [[LinphoneAppDelegate sharedInstance].pbxContacts objectAtIndex:indexPath.row];
-    }
+    NSString *key = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section];
+    PBXContact *contact = [[contactSections objectForKey: key] objectAtIndex:indexPath.row];
     
     // Tên contact
     if (contact._name != nil && ![contact._name isKindOfClass:[NSNull class]]) {
@@ -192,31 +202,89 @@
     }else{
         cell._lbPhone.text = @"";
     }
-    cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbContacts.frame.size.width, hCell);
-    [cell updateUIForCell];
     
     if ([contact._name isEqualToString:@""]) {
-        cell._imgAvatar.image = [UIImage imageForName:@"#" size: CGSizeMake(60, 60)];
+        UIImage *avatar = [UIImage imageForName:@"#" size:CGSizeMake(60.0, 60.0)
+                                backgroundColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0]
+                                      textColor:UIColor.whiteColor
+                                           font:[UIFont fontWithName:HelveticaNeue size:30.0]];
+        cell._imgAvatar.image = avatar;
     }else{
         NSString *firstChar = [contact._name substringToIndex:1];
-        cell._imgAvatar.image = [UIImage imageForName:[firstChar uppercaseString] size: CGSizeMake(60, 60)];
+        UIImage *avatar = [UIImage imageForName:[firstChar uppercaseString] size:CGSizeMake(60.0, 60.0)
+                                backgroundColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0]
+                                      textColor:UIColor.whiteColor
+                                           font:[UIFont fontWithName:HelveticaNeue size:30.0]];
+        cell._imgAvatar.image = avatar;
     }
+    
+    int count = (int)[[contactSections objectForKey:key] count];
+    if (indexPath.row == count-1) {
+        cell._lbSepa.hidden = YES;
+    }else{
+        cell._lbSepa.hidden = NO;
+    }
+    
     return cell;
+}
+
+- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    NSString *titleHeader = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section];;
+    
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, hSection)];
+    headerView.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
+                                                  blue:(240/255.0) alpha:1.0];
+    
+    UILabel *descLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 150, hSection)];
+    descLabel.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
+                                           blue:(50/255.0) alpha:1.0];
+    if ([titleHeader isEqualToString:@"z#"]) {
+        descLabel.font = [UIFont fontWithName:HelveticaNeue size:20.0];
+        descLabel.text = @"#";
+    }else{
+        descLabel.font = textFont;
+        descLabel.text = titleHeader;
+    }
+    descLabel.backgroundColor = UIColor.clearColor;
+    [headerView addSubview: descLabel];
+    return headerView;
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    NSMutableArray *tmpArr = [[NSMutableArray alloc] initWithArray: [[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
+    
+    int iCount = 0;
+    while (iCount < tmpArr.count) {
+        NSString *title = [tmpArr objectAtIndex: iCount];
+        if ([title isEqualToString:@"z#"]) {
+            [tmpArr replaceObjectAtIndex:iCount withObject:@"#"];
+            break;
+        }
+        iCount++;
+    }
+    return tmpArr;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PBXContact *contact;
-    if (isSearching) {
-        contact = [listSearch objectAtIndex:indexPath.row];
-    }else{
-        contact = [[LinphoneAppDelegate sharedInstance].pbxContacts objectAtIndex:indexPath.row];
-    }
-    [self callPBXWithNumber: contact._number];
+    NSString *key = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section];
+    PBXContact *contact = [[contactSections objectForKey: key] objectAtIndex:indexPath.row];
+    NSLog(@"--------%@: %@", contact._name, contact._number);
+//    PBXContact *contact;
+//    if (isSearching) {
+//        contact = [listSearch objectAtIndex:indexPath.row];
+//    }else{
+//        contact = [[LinphoneAppDelegate sharedInstance].pbxContacts objectAtIndex:indexPath.row];
+//    }
+//    [self callPBXWithNumber: contact._number];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return hCell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return hSection;
 }
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
@@ -276,6 +344,51 @@
     }else{
         [_lbContacts setHidden: false];
         [_tbContacts setHidden: true];
+    }
+}
+
+- (void)getSectionsForContactsList: (NSMutableArray *)contactList {
+    [contactSections removeAllObjects];
+    
+    // Loop through the books and create our keys
+    for (PBXContact *contactItem in contactList){
+        NSString *c = @"";
+        if (contactItem._name.length > 1) {
+            c = [[contactItem._name substringToIndex: 1] uppercaseString];
+            c = [AppUtils convertUTF8StringToString: c];
+        }
+        
+        if (![listCharacter containsObject:c]) {
+            c = @"z#";
+        }
+        
+        found = NO;
+        for (NSString *str in [contactSections allKeys]){
+            if ([str isEqualToString:c]){
+                found = YES;
+            }
+        }
+        if (!found){
+            [contactSections setObject:[[NSMutableArray alloc] init] forKey:c];
+        }
+    }
+    
+    // Loop again and sort the books into their respective keys
+    for (PBXContact *contactItem in contactList){
+        NSString *c = @"";
+        if (contactItem._name.length > 1) {
+            c = [[contactItem._name substringToIndex: 1] uppercaseString];
+            c = [AppUtils convertUTF8StringToString: c];
+        }
+        if (![listCharacter containsObject:c]) {
+            c = @"z#";
+        }
+        
+        [[contactSections objectForKey: c] addObject:contactItem];
+    }
+    // Sort each section array
+    for (NSString *key in [contactSections allKeys]){
+        [[contactSections objectForKey:key] sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"_name" ascending:YES]]];
     }
 }
 

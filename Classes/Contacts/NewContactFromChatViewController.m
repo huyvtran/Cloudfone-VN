@@ -727,8 +727,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             cell = topLevelObjects[0];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbPhones.frame.size.width, hCell);
-        [cell setupUIForCell];
+        
         cell._tfPhone.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_phone];
         
         PhoneObject *aPhone = [appDelegate._newContact._listPhone objectAtIndex: indexPath.row];

@@ -13,8 +13,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *_lbName;
 @property (weak, nonatomic) IBOutlet UILabel *_lbPhone;
 @property (weak, nonatomic) IBOutlet UILabel *_lbSepa;
+@property (weak, nonatomic) IBOutlet UIButton *icCall;
 
-- (void)updateUIForCell;
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 
 @end
