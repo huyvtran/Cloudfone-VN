@@ -4,7 +4,6 @@
 "text_thong_bao_rung"       =   "Rung"
 "text_rung_tin_nhan"        =   "Rung khi có tin nhắn đến"
 
-"text_new_contact"          =   "Thêm liên hệ"
 "text_missed_call_from"     =   "Cuộc gọi nhỡ từ"
 
 "text_can_not_save_picture" =   "Không thể tải ảnh"
@@ -67,7 +66,6 @@
 "text_gallery"      = "Thư viện"
 "text_camera"       = "Chụp ảnh"
 "text_remove"       = "Hủy ảnh đại diện"
-"text_crop_image"   = "Cập nhật hình đại diện"
 
 "text_successfully" =   "Thành công"
 
@@ -346,11 +344,6 @@
 "text_phone_home"       =   "Nhà"
 "text_phone_other"      =   "Khác"
 
-"TEXT_TYPE_INDIVIDUAL"  = "Cá nhân"
-"TEXT_TYPE_COMPANY"     = "Công ty"
-
-"text_contact_name"         =   "Họ tên"
-"text_contact_cloudfoneId"  =   "Cloudfone ID"
 "text_contact_company"      =   "Công ty"
 "text_contact_email"        =   "Email"
 "text_contact_phone"        =   "Số điện thoại"
@@ -369,7 +362,6 @@
 
 "text_add_contact_failed"   =   "Thêm thất bại. Vui lòng thực hiện lại!"
 "text_update_contact_failed"=   "Cập nhật liên hệ thất bại"
-"text_edit_contact"         =   "Chỉnh sửa liên lạc"
 
 "text_occupiants"           =   "Thành viên"
 "text_occupiant"            =   "Thành viên"
@@ -1118,7 +1110,6 @@
 "check_pbx_account"         =   "Vui lòng kiểm tra tài khoản PBX"
 "clear_pbx_successfully"    =   "Xoá PBX thành công"
 
-"please_input_phone_number" =   "Vui lòng nhập số điện thoại"
 "text_message_settings" =   "TIN NHẮN"
 "text_call_settings"    =   "CUỘC GỌI"
 "text_wait_starting_app" =   "Ứng dụng đang được khởi động..."
@@ -1147,3 +1138,15 @@
 "Privacy Policy" = "Chính sách"
 "Introduction" = "Giới thiệu"
 "Version" = "Phiên bản"
+
+"Add contact" = "Thêm liên hệ"
+"Cancel" = "Hủy"
+"Save" = "Lưu"
+"Fullname" = "Họ tên"
+"Company" = "Công ty"
+"Email" = "Email"
+"Please input phone number" = "Vui lòng nhập số điện thoại"
+"Phone number" = "Số điện thoại"
+"Crop picture" = "Cắt hình ảnh"
+"Edit contact" = "Chỉnh sửa liên hệ"
+"Contact info" = "Thông tin liên hệ"

@@ -346,48 +346,66 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
     }
     
     _viewHeader = [[UIView alloc] init];
-    [_viewHeader setFrame: CGRectMake(0, 0, SCREEN_WIDTH, [LinphoneAppDelegate sharedInstance]._hHeader)];
-    [_viewHeader setBackgroundColor:[UIColor colorWithRed:(21/255.0) green:(41/255.0)
-                                                     blue:(52/255.0) alpha:1.0]];
+    [self.view addSubview: _viewHeader];
+    [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState);
+    }];
+    
+    UIImageView *bgHeader = [[UIImageView alloc] init];
+    bgHeader.image = [UIImage imageNamed:@"background_header.png"];
+    [_viewHeader addSubview: bgHeader];
+    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewHeader);
+    }];
+    
+    _lbHeader = [[UILabel alloc] init];
+    _lbHeader.font = textFont;
+    _lbHeader.textColor = UIColor.whiteColor;
+    _lbHeader.textAlignment = NSTextAlignmentCenter;
+    [_viewHeader addSubview: _lbHeader];
+    [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus);
+        make.bottom.equalTo(_viewHeader);
+        make.centerX.equalTo(_viewHeader.mas_centerX);
+        make.width.mas_equalTo(200);
+    }];
     
     _iconBack = [UIButton buttonWithType: UIButtonTypeCustom];
-    [_iconBack setFrame: CGRectMake(0, 0, [LinphoneAppDelegate sharedInstance]._hHeader, [LinphoneAppDelegate sharedInstance]._hHeader)];
-    [_iconBack setBackgroundImage:[UIImage imageNamed:@"ic_back_def.png"]
+    [_iconBack setBackgroundImage:[UIImage imageNamed:@"ic_back.png"]
                          forState:UIControlStateNormal];
-    [_iconBack setBackgroundImage:[UIImage imageNamed:@"ic_back_act.png"]
-                         forState:UIControlStateHighlighted];
     [_iconBack addTarget:self
                   action:@selector(cancel:)
         forControlEvents:UIControlEventTouchUpInside];
-    
     [_viewHeader addSubview: _iconBack];
+    [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewHeader);
+        make.centerY.equalTo(_lbHeader.mas_centerY);
+        make.width.height.mas_equalTo(35.0);
+    }];
     
-    _lbHeader = [[UILabel alloc] init];
-    [_lbHeader setFrame: CGRectMake(_iconBack.frame.origin.x+_iconBack.frame.size.width+5, 0, (_viewHeader.frame.size.width-2*_iconBack.frame.size.width-10), [LinphoneAppDelegate sharedInstance]._hHeader)];
-    [_lbHeader setFont: textFont];
-    [_lbHeader setTextColor:[UIColor whiteColor]];
-    [_lbHeader setTextAlignment: NSTextAlignmentCenter];
-    [_viewHeader addSubview: _lbHeader];
-    
-    [self.view addSubview: _viewHeader];
     
     _btnSave = [UIButton buttonWithType: UIButtonTypeCustom];
-    [_btnSave setFrame: CGRectMake(SCREEN_WIDTH-15-70, SCREEN_HEIGHT-[LinphoneAppDelegate sharedInstance]._hStatus-15-40, 70, 40)];
-    [_btnSave setBackgroundImage:[UIImage imageNamed:@"btn_send_default.png"]
-                        forState:UIControlStateNormal];
-    [_btnSave setBackgroundImage:[UIImage imageNamed:@"btn_send_press.png"]
-                        forState:UIControlStateHighlighted];
+    _btnSave.backgroundColor = [UIColor colorWithRed:(20/255.0) green:(129/255.0)
+                                                blue:(211/255.0) alpha:1.0];
+    [_btnSave setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    
     [_btnSave addTarget:self
                  action:@selector(done:)
        forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview: _btnSave];
+    [_btnSave mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.right.equalTo(self.view).offset(-20);
+        make.width.mas_equalTo(80.0);
+        make.height.mas_equalTo(40.0);
+    }];
 }
 
 - (void)showContentWithCurrentLanguage
 {
-    HMLocalization *localization = [HMLocalization sharedInstance];
-    [_lbHeader setText:[localization localizedStringForKey: text_crop_image]];
-    [_btnSave setTitle:[localization localizedStringForKey:text_save] forState:UIControlStateNormal];
+    _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Crop picture"];
+    [_btnSave setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Save"]
+              forState:UIControlStateNormal];
 }
 
 

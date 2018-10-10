@@ -8,6 +8,7 @@
 
 #import "KContactDetailViewController.h"
 #import "UIKContactCell.h"
+#import "UIContactPhoneCell.h"
 #import "JSONKit.h"
 #import "NSData+Base64.h"
 #import <CommonCrypto/CommonDigest.h>
@@ -339,37 +340,46 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"UIKContactCell";
-    
-    UIKContactCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
-    if (cell == nil) {
-        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UIKContactCell" owner:self options:nil];
-        cell = topLevelObjects[0];
-    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
     if (indexPath.row < detailsContact._listPhone.count)
     {
+        static NSString *CellIdentifier = @"UIContactPhoneCell";
+        UIContactPhoneCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
+        if (cell == nil) {
+            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UIContactPhoneCell" owner:self options:nil];
+            cell = topLevelObjects[0];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         ContactDetailObj *anItem = [detailsContact._listPhone objectAtIndex: indexPath.row];
         cell.lbTitle.text = anItem._titleStr;
-        cell.lbValue.text = anItem._valueStr;
+        cell.lbPhone.text = anItem._valueStr;
         
-    }else if (indexPath.row == detailsContact._listPhone.count) {
-        if (detailsContact._company != nil && ![detailsContact._company isEqualToString:@""]) {
-            cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Company"];
-            cell.lbValue.text = detailsContact._company;
-        }else if (detailsContact._email != nil && ![detailsContact._email isEqualToString:@""]){
-            cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Email"];
-            cell.lbValue.text = detailsContact._email;
+        return cell;
+    }else{
+        static NSString *CellIdentifier = @"UIKContactCell";
+        UIKContactCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
+        if (cell == nil) {
+            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UIKContactCell" owner:self options:nil];
+            cell = topLevelObjects[0];
         }
-    }else if (indexPath.row == detailsContact._listPhone.count + 1){
-        if (detailsContact._email != nil && ![detailsContact._email isEqualToString:@""]){
-            cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Email"];
-            cell.lbValue.text = detailsContact._email;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        if (indexPath.row == detailsContact._listPhone.count) {
+            if (detailsContact._company != nil && ![detailsContact._company isEqualToString:@""]) {
+                cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Company"];
+                cell.lbValue.text = detailsContact._company;
+            }else if (detailsContact._email != nil && ![detailsContact._email isEqualToString:@""]){
+                cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Email"];
+                cell.lbValue.text = detailsContact._email;
+            }
+        }else if (indexPath.row == detailsContact._listPhone.count + 1){
+            if (detailsContact._email != nil && ![detailsContact._email isEqualToString:@""]){
+                cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Email"];
+                cell.lbValue.text = detailsContact._email;
+            }
         }
+        return cell;
     }
-    
-    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

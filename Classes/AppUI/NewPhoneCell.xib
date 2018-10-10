@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -24,34 +24,29 @@
                         <state key="normal" backgroundImage="ic_add_phone.png"/>
                     </button>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="n8P-BA-ita">
-                        <rect key="frame" x="46" y="6" width="228" height="30"/>
+                        <rect key="frame" x="46" y="6" width="224" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <nil key="textColor"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits"/>
                     </textField>
-                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="rAC-uU-8Jv">
-                        <rect key="frame" x="282" y="6" width="30" height="30"/>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Hmt-nl-GqZ">
+                        <rect key="frame" x="283" y="7" width="27" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" backgroundImage="ic_type_phone.png"/>
+                        <state key="normal" backgroundImage="btn_contacts_mobile"/>
                     </button>
                 </subviews>
             </tableViewCellContentView>
             <connections>
                 <outlet property="_iconNewPhone" destination="92d-vj-1rY" id="rPO-XF-nyE"/>
-                <outlet property="_iconTypePhone" destination="rAC-uU-8Jv" id="di1-HE-KwT"/>
+                <outlet property="_iconTypePhone" destination="Hmt-nl-GqZ" id="hfS-if-kQo"/>
                 <outlet property="_tfPhone" destination="n8P-BA-ita" id="Y0c-bc-9LV"/>
             </connections>
-            <point key="canvasLocation" x="-133" y="-9"/>
+            <point key="canvasLocation" x="-133" y="-9.5"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="ic_add_phone.png" width="40" height="40"/>
-        <image name="ic_type_phone.png" width="50" height="50"/>
+        <image name="btn_contacts_mobile" width="80" height="80"/>
+        <image name="ic_add_phone.png" width="128" height="128"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

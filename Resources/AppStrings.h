@@ -332,14 +332,11 @@
 
 #define text_feedback           @"text_feedback"
 #define text_saving             @"text_saving"
-#define text_new_contact        @"text_new_contact"
-#define text_contact_name       @"text_contact_name"
 #define text_contact_sipPhone   @"text_contact_sipPhone"
 #define text_contact_company    @"text_contact_company"
 #define text_contact_email      @"text_contact_email"
 #define text_contact_phone      @"text_contact_phone"
 #define text_contact_type       @"text_contact_type"
-#define text_edit_contact       @"text_edit_contact"
 #define text_add_contact_failed     @"text_add_contact_failed"
 #define text_update_contact_failed  @"text_update_contact_failed"
 
@@ -666,8 +663,6 @@
 #define hotline                 @"4113"
 
 #define text_dien_day_tu_thong_tin  @"text_dien_day_tu_thong_tin"
-#define text_contact_name           @"text_contact_name"
-#define text_contact_cloudfoneId    @"text_contact_cloudfoneId"
 #define text_contact_company        @"text_contact_company"
 #define text_contact_email          @"text_contact_email"
 #define text_contact_phone          @"text_contact_phone"
@@ -676,16 +671,12 @@
 #define text_gallery        @"text_gallery"
 #define text_camera         @"text_camera"
 #define text_remove         @"text_remove"
-#define text_crop_image     @"text_crop_image"
 
 #define can_not_send_friend_request @"can_not_send_friend_request"
-#define TEXT_TYPE_INDIVIDUAL        @"TEXT_TYPE_INDIVIDUAL"
-#define TEXT_TYPE_COMPANY           @"TEXT_TYPE_COMPANY"
 
 #define text_gallery            @"text_gallery"
 #define text_camera             @"text_camera"
 #define text_remove             @"text_remove"
-#define text_crop_image         @"text_crop_image"
 
 #define text_save               @"text_save"
 #define text_edit_profile       @"text_edit_profile"
@@ -775,7 +766,6 @@
 #define check_pbx_account       @"check_pbx_account"
 #define clear_pbx_successfully  @"clear_pbx_successfully"
 
-#define please_input_phone_number   @"please_input_phone_number"
 #define text_message_settings   @"text_message_settings"
 #define text_call_settings      @"text_call_settings"
 #define text_wait_starting_app  @"text_wait_starting_app"

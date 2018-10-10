@@ -70,7 +70,7 @@
 - (void)fadeOut {
     for (UIView *subView in self.window.subviews)
     {
-        if (subView.tag == 25)
+        if (subView.tag == 20)
         {
             [subView removeFromSuperview];
         }

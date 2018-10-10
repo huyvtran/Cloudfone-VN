@@ -23,7 +23,7 @@
     }
     
     [lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self).offset(5);
+        make.left.equalTo(self).offset(20);
         make.top.equalTo(self);
         make.bottom.equalTo(self).offset(-1);
         make.width.mas_equalTo(100);
@@ -33,7 +33,7 @@
     
     [lbValue mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(lbTitle.mas_right).offset(5);
-        make.right.equalTo(self).offset(-5);
+        make.right.equalTo(self).offset(-20);
         make.top.equalTo(self);
         make.bottom.equalTo(self).offset(-1);
     }];

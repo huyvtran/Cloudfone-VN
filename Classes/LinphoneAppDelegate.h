@@ -123,5 +123,8 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 +(LinphoneAppDelegate*) sharedInstance;
 @property (nonatomic, strong) WebServices *webService;
 @property (nonatomic, strong) NSTimer *keepAwakeTimer;
+
+@property (nonatomic, assign) BOOL needToReloadContactList;
+
 @end
 

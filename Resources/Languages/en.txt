@@ -4,7 +4,6 @@
 "text_thong_bao_rung"       =   "Vibrate"
 "text_rung_tin_nhan"        =   "On icomming messages"
 
-"text_new_contact"          =   "Add contact"
 "text_missed_call_from"     =   "Missed call from"
 
 "text_can_not_save_picture" =   "Can not dowload picture"
@@ -69,7 +68,6 @@
 "text_gallery"      = "Gallery"
 "text_camera"       = "Camera"
 "text_remove"       = "Remove Avatar"
-"text_crop_image"   = "Update avatar"
 
 "text_successfully" =   "Successfully"
 
@@ -347,11 +345,7 @@
 "text_phone_fax"        =   "Fax"
 "text_phone_home"       =   "Home"
 
-"TEXT_TYPE_INDIVIDUAL"  = "Individual"
-"TEXT_TYPE_COMPANY"     = "Company"
 
-"text_contact_name"         =   "Fullname"
-"text_contact_cloudfoneId"  =   "Cloudfone ID"
 "text_contact_company"      =   "Company"
 "text_contact_email"        =   "Email"
 "text_contact_phone"        =   "Phone number"
@@ -371,7 +365,6 @@
 
 "text_add_contact_failed"   =   "Failed. Please try again!"
 "text_update_contact_failed"=   "Update contact failed!"
-"text_edit_contact"         =   "Edit contact"
 
 "text_occupiants"           =   "Occupiant(s)"
 "text_occupiant"            =   "Occupiant"
@@ -1088,7 +1081,6 @@
 "check_pbx_account"         =   "Please check PBX account"
 "clear_pbx_successfully"    =   "Clear PBX successfully"
 
-"please_input_phone_number" =   "Please input phone number"
 "text_message_settings" =   "MESSAGES"
 "text_call_settings"    =   "CALL"
 "text_wait_starting_app"    =   "Starting application, wait a moment..."
@@ -1119,3 +1111,15 @@
 "Privacy Policy" = "Privacy Policy"
 "Introduction" = "Introduction"
 "Version" = "Version"
+
+"Add contact" = "Add contact"
+"Cancel" = "Cancel"
+"Save" = "Save"
+"Fullname" = "Fullname"
+"Company" = "Company"
+"Email" = "Email"
+"Please input phone number" = "Please input phone number"
+"Phone number" = "Phone number"
+"Crop picture" = "Crop picture"
+"Edit contact" = "Edit contact"
+"Contact info" = "Contact info"

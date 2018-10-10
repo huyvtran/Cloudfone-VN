@@ -10,8 +10,8 @@
 
 @interface NewPhoneCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UIButton *_iconTypePhone;
 @property (weak, nonatomic) IBOutlet UITextField *_tfPhone;
 @property (weak, nonatomic) IBOutlet UIButton *_iconNewPhone;
+@property (weak, nonatomic) IBOutlet UIButton *_iconTypePhone;
 
 @end

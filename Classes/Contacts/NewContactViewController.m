@@ -7,45 +7,39 @@
 //
 
 #import "NewContactViewController.h"
-#import "TypePhonePopupView.h"
 #import "NewPhoneCell.h"
 #import "TypePhoneObject.h"
 #import "NSDatabase.h"
 #import "NSData+Base64.h"
-#import "PhoneMainView.h"
 #import "ContactDetailObj.h"
 #import "InfoForNewContactTableCell.h"
-#import "TypePhoneCell.h"
 #import "PECropViewController.h"
+#import "TypePhonePopupView.h"
 
 #define ROW_CONTACT_NAME    0
 #define ROW_CONTACT_EMAIL   1
 #define ROW_CONTACT_COMPANY 2
+#define NUMBER_ROW_BEFORE   3
 
 @interface NewContactViewController ()<PECropViewControllerDelegate>{
     LinphoneAppDelegate *appDelegate;
-    float marginX;
-    float hTextfield;
-    float hCell;
-    
-    TypePhonePopupView *popupTypePhone;
     
     YBHud *waitingHud;
-    UIFont *textFont;
-    
-    UITableView *tbTypeContact;
     
     UITapGestureRecognizer *tapOnScreen;
     
     PECropViewController *PECropController;
+    
+    UIView *viewFooter;
+    UIButton *btnCancel;
+    UIButton *btnSave;
+    TypePhonePopupView *popupTypePhone;
 }
 
 @end
 
 @implementation NewContactViewController
-@synthesize _viewHeader, bgHeader, _iconBack, _lbHeader, _iconDone;
-@synthesize _scrollViewContent, _viewInfo, _imgAvatar, _imgChangePicture, _btnAvatar, _tfFullName, _tfCloudFoneID, _tfCompany;
-@synthesize _iconType, _tfType, _btnType, _iconEmail, _tfEmail, _tbPhones;
+@synthesize _viewHeader, bgHeader, _iconBack, _lbHeader, _imgAvatar, _imgChangePicture, _btnAvatar;
 @synthesize currentSipPhone, currentPhoneNumber, currentName;
 
 #pragma mark - UICompositeViewDelegate Functions
@@ -119,43 +113,32 @@ static UICompositeViewDescription *compositeDescription = nil;
         [appDelegate._newContact._listPhone addObject: aPhone];
     }
     
-    
-    //  Nếu đang thêm contact từ request kết bạn
-    if (appDelegate._newContact._accept) {
-        _tfCloudFoneID.enabled = NO;
-        _tfCloudFoneID.backgroundColor = [UIColor colorWithRed:(200/255.0) green:(200/255.0)
-                                                          blue:(200/255.0) alpha:1.0];
-    }else{
-        _tfCloudFoneID.enabled = YES;
-        _tfCloudFoneID.backgroundColor = [UIColor clearColor];
-    }
-    
-    
-    [self showAllInformationOfView];
-    [self updateAllUIForView];
-    
     if (appDelegate._dataCrop != nil) {
         _imgAvatar.image = [UIImage imageWithData: appDelegate._dataCrop];
-        _imgChangePicture.hidden = YES;
     }else{
         _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-        _imgChangePicture.hidden = NO;
     }
     
     [_tbContents reloadData];
     
+    if ([appDelegate._newContact._fullName isEqualToString:@""] || appDelegate._newContact._fullName == nil) {
+        [self enableForSaveButton: NO];
+    }else{
+        [self enableForSaveButton: YES];
+    }
     //  notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:)
                                                  name:UIKeyboardDidShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:)
                                                  name:UIKeyboardDidHideNotification object:nil];
-    //  Chọn loại điện thoại
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenSelectTypeForPhone:)
-                                                 name:selectTypeForPhoneNumber object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(afterAddAndReloadContactDone)
                                                  name:finishLoadContacts object:nil];
+    
+    //  Chọn loại điện thoại
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenSelectTypeForPhone:)
+                                                 name:selectTypeForPhoneNumber object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -175,22 +158,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     appDelegate._cropAvatar = nil;
     
     [[PhoneMainView instance] popCurrentView];
-}
-
-- (IBAction)_iconDoneClicked:(UIButton *)sender {
-    [self.view endEditing: true];
-    
-    [waitingHud showInView:self.view animated:YES];
-    
-    for (int iCount=0; iCount<appDelegate._newContact._listPhone.count; iCount++) {
-        ContactDetailObj *aPhone = [appDelegate._newContact._listPhone objectAtIndex: iCount];
-        if ([aPhone._valueStr isEqualToString: @""]) {
-            [appDelegate._newContact._listPhone removeObject: aPhone];
-            iCount--;
-        }
-    }
-    
-    [self addContacts];
 }
 
 - (IBAction)_btnAvatarPressed:(UIButton *)sender {
@@ -217,41 +184,17 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - my functions
 
 - (void)showContentWithCurrentLanguage {
-    _lbHeader.text = [appDelegate.localization localizedStringForKey: text_new_contact];
-    _tfFullName.placeholder = [appDelegate.localization localizedStringForKey:text_contact_name];
-    _tfEmail.placeholder = [appDelegate.localization localizedStringForKey:text_contact_email];
-    _tfCloudFoneID.placeholder = [appDelegate.localization localizedStringForKey:text_contact_cloudfoneId];
-    _tfCompany.placeholder = [appDelegate.localization localizedStringForKey:text_contact_company];
-    _tfType.text = [appDelegate.localization localizedStringForKey:text_contact_type];
+    _lbHeader.text = [appDelegate.localization localizedStringForKey: @"Add contact"];
+    [btnCancel setTitle:[appDelegate.localization localizedStringForKey:@"Cancel"]
+               forState:UIControlStateNormal];
+    [btnSave setTitle:[appDelegate.localization localizedStringForKey:@"Save"]
+             forState:UIControlStateNormal];
 }
 
 //  Thêm mới contact
 - (void)addContacts
 {
-    //  cloudfoneID
-    NSString *sipPhone = _tfCloudFoneID.text;
-    appDelegate._newContact._sipPhone = sipPhone;
-    
-    //  email
-    NSString *strEmail = [_tfEmail text];
-    [appDelegate._newContact set_email: strEmail];
-    
-    // Add thêm cloudfone id vào list phone
-    if (![sipPhone isEqualToString: @""]) {
-        ContactDetailObj *aPhone = [[ContactDetailObj alloc] init];
-        aPhone._typePhone = type_cloudfone_id;
-        aPhone._iconStr = @"btn_contacts_mobile.png";
-        aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_cloudfone_id];
-        aPhone._valueStr = sipPhone;
-        aPhone._buttonStr = @"contact_detail_icon_call.png";
-        [appDelegate._newContact._listPhone addObject: aPhone];
-    }
-    appDelegate._newContact._firstName = _tfFullName.text;
-    appDelegate._newContact._lastName = @"";
-    appDelegate._newContact._fullName = _tfFullName.text;
-    appDelegate._newContact._company = _tfCompany.text;
-    
-    NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: _tfFullName.text];
+    NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: appDelegate._newContact._firstName];
     NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName:convertName];
     appDelegate._newContact._nameForSearch = nameForSearch;
     
@@ -314,22 +257,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     ABRecordSetValue(aRecord, kABPersonPhoneProperty, multiPhone,nil);
     CFRelease(multiPhone);
     
-    // Instant Message
-    NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                @"SIP", (NSString*)kABPersonInstantMessageServiceKey,
-                                appDelegate._newContact._sipPhone, (NSString*)kABPersonInstantMessageUsernameKey, nil];
-    CFStringRef label = NULL; // in this case 'IM' will be set. But you could use something like = CFSTR("Personal IM");
-    CFErrorRef errorf = NULL;
-    ABMutableMultiValueRef values =  ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
-    BOOL didAdd = ABMultiValueAddValueAndLabel(values, (__bridge CFTypeRef)(dictionary), label, NULL);
-    BOOL didSet = ABRecordSetValue(aRecord, kABPersonInstantMessageProperty, values, &errorf);
-    if (!didAdd || !didSet) {
-        CFStringRef errorDescription = CFErrorCopyDescription(errorf);
-        NSLog(@"%s error %@ while inserting multi dictionary property %@ into ABRecordRef", __FUNCTION__, dictionary, errorDescription);
-        CFRelease(errorDescription);
-    }
-    CFRelease(values);
-    
     //Address
     ABMutableMultiValueRef address = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
     NSMutableDictionary *addressDict = [[NSMutableDictionary alloc] init];
@@ -344,11 +271,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (anError != NULL) {
         NSLog(@"error while creating..");
     }
-    
-    CFStringRef firstName, lastName, company;
-    firstName = ABRecordCopyValue(aRecord, kABPersonFirstNameProperty);
-    lastName  = ABRecordCopyValue(aRecord, kABPersonLastNameProperty);
-    company  = ABRecordCopyValue(aRecord, kABPersonOrganizationProperty);
     
     ABAddressBookRef addressBook;
     CFErrorRef error = NULL;
@@ -374,12 +296,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     
     CFRelease(aRecord);
-    CFRelease(firstName);
-    CFRelease(lastName);
-    CFRelease(company);
     CFRelease(email);
     CFRelease(addressBook);
     
+    [LinphoneAppDelegate sharedInstance].needToReloadContactList = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadContactAfterAdd" object:nil];
 }
 
@@ -432,66 +352,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[PhoneMainView instance] popCurrentView];
 }
 
-//  Chọn loại phone
-- (void)whenSelectTypeForPhone: (NSNotification *)notif {
-    id object = [notif object];
-    if ([object isKindOfClass:[TypePhoneObject class]]) {
-        int curIndex = (int)[popupTypePhone tag];
-        ContactDetailObj *curPhone = [appDelegate._newContact._listPhone objectAtIndex: curIndex];
-        curPhone._typePhone = [(TypePhoneObject *)object _strType];
-        [_tbPhones reloadData];
-    }
-}
-
-- (void)showAllInformationOfView
-{
-    [_tbPhones reloadData];
-    
-    //  fullname
-    NSString *fullname = @"";
-    if (appDelegate._newContact._firstName != nil && appDelegate._newContact._lastName != nil) {
-        fullname = [NSString stringWithFormat:@"%@ %@", appDelegate._newContact._firstName, appDelegate._newContact._lastName];
-    }else if (appDelegate._newContact._firstName != nil && appDelegate._newContact._lastName == nil){
-        fullname = appDelegate._newContact._firstName;
-    }else if (appDelegate._newContact._firstName == nil && appDelegate._newContact._lastName != nil){
-        fullname = appDelegate._newContact._lastName;
-    }
-    _tfFullName.text = fullname;
-    
-    //  cloudfone ID
-    if (![appDelegate._newContact._sipPhone isEqualToString: @""] && appDelegate._newContact._sipPhone != nil) {
-        _tfCloudFoneID.text = appDelegate._newContact._sipPhone;
-    }else{
-        _tfCloudFoneID.text = @"";
-    }
-    
-    //  company
-    if (![appDelegate._newContact._company isEqualToString: @""] && appDelegate._newContact._company != nil) {
-        _tfCompany.text = appDelegate._newContact._company;
-    }else{
-        _tfCompany.text = @"";
-    }
-    
-    //  email
-    if (![appDelegate._newContact._email isEqualToString: @""] && appDelegate._newContact._email != nil) {
-        _tfEmail.text = appDelegate._newContact._email;
-    }else{
-        _tfEmail.text = @"";
-    }
-    [self checkFirstNameAndLastNameForDoneIcon];
-}
-
 - (void)setupUIForView {
     //  Tap vào màn hình để đóng bàn phím
     float wAvatar = 110.0;
     
     if (SCREEN_WIDTH > 320) {
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
-        hTextfield = 35.0;
         _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
     }else{
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
-        hTextfield = 30.0;
         _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }
     
@@ -502,8 +369,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     self.view.userInteractionEnabled = YES;
     [self.view addGestureRecognizer: tapOnScreen];
     
-    marginX = 10.0;
-    hCell = hTextfield + 10;
     
     //  view header
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -524,12 +389,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewHeader);
-        make.centerY.equalTo(_lbHeader.mas_centerY);
-        make.width.height.mas_equalTo(35.0);
-    }];
-    
-    [_iconDone mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_viewHeader);
         make.centerY.equalTo(_lbHeader.mas_centerY);
         make.width.height.mas_equalTo(35.0);
     }];
@@ -562,232 +421,112 @@ static UICompositeViewDescription *compositeDescription = nil;
     _tbContents.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tbContents.delegate = self;
     _tbContents.dataSource = self;
-    _tbContents.scrollEnabled = NO;
     
     UIView *viewHeader = [[UIView alloc] init];
     viewHeader.frame = CGRectMake(0, 0, SCREEN_WIDTH, wAvatar/2);
     viewHeader.backgroundColor = UIColor.clearColor;
     _tbContents.tableHeaderView = viewHeader;
     
-    _scrollViewContent.hidden = YES;
-    return;
     
-    //  scroll view content
-    _scrollViewContent.frame = CGRectMake(0, _viewHeader.frame.origin.y+_viewHeader.frame.size.height, SCREEN_WIDTH, SCREEN_HEIGHT-appDelegate._hHeader-appDelegate._hStatus);
+    //  Footer view
+    viewFooter = [[UIView alloc] init];
+    viewFooter.frame = CGRectMake(0, 0, SCREEN_WIDTH, 100);
     
+    btnCancel = [[UIButton alloc] init];
+    [btnCancel setTitle:[appDelegate.localization localizedStringForKey:@"Cancel"]
+               forState:UIControlStateNormal];
     
-    //  view info
-    float hInfo = 7 + hTextfield + 7 + hTextfield + 7 + hTextfield + 7;
-    _viewInfo.frame = CGRectMake(0, 0, _scrollViewContent.frame.size.width, hInfo);
+    btnCancel.backgroundColor = [UIColor colorWithRed:(210/255.0) green:(51/255.0)
+                                                 blue:(92/255.0) alpha:1.0];
+    [btnCancel setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    btnCancel.clipsToBounds = YES;
+    btnCancel.layer.cornerRadius = 40.0/2;
+    [viewFooter addSubview: btnCancel];
+    [btnCancel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(viewFooter.mas_centerX).offset(-10);
+        make.centerY.equalTo(viewFooter.mas_centerY);
+        make.width.mas_equalTo(140.0);
+        make.height.mas_equalTo(40.0);
+    }];
     
+    btnSave = [[UIButton alloc] init];
+    [btnSave setTitle:[appDelegate.localization localizedStringForKey:@"Save"]
+             forState:UIControlStateNormal];
+    btnSave.backgroundColor = [UIColor colorWithRed:(20/255.0) green:(129/255.0)
+                                               blue:(211/255.0) alpha:1.0];
+    [btnSave setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    btnSave.clipsToBounds = YES;
+    btnSave.layer.cornerRadius = 40.0/2;
+    [viewFooter addSubview: btnSave];
+    [btnSave mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(viewFooter.mas_centerX).offset(10);
+        make.centerY.equalTo(viewFooter.mas_centerY);
+        make.width.equalTo(btnCancel.mas_width);
+        make.height.equalTo(btnCancel.mas_height);
+    }];
+    [btnSave addTarget:self
+                action:@selector(saveContactPressed:)
+      forControlEvents:UIControlEventTouchUpInside];
     
-    
-    _btnAvatar.frame = _imgAvatar.frame;
-    
-    _tfFullName.font = textFont;
-    _tfFullName.frame = CGRectMake(_imgAvatar.frame.origin.x+_imgAvatar.frame.size.width+7, 7, _scrollViewContent.frame.size.width-(2*_imgAvatar.frame.origin.x+_imgAvatar.frame.size.width+7), hTextfield);
-    _tfFullName.backgroundColor = UIColor.clearColor;
-    
-    [_tfFullName addTarget:self
-                    action:@selector(whenTextfieldDidChanged:)
-          forControlEvents:UIControlEventEditingChanged];
-    
-    //  cloudfoneID
-    _tfCloudFoneID.font = textFont;
-    _tfCloudFoneID.frame = CGRectMake(_tfFullName.frame.origin.x, _tfFullName.frame.origin.y+_tfFullName.frame.size.height+7, _tfFullName.frame.size.width, _tfFullName.frame.size.height);
-    _tfCloudFoneID.backgroundColor = UIColor.clearColor;
-    _tfCloudFoneID.keyboardType = UIKeyboardTypeNumberPad;
-    [_tfCloudFoneID addTarget:self
-                    action:@selector(whenTextfieldDidChanged:)
-          forControlEvents:UIControlEventEditingChanged];
-    
-    //  company
-    _tfCompany.font = textFont;
-    _tfCompany.frame = CGRectMake(_tfCloudFoneID.frame.origin.x, _tfCloudFoneID.frame.origin.y+_tfCloudFoneID.frame.size.height+7, _tfCloudFoneID.frame.size.width, _tfCloudFoneID.frame.size.height);
-    _tfCompany.backgroundColor = UIColor.clearColor;
-    [_tfCompany addTarget:self
-                   action:@selector(whenTextfieldDidChanged:)
-         forControlEvents:UIControlEventEditingChanged];
-    
-    //  type contact
-    _iconType.frame = CGRectMake(marginX, _viewInfo.frame.origin.y+_viewInfo.frame.size.height+10, hTextfield, hTextfield);
-    
-    _tfType.font = textFont;
-    _tfType.frame = CGRectMake(_iconType.frame.origin.x+_iconType.frame.size.width+marginX, _iconType.frame.origin.y, _scrollViewContent.frame.size.width-(_iconType.frame.origin.x+_iconType.frame.size.width+marginX+marginX), hTextfield);
-    _tfType.enabled = NO;
-    
-    _btnType.frame = _tfType.frame;
-    [_btnType addTarget:self
-                 action:@selector(btnTypeContactPressed)
-       forControlEvents:UIControlEventTouchUpInside];
-    
-    //  email
-    _iconEmail.frame = CGRectMake(_iconType.frame.origin.x, _iconType.frame.origin.y+_iconType.frame.size.height+10, _iconType.frame.size.width, _iconType.frame.size.height);
-    
-    _tfEmail.font = textFont;
-    _tfEmail.frame = CGRectMake(_tfType.frame.origin.x, _iconEmail.frame.origin.y, _tfType.frame.size.width, hTextfield);
-    _tfEmail.backgroundColor = UIColor.clearColor;
-    _tfEmail.keyboardType = UIKeyboardTypeEmailAddress;
-    [_tfEmail addTarget:self
-                 action:@selector(whenTextfieldDidChanged:)
-       forControlEvents:UIControlEventEditingChanged];
-    
-    
-    //  email
-    _tbPhones.frame = CGRectMake(0, _tfEmail.frame.origin.y+_tfEmail.frame.size.height+10, _scrollViewContent.frame.size.width, hCell);
-    _tbPhones.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tbPhones.delegate = self;
-    _tbPhones.dataSource = self;
-    _tbPhones.scrollEnabled = NO;
-    
-    _scrollViewContent.contentSize = CGSizeMake(SCREEN_WIDTH, _tbPhones.frame.origin.y+_tbPhones.frame.size.height+15);
-}
-
-- (void)btnTypeContactPressed {
-    if (tbTypeContact == nil) {
-        tbTypeContact = [[UITableView alloc] initWithFrame: CGRectMake(_tfType.frame.origin.x, _tfType.frame.origin.y+_tfType.frame.size.height+2, _tfType.frame.size.width/2, 0)];
-        tbTypeContact.delegate = self;
-        tbTypeContact.dataSource = self;
-        tbTypeContact.layer.borderColor = [UIColor colorWithRed:(220/255.0) green:(220/255.0)
-                                                           blue:(220/255.0) alpha:1.0].CGColor;
-        tbTypeContact.layer.borderWidth = 1.0;
-        tbTypeContact.separatorStyle = UITableViewCellSeparatorStyleNone;
-        [_scrollViewContent addSubview: tbTypeContact];
-    }
-    
-    if (tbTypeContact.frame.size.height == 0) {
-        [UIView animateWithDuration:0.2 animations:^{
-            tbTypeContact.frame = CGRectMake(tbTypeContact.frame.origin.x, tbTypeContact.frame.origin.y, tbTypeContact.frame.size.width, 2*hCell);
-        }];
-    }else{
-        [UIView animateWithDuration:0.2 animations:^{
-            tbTypeContact.frame = CGRectMake(tbTypeContact.frame.origin.x, tbTypeContact.frame.origin.y, tbTypeContact.frame.size.width, 0);
-        }];
-    }
+    _tbContents.tableFooterView = viewFooter;
 }
 
 //  Hiển thị bàn phím
 - (void)keyboardDidShow: (NSNotification *) notif{
     CGSize keyboardSize = [[[notif userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    [UIView animateWithDuration:0.05 animations:^{
-        _scrollViewContent.frame = CGRectMake(0, _viewHeader.frame.origin.y+_viewHeader.frame.size.height, _scrollViewContent.frame.size.width, SCREEN_HEIGHT-(appDelegate._hStatus+appDelegate._hHeader+keyboardSize.height));
+    [_tbContents mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view).offset(-keyboardSize.height);
     }];
 }
 
 //  Ẩn bàn phím
 - (void)keyboardDidHide: (NSNotification *) notif{
-    [UIView animateWithDuration:0.05 animations:^{
-        _scrollViewContent.frame = CGRectMake(0, _viewHeader.frame.origin.y+_viewHeader.frame.size.height, _scrollViewContent.frame.size.width, SCREEN_HEIGHT-(appDelegate._hStatus+appDelegate._hHeader));
+    [_tbContents mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view);
     }];
 }
 
 //  Tap vào màn hình chính để đóng bàn phím
 - (void)whenTapOnMainScreen {
     [self.view endEditing: true];
-    
-    [UIView animateWithDuration:0.2 animations:^{
-        tbTypeContact.frame = CGRectMake(tbTypeContact.frame.origin.x, tbTypeContact.frame.origin.y, tbTypeContact.frame.size.width, 0);
-    }];
-}
-
-- (void)whenTextfieldDidChanged: (UITextField *)textfield {
-    if (textfield == _tfFullName) {
-        if ([_tfFullName.text isEqualToString: @""]) {
-            _iconDone.hidden = YES;
-        }else{
-            _iconDone.hidden = NO;
-        }
-        //  Lưu giá trị first name
-        appDelegate._newContact._firstName = _tfFullName.text;
-    }if (textfield == _tfCompany) {
-        //  Lưu giá trị company
-        appDelegate._newContact._company = _tfCompany.text;
-    }else if (textfield == _tfCloudFoneID){
-        //  Lưu giá trị cloudfoneID
-        appDelegate._newContact._sipPhone = _tfCloudFoneID.text;
-    }else if (textfield == _tfEmail){
-        //  Lưu giá trị email
-        appDelegate._newContact._email = _tfEmail.text;
-    }
-}
-
-//  Hiển thị icon done nếu có firstname hoặc lastname
-- (void)checkFirstNameAndLastNameForDoneIcon {
-    if ([_tfFullName.text isEqualToString: @""]) {
-        _iconDone.hidden = YES;
-    }else{
-        _iconDone.hidden = NO;
-    }
 }
 
 //  Thêm hoặc xoá số phone
 - (void)btnAddPhonePressed: (UIButton *)sender {
     int tag = (int)[sender tag];
-    if (tag < appDelegate._newContact._listPhone.count) {
-        [appDelegate._newContact._listPhone removeObjectAtIndex: tag];
-    }else{
-        NewPhoneCell *cell = [_tbPhones cellForRowAtIndexPath:[NSIndexPath indexPathForRow:tag inSection:0]];
-        if (![cell._tfPhone.text isEqualToString:@""]) {
-            ContactDetailObj *aPhone = [[ContactDetailObj alloc] init];
-            aPhone._iconStr = @"btn_contacts_mobile.png";
-            aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_mobile];
-            aPhone._valueStr = cell._tfPhone.text;
-            aPhone._buttonStr = @"contact_detail_icon_call.png";
-            aPhone._typePhone = type_phone_mobile;
-            [appDelegate._newContact._listPhone addObject: aPhone];
-        }else{
-            [self.view makeToast:[appDelegate.localization localizedStringForKey:please_input_phone_number]
-                        duration:2.0 position:CSToastPositionCenter];
+    if (tag - NUMBER_ROW_BEFORE >= 0) {
+        if ([sender.currentTitle isEqualToString:@"Add"])
+        {
+            NewPhoneCell *cell = [_tbContents cellForRowAtIndexPath:[NSIndexPath indexPathForRow:tag inSection:0]];
+            if (cell != nil && ![cell._tfPhone.text isEqualToString:@""]) {
+                ContactDetailObj *aPhone = [[ContactDetailObj alloc] init];
+                aPhone._iconStr = @"btn_contacts_mobile.png";
+                aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_mobile];
+                aPhone._valueStr = cell._tfPhone.text;
+                aPhone._buttonStr = @"contact_detail_icon_call.png";
+                aPhone._typePhone = type_phone_mobile;
+                [appDelegate._newContact._listPhone addObject: aPhone];
+            }else{
+                [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please input phone number"]
+                            duration:2.0 position:CSToastPositionCenter];
+            }
+        }else if ([sender.currentTitle isEqualToString:@"Remove"]){
+            if (tag-NUMBER_ROW_BEFORE < appDelegate._newContact._listPhone.count) {
+                [appDelegate._newContact._listPhone removeObjectAtIndex: tag-NUMBER_ROW_BEFORE];
+            }
         }
     }
+    
     //  Khi thêm mới hoặc xoá thì chỉ có dòng cuối cùng là new
-    [_tbPhones reloadData];
-    [self updateAllUIForView];
-}
-
-//  Chọn loại phone cho điện thoại
-- (void)btnTypePhonePressed: (UIButton *)sender {
-    [self.view endEditing: true];
-    
-    float hPopup;
-    if (SCREEN_WIDTH > 320) {
-        hPopup = 4*50 + 6;
-    }else{
-        hPopup = 4*40 + 6;
-    }
-    
-    popupTypePhone = [[TypePhonePopupView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-236)/2, (SCREEN_HEIGHT-hPopup)/2, 236, hPopup)];
-    [popupTypePhone setTag: sender.tag];
-    [popupTypePhone showInView:appDelegate.window animated:YES];
-}
-
-//  Cập nhật vị trí các ui trong view
-- (void)updateAllUIForView {
-    [_tbPhones setFrame: CGRectMake(0, _tfEmail.frame.origin.y+_tfEmail.frame.size.height+10, _scrollViewContent.frame.size.width, (appDelegate._newContact._listPhone.count+1)*hCell)];
-    
-    [_scrollViewContent setContentSize: CGSizeMake(SCREEN_WIDTH, _tbPhones.frame.origin.y+_tbPhones.frame.size.height+15)];
-}
-
-//  Get icon tương ứng với loại phone
-- (NSString *)getTypeOfPhone: (NSString *)typePhone {
-    if ([typePhone isEqualToString: type_phone_mobile]) {
-        return @"btn_contacts_mobile.png";
-    }else if ([typePhone isEqualToString: type_phone_work]){
-        return @"btn_contacts_work.png";
-    }else if ([typePhone isEqualToString: type_phone_fax]){
-        return @"btn_contacts_fax.png";
-    }else if ([typePhone isEqualToString: type_phone_home]){
-        return @"btn_contacts_home.png";
-    }else{
-        return @"btn_contacts_mobile.png";
-    }
+    [_tbContents reloadData];
 }
 
 - (void)whenTextfieldPhoneDidChanged: (UITextField *)textfield {
     int row = (int)[textfield tag];
-    if (row < appDelegate._newContact._listPhone.count) {
+    if (row-NUMBER_ROW_BEFORE >= 0 && row-NUMBER_ROW_BEFORE < appDelegate._newContact._listPhone.count)
+    {
         ContactDetailObj *curPhone = [appDelegate._newContact._listPhone objectAtIndex: row];
-        [curPhone set_valueStr: textfield.text];
+        curPhone._valueStr = textfield.text;
     }
 }
 
@@ -798,13 +537,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return (3 + [appDelegate._newContact._listPhone count] + 1);
-    
-    if (tableView == _tbPhones) {
-        return [appDelegate._newContact._listPhone count] + 1;
-    }else{
-        return 2;
-    }
+    return NUMBER_ROW_BEFORE + [appDelegate._newContact._listPhone count] + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -818,15 +551,40 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         switch (indexPath.row) {
             case ROW_CONTACT_NAME:{
-                cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Full name:"];
+                cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Fullname"];
+                cell.tfContent.text = [self getFullnameOfContactIfExists];
+                [cell.tfContent addTarget:self
+                                   action:@selector(whenTextfieldFullnameChanged:)
+                         forControlEvents:UIControlEventEditingChanged];
                 break;
             }
             case ROW_CONTACT_EMAIL:{
-                cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Email:"];
+                cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Email"];
+                cell.tfContent.tag = 100;
+                [cell.tfContent addTarget:self
+                                   action:@selector(whenTextfieldChanged:)
+                         forControlEvents:UIControlEventEditingChanged];
+                
+                if (![appDelegate._newContact._email isEqualToString: @""] && appDelegate._newContact._email != nil) {
+                    cell.tfContent.text = appDelegate._newContact._email;
+                }else{
+                    cell.tfContent.text = @"";
+                }
+                
                 break;
             }
             case ROW_CONTACT_COMPANY:{
-                cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Company:"];
+                cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Company"];
+                cell.tfContent.tag = 101;
+                [cell.tfContent addTarget:self
+                                   action:@selector(whenTextfieldChanged:)
+                         forControlEvents:UIControlEventEditingChanged];
+                
+                if (![appDelegate._newContact._company isEqualToString: @""] && appDelegate._newContact._company != nil) {
+                    cell.tfContent.text = appDelegate._newContact._company;
+                }else{
+                    cell.tfContent.text = @"";
+                }
                 break;
             }
         }
@@ -840,23 +598,21 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        if (indexPath.row == appDelegate._newContact._listPhone.count + 3) {
+        if (indexPath.row == appDelegate._newContact._listPhone.count + NUMBER_ROW_BEFORE) {
             cell._tfPhone.text = @"";
             
+            [cell._iconNewPhone setTitle:@"Add" forState:UIControlStateNormal];
             [cell._iconNewPhone setBackgroundImage:[UIImage imageNamed:@"ic_add_phone.png"]
                                           forState:UIControlStateNormal];
-            [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:@"btn_contacts_mobile"]
-                                           forState:UIControlStateNormal];
         }else{
-            ContactDetailObj *aPhone = [appDelegate._newContact._listPhone objectAtIndex: indexPath.row];
-            cell._tfPhone.text = aPhone._valueStr;
-            
-            [cell._iconNewPhone setBackgroundImage:[UIImage imageNamed:@"ic_delete_phone.png"]
-                                          forState:UIControlStateNormal];
-            NSString *imgType = aPhone._iconStr;
-            cell._iconTypePhone.tag = indexPath.row;
-            [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:imgType]
-                                           forState:UIControlStateNormal];
+            if ((indexPath.row - NUMBER_ROW_BEFORE) >= 0 && (indexPath.row - NUMBER_ROW_BEFORE) < appDelegate._newContact._listPhone.count) {
+                ContactDetailObj *aPhone = [appDelegate._newContact._listPhone objectAtIndex: (indexPath.row - NUMBER_ROW_BEFORE)];
+                cell._tfPhone.text = aPhone._valueStr;
+                
+                [cell._iconNewPhone setTitle:@"Remove" forState:UIControlStateNormal];
+                [cell._iconNewPhone setBackgroundImage:[UIImage imageNamed:@"ic_delete_phone.png"]
+                                              forState:UIControlStateNormal];
+            }
         }
         cell._tfPhone.tag = indexPath.row;
         [cell._tfPhone addTarget:self
@@ -867,49 +623,10 @@ static UICompositeViewDescription *compositeDescription = nil;
         [cell._iconNewPhone addTarget:self
                                action:@selector(btnAddPhonePressed:)
                      forControlEvents:UIControlEventTouchUpInside];
-        
         [cell._iconTypePhone addTarget:self
                                 action:@selector(btnTypePhonePressed:)
                       forControlEvents:UIControlEventTouchUpInside];
-        
         return cell;
-    }
-    
-    
-    
-    
-    
-    if (tableView == _tbPhones) {
-        
-        
-    }else{
-        static NSString *cellIdentifier = @"Cell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        }
-        if (indexPath.row == 0) {
-            cell.textLabel.text = [appDelegate.localization localizedStringForKey:TEXT_TYPE_INDIVIDUAL];
-        }else{
-            cell.textLabel.text = [appDelegate.localization localizedStringForKey:TEXT_TYPE_COMPANY];
-        }
-        cell.textLabel.font = textFont;
-        return cell;
-    }
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView == tbTypeContact){
-        if (indexPath.row == 0) {
-            _tfType.text = [appDelegate.localization localizedStringForKey:TEXT_TYPE_INDIVIDUAL];
-        }else{
-            _tfType.text = [appDelegate.localization localizedStringForKey:TEXT_TYPE_COMPANY];
-        }
-        appDelegate._newContact._type = (int)indexPath.row;
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            tbTypeContact.frame = CGRectMake(tbTypeContact.frame.origin.x, tbTypeContact.frame.origin.y, tbTypeContact.frame.size.width, 0);
-        }];
     }
 }
 
@@ -917,13 +634,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (indexPath.row == ROW_CONTACT_NAME || indexPath.row == ROW_CONTACT_EMAIL || indexPath.row == ROW_CONTACT_COMPANY) {
         return 83.0;
     }
-    return hCell;
-    
-    if (tableView == _tbPhones) {
-        return hCell;
-    }else{
-        return hCell;
-    }
+    return 50.0;
 }
 
 #pragma mark - ContactDetailsImagePickerDelegate Functions
@@ -943,9 +654,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    if ([touch.view isDescendantOfView: tbTypeContact]) {
-        return NO;
-    }
     return YES;
 }
 
@@ -1046,9 +754,128 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)removeAvatar {
     appDelegate._newContact._avatar = @"";
     _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-    _imgChangePicture.hidden = NO;
     appDelegate._dataCrop = nil;
-    [_tbPhones reloadData];
+}
+
+- (void)saveContactPressed: (UIButton *)sender {
+    [self.view endEditing: true];
+    
+    if ((appDelegate._newContact._firstName == nil || [appDelegate._newContact._firstName isEqualToString:@""]) && (appDelegate._newContact._lastName == nil || [appDelegate._newContact._lastName isEqualToString:@""]))
+    {
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please input contact name"]
+                    duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    [waitingHud showInView:self.view animated:YES];
+    
+    //  Check if user input phone number into textfield but have not added to list phone ---> still add
+    /*
+    if (appDelegate._newContact._listPhone.count == 0) {
+        NewPhoneCell *cell = [_tbContents cellForRowAtIndexPath:[NSIndexPath indexPathForRow:(NUMBER_ROW_BEFORE + appDelegate._newContact._listPhone.count) inSection:0]];
+        if (cell != nil && [cell isKindOfClass:[NewPhoneCell class]] && [cell._iconNewPhone.currentTitle isEqualToString:@"Add"]) {
+            if (![cell._tfPhone.text isEqualToString:@""]) {
+                ContactDetailObj *aPhone = [[ContactDetailObj alloc] init];
+                aPhone._iconStr = @"btn_contacts_mobile.png";
+                aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_mobile];
+                aPhone._valueStr = cell._tfPhone.text;
+                aPhone._buttonStr = @"contact_detail_icon_call.png";
+                aPhone._typePhone = type_phone_mobile;
+                [appDelegate._newContact._listPhone addObject: aPhone];
+                NSLog(@"-------%@", cell._tfPhone.text);
+            }else{
+                NSLog(@"-------EMPTY!!!!!!!");
+            }
+            
+        }
+    }   */
+    
+    //  Remove all phone number with value is empty
+    for (int iCount=0; iCount<appDelegate._newContact._listPhone.count; iCount++) {
+        ContactDetailObj *aPhone = [appDelegate._newContact._listPhone objectAtIndex: iCount];
+        if ([aPhone._valueStr isEqualToString: @""]) {
+            [appDelegate._newContact._listPhone removeObject: aPhone];
+            iCount--;
+        }
+    }
+    
+    [self addContacts];
+}
+
+- (void)whenTextfieldFullnameChanged: (UITextField *)textfield {
+    //  Save fullname into first name
+    appDelegate._newContact._firstName = textfield.text;
+    
+    if (![textfield.text isEqualToString:@""]) {
+        [self enableForSaveButton: YES];
+    }else{
+        [self enableForSaveButton: NO];
+    }
+}
+
+- (void)whenTextfieldChanged: (UITextField *)textfield {
+    if (textfield.tag == 100) {
+        appDelegate._newContact._email = textfield.text;
+    }else if (textfield.tag == 101){
+        appDelegate._newContact._company = textfield.text;
+    }
+}
+
+- (void)enableForSaveButton: (BOOL)enable {
+    btnSave.enabled = enable;
+    if (enable) {
+        btnSave.backgroundColor = [UIColor colorWithRed:(20/255.0) green:(129/255.0)
+                                                   blue:(211/255.0) alpha:1.0];
+    }else{
+        btnSave.backgroundColor = [UIColor colorWithRed:(200/255.0) green:(200/255.0)
+                                                   blue:(200/255.0) alpha:1.0];
+    }
+}
+
+- (NSString *)getFullnameOfContactIfExists {
+    NSString *fullname = @"";
+    if (appDelegate._newContact._firstName != nil && appDelegate._newContact._lastName != nil) {
+        fullname = [NSString stringWithFormat:@"%@ %@", appDelegate._newContact._lastName, appDelegate._newContact._firstName];
+    }else if (appDelegate._newContact._firstName != nil && appDelegate._newContact._lastName == nil){
+        fullname = appDelegate._newContact._firstName;
+    }else if (appDelegate._newContact._firstName == nil && appDelegate._newContact._lastName != nil){
+        fullname = appDelegate._newContact._lastName;
+    }
+    return fullname;
+}
+
+//  Chọn loại phone cho điện thoại
+- (void)btnTypePhonePressed: (UIButton *)sender {
+    [self.view endEditing: true];
+    
+    float hPopup;
+    if (SCREEN_WIDTH > 320) {
+        hPopup = 4*50 + 6;
+    }else{
+        hPopup = 4*40 + 6;
+    }
+    
+    popupTypePhone = [[TypePhonePopupView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-236)/2, (SCREEN_HEIGHT-hPopup)/2, 236, hPopup)];
+    [popupTypePhone setTag: sender.tag];
+    [popupTypePhone showInView:appDelegate.window animated:YES];
+}
+
+- (NSString *)getTypeOfPhone: (NSString *)typePhone {
+    if ([typePhone isEqualToString: type_phone_mobile]) {
+        return @"btn_contacts_mobile.png";
+    }else if ([typePhone isEqualToString: type_phone_work]){
+        return @"btn_contacts_work.png";
+    }else if ([typePhone isEqualToString: type_phone_fax]){
+        return @"btn_contacts_fax.png";
+    }else if ([typePhone isEqualToString: type_phone_home]){
+        return @"btn_contacts_home.png";
+    }else{
+        return @"btn_contacts_mobile.png";
+    }
+}
+
+//  Chọn loại phone
+- (void)whenSelectTypeForPhone: (NSNotification *)notif {
+    
 }
 
 @end

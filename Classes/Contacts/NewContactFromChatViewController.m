@@ -9,7 +9,6 @@
 #import "NewContactFromChatViewController.h"
 #import "TypePhoneObject.h"
 #import "PhoneObject.h"
-#import "TypePhonePopupView.h"
 #import "ChooseAvatarPopupView.h"
 #import "NewPhoneCell.h"
 #import "SettingItem.h"
@@ -23,8 +22,6 @@
     LinphoneAppDelegate *appDelegate;
     float marginX;
     float hTextfield;
-    
-    TypePhonePopupView *popupTypePhone;
     
     float hCell;
     
@@ -233,8 +230,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)showContentWithCurrentLanguage {
-    _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: text_new_contact];
-    _tfFullName.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_contact_name];
+    _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: @"Add contact"];
+    _tfFullName.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Fullname"];
+    
     _tfEmail.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_contact_email];
     _tfCloudFoneID.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_contact_sipPhone];
     _tfCompany.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_contact_company];
@@ -484,15 +482,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-//  Chọn loại phone cho điện thoại
-- (void)btnTypePhonePressed: (UIButton *)sender {
-    [self.view endEditing: true];
-    
-    popupTypePhone = [[TypePhonePopupView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-236)/2, (SCREEN_HEIGHT-4*40+6)/2, 236, 4*40+6)];
-    popupTypePhone.tag = sender.tag;
-    [popupTypePhone showInView:appDelegate.window animated:YES];
-}
-
 - (void)updateStateNewForPhoneList {
     for (int iCount=0; iCount<appDelegate._newContact._listPhone.count; iCount++) {
         PhoneObject *aPhone = [appDelegate._newContact._listPhone objectAtIndex: iCount];
@@ -539,13 +528,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 //  Chọn loại phone
 - (void)whenSelectTypeForPhone: (NSNotification *)notif {
-    id object = [notif object];
-    if ([object isKindOfClass:[TypePhoneObject class]]) {
-        int curIndex = (int)[popupTypePhone tag];
-        PhoneObject *curPhone = [appDelegate._newContact._listPhone objectAtIndex: curIndex];
-        curPhone._phoneType = [(TypePhoneObject *)object _strType];
-        [_tbPhones reloadData];
-    }
+    
 }
 
 //  Hiển thị bàn phím
@@ -745,20 +728,11 @@ static UICompositeViewDescription *compositeDescription = nil;
                           action:@selector(whenTextfieldPhoneDidChanged:)
                 forControlEvents:UIControlEventEditingChanged];
         
-        NSString *imgType = [self getTypeOfPhone: aPhone._phoneType];
-        
-        cell._iconTypePhone.tag = indexPath.row;
-        [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:imgType]
-                                       forState:UIControlStateNormal];
-        
         cell._iconNewPhone.tag = indexPath.row;
         [cell._iconNewPhone addTarget:self
                                action:@selector(btnAddPhonePressed:)
                      forControlEvents:UIControlEventTouchUpInside];
         
-        [cell._iconTypePhone addTarget:self
-                                action:@selector(btnTypePhonePressed:)
-                      forControlEvents:UIControlEventTouchUpInside];
         
         return cell;
     }else{
@@ -826,21 +800,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         return hCell;
     }else{
         return 40.0;
-    }
-}
-
-//  Get icon tương ứng với loại phone
-- (NSString *)getTypeOfPhone: (NSString *)typePhone {
-    if ([typePhone isEqualToString: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:type_phone_mobile]]) {
-        return @"btn_contacts_mobile.png";
-    }else if ([typePhone isEqualToString: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:type_phone_work]]){
-        return @"btn_contacts_work.png";
-    }else if ([typePhone isEqualToString: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:type_phone_fax]]){
-        return @"btn_contacts_fax.png";
-    }else if ([typePhone isEqualToString: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:type_phone_home]]){
-        return @"btn_contacts_home.png";
-    }else{
-        return @"btn_contacts_mobile.png";
     }
 }
 

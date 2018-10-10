@@ -90,12 +90,12 @@
         _tbContacts.hidden = NO;
     }
     
+    if ([LinphoneAppDelegate sharedInstance].needToReloadContactList) {
+        [_tbContacts reloadData];
+        [LinphoneAppDelegate sharedInstance].needToReloadContactList = NO;
+    }
+    
     //  notifications
-    /*  Leo Kelvin
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableScrolledForTableView:)
-                                                 name:k11EnableScrolledForTableView object:nil];
-    */
-    //  Add notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenLoadContactFinish)
                                                  name:finishLoadContacts object:nil];
     
@@ -168,18 +168,6 @@
     _lbNoContacts.font = textFont;
     _lbNoContacts.textColor = UIColor.grayColor;
     _lbNoContacts.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_no_contact];
-}
-
-- (void)enableScrolledForTableView: (NSNotification *)notif{
-    id object = [notif object];
-    if ([object isKindOfClass:[NSNumber class]]) {
-        int value = [object intValue];
-        if (value == 1) {
-            _tbContacts.scrollEnabled = YES;
-        }else{
-            _tbContacts.scrollEnabled = NO;
-        }
-    }
 }
 
 - (void)getSectionsForContactsList: (NSMutableArray *)contactList {
