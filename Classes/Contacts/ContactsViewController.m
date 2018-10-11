@@ -105,6 +105,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     UIDevice *device = [UIDevice currentDevice];
     device.proximityMonitoringEnabled = NO;
     
+    if (![_tfSearch.text isEqualToString:@""]) {
+        _icClearSearch.hidden = NO;
+    }else{
+        _icClearSearch.hidden = YES;
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeKeyboard)
                                                  name:@"closeKeyboard" object:nil];
 }
@@ -262,8 +268,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     imgSearch.image = [UIImage imageNamed:@"ic_search"];
     [_tfSearch addSubview: imgSearch];
     [imgSearch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.equalTo(_tfSearch);
-        make.width.mas_equalTo(hTextfield);
+        make.centerY.equalTo(_tfSearch.mas_centerY);
+        make.left.equalTo(_tfSearch).offset(8.0);
+        make.width.height.mas_equalTo(17.0);
     }];
     
     _icClearSearch.backgroundColor = UIColor.clearColor;
@@ -308,6 +315,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 //  Added by Khai Le on 04/10/2018
 - (void)onSearchContactChange: (UITextField *)textField {
+    if (![textField.text isEqualToString:@""]) {
+        _icClearSearch.hidden = NO;
+    }else{
+        _icClearSearch.hidden = YES;
+    }
+    
     [searchTimer invalidate];
     searchTimer = nil;
     searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self

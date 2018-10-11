@@ -71,6 +71,14 @@ static UICompositeViewDescription *compositeDescription = nil;
     [self updateView];
 }
 
+- (IBAction)btnCallPressed:(UIButton *)sender {
+    if (_phoneNumberDetail != nil && ![_phoneNumberDetail isEqualToString:@""]) {
+        [SipUtils makeCallWithPhoneNumber: _phoneNumberDetail];
+    }else{
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"The phone number can not empty"] duration:2.0 position:CSToastPositionCenter];
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -335,20 +343,48 @@ static UICompositeViewDescription *compositeDescription = nil;
         
         if ([aCall._status isEqualToString: success_call])
         {
-            int timeValue = 0;
-            float time = (float)aCall._duration/60;
-            if (time > (int)time) {
-                timeValue = (int)time + 1;
-            }
-            if (timeValue == 0) {
-                timeValue = 1;
+            if (aCall._duration < 60) {
+                cell.lbDuration.text = [NSString stringWithFormat:@"%d %@", aCall._duration, [appDelegate.localization localizedStringForKey:@"sec"]];
+            }else{
+                NSInteger hour = aCall._duration/3600;
+                NSInteger minutes = (aCall._duration - hour*3600)/60;
+                NSInteger seconds = aCall._duration - hour*3600 - minutes*60;
+                
+                NSString *str = @"";
+                if (hour > 0) {
+                    if (hour == 1) {
+                        str = [NSString stringWithFormat:@"%ld %@", hour, [appDelegate.localization localizedStringForKey:@"hour"]];
+                    }else{
+                        str = [NSString stringWithFormat:@"%ld %@", hour, [appDelegate.localization localizedStringForKey:@"hours"]];
+                    }
+                }
+                
+                if (minutes > 0) {
+                    if (![str isEqualToString:@""]) {
+                        if (minutes == 1) {
+                            str = [NSString stringWithFormat:@"%@ %ld %@", str, minutes, [appDelegate.localization localizedStringForKey:@"minute"]];
+                        }else{
+                            str = [NSString stringWithFormat:@"%@ %ld %@", str, minutes, [appDelegate.localization localizedStringForKey:@"minutes"]];
+                        }
+                    }else{
+                        if (minutes == 1) {
+                            str = [NSString stringWithFormat:@"%ld %@", minutes, [appDelegate.localization localizedStringForKey:@"minute"]];
+                        }else{
+                            str = [NSString stringWithFormat:@"%ld %@", minutes, [appDelegate.localization localizedStringForKey:@"minutes"]];
+                        }
+                    }
+                }
+                
+                if (seconds > 0) {
+                    if (![str isEqualToString:@""]) {
+                        str = [NSString stringWithFormat:@"%@ %ld %@", str, seconds, [appDelegate.localization localizedStringForKey:@"sec"]];
+                    }else{
+                        str = [NSString stringWithFormat:@"%ld %@", seconds, [appDelegate.localization localizedStringForKey:@"sec"]];
+                    }
+                }
+                cell.lbDuration.text = str;
             }
             
-            if (time == 1) {
-                cell.lbDuration.text = [NSString stringWithFormat:@"%d %@", timeValue, [appDelegate.localization localizedStringForKey:text_minute]];
-            }else{
-                cell.lbDuration.text = [NSString stringWithFormat:@"%d %@", timeValue, [appDelegate.localization localizedStringForKey:text_minutes]];
-            }
             cell.lbTime.text = aCall._time;
             if ([aCall._callDirection isEqualToString:@"Incomming"]) {
                 cell.imgStatus.image = [UIImage imageNamed:@"ic_call_incoming.png"];
@@ -357,7 +393,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                 cell.imgStatus.image = [UIImage imageNamed:@"ic_call_outgoing.png"];
                 cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:@"Outgoing call"];
             }
-            cell.lbDuration.hidden = NO;
         }else{
             if ([aCall._status isEqualToString: aborted_call] || [aCall._status isEqualToString: declined_call]) {
                 cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:@"Aborted call"];
@@ -367,7 +402,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             }
             cell.imgStatus.image = [UIImage imageNamed:@"ic_call_missed.png"];
             cell.lbTime.text = aCall._time;
-            cell.lbDuration.hidden = YES;
+            cell.lbDuration.text = [NSString stringWithFormat:@"%d %@", aCall._duration, [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"sec"]];
         }
     }
     return cell;
@@ -468,6 +503,18 @@ static UICompositeViewDescription *compositeDescription = nil;
                 break;
         }
     }
+}
+
+- (NSString *)getEventTimeFromDuration:(NSTimeInterval)duration
+{
+    NSDateComponentsFormatter *cFormatter = [[NSDateComponentsFormatter alloc] init];
+    cFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleShort;
+    cFormatter.includesApproximationPhrase = NO;
+    cFormatter.includesTimeRemainingPhrase = NO;
+    cFormatter.allowedUnits = NSCalendarUnitHour |NSCalendarUnitMinute | NSCalendarUnitSecond;
+    cFormatter.zeroFormattingBehavior = NSDateComponentsFormatterZeroFormattingBehaviorDropAll;
+    
+    return [cFormatter stringFromTimeInterval:duration];
 }
 
 @end

@@ -163,8 +163,6 @@
         [self getSectionsForContactsList: [LinphoneAppDelegate sharedInstance].pbxContacts];
     }
     return [[contactSections allKeys] count];
-    
-    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -184,6 +182,7 @@
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"PBXContactTableCell" owner:self options:nil];
         cell = topLevelObjects[0];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     NSString *key = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section];
     PBXContact *contact = [[contactSections objectForKey: key] objectAtIndex:indexPath.row];
@@ -197,8 +196,14 @@
     
     if (contact._number != nil && ![contact._number isKindOfClass:[NSNull class]]) {
         cell._lbPhone.text = contact._number;
+        cell.icCall.hidden = NO;
+        [cell.icCall setTitle:contact._number forState:UIControlStateNormal];
+        [cell.icCall addTarget:self
+                        action:@selector(onIconCallClicked:)
+              forControlEvents:UIControlEventTouchUpInside];
     }else{
         cell._lbPhone.text = @"";
+        cell.icCall.hidden = YES;
     }
     
     if ([contact._name isEqualToString:@""]) {
@@ -263,20 +268,6 @@
     return tmpArr;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *key = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section];
-    PBXContact *contact = [[contactSections objectForKey: key] objectAtIndex:indexPath.row];
-    NSLog(@"--------%@: %@", contact._name, contact._number);
-//    PBXContact *contact;
-//    if (isSearching) {
-//        contact = [listSearch objectAtIndex:indexPath.row];
-//    }else{
-//        contact = [[LinphoneAppDelegate sharedInstance].pbxContacts objectAtIndex:indexPath.row];
-//    }
-//    [self callPBXWithNumber: contact._number];
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return hCell;
 }
@@ -293,21 +284,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"closeKeyboard" object:nil];
 }
 
-- (void)callPBXWithNumber: (NSString *)pbxNumber {
-    LinphoneAddress *addr = linphone_core_interpret_url(LC, pbxNumber.UTF8String);
-    [LinphoneManager.instance call:addr];
-    if (addr)
-        linphone_address_destroy(addr);
-    
-    OutgoingCallViewController *controller = VIEW(OutgoingCallViewController);
-    if (controller != nil) {
-        [controller setPhoneNumberForView: pbxNumber];
-    }
-    [[PhoneMainView instance] changeCurrentView:[OutgoingCallViewController compositeViewDescription] push:TRUE];
-}
-
-
-
 //  Added by Khai Le on 04/10/2018
 - (void)searchContactWithValue: (NSNotification *)notif {
     id object = [notif object];
@@ -315,15 +291,24 @@
     {
         if ([object isEqualToString:@""]) {
             isSearching = NO;
+            [_tbContacts reloadData];
         }else{
             isSearching = YES;
-        }
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            [self startSearchPBXContactsWithContent: object];
-            dispatch_async(dispatch_get_main_queue(), ^(void){
-                [_tbContacts reloadData];
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                [self startSearchPBXContactsWithContent: object];
+                dispatch_async(dispatch_get_main_queue(), ^(void){
+                    if (listSearch.count > 0) {
+                        [_lbContacts setHidden: true];
+                        [_tbContacts setHidden: false];
+                        [_tbContacts reloadData];
+                    }else{
+                        [_lbContacts setHidden: false];
+                        [_tbContacts setHidden: true];
+                    }
+                });
             });
-        });
+        }
     }
 }
 
@@ -333,15 +318,6 @@
     NSArray *filter = [[LinphoneAppDelegate sharedInstance].pbxContacts filteredArrayUsingPredicate: predicate];
     if (filter.count > 0) {
         [listSearch addObjectsFromArray: filter];
-    }
-    
-    if (listSearch.count > 0) {
-        [_lbContacts setHidden: true];
-        [_tbContacts setHidden: false];
-        [_tbContacts reloadData];
-    }else{
-        [_lbContacts setHidden: false];
-        [_tbContacts setHidden: true];
     }
 }
 
@@ -387,6 +363,15 @@
     // Sort each section array
     for (NSString *key in [contactSections allKeys]){
         [[contactSections objectForKey:key] sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"_name" ascending:YES]]];
+    }
+}
+
+- (void)onIconCallClicked: (UIButton *)sender {
+    if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
+        NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
+        if (![phoneNumber isEqualToString:@""]) {
+            [SipUtils makeCallWithPhoneNumber: phoneNumber];
+        }
     }
 }
 

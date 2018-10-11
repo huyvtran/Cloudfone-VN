@@ -101,9 +101,6 @@
 + (NSString *)getPBXNameWithPhoneNumber: (NSString *)phonenumber;
 + (NSString *)getAvatarOfContact: (int)idContact;
 
-+ (NSString *)getDateStringFromTimeInterval: (double)timeInterval;
-+ (NSString *)getTimeStringFromTimeInterval:(double)timeInterval;
-
 + (UIImage *)getImageDataWithName: (NSString *)imageName;
 
 //  Lấy status của user
@@ -123,5 +120,8 @@
 
 // Remove all special characters from string
 + (NSString *)removeAllSpecialInString: (NSString *)phoneString;
+
++ (NSString *)getDateStringFromTimeInterval: (double)timeInterval;
++ (NSString *)getTimeStringFromTimeInterval:(double)timeInterval;
 
 @end

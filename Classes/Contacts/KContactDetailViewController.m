@@ -286,22 +286,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     return phoneString;
 }
 
-- (void)makeCallWithPhoneNumber: (NSString *)phoneNumber {
-    if (phoneNumber != nil && phoneNumber.length > 0)
-    {
-        LinphoneAddress *addr = linphone_core_interpret_url(LC, phoneNumber.UTF8String);
-        [LinphoneManager.instance call:addr];
-        if (addr)
-            linphone_address_destroy(addr);
-        
-        OutgoingCallViewController *controller = VIEW(OutgoingCallViewController);
-        if (controller != nil) {
-            [controller setPhoneNumberForView: phoneNumber];
-        }
-        [[PhoneMainView instance] changeCurrentView:[OutgoingCallViewController compositeViewDescription] push:TRUE];
-    }
-}
-
 #pragma mark - Tableview Delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;

@@ -15,7 +15,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *_imgAvatar;
 @property (weak, nonatomic) IBOutlet UIImageView *_imgStatus;
 @property (weak, nonatomic) IBOutlet UILabel *_lbName;
-@property (weak, nonatomic) IBOutlet UILabel *_lbDateTime;
 @property (weak, nonatomic) IBOutlet UIButton *_btnCall;
 @property (weak, nonatomic) IBOutlet UILabel *_lbSepa;
 @property (weak, nonatomic) IBOutlet UILabel *_lbPhone;
@@ -25,7 +24,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *lbDuration;
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
-
-- (void)setupUIForViewWithStatus: (BOOL)isDelete;
 
 @end

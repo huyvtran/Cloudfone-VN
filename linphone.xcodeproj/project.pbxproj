@@ -726,6 +726,8 @@
 		845056CC1FE596200035B6B3 /* OutgoingCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845056CA1FE596200035B6B3 /* OutgoingCallViewController.m */; };
 		845056CD1FE596200035B6B3 /* OutgoingCallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 845056CB1FE596200035B6B3 /* OutgoingCallViewController.xib */; };
 		84515E67200EEE1A007246E9 /* msg.wav in Resources */ = {isa = PBXBuildFile; fileRef = 84515E66200EEE19007246E9 /* msg.wav */; };
+		8459953A216F8CE00004143A /* ic_add_def.png in Resources */ = {isa = PBXBuildFile; fileRef = 84599532216F8CDE0004143A /* ic_add_def.png */; };
+		8459953B216F8CE00004143A /* ic_add_def@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84599539216F8CDF0004143A /* ic_add_def@2x.png */; };
 		845A13311FE2C70300640B51 /* PBXContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 845A132F1FE2C70300640B51 /* PBXContactTableCell.m */; };
 		845A13321FE2C70300640B51 /* PBXContactTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 845A13301FE2C70300640B51 /* PBXContactTableCell.xib */; };
 		8462F40A20E73BAB005964D7 /* bg_chat_default.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8462F40320E73BAA005964D7 /* bg_chat_default.jpg */; };
@@ -1963,6 +1965,8 @@
 		845056CA1FE596200035B6B3 /* OutgoingCallViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OutgoingCallViewController.m; sourceTree = "<group>"; };
 		845056CB1FE596200035B6B3 /* OutgoingCallViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OutgoingCallViewController.xib; sourceTree = "<group>"; };
 		84515E66200EEE19007246E9 /* msg.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = msg.wav; sourceTree = "<group>"; };
+		84599532216F8CDE0004143A /* ic_add_def.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_add_def.png; sourceTree = "<group>"; };
+		84599539216F8CDF0004143A /* ic_add_def@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_add_def@2x.png"; sourceTree = "<group>"; };
 		845A132E1FE2C70300640B51 /* PBXContactTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PBXContactTableCell.h; path = AppUI/PBXContactTableCell.h; sourceTree = "<group>"; };
 		845A132F1FE2C70300640B51 /* PBXContactTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PBXContactTableCell.m; path = AppUI/PBXContactTableCell.m; sourceTree = "<group>"; };
 		845A13301FE2C70300640B51 /* PBXContactTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PBXContactTableCell.xib; path = AppUI/PBXContactTableCell.xib; sourceTree = "<group>"; };
@@ -3326,6 +3330,8 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				84599532216F8CDE0004143A /* ic_add_def.png */,
+				84599539216F8CDF0004143A /* ic_add_def@2x.png */,
 				8439F746216EC06900110D26 /* hotline_avatar.png */,
 				15857C01216E0AF800DB5237 /* ic_change_photo.png */,
 				15857BFF216DED4700DB5237 /* call_default_mini.png */,
@@ -5226,6 +5232,7 @@
 				63CDC45E1C3BDE370085F529 /* msg.caf in Resources */,
 				633FEE6D1D3CD5590014B822 /* footer_dialer_disabled@2x.png in Resources */,
 				633FEF171D3CD55A0014B822 /* pause_small_disabled@2x.png in Resources */,
+				8459953A216F8CE00004143A /* ic_add_def.png in Resources */,
 				D38187DD15FE348A00C3EDCA /* AssistantView.xib in Resources */,
 				633FEDA61D3CD5590014B822 /* back_disabled.png in Resources */,
 				8489DED02160B16100A7A1DD /* NewSettingCell.xib in Resources */,
@@ -5404,6 +5411,7 @@
 				153D002D2164D537007B69B3 /* menu_keypad_en_act.png in Resources */,
 				633FEF151D3CD55A0014B822 /* pause_small_default@2x.png in Resources */,
 				633FEDCB1D3CD5590014B822 /* call_outgoing@2x.png in Resources */,
+				8459953B216F8CE00004143A /* ic_add_def@2x.png in Resources */,
 				633FEE8B1D3CD5590014B822 /* linphone_user@2x.png in Resources */,
 				633FEF501D3CD55A0014B822 /* valid_disabled.png in Resources */,
 				631348321B6FA53300C6BDCB /* rootca.pem in Resources */,

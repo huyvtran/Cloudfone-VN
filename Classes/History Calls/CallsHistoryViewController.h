@@ -29,6 +29,5 @@ typedef enum eTypeHistory{
 - (IBAction)_btnEditPressed:(id)sender;
 - (IBAction)_iconAllClicked:(id)sender;
 - (IBAction)_iconMissedClicked:(id)sender;
-- (IBAction)_btnDonePressed:(id)sender;
 
 @end

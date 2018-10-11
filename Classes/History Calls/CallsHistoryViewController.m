@@ -142,19 +142,14 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnEditPressed:(id)sender {
-    _btnEdit.hidden = YES;
-    _iconAll.hidden = YES;
-    _iconMissed.hidden = YES;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:editHistoryCallView object:nil];
-}
-
-- (IBAction)_btnDonePressed:(id)sender {
-    _btnEdit.hidden = NO;
-    _iconAll.hidden = NO;
-    _iconMissed.hidden = NO;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:finishRemoveHistoryCall object:nil];
+    NSString *title = [(UIButton *)sender currentTitle];
+    if ([title isEqualToString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Done"]]) {
+        [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete"] forState:UIControlStateNormal];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"deleteHistoryCallsChoosed" object:nil];
+    }else{
+        [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Done"] forState:UIControlStateNormal];
+        [[NSNotificationCenter defaultCenter] postNotificationName:editHistoryCallView object:nil];
+    }
 }
 
 #pragma mark – UIPageViewControllerDelegate Method

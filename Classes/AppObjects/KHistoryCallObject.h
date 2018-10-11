@@ -30,5 +30,6 @@
 @property (nonatomic, strong) NSString *_prefixPhone;
 @property (nonatomic, strong) NSString *_phoneAvatar;
 @property (nonatomic, assign) long duration;
+@property (nonatomic, assign) long timeInt;
 
 @end

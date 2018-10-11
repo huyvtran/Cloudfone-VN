@@ -288,6 +288,15 @@
     
     cell.tag = contact._id_contact;
     cell.phone.text = contact._sipPhone;
+    if (![contact._sipPhone isEqualToString:@""] && contact._sipPhone != nil) {
+        cell.icCall.hidden = NO;
+        [cell.icCall setTitle:contact._sipPhone forState:UIControlStateNormal];
+        [cell.icCall addTarget:self
+                        action:@selector(onIconCallClicked:)
+              forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        cell.icCall.hidden = YES;
+    }
     
     return cell;
 }
@@ -396,6 +405,15 @@
         NSArray *filter = [contact._listPhone filteredArrayUsingPredicate: predicate];
         if (filter.count > 0) {
             [_searchResults addObject: contact];
+        }
+    }
+}
+
+- (void)onIconCallClicked: (UIButton *)sender {
+    if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
+        NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
+        if (![phoneNumber isEqualToString:@""]) {
+            [SipUtils makeCallWithPhoneNumber: phoneNumber];
         }
     }
 }

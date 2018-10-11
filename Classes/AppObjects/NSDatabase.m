@@ -125,6 +125,7 @@ HMLocalization *localization;
         NSString *callTime      = [rsDict objectForKey:@"time"];
         NSString *callDate      = [rsDict objectForKey:@"date"];
         NSString *phoneNumber   = [rsDict objectForKey:@"phone_number"];
+        long timeInt   = [[rsDict objectForKey:@"time_int"] longValue];
         
         aCall._prefixPhone = @"";
         aCall._phoneNumber = phoneNumber;
@@ -138,6 +139,7 @@ HMLocalization *localization;
         aCall._phoneName = [infos objectAtIndex: 0];
         aCall._phoneAvatar = [infos objectAtIndex: 1];
         aCall.duration = [[rsDict objectForKey:@"duration"] intValue];
+        aCall.timeInt = timeInt;
         
         [resultArr addObject: aCall];
     }

@@ -1126,3 +1126,10 @@
 "Yes"          =   "Yes"
 "No"           =   "No"
 "The phone number can not empty" = "The phone number can not empty"
+"sec" = "sec"
+"Done" = "Done"
+
+"hours" = "hours"
+"hour" = "hour"
+"minutes" = "minutes"
+"minute" = "minute"

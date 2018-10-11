@@ -74,12 +74,12 @@
     
     [self getMissedHistoryCallForUser];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(btnDoneRemoveHistoryCallPressed)
-                                                 name:finishRemoveHistoryCall object:nil];
-    
     //  Sự kiện click trên icon Edit
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beginEditHistoryView)
                                                  name:editHistoryCallView object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteHistoryCallsChoosed)
+                                                 name:@"deleteHistoryCallsChoosed" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getMissedHistoryCallForUser)
                                                  name:reloadHistoryCall object:nil];
@@ -126,20 +126,6 @@
 //  Click trên button Edit
 - (void)beginEditHistoryView {
     isDeleted = true;
-    [_tbListCalls reloadData];
-}
-
-//  Nhấn nút xoá lịch sử cuộc gọi
-- (void)btnDoneRemoveHistoryCallPressed {
-    isDeleted = false;
-    if (listDelete != nil && listDelete.count > 0) {
-        for (int iCount=0; iCount<listDelete.count; iCount++) {
-            int idHisCall = [[listDelete objectAtIndex: iCount] intValue];
-            NSString *recordFile = [NSDatabase getRecordFileNameOfCall: idHisCall];
-            [NSDatabase deleteRecordCallHistory:idHisCall withRecordFile: recordFile];
-        }
-    }
-    [self reGetListCallsForHistory];
     [_tbListCalls reloadData];
 }
 
@@ -264,7 +250,6 @@
         NSData *imgData = [[NSData alloc] initWithData:[NSData dataFromBase64String: aCall._phoneAvatar]];
         cell._imgAvatar.image = [UIImage imageWithData: imgData];
     }
-    cell._lbDateTime.text = aCall._callTime;
     
     if (isDeleted) {
         cell._cbDelete.hidden = NO;
@@ -289,8 +274,7 @@
     [cell._btnCall addTarget:self
                       action:@selector(btnCallOnCellPressed:)
             forControlEvents:UIControlEventTouchUpInside];
-    cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, _tbListCalls.frame.size.width, hCell);
-    [cell setupUIForViewWithStatus: isDeleted];
+    
     return cell;
 }
 
@@ -381,21 +365,28 @@
 }
 
 - (void)btnCallOnCellPressed: (UIButton *)sender {
-    NSString *phoneNumber = [sender.titleLabel text];
-    if (![phoneNumber isEqualToString: @""]) {
-        LinphoneAddress *addr = linphone_core_interpret_url(LC, phoneNumber.UTF8String);
-        [LinphoneManager.instance call:addr];
-        if (addr)
-            linphone_address_destroy(addr);
-        
-        OutgoingCallViewController *controller = VIEW(OutgoingCallViewController);
-        if (controller != nil) {
-            [controller setPhoneNumberForView: phoneNumber];
+    if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
+        NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
+        if (![phoneNumber isEqualToString:@""]) {
+            [SipUtils makeCallWithPhoneNumber: phoneNumber];
         }
-        [[PhoneMainView instance] changeCurrentView:[OutgoingCallViewController compositeViewDescription] push:TRUE];
-    }else{
-        [self.view makeToast:[localization localizedStringForKey:text_phone_not_exists] duration:2.0 position:CSToastPositionCenter];
+        return;
     }
+    [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"]
+                duration:2.0 position:CSToastPositionCenter];
+}
+
+- (void)deleteHistoryCallsChoosed {
+    isDeleted = false;
+    if (listDelete != nil && listDelete.count > 0) {
+        for (int iCount=0; iCount<listDelete.count; iCount++) {
+            int idHisCall = [[listDelete objectAtIndex: iCount] intValue];
+            NSString *recordFile = [NSDatabase getRecordFileNameOfCall: idHisCall];
+            [NSDatabase deleteRecordCallHistory:idHisCall withRecordFile: recordFile];
+        }
+    }
+    [self reGetListCallsForHistory];
+    [_tbListCalls reloadData];
 }
 
 @end

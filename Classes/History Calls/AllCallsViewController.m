@@ -68,6 +68,7 @@
     [super viewWillAppear:animated];
     
     [self showContentWithCurrentLanguage];
+    [self getHistoryCallForUser];
     
     if (waitingHud == nil) {
         //  add waiting view
@@ -83,8 +84,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beginEditHistoryView)
                                                  name:editHistoryCallView object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(btnDoneRemoveHistoryCallPressed)
-                                                 name:finishRemoveHistoryCall object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteHistoryCallsChoosed)
+                                                 name:@"deleteHistoryCallsChoosed" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getHistoryCallForUser)
                                                  name:reloadHistoryCall object:nil];
@@ -92,8 +93,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear: animated];
-    
-    [self getHistoryCallForUser];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -134,20 +133,6 @@
 
 - (void)showContentWithCurrentLanguage {
     _lbNoCalls.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_no_recent_call];
-}
-
-//  Nhấn nút xoá lịch sử cuộc gọi
-- (void)btnDoneRemoveHistoryCallPressed {
-    isDeleted = false;
-    if (listDelete != nil && listDelete.count > 0) {
-        for (int iCount=0; iCount<listDelete.count; iCount++) {
-            int idHisCall = [[listDelete objectAtIndex: iCount] intValue];
-            NSString *recordFile = [NSDatabase getRecordFileNameOfCall: idHisCall];
-            [NSDatabase deleteRecordCallHistory:idHisCall withRecordFile: recordFile];
-        }
-    }
-    [self reGetListCallsForHistory];
-    [_tbListCalls reloadData];
 }
 
 //  Click trên button Edit
@@ -249,13 +234,22 @@
         NSData *imgData = [[NSData alloc] initWithData:[NSData dataFromBase64String: aCall._phoneAvatar]];
         cell._imgAvatar.image = [UIImage imageWithData: imgData];
     }
-    cell._lbDateTime.text = aCall._callTime;
-    cell.lbDuration.text = [NSString stringWithFormat:@"%ld s", aCall.duration];
+    
+    NSString *strTime = [AppUtils getTimeStringFromTimeInterval: aCall.timeInt];
+    cell.lbTime.text = strTime;
+    if (aCall.duration < 60) {
+        cell.lbDuration.text = [NSString stringWithFormat:@"%ld %@", aCall.duration, [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"sec"]];
+    }else{
+        cell.lbDuration.text = [NSString stringWithFormat:@"%ld s", aCall.duration];
+    }
     
     if (isDeleted) {
         cell._cbDelete.hidden = NO;
+        cell._btnCall.hidden = YES;
     }else{
         cell._cbDelete.hidden = YES;
+        cell._btnCall.hidden = NO;
+        
         if ([aCall._callDirection isEqualToString: incomming_call]) {
             if ([aCall._status isEqualToString: missed_call]) {
                 cell._imgStatus.image = [UIImage imageNamed:@"ic_call_missed.png"];
@@ -373,8 +367,20 @@
         }
         return;
     }
-    [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"]
-                duration:2.0 position:CSToastPositionCenter];
+    [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"] duration:2.0 position:CSToastPositionCenter];
+}
+
+- (void)deleteHistoryCallsChoosed {
+    isDeleted = false;
+    if (listDelete != nil && listDelete.count > 0) {
+        for (int iCount=0; iCount<listDelete.count; iCount++) {
+            int idHisCall = [[listDelete objectAtIndex: iCount] intValue];
+            NSString *recordFile = [NSDatabase getRecordFileNameOfCall: idHisCall];
+            [NSDatabase deleteRecordCallHistory:idHisCall withRecordFile: recordFile];
+        }
+    }
+    [self reGetListCallsForHistory];
+    [_tbListCalls reloadData];
 }
 
 @end

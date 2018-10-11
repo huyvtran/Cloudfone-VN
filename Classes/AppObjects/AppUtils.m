@@ -793,32 +793,6 @@
     return @"";
 }
 
-//  Convert time interval to nsstring
-+ (NSString *)getDateStringFromTimeInterval: (double)timeInterval
-{
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970: timeInterval];
-    NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
-    if ([calendar isDateInToday:date]) {
-        return NSLocalizedString(@"Today", nil);
-    } else if ([calendar isDateInYesterday:date]) {
-        return NSLocalizedString(@"Yesterday", nil);
-    } else {
-        NSString *formattedDateString = [dateFormatter stringFromDate:date];
-        return formattedDateString;
-    }
-}
-
-+ (NSString *)getTimeStringFromTimeInterval:(double)timeInterval {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Bangkok"]];
-    [dateFormatter setDateFormat:@"HH:mm"];
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970: timeInterval];
-    NSString *formattedDateString = [dateFormatter stringFromDate:date];
-    return formattedDateString;
-}
-
 + (UIImage *)getImageDataWithName: (NSString *)imageName {
     NSString *appDocDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSString *workSpacePath = [appDocDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"files/%@", imageName]];
@@ -1035,6 +1009,32 @@
         }
     }
     return resultStr;
+}
+
+//  Convert time interval to nsstring
++ (NSString *)getDateStringFromTimeInterval: (double)timeInterval
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970: timeInterval];
+    NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
+    if ([calendar isDateInToday:date]) {
+        return [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Today"];
+    } else if ([calendar isDateInYesterday:date]) {
+        return [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Yesterday"];
+    } else {
+        NSString *formattedDateString = [dateFormatter stringFromDate:date];
+        return formattedDateString;
+    }
+}
+
++ (NSString *)getTimeStringFromTimeInterval:(double)timeInterval {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Bangkok"]];
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970: timeInterval];
+    NSString *formattedDateString = [dateFormatter stringFromDate:date];
+    return formattedDateString;
 }
 
 @end

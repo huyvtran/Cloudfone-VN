@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSString *strCallnexId;
 @property (nonatomic, strong) NSString *avatarStr;
 @property (weak, nonatomic) IBOutlet UILabel *_lbSepa;
+@property (weak, nonatomic) IBOutlet UIButton *icCall;
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 @property(nonatomic, assign) Contact *contact;

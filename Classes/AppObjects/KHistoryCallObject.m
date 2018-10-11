@@ -10,6 +10,6 @@
 
 @implementation KHistoryCallObject
 
-@synthesize _callId, _phoneNumber, _callDirection, _status, _callTime, _callDate, _phoneName, _phoneAvatar, _prefixPhone, duration;
+@synthesize _callId, _phoneNumber, _callDirection, _status, _callTime, _callDate, _phoneName, _phoneAvatar, _prefixPhone, duration, timeInt;
 
 @end

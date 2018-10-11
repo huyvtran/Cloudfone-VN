@@ -15,6 +15,4 @@
 @property (weak, nonatomic) IBOutlet UILabel *_lbSepa;
 @property (weak, nonatomic) IBOutlet UIButton *icCall;
 
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
-
 @end

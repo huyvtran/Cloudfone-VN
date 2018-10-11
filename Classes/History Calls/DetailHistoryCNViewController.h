@@ -31,5 +31,6 @@
 @property (nonatomic, strong) NSString *_phoneNumberDetail;
 
 - (void)setPhoneNumberForView:(NSString *)phoneNumberStr;
+- (IBAction)btnCallPressed:(UIButton *)sender;
 
 @end

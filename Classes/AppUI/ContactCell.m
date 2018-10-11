@@ -10,7 +10,7 @@
 #import "Utils.h"
 
 @implementation ContactCell
-@synthesize name, phone, image, strCallnexId, avatarStr, _lbSepa;
+@synthesize name, phone, image, strCallnexId, avatarStr, _lbSepa, icCall;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -33,12 +33,19 @@
         make.width.height.mas_equalTo(45.0);
     }];
     
+    [icCall setTitleColor:UIColor.clearColor forState:UIControlStateNormal];
+    [icCall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.mas_centerY);
+        make.right.equalTo(self).offset(-25.0);
+        make.width.height.mas_equalTo(35.0);
+    }];
+    
     name.font = [UIFont fontWithName:HelveticaNeue size:17.0];
     name.backgroundColor = UIColor.clearColor;
     [name mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(image);
         make.left.equalTo(image.mas_right).offset(10.0);
-        make.right.equalTo(self).offset(-25.0);
+        make.right.equalTo(icCall).offset(-10.0);
         make.bottom.equalTo(image.mas_centerY);
     }];
     
