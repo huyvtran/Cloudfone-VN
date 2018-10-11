@@ -13,7 +13,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    
+    self.contentView.backgroundColor = UIColor.whiteColor;
     if (SCREEN_WIDTH > 320) {
         lbTitle.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
         lbPhone.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
@@ -30,6 +30,7 @@
     lbTitle.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
                                          blue:(50/255.0) alpha:1.0];
     
+    [icCall setTitleColor:UIColor.clearColor forState:UIControlStateNormal];
     icCall.clipsToBounds = YES;
     icCall.layer.borderColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
                                                 blue:(230/255.0) alpha:1.0].CGColor;

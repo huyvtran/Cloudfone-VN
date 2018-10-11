@@ -48,7 +48,6 @@
 
 @interface LinphoneAppDelegate (){
     Reachability* hostReachable;
-    NSArray *listNumber;
     
     ABAddressBookRef addressListBook;
     NSThread *getContactThread;
@@ -79,7 +78,7 @@
 @synthesize _chooseMyAvatar, userImage, _resource;
 @synthesize imageChooseName, imageChoose;
 @synthesize _allPhonesDict, _allIDDict, contactLoaded;
-@synthesize webService, keepAwakeTimer;
+@synthesize webService, keepAwakeTimer, listNumber;
 
 #pragma mark - Lifecycle Functions
 
@@ -1548,8 +1547,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 aContact._company = company;
             }
         }
-        //  Closed by Khai Le on 09/10/2018
-        //  aContact._sipPhone = [self getSipIdOfContact: aPerson];
+        
         aContact._avatar = [self getAvatarOfContact: aPerson];
         aContact._listPhone = [self getListPhoneOfContactPerson: aPerson withName: aContact._fullName];
         [listContacts addObject: aContact];
@@ -1582,6 +1580,10 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                         aContact._name = nameValue;
                         aContact._number = curPhoneValue;
                         
+                        NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: nameValue];
+                        NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
+                        aContact._nameForSearch = nameForSearch;
+                        
                         [pbxContacts addObject: aContact];
                     }
                 }
@@ -1609,7 +1611,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             CFStringRef locLabel = ABMultiValueCopyLabelAtIndex(phones, j);
             
             NSString *phoneNumber = (__bridge NSString *)phoneNumberRef;
-            phoneNumber = [self removeAllSpecialInString:phoneNumber];
+            phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
             
             if (phoneNumber != nil) {
                 int idOfContact = ABRecordGetRecordID(aPerson);
@@ -1623,7 +1625,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                 anItem._iconStr = @"btn_contacts_home.png";
                 anItem._titleStr = [localization localizedStringForKey:text_phone_home];
-                anItem._valueStr = [self removeAllSpecialInString:phoneNumber];
+                anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                 anItem._buttonStr = @"contact_detail_icon_call.png";
                 anItem._typePhone = type_phone_home;
                 [result addObject: anItem];
@@ -1632,7 +1634,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_home.png";
                     anItem._titleStr = [localization localizedStringForKey:text_phone_home];
-                    anItem._valueStr = [self removeAllSpecialInString:phoneNumber];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_home;
                     [result addObject: anItem];
@@ -1641,7 +1643,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_work.png";
                     anItem._titleStr = [localization localizedStringForKey:text_phone_work];
-                    anItem._valueStr = [self removeAllSpecialInString:phoneNumber];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_work;
                     [result addObject: anItem];
@@ -1650,7 +1652,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_mobile.png";
                     anItem._titleStr = [localization localizedStringForKey:text_phone_mobile];
-                    anItem._valueStr = [self removeAllSpecialInString:phoneNumber];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_mobile;
                     [result addObject: anItem];
@@ -1659,7 +1661,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_fax.png";
                     anItem._titleStr = [localization localizedStringForKey:text_phone_fax];
-                    anItem._valueStr = [self removeAllSpecialInString:phoneNumber];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_fax;
                     [result addObject: anItem];
@@ -1668,7 +1670,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_fax.png";
                     anItem._titleStr = [localization localizedStringForKey:text_phone_other];
-                    anItem._valueStr = [self removeAllSpecialInString:phoneNumber];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_other;
                     [result addObject: anItem];
@@ -1676,7 +1678,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_mobile.png";
                     anItem._titleStr = [localization localizedStringForKey:text_phone_mobile];
-                    anItem._valueStr = [self removeAllSpecialInString:phoneNumber];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_mobile;
                     [result addObject: anItem];
@@ -1685,20 +1687,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         }
     }
     return result;
-}
-
-//  Hàm loại bỏ tất cả các ký tự ko là số ra khỏi chuỗi
-- (NSString *)removeAllSpecialInString: (NSString *)phoneString {
-    
-    NSString *resultStr = @"";
-    for (int strCount=0; strCount<phoneString.length; strCount++) {
-        char characterChar = [phoneString characterAtIndex: strCount];
-        NSString *characterStr = [NSString stringWithFormat:@"%c", characterChar];
-        if ([listNumber containsObject: characterStr]) {
-            resultStr = [NSString stringWithFormat:@"%@%@", resultStr, characterStr];
-        }
-    }
-    return resultStr;
 }
 
 - (NSString *)getAvatarOfContact: (ABRecordRef)aPerson

@@ -221,4 +221,22 @@
     }
 }
 
++ (BOOL)makeCallWithPhoneNumber: (NSString *)phoneNumber {
+    if (phoneNumber != nil && phoneNumber.length > 0)
+    {
+        LinphoneAddress *addr = linphone_core_interpret_url(LC, phoneNumber.UTF8String);
+        [LinphoneManager.instance call:addr];
+        if (addr)
+            linphone_address_destroy(addr);
+        
+        CallView *controller = VIEW(CallView);
+        if (controller != nil) {
+            controller.phoneNumber = phoneNumber;
+        }
+        [[PhoneMainView instance] changeCurrentView:[CallView compositeViewDescription] push:TRUE];
+        return YES;
+    }
+    return NO;
+}
+
 @end

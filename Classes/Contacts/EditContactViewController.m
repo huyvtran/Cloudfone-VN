@@ -39,8 +39,6 @@
     PECropViewController *PECropController;
     UIActionSheet *optionsPopup;
     
-    NSArray *listNumber;
-    
     UIView *viewFooter;
     UIButton *btnCancel;
     UIButton *btnSave;
@@ -91,10 +89,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
-    
-    if (listNumber == nil) {
-        listNumber = [[NSArray alloc] initWithObjects: @"+", @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil];
-    }
     
     [self showContentWithCurrentLanguage];
     
@@ -699,7 +693,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             NSString *phoneNumber = (__bridge NSString *)phoneNumberRef;
             if (phoneNumber != nil) {
                 int idOfContact = ABRecordGetRecordID(aPerson);
-                phoneNumber = [self removeAllSpecialInString:phoneNumber];
+                phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
                 
                 [appDelegate._allPhonesDict setObject:[NSString stringWithFormat:@"%@|%@|%@", contactName, [AppUtils getNameForSearchOfConvertName:contactName], phoneNumber] forKey:phoneNumber];
                 [appDelegate._allIDDict setObject:[NSString stringWithFormat:@"%d", idOfContact] forKey:phoneNumber];
@@ -772,20 +766,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
     }
     return result;
-}
-
-//  Hàm loại bỏ tất cả các ký tự ko là số ra khỏi chuỗi
-- (NSString *)removeAllSpecialInString: (NSString *)phoneString {
-    
-    NSString *resultStr = @"";
-    for (int strCount=0; strCount<phoneString.length; strCount++) {
-        char characterChar = [phoneString characterAtIndex: strCount];
-        NSString *characterStr = [NSString stringWithFormat:@"%c", characterChar];
-        if ([listNumber containsObject: characterStr]) {
-            resultStr = [NSString stringWithFormat:@"%@%@", resultStr, characterStr];
-        }
-    }
-    return resultStr;
 }
 
 - (void)saveContactPressed: (UIButton *)sender {

@@ -28,7 +28,6 @@
 @property (retain, nonatomic) IBOutlet UITableView *_tbContactInfo;
 
 - (IBAction)_iconBackClicked:(id)sender;
-- (IBAction)_iconDeleteClicked:(id)sender;
 - (IBAction)_iconEditClicked:(id)sender;
 - (IBAction)buttonCallPBXPressed:(UIButton *)sender;
 

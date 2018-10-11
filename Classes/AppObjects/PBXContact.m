@@ -10,6 +10,6 @@
 
 @implementation PBXContact
 
-@synthesize _name, _number, _idContact;
+@synthesize _name, _number, _nameForSearch, _idContact;
 
 @end

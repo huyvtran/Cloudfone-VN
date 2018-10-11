@@ -104,9 +104,6 @@
 "text_alert_logout_title"   =   "Logout"
 "text_alert_logout_content" =   "Are you sure, you want to logout?"
 
-"text_yes"          =   "Yes"
-"text_no"           =   "No"
-
 "text_pbx_on"       =   "On"
 "text_pbx_off"      =   "Off"
 
@@ -184,9 +181,6 @@
 
 "text_name_number_not_empty" =   "Name and Number can not empty"
 "text_pbx_contact_exists"   =   "This contact already exists!"
-
-"text_popup_delete_contact_title"   =   "Delete contact"
-"text_popup_delete_contact_content" =   "Are you sure, you want to delete this contact?"
 
 "CN_TEXT_CONFERENCE_VC_TITLE"               = "Conference"
 "CN_TEXT_ADD_CONFERENCE"                    = "Add call"
@@ -1126,3 +1120,9 @@
 "Outgoing call" = "Outgoing call"
 "Missed call" = "Missed call"
 "Aborted call" = "Aborted"
+
+"Delete contact" = "Delete contact"
+"Are you sure, you want to delete this contact?" =   "Are you sure, you want to delete this contact?"
+"Yes"          =   "Yes"
+"No"           =   "No"
+"The phone number can not empty" = "The phone number can not empty"

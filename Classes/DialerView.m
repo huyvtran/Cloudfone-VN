@@ -35,6 +35,7 @@
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
 #import "Masonry.h"
+#import "PBXContact.h"
 
 @interface DialerView (){
     UIFont *textFont;
@@ -502,17 +503,30 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         [listPhoneSearched removeAllObjects];
         
-        //  search name
-        [self searchForContactName: searchStr];
-        
-        NSArray *cleanedArray = [[NSSet setWithArray: listPhoneSearched] allObjects];
-        [listPhoneSearched removeAllObjects];
-        [listPhoneSearched addObjectsFromArray: cleanedArray];
+        //  search name with list pbx first
+        [self searchContactInPBXList: searchStr];
+        if (listPhoneSearched.count <= 0) {
+            //  Continue search with person list
+            [self searchForContactName: searchStr];
+            
+            NSArray *cleanedArray = [[NSSet setWithArray: listPhoneSearched] allObjects];
+            [listPhoneSearched removeAllObjects];
+            [listPhoneSearched addObjectsFromArray: cleanedArray];
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^(void){
             [self afterGetContactPhoneBookSuccessfully];
         });
     });
+}
+
+- (void)searchContactInPBXList: (NSString *)search {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_name CONTAINS[cd] %@ OR _number CONTAINS[cd] %@ OR _nameForSearch CONTAINS[cd] %@", search, search, search];
+    NSArray *filter = [[LinphoneAppDelegate sharedInstance].pbxContacts filteredArrayUsingPredicate: predicate];
+    if (filter.count > 0) {
+        [listPhoneSearched addObjectsFromArray: filter];
+    }
+    
 }
 
 - (void)searchForContactName: (NSString *)search {
@@ -533,16 +547,32 @@ static UICompositeViewDescription *compositeDescription = nil;
         _addContactButton.hidden = NO;
         
         if (listPhoneSearched.count > 0) {
-            NSString *value = [listPhoneSearched objectAtIndex: 0];
-            
-            NSArray *tmpArr = [value componentsSeparatedByString:@"|"];
-            if (tmpArr.count >= 3) {
-                NSString *name = [tmpArr firstObject];
-                NSString *phone = [tmpArr lastObject];
+            NSString *name = @"";
+            NSString *phone = @"";
+            NSString *nameForSearch = @"";
+            BOOL isPBXContact = NO;
+            id searchObj = [listPhoneSearched firstObject];
+            if ([searchObj isKindOfClass:[PBXContact class]]) {
+                name = [(PBXContact *)searchObj _name];
+                phone = [(PBXContact *)searchObj _number];
+                nameForSearch = [(PBXContact *)searchObj _nameForSearch];
                 
+                isPBXContact = YES;
+            }else{
+                NSString *value = [listPhoneSearched objectAtIndex: 0];
+                NSArray *tmpArr = [value componentsSeparatedByString:@"|"];
+                if (tmpArr.count >= 3) {
+                    name = [tmpArr firstObject];
+                    phone = [tmpArr lastObject];
+                    nameForSearch = [tmpArr objectAtIndex: 1];
+                }
+            }
+            
+            
+            if (![name isEqualToString:@""] && ![phone isEqualToString:@""]) {
                 // Tô màu cho tên contact đầu tiên được tìm thấy
                 NSMutableAttributedString *nameColor = [[NSMutableAttributedString alloc] initWithString: name];
-                NSString *nameForSearch = [tmpArr objectAtIndex: 1];
+                
                 NSRange firstRange = [nameForSearch rangeOfString: _addressField.text options:NSCaseInsensitiveSearch];
                 
                 if (firstRange.location != NSNotFound) {
@@ -576,11 +606,15 @@ static UICompositeViewDescription *compositeDescription = nil;
                 lbSearchPhone.attributedText = phoneColor;
                 
                 // setup avatar
-                NSString *avatar = [NSDatabase getAvatarOfContactWithPhoneNumber: phone];
-                if (![avatar isEqualToString:@""]) {
-                    imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
-                }else{
+                if (isPBXContact) {
                     imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                }else{
+                    NSString *avatar = [NSDatabase getAvatarOfContactWithPhoneNumber: phone];
+                    if (![avatar isEqualToString:@""]) {
+                        imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
+                    }else{
+                        imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                    }
                 }
                 searchView.hidden = NO;
             }else{
@@ -859,7 +893,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.top.equalTo(_addressField.mas_bottom).offset(10);
         make.centerX.equalTo(_viewNumber.mas_centerX);
         make.height.mas_equalTo(hSearch);
-        make.width.mas_equalTo(220);
+        make.width.mas_equalTo(280);
     }];
     
     imgSearchAvatar = [[UIImageView alloc] init];
@@ -902,13 +936,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)whenTapOnSearchResult {
-    if (listPhoneSearched.count > 0) {
-        NSString *value = [listPhoneSearched firstObject];
-        NSArray *tmpArr = [value componentsSeparatedByString:@"|"];
-        if (tmpArr.count >= 3) {
-            NSString *phone = [tmpArr lastObject];
-            _addressField.text = phone;
-        }
+    NSString *phoneNumber = lbSearchPhone.text;
+    if (![phoneNumber isEqualToString:@""]) {
+        NSString *newPhoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+        _addressField.text = newPhoneNumber;
+        searchView.hidden = YES;
     }
 }
 

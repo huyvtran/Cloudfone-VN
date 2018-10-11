@@ -1024,4 +1024,17 @@
     }
 }
 
+// Remove all special characters from string
++ (NSString *)removeAllSpecialInString: (NSString *)phoneString {
+    NSString *resultStr = @"";
+    for (int strCount=0; strCount<phoneString.length; strCount++) {
+        char characterChar = [phoneString characterAtIndex: strCount];
+        NSString *characterStr = [NSString stringWithFormat:@"%c", characterChar];
+        if ([[LinphoneAppDelegate sharedInstance].listNumber containsObject: characterStr]) {
+            resultStr = [NSString stringWithFormat:@"%@%@", resultStr, characterStr];
+        }
+    }
+    return resultStr;
+}
+
 @end

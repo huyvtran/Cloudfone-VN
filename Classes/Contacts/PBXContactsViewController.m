@@ -8,11 +8,9 @@
 
 #import "PBXContactsViewController.h"
 #import "NewContactViewController.h"
-#import "PBXContactPopupView.h"
 #import "JSONKit.h"
 #import "PBXContact.h"
 #import "PBXContactTableCell.h"
-#import "DeleteContactPBXPopupView.h"
 #import "UIImage+GKContact.h"
 
 @interface PBXContactsViewController (){

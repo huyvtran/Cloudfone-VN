@@ -121,4 +121,7 @@
 + (void)addCornerRadiusTopLeftAndBottomLeftForButton: (id)view radius: (float)radius withColor: (UIColor *)borderColor border: (float)borderWidth;
 + (void)addCornerRadiusTopRightAndBottomRightForButton: (id)view radius: (float)radius withColor: (UIColor *)borderColor border: (float)borderWidth;
 
+// Remove all special characters from string
++ (NSString *)removeAllSpecialInString: (NSString *)phoneString;
+
 @end

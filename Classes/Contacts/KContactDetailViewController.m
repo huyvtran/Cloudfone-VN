@@ -19,12 +19,6 @@
 
 @interface KContactDetailViewController (){
     LinphoneAppDelegate *appDelegate;
-    NSArray *listNumber;
-    
-    //  call
-    BOOL transfer_popup;
-    
-    int i;
     float hCell;
     
     YBHud *waitingHud;
@@ -83,8 +77,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     //  MY CODE HERE
     appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
-    listNumber = [[NSArray alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5",
-                  @"6", @"7", @"8", @"9",nil];
     [self autoLayoutForView];
     
     //  add waiting view
@@ -111,10 +103,21 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [self showContactInformation];
     [_tbContactInfo reloadData];
+    
+    [btnDelete setTitle:[appDelegate.localization localizedStringForKey:@"Delete contact"]
+               forState:UIControlStateNormal];
+}
+
+-(void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    [self setupFooterForTableView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear: animated];
+    
+    _tbContactInfo.tableFooterView = nil;
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
@@ -140,12 +143,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[PhoneMainView instance] popCurrentView];
 }
 
-- (IBAction)_iconDeleteClicked:(id)sender {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_popup_delete_contact_title] message:[appDelegate.localization localizedStringForKey:text_popup_delete_contact_content] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_no] otherButtonTitles:[appDelegate.localization localizedStringForKey:text_yes], nil];
-    alertView.delegate = self;
-    [alertView show];
-}
-
 - (IBAction)_iconEditClicked:(id)sender
 {
     EditContactViewController *controller = VIEW(EditContactViewController);
@@ -158,17 +155,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (IBAction)buttonCallPBXPressed:(UIButton *)sender {
 }
 
-//  Gọi trên icon call trong từng cell
-- (void)callOnPhoneDetail: (UIButton *)sender {
-    NSString *phoneNumber = sender.titleLabel.text;
-    [self makeCallWithPhoneNumber: phoneNumber];
-}
-
 #pragma mark - my functions
 
 - (void)autoLayoutForView
 {
-    self.view.backgroundColor = UIColor.whiteColor;
+    self.view.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
+                                                 blue:(240/255.0) alpha:1.0];
     if (SCREEN_WIDTH > 320) {
         hCell = 55.0;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
@@ -182,7 +174,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  header
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo(260+[LinphoneAppDelegate sharedInstance]._hStatus);
+        make.height.mas_equalTo(230+[LinphoneAppDelegate sharedInstance]._hStatus);
     }];
     
     [_bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -233,6 +225,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     _lbContactName.textColor = UIColor.whiteColor;
     
     //  button call
+    [buttonCallPBX setBackgroundImage:[UIImage imageNamed:@"call_disable.png"]
+                             forState:UIControlStateDisabled];
+    buttonCallPBX.hidden = YES;
+    buttonCallPBX.enabled = NO;
     buttonCallPBX.layer.cornerRadius = 70.0/2;
     buttonCallPBX.clipsToBounds = YES;
     buttonCallPBX.layer.borderWidth = 2.0;
@@ -244,45 +240,20 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     //  content
-    
     [_tbContactInfo mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_viewHeader.mas_bottom);
         make.left.right.bottom.equalTo(self.view);
     }];
+    
     _tbContactInfo.delegate = self;
     _tbContactInfo.dataSource = self;
     _tbContactInfo.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tbContactInfo.backgroundColor = UIColor.clearColor;
     
     UIView *headerView = [[UIView alloc] init];
     headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 70.0/2);
-    headerView.backgroundColor = UIColor.clearColor;
-    _tbContactInfo.tableHeaderView = headerView;
-    
-    
-    UIView *footerView = [[UIView alloc] init];
-    footerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 80.0/2);
-    footerView.backgroundColor = UIColor.clearColor;
-    _tbContactInfo.tableFooterView = footerView;
-    
-    btnDelete = [[UIButton alloc] init];
-    btnDelete.backgroundColor = UIColor.redColor;
-    [btnDelete setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    [footerView addSubview: btnDelete];
-    
-    [btnDelete mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(footerView.mas_centerY);
-        make.left.equalTo(footerView).offset(50);
-        make.right.equalTo(footerView).offset(-50);
-        make.height.mas_equalTo(40.0);
-    }];
-    btnDelete.clipsToBounds = YES;
-    btnDelete.layer.cornerRadius = 40.0;
-}
-
-- (void)btnCallPressed: (UIButton *)sender {
-    NSString *phoneNumber = sender.titleLabel.text;
-    transfer_popup = NO;
-    [self makeCallWithPhoneNumber: phoneNumber];
+    headerView.backgroundColor = UIColor.whiteColor;
+    //  _tbContactInfo.tableHeaderView = headerView;
 }
 
 //  Hiển thị thông tin của contact
@@ -300,20 +271,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         _imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: detailsContact._avatar]];
     }
-}
-
-//  Hàm loại bỏ tất cả các ký tự ko là số ra khỏi chuỗi
-- (NSString *)removeAllSpecialInString: (NSString *)phoneString {
-    
-    NSString *resultStr = @"";
-    for (int strCount=0; strCount<phoneString.length; strCount++) {
-        char characterChar = [phoneString characterAtIndex: strCount];
-        NSString *characterStr = [NSString stringWithFormat:@"%c", characterChar];
-        if ([listNumber containsObject: characterStr]) {
-            resultStr = [NSString stringWithFormat:@"%@%@", resultStr, characterStr];
-        }
-    }
-    return resultStr;
 }
 
 //  Xử lý số phone
@@ -376,6 +333,11 @@ static UICompositeViewDescription *compositeDescription = nil;
         ContactDetailObj *anItem = [detailsContact._listPhone objectAtIndex: indexPath.row];
         cell.lbTitle.text = anItem._titleStr;
         cell.lbPhone.text = anItem._valueStr;
+        
+        [cell.icCall setTitle:anItem._valueStr forState:UIControlStateNormal];
+        [cell.icCall addTarget:self
+                        action:@selector(onIconCallClicked:)
+              forControlEvents:UIControlEventTouchUpInside];
         
         return cell;
     }else{
@@ -443,6 +405,72 @@ static UICompositeViewDescription *compositeDescription = nil;
         result = result + 1;
     }
     return result;
+}
+
+- (void)setupFooterForTableView {
+    UIView *footerView = [_tbContactInfo tableFooterView];
+    if (footerView == nil) {
+        float hFooterDefault = 100.0;
+        footerView = [[UIView alloc] init];
+        footerView.backgroundColor = UIColor.greenColor;
+        if (_tbContactInfo.contentSize.height > _tbContactInfo.frame.size.height) {
+            footerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, hFooterDefault);
+            _tbContactInfo.scrollEnabled = YES;
+        }else{
+            float tmpHeight = _tbContactInfo.frame.size.height - _tbContactInfo.contentSize.height;
+            if (tmpHeight <= hFooterDefault) {
+                footerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, hFooterDefault);
+                _tbContactInfo.scrollEnabled = YES;
+            }else{
+                footerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, tmpHeight);
+                _tbContactInfo.scrollEnabled = NO;
+            }
+        }
+        footerView.backgroundColor = UIColor.clearColor;
+        _tbContactInfo.tableFooterView = footerView;
+        
+        btnDelete = [[UIButton alloc] init];
+        btnDelete.backgroundColor = [UIColor colorWithRed:(202/255.0) green:(212/255.0)
+                                                     blue:(223/255.0) alpha:1.0];
+        [btnDelete setTitleColor:UIColor.redColor forState:UIControlStateNormal];
+        [btnDelete setTitle:[appDelegate.localization localizedStringForKey:@"Delete contact"]
+                   forState:UIControlStateNormal];
+        btnDelete.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
+        [footerView addSubview: btnDelete];
+        
+        [btnDelete mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(footerView).offset(-25.0);
+            make.left.equalTo(footerView).offset(50);
+            make.right.equalTo(footerView).offset(-50);
+            make.height.mas_equalTo(50.0);
+        }];
+        btnDelete.clipsToBounds = YES;
+        btnDelete.layer.cornerRadius = 50.0/2;
+        
+        [btnDelete addTarget:self
+                      action:@selector(btnDeleteContactPressed:)
+            forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        NSLog(@"You setted FooterView for UITableview");
+    }
+}
+
+- (void)btnDeleteContactPressed: (UIButton *)sender {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Delete contact"] message:[appDelegate.localization localizedStringForKey:@"Are you sure, you want to delete this contact?"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"No"] otherButtonTitles:[appDelegate.localization localizedStringForKey:@"Yes"], nil];
+    alertView.delegate = self;
+    [alertView show];
+}
+
+- (void)onIconCallClicked: (UIButton *)sender {
+    if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
+        NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
+        if (![phoneNumber isEqualToString:@""]) {
+            [SipUtils makeCallWithPhoneNumber: phoneNumber];
+        }
+    }else{
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"The phone number can not empty"]
+                    duration:2.0 position:CSToastPositionCenter];
+    }
 }
 
 @end

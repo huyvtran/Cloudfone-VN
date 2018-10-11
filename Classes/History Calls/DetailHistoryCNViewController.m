@@ -9,14 +9,11 @@
 #import "DetailHistoryCNViewController.h"
 #import "NewContactViewController.h"
 #import "AllContactListViewController.h"
-#import "JSONKit.h"
 #import "UIHistoryDetailCell.h"
 #import "CallHistoryObject.h"
 #import "NSDatabase.h"
 #import "NSData+Base64.h"
 #import "contactBlackListCell.h"
-
-#import <CommonCrypto/CommonDigest.h>
 
 @interface DetailHistoryCNViewController ()
 {
@@ -27,23 +24,6 @@
     UIFont *textFontDes;
     UIFont *textFontBold;
 }
-@end
-
-@implementation NSString (MD5)
-
-- (NSString *)MD5String {
-    const char *cstr = [self UTF8String];
-    unsigned char result[16];
-    CC_MD5(cstr, (int)strlen(cstr), result);
-    return [NSString stringWithFormat:
-            @"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
-            result[0], result[1], result[2], result[3],
-            result[4], result[5], result[6], result[7],
-            result[8], result[9], result[10], result[11],
-            result[12], result[13], result[14], result[15]
-            ];
-}
-
 @end
 
 @implementation DetailHistoryCNViewController
@@ -123,14 +103,29 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 //  Cập nhật view sau khi get xong phone number
 - (void)updateView {
-    // Lấy tổng tiền và số phút gọi
     NSArray *infos = [NSDatabase getNameAndAvatarOfContactWithPhoneNumber: _phoneNumberDetail];
     if ([[infos objectAtIndex: 0] isEqualToString: @""]) {
         _lbName.text = _phoneNumberDetail;
+        
+        NSRange phoneRange = NSMakeRange(0, _phoneNumberDetail.length);
+        NSMutableAttributedString *contentAttr = [[NSMutableAttributedString alloc] initWithString:_phoneNumberDetail];
+        [contentAttr addAttribute:NSFontAttributeName value:[UIFont fontWithName:MYRIADPRO_BOLD size:18.0] range:phoneRange];
+        [contentAttr addAttribute:NSForegroundColorAttributeName value:UIColor.orangeColor range:phoneRange];
+        _lbName.attributedText = contentAttr;
+        
         _iconAddNew.hidden = NO;
     }else{
-        _lbName.text = [NSString stringWithFormat:@"%@ - %@", [infos objectAtIndex: 0], _phoneNumberDetail];
+        //  _lbName.text = [NSString stringWithFormat:@"%@ - %@", [infos objectAtIndex: 0], _phoneNumberDetail];
         _iconAddNew.hidden = YES;
+        
+        NSString *content = [NSString stringWithFormat:@"%@ - %@", [infos objectAtIndex: 0], _phoneNumberDetail];
+        
+        NSRange phoneRange = NSMakeRange(content.length-_phoneNumberDetail.length, _phoneNumberDetail.length);
+        
+        NSMutableAttributedString *contentAttr = [[NSMutableAttributedString alloc] initWithString:content];
+        [contentAttr addAttribute:NSFontAttributeName value:[UIFont fontWithName:MYRIADPRO_BOLD size:18.0] range:phoneRange];
+        [contentAttr addAttribute:NSForegroundColorAttributeName value:UIColor.orangeColor range:phoneRange];
+        _lbName.attributedText = contentAttr;
     }
     
     NSString *avatar = [infos objectAtIndex:1];
@@ -259,9 +254,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     dateFormatter.dateFormat = @"HH:mm";
     NSString *str_time = [dateFormatter stringFromDate:startData];
     return str_time;
-}
-
-- (void) dealloc{
 }
 
 - (void)didReceiveMemoryWarning

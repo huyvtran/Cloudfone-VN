@@ -60,21 +60,6 @@
 
 #pragma mark -
 
-//  Hàm loại bỏ tất cả các ký tự ko là số ra khỏi chuỗi
-- (NSString *)removeAllSpecialInString: (NSString *)phoneString
-{
-    NSArray *listNumber = [[NSArray alloc] initWithObjects: @"+", @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil];
-    NSString *resultStr = @"";
-    for (int strCount=0; strCount<phoneString.length; strCount++) {
-        char characterChar = [phoneString characterAtIndex: strCount];
-        NSString *characterStr = [NSString stringWithFormat:@"%c", characterChar];
-        if ([listNumber containsObject: characterStr]) {
-            resultStr = [NSString stringWithFormat:@"%@%@", resultStr, characterStr];
-        }
-    }
-    return resultStr;
-}
-
 - (void)touchUp:(id)sender {
 	NSString *address = addressField.text;
 	if (address.length == 0) {
@@ -94,8 +79,7 @@
         address = [address substringFromIndex:2];
         address = [NSString stringWithFormat:@"0%@", address];
     }
-
-    address = [self removeAllSpecialInString:address];
+    address = [AppUtils removeAllSpecialInString: address];
     
 	if ([address length] > 0) {
 		LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:address];

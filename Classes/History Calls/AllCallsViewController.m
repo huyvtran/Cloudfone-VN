@@ -366,21 +366,15 @@
 }
 
 - (void)btnCallOnCellPressed: (UIButton *)sender {
-    NSString *phoneNumber = [sender.titleLabel text];
-    if (![phoneNumber isEqualToString: @""]) {
-        LinphoneAddress *addr = linphone_core_interpret_url(LC, phoneNumber.UTF8String);
-        [LinphoneManager.instance call:addr];
-        if (addr)
-            linphone_address_destroy(addr);
-        
-        OutgoingCallViewController *controller = VIEW(OutgoingCallViewController);
-        if (controller != nil) {
-            [controller setPhoneNumberForView: phoneNumber];
+    if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
+        NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
+        if (![phoneNumber isEqualToString:@""]) {
+            [SipUtils makeCallWithPhoneNumber: phoneNumber];
         }
-        [[PhoneMainView instance] changeCurrentView:[OutgoingCallViewController compositeViewDescription] push:TRUE];
-    }else{
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_phone_not_exists] duration:2.0 position:CSToastPositionCenter];
+        return;
     }
+    [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"]
+                duration:2.0 position:CSToastPositionCenter];
 }
 
 @end

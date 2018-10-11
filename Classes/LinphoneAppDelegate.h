@@ -126,5 +126,7 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 
 @property (nonatomic, assign) BOOL needToReloadContactList;
 
+@property (nonatomic, strong) NSArray *listNumber;
+
 @end
 

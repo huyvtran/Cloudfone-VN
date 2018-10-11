@@ -14,6 +14,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    self.contentView.backgroundColor = UIColor.whiteColor;
     if (SCREEN_WIDTH > 320) {
         lbTitle.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
         lbValue.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];

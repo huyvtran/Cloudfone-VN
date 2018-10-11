@@ -238,8 +238,6 @@
 #define text_phone_home     @"text_phone_home"
 #define text_phone_other    @"text_phone_other"
 
-#define text_popup_delete_contact_title   @"text_popup_delete_contact_title"
-#define text_popup_delete_contact_content @"text_popup_delete_contact_content"
 
 #define text_no             @"text_no"
 #define text_yes            @"text_yes"

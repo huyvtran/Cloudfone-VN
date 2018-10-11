@@ -103,9 +103,6 @@
 "text_alert_logout_title"   =   "Đăng xuất"
 "text_alert_logout_content" =   "Bạn có muốn đăng xuất hay không?"
 
-"text_yes"          =   "Đồng ý"
-"text_no"           =   "Hủy bỏ"
-
 "text_pbx_on"       =   "Bật"
 "text_pbx_off"      =   "Tắt"
 
@@ -1153,4 +1150,10 @@
 "Incoming call" = "Cuộc gọi đến"
 "Outgoing call" = "Cuộc gọi đi"
 "Missed call" = "Cuộc gọi nhỡ"
-"Aborted call" = "Bị huỷ bỏ"
+"Aborted call" = "Bị hủy bỏ"
+
+"Delete contact" = "Xóa liên hệ"
+"Are you sure, you want to delete this contact?" =   "Are you sure, you want to delete this contact?"
+"Yes"          =   "Đồng ý"
+"No"           =   "Hủy bỏ"
+"The phone number can not empty" = "Số điện thoại không được rỗng"
