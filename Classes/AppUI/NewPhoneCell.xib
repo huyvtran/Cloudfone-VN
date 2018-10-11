@@ -31,7 +31,7 @@
                         <textInputTraits key="textInputTraits"/>
                     </textField>
                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Hmt-nl-GqZ">
-                        <rect key="frame" x="283" y="7" width="27" height="30"/>
+                        <rect key="frame" x="283" y="7" width="30" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" backgroundImage="btn_contacts_mobile"/>
                     </button>

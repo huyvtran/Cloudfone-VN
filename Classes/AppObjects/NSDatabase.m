@@ -428,19 +428,19 @@ HMLocalization *localization;
     while ([rs next]) {
         NSDictionary *rsDict = [rs resultDictionary];
         
-        NSString *time      = [rsDict objectForKey:@"time"];
-        NSString *status    = [rsDict objectForKey:@"status"];
-        int duration  = [[rsDict objectForKey:@"duration"] intValue];
-        float rate      = [[rsDict objectForKey:@"rate"] floatValue];
-        //NSString *date      = [rsDict objectForKey:@"date"];
+        NSString *time = [rsDict objectForKey:@"time"];
+        NSString *status = [rsDict objectForKey:@"status"];
+        int duration = [[rsDict objectForKey:@"duration"] intValue];
+        float rate = [[rsDict objectForKey:@"rate"] floatValue];
+        NSString *call_direction = [rsDict objectForKey:@"call_direction"];
         
         CallHistoryObject *aCall = [[CallHistoryObject alloc] init];
         aCall._time = time;
         aCall._status= status;
         aCall._duration = duration;
         aCall._rate = rate;
-        // aCall._date = date;
         aCall._date = @"date";
+        aCall._callDirection = call_direction;
         
         [resultArr addObject: aCall];
     }

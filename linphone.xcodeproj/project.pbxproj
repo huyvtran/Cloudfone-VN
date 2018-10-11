@@ -681,6 +681,7 @@
 		842E03E31FFCD57C00BA16BD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842E03E01FFCD57B00BA16BD /* Security.framework */; };
 		842E03E41FFCD57C00BA16BD /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842E03E11FFCD57C00BA16BD /* Crashlytics.framework */; };
 		842FA3B52162687800C59DDA /* qr-code-scan.png in Resources */ = {isa = PBXBuildFile; fileRef = 842FA3AE2162687700C59DDA /* qr-code-scan.png */; };
+		8439F74D216EC06A00110D26 /* hotline_avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8439F746216EC06900110D26 /* hotline_avatar.png */; };
 		843ED6601FB658F9005FE1C1 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 843ED65E1FB658F9005FE1C1 /* MoreViewController.m */; };
 		843ED6611FB658F9005FE1C1 /* MoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 843ED65F1FB658F9005FE1C1 /* MoreViewController.xib */; };
 		843ED6651FB65989005FE1C1 /* MenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 843ED6631FB65989005FE1C1 /* MenuCell.m */; };
@@ -1916,6 +1917,7 @@
 		842E03E01FFCD57B00BA16BD /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		842E03E11FFCD57C00BA16BD /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = SOURCE_ROOT; };
 		842FA3AE2162687700C59DDA /* qr-code-scan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qr-code-scan.png"; sourceTree = "<group>"; };
+		8439F746216EC06900110D26 /* hotline_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hotline_avatar.png; sourceTree = "<group>"; };
 		843ED65D1FB658F9005FE1C1 /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoreViewController.h; path = More/MoreViewController.h; sourceTree = "<group>"; };
 		843ED65E1FB658F9005FE1C1 /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoreViewController.m; path = More/MoreViewController.m; sourceTree = "<group>"; };
 		843ED65F1FB658F9005FE1C1 /* MoreViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MoreViewController.xib; path = More/MoreViewController.xib; sourceTree = "<group>"; };
@@ -3349,6 +3351,7 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				8439F746216EC06900110D26 /* hotline_avatar.png */,
 				15857C01216E0AF800DB5237 /* ic_change_photo.png */,
 				15857BFF216DED4700DB5237 /* call_default_mini.png */,
 				15A64DA3216CACD700D194BD /* ic_add_phone.png */,
@@ -5433,6 +5436,7 @@
 				633FEF421D3CD55A0014B822 /* select_all_disabled.png in Resources */,
 				8442A36B1FB13C0F00F08F11 /* ContactsViewController.xib in Resources */,
 				8440F18D216BA82000BB559C /* mini_key_7_hover.png in Resources */,
+				8439F74D216EC06A00110D26 /* hotline_avatar.png in Resources */,
 				63AADBE81B6A0FF200AA16FD /* Localizable.strings in Resources */,
 				633FEE8A1D3CD5590014B822 /* linphone_user.png in Resources */,
 				633FEE3F1D3CD5590014B822 /* contacts_all_disabled@2x.png in Resources */,

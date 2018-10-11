@@ -30,6 +30,8 @@
     YBHud *waitingHud;
     UIFont *textFont;
     BOOL isPBXContact;
+    
+    UIButton *btnDelete;
 }
 @end
 
@@ -170,50 +172,51 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (SCREEN_WIDTH > 320) {
         hCell = 55.0;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
-        _lbTitle.font = [UIFont fontWithName:HelveticaNeue size:20.0];
+        _lbTitle.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
     }else{
         hCell = 45.0;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
-        _lbTitle.font = [UIFont fontWithName:HelveticaNeue size:18.0];
+        _lbTitle.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }
     
     //  header
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo(230+[LinphoneAppDelegate sharedInstance]._hStatus);
+        make.height.mas_equalTo(260+[LinphoneAppDelegate sharedInstance]._hStatus);
     }];
     
     [_bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.equalTo(_viewHeader);
     }];
     
+    [_lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewHeader).offset(appDelegate._hStatus);
+        make.centerX.equalTo(_viewHeader.mas_centerX);
+        make.width.mas_equalTo(200.0);
+        make.height.mas_equalTo(44.0);
+    }];
+    
     [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus+5.0);
-        make.left.equalTo(_viewHeader).offset(5.0);
+        make.left.equalTo(_viewHeader);
+        make.centerY.equalTo(_lbTitle.mas_centerY);
         make.width.height.mas_equalTo(35.0);
     }];
     
     [_iconEdit mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_iconBack);
-        make.right.equalTo(_viewHeader).offset(-5);
+        make.right.equalTo(_viewHeader);
         make.width.equalTo(_iconBack.mas_width);
         make.height.equalTo(_iconBack.mas_height);
     }];
     
-    [_lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(_iconBack);
-        make.left.equalTo(_iconBack.mas_right).offset(5);
-        make.right.equalTo(_iconEdit.mas_left).offset(-5);
-    }];
-    
-    _imgAvatar.layer.cornerRadius = 100.0/2;
+    _imgAvatar.layer.cornerRadius = 120.0/2;
     _imgAvatar.layer.borderWidth = 2.0;
     _imgAvatar.layer.borderColor = UIColor.whiteColor.CGColor;
     _imgAvatar.clipsToBounds = YES;
     [_imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbTitle.mas_bottom).offset(10);
         make.centerX.equalTo(_viewHeader.mas_centerX);
-        make.width.height.mas_equalTo(100.0);
+        make.width.height.mas_equalTo(120.0);
     }];
     
     [_lbContactName mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -254,6 +257,26 @@ static UICompositeViewDescription *compositeDescription = nil;
     headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 70.0/2);
     headerView.backgroundColor = UIColor.clearColor;
     _tbContactInfo.tableHeaderView = headerView;
+    
+    
+    UIView *footerView = [[UIView alloc] init];
+    footerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 80.0/2);
+    footerView.backgroundColor = UIColor.clearColor;
+    _tbContactInfo.tableFooterView = footerView;
+    
+    btnDelete = [[UIButton alloc] init];
+    btnDelete.backgroundColor = UIColor.redColor;
+    [btnDelete setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    [footerView addSubview: btnDelete];
+    
+    [btnDelete mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(footerView.mas_centerY);
+        make.left.equalTo(footerView).offset(50);
+        make.right.equalTo(footerView).offset(-50);
+        make.height.mas_equalTo(40.0);
+    }];
+    btnDelete.clipsToBounds = YES;
+    btnDelete.layer.cornerRadius = 40.0;
 }
 
 - (void)btnCallPressed: (UIButton *)sender {

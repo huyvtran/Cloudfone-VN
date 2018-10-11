@@ -464,9 +464,6 @@
 "text_no_missed_call"   =   "No missed call in your history"
 "text_no_recorded_call" =   "No recorded call in your history"
 
-"text_today"            =   "Today"
-"text_yesterday"        =   "Yesterday"
-
 "text_edit"             =   "Edit"
 
 
@@ -516,8 +513,6 @@
 "text_minutes"          =   "minutes"
 "text_minute"           =   "minute"
 "text_call_free"        =   "Free"
-"text_call_aborted"     =   "Aborted"
-"text_call_declined"    =   "Declined"
 "text_call_missed"      =   "Missed"
 
 "text_block_user"       =   "Block"
@@ -1123,3 +1118,11 @@
 "Crop picture" = "Crop picture"
 "Edit contact" = "Edit contact"
 "Contact info" = "Contact info"
+"Contact has been updated" = "Contact has been updated"
+
+"Today" = "Today"
+"Yesterday" = "Yesterday"
+"Incoming call" = "Incoming call"
+"Outgoing call" = "Outgoing call"
+"Missed call" = "Missed call"
+"Aborted call" = "Aborted"

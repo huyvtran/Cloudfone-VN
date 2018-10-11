@@ -243,8 +243,6 @@
 
 #define text_no             @"text_no"
 #define text_yes            @"text_yes"
-#define text_today          @"text_today"
-#define text_yesterday      @"text_yesterday"
 #define text_edit           @"text_edit"
 
 #define text_no_recent_call     @"text_no_recent_call"
@@ -649,8 +647,6 @@
 #define text_minutes            @"text_minutes"
 #define text_minute             @"text_minute"
 #define text_call_free          @"text_call_free"
-#define text_call_aborted       @"text_call_aborted"
-#define text_call_declined      @"text_call_declined"
 
 #define missed_call             @"Missed"
 #define success_call            @"Success"

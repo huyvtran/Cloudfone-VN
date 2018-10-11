@@ -127,8 +127,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         [self enableForSaveButton: YES];
     }
     //  notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:)
-                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:)
                                                  name:UIKeyboardDidHideNotification object:nil];
@@ -136,7 +136,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(afterAddAndReloadContactDone)
                                                  name:finishLoadContacts object:nil];
     
-    //  Chọn loại điện thoại
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenSelectTypeForPhone:)
                                                  name:selectTypeForPhoneNumber object:nil];
 }
@@ -472,7 +471,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 //  Hiển thị bàn phím
-- (void)keyboardDidShow: (NSNotification *) notif{
+- (void)keyboardWillShow:(NSNotification *)notif {
     CGSize keyboardSize = [[[notif userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     [_tbContents mas_updateConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view).offset(-keyboardSize.height);
@@ -500,11 +499,31 @@ static UICompositeViewDescription *compositeDescription = nil;
             NewPhoneCell *cell = [_tbContents cellForRowAtIndexPath:[NSIndexPath indexPathForRow:tag inSection:0]];
             if (cell != nil && ![cell._tfPhone.text isEqualToString:@""]) {
                 ContactDetailObj *aPhone = [[ContactDetailObj alloc] init];
-                aPhone._iconStr = @"btn_contacts_mobile.png";
-                aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_mobile];
                 aPhone._valueStr = cell._tfPhone.text;
                 aPhone._buttonStr = @"contact_detail_icon_call.png";
-                aPhone._typePhone = type_phone_mobile;
+                
+                NSString *type = cell._iconTypePhone.currentTitle;
+                if ([type isEqualToString:type_phone_work])
+                {
+                    aPhone._typePhone = type_phone_work;
+                    aPhone._iconStr = @"btn_contacts_work.png";
+                    aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_work];
+                    
+                }else if ([type isEqualToString:type_phone_fax]){
+                    aPhone._typePhone = type_phone_fax;
+                    aPhone._iconStr = @"btn_contacts_fax.png";
+                    aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_fax];
+                    
+                }else if ([type isEqualToString:type_phone_home]){
+                    aPhone._typePhone = type_phone_home;
+                    aPhone._iconStr = @"btn_contacts_home.png";
+                    aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_home];
+                    
+                }else{
+                    aPhone._typePhone = type_phone_mobile;
+                    aPhone._iconStr = @"btn_contacts_mobile.png";
+                    aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_mobile];
+                }
                 [appDelegate._newContact._listPhone addObject: aPhone];
             }else{
                 [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please input phone number"]
@@ -561,6 +580,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             case ROW_CONTACT_EMAIL:{
                 cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Email"];
                 cell.tfContent.tag = 100;
+                cell.tfContent.keyboardType = UIKeyboardTypeEmailAddress;
                 [cell.tfContent addTarget:self
                                    action:@selector(whenTextfieldChanged:)
                          forControlEvents:UIControlEventEditingChanged];
@@ -604,6 +624,10 @@ static UICompositeViewDescription *compositeDescription = nil;
             [cell._iconNewPhone setTitle:@"Add" forState:UIControlStateNormal];
             [cell._iconNewPhone setBackgroundImage:[UIImage imageNamed:@"ic_add_phone.png"]
                                           forState:UIControlStateNormal];
+            
+            [cell._iconTypePhone setTitle:text_phone_mobile forState:UIControlStateNormal];
+            [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:@"btn_contacts_mobile"]
+                                           forState:UIControlStateNormal];
         }else{
             if ((indexPath.row - NUMBER_ROW_BEFORE) >= 0 && (indexPath.row - NUMBER_ROW_BEFORE) < appDelegate._newContact._listPhone.count) {
                 ContactDetailObj *aPhone = [appDelegate._newContact._listPhone objectAtIndex: (indexPath.row - NUMBER_ROW_BEFORE)];
@@ -612,6 +636,9 @@ static UICompositeViewDescription *compositeDescription = nil;
                 [cell._iconNewPhone setTitle:@"Remove" forState:UIControlStateNormal];
                 [cell._iconNewPhone setBackgroundImage:[UIImage imageNamed:@"ic_delete_phone.png"]
                                               forState:UIControlStateNormal];
+                [cell._iconTypePhone setTitle:aPhone._typePhone forState:UIControlStateNormal];
+                [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:aPhone._iconStr]
+                                               forState:UIControlStateNormal];
             }
         }
         cell._tfPhone.tag = indexPath.row;
@@ -623,6 +650,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         [cell._iconNewPhone addTarget:self
                                action:@selector(btnAddPhonePressed:)
                      forControlEvents:UIControlEventTouchUpInside];
+        
+        cell._iconTypePhone.tag = indexPath.row;
         [cell._iconTypePhone addTarget:self
                                 action:@selector(btnTypePhonePressed:)
                       forControlEvents:UIControlEventTouchUpInside];
@@ -804,6 +833,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)whenTextfieldFullnameChanged: (UITextField *)textfield {
     //  Save fullname into first name
     appDelegate._newContact._firstName = textfield.text;
+    appDelegate._newContact._fullName = textfield.text;
+    appDelegate._newContact._lastName = @"";
     
     if (![textfield.text isEqualToString:@""]) {
         [self enableForSaveButton: YES];
@@ -875,7 +906,26 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 //  Chọn loại phone
 - (void)whenSelectTypeForPhone: (NSNotification *)notif {
-    
+    id object = [notif object];
+    if ([object isKindOfClass:[TypePhoneObject class]]) {
+        int curIndex = (int)[popupTypePhone tag];
+        
+        //  Choose phone type for row: Add new phone
+        NewPhoneCell *cell = [_tbContents cellForRowAtIndexPath:[NSIndexPath indexPathForRow:curIndex inSection:0]];
+        if ([cell isKindOfClass:[NewPhoneCell class]]) {
+            NSString *imgName = [self getTypeOfPhone: [(TypePhoneObject *)object _strType]];
+            [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:imgName]
+                                           forState:UIControlStateNormal];
+            [cell._iconTypePhone setTitle:[(TypePhoneObject *)object _strType] forState:UIControlStateNormal];
+        }
+        if (curIndex - NUMBER_ROW_BEFORE >= 0 && (curIndex - NUMBER_ROW_BEFORE) < appDelegate._newContact._listPhone.count)
+        {
+            ContactDetailObj *curPhone = [appDelegate._newContact._listPhone objectAtIndex: (curIndex - NUMBER_ROW_BEFORE)];
+            curPhone._typePhone = [(TypePhoneObject *)object _strType];
+            curPhone._iconStr = [self getTypeOfPhone: curPhone._typePhone];
+            [_tbContents reloadData];
+        }
+    }
 }
 
 @end

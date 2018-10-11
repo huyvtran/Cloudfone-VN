@@ -288,11 +288,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     dateFormatter.dateFormat = @"dd/MM/yyyy";
     
     if ([strTime isEqualToString:[dateFormatter stringFromDate:yesterday] ]) {
-        return [appDelegate.localization localizedStringForKey:text_yesterday];
+        return [appDelegate.localization localizedStringForKey:@"Yesterday"];
     }
     
     if ([strTime isEqualToString:[dateFormatter stringFromDate:today]]) {
-        return [appDelegate.localization localizedStringForKey:text_today];
+        return [appDelegate.localization localizedStringForKey:@"Today"];
     }
     
     return strTime;
@@ -328,13 +328,14 @@ static UICompositeViewDescription *compositeDescription = nil;
         if (![dateStr isEqualToString:@"Today"]) {
             dateStr = [AppUtils checkYesterdayForHistoryCall: aCall._date];
             if ([dateStr isEqualToString:@"Yesterday"]) {
-                dateStr = [appDelegate.localization localizedStringForKey:@"YESTERDAY"];
+                dateStr = [appDelegate.localization localizedStringForKey:@"Yesterday"];
             }
         }else{
-            dateStr = [appDelegate.localization localizedStringForKey:text_today];
+            dateStr = [appDelegate.localization localizedStringForKey:@"Today"];
         }
         cell.viewContent.hidden = YES;
         cell.lbTitle.hidden = NO;
+        cell.lbTitle.text = dateStr;
     }else{
         cell.viewContent.hidden = NO;
         cell.lbTitle.hidden = YES;
@@ -357,16 +358,24 @@ static UICompositeViewDescription *compositeDescription = nil;
                 cell.lbDuration.text = [NSString stringWithFormat:@"%d %@", timeValue, [appDelegate.localization localizedStringForKey:text_minutes]];
             }
             cell.lbTime.text = aCall._time;
-        }else{
-            if ([aCall._status isEqualToString: aborted_call]) {
-                cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:text_call_aborted];
-                cell.lbDuration.text = @"";
-            }else if ([aCall._status isEqualToString: declined_call]){
-                cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:text_call_aborted];
+            if ([aCall._callDirection isEqualToString:@"Incomming"]) {
+                cell.imgStatus.image = [UIImage imageNamed:@"ic_call_incoming.png"];
+                cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:@"Incoming call"];
             }else{
-                cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:text_call_missed];
+                cell.imgStatus.image = [UIImage imageNamed:@"ic_call_outgoing.png"];
+                cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:@"Outgoing call"];
             }
+            cell.lbDuration.hidden = NO;
+        }else{
+            if ([aCall._status isEqualToString: aborted_call] || [aCall._status isEqualToString: declined_call]) {
+                cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:@"Aborted call"];
+                cell.lbDuration.text = @"";
+            }else{
+                cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:@"Missed call"];
+            }
+            cell.imgStatus.image = [UIImage imageNamed:@"ic_call_missed.png"];
             cell.lbTime.text = aCall._time;
+            cell.lbDuration.hidden = YES;
         }
     }
     return cell;

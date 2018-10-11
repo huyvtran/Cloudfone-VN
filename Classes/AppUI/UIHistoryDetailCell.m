@@ -17,6 +17,8 @@
     // Initialization code
     
     lbTitle.font = [UIFont systemFontOfSize:16.0 weight:UIFontWeightSemibold];
+    lbTitle.textColor = [UIColor colorWithRed:(61/255.0) green:(75/255.0)
+                                         blue:(100/255.0) alpha:1.0];
     [lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(self);
         make.left.equalTo(self).offset(20);

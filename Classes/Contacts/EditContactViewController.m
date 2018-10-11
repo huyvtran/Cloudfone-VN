@@ -18,6 +18,7 @@
 #import "PhoneObject.h"
 #import "ContactDetailObj.h"
 #import "PECropViewController.h"
+#import "TypePhonePopupView.h"
 
 #define ROW_CONTACT_NAME    0
 #define ROW_CONTACT_EMAIL   1
@@ -43,6 +44,8 @@
     UIView *viewFooter;
     UIButton *btnCancel;
     UIButton *btnSave;
+    
+    TypePhonePopupView *popupTypePhone;
 }
 
 @end
@@ -105,11 +108,14 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     
     //  notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:)
-                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:)
                                                  name:UIKeyboardDidHideNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenSelectTypeForPhone:)
+                                                 name:selectTypeForPhoneNumber object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -131,7 +137,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [waitingHud showInView:self.view animated:YES];
     
-    [self addNewContactToAddressPhoneBook];
+    [self updateContactIntoAddressPhoneBook];
     
     [waitingHud dismissAnimated:YES];
     [[PhoneMainView instance] popCurrentView];
@@ -159,6 +165,44 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 #pragma mark - my functions
+
+//  Chọn loại phone
+- (void)whenSelectTypeForPhone: (NSNotification *)notif {
+    id object = [notif object];
+    if ([object isKindOfClass:[TypePhoneObject class]]) {
+        int curIndex = (int)[popupTypePhone tag];
+        
+        //  Choose phone type for row: Add new phone
+        NewPhoneCell *cell = [tbContents cellForRowAtIndexPath:[NSIndexPath indexPathForRow:curIndex inSection:0]];
+        if ([cell isKindOfClass:[NewPhoneCell class]]) {
+            NSString *imgName = [self getTypeOfPhone: [(TypePhoneObject *)object _strType]];
+            [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:imgName]
+                                           forState:UIControlStateNormal];
+            [cell._iconTypePhone setTitle:[(TypePhoneObject *)object _strType] forState:UIControlStateNormal];
+        }
+        if (curIndex - NUMBER_ROW_BEFORE >= 0 && (curIndex - NUMBER_ROW_BEFORE) < detailsContact._listPhone.count)
+        {
+            ContactDetailObj *curPhone = [detailsContact._listPhone objectAtIndex: (curIndex - NUMBER_ROW_BEFORE)];
+            curPhone._typePhone = [(TypePhoneObject *)object _strType];
+            curPhone._iconStr = [self getTypeOfPhone: curPhone._typePhone];
+            [tbContents reloadData];
+        }
+    }
+}
+
+- (NSString *)getTypeOfPhone: (NSString *)typePhone {
+    if ([typePhone isEqualToString: type_phone_mobile]) {
+        return @"btn_contacts_mobile.png";
+    }else if ([typePhone isEqualToString: type_phone_work]){
+        return @"btn_contacts_work.png";
+    }else if ([typePhone isEqualToString: type_phone_fax]){
+        return @"btn_contacts_fax.png";
+    }else if ([typePhone isEqualToString: type_phone_home]){
+        return @"btn_contacts_home.png";
+    }else{
+        return @"btn_contacts_mobile.png";
+    }
+}
 
 - (void)whenTextfieldFullnameChanged: (UITextField *)textfield {
     //  Save fullname into first name
@@ -226,7 +270,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)addNewContactToAddressPhoneBook
+- (void)updateContactIntoAddressPhoneBook
 {
     ABAddressBookRef addressBook;
     CFErrorRef anError = NULL;
@@ -324,9 +368,21 @@ static UICompositeViewDescription *compositeDescription = nil;
         aContact._nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
     }
     
+    if (appDelegate._dataCrop != nil) {
+        if ([appDelegate._dataCrop respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
+            // iOS 7+
+            aContact._avatar = [appDelegate._dataCrop base64EncodedStringWithOptions: 0];
+        } else {
+            // pre iOS7
+            aContact._avatar = [appDelegate._dataCrop base64Encoding];
+        }
+    }else{
+        aContact._avatar = detailsContact._avatar;
+    }
     aContact._sipPhone = detailsContact._sipPhone;
-    aContact._avatar = detailsContact._avatar;
     aContact._listPhone = [self getListPhoneOfContactPerson: aPerson withName: aContact._fullName];
+    aContact._company = detailsContact._company;
+    aContact._email = detailsContact._email;
     
     //  Xoa contact ra khoi db neu co
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_id_contact = %d", detailsContact._id_contact];
@@ -380,6 +436,16 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)btnTypePhonePressed: (UIButton *)sender {
     [self.view endEditing: true];
     
+    float hPopup;
+    if (SCREEN_WIDTH > 320) {
+        hPopup = 4*50 + 6;
+    }else{
+        hPopup = 4*40 + 6;
+    }
+    
+    popupTypePhone = [[TypePhonePopupView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-236)/2, (SCREEN_HEIGHT-hPopup)/2, 236, hPopup)];
+    [popupTypePhone setTag: sender.tag];
+    [popupTypePhone showInView:appDelegate.window animated:YES];
 }
 
 //  Thêm hoặc xoá số phone
@@ -391,19 +457,39 @@ static UICompositeViewDescription *compositeDescription = nil;
             NewPhoneCell *cell = [tbContents cellForRowAtIndexPath:[NSIndexPath indexPathForRow:tag inSection:0]];
             if (cell != nil && ![cell._tfPhone.text isEqualToString:@""]) {
                 ContactDetailObj *aPhone = [[ContactDetailObj alloc] init];
-                aPhone._iconStr = @"btn_contacts_mobile.png";
-                aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_mobile];
                 aPhone._valueStr = cell._tfPhone.text;
                 aPhone._buttonStr = @"contact_detail_icon_call.png";
-                aPhone._typePhone = type_phone_mobile;
+                
+                NSString *type = cell._iconTypePhone.currentTitle;
+                if ([type isEqualToString:type_phone_work])
+                {
+                    aPhone._typePhone = type_phone_work;
+                    aPhone._iconStr = @"btn_contacts_work.png";
+                    aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_work];
+                    
+                }else if ([type isEqualToString:type_phone_fax]){
+                    aPhone._typePhone = type_phone_fax;
+                    aPhone._iconStr = @"btn_contacts_fax.png";
+                    aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_fax];
+                    
+                }else if ([type isEqualToString:type_phone_home]){
+                    aPhone._typePhone = type_phone_home;
+                    aPhone._iconStr = @"btn_contacts_home.png";
+                    aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_home];
+                    
+                }else{
+                    aPhone._typePhone = type_phone_mobile;
+                    aPhone._iconStr = @"btn_contacts_mobile.png";
+                    aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_mobile];
+                }
                 [detailsContact._listPhone addObject: aPhone];
             }else{
                 [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please input phone number"]
                             duration:2.0 position:CSToastPositionCenter];
             }
         }else if ([sender.currentTitle isEqualToString:@"Remove"]){
-            if (tag-NUMBER_ROW_BEFORE < appDelegate._newContact._listPhone.count) {
-                [appDelegate._newContact._listPhone removeObjectAtIndex: tag-NUMBER_ROW_BEFORE];
+            if (tag-NUMBER_ROW_BEFORE < detailsContact._listPhone.count) {
+                [detailsContact._listPhone removeObjectAtIndex: tag-NUMBER_ROW_BEFORE];
             }
         }
     }
@@ -432,7 +518,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 //  Hiển thị bàn phím
-- (void)keyboardDidShow: (NSNotification *) notif{
+- (void)keyboardWillShow: (NSNotification *) notif{
     CGSize keyboardSize = [[[notif userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     [tbContents mas_updateConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view).offset(-keyboardSize.height);
@@ -703,12 +789,16 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)saveContactPressed: (UIButton *)sender {
-    [self.view endEditing: true];
+    [LinphoneAppDelegate sharedInstance].needToReloadContactList = YES;
     
+    [self.view endEditing: true];
     [waitingHud showInView:self.view animated:YES];
     
-    [self addNewContactToAddressPhoneBook];
-    
+    [self updateContactIntoAddressPhoneBook];
+    [self performSelector:@selector(hideWaitingView) withObject:nil afterDelay:1.0];
+}
+
+- (void)hideWaitingView {
     [waitingHud dismissAnimated:YES];
     [[PhoneMainView instance] popCurrentView];
 }
@@ -797,6 +887,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                     cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Email"];
                     cell.tfContent.tag = 100;
                     cell.tfContent.text = detailsContact._email;
+                    cell.tfContent.keyboardType = UIKeyboardTypeEmailAddress;
                     [cell.tfContent addTarget:self
                                        action:@selector(whenTextfieldChanged:)
                              forControlEvents:UIControlEventEditingChanged];
@@ -837,6 +928,10 @@ static UICompositeViewDescription *compositeDescription = nil;
                     [cell._iconNewPhone setTitle:@"Remove" forState:UIControlStateNormal];
                     [cell._iconNewPhone setBackgroundImage:[UIImage imageNamed:@"ic_delete_phone.png"]
                                                   forState:UIControlStateNormal];
+                    
+                    [cell._iconTypePhone setTitle:aPhone._typePhone forState:UIControlStateNormal];
+                    [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:aPhone._iconStr]
+                                                   forState:UIControlStateNormal];
                 }
             }
             cell._tfPhone.tag = indexPath.row;
@@ -848,6 +943,11 @@ static UICompositeViewDescription *compositeDescription = nil;
             [cell._iconNewPhone addTarget:self
                                    action:@selector(btnAddPhonePressed:)
                          forControlEvents:UIControlEventTouchUpInside];
+            
+            cell._iconTypePhone.tag = indexPath.row;
+            [cell._iconTypePhone addTarget:self
+                                    action:@selector(btnTypePhonePressed:)
+                          forControlEvents:UIControlEventTouchUpInside];
             
             return cell;
         }

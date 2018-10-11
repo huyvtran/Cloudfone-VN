@@ -21,6 +21,7 @@
         make.width.height.mas_equalTo(35.0);
     }];
     
+    [_iconTypePhone setTitleColor:UIColor.clearColor forState:UIControlStateNormal];
     [_iconTypePhone mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self).offset(-20.0);
         make.centerY.equalTo(self.mas_centerY);

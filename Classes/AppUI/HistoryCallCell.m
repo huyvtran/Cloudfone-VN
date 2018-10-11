@@ -111,8 +111,8 @@
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     if (highlighted) {
-        self.backgroundColor = [UIColor colorWithRed:(223/255.0) green:(255/255.0)
-                                                blue:(133/255.0) alpha:1];
+        self.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
+                                                blue:(240/255.0) alpha:1];
     }else{
         self.backgroundColor = UIColor.clearColor;
     }

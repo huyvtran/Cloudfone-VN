@@ -454,8 +454,6 @@
 "text_no_missed_call"   =   "Không có cuộc gọi nhỡ"
 "text_no_recorded_call" =   "Không có cuộc gọi được ghi âm"
 
-"text_today"            =   "Hôm nay"
-"text_yesterday"        =   "Hôm qua"
 
 "text_edit"             =   "Sửa"
 
@@ -530,8 +528,6 @@
 "text_minutes"          =   "phút"
 "text_minute"           =   "phút"
 "text_call_free"        =   "Miễn phí"
-"text_call_aborted"     =   "Bị hủy bỏ"
-"text_call_declined"    =   "Bị từ chối"
 "text_call_missed"      =   "Cuộc gọi nhỡ"
 
 "text_block_user"       =   "Chặn"
@@ -1150,3 +1146,11 @@
 "Crop picture" = "Cắt hình ảnh"
 "Edit contact" = "Chỉnh sửa liên hệ"
 "Contact info" = "Thông tin liên hệ"
+"Contact has been updated" = "Liên hệ đã được cập nhật"
+
+"Today" = "Hôm nay"
+"Yesterday" = "Hôm qua"
+"Incoming call" = "Cuộc gọi đến"
+"Outgoing call" = "Cuộc gọi đi"
+"Missed call" = "Cuộc gọi nhỡ"
+"Aborted call" = "Bị huỷ bỏ"
