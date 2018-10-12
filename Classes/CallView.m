@@ -554,11 +554,18 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallConnected:{
-            icAddCall.enabled = YES;
+            //  Check if in call with hotline
+            if (![phoneNumber isEqualToString:hotline]) {
+                icAddCall.enabled = YES;
+                _optionsTransferButton.enabled = YES;
+            }else{
+                icAddCall.enabled = NO;
+                _optionsTransferButton.enabled = NO;
+                
+            }
             _numpadButton.enabled = YES;
             _callPauseButton.enabled = YES;
             _microButton.enabled = YES;
-            _optionsTransferButton.enabled = YES;
             
             _lbQuality.hidden = NO;
             _lbQualityValue.hidden = NO;

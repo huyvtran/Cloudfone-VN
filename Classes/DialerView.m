@@ -21,6 +21,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "NewContactViewController.h"
 #import "AllContactListViewController.h"
+#import "PBXSettingViewController.h"
 #import "LinphoneManager.h"
 #import "PhoneMainView.h"
 #import <AVFoundation/AVFoundation.h>
@@ -37,6 +38,7 @@
 #import "PBXContact.h"
 
 @interface DialerView (){
+    LinphoneAppDelegate *appDelegate;
     UIFont *textFont;
     NSMutableArray *listPhoneSearched;
     
@@ -165,6 +167,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidLoad {
 	[super viewDidLoad];
     
+    appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    //  Check for first time, after installed app
+    [self checkForShowFirstSettingAccount];
+    
     //  my code here
     _zeroButton.digit = '0';
     _oneButton.digit = '1';
@@ -237,6 +244,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [self addBoxShadowForView:searchView withColor:[UIColor colorWithRed:(220/255.0) green:(220/255.0)
                                                                     blue:(220/255.0) alpha:1.0]];
+}
+
+- (void)testAction {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"facepro://call?type=video&user_id=0700130"]];
 }
 
 #pragma mark - Event Functions
@@ -321,13 +332,13 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)onAddContactClick:(id)event {
     if ([_addressField.text isEqualToString:USERNAME]) {
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"You can not add yourself to contact list"] duration:2.0 position:CSToastPositionCenter];
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"You can not add yourself to contact list"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
     
-    UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:_addressField.text delegate:self cancelButtonTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
-                            [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_add_new_contact],
-                            [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_add_exists_contact],
+    UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:_addressField.text delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
+                            [appDelegate.localization localizedStringForKey:text_add_new_contact],
+                            [appDelegate.localization localizedStringForKey:text_add_exists_contact],
                             nil];
     popupAddContact.tag = 100;
     [popupAddContact showInView:self.view];
@@ -447,6 +458,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)_btnNumberPressed:(id)sender {
     [self.view endEditing: true];
+    //  Show or hide "add contact" button when textfield address changed
+    if (_addressField.text.length > 0){
+        _addContactButton.hidden = NO;
+    }else{
+        _addContactButton.hidden = YES;
+    }
     
     [self searchPhoneBookWithThread];
 }
@@ -483,7 +500,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)networkDown {
-    _lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No network"];
+    _lbStatus.text = [appDelegate.localization localizedStringForKey:@"No network"];
     _lbStatus.textColor = UIColor.orangeColor;
 }
 
@@ -514,7 +531,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)searchContactInPBXList: (NSString *)search {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_name CONTAINS[cd] %@ OR _number CONTAINS[cd] %@ OR _nameForSearch CONTAINS[cd] %@", search, search, search];
-    NSArray *filter = [[LinphoneAppDelegate sharedInstance].pbxContacts filteredArrayUsingPredicate: predicate];
+    NSArray *filter = [appDelegate.pbxContacts filteredArrayUsingPredicate: predicate];
     if (filter.count > 0) {
         [listPhoneSearched addObjectsFromArray: filter];
     }
@@ -522,7 +539,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)searchForContactName: (NSString *)search {
-    NSArray *allName = [[LinphoneAppDelegate sharedInstance]._allPhonesDict allValues];
+    NSArray *allName = [appDelegate._allPhonesDict allValues];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", search];
     NSArray *filter = [allName filteredArrayUsingPredicate: predicate];
     if (filter.count > 0) {
@@ -621,19 +638,19 @@ static UICompositeViewDescription *compositeDescription = nil;
         switch (state) {
             case LinphoneRegistrationOk:{
                 _lbStatus.textColor = UIColor.greenColor;
-                _lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Online"];
+                _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Online"];
                 break;
             }
             case LinphoneRegistrationProgress:{
                 _lbStatus.textColor = UIColor.whiteColor;
-                _lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Connecting"];
+                _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Connecting"];
                 break;
             }
             case LinphoneRegistrationNone:
             case LinphoneRegistrationCleared:
             case LinphoneRegistrationFailed:{
                 _lbStatus.textColor = UIColor.orangeColor;
-                _lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Offline"];
+                _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Offline"];
                 break;
             }
             default:
@@ -662,12 +679,12 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                    blue:(52/255.0) alpha:1.0];
     [_viewStatus mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState);
+        make.height.mas_equalTo(appDelegate._hRegistrationState);
     }];
     
     [_imgLogoSmall mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_viewStatus).offset([LinphoneAppDelegate sharedInstance]._hRegistrationState/4);
-        make.centerY.equalTo(_viewStatus.mas_centerY).offset([LinphoneAppDelegate sharedInstance]._hStatus/2);
+        make.left.equalTo(_viewStatus).offset(appDelegate._hRegistrationState/4);
+        make.centerY.equalTo(_viewStatus.mas_centerY).offset(appDelegate._hStatus/2);
         make.width.height.mas_equalTo(30.0);
     }];
     
@@ -685,8 +702,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_lbStatus mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewStatus.mas_centerX);
         make.top.bottom.equalTo(_lbAccount);
-        make.right.equalTo(_viewStatus).offset(-[LinphoneAppDelegate sharedInstance]._hRegistrationState/4);
+        make.right.equalTo(_viewStatus).offset(-appDelegate._hRegistrationState/4);
     }];
+    UITapGestureRecognizer *tapOnStatus = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(whenTappedOnStatusAccount)];
+    _lbStatus.userInteractionEnabled = YES;
+    [_lbStatus addGestureRecognizer: tapOnStatus];
     
     //  Number keypad
     float wEndCall = 70.0;
@@ -851,17 +871,11 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.bottom.equalTo(_padView.mas_top);
     }];
     
-    float wSmallIcon = 60.0;
-    [_addContactButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.equalTo(_viewNumber).offset(10);
-        make.width.height.mas_equalTo(wSmallIcon);
-    }];
-    
     [_addressField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_viewNumber).offset(20);
-        make.left.equalTo(_addContactButton.mas_right).offset(10);
-        make.right.equalTo(_viewNumber).offset(-20-wSmallIcon);
-        make.height.mas_equalTo(wSmallIcon);
+        make.left.equalTo(self.view).offset(80);
+        make.right.equalTo(self.view).offset(-80);
+        make.height.mas_equalTo(60.0);
     }];
     _addressField.keyboardType = UIKeyboardTypePhonePad;
     _addressField.enabled = YES;
@@ -869,6 +883,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     _addressField.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:45.0];
     _addressField.adjustsFontSizeToFitWidth = YES;
     _addressField.delegate = self;
+    
+    [_addContactButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewNumber).offset(10.0);
+        make.centerY.equalTo(_addressField.mas_centerY).offset(-3);
+        make.width.height.mas_equalTo(40.0);
+    }];
     
     //  search contact
     hSearch = 60.0;
@@ -951,7 +971,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)displayAssistantConfigurationError {
     [_lbStatus setTextColor:[UIColor orangeColor]];
-    [_lbStatus setText: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_status_offline]];
+    [_lbStatus setText: [appDelegate.localization localizedStringForKey:text_status_offline]];
 }
 
 #pragma mark - Actionsheet Delegate
@@ -1086,7 +1106,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
     if (defaultConfig == NULL) {
         _lbAccount.text = NSLocalizedString(@"", nil);
-        _lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"];
+        _lbStatus.text = [appDelegate.localization localizedStringForKey:@"No account"];
     }else{
         const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
         NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
@@ -1110,9 +1130,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)whenNetworkChanged {
-    NetworkStatus internetStatus = [[LinphoneAppDelegate sharedInstance]._internetReachable currentReachabilityStatus];
+    NetworkStatus internetStatus = [appDelegate._internetReachable currentReachabilityStatus];
     if (internetStatus == NotReachable) {
-        _lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No network"];
+        _lbStatus.text = [appDelegate.localization localizedStringForKey:@"No network"];
         _lbStatus.textColor = UIColor.orangeColor;
     }else{
         [self checkAccountForApp];
@@ -1141,7 +1161,46 @@ static UICompositeViewDescription *compositeDescription = nil;
     return @[@"", @"", @""];
 }
 
+- (void)whenTappedOnStatusAccount
+{
+    if ([LinphoneManager instance].connectivity == none){
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection"]
+                    duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    NSString *currentTitle = _lbStatus.text;
+    if ([currentTitle isEqualToString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"]]){
+        NSString *content = [NSString stringWithFormat:@"%@", [appDelegate.localization localizedStringForKey:@"You have not set up an account yet. Do you want to setup now?"]];
+        
+        UIAlertView *alertAcc = [[UIAlertView alloc] initWithTitle:nil message:content delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] otherButtonTitles: [appDelegate.localization localizedStringForKey:@"Go to settings?"], nil];
+        [alertAcc show];
+        return;
+    }
+    [LinphoneManager.instance refreshRegisters];
+}
 
+- (void)checkForShowFirstSettingAccount {
+    NSString *needSetting = [[NSUserDefaults standardUserDefaults] objectForKey:@"SHOWED_SETTINGS_ACCOUNT_FOR_FIRST"];
+    if (needSetting == nil){
+        LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+        if (defaultConfig == NULL) {
+            NSString *content = [NSString stringWithFormat:@"%@", [appDelegate.localization localizedStringForKey:@"You have not set up an account yet. Do you want to setup now?"]];
+            
+            UIAlertView *alertAcc = [[UIAlertView alloc] initWithTitle:nil message:content delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] otherButtonTitles: [appDelegate.localization localizedStringForKey:@"Go to settings?"], nil];
+            [alertAcc show];
+        }else{
+            [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"SHOWED_SETTINGS_ACCOUNT_FOR_FIRST"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+}
+
+#pragma mark - UIAlertview Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1){
+        [[PhoneMainView instance] changeCurrentView:[PBXSettingViewController compositeViewDescription] push:YES];
+    }
+}
 
 
 @end

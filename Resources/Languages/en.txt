@@ -1133,3 +1133,5 @@
 "hour" = "hour"
 "minutes" = "minutes"
 "minute" = "minute"
+"You have not set up an account yet. Do you want to setup now?" = "You have not set up an account yet. Do you want to setup now?"
+"Go to settings" = "Go to settings"

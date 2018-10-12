@@ -57,9 +57,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                  name:k11ReloadAfterDeleteAllCall object:nil];
     
     //  Cập nhật nhãn delete khi xoá lịch sử cuộc gọi
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateValueNumberCallRemove:)
-                                                 name:updateNumberHistoryCallRemove object:nil];
-    self.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-[LinphoneAppDelegate sharedInstance]._hStatus);
     self.view.backgroundColor = UIColor.clearColor;
     
     [self autoLayoutForView];
@@ -259,25 +256,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.mas_lessThanOrEqualTo(100);
     }];
     _btnEdit.titleLabel.font = textFont;
-}
-
-//  Cập nhật giá trị delete
-- (void)updateValueNumberCallRemove: (NSNotification *)notif {
-    id object = [notif object];
-    if ([object isKindOfClass:[NSNumber class]]) {
-        if ([object intValue] == 0) {
-//            _lbDelete.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_delete];
-//
-//            CGSize textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_delete] withFont:textFont];
-//            _btnEdit.frame = CGRectMake(_lbDelete.frame.origin.x, 0, textSize.width, [LinphoneAppDelegate sharedInstance]._hHeader);
-        }else{
-//            NSString *str = [NSString stringWithFormat:@"%@(%d)", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_delete], [object intValue]];
-//            _lbDelete.text = str;
-//
-//            CGSize textSize = [AppUtils getSizeWithText:str withFont:textFont];
-//            _btnEdit.frame = CGRectMake(_lbDelete.frame.origin.x, 0, textSize.width, [LinphoneAppDelegate sharedInstance]._hHeader);
-        }
-    }
 }
 
 @end

@@ -30,7 +30,6 @@
     LinphoneAppDelegate *appDelegate;
     
     ChooseAvatarPopupView *popupChooseAvatar;
-    NSMutableArray *listOptions;
     
     YBHud *waitingHud;
     
@@ -140,22 +139,22 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (IBAction)_btnAvatarPressed:(UIButton *)sender {
     [self.view endEditing: YES];
     
-    if (appDelegate._dataCrop != nil) {
-        [self createDataForPopupAvatarWithExistsAvatar: YES];
+    if (appDelegate._dataCrop != nil || (detailsContact._avatar != nil && ![detailsContact._avatar isEqualToString:@""])) {
+        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_options] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
+                                          [appDelegate.localization localizedStringForKey:text_gallery],
+                                          [appDelegate.localization localizedStringForKey:text_camera],
+                                          [appDelegate.localization localizedStringForKey:text_remove],
+                                          nil];
+        popupAddContact.tag = 100;
+        [popupAddContact showInView:self.view];
     }else{
-        if ([self checkExistsValue: detailsContact._avatar]) {
-            [self createDataForPopupAvatarWithExistsAvatar: YES];
-        }else{
-            [self createDataForPopupAvatarWithExistsAvatar: NO];
-        }
+        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_options] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
+                                          [appDelegate.localization localizedStringForKey:text_gallery],
+                                          [appDelegate.localization localizedStringForKey:text_camera],
+                                          nil];
+        popupAddContact.tag = 101;
+        [popupAddContact showInView:self.view];
     }
-    
-    popupChooseAvatar = [[ChooseAvatarPopupView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-236)/2, (SCREEN_HEIGHT-listOptions.count*50.0+6)/2, 236, listOptions.count*50.0+6)];
-    popupChooseAvatar._listOptions = listOptions;
-    popupChooseAvatar._optionsTableView.delegate = self;
-    popupChooseAvatar._optionsTableView.dataSource = self;
-    [popupChooseAvatar._optionsTableView reloadData];
-    [popupChooseAvatar showInView:appDelegate.window animated:YES];
 }
 
 #pragma mark - my functions
@@ -646,31 +645,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     tbContents.tableFooterView = viewFooter;
 }
 
-//  Tao du lieu cho popup change avatar
-- (void)createDataForPopupAvatarWithExistsAvatar: (BOOL)isExists {
-    if (listOptions == nil) {
-        listOptions = [[NSMutableArray alloc] init];
-    }
-    [listOptions removeAllObjects];
-    
-    SettingItem *itemGallery = [[SettingItem alloc] init];
-    itemGallery._imageStr = @"gallery.png";
-    itemGallery._valueStr = [appDelegate.localization localizedStringForKey:text_gallery];
-    [listOptions addObject: itemGallery];
-    
-    SettingItem *itemCamera = [[SettingItem alloc] init];
-    itemCamera._imageStr = @"camera.png";
-    itemCamera._valueStr = [appDelegate.localization localizedStringForKey:text_camera];
-    [listOptions addObject: itemCamera];
-    
-    if (isExists) {
-        SettingItem *itemRemove = [[SettingItem alloc] init];
-        itemRemove._imageStr = @"delete_conversation.png";
-        itemRemove._valueStr = [appDelegate.localization localizedStringForKey:text_remove];
-        [listOptions addObject: itemRemove];
-    }
-}
-
 //  Tap vào màn hình chính để đóng bàn phím
 - (void)whenTapOnMainScreen {
     [self.view endEditing: true];
@@ -836,25 +810,19 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (tableView == tbContents) {
-        return NUMBER_ROW_BEFORE + [detailsContact._listPhone count] + 1;
-    }else{
-        return [listOptions count];
-    }
+    return NUMBER_ROW_BEFORE + [detailsContact._listPhone count] + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == tbContents)
+    if (indexPath.row == ROW_CONTACT_NAME || indexPath.row == ROW_CONTACT_EMAIL || indexPath.row == ROW_CONTACT_COMPANY)
     {
-        if (indexPath.row == ROW_CONTACT_NAME || indexPath.row == ROW_CONTACT_EMAIL || indexPath.row == ROW_CONTACT_COMPANY)
-        {
-            static NSString *identifier = @"InfoForNewContactTableCell";
-            InfoForNewContactTableCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
-            if (cell == nil) {
-                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"InfoForNewContactTableCell" owner:self options:nil];
-                cell = topLevelObjects[0];
-            }
-            switch (indexPath.row) {
+        static NSString *identifier = @"InfoForNewContactTableCell";
+        InfoForNewContactTableCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+        if (cell == nil) {
+            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"InfoForNewContactTableCell" owner:self options:nil];
+            cell = topLevelObjects[0];
+        }
+        switch (indexPath.row) {
                 case ROW_CONTACT_NAME:{
                     cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Fullname"];
                     cell.tfContent.text = detailsContact._fullName;
@@ -882,111 +850,60 @@ static UICompositeViewDescription *compositeDescription = nil;
                              forControlEvents:UIControlEventEditingChanged];
                     break;
                 }
-            }
-            return cell;
-        }else
-        {
-            static NSString *identifier = @"NewPhoneCell";
-            NewPhoneCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
-            if (cell == nil) {
-                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"NewPhoneCell" owner:self options:nil];
-                cell = topLevelObjects[0];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            if (indexPath.row == detailsContact._listPhone.count + NUMBER_ROW_BEFORE) {
-                cell._tfPhone.text = @"";
-                
-                [cell._iconNewPhone setTitle:@"Add" forState:UIControlStateNormal];
-                [cell._iconNewPhone setBackgroundImage:[UIImage imageNamed:@"ic_add_phone.png"]
-                                              forState:UIControlStateNormal];
-            }else{
-                if ((indexPath.row - NUMBER_ROW_BEFORE) >= 0 && (indexPath.row - NUMBER_ROW_BEFORE) < detailsContact._listPhone.count) {
-                    ContactDetailObj *aPhone = [detailsContact._listPhone objectAtIndex: (indexPath.row - NUMBER_ROW_BEFORE)];
-                    cell._tfPhone.text = aPhone._valueStr;
-                    
-                    [cell._iconNewPhone setTitle:@"Remove" forState:UIControlStateNormal];
-                    [cell._iconNewPhone setBackgroundImage:[UIImage imageNamed:@"ic_delete_phone.png"]
-                                                  forState:UIControlStateNormal];
-                    
-                    [cell._iconTypePhone setTitle:aPhone._typePhone forState:UIControlStateNormal];
-                    [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:aPhone._iconStr]
-                                                   forState:UIControlStateNormal];
-                }
-            }
-            cell._tfPhone.tag = indexPath.row;
-            [cell._tfPhone addTarget:self
-                              action:@selector(whenTextfieldPhoneDidChanged:)
-                    forControlEvents:UIControlEventEditingChanged];
-            
-            cell._iconNewPhone.tag = indexPath.row;
-            [cell._iconNewPhone addTarget:self
-                                   action:@selector(btnAddPhonePressed:)
-                         forControlEvents:UIControlEventTouchUpInside];
-            
-            cell._iconTypePhone.tag = indexPath.row;
-            [cell._iconTypePhone addTarget:self
-                                    action:@selector(btnTypePhonePressed:)
-                          forControlEvents:UIControlEventTouchUpInside];
-            
-            return cell;
         }
-    }else{
-        static NSString *identifier = @"MenuCell";
-        MenuCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+        return cell;
+    }else
+    {
+        static NSString *identifier = @"NewPhoneCell";
+        NewPhoneCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
         if (cell == nil) {
-            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"MenuCell" owner:self options:nil];
+            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"NewPhoneCell" owner:self options:nil];
             cell = topLevelObjects[0];
         }
-        [cell setSelectionStyle: UITableViewCellSelectionStyleNone];
-        [cell setFrame: CGRectMake(cell.frame.origin.x, cell.frame.origin.y, popupChooseAvatar._optionsTableView.frame.size.width, 50.0)];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        [cell setTag: indexPath.row];
+        if (indexPath.row == detailsContact._listPhone.count + NUMBER_ROW_BEFORE) {
+            cell._tfPhone.text = @"";
+            
+            [cell._iconNewPhone setTitle:@"Add" forState:UIControlStateNormal];
+            [cell._iconNewPhone setBackgroundImage:[UIImage imageNamed:@"ic_add_phone.png"]
+                                          forState:UIControlStateNormal];
+        }else{
+            if ((indexPath.row - NUMBER_ROW_BEFORE) >= 0 && (indexPath.row - NUMBER_ROW_BEFORE) < detailsContact._listPhone.count) {
+                ContactDetailObj *aPhone = [detailsContact._listPhone objectAtIndex: (indexPath.row - NUMBER_ROW_BEFORE)];
+                cell._tfPhone.text = aPhone._valueStr;
+                
+                [cell._iconNewPhone setTitle:@"Remove" forState:UIControlStateNormal];
+                [cell._iconNewPhone setBackgroundImage:[UIImage imageNamed:@"ic_delete_phone.png"]
+                                              forState:UIControlStateNormal];
+                
+                [cell._iconTypePhone setTitle:aPhone._typePhone forState:UIControlStateNormal];
+                [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:aPhone._iconStr]
+                                               forState:UIControlStateNormal];
+            }
+        }
+        cell._tfPhone.tag = indexPath.row;
+        [cell._tfPhone addTarget:self
+                          action:@selector(whenTextfieldPhoneDidChanged:)
+                forControlEvents:UIControlEventEditingChanged];
         
-        SettingItem *curItem = [listOptions objectAtIndex: indexPath.row];
-        cell._lbTitle.text = curItem._valueStr;
-        [cell._iconImage setImage:[UIImage imageNamed: curItem._imageStr]];
+        cell._iconNewPhone.tag = indexPath.row;
+        [cell._iconNewPhone addTarget:self
+                               action:@selector(btnAddPhonePressed:)
+                     forControlEvents:UIControlEventTouchUpInside];
+        
+        cell._iconTypePhone.tag = indexPath.row;
+        [cell._iconTypePhone addTarget:self
+                                action:@selector(btnTypePhonePressed:)
+                      forControlEvents:UIControlEventTouchUpInside];
         
         return cell;
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView == popupChooseAvatar._optionsTableView) {
-        UITableViewCell *curCell = [tableView cellForRowAtIndexPath: indexPath];
-        curCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-        
-        if (curCell.tag == 0) {
-            appDelegate.fromImagePicker = YES;
-            
-            UILabel *testLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, -20, 320, 20)];
-            UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
-            [pickerController.view addSubview: testLabel];
-            
-            pickerController.delegate = self;
-            [self presentViewController:pickerController animated:YES completion:nil];
-        }else if (curCell.tag == 1) {
-            // Go to camera
-            appDelegate.fromImagePicker = YES;
-            
-            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-            [picker setDelegate: self];
-            [picker setSourceType: UIImagePickerControllerSourceTypeCamera];
-            [self presentViewController:picker animated:YES completion:NULL];
-        }else{
-            //  [newContact set_avatar: @""];
-            [_imgAvatar setImage:[UIImage imageNamed:@"no_avatar.png"]];
-            appDelegate._dataCrop = nil;
-        }
-        [popupChooseAvatar fadeOut];
-    }
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == tbContents) {
-        if (indexPath.row == ROW_CONTACT_NAME || indexPath.row == ROW_CONTACT_EMAIL || indexPath.row == ROW_CONTACT_COMPANY) {
-            return 83.0;
-        }
+    if (indexPath.row == ROW_CONTACT_NAME || indexPath.row == ROW_CONTACT_EMAIL || indexPath.row == ROW_CONTACT_COMPANY) {
+        return 83.0;
     }
     return 50.0;
 }
@@ -1002,6 +919,75 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)cropViewControllerDidCancel:(PECropViewController *)controller
 {
     [controller dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark - ActionSheet Delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (actionSheet.tag == 100) {
+        switch (buttonIndex) {
+                case 0:{
+                    [self pressOnGallery];
+                    break;
+                }
+                case 1:{
+                    [self pressOnCamera];
+                    break;
+                }
+                case 2:{
+                    [self removeAvatar];
+                    break;
+                }
+                case 3:{
+                    NSLog(@"Cancel");
+                    break;
+                }
+        }
+    }else if (actionSheet.tag == 101){
+        switch (buttonIndex) {
+                case 0:{
+                    [self pressOnGallery];
+                    break;
+                }
+                case 1:{
+                    [self pressOnCamera];
+                    break;
+                }
+        }
+    }
+}
+
+- (void)pressOnCamera {
+    appDelegate.fromImagePicker = YES;
+    
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    [picker setDelegate: self];
+    [picker setSourceType: UIImagePickerControllerSourceTypeCamera];
+    [self presentViewController:picker animated:YES completion:NULL];
+}
+
+- (void)pressOnGallery {
+    appDelegate.fromImagePicker = YES;
+    
+    UILabel *testLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, -20, 320, 20)];
+    UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
+    [pickerController.view addSubview: testLabel];
+    
+    pickerController.delegate = self;
+    [self presentViewController:pickerController animated:YES completion:nil];
+}
+
+- (void)removeAvatar {
+    if (appDelegate._dataCrop != nil) {
+        appDelegate._dataCrop = nil;
+        if (detailsContact._avatar != nil && ![detailsContact._avatar isEqualToString:@""]){
+            _imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: detailsContact._avatar]];
+        }else{
+            _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+        }
+    }else{
+        detailsContact._avatar = @"";
+        _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+    }
 }
 
 @end

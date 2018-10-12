@@ -88,7 +88,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Add to contact"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                    <state key="normal" backgroundImage="ic_add_def"/>
+                                    <state key="normal" backgroundImage="add_contact_dialer.png"/>
                                     <state key="disabled" image="contact_add_disabled.png"/>
                                     <connections>
                                         <action selector="onAddContactClick:" destination="-1" eventType="touchUpInside" id="230"/>
@@ -354,12 +354,13 @@
             <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="14" y="-457"/>
+            <point key="canvasLocation" x="854" y="-288"/>
         </view>
     </objects>
     <resources>
         <image name="add_call.png" width="200" height="200"/>
-        <image name="background_header.png" width="750" height="360"/>
+        <image name="add_contact_dialer.png" width="200" height="200"/>
+        <image name="background_header.png" width="750" height="130"/>
         <image name="backspace_hover_1" width="241" height="149"/>
         <image name="button_back_dialer" width="240" height="148"/>
         <image name="call_alt_back_disabled.png" width="51" height="36"/>
@@ -368,7 +369,6 @@
         <image name="contact_add_disabled.png" width="34" height="29"/>
         <image name="hotline_default.png" width="201" height="201"/>
         <image name="hotline_hover.png" width="201" height="201"/>
-        <image name="ic_add_def" width="200" height="200"/>
         <image name="ic_logo" width="200" height="200"/>
         <image name="numpad_clear.png" width="201" height="201"/>
         <image name="numpad_eight_default.png" width="201" height="201"/>

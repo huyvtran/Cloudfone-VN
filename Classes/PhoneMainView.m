@@ -385,7 +385,7 @@ static RootViewManager *rootViewManagerInstance = nil;
             }else{
                 [self changeCurrentView:CallView.compositeViewDescription push:TRUE];
             }
-            sssss
+            
             //  ------
 			if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max && call) {
 				NSString *callId =

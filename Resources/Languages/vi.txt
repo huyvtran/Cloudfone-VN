@@ -1164,3 +1164,5 @@
 "hour" = "giờ"
 "minutes" = "phút"
 "minute" = "phút"
+"now?" = "Bạn chưa cài đặt tài khoản. Bạn có muốn cài đặt bâw giờ không?"
+"Go to settings" = "Đi đến cài đặt"

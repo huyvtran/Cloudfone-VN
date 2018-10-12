@@ -383,8 +383,14 @@
     if (listDelete != nil && listDelete.count > 0) {
         for (int iCount=0; iCount<listDelete.count; iCount++) {
             int idHisCall = [[listDelete objectAtIndex: iCount] intValue];
-            NSString *recordFile = [NSDatabase getRecordFileNameOfCall: idHisCall];
-            [NSDatabase deleteRecordCallHistory:idHisCall withRecordFile: recordFile];
+            NSDictionary *callInfo = [NSDatabase getCallInfoWithHistoryCallId: idHisCall];
+            if (callInfo != nil) {
+                NSString *phoneNumber = [callInfo objectForKey:@"phone_number"];
+                if (phoneNumber != nil && ![phoneNumber isEqualToString:@""]) {
+                    NSString *date = [callInfo objectForKey:@"date"];
+                    [NSDatabase removeHistoryCallsOfUser:phoneNumber onDate:date ofAccount:USERNAME];
+                }
+            }
         }
     }
     [self reGetListCallsForHistory];
