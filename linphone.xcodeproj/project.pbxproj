@@ -661,8 +661,6 @@
 		840B574220061FD300DCBA7E /* QRCodeReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573920061FD100DCBA7E /* QRCodeReader.m */; };
 		840B574320061FD300DCBA7E /* QRCodeReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573A20061FD200DCBA7E /* QRCodeReaderViewController.m */; };
 		840B574420061FD300DCBA7E /* QRCameraSwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573E20061FD300DCBA7E /* QRCameraSwitchButton.m */; };
-		84183A902053857D00DA23F0 /* HotlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84183A8E2053857D00DA23F0 /* HotlineViewController.m */; };
-		84183A912053857D00DA23F0 /* HotlineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84183A8F2053857D00DA23F0 /* HotlineViewController.xib */; };
 		8419017620EAA01B003F524C /* PulsingHaloLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8419016E20EAA01B003F524C /* PulsingHaloLayer.m */; };
 		841D338C216112ED00FFCD72 /* ManagerPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841D338A216112ED00FFCD72 /* ManagerPasswordViewController.m */; };
 		841D338D216112ED00FFCD72 /* ManagerPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 841D338B216112ED00FFCD72 /* ManagerPasswordViewController.xib */; };
@@ -1882,9 +1880,6 @@
 		840B573D20061FD200DCBA7E /* QRCodeReaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRCodeReaderView.h; path = OutSources/QRCodeReader/QRCodeReaderView.h; sourceTree = "<group>"; };
 		840B573E20061FD300DCBA7E /* QRCameraSwitchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QRCameraSwitchButton.m; path = OutSources/QRCodeReader/QRCameraSwitchButton.m; sourceTree = "<group>"; };
 		840B573F20061FD300DCBA7E /* QRCodeReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRCodeReader.h; path = OutSources/QRCodeReader/QRCodeReader.h; sourceTree = "<group>"; };
-		84183A8D2053857D00DA23F0 /* HotlineViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HotlineViewController.h; sourceTree = "<group>"; };
-		84183A8E2053857D00DA23F0 /* HotlineViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HotlineViewController.m; sourceTree = "<group>"; };
-		84183A8F2053857D00DA23F0 /* HotlineViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HotlineViewController.xib; sourceTree = "<group>"; };
 		8419016B20EAA01B003F524C /* PulsingHaloLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulsingHaloLayer.h; sourceTree = "<group>"; };
 		8419016D20EAA01B003F524C /* PulsingHalo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulsingHalo.h; sourceTree = "<group>"; };
 		8419016E20EAA01B003F524C /* PulsingHaloLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PulsingHaloLayer.m; sourceTree = "<group>"; };
@@ -2820,9 +2815,6 @@
 				84C47D131FB632640015695E /* IncomingCallViewController.h */,
 				84C47D141FB632640015695E /* IncomingCallViewController.m */,
 				84C47D151FB632640015695E /* IncomingCallViewController.xib */,
-				84183A8D2053857D00DA23F0 /* HotlineViewController.h */,
-				84183A8E2053857D00DA23F0 /* HotlineViewController.m */,
-				84183A8F2053857D00DA23F0 /* HotlineViewController.xib */,
 				6341807A1BBC103100F71761 /* ChatConversationCreateTableView.h */,
 				6341807B1BBC103100F71761 /* ChatConversationCreateTableView.m */,
 				6336715E1BCBAAD200BFCBDE /* ChatConversationCreateView.h */,
@@ -5207,7 +5199,6 @@
 				633FEDA01D3CD5590014B822 /* avatar.png in Resources */,
 				153D004E2164D9D3007B69B3 /* numpad_clear_hover.png in Resources */,
 				153D000E2164A67E007B69B3 /* numpad_four_default.png in Resources */,
-				84183A912053857D00DA23F0 /* HotlineViewController.xib in Resources */,
 				633FEDF71D3CD5590014B822 /* camera_default@2x.png in Resources */,
 				84C1E24D1FAEBBAF00EED0B9 /* ConfirmResetPasswordView.xib in Resources */,
 				633FEDB31D3CD5590014B822 /* call_alt_back_default@2x.png in Resources */,
@@ -5886,7 +5877,6 @@
 				846B716920E240410019AD41 /* SipUtils.m in Sources */,
 				D3807FE815C2894A005BE9BC /* IASKAppSettingsViewController.m in Sources */,
 				D3807FEA15C2894A005BE9BC /* IASKAppSettingsWebViewController.m in Sources */,
-				84183A902053857D00DA23F0 /* HotlineViewController.m in Sources */,
 				D3807FEC15C2894A005BE9BC /* IASKSpecifierValuesViewController.m in Sources */,
 				D3807FEE15C2894A005BE9BC /* IASKSettingsReader.m in Sources */,
 				D3807FF015C2894A005BE9BC /* IASKSettingsStore.m in Sources */,

@@ -699,6 +699,49 @@
     return @"";
 }
 
+//  Get first name and last name of contact
++ (NSArray *)getFirstNameAndLastNameOfContact: (ABRecordRef)aPerson
+{
+    if (aPerson != nil) {
+        NSString *firstName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNameProperty);
+        if (firstName == nil) {
+            firstName = @"";
+        }
+        firstName = [firstName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
+        firstName = [firstName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
+        
+        NSString *middleName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonMiddleNameProperty);
+        if (middleName == nil) {
+            middleName = @"";
+        }
+        middleName = [middleName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
+        middleName = [middleName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
+        
+        NSString *lastName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonLastNameProperty);
+        if (lastName == nil) {
+            lastName = @"";
+        }
+        lastName = [lastName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
+        lastName = [lastName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
+        
+        // Lưu tên contact cho search phonebook
+        NSString *fullname = @"";
+        if (![lastName isEqualToString:@""]) {
+            fullname = lastName;
+        }
+        
+        if (![middleName isEqualToString:@""]) {
+            if ([fullname isEqualToString:@""]) {
+                fullname = middleName;
+            }else{
+                fullname = [NSString stringWithFormat:@"%@ %@", fullname, middleName];
+            }
+        }
+        return @[firstName, fullname];
+    }
+    return @[@"", @""];
+}
+
 //  Get tên (custom label) của contact
 + (NSString *)getNameOfPhoneOfContact: (ABRecordRef)aPerson andPhoneNumber: (NSString *)phoneNumber
 {

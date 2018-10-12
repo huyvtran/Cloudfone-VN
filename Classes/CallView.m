@@ -993,11 +993,12 @@ static UICompositeViewDescription *compositeDescription = nil;
                 }
             }
         }
-        fullName = [NSDatabase getNameOfContactWithPhoneNumber: phoneNumber];
-        if ([fullName isEqualToString:@""]) {
-            if ([phoneNumber isEqualToString:hotline]) {
-                fullName = @"hotline";
-            }else{
+        
+        if ([phoneNumber isEqualToString:hotline]) {
+            fullName = [appDelegate.localization localizedStringForKey:@"Hotline"];
+        }else{
+            fullName = [NSDatabase getNameOfContactWithPhoneNumber: phoneNumber];
+            if ([fullName isEqualToString:@""]) {
                 fullName = [appDelegate.localization localizedStringForKey:@"Unknown"];
             }
         }
@@ -1006,10 +1007,14 @@ static UICompositeViewDescription *compositeDescription = nil;
             _nameLabel.text = fullName;
             lbAddressConf.text = fullName;
             
-            if (![avatar isEqualToString:@""]) {
-                _avatarImage.image = [UIImage imageWithData: [NSData dataFromBase64String: avatar]];
+            if ([phoneNumber isEqualToString:hotline]) {
+                 _avatarImage.image = [UIImage imageNamed:@"hotline_avatar.png"];
             }else{
-                _avatarImage.image = [UIImage imageNamed:@"default-avatar"];
+                if (![avatar isEqualToString:@""]) {
+                    _avatarImage.image = [UIImage imageWithData: [NSData dataFromBase64String: avatar]];
+                }else{
+                    _avatarImage.image = [UIImage imageNamed:@"default-avatar"];
+                }
             }
         });
     });

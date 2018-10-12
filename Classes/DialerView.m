@@ -30,7 +30,6 @@
 #import "NSDatabase.h"
 #import "ContactDetailObj.h"
 #import "UIVIew+Toast.h"
-#import "HotlineViewController.h"
 
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
@@ -443,14 +442,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnHotlinePressed:(UIButton *)sender {
-    LinphoneManager.instance.nextCallIsTransfer = NO;
-
-    LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:hotline];
-    [LinphoneManager.instance call:addr];
-    if (addr)
-        linphone_address_destroy(addr);
-    
-    //  [[PhoneMainView instance] changeCurrentView:[HotlineViewController compositeViewDescription] push:YES];
+    [SipUtils makeCallWithPhoneNumber: hotline];
 }
 
 - (IBAction)_btnNumberPressed:(id)sender {
@@ -559,15 +551,11 @@ static UICompositeViewDescription *compositeDescription = nil;
                 
                 isPBXContact = YES;
             }else{
-                NSString *value = [listPhoneSearched objectAtIndex: 0];
-                NSArray *tmpArr = [value componentsSeparatedByString:@"|"];
-                if (tmpArr.count >= 3) {
-                    name = [tmpArr firstObject];
-                    phone = [tmpArr lastObject];
-                    nameForSearch = [tmpArr objectAtIndex: 1];
-                }
+                NSArray *value = [self getValidResultFromSearchResult];
+                name = [value firstObject];
+                phone = [value lastObject];
+                nameForSearch = [value objectAtIndex: 1];
             }
-            
             
             if (![name isEqualToString:@""] && ![phone isEqualToString:@""]) {
                 // Tô màu cho tên contact đầu tiên được tìm thấy
@@ -1130,5 +1118,30 @@ static UICompositeViewDescription *compositeDescription = nil;
         [self checkAccountForApp];
     }
 }
+
+- (NSArray *)getValidResultFromSearchResult
+{
+    NSString *name = @"";
+    NSString *phone = @"";
+    NSString *nameForSearch = @"";
+    
+    for (int iCount=0; iCount<listPhoneSearched.count; iCount++) {
+        NSString *value = [listPhoneSearched objectAtIndex: iCount];
+        NSArray *tmpArr = [value componentsSeparatedByString:@"|"];
+        if (tmpArr.count >= 3) {
+            name = [tmpArr firstObject];
+            phone = [tmpArr lastObject];
+            nameForSearch = [tmpArr objectAtIndex: 1];
+            
+            if (![name isEqualToString:@""] && ![phone isEqualToString:@""] && ![nameForSearch isEqualToString:@""]) {
+                return @[name, phone, nameForSearch];
+            }
+        }
+    }
+    return @[@"", @"", @""];
+}
+
+
+
 
 @end

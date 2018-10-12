@@ -253,8 +253,10 @@
     
     if (isDeleted) {
         cell._cbDelete.hidden = NO;
+        cell._btnCall.hidden = YES;
     }else{
         cell._cbDelete.hidden = YES;
+        cell._btnCall.hidden = NO;
         if ([aCall._callDirection isEqualToString:incomming_call]) {
             if ([aCall._status isEqualToString:missed_call]) {
                 cell._imgStatus.image = [UIImage imageNamed:@"ic_call_missed.png"];

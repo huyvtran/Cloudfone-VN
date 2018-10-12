@@ -116,4 +116,8 @@
 // Xoá một contact vào Blacklist
 + (BOOL)removeContactFromBlacklist: (int)idContact andCloudFoneID: (NSString *)cloudFoneID;
 
+//  Added by Khai Le on 12/10/2018
++ (NSDictionary *)getCallInfoWithHistoryCallId: (int)callId;
++ (BOOL)removeHistoryCallsOfUser: (NSString *)user onDate: (NSString *)date ofAccount: (NSString *)account;
+
 @end

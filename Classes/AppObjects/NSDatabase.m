@@ -435,6 +435,7 @@ HMLocalization *localization;
         int duration = [[rsDict objectForKey:@"duration"] intValue];
         float rate = [[rsDict objectForKey:@"rate"] floatValue];
         NSString *call_direction = [rsDict objectForKey:@"call_direction"];
+        long timeInt = [[rsDict objectForKey:@"time_int"] longValue];
         
         CallHistoryObject *aCall = [[CallHistoryObject alloc] init];
         aCall._time = time;
@@ -443,12 +444,14 @@ HMLocalization *localization;
         aCall._rate = rate;
         aCall._date = @"date";
         aCall._callDirection = call_direction;
+        aCall._timeInt = timeInt;
         
         [resultArr addObject: aCall];
     }
     [rs close];
     return resultArr;
 }
+
 
 +(NSArray *) getAllRowsByCallDirection : (NSString *)direction phone:(NSString *)phoneCall{
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
@@ -935,6 +938,24 @@ HMLocalization *localization;
     BOOL result = NO;
     NSString *tSQL = [NSString stringWithFormat:@"DELETE FROM group_members WHERE id_group = %d AND id_member = %d AND callnex_id = %@ AND account = '%@'", 0, idContact, cloudFoneID, USERNAME];
     result = [appDelegate._database executeUpdate: tSQL];
+    return result;
+}
+
+//  Get call history info with callId
++ (NSDictionary *)getCallInfoWithHistoryCallId: (int)callId {
+    NSDictionary *rsDict;
+     NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE _id = %d ", callId];
+    FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
+    while ([rs next]) {
+        rsDict = [rs resultDictionary];
+    }
+    [rs close];
+    return rsDict;
+}
+
++ (BOOL)removeHistoryCallsOfUser: (NSString *)user onDate: (NSString *)date ofAccount: (NSString *)account {
+    NSString *tSQL = [NSString stringWithFormat:@"DELETE FROM history WHERE my_sip = '%@' AND phone_number = '%@' AND date = '%@'", account, user, date];
+    BOOL result = [appDelegate._database executeUpdate: tSQL];
     return result;
 }
 

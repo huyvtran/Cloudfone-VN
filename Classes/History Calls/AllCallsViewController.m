@@ -161,35 +161,6 @@
     }
 }
 
-//  Chuyển số phone trong history thành số phone hiển thị lên tableview
-- (NSString *)changePhoneNumberOfUser: (NSString *)phoneNumber {
-    NSString *result = @"";
-    if (phoneNumber != nil) {
-        if ([phoneNumber isEqualToString: hotline]) {
-            result = @"hotline";
-        }else{
-            NSArray *tmpArr = [phoneNumber componentsSeparatedByString:@"_"];
-            if (tmpArr.count > 1) {
-                //  Trường hợp gọi trunking
-                result = [tmpArr objectAtIndex: 1];
-            }else if ([phoneNumber hasPrefix:@"sv-"]){
-                //  Trường hợp gọi saving
-                result = [phoneNumber substringFromIndex: 3];
-            }else{
-                // Trường hợp gọi premium
-                NSRange range = [phoneNumber rangeOfString:@",,"];
-                if (range.location != NSNotFound) {
-                    NSString *tmpStr = [phoneNumber substringFromIndex: range.location+range.length];
-                    result = [tmpStr substringToIndex: tmpStr.length-1];
-                }else{
-                    result = phoneNumber;
-                }
-            }
-        }
-    }
-    return result;
-}
-
 //  Get lại danh sách các cuộc gọi sau khi xoá
 - (void)reGetListCallsForHistory {
     [listCalls removeAllObjects];
@@ -217,22 +188,26 @@
     KHistoryCallObject *aCall = [[[listCalls objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex: indexPath.row];
     
     // Set name for cell
-    NSString *phoneNumber = [self changePhoneNumberOfUser: aCall._phoneNumber];
-    cell._lbPhone.text = phoneNumber;
-    cell._phoneNumber = phoneNumber;
+    cell._lbPhone.text = aCall._phoneNumber;
+    cell._phoneNumber = aCall._phoneNumber;
     
-    if ([aCall._phoneName isEqualToString:@""]) {
-        cell._lbName.text = phoneNumber;
+    if ([aCall._phoneNumber isEqualToString: hotline]) {
+        cell._lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Hotline"];
+        cell._imgAvatar.image = [UIImage imageNamed:@"hotline_avatar.png"];
     }else{
-        cell._lbName.text = aCall._phoneName;
-    }
-    
-    if (aCall._phoneAvatar == nil || [aCall._phoneAvatar isEqualToString:@""] || [aCall._phoneAvatar isEqualToString:@"(null)"] || [aCall._phoneAvatar isEqualToString:@"null"] || [aCall._phoneAvatar isEqualToString:@"<null>"])
-    {
-        cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-    }else{
-        NSData *imgData = [[NSData alloc] initWithData:[NSData dataFromBase64String: aCall._phoneAvatar]];
-        cell._imgAvatar.image = [UIImage imageWithData: imgData];
+        if ([aCall._phoneName isEqualToString:@""]) {
+            cell._lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+        }else{
+            cell._lbName.text = aCall._phoneName;
+        }
+        
+        if (aCall._phoneAvatar == nil || [aCall._phoneAvatar isEqualToString:@""] || [aCall._phoneAvatar isEqualToString:@"(null)"] || [aCall._phoneAvatar isEqualToString:@"null"] || [aCall._phoneAvatar isEqualToString:@"<null>"])
+        {
+            cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+        }else{
+            NSData *imgData = [[NSData alloc] initWithData:[NSData dataFromBase64String: aCall._phoneAvatar]];
+            cell._imgAvatar.image = [UIImage imageWithData: imgData];
+        }
     }
     
     NSString *strTime = [AppUtils getTimeStringFromTimeInterval: aCall.timeInt];
@@ -375,8 +350,14 @@
     if (listDelete != nil && listDelete.count > 0) {
         for (int iCount=0; iCount<listDelete.count; iCount++) {
             int idHisCall = [[listDelete objectAtIndex: iCount] intValue];
-            NSString *recordFile = [NSDatabase getRecordFileNameOfCall: idHisCall];
-            [NSDatabase deleteRecordCallHistory:idHisCall withRecordFile: recordFile];
+            NSDictionary *callInfo = [NSDatabase getCallInfoWithHistoryCallId: idHisCall];
+            if (callInfo != nil) {
+                NSString *phoneNumber = [callInfo objectForKey:@"phone_number"];
+                if (phoneNumber != nil && ![phoneNumber isEqualToString:@""]) {
+                    NSString *date = [callInfo objectForKey:@"date"];
+                    [NSDatabase removeHistoryCallsOfUser:phoneNumber onDate:date ofAccount:USERNAME];
+                }
+            }
         }
     }
     [self reGetListCallsForHistory];

@@ -22,5 +22,6 @@
 @property (nonatomic, assign) float _rate;
 @property (nonatomic, strong) NSString *_date;
 @property (nonatomic, strong) NSString *_callDirection;
+@property (nonatomic, assign) long _timeInt;
 
 @end

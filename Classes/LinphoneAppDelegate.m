@@ -1511,10 +1511,50 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         ABRecordRef aPerson = (__bridge ABRecordRef)[arrayOfAllPeople objectAtIndex:peopleCounter];
         int idOfContact = ABRecordGetRecordID(aPerson);
         
+        //  Kiem tra co phai la contact pbx hay ko?
+        NSString *sipNumber = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNamePhoneticProperty);
+        if (sipNumber != nil && [sipNumber isEqualToString: keySyncPBX])
+        {
+            ABMultiValueRef phones = ABRecordCopyValue(aPerson, kABPersonPhoneProperty);
+            if (ABMultiValueGetCount(phones) > 0)
+            {
+                for(CFIndex j = 0; j < ABMultiValueGetCount(phones); j++)
+                {
+                    CFStringRef phoneNumberRef = ABMultiValueCopyValueAtIndex(phones, j);
+                    CFStringRef locLabel = ABMultiValueCopyLabelAtIndex(phones, j);
+                    
+                    NSString *curPhoneValue = (__bridge NSString *)phoneNumberRef;
+                    curPhoneValue = [[curPhoneValue componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+                    
+                    NSString *nameValue = (__bridge NSString *)locLabel;
+                    
+                    if (curPhoneValue != nil && nameValue != nil) {
+                        PBXContact *pbxContact = [[PBXContact alloc] init];
+                        pbxContact._name = nameValue;
+                        pbxContact._number = curPhoneValue;
+                        
+                        NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: nameValue];
+                        NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
+                        pbxContact._nameForSearch = nameForSearch;
+                        
+                        [pbxContacts addObject: pbxContact];
+                    }
+                }
+            }
+            
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:idOfContact]
+                                                      forKey:@"PBX_ID_CONTACT"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            continue;
+        }
+        
         ContactObject *aContact = [[ContactObject alloc] init];
         aContact.person = aPerson;
         aContact._id_contact = idOfContact;
         aContact._fullName = [AppUtils getNameOfContact: aPerson];
+        NSArray *nameInfo = [AppUtils getFirstNameAndLastNameOfContact: aPerson];
+        aContact._firstName = [nameInfo objectAtIndex: 0];
+        aContact._lastName = [nameInfo objectAtIndex: 1];
         
         if (![aContact._fullName isEqualToString:@""]) {
             NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: aContact._fullName];
@@ -1556,42 +1596,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         if (aContact._listPhone.count > 0) {
             ContactDetailObj *anItem = [aContact._listPhone firstObject];
             aContact._sipPhone = anItem._valueStr;
-        }
-        
-        //  Kiem tra co phai la contact pbx hay ko?
-        NSString *sipNumber = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNamePhoneticProperty);
-        if (sipNumber != nil && [sipNumber isEqualToString: keySyncPBX])
-        {
-            ABMultiValueRef phones = ABRecordCopyValue(aPerson, kABPersonPhoneProperty);
-            if (ABMultiValueGetCount(phones) > 0)
-            {
-                for(CFIndex j = 0; j < ABMultiValueGetCount(phones); j++)
-                {
-                    CFStringRef phoneNumberRef = ABMultiValueCopyValueAtIndex(phones, j);
-                    CFStringRef locLabel = ABMultiValueCopyLabelAtIndex(phones, j);
-                    
-                    NSString *curPhoneValue = (__bridge NSString *)phoneNumberRef;
-                    curPhoneValue = [[curPhoneValue componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
-                    
-                    NSString *nameValue = (__bridge NSString *)locLabel;
-                    
-                    if (curPhoneValue != nil && nameValue != nil) {
-                        PBXContact *aContact = [[PBXContact alloc] init];
-                        aContact._name = nameValue;
-                        aContact._number = curPhoneValue;
-                        
-                        NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: nameValue];
-                        NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
-                        aContact._nameForSearch = nameForSearch;
-                        
-                        [pbxContacts addObject: aContact];
-                    }
-                }
-            }
-            
-            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:idOfContact]
-                                                      forKey:@"PBX_ID_CONTACT"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
 }

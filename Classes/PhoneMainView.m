@@ -21,7 +21,6 @@
 #import <AudioToolbox/AudioServices.h>
 #import "LinphoneAppDelegate.h"
 #import "PhoneMainView.h"
-#import "HotlineViewController.h"
 
 static RootViewManager *rootViewManagerInstance = nil;
 
@@ -357,18 +356,12 @@ static RootViewManager *rootViewManagerInstance = nil;
             //  [self changeCurrentView:[OutgoingCallViewController compositeViewDescription] push:YES];
             //  Edit by Khai Le on 05/07/2018
             //  NSString *address = [FastAddressBook displayNameForAddress:linphone_call_get_remote_address(call)];
-            NSString *address = [self getPhoneNumberOfCall: call];
-            
-            if ([address isEqualToString:hotline]) {
-                //  [self changeCurrentView:[CallView compositeViewDescription] push:YES];
-                [self changeCurrentView:[HotlineViewController compositeViewDescription] push:YES];
-            }else{
-                //  Nếu đang có cuộc gọi thì nghĩa là đang gọi conference, nên quay về lại màn hình call
-                int count = linphone_core_get_calls_nb([LinphoneManager getLc]);
-                if (count > 1) {
-                    [self popToView:CallView.compositeViewDescription];
-                }
+            //  Nếu đang có cuộc gọi thì nghĩa là đang gọi conference, nên quay về lại màn hình call
+            int count = linphone_core_get_calls_nb([LinphoneManager getLc]);
+            if (count > 1) {
+                [self popToView:CallView.compositeViewDescription];
             }
+            
 			break;
 		}
 		case LinphoneCallPausedByRemote:
@@ -392,6 +385,7 @@ static RootViewManager *rootViewManagerInstance = nil;
             }else{
                 [self changeCurrentView:CallView.compositeViewDescription push:TRUE];
             }
+            sssss
             //  ------
 			if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max && call) {
 				NSString *callId =

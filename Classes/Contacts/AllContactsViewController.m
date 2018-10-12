@@ -279,10 +279,23 @@
         NSData *imageData = [NSData dataFromBase64String:contact._avatar];
         cell.image.image = [UIImage imageWithData: imageData];
     }else {
-        UIImage *avatar = [UIImage imageForName:[key uppercaseString] size:CGSizeMake(60.0, 60.0)
+        NSString *keyAvatar = @"";
+        if (contact._lastName != nil && ![contact._lastName isEqualToString:@""]) {
+            keyAvatar = [contact._lastName substringToIndex: 1];
+        }
+        
+        if (contact._firstName != nil && ![contact._firstName isEqualToString:@""]) {
+            if (![keyAvatar isEqualToString:@""]) {
+                keyAvatar = [NSString stringWithFormat:@"%@ %@", keyAvatar, [contact._firstName substringToIndex: 1]];
+            }else{
+                keyAvatar = [contact._firstName substringToIndex: 1];
+            }
+        }
+        
+        UIImage *avatar = [UIImage imageForName:[keyAvatar uppercaseString] size:CGSizeMake(60.0, 60.0)
                                 backgroundColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0]
                                       textColor:UIColor.whiteColor
-                                           font:[UIFont fontWithName:HelveticaNeue size:30.0]];
+                                           font:nil];
         cell.image.image = avatar;
     }
     

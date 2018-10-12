@@ -124,4 +124,7 @@
 + (NSString *)getDateStringFromTimeInterval: (double)timeInterval;
 + (NSString *)getTimeStringFromTimeInterval:(double)timeInterval;
 
+//  Get first name and last name of contact
++ (NSArray *)getFirstNameAndLastNameOfContact: (ABRecordRef)aPerson;
+
 @end

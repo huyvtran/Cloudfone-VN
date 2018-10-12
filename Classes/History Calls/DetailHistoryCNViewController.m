@@ -339,7 +339,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         cell.viewContent.hidden = NO;
         cell.lbTitle.hidden = YES;
-        
+        cell.lbTime.text = [AppUtils getTimeStringFromTimeInterval: aCall._timeInt];
         
         if ([aCall._status isEqualToString: success_call])
         {
@@ -385,7 +385,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                 cell.lbDuration.text = str;
             }
             
-            cell.lbTime.text = aCall._time;
             if ([aCall._callDirection isEqualToString:@"Incomming"]) {
                 cell.imgStatus.image = [UIImage imageNamed:@"ic_call_incoming.png"];
                 cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:@"Incoming call"];
@@ -401,7 +400,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                 cell.lbStateCall.text = [appDelegate.localization localizedStringForKey:@"Missed call"];
             }
             cell.imgStatus.image = [UIImage imageNamed:@"ic_call_missed.png"];
-            cell.lbTime.text = aCall._time;
             cell.lbDuration.text = [NSString stringWithFormat:@"%d %@", aCall._duration, [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"sec"]];
         }
     }
