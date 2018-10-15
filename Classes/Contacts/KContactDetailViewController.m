@@ -191,7 +191,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewHeader);
         make.centerY.equalTo(_lbTitle.mas_centerY);
-        make.width.height.mas_equalTo(35.0);
+        make.width.height.mas_equalTo(HEADER_ICON_WIDTH);
     }];
     
     [_iconEdit mas_makeConstraints:^(MASConstraintMaker *make) {

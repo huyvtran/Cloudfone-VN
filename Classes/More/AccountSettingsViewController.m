@@ -102,16 +102,16 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(_viewHeader);
+        make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus);
+        make.bottom.equalTo(_viewHeader);
         make.centerX.equalTo(_viewHeader.mas_centerX);
         make.width.mas_equalTo(200);
     }];
     
-    float topY = [LinphoneAppDelegate sharedInstance]._hStatus + ([LinphoneAppDelegate sharedInstance]._hRegistrationState - [LinphoneAppDelegate sharedInstance]._hStatus - 40.0)/2;
     [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_viewHeader).offset(5);
-        make.top.equalTo(_viewHeader).offset(topY);
-        make.width.height.mas_equalTo(40.0);
+        make.left.equalTo(_viewHeader);
+        make.centerY.equalTo(_viewHeader.mas_centerY);
+        make.width.height.mas_equalTo(HEADER_ICON_WIDTH);
     }];
     
     _tbContent.delegate = self;

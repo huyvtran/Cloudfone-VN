@@ -24,7 +24,6 @@
 - (IBAction)_iconBackClicked:(UIButton *)sender;
 - (IBAction)_btnAvatarPressed:(UIButton *)sender;
 
-@property (strong, nonatomic) NSString *currentSipPhone;
 @property (strong, nonatomic) NSString *currentPhoneNumber;
 @property (strong, nonatomic) NSString *currentName;
 

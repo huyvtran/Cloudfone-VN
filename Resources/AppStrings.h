@@ -9,6 +9,7 @@
 #ifndef AppStrings_h
 #define AppStrings_h
 
+#define HEADER_ICON_WIDTH 35.0
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"
 
 #define USERNAME ([[NSUserDefaults standardUserDefaults] objectForKey:key_login])
@@ -308,8 +309,6 @@
 #define text_rung_tin_nhan      @"text_rung_tin_nhan"
 
 #define text_call_detail_header @"text_call_detail_header"
-#define text_add_new_contact    @"text_add_new_contact"
-#define text_add_exists_contact @"text_add_exists_contact"
 
 #define text_block_user         @"text_block_user"
 #define text_unblock_user       @"text_unblock_user"
@@ -492,8 +491,6 @@
 
 #define text_select_contact             @"text_select_contact"
 #define text_list_friend_no_contacts    @"text_list_friend_no_contacts"
-#define text_add_new_contact            @"text_add_new_contact"
-#define text_add_exists_contact         @"text_add_exists_contact"
 #define text_please_enter_confirm_code  @"text_please_enter_confirm_code"
 #define choose_contact_for_add_group    @"choose_contact_for_add_group"
 

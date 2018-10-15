@@ -336,10 +336,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     
-    UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:_addressField.text delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
-                            [appDelegate.localization localizedStringForKey:text_add_new_contact],
-                            [appDelegate.localization localizedStringForKey:text_add_exists_contact],
-                            nil];
+    UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:_addressField.text delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles: [appDelegate.localization localizedStringForKey:@"Create new contact"], [appDelegate.localization localizedStringForKey:@"Add to existing contact"], nil];
     popupAddContact.tag = 100;
     [popupAddContact showInView:self.view];
 }
@@ -981,7 +978,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             case 0:{
                 NewContactViewController *controller = VIEW(NewContactViewController);
                 if (controller) {
-                    controller.currentSipPhone = _addressField.text;
+                    controller.currentPhoneNumber = _addressField.text;
                     controller.currentName = @"";
                 }
                 [[PhoneMainView instance] changeCurrentView:[NewContactViewController compositeViewDescription]

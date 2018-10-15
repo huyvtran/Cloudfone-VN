@@ -40,7 +40,7 @@
 
 @implementation NewContactViewController
 @synthesize _viewHeader, bgHeader, _iconBack, _lbHeader, _imgAvatar, _imgChangePicture, _btnAvatar;
-@synthesize currentSipPhone, currentPhoneNumber, currentName;
+@synthesize currentPhoneNumber, currentName;
 
 #pragma mark - UICompositeViewDelegate Functions
 
@@ -94,15 +94,12 @@ static UICompositeViewDescription *compositeDescription = nil;
         appDelegate._newContact = [[ContactObject alloc] init];
         appDelegate._newContact._listPhone = [[NSMutableArray alloc] init];
     }
-    if (currentSipPhone != nil && ![currentSipPhone isEqualToString:@""]) {
-        appDelegate._newContact._sipPhone = currentSipPhone;
-    }
     
     if (currentName != nil && ![currentName isEqualToString:@""]) {
         appDelegate._newContact._fullName = currentName;
         appDelegate._newContact._firstName = currentName;
     }
-    
+    //  For case add contact from keypad screen
     if (currentPhoneNumber != nil && ![currentPhoneNumber isEqualToString:@""]) {
         ContactDetailObj *aPhone = [[ContactDetailObj alloc] init];
         aPhone._iconStr = @"btn_contacts_mobile.png";
@@ -151,7 +148,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_iconBackClicked:(UIButton *)sender {
-    currentSipPhone = @"";
     currentPhoneNumber = @"";
     appDelegate._dataCrop = nil;
     appDelegate._cropAvatar = nil;
@@ -389,7 +385,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewHeader);
         make.centerY.equalTo(_lbHeader.mas_centerY);
-        make.width.height.mas_equalTo(35.0);
+        make.width.height.mas_equalTo(HEADER_ICON_WIDTH);
     }];
     
     _imgAvatar.layer.borderColor = UIColor.whiteColor.CGColor;

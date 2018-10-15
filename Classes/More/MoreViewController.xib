@@ -35,7 +35,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="no_avatar" id="D5a-FM-ayU">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="no_avatar.png" id="D5a-FM-ayU">
                             <rect key="frame" x="8" y="9" width="50" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
@@ -83,6 +83,6 @@
     </objects>
     <resources>
         <image name="background_more.png" width="750" height="360"/>
-        <image name="no_avatar" width="166" height="166"/>
+        <image name="no_avatar.png" width="198" height="198"/>
     </resources>
 </document>

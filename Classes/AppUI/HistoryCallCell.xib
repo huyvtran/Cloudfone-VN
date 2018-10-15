@@ -18,7 +18,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="no_avatar" id="sjd-YW-IHj">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="no_avatar.png" id="sjd-YW-IHj">
                         <rect key="frame" x="10" y="10" width="40" height="40"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
@@ -90,6 +90,6 @@
     <resources>
         <image name="ic_call_history" width="200" height="200"/>
         <image name="ic_call_incoming.png" width="201" height="201"/>
-        <image name="no_avatar" width="166" height="166"/>
+        <image name="no_avatar.png" width="198" height="198"/>
     </resources>
 </document>

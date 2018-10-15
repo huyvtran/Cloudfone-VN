@@ -142,8 +142,7 @@
 "text_update_failed"        =   "Update password failed"
 
 
-"text_add_new_contact"      =   "Create new contact"
-"text_add_exists_contact"   =   "Add to existing contact"
+
 
 "text_sync_xmpp"            =   "SYNC CONTACTS"
 
@@ -1135,3 +1134,6 @@
 "minute" = "minute"
 "You have not set up an account yet. Do you want to setup now?" = "You have not set up an account yet. Do you want to setup now?"
 "Go to settings" = "Go to settings"
+
+"Create new contact"      =   "Create new contact"
+"Add to existing contact"   =   "Add to existing contact"

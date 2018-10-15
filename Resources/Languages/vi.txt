@@ -141,9 +141,6 @@
 "text_update_failed"        =   "Cập nhật không thành công"
 
 
-"text_add_new_contact"      =   "Tạo số liên lạc mới"
-"text_add_exists_contact"   =   "Thêm vào danh bạ"
-
 "text_sync_xmpp"            =   "ĐỒNG BỘ DANH BẠ"
 "text_pull_to_refresh"      = "Kéo để tải lại"
 
@@ -1166,3 +1163,6 @@
 "minute" = "phút"
 "now?" = "Bạn chưa cài đặt tài khoản. Bạn có muốn cài đặt bâw giờ không?"
 "Go to settings" = "Đi đến cài đặt"
+
+"Create new contact"      =   "Tạo số liên lạc mới"
+"Add to existing contact"   =   "Thêm vào danh bạ"

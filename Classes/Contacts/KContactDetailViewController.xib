@@ -63,7 +63,7 @@
                                 <action selector="_iconEditClicked:" destination="-1" eventType="touchUpInside" id="ssJ-Vt-ukT"/>
                             </connections>
                         </button>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="no_avatar" id="RYe-DI-Cke">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="no_avatar.png" id="RYe-DI-Cke">
                             <rect key="frame" x="128" y="39" width="49" height="49"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
@@ -98,10 +98,10 @@
         </view>
     </objects>
     <resources>
-        <image name="background_header.png" width="750" height="360"/>
+        <image name="background_header.png" width="750" height="130"/>
         <image name="call_default.png" width="201" height="201"/>
         <image name="ic_back.png" width="100" height="100"/>
         <image name="ic_edit.png" width="100" height="100"/>
-        <image name="no_avatar" width="166" height="166"/>
+        <image name="no_avatar.png" width="198" height="198"/>
     </resources>
 </document>

@@ -180,8 +180,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus+5.0);
-        make.left.equalTo(_viewHeader).offset(5.0);
-        make.width.height.mas_equalTo(35.0);
+        make.left.equalTo(_viewHeader);
+        make.width.height.mas_equalTo(HEADER_ICON_WIDTH);
     }];
     
     [_iconAddNew mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -413,8 +413,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)_iconAddNewClicked:(UIButton *)sender {
     UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:_phoneNumberDetail delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
-                                      [appDelegate.localization localizedStringForKey:text_add_new_contact],
-                                      [appDelegate.localization localizedStringForKey:text_add_exists_contact],
+                                      [appDelegate.localization localizedStringForKey:@"Create new contact"],
+                                      [appDelegate.localization localizedStringForKey:@"Add to existing contact"],
                                       nil];
     popupAddContact.tag = 100;
     [popupAddContact showInView:self.view];
@@ -475,11 +475,9 @@ static UICompositeViewDescription *compositeDescription = nil;
                 NewContactViewController *controller = VIEW(NewContactViewController);
                 if (controller) {
                     if ([_phoneNumberDetail hasPrefix:@"778899"]) {
-                        controller.currentSipPhone = _phoneNumberDetail;
                         controller.currentPhoneNumber = @"";
                         controller.currentName = @"";
                     }else{
-                        controller.currentSipPhone = @"";
                         controller.currentPhoneNumber = _phoneNumberDetail;
                         controller.currentName = @"";
                     }
