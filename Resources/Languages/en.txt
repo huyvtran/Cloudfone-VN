@@ -1137,3 +1137,4 @@
 
 "Create new contact"      =   "Create new contact"
 "Add to existing contact"   =   "Add to existing contact"
+"Choose contact" = "Choose contact"

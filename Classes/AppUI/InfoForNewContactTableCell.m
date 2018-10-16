@@ -39,11 +39,11 @@
         make.height.mas_equalTo(38.0);
     }];
     
-    UIView *pView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 38.0)];
+    UIView *pView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 38.0)];
     tfContent.leftView = pView;
     tfContent.leftViewMode = UITextFieldViewModeAlways;
     
-    UIView *pRight = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 38.0)];
+    UIView *pRight = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 38.0)];
     tfContent.rightView = pRight;
     tfContent.rightViewMode = UITextFieldViewModeAlways;
 }

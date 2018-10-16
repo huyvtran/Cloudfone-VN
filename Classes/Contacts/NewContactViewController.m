@@ -100,7 +100,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         appDelegate._newContact._firstName = currentName;
     }
     //  For case add contact from keypad screen
-    if (currentPhoneNumber != nil && ![currentPhoneNumber isEqualToString:@""]) {
+    if (currentPhoneNumber != nil && ![currentPhoneNumber isEqualToString:@""] && ![self checkCurrentPhone: currentPhoneNumber inList: appDelegate._newContact._listPhone])
+    {
         ContactDetailObj *aPhone = [[ContactDetailObj alloc] init];
         aPhone._iconStr = @"btn_contacts_mobile.png";
         aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_mobile];
@@ -213,6 +214,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     ABRecordSetValue(aRecord, kABPersonLastNameProperty, (__bridge CFTypeRef)(appDelegate._newContact._lastName), &anError);
     ABRecordSetValue(aRecord, kABPersonOrganizationProperty, (__bridge CFTypeRef)(appDelegate._newContact._company), &anError);
     ABRecordSetValue(aRecord, kABPersonFirstNamePhoneticProperty, (__bridge CFTypeRef)(appDelegate._newContact._sipPhone), &anError);
+    
+    if (appDelegate._newContact._email == nil) {
+        appDelegate._newContact._email = @"";
+    }
     
     ABMutableMultiValueRef email = ABMultiValueCreateMutable(kABMultiStringPropertyType);
     ABMultiValueAddValueAndLabel(email, (__bridge CFTypeRef)(appDelegate._newContact._email), CFSTR("email"), NULL);
@@ -922,6 +927,15 @@ static UICompositeViewDescription *compositeDescription = nil;
             [_tbContents reloadData];
         }
     }
+}
+
+- (BOOL)checkCurrentPhone: (NSString *)phone inList: (NSArray *)listPhone {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_valueStr = %@", phone];
+    NSArray *filter = [listPhone filteredArrayUsingPredicate: predicate];
+    if (filter.count > 0) {
+        return YES;
+    }
+    return NO;
 }
 
 @end

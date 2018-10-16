@@ -16,7 +16,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *bgHeader;
 @property (weak, nonatomic) IBOutlet UIButton *_iconBack;
 @property (weak, nonatomic) IBOutlet UILabel *_lbHeader;
-@property (weak, nonatomic) IBOutlet UIButton *_iconDone;
 @property (weak, nonatomic) IBOutlet UIImageView *_imgAvatar;
 @property (weak, nonatomic) IBOutlet UIImageView *_imgChangePicture;
 @property (weak, nonatomic) IBOutlet UIButton *_btnAvatar;
@@ -24,11 +23,12 @@
 @property (weak, nonatomic) IBOutlet UITableView *tbContents;
 
 - (IBAction)_iconBackClicked:(UIButton *)sender;
-- (IBAction)_iconDoneClicked:(UIButton *)sender;
 - (IBAction)_btnAvatarPressed:(UIButton *)sender;
 
 @property (nonatomic, strong) ContactObject *detailsContact;
 - (void)setContactDetailsInformation: (ContactObject *)contactInfo;
 - (void)processPhoneNumberForAddExist: (NSString *)phoneNumber;
+
+@property (nonatomic, assign) int idContact;
 
 @end

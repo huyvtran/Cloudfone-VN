@@ -8,13 +8,12 @@
 #import "AllContactListViewController.h"
 #import "EditContactViewController.h"
 #import "DGActivityIndicatorView.h"
-#import "PhoneMainView.h"
 #import "ContactCell.h"
 #import "ContactNormalCell.h"
 #import "NSData+Base64.h"
+#import "UIImage+GKContact.h"
 
 @interface AllContactListViewController (){
-    float hSearch;
     float hSection;
     float hCell;
     
@@ -32,8 +31,7 @@
 @end
 
 @implementation AllContactListViewController
-@synthesize viewHeader, iconBack, lbHeader;
-@synthesize viewSearch, bgSearch, imgSearch, tfSearch, lbSearch, iconClear, tbContacts, lbNoContact;
+@synthesize viewHeader, iconBack, lbHeader, bgHeader, tfSearch, iconClear, tbContacts, lbNoContact;
 @synthesize _searchResults, _contactSections, phoneNumber;
 
 #pragma mark - UICompositeViewDelegate Functions
@@ -64,7 +62,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     listCharacter = [[NSArray alloc] initWithObjects: @"A", @"B", @"C", @"D", @"E", @"F",
                      @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
     
-    [self setupUIForView];
+    [self autoLayoutForMainView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -88,7 +86,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         
         if ([tfSearch.text isEqualToString:@""]) {
             iconClear.hidden = YES;
-            lbSearch.hidden = NO;
             isSearching = NO;
             if ([LinphoneAppDelegate sharedInstance].listContacts.count > 0) {
                 lbNoContact.hidden = YES;
@@ -98,7 +95,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             [tbContacts reloadData];
         }else{
             iconClear.hidden = NO;
-            lbSearch.hidden = YES;
             isSearching = YES;
             
             [self startSearchPhoneBook];
@@ -143,72 +139,124 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)showContentWithCurrentLanguage {
-    [lbSearch setText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_search_contact]];
+    lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Choose contact"];
 }
 
 //  Setup frame cho view
-- (void)setupUIForView {
-    hCell = 60.0;
-    hSection = 20.0;
+- (void)autoLayoutForMainView
+{
+    if (SCREEN_WIDTH > 320) {
+        lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
+    }else{
+        lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
+    }
     
-    hSearch = 60.0;
+    viewHeader.backgroundColor = UIColor.clearColor;
+    [viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState + 50);
+    }];
     
-    // set font cho tiêu đề
-    [viewHeader setFrame: CGRectMake(0, 0, SCREEN_WIDTH, [LinphoneAppDelegate sharedInstance]._hHeader)];
-    [iconBack setFrame: CGRectMake(0, 0, [LinphoneAppDelegate sharedInstance]._hHeader, [LinphoneAppDelegate sharedInstance]._hHeader)];
-    [iconBack setBackgroundImage:[UIImage imageNamed:@"ic_back_act.png"]
-                         forState:UIControlStateHighlighted];
+    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(viewHeader);
+    }];
     
-    [lbHeader setFrame: CGRectMake(iconBack.frame.origin.x+iconBack.frame.size.width+5, 0, viewHeader.frame.size.width-(2*iconBack.frame.origin.x+2*iconBack.frame.size.width+10), [LinphoneAppDelegate sharedInstance]._hHeader)];
-    [lbHeader setFont:[UIFont fontWithName:HelveticaNeue size:18.0]];
-    [lbHeader setText: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_select_contact]];
+    [iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(viewHeader);
+        make.top.equalTo(viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus);
+        make.width.height.mas_equalTo(HEADER_ICON_WIDTH);
+    }];
     
-    //  view search
-    [viewSearch setFrame: CGRectMake(0, viewHeader.frame.origin.y+viewHeader.frame.size.height, SCREEN_WIDTH, hSearch)];
-    [bgSearch setFrame: CGRectMake(0, 0, viewHeader.frame.size.width, hSearch)];
-    [imgSearch setFrame: CGRectMake(10, (hSearch-30)/2, 30, 30)];
-    [tfSearch setFrame: CGRectMake(imgSearch.frame.origin.x+imgSearch.frame.size.width+5, imgSearch.frame.origin.y, viewSearch.frame.size.width-(2*imgSearch.frame.origin.x+2*imgSearch.frame.size.width+10), imgSearch.frame.size.height)];
-    [tfSearch setFont:[UIFont fontWithName:HelveticaNeue size:15.0]];
-    [tfSearch setBackgroundColor:[UIColor clearColor]];
-    [tfSearch setBorderStyle: UITextBorderStyleNone];
+    [lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(viewHeader.mas_centerX);
+        make.width.mas_equalTo(200);
+        make.top.bottom.equalTo(iconBack);
+    }];
     
+    [lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(viewHeader.mas_centerX);
+        make.width.mas_equalTo(200);
+        make.top.bottom.equalTo(iconBack);
+    }];
+    
+    float hTextfield = 32.0;
+    tfSearch.backgroundColor = [UIColor colorWithRed:(16/255.0) green:(59/255.0)
+                                                 blue:(123/255.0) alpha:0.8];
+    tfSearch.font = [UIFont systemFontOfSize: 16.0];
+    tfSearch.borderStyle = UITextBorderStyleNone;
+    tfSearch.layer.cornerRadius = hTextfield/2;
+    tfSearch.clipsToBounds = YES;
+    tfSearch.textColor = UIColor.whiteColor;
+    if ([self.tfSearch respondsToSelector:@selector(setAttributedPlaceholder:)]) {
+        tfSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Type name or phone number"] attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1.0]}];
+    } else {
+        tfSearch.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Type name or phone number"];
+    }
     [tfSearch addTarget:self
                   action:@selector(whenTextFieldDidChange:)
         forControlEvents:UIControlEventEditingChanged];
     
-    [iconClear setFrame: CGRectMake(tfSearch.frame.origin.x+tfSearch.frame.size.width+5, imgSearch.frame.origin.y, imgSearch.frame.size.width, imgSearch.frame.size.height)];
+    UIView *pLeft = [[UIView alloc] initWithFrame:CGRectMake(0, 0, hTextfield, hTextfield)];
+    tfSearch.leftView = pLeft;
+    tfSearch.leftViewMode = UITextFieldViewModeAlways;
     
-    [lbSearch setFrame: tfSearch.frame];
-    [lbSearch setFont:[UIFont fontWithName:HelveticaNeue size:15.0]];
-    [lbSearch setText: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_type_to_chat]];
+    [tfSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(lbHeader.mas_bottom).offset(5+(50-hTextfield)/2);
+        make.left.equalTo(viewHeader).offset(30.0);
+        make.right.equalTo(viewHeader).offset(-30.0);
+        make.height.mas_equalTo(hTextfield);
+    }];
     
-    // setup cho tableview
-    [tbContacts setFrame: CGRectMake(0, viewSearch.frame.origin.y+viewSearch.frame.size.height, SCREEN_WIDTH, SCREEN_HEIGHT-([LinphoneAppDelegate sharedInstance]._hStatus+[LinphoneAppDelegate sharedInstance]._hHeader+hSearch))];
-    [tbContacts setDelegate: self];
-    [tbContacts setDataSource: self];
+    UIImageView *imgSearch = [[UIImageView alloc] init];
+    imgSearch.image = [UIImage imageNamed:@"ic_search"];
+    [tfSearch addSubview: imgSearch];
+    [imgSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(tfSearch.mas_centerY);
+        make.left.equalTo(tfSearch).offset(8.0);
+        make.width.height.mas_equalTo(17.0);
+    }];
+    
+    iconClear.backgroundColor = UIColor.clearColor;
+    [iconClear mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.right.bottom.equalTo(tfSearch);
+        make.width.mas_equalTo(hTextfield);
+    }];
+    
+    //  table contact
+    [tbContacts mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(viewHeader.mas_bottom);
+        make.left.bottom.right.equalTo(self.view);
+    }];
+    
+    tbContacts.delegate = self;
+    tbContacts.dataSource = self;
+    tbContacts.separatorStyle = UITableViewCellSeparatorStyleNone;
     if ([tbContacts respondsToSelector:@selector(setSectionIndexColor:)]) {
         [tbContacts setSectionIndexColor: [UIColor grayColor]];
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
             [tbContacts setSectionIndexBackgroundColor:[UIColor whiteColor]];
         }
     }
-    [tbContacts setSeparatorStyle: UITableViewCellSeparatorStyleNone];
     
-    [lbNoContact setFrame: tbContacts.frame];
-    [lbNoContact setTextColor:[UIColor darkGrayColor]];
-    [lbNoContact setFont:[UIFont fontWithName:HelveticaNeue size:15.0]];
-    [lbNoContact setText: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_no_contact]];
+    lbNoContact.textColor = UIColor.darkGrayColor;
+    lbNoContact.font = [UIFont fontWithName:HelveticaNeue size:15.0];
+    lbNoContact.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_no_contact];
+    [lbNoContact mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(viewHeader.mas_bottom);
+        make.left.bottom.right.equalTo(self.view);
+    }];
+    
+    hCell = 60.0;
+    hSection = 35.0;
 }
 
 - (void)whenTextFieldDidChange: (UITextField *)textField {
     if (textField.text.length == 0) {
         isSearching = false;
         [iconClear setHidden: true];
-        [lbSearch setHidden: false];
         [tbContacts reloadData];
     }else{
         [iconClear setHidden: false];
-        [lbSearch setHidden: true];
         isSearching = true;
         
         [searchTimer invalidate];
@@ -329,65 +377,54 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ContactObject *contact = [[_contactSections objectForKey:[[[_contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
     
-    if (contact._sipPhone != nil && ![contact._sipPhone isKindOfClass:[NSNull class]] && ![contact._sipPhone isEqualToString:@""])
-    {
-        static NSString *identifier = @"ContactCell";
-        ContactCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
-        if (cell == nil) {
-            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ContactCell" owner:self options:nil];
-            cell = topLevelObjects[0];
+    
+    static NSString *identifier = @"ContactCell";
+    ContactCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+    if (cell == nil) {
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ContactCell" owner:self options:nil];
+        cell = topLevelObjects[0];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    // Tên contact
+    if (contact._fullName != nil) {
+        if ([contact._fullName isEqualToString: @""]) {
+            cell.name.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_unknown];
+        }else{
+            cell.name.text = contact._fullName;
         }
-        [cell setSelectionStyle: UITableViewCellSelectionStyleNone];
+    }
+    
+    if (contact._avatar != nil && ![contact._avatar isEqualToString:@""] && ![contact._avatar isEqualToString:@"<null>"] && ![contact._avatar isEqualToString:@"(null)"] && ![contact._avatar isEqualToString:@"null"])
+    {
+        NSData *imageData = [NSData dataFromBase64String:contact._avatar];
+        cell.image.image = [UIImage imageWithData: imageData];
+    }else {
+        NSString *keyAvatar = @"";
+        if (contact._lastName != nil && ![contact._lastName isEqualToString:@""]) {
+            keyAvatar = [contact._lastName substringToIndex: 1];
+        }
         
-        // Tên contact
-        if (contact._fullName != nil) {
-            if ([contact._fullName isEqualToString: @""]) {
-                [cell.name setText: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_unknown]];
+        if (contact._firstName != nil && ![contact._firstName isEqualToString:@""]) {
+            if (![keyAvatar isEqualToString:@""]) {
+                keyAvatar = [NSString stringWithFormat:@"%@ %@", keyAvatar, [contact._firstName substringToIndex: 1]];
             }else{
-                [cell.name setText: contact._fullName];
+                keyAvatar = [contact._firstName substringToIndex: 1];
             }
         }
         
-        if (contact._avatar != nil && ![contact._avatar isEqualToString:@""] && ![contact._avatar isEqualToString:@"<null>"] && ![contact._avatar isEqualToString:@"(null)"] && ![contact._avatar isEqualToString:@"null"])
-        {
-            NSData *imageData = [NSData dataFromBase64String:contact._avatar];
-            [cell.image setImage: [UIImage imageWithData: imageData]];
-        }else {
-            //  UIImage *avatar = [UIImage imageForName:[contact._fullName uppercaseString] size: CGSizeMake(60, 60)];
-            [cell.image setImage: [UIImage imageNamed:@"no_avatar.png"]];
-        }
-        
-        cell.tag = contact._id_contact;
-        cell.phone.text = contact._sipPhone;
-        
-        return cell;
-    }else{
-        static NSString *cellIdentifier = @"ContactNormalCell";
-        ContactNormalCell *contactCell = [tableView dequeueReusableCellWithIdentifier: cellIdentifier];
-        if (contactCell == nil) {
-            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ContactNormalCell" owner:self options:nil];
-            contactCell = topLevelObjects[0];
-        }
-        [contactCell setSelectionStyle: UITableViewCellSelectionStyleNone];
-        [contactCell setFrame: CGRectMake(contactCell.frame.origin.x, contactCell.frame.origin.y, tbContacts.frame.size.width, hCell)];
-        [contactCell setupUIForCell];
-        
-        // Tên contact
-        [contactCell._contactName setText: contact._fullName];
-        
-        if (contact._avatar != nil && ![contact._avatar isEqualToString:@""] && ![contact._avatar isEqualToString:@"<null>"] && ![contact._avatar isEqualToString:@"(null)"] && ![contact._avatar isEqualToString:@"null"])
-        {
-            NSData *imageData = [NSData dataFromBase64String:contact._avatar];
-            [contactCell._contactAvatar setImage: [UIImage imageWithData: imageData]];
-        }else {
-            //  UIImage *avatar = [UIImage imageForName:[contact._fullName uppercaseString] size: CGSizeMake(60, 60)];
-            [contactCell._contactAvatar setImage: [UIImage imageNamed:@"no_avatar.png"]];
-        }
-        
-        contactCell.tag = contact._id_contact;
-        
-        return contactCell;
+        UIImage *avatar = [UIImage imageForName:[keyAvatar uppercaseString] size:CGSizeMake(60.0, 60.0)
+                                backgroundColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0]
+                                      textColor:UIColor.whiteColor
+                                           font:nil];
+        cell.image.image = avatar;
     }
+    
+    cell.tag = contact._id_contact;
+    cell.phone.text = contact._sipPhone;
+    cell.icCall.hidden = YES;
+    
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -413,18 +450,20 @@ static UICompositeViewDescription *compositeDescription = nil;
     NSString *titleHeader = [[[_contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section];;
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, hSection)];
-    [headerView setBackgroundColor:[UIColor colorWithRed:(240/255.0) green:(240/255.0)
-                                                    blue:(240/255.0) alpha:1.0]];
+    headerView.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
+                                                  blue:(240/255.0) alpha:1.0];
+    
     UILabel *descLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 150, hSection)];
-    [descLabel setTextColor: [UIColor colorWithRed:(50/255.0) green:(50/255.0)
-                                              blue:(50/255.0) alpha:1.0]];
-    if ([titleHeader isEqualToString:@"*"]) {
-        [descLabel setFont: [UIFont fontWithName:HelveticaNeue size:20.0]];
+    descLabel.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
+                                           blue:(50/255.0) alpha:1.0];
+    if ([titleHeader isEqualToString:@"z#"]) {
+        descLabel.font = [UIFont fontWithName:HelveticaNeue size:20.0];
+        descLabel.text = @"#";
     }else{
-        [descLabel setFont: textFont];
+        descLabel.font = textFont;
+        descLabel.text = titleHeader;
     }
-    [descLabel setText: titleHeader];
-    [descLabel setBackgroundColor:[UIColor clearColor]];
+    descLabel.backgroundColor = UIColor.clearColor;
     [headerView addSubview: descLabel];
     return headerView;
 }
@@ -435,9 +474,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     int iCount = 0;
     while (iCount < tmpArr.count) {
-        NSString *callnexIndex = [tmpArr objectAtIndex: iCount];
-        if ([callnexIndex isEqualToString:@"Callnex"]) {
-            [tmpArr replaceObjectAtIndex:iCount withObject:@"*"];
+        NSString *title = [tmpArr objectAtIndex: iCount];
+        if ([title isEqualToString:@"z#"]) {
+            [tmpArr replaceObjectAtIndex:iCount withObject:@"#"];
             break;
         }
         iCount++;

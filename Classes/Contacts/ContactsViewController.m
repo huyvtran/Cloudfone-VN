@@ -192,7 +192,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 //  setup trạng thái cho các button
 - (void)autoLayoutForMainView {
     hIcon = [LinphoneAppDelegate sharedInstance]._hRegistrationState - [LinphoneAppDelegate sharedInstance]._hStatus;
-    _viewHeader.backgroundColor = UIColor.greenColor;
+    _viewHeader.backgroundColor = UIColor.clearColor;
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState + 50);
@@ -628,8 +628,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[LinphoneAppDelegate sharedInstance] set_isSyncing: false];
     [_iconSyncPBXContact.layer removeAllAnimations];
     
-    [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_successfully]
-                                                  duration:2.0 position:CSToastPositionCenter];
+    [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_successfully] duration:2.0 position:CSToastPositionCenter];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"searchContactWithValue" object:_tfSearch.text];
 }

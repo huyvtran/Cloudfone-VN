@@ -25,7 +25,6 @@
     NSString *stringForCall;
     BOOL isFound;
     BOOL found;
-    float hCell;
     float hSection;
     
     NSTimer *searchTimer;
@@ -51,7 +50,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //  MY CODE HERE
-    hCell = 60.0;
     hSection = 35.0;
     
     listCharacter = [[NSArray alloc] initWithObjects: @"A", @"B", @"C", @"D", @"E", @"F",
@@ -359,7 +357,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return hCell;
+    return 60.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{

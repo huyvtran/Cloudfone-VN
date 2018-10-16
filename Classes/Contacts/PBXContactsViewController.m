@@ -290,8 +290,16 @@
     if ([object isKindOfClass:[NSString class]])
     {
         if ([object isEqualToString:@""]) {
+            if ([LinphoneAppDelegate sharedInstance].pbxContacts.count > 0) {
+                _lbContacts.hidden = YES;
+                _tbContacts.hidden = NO;
+            }else{
+                _lbContacts.hidden = NO;
+                _tbContacts.hidden = YES;
+            }
             isSearching = NO;
             [_tbContacts reloadData];
+            
         }else{
             isSearching = YES;
             
@@ -299,12 +307,12 @@
                 [self startSearchPBXContactsWithContent: object];
                 dispatch_async(dispatch_get_main_queue(), ^(void){
                     if (listSearch.count > 0) {
-                        [_lbContacts setHidden: true];
-                        [_tbContacts setHidden: false];
+                        _lbContacts.hidden = YES;
+                        _tbContacts.hidden = NO;
                         [_tbContacts reloadData];
                     }else{
-                        [_lbContacts setHidden: false];
-                        [_tbContacts setHidden: true];
+                        _lbContacts.hidden = NO;
+                        _tbContacts.hidden = YES;
                     }
                 });
             });

@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AllContactListViewController">
             <connections>
+                <outlet property="bgHeader" destination="LUx-IZ-Vnp" id="4S8-jF-FXY"/>
                 <outlet property="iconBack" destination="Si3-0T-LLM" id="4Fm-Hy-bgc"/>
                 <outlet property="iconClear" destination="JAw-A4-sF8" id="PAq-r8-FNk"/>
                 <outlet property="lbHeader" destination="pK1-Jt-AJE" id="1rv-WB-QVz"/>

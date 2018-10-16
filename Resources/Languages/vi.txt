@@ -1166,3 +1166,4 @@
 
 "Create new contact"      =   "Tạo số liên lạc mới"
 "Add to existing contact"   =   "Thêm vào danh bạ"
+"Choose contact" = "Chọn liên hệ"

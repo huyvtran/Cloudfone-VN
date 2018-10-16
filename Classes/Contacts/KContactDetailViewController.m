@@ -147,6 +147,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 {
     EditContactViewController *controller = VIEW(EditContactViewController);
     if (controller != nil) {
+        controller.idContact = detailsContact._id_contact;
         [controller setContactDetailsInformation: detailsContact];
     }
     [[PhoneMainView instance] changeCurrentView:[EditContactViewController compositeViewDescription] push:true];

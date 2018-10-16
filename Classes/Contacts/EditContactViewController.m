@@ -48,8 +48,8 @@
 @end
 
 @implementation EditContactViewController
-@synthesize _viewHeader, bgHeader, _iconBack, _lbHeader, _iconDone, tbContents, _imgAvatar, _imgChangePicture, _btnAvatar;
-@synthesize detailsContact;
+@synthesize _viewHeader, bgHeader, _iconBack, _lbHeader, tbContents, _imgAvatar, _imgChangePicture, _btnAvatar;
+@synthesize detailsContact, idContact;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -122,17 +122,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_iconBackClicked:(UIButton *)sender {
-    [[PhoneMainView instance] popCurrentView];
-}
-
-- (IBAction)_iconDoneClicked:(UIButton *)sender {
-    [self.view endEditing: true];
-    
-    [waitingHud showInView:self.view animated:YES];
-    
-    [self updateContactIntoAddressPhoneBook];
-    
-    [waitingHud dismissAnimated:YES];
+    detailsContact = nil;
     [[PhoneMainView instance] popCurrentView];
 }
 
@@ -558,12 +548,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewHeader);
-        make.centerY.equalTo(_lbHeader.mas_centerY);
-        make.width.height.mas_equalTo(HEADER_ICON_WIDTH);
-    }];
-    
-    [_iconDone mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_viewHeader);
         make.centerY.equalTo(_lbHeader.mas_centerY);
         make.width.height.mas_equalTo(HEADER_ICON_WIDTH);
     }];

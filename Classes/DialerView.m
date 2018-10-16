@@ -169,9 +169,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    //  Check for first time, after installed app
-    [self checkForShowFirstSettingAccount];
-    
     //  my code here
     _zeroButton.digit = '0';
     _oneButton.digit = '1';
@@ -244,6 +241,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [self addBoxShadowForView:searchView withColor:[UIColor colorWithRed:(220/255.0) green:(220/255.0)
                                                                     blue:(220/255.0) alpha:1.0]];
+    
+    //  Check for first time, after installed app
+    [self checkForShowFirstSettingAccount];
 }
 
 - (void)testAction {
@@ -1151,7 +1151,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             nameForSearch = [tmpArr objectAtIndex: 1];
             
             if (![name isEqualToString:@""] && ![phone isEqualToString:@""] && ![nameForSearch isEqualToString:@""]) {
-                return @[name, phone, nameForSearch];
+                return @[name, nameForSearch, phone];
             }
         }
     }
@@ -1185,10 +1185,9 @@ static UICompositeViewDescription *compositeDescription = nil;
             
             UIAlertView *alertAcc = [[UIAlertView alloc] initWithTitle:nil message:content delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] otherButtonTitles: [appDelegate.localization localizedStringForKey:@"Go to settings?"], nil];
             [alertAcc show];
-        }else{
-            [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"SHOWED_SETTINGS_ACCOUNT_FOR_FIRST"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
         }
+        [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"SHOWED_SETTINGS_ACCOUNT_FOR_FIRST"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 
