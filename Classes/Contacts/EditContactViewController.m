@@ -748,8 +748,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo
 {
     // Crop image trong edits contact
-    appDelegate._chooseMyAvatar = NO;
-    
     appDelegate._cropAvatar = image;
     
     [picker dismissViewControllerAnimated:YES completion:^{

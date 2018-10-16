@@ -158,7 +158,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)_btnAvatarPressed:(UIButton *)sender {
     [self.view endEditing: YES];
-    appDelegate._chooseMyAvatar =  NO;
     if (appDelegate._dataCrop != nil) {
         UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_options] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
                                           [appDelegate.localization localizedStringForKey:text_gallery],

@@ -75,7 +75,6 @@
 @synthesize _cropAvatar, _dataCrop;
 @synthesize fromImagePicker;
 @synthesize _isSyncing;
-@synthesize _chooseMyAvatar, userImage, _resource;
 @synthesize imageChooseName, imageChoose;
 @synthesize _allPhonesDict, _allIDDict, contactLoaded;
 @synthesize webService, keepAwakeTimer, listNumber;
@@ -438,15 +437,6 @@ void onUncaughtException(NSException* exception)
     
     localization = [HMLocalization sharedInstance];
     [localization setLanguage: curLanguage];
-    
-    //  Tạo resource cho phần chat
-    NSString *chatResouce = [[NSUserDefaults standardUserDefaults] objectForKey: chat_resouce];
-    if (chatResouce == nil || [chatResouce isEqualToString: @""]) {
-        chatResouce = [NSString stringWithFormat:@"ios_%@", [AppUtils randomStringWithLength:10]];
-        [[NSUserDefaults standardUserDefaults] setObject:chatResouce forKey:chat_resouce];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    _resource = chatResouce;
     
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10.0")){
         UNUserNotificationCenter *notifiCenter = [UNUserNotificationCenter currentNotificationCenter];

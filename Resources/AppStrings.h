@@ -633,7 +633,6 @@
 #define callnexPBXFlag          @"callnexPBXFlag"
 #define transport_udp           @"UDP"
 
-#define chat_resouce            @"chat_resouce"
 #define group_chat              @"groupchat"
 #define folder_call_records     @"calls_records"
 

@@ -100,10 +100,6 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 @property (nonatomic, assign) BOOL fromImagePicker;
 
 @property (nonatomic, assign) BOOL _isSyncing;
-@property (nonatomic, assign) BOOL _chooseMyAvatar;
-
-@property (nonatomic, strong) UIImage *userImage;
-@property (nonatomic, strong) NSString *_resource;
 
 //  Biến lưu id của videoMessage ở màn hình PlayVideo
 @property (nonatomic, strong) NSString *idVideoMessage;
