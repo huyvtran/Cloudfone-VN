@@ -91,6 +91,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [self showContentWithCurrentLanguage];
     
+    lay thong tin contact with id
+    
     [self showContactInformation];
     
     [tbContents reloadData];
