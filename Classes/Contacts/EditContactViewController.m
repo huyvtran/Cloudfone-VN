@@ -49,7 +49,7 @@
 
 @implementation EditContactViewController
 @synthesize _viewHeader, bgHeader, _iconBack, _lbHeader, tbContents, _imgAvatar, _imgChangePicture, _btnAvatar;
-@synthesize detailsContact, idContact;
+@synthesize detailsContact, idContact, curPhoneNumber;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -91,8 +91,24 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [self showContentWithCurrentLanguage];
     
-    lay thong tin contact with id
-    
+    //  Get contact information
+    if (detailsContact == nil) {
+        detailsContact = [appDelegate getContactInPhoneBookWithIdRecord: idContact];
+        
+        if (curPhoneNumber != nil && ![curPhoneNumber isEqualToString:@""] && ![self checkCurrentPhone: curPhoneNumber inList: detailsContact._listPhone])
+        {
+            ContactDetailObj *aPhone = [[ContactDetailObj alloc] init];
+            aPhone._iconStr = @"btn_contacts_mobile.png";
+            aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_mobile];
+            aPhone._valueStr = curPhoneNumber;
+            aPhone._buttonStr = @"contact_detail_icon_call.png";
+            aPhone._typePhone = type_phone_mobile;
+            if (detailsContact._listPhone == nil){
+                detailsContact._listPhone = [[NSMutableArray alloc] init];
+            }
+            [detailsContact._listPhone addObject: aPhone];
+        }
+    }
     [self showContactInformation];
     
     [tbContents reloadData];
@@ -219,42 +235,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)setContactDetailsInformation: (ContactObject *)contactInfo {
-    if (detailsContact == nil) {
-        detailsContact = [[ContactObject alloc] init];
-    }
-    detailsContact = contactInfo;
-    if (detailsContact._listPhone == nil) {
-        detailsContact._listPhone = [[NSMutableArray alloc] init];
-    }
-}
-
-- (void)processPhoneNumberForAddExist: (NSString *)phoneNumber {
-    if (![detailsContact._sipPhone isEqualToString:@""]) {
-        ContactDetailObj *aPhone = [[ContactDetailObj alloc] init];
-        aPhone._iconStr = @"btn_contacts_mobile.png";
-        aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_mobile];
-        aPhone._valueStr = phoneNumber;
-        aPhone._buttonStr = @"contact_detail_icon_call.png";
-        aPhone._typePhone = type_phone_mobile;
-        
-        [detailsContact._listPhone addObject: aPhone];
-    }else{
-        if ([phoneNumber hasPrefix:@"778899"]) {
-            detailsContact._sipPhone = phoneNumber;
-        }else{
-            ContactDetailObj *aPhone = [[ContactDetailObj alloc] init];
-            aPhone._iconStr = @"btn_contacts_mobile.png";
-            aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_mobile];
-            aPhone._valueStr = phoneNumber;
-            aPhone._buttonStr = @"contact_detail_icon_call.png";
-            aPhone._typePhone = type_phone_mobile;
-            
-            [detailsContact._listPhone addObject: aPhone];
-        }
-    }
-}
-
 - (void)updateContactIntoAddressPhoneBook
 {
     ABAddressBookRef addressBook;
@@ -343,34 +323,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)addNewContactToList: (ABRecordRef)aPerson
 {
-    ContactObject *aContact = [[ContactObject alloc] init];
-    aContact.person = aPerson;
-    aContact._id_contact = detailsContact._id_contact;
-    aContact._fullName = [AppUtils getNameOfContact: aPerson];
+    ContactObject *aContact = [appDelegate getContactInPhoneBookWithIdRecord: idContact];
     
-    if (![aContact._fullName isEqualToString:@""]) {
-        NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: aContact._fullName];
-        aContact._nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
-    }
-    
-    if (appDelegate._dataCrop != nil) {
-        if ([appDelegate._dataCrop respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
-            // iOS 7+
-            aContact._avatar = [appDelegate._dataCrop base64EncodedStringWithOptions: 0];
-        } else {
-            // pre iOS7
-            aContact._avatar = [appDelegate._dataCrop base64Encoding];
-        }
-    }else{
-        aContact._avatar = detailsContact._avatar;
-    }
-    aContact._sipPhone = detailsContact._sipPhone;
-    aContact._listPhone = [self getListPhoneOfContactPerson: aPerson withName: aContact._fullName];
-    aContact._company = detailsContact._company;
-    aContact._email = detailsContact._email;
-    
-    //  Xoa contact ra khoi db neu co
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_id_contact = %d", detailsContact._id_contact];
+    //  Replace current contact with new contact after updated
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_id_contact = %d", idContact];
     NSArray *filter = [appDelegate.listContacts filteredArrayUsingPredicate: predicate];
     if (filter.count > 0) {
         [appDelegate.listContacts removeObjectsInArray: filter];
@@ -384,10 +340,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                forState:UIControlStateNormal];
     [btnSave setTitle:[appDelegate.localization localizedStringForKey:@"Save"]
              forState:UIControlStateNormal];
-}
-
-- (void)showPopupFinish {
-    [[PhoneMainView instance] popCurrentView];
 }
 
 - (BOOL)checkExistsValue: (NSString *)string {
@@ -972,6 +924,15 @@ static UICompositeViewDescription *compositeDescription = nil;
         detailsContact._avatar = @"";
         _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
     }
+}
+
+- (BOOL)checkCurrentPhone: (NSString *)phone inList: (NSArray *)listPhone {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_valueStr = %@", phone];
+    NSArray *filter = [listPhone filteredArrayUsingPredicate: predicate];
+    if (filter.count > 0) {
+        return YES;
+    }
+    return NO;
 }
 
 @end

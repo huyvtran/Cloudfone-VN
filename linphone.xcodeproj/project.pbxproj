@@ -546,8 +546,6 @@
 		6377AC801BDE4069007F7625 /* UIBackToCallButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6377AC7F1BDE4069007F7625 /* UIBackToCallButton.m */; };
 		637835A51CFD971D00599382 /* libbv16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 637835A41CFD971D00599382 /* libbv16.a */; };
 		6381DA7D1C1AD5EA00DF3BBD /* UIBouncingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6381DA7C1C1AD5EA00DF3BBD /* UIBouncingView.m */; };
-		638F1A621C2021B2004B8E02 /* DialerView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 638F1A601C2021B2004B8E02 /* DialerView~ipad.xib */; };
-		638F1A881C2167C2004B8E02 /* CallView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 638F1A861C2167C2004B8E02 /* CallView~ipad.xib */; };
 		638F1A911C21993D004B8E02 /* UICompositeView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 638F1A8F1C21993D004B8E02 /* UICompositeView~ipad.xib */; };
 		639CEAFD1A1DF4D9004DE38F /* StatusBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 639CEAFF1A1DF4D9004DE38F /* StatusBarView.xib */; };
 		639CEB001A1DF4E4004DE38F /* UIHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 639CEB021A1DF4E4004DE38F /* UIHistoryCell.xib */; };
@@ -1770,8 +1768,6 @@
 		637835A41CFD971D00599382 /* libbv16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbv16.a; path = "liblinphone-sdk/apple-darwin/lib/libbv16.a"; sourceTree = "<group>"; };
 		6381DA7B1C1AD5EA00DF3BBD /* UIBouncingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBouncingView.h; sourceTree = "<group>"; };
 		6381DA7C1C1AD5EA00DF3BBD /* UIBouncingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBouncingView.m; sourceTree = "<group>"; };
-		638F1A611C2021B2004B8E02 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/DialerView~ipad.xib"; sourceTree = "<group>"; };
-		638F1A871C2167C2004B8E02 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/CallView~ipad.xib"; sourceTree = "<group>"; };
 		638F1A901C21993D004B8E02 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/UICompositeView~ipad.xib"; sourceTree = "<group>"; };
 		639CEAFE1A1DF4D9004DE38F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/StatusBarView.xib; sourceTree = "<group>"; };
 		639CEB011A1DF4E4004DE38F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UIHistoryCell.xib; sourceTree = "<group>"; };
@@ -2364,7 +2360,6 @@
 		8C1C42EA1E43409000FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/CallIncomingView.strings; sourceTree = "<group>"; };
 		8C1C42EB1E43409100FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/CallOutgoingView.strings; sourceTree = "<group>"; };
 		8C1C42EC1E43409100FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/CallView.strings; sourceTree = "<group>"; };
-		8C1C42ED1E43409100FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = "fr.lproj/CallView~ipad.strings"; sourceTree = "<group>"; };
 		8C1C42EE1E43409200FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ChatConversationCreateView.strings; sourceTree = "<group>"; };
 		8C1C42EF1E43409200FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ChatConversationView.strings; sourceTree = "<group>"; };
 		8C1C42F01E43409300FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ChatsListView.strings; sourceTree = "<group>"; };
@@ -2372,7 +2367,6 @@
 		8C1C42F21E43409300FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ContactsListView.strings; sourceTree = "<group>"; };
 		8C1C42F31E43409400FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/CountryListView.strings; sourceTree = "<group>"; };
 		8C1C42F41E43409400FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/DialerView.strings; sourceTree = "<group>"; };
-		8C1C42F51E43409400FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = "fr.lproj/DialerView~ipad.strings"; sourceTree = "<group>"; };
 		8C1C42F61E43409500FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/FirstLoginView.strings; sourceTree = "<group>"; };
 		8C1C42F71E43409500FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/HistoryDetailsView.strings; sourceTree = "<group>"; };
 		8C1C42F81E43409500FE9A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/HistoryListView.strings; sourceTree = "<group>"; };
@@ -2817,7 +2811,6 @@
 				D3F83EE91582021700336684 /* CallView.h */,
 				D3F83EEA1582021700336684 /* CallView.m */,
 				D381881C15FE3FCA00C3EDCA /* CallView.xib */,
-				638F1A861C2167C2004B8E02 /* CallView~ipad.xib */,
 				84C47D131FB632640015695E /* IncomingCallViewController.h */,
 				84C47D141FB632640015695E /* IncomingCallViewController.m */,
 				84C47D151FB632640015695E /* IncomingCallViewController.xib */,
@@ -2852,7 +2845,6 @@
 				22F2508B107141E100AC9B3F /* DialerView.h */,
 				22F2508C107141E100AC9B3F /* DialerView.m */,
 				D38187C415FE345B00C3EDCA /* DialerView.xib */,
-				638F1A601C2021B2004B8E02 /* DialerView~ipad.xib */,
 				6306440B1BECB08500134C72 /* FirstLoginView.h */,
 				6306440C1BECB08500134C72 /* FirstLoginView.m */,
 				639E9C951C0DB7BE00019A75 /* FirstLoginView.xib */,
@@ -4918,7 +4910,6 @@
 				633FEE6E1D3CD5590014B822 /* footer_history_default.png in Resources */,
 				633FEDC61D3CD5590014B822 /* call_incoming.png in Resources */,
 				633FEF2D1D3CD55A0014B822 /* route_earpiece_selected@2x.png in Resources */,
-				638F1A621C2021B2004B8E02 /* DialerView~ipad.xib in Resources */,
 				633FEEFF1D3CD55A0014B822 /* options_add_call_disabled@2x.png in Resources */,
 				633FEF091D3CD55A0014B822 /* options_start_conference_disabled@2x.png in Resources */,
 				15F2E600216B66830076CB1F /* ic_about.png in Resources */,
@@ -5239,7 +5230,6 @@
 				D38187DD15FE348A00C3EDCA /* AssistantView.xib in Resources */,
 				633FEDA61D3CD5590014B822 /* back_disabled.png in Resources */,
 				8489DED02160B16100A7A1DD /* NewSettingCell.xib in Resources */,
-				638F1A881C2167C2004B8E02 /* CallView~ipad.xib in Resources */,
 				153D00322164D537007B69B3 /* menu_more_en_def.png in Resources */,
 				15F2E5F5216B56F60076CB1F /* ic_setting.png in Resources */,
 				633FEDA11D3CD5590014B822 /* avatar@2x.png in Resources */,
@@ -6110,24 +6100,6 @@
 			name = SettingsView.xib;
 			sourceTree = "<group>";
 		};
-		638F1A601C2021B2004B8E02 /* DialerView~ipad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				638F1A611C2021B2004B8E02 /* Base */,
-				8C1C42F51E43409400FE9A91 /* fr */,
-			);
-			name = "DialerView~ipad.xib";
-			sourceTree = "<group>";
-		};
-		638F1A861C2167C2004B8E02 /* CallView~ipad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				638F1A871C2167C2004B8E02 /* Base */,
-				8C1C42ED1E43409100FE9A91 /* fr */,
-			);
-			name = "CallView~ipad.xib";
-			sourceTree = "<group>";
-		};
 		638F1A8F1C21993D004B8E02 /* UICompositeView~ipad.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -6519,7 +6491,7 @@
 				PROVISIONING_PROFILE = "112ac71b-f41b-4717-aaad-654c72ea7d4c";
 				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				WARNING_CFLAGS = (
 					"-Werror=objc-method-access",
@@ -6628,7 +6600,7 @@
 				PROVISIONING_PROFILE = "a13a6c11-3805-430d-a672-a92e38342b46";
 				PROVISIONING_PROFILE_SPECIFIER = "Cloudfone App Store";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				WARNING_CFLAGS = (
 					"-Werror=objc-method-access",
@@ -6737,7 +6709,7 @@
 				PROVISIONING_PROFILE = "a13a6c11-3805-430d-a672-a92e38342b46";
 				PROVISIONING_PROFILE_SPECIFIER = "Cloudfone App Store";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				WARNING_CFLAGS = (
 					"-Werror=objc-method-access",
@@ -6846,7 +6818,7 @@
 				PROVISIONING_PROFILE = "a13a6c11-3805-430d-a672-a92e38342b46";
 				PROVISIONING_PROFILE_SPECIFIER = "Cloudfone App Store";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				WARNING_CFLAGS = (
 					"-Werror=objc-method-access",

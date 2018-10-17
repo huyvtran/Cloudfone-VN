@@ -26,9 +26,8 @@
 - (IBAction)_btnAvatarPressed:(UIButton *)sender;
 
 @property (nonatomic, strong) ContactObject *detailsContact;
-- (void)setContactDetailsInformation: (ContactObject *)contactInfo;
-- (void)processPhoneNumberForAddExist: (NSString *)phoneNumber;
 
 @property (nonatomic, assign) int idContact;
+@property (nonatomic, strong) NSString *curPhoneNumber;
 
 @end

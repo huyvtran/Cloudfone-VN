@@ -221,6 +221,13 @@ static UICompositeViewDescription *compositeDescription = nil;
         if (count == 0) {
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Calling"];
             _lbQualityValue.text = @"";
+        }else{
+            LinphoneCall *curCall = linphone_core_get_current_call([LinphoneManager getLc]);
+            LinphoneCallState state = linphone_call_get_state(curCall);
+            stream running
+            if (state == LinphoneCallConnected) {
+                [self countUpTimeForCall];
+            }
         }
     }else{
         _callView.hidden = YES;
@@ -1031,6 +1038,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)addScrollview
 {
     float wFeatureIcon = 70.0;
+    if (!IS_IPHONE && !IS_IPOD) {
+        wFeatureIcon = 100.0;
+    }
     float marginX = (SCREEN_WIDTH - 3*wFeatureIcon)/4;
     
     _scrollView.minimumZoomScale = 0.5;
@@ -1153,6 +1163,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_optionsTransferButton setBackgroundImage:[UIImage imageNamed:@"ic_transfer_act.png"] forState:UIControlStateSelected];
     [_optionsTransferButton setBackgroundImage:[UIImage imageNamed:@"ic_transfer_dis.png"] forState:UIControlStateDisabled];
     _optionsTransferButton.backgroundColor = UIColor.clearColor;
+//    [_optionsTransferButton addTarget:self
+//                               action:@selector(onTransfer)
+//                     forControlEvents:UIControlEventTouchUpInside];
     
     [lbTransfer mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbPause.mas_top);
@@ -1164,8 +1177,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     lbTransfer.text = [appDelegate.localization localizedStringForKey:@"Transfer"];
 
     /*  Leo Kelvin
-     [buttonTransfer addTarget:self action:@selector(onTransfer)
-     forControlEvents:UIControlEventTouchUpInside];
+     
      */
     //  [self.scrollView addSubview:buttonTransfer];
 }

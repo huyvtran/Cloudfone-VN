@@ -432,10 +432,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     EditContactViewController *controller = VIEW(EditContactViewController);
     if (controller != nil) {
-        [controller setContactDetailsInformation: contact];
-        [controller processPhoneNumberForAddExist: phoneNumber];
+        controller.idContact = contact._id_contact;
+        controller.curPhoneNumber = phoneNumber;
     }
-    [[PhoneMainView instance] changeCurrentView:[EditContactViewController compositeViewDescription] push:true];
+    [[PhoneMainView instance] changeCurrentView:[EditContactViewController compositeViewDescription]];
+    //  [[PhoneMainView instance] changeCurrentView:[EditContactViewController compositeViewDescription] push:true];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

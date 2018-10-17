@@ -124,5 +124,8 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 
 @property (nonatomic, strong) NSArray *listNumber;
 
+
+- (ContactObject *)getContactInPhoneBookWithIdRecord: (int)idRecord;
+
 @end
 

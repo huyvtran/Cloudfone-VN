@@ -710,6 +710,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     float wIcon = 65.0;
     float spaceMarginY = 10.0;
     float spaceMarginX = 20.0;
+    if (!IS_IPHONE && !IS_IPOD) {
+        wEndCall = 100.0;
+        wIcon = 85.0;
+        spaceMarginY = 20.0;
+        spaceMarginX = 40.0;
+    }
     
     float hKeypad = 4*wIcon + wEndCall + 6*spaceMarginY;
     _padView.backgroundColor = UIColor.clearColor;
