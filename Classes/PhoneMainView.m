@@ -366,6 +366,8 @@ static RootViewManager *rootViewManagerInstance = nil;
 		}
 		case LinphoneCallPausedByRemote:
 		case LinphoneCallConnected: {
+            NSLog(@"-------> LinphoneCallConnected");
+            
 			if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max && call) {
 				NSString *callId =
 					[NSString stringWithUTF8String:linphone_call_log_get_call_id(linphone_call_get_call_log(call))];
@@ -378,6 +380,8 @@ static RootViewManager *rootViewManagerInstance = nil;
 			break;
 		}
 		case LinphoneCallStreamsRunning: {
+            NSLog(@"-------> LinphoneCallStreamsRunning");
+            
             //  Add new by Khai Le on 05/07/2018
             NSString *address = [self getPhoneNumberOfCall: call];
             if ([address isEqualToString:hotline]) {

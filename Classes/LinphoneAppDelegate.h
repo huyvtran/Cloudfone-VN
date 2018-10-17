@@ -89,9 +89,6 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 
 // Biến cho biết user đang có cuộc gọi (không thể nghe cuộc gọi tiếp theo)
 @property (nonatomic, assign) BOOL _busyForCall;
-//  Ghi am cuoc goi
-@property (nonatomic, strong) NSString *_recordFile;
-@property (nonatomic, assign) BOOL _hasRecordCall;
 
 @property (nonatomic, strong, getter=theNewContact) ContactObject *_newContact;
 
@@ -100,14 +97,6 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 @property (nonatomic, assign) BOOL fromImagePicker;
 
 @property (nonatomic, assign) BOOL _isSyncing;
-
-//  Biến lưu id của videoMessage ở màn hình PlayVideo
-@property (nonatomic, strong) NSString *idVideoMessage;
-
-@property (nonatomic, strong) NSString *imageChooseName;
-@property (nonatomic, strong) UIImage *imageChoose;
-
-@property (nonatomic, strong) ALAssetsGroup *photoGroup;
 
 @property (nonatomic, strong) NSMutableDictionary *_allPhonesDict;
 //  diction mapping giữa contact id và phone number (kể cả cloudfoneiD)

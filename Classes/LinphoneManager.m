@@ -1109,21 +1109,12 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
                 [[LinphoneAppDelegate sharedInstance] set_busyForCall: NO];
             }else{
                 int timeInt = (int)linphone_call_log_get_start_date(callLog);
-                
-                //  Kiểm tra có đang ghi âm hay ko?
-                if ([LinphoneAppDelegate sharedInstance]._hasRecordCall && ![[LinphoneAppDelegate sharedInstance]._recordFile isEqualToString: @""]) {
-                    [NSDatabase InsertHistory:callID status:callStatus phoneNumber:phoneNumber callDirection:callDicrection recordFiles:[LinphoneAppDelegate sharedInstance]._recordFile duration:duration date:date time:time time_int:timeInt rate:0 sipURI:strAddress MySip:USERNAME kCallId:@"" andFlag:1 andUnread:0];
-                }else{
-                    [NSDatabase InsertHistory:callID status:callStatus phoneNumber:phoneNumber callDirection:callDicrection recordFiles:@"" duration:duration date:date time:time time_int:timeInt rate:0 sipURI:strAddress MySip:USERNAME kCallId:@"" andFlag:1 andUnread:0];
-                }
+                [NSDatabase InsertHistory:callID status:callStatus phoneNumber:phoneNumber callDirection:callDicrection recordFiles:@"" duration:duration date:date time:time time_int:timeInt rate:0 sipURI:strAddress MySip:USERNAME kCallId:@"" andFlag:1 andUnread:0];
             }
         }
         
         // Huỷ bỏ biến cancel cuộc gọi
-        [[LinphoneAppDelegate sharedInstance] set_hasRecordCall: false];
         [[LinphoneAppDelegate sharedInstance] set_meEnded: false];
-        [[LinphoneAppDelegate sharedInstance] set_hasRecordCall: false];
-        [[LinphoneAppDelegate sharedInstance] set_recordFile: @""];
         [[NSNotificationCenter defaultCenter] postNotificationName:reloadHistoryCall
                                                             object:nil];
         
@@ -2829,32 +2820,11 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
     
     //  Truyền biến ghi âm cuộc gọi
     const LinphoneAddress* addr = linphone_call_get_remote_address(call);
-    NSString *phoneNumber = [NSString stringWithUTF8String:linphone_address_get_username(addr)];
-    //  linphone_call_params_set_privacy(lcallParams, 1);
-    
-    const char* lPlay = [[self createDirectoryForRecordCall: phoneNumber] cStringUsingEncoding:[NSString defaultCStringEncoding]];
-    linphone_call_params_set_record_file(lcallParams,lPlay);
-    
     
 	linphone_call_params_enable_video(lcallParams, video);
     [[LinphoneAppDelegate sharedInstance] set_acceptCall: true];
     
 	linphone_core_accept_call_with_params(theLinphoneCore, call, lcallParams);
-}
-
-//  Gắn đường link cho file ghi âm
-- (NSString *)createDirectoryForRecordCall: (NSString *)phonenumber {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
-    NSString *curDate = [AppUtils getCurrentDate];
-    NSString *curTime = [AppUtils getCurrentTime];
-    
-    [LinphoneAppDelegate sharedInstance]._recordFile = [NSString stringWithFormat:@"%@_%@_%@.mp3", phonenumber, curDate, curTime];
-    
-    // Kiểm tra folder có tồn tại hay không?
-    NSString *folderPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@/%@", folder_call_records, [LinphoneAppDelegate sharedInstance]._recordFile]];
-    return folderPath;
 }
 
 - (void)call:(const LinphoneAddress *)iaddr {
@@ -2941,12 +2911,6 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
 		linphone_call_params_enable_low_bandwidth(lcallParams, YES);
 	}
 
-    //  Truyền biến ghi âm cuộc gọi
-    NSString *phoneNumber = [NSString stringWithUTF8String:linphone_address_get_username(addr)];
-    linphone_call_params_set_privacy(lcallParams, 1);
-    const char* lPlay = [[self createDirectoryForRecordCall: phoneNumber] cStringUsingEncoding:[NSString defaultCStringEncoding]];
-    linphone_call_params_set_record_file(lcallParams,lPlay);
-    
 	if (displayName != nil) {
 		linphone_address_set_display_name(addr, displayName.UTF8String);
 	}

@@ -224,7 +224,9 @@ static UICompositeViewDescription *compositeDescription = nil;
         }else{
             LinphoneCall *curCall = linphone_core_get_current_call([LinphoneManager getLc]);
             LinphoneCallState state = linphone_call_get_state(curCall);
-            stream running
+            //  LinphoneCallDir callDirection = linphone_call_get_dir(curCall);
+            NSLog(@"-------> LinphoneCallState = %d", state);
+            
             if (state == LinphoneCallConnected) {
                 [self countUpTimeForCall];
             }

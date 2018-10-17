@@ -70,12 +70,10 @@
 @synthesize idContact;
 @synthesize _database, _databasePath, _threadDatabase;
 @synthesize _busyForCall;
-@synthesize _recordFile, _hasRecordCall;
 @synthesize _newContact;
 @synthesize _cropAvatar, _dataCrop;
 @synthesize fromImagePicker;
 @synthesize _isSyncing;
-@synthesize imageChooseName, imageChoose;
 @synthesize _allPhonesDict, _allIDDict, contactLoaded;
 @synthesize webService, keepAwakeTimer, listNumber;
 
@@ -385,8 +383,6 @@ void onUncaughtException(NSException* exception)
     [NSDatabase connectCallnexDB];
     
     //  Ghi âm cuộc gọi
-    _hasRecordCall = false;
-    _recordFile = @"";
     _isSyncing = false;
     
     _allPhonesDict = [[NSMutableDictionary alloc] init];

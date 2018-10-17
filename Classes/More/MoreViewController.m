@@ -8,6 +8,7 @@
 
 #import "MoreViewController.h"
 #import "MenuCell.h"
+#import "EditProfileViewController.h"
 #import "AccountSettingsViewController.h"
 #import "KSettingViewController.h"
 #import "FeedbackViewController.h"
@@ -290,7 +291,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)icEditClicked:(UIButton *)sender {
-    
+    [[PhoneMainView instance] changeCurrentView:[EditProfileViewController compositeViewDescription]
+                                           push:YES];
 }
 
 @end
