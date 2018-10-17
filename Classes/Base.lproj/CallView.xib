@@ -46,7 +46,6 @@
                 <outlet property="lbMute" destination="om2-JF-FYC" id="POs-pc-maN"/>
                 <outlet property="lbPause" destination="NDb-ah-Gfh" id="sbY-rE-daG"/>
                 <outlet property="lbPhoneNumber" destination="8cH-4m-lqD" id="Xh2-ob-OPb"/>
-                <outlet property="lbQualityValue" destination="oAE-6y-UGQ" id="j9s-7z-Eef"/>
                 <outlet property="lbSpeaker" destination="h7K-LT-cOj" id="liR-rr-zId"/>
                 <outlet property="lbTransfer" destination="Tf7-uu-crp" id="pgy-d0-POR"/>
                 <outlet property="microButton" destination="pRH-Ao-h65" id="F5a-sf-J7B"/>
@@ -118,13 +117,6 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oAE-6y-UGQ">
-                                    <rect key="frame" x="174" y="20" width="80" height="42"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <imageView userInteractionEnabled="NO" tag="7" contentMode="scaleAspectFit" misplaced="YES" image="default-avatar" id="fZy-K5-yQp" userLabel="avatarImage" customClass="UIRoundedImageView">

@@ -116,7 +116,6 @@ typedef enum typeCall{
 - (IBAction)onChatClick:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UILabel *_lbQuality;
-@property (weak, nonatomic) IBOutlet UILabel *lbQualityValue;
 
 @property (weak, nonatomic) IBOutlet UIView *_viewCommand;
 @property (weak, nonatomic) IBOutlet UIScrollView *_scrollView;

@@ -70,6 +70,9 @@ const NSInteger MINI_KEYPAD_TAG = 101;
     
     NSTimer *updateTimeConf;
     float hIconEndCall;
+    UIMiniKeypad *viewKeypad;
+    
+    NSTimer *qualityTimer;
 }
 
 @end
@@ -216,12 +219,12 @@ static UICompositeViewDescription *compositeDescription = nil;
         _conferenceView.hidden = YES;
         if (count == 0) {
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Calling"];
-            _lbQualityValue.text = @"";
         }else{
             LinphoneCall *curCall = linphone_core_get_current_call([LinphoneManager getLc]);
             LinphoneCallDir callDirection = linphone_call_get_dir(curCall);
             if (callDirection == LinphoneCallIncoming) {
                 [self countUpTimeForCall];
+                [self updateQualityForCall];
             }
         }
     }else{
@@ -332,15 +335,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (list != NULL) {
         duration = linphone_call_get_duration((LinphoneCall*)list->data);
         _durationLabel.text = [LinphoneUtils durationToString:duration];
-        if (duration > 0) {
-            [self callQualityUpdate];
-        }
         _lbQuality.hidden = NO;
-        _lbQualityValue.hidden = NO;
     }else{
         duration = 0;
         _lbQuality.hidden = YES;
-        _lbQualityValue.hidden = YES;
     }
 }
 
@@ -348,27 +346,61 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)callQualityUpdate {
     LinphoneCall *call;
     list = linphone_core_get_calls([LinphoneManager getLc]);
-    
+    if (list == NULL) {
+        if (qualityTimer != nil) {
+            [qualityTimer invalidate];
+            qualityTimer = nil;
+        }
+        return;
+    }
     call = (LinphoneCall*)list->data;
     
     if(call != NULL) {
         //FIXME double check call state before computing, may cause core dump
         float quality = linphone_call_get_average_quality(call);
         if(quality < 1) {
-            _lbQualityValue.text = [appDelegate.localization localizedStringForKey:text_quality_worse];
-            _lbQualityValue.textColor = UIColor.orangeColor;
+            NSString *qualityValue = [appDelegate.localization localizedStringForKey:text_quality_worse];
+            NSString *quality = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:@"Quality"], qualityValue];
+            NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString: quality];
+            [attr addAttribute:NSForegroundColorAttributeName value:UIColor.redColor range:NSMakeRange(quality.length-qualityValue.length, qualityValue.length)];
+            
+            _lbQuality.attributedText = attr;
+            viewKeypad.lbQualityValue.attributedText = attr;
+            
         } else if (quality < 2) {
-            _lbQualityValue.text = [appDelegate.localization localizedStringForKey:text_quality_very_low];
-            _lbQualityValue.textColor = UIColor.orangeColor;
+            NSString *qualityValue = [appDelegate.localization localizedStringForKey:text_quality_worse];
+            NSString *quality = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:@"Quality"], qualityValue];
+            NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString: quality];
+            [attr addAttribute:NSForegroundColorAttributeName value:UIColor.orangeColor range:NSMakeRange(quality.length-qualityValue.length, qualityValue.length)];
+            
+            _lbQuality.attributedText = attr;
+            viewKeypad.lbQualityValue.attributedText = attr;
+            
         } else if (quality < 3) {
-            _lbQualityValue.text = [appDelegate.localization localizedStringForKey:text_quality_low];
-            _lbQualityValue.textColor = UIColor.whiteColor;
+            NSString *qualityValue = [appDelegate.localization localizedStringForKey:text_quality_low];
+            NSString *quality = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:@"Quality"], qualityValue];
+            NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString: quality];
+            [attr addAttribute:NSForegroundColorAttributeName value:UIColor.whiteColor range:NSMakeRange(quality.length-qualityValue.length, qualityValue.length)];
+            
+            _lbQuality.attributedText = attr;
+            viewKeypad.lbQualityValue.attributedText = attr;
         } else if(quality < 4){
-            _lbQualityValue.text = [appDelegate.localization localizedStringForKey:text_quality_average];
-            _lbQualityValue.textColor = UIColor.greenColor;
+            NSString *qualityValue = [appDelegate.localization localizedStringForKey:text_quality_average];
+            NSString *quality = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:@"Quality"], qualityValue];
+            NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString: quality];
+            [attr addAttribute:NSForegroundColorAttributeName value:UIColor.greenColor range:NSMakeRange(quality.length-qualityValue.length, qualityValue.length)];
+            
+            _lbQuality.attributedText = attr;
+            viewKeypad.lbQualityValue.attributedText = attr;
+            
         } else{
-            _lbQualityValue.text = [appDelegate.localization localizedStringForKey:text_quality_good];
-            _lbQualityValue.textColor = UIColor.greenColor;
+            NSString *qualityValue = [appDelegate.localization localizedStringForKey:text_quality_good];
+            NSString *quality = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:@"Quality"], qualityValue];
+            NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString: quality];
+            [attr addAttribute:NSForegroundColorAttributeName value:UIColor.greenColor range:NSMakeRange(quality.length-qualityValue.length, qualityValue.length)];
+            
+            _lbQuality.attributedText = attr;
+            viewKeypad.lbQualityValue.attributedText = attr;
         }
     }
 }
@@ -570,7 +602,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             _microButton.enabled = YES;
             
             _lbQuality.hidden = NO;
-            _lbQualityValue.hidden = NO;
             
             // Add tất cả các cuộc gọi vào nhóm
             if (linphone_core_get_calls_nb(LC) >= 2) {
@@ -578,6 +609,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             }
             
             [self countUpTimeForCall];
+            [self updateQualityForCall];
             break;
         }
 		case LinphoneCallStreamsRunning: {
@@ -634,9 +666,22 @@ static UICompositeViewDescription *compositeDescription = nil;
                 [durationTimer invalidate];
                 durationTimer = nil;
             }
+            if (qualityTimer != nil) {
+                [qualityTimer invalidate];
+                qualityTimer = nil;
+            }
+            transfer va nut back to call va minikeyoad tren ipad
             break;
         }
         case LinphoneCallError:{
+            if (durationTimer != nil) {
+                [durationTimer invalidate];
+                durationTimer = nil;
+            }
+            if (qualityTimer != nil) {
+                [qualityTimer invalidate];
+                qualityTimer = nil;
+            }
             [self displayCallError:call message:message];
             [self performSelector:@selector(hideCallView) withObject:nil afterDelay:2.0];
             break;
@@ -650,7 +695,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)onNumpadClick:(id)sender {
     NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"UIMiniKeypad" owner:nil options:nil];
-    UIMiniKeypad *viewKeypad;
+    
     for(id currentObject in toplevelObject){
         if ([currentObject isKindOfClass:[UIMiniKeypad class]]) {
             viewKeypad = (UIMiniKeypad *) currentObject;
@@ -694,6 +739,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     [viewKeypad setupUIForView];
     
+    viewKeypad.lbQuality.text = [appDelegate.localization localizedStringForKey: text_quality];
+    viewKeypad.lbQuality.font = _lbQuality.font;
+    
     [viewKeypad.iconBack addTarget:self
                             action:@selector(hideMiniKeypad)
                   forControlEvents:UIControlEventTouchUpInside];
@@ -712,7 +760,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             }];
         }
     }
-    _numpadButton.selected = NO;    kiem tra lai
+    _numpadButton.selected = NO;
 }
 
 - (void)fadeIn :(UIView*)view{
@@ -1173,21 +1221,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     _lbQuality.text = [appDelegate.localization localizedStringForKey: text_quality];
     _lbQuality.backgroundColor = UIColor.clearColor;
-    _lbQuality.font = [UIFont systemFontOfSize: 16.0];
+    _lbQuality.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
     _lbQuality.textColor = UIColor.whiteColor;
+    _lbQuality.textAlignment = NSTextAlignmentCenter;
     [_lbQuality mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(icBack);
-        make.right.equalTo(_callView.mas_centerX).offset(-2.5);
-        make.left.equalTo(_callView).offset(20);
-    }];
-    
-    _lbQualityValue.backgroundColor = UIColor.clearColor;
-    _lbQualityValue.font = [UIFont systemFontOfSize: 16.0];
-    _lbQualityValue.textColor = UIColor.whiteColor;
-    [_lbQualityValue mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_lbQuality.mas_right).offset(2.5);
-        make.top.bottom.equalTo(_lbQuality);
         make.right.equalTo(_callView).offset(-20);
+        make.left.equalTo(_callView).offset(20);
     }];
     
     [_avatarImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1478,6 +1518,15 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)hideCallView {
     [[PhoneMainView instance] popCurrentView];
+}
+
+- (void)updateQualityForCall {
+    if (qualityTimer != nil) {
+        [qualityTimer invalidate];
+        qualityTimer = nil;
+    }
+    [self callQualityUpdate];
+    qualityTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(callQualityUpdate) userInfo:nil repeats:YES];
 }
 
 @end
