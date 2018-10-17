@@ -19,20 +19,23 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <view contentMode="scaleToFill" id="Yyd-ME-4Y3">
-                    <rect key="frame" x="40" y="176" width="240" height="128"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="Yyd-ME-4Y3">
+                    <rect key="frame" x="0.0" y="100" width="320" height="300"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hMZ-h3-1Zg" userLabel="One" customClass="UIDigitButton">
-                            <rect key="frame" x="90" y="34" width="60" height="60"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hMZ-h3-1Zg" userLabel="One" customClass="UIDigitButton">
+                            <rect key="frame" x="62" y="28" width="60" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <accessibility key="accessibilityConfiguration" label="1"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal" backgroundImage="mini_key_1.png"/>
+                            <connections>
+                                <action selector="onDigitPress:" destination="lnM-d3-YYv" eventType="touchUpInside" id="Ei2-PF-dM3"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Wzz-cR-838" userLabel="Two" customClass="UIDigitButton">
-                            <rect key="frame" x="90" y="34" width="60" height="60"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Wzz-cR-838" userLabel="Two" customClass="UIDigitButton">
+                            <rect key="frame" x="130" y="28" width="60" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" label="2"/>
@@ -40,9 +43,12 @@
                             <state key="normal" backgroundImage="mini_key_2.png">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onDigitPress:" destination="lnM-d3-YYv" eventType="touchUpInside" id="3v4-h9-fpu"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="aPi-vp-bKj" userLabel="Three" customClass="UIDigitButton">
-                            <rect key="frame" x="90" y="34" width="60" height="60"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="aPi-vp-bKj" userLabel="Three" customClass="UIDigitButton">
+                            <rect key="frame" x="198" y="28" width="60" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" label="3"/>
@@ -50,9 +56,12 @@
                             <state key="normal" backgroundImage="mini_key_3.png">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onDigitPress:" destination="lnM-d3-YYv" eventType="touchUpInside" id="UOA-Dn-GWk"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="OuM-Up-ff3" userLabel="Four" customClass="UIDigitButton">
-                            <rect key="frame" x="90" y="34" width="60" height="60"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="OuM-Up-ff3" userLabel="Four" customClass="UIDigitButton">
+                            <rect key="frame" x="62" y="96" width="60" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" label="4"/>
@@ -60,9 +69,12 @@
                             <state key="normal" backgroundImage="mini_key_4.png">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onDigitPress:" destination="lnM-d3-YYv" eventType="touchUpInside" id="G6l-E6-wfe"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DFo-CB-Wk1" userLabel="Five" customClass="UIDigitButton">
-                            <rect key="frame" x="90" y="34" width="60" height="60"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DFo-CB-Wk1" userLabel="Five" customClass="UIDigitButton">
+                            <rect key="frame" x="130" y="96" width="60" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" label="5"/>
@@ -70,9 +82,12 @@
                             <state key="normal" backgroundImage="mini_key_5.png">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onDigitPress:" destination="lnM-d3-YYv" eventType="touchUpInside" id="nkk-TH-F6k"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4Ox-qa-8LF" userLabel="Six" customClass="UIDigitButton">
-                            <rect key="frame" x="90" y="34" width="60" height="60"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4Ox-qa-8LF" userLabel="Six" customClass="UIDigitButton">
+                            <rect key="frame" x="198" y="96" width="60" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" label="6"/>
@@ -80,9 +95,12 @@
                             <state key="normal" backgroundImage="mini_key_6.png">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onDigitPress:" destination="lnM-d3-YYv" eventType="touchUpInside" id="A0B-VN-qco"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xWY-2d-Idf" userLabel="Seven" customClass="UIDigitButton">
-                            <rect key="frame" x="90" y="34" width="60" height="60"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xWY-2d-Idf" userLabel="Seven" customClass="UIDigitButton">
+                            <rect key="frame" x="62" y="164" width="60" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" label="7"/>
@@ -90,9 +108,12 @@
                             <state key="normal" backgroundImage="mini_key_7.png">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onDigitPress:" destination="lnM-d3-YYv" eventType="touchUpInside" id="pSv-Q9-zXb"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ht1-5A-1EE" userLabel="Eight" customClass="UIDigitButton">
-                            <rect key="frame" x="90" y="34" width="60" height="60"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ht1-5A-1EE" userLabel="Eight" customClass="UIDigitButton">
+                            <rect key="frame" x="130" y="164" width="60" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" label="8"/>
@@ -100,9 +121,12 @@
                             <state key="normal" backgroundImage="mini_key_8.png">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onDigitPress:" destination="lnM-d3-YYv" eventType="touchUpInside" id="fIC-3x-67o"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="OCI-eb-ClV" userLabel="Nine" customClass="UIDigitButton">
-                            <rect key="frame" x="90" y="34" width="60" height="60"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="OCI-eb-ClV" userLabel="Nine" customClass="UIDigitButton">
+                            <rect key="frame" x="198" y="164" width="60" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" label="9"/>
@@ -110,9 +134,12 @@
                             <state key="normal" backgroundImage="mini_key_9.png">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onDigitPress:" destination="lnM-d3-YYv" eventType="touchUpInside" id="wOz-1z-tpJ"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="oFq-qd-GrW" userLabel="Star" customClass="UIDigitButton">
-                            <rect key="frame" x="90" y="34" width="60" height="60"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="oFq-qd-GrW" userLabel="Star" customClass="UIDigitButton">
+                            <rect key="frame" x="62" y="232" width="60" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" label="Star"/>
@@ -120,9 +147,12 @@
                             <state key="normal" backgroundImage="mini_key_star.png">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onDigitPress:" destination="lnM-d3-YYv" eventType="touchUpInside" id="NIi-oQ-Arn"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fi9-OS-xvc" userLabel="Zero" customClass="UIDigitButton">
-                            <rect key="frame" x="90" y="34" width="60" height="60"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fi9-OS-xvc" userLabel="Zero" customClass="UIDigitButton">
+                            <rect key="frame" x="130" y="232" width="60" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" label="zero"/>
@@ -130,9 +160,12 @@
                             <state key="normal" backgroundImage="mini_key_0.png">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onDigitPress:" destination="lnM-d3-YYv" eventType="touchUpInside" id="RWe-G5-mo3"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="siV-xL-KTQ" userLabel="Sharp" customClass="UIDigitButton">
-                            <rect key="frame" x="90" y="34" width="60" height="60"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="siV-xL-KTQ" userLabel="Sharp" customClass="UIDigitButton">
+                            <rect key="frame" x="198" y="232" width="60" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" label="Sharp"/>
@@ -140,26 +173,25 @@
                             <state key="normal" backgroundImage="mini_key_sharp.png">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bmD-dg-RTd">
-                            <rect key="frame" x="102" y="46" width="35" height="35"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" backgroundImage="ic_back.png"/>
+                            <connections>
+                                <action selector="onDigitPress:" destination="lnM-d3-YYv" eventType="touchUpInside" id="8v3-H9-fqF"/>
+                            </connections>
                         </button>
                     </subviews>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="33O-hB-9Tq">
-                    <rect key="frame" x="130" y="210" width="60" height="60"/>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="33O-hB-9Tq">
+                    <rect key="frame" x="130" y="400" width="60" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" backgroundImage="decline_call_def.png"/>
+                    <connections>
+                        <action selector="iconEndCallClick:" destination="lnM-d3-YYv" eventType="touchUpInside" id="qnu-qR-Ams"/>
+                    </connections>
                 </button>
-                <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="5vi-pL-lwc" customClass="UIAddressTextField">
-                    <rect key="frame" x="49" y="53" width="224" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bmD-dg-RTd">
+                    <rect key="frame" x="5" y="5" width="35" height="35"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <nil key="textColor"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
+                    <state key="normal" backgroundImage="ic_back.png"/>
+                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Đường truyền:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bwH-dW-l8K">
                     <rect key="frame" x="49" y="21" width="112" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -174,6 +206,13 @@
                     <color key="textColor" red="0.094117647060000004" green="0.72549019609999998" blue="0.072059461805555503" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="5vi-pL-lwc" customClass="UIAddressTextField">
+                    <rect key="frame" x="49" y="47" width="224" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
@@ -199,7 +238,7 @@
                 <outlet property="viewKeypad" destination="Yyd-ME-4Y3" id="o3C-we-oxk"/>
                 <outlet property="zeroButton" destination="fi9-OS-xvc" id="2Vq-tG-gj5"/>
             </connections>
-            <point key="canvasLocation" x="-764" y="-55"/>
+            <point key="canvasLocation" x="-1159" y="-168"/>
         </view>
     </objects>
     <resources>

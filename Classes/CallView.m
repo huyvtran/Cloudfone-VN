@@ -53,6 +53,7 @@ void message_received(LinphoneCore *lc, LinphoneChatRoom *room, const LinphoneAd
 }
 
 const NSInteger SECURE_BUTTON_TAG = 5;
+const NSInteger MINI_KEYPAD_TAG = 101;
 
 @interface CallView (){
     LinphoneAppDelegate *appDelegate;
@@ -68,11 +69,6 @@ const NSInteger SECURE_BUTTON_TAG = 5;
     const MSList *list;
     
     NSTimer *updateTimeConf;
-    
-    //  End call trong add keypad
-    UIHangUpButton *btEndCall;
-    UIButton *btHideKeypad;
-    
     float hIconEndCall;
 }
 
@@ -223,11 +219,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             _lbQualityValue.text = @"";
         }else{
             LinphoneCall *curCall = linphone_core_get_current_call([LinphoneManager getLc]);
-            LinphoneCallState state = linphone_call_get_state(curCall);
-            //  LinphoneCallDir callDirection = linphone_call_get_dir(curCall);
-            NSLog(@"-------> LinphoneCallState = %d", state);
-            
-            if (state == LinphoneCallConnected) {
+            LinphoneCallDir callDirection = linphone_call_get_dir(curCall);
+            if (callDirection == LinphoneCallIncoming) {
                 [self countUpTimeForCall];
             }
         }
@@ -656,14 +649,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - Action Functions
 
 - (IBAction)onNumpadClick:(id)sender {
-    /*  Leo Kel vin
-	if ([_numpadView isHidden]) {
-		[self hidePad:FALSE animated:ANIMATED];
-	} else {
-		[self hidePad:TRUE animated:ANIMATED];
-	}   */
-    //  [_numpadButton setBackgroundColor:[UIColor clearColor]];
-    // Install Popupview
     NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"UIMiniKeypad" owner:nil options:nil];
     UIMiniKeypad *viewKeypad;
     for(id currentObject in toplevelObject){
@@ -673,17 +658,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
     }
     
-    float hKeyboard;
-    if (SCREEN_WIDTH > 320) {
-        hKeyboard = 280;
-    }else{
-        hKeyboard = 200;
-    }
-    
-    float keypadY = (SCREEN_HEIGHT-appDelegate._hStatus-hKeyboard)/2;
-    
-    viewKeypad.frame = CGRectMake((SCREEN_WIDTH-320)/2, keypadY, 320, hKeyboard);
-    viewKeypad.tag = 10;
+    viewKeypad.tag = MINI_KEYPAD_TAG;
     [viewKeypad.zeroButton setDigit:'0'];
     [viewKeypad.zeroButton setDtmf:true] ;
     [viewKeypad.oneButton    setDigit:'1'];
@@ -710,79 +685,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [viewKeypad.sharpButton setDtmf:true];
     [viewKeypad setBackgroundColor:[UIColor clearColor]];
     
-    [_viewCommand setHidden: true];
-    [_callView addSubview:viewKeypad];
-    [self fadeIn:viewKeypad];
-    
-    float wIcon = 60.0;
-    float tmpMargin = (SCREEN_WIDTH - 2*wIcon)/3;
-    float bottom;
-    
-    if (SCREEN_HEIGHT == 480) {
-        bottom = 10.0;
-    }else{
-        bottom = 25.0;
-    }
-    
-    btEndCall = [[UIHangUpButton alloc] initWithFrame:CGRectMake(tmpMargin, _callView.frame.size.height-wIcon-bottom, wIcon, wIcon)];
-    [btEndCall setBackgroundImage:[UIImage imageNamed:@"decline_call_def.png"]
-                         forState: UIControlStateNormal];
-    [btEndCall setBackgroundImage:[UIImage imageNamed:@"decline_call_over.png"]
-                         forState: UIControlStateHighlighted];
-    [_callView addSubview: btEndCall];
-    
-    btHideKeypad = [[UIButton alloc] initWithFrame:CGRectMake(btEndCall.frame.origin.x+btEndCall.frame.size.width+tmpMargin, btEndCall.frame.origin.y, btEndCall.frame.size.width, btEndCall.frame.size.height)];
-    [btHideKeypad setBackgroundImage:[UIImage imageNamed:@"close_keypad_def.png"]
-                            forState:UIControlStateNormal ] ;
-    [btHideKeypad setBackgroundImage:[UIImage imageNamed:@"close_keypad_act.png"]
-                            forState: UIControlStateHighlighted];
-    [btHideKeypad addTarget:self
-                     action:@selector(btnHideKeypadPressed)
-           forControlEvents:UIControlEventTouchUpInside];
-    
-    [_callView addSubview: btHideKeypad];
-    
-    [_hangupButton setHidden: true];
-}
-
-- (void)btnKeypadPressed {
-    NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"UIMiniKeypad" owner:nil options:nil];
-    UIMiniKeypad *viewKeypad;
-    for(id currentObject in toplevelObject){
-        if ([currentObject isKindOfClass:[UIMiniKeypad class]]) {
-            viewKeypad = (UIMiniKeypad *) currentObject;
-            break;
-        }
-    }
-    
-    viewKeypad.tag = 10;
-    [viewKeypad.zeroButton setDigit:'0'];
-    [viewKeypad.zeroButton setDtmf:true] ;
-    [viewKeypad.oneButton    setDigit:'1'];
-    [viewKeypad.oneButton setDtmf:true];
-    [viewKeypad.twoButton    setDigit:'2'];
-    [viewKeypad.twoButton setDtmf:true];
-    [viewKeypad.threeButton  setDigit:'3'];
-    [viewKeypad.threeButton setDtmf:true];
-    [viewKeypad.fourButton   setDigit:'4'];
-    [viewKeypad.fourButton setDtmf:true];
-    [viewKeypad.fiveButton   setDigit:'5'];
-    [viewKeypad.fiveButton setDtmf:true];
-    [viewKeypad.sixButton    setDigit:'6'];
-    [viewKeypad.sixButton setDtmf:true];
-    [viewKeypad.sevenButton  setDigit:'7'];
-    [viewKeypad.sevenButton setDtmf:true];
-    [viewKeypad.eightButton  setDigit:'8'];
-    [viewKeypad.eightButton setDtmf:true];
-    [viewKeypad.nineButton   setDigit:'9'];
-    [viewKeypad.nineButton setDtmf:true];
-    [viewKeypad.starButton   setDigit:'*'];
-    [viewKeypad.starButton setDtmf:true];
-    [viewKeypad.sharpButton  setDigit:'#'];
-    [viewKeypad.sharpButton setDtmf:true];
-    [viewKeypad setBackgroundColor:[UIColor clearColor]];
-    
-    [_viewCommand setHidden: true];
     [_callView addSubview:viewKeypad];
     [self fadeIn:viewKeypad];
     
@@ -792,37 +694,25 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     [viewKeypad setupUIForView];
     
-    return;
-    
-    float wIcon = 60.0;
-    float tmpMargin = (SCREEN_WIDTH - 2*wIcon)/3;
-    float bottom;
-    
-    if (SCREEN_HEIGHT == 480) {
-        bottom = 10.0;
-    }else{
-        bottom = 25.0;
+    [viewKeypad.iconBack addTarget:self
+                            action:@selector(hideMiniKeypad)
+                  forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)hideMiniKeypad {
+    for (UIView *subView in _callView.subviews) {
+        if (subView.tag == MINI_KEYPAD_TAG) {
+            [UIView animateWithDuration:.35 animations:^{
+                subView.transform = CGAffineTransformMakeScale(1.3, 1.3);
+                subView.alpha = 0.0;
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    [subView removeFromSuperview];
+                }
+            }];
+        }
     }
-    
-    btEndCall = [[UIHangUpButton alloc] initWithFrame:CGRectMake(tmpMargin, _callView.frame.size.height-wIcon-bottom, wIcon, wIcon)];
-    [btEndCall setBackgroundImage:[UIImage imageNamed:@"decline_call_def.png"]
-                         forState: UIControlStateNormal];
-    [btEndCall setBackgroundImage:[UIImage imageNamed:@"decline_call_over.png"]
-                         forState: UIControlStateHighlighted];
-    [_callView addSubview: btEndCall];
-    
-    btHideKeypad = [[UIButton alloc] initWithFrame:CGRectMake(btEndCall.frame.origin.x+btEndCall.frame.size.width+tmpMargin, btEndCall.frame.origin.y, btEndCall.frame.size.width, btEndCall.frame.size.height)];
-    [btHideKeypad setBackgroundImage:[UIImage imageNamed:@"close_keypad_def.png"]
-                            forState:UIControlStateNormal ] ;
-    [btHideKeypad setBackgroundImage:[UIImage imageNamed:@"close_keypad_act.png"]
-                            forState: UIControlStateHighlighted];
-    [btHideKeypad addTarget:self
-                     action:@selector(btnHideKeypadPressed)
-           forControlEvents:UIControlEventTouchUpInside];
-    
-    [_callView addSubview: btHideKeypad];
-    
-    _hangupButton.hidden = YES;
+    _numpadButton.selected = NO;    kiem tra lai
 }
 
 - (void)fadeIn :(UIView*)view{
@@ -966,16 +856,11 @@ static UICompositeViewDescription *compositeDescription = nil;
                 subView.alpha = 0.0;
             } completion:^(BOOL finished) {
                 if (finished) {
-                    // [[NSNotificationCenter defaultCenter] removeObserver:self];
                     [subView removeFromSuperview];
                 }
             }];
         }
     }
-    //  An footer keypad
-    btEndCall.hidden = YES;
-    btHideKeypad.hidden = YES;
-    _hangupButton.hidden = NO;
 }
 
 /*----- Kết thúc cuộc gọi trong màn hình video call -----*/
@@ -1070,10 +955,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_numpadButton setBackgroundImage:[UIImage imageNamed:@"ic_keypad_act.png"] forState:UIControlStateSelected];
     [_numpadButton setBackgroundImage:[UIImage imageNamed:@"ic_keypad_dis.png"] forState:UIControlStateDisabled];
     _numpadButton.backgroundColor = UIColor.clearColor;
-    //  _numpadButton.enabled = NO;
-    [_numpadButton addTarget:self
-                  action:@selector(btnKeypadPressed)
-        forControlEvents:UIControlEventTouchUpInside];
     
     //  mute
     [_microButton mas_makeConstraints:^(MASConstraintMaker *make) {

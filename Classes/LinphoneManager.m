@@ -2818,9 +2818,6 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
 		linphone_call_params_enable_low_bandwidth(lcallParams, low_bandwidth);
 	}
     
-    //  Truyền biến ghi âm cuộc gọi
-    const LinphoneAddress* addr = linphone_call_get_remote_address(call);
-    
 	linphone_call_params_enable_video(lcallParams, video);
     [[LinphoneAppDelegate sharedInstance] set_acceptCall: true];
     
@@ -2928,6 +2925,8 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
 		ms_free(caddr);
 	} else {
         //  27/12/2017
+        NSString *phoneNumber = [NSString stringWithUTF8String:linphone_address_get_username(iaddr)];
+        
         if (![[LinphoneAppDelegate sharedInstance].phoneNumberEnd isEqualToString:@""] && [[LinphoneAppDelegate sharedInstance].phoneNumberEnd isEqualToString: phoneNumber]) {
             NSLog(@"Nguoi dung vua bam cancel cuoc goi nay");
             [LinphoneAppDelegate sharedInstance].phoneNumberEnd = @"";

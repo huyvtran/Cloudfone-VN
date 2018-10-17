@@ -74,6 +74,8 @@
     tfNumber.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:45.0];
     tfNumber.adjustsFontSizeToFitWidth = YES;
     tfNumber.backgroundColor = UIColor.clearColor;
+    tfNumber.textColor = UIColor.whiteColor;
+    [tfNumber setBorderStyle: UITextBorderStyleNone];
     
     [viewKeypad mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self);
@@ -157,6 +159,15 @@
         make.left.equalTo(zeroButton.mas_right).offset(spaceMarginX);
         make.width.height.mas_equalTo(wIcon);
     }];
+}
+
+- (IBAction)iconEndCallClick:(UIButton *)sender {
+    linphone_core_terminate_all_calls(LC);
+}
+
+- (IBAction)onDigitPress:(UIDigitButton *)sender {
+    NSString *value = [NSString stringWithFormat:@"%c", sender.digit];
+    tfNumber.text = [NSString stringWithFormat:@"%@%@", tfNumber.text, value];
 }
 
 @end
