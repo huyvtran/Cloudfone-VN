@@ -670,7 +670,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 [qualityTimer invalidate];
                 qualityTimer = nil;
             }
-            transfer va nut back to call va minikeyoad tren ipad
+            
             break;
         }
         case LinphoneCallError:{

@@ -328,7 +328,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Back"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                    <state key="normal" image="button_back_dialer">
+                                    <state key="normal" image="button_back_dialer.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="disabled" image="call_alt_back_disabled.png"/>
@@ -362,7 +362,7 @@
         <image name="add_contact_dialer.png" width="200" height="200"/>
         <image name="background_header.png" width="750" height="130"/>
         <image name="backspace_hover_1" width="241" height="149"/>
-        <image name="button_back_dialer" width="240" height="148"/>
+        <image name="button_back_dialer.png" width="201" height="201"/>
         <image name="call_alt_back_disabled.png" width="51" height="36"/>
         <image name="call_default.png" width="201" height="201"/>
         <image name="call_hover.png" width="201" height="201"/>

@@ -9,6 +9,9 @@
 #import "QRCodeReaderViewController.h"
 #import "QRCodeReader.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "InfoForNewContactTableCell.h"
+#import <CommonCrypto/CommonDigest.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 @interface PBXSettingViewController (){
     LinphoneAppDelegate *appDelegate;
@@ -91,6 +94,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)autoLayoutForMainView {
     float marginX = 20.0;
     
+    self.view.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
+                                                 blue:(240/255.0) alpha:1.0];
+    
     _icWaiting.backgroundColor = UIColor.whiteColor;
     _icWaiting.alpha = 0.5;
     [_icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -129,9 +135,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     //  content view
+    _viewContent.backgroundColor = UIColor.whiteColor;
     [_viewContent mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_viewHeader.mas_bottom);
-        make.left.right.bottom.equalTo(self.view);
+        //  make.left.right.bottom.equalTo(self.view);
+        make.left.right.equalTo(self.view);
+        make.height.mas_equalTo(465.0);
     }];
     
     _lbPBX.textColor = UIColor.darkGrayColor;
@@ -167,7 +176,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_tfServerID mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbServerID.mas_bottom);
         make.left.right.equalTo(_lbServerID);
-        make.height.mas_equalTo(_lbServerID.mas_height);
+        make.height.mas_equalTo(40.0);
     }];
     
     //  account
@@ -181,7 +190,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_tfAccount mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbAccount.mas_bottom);
         make.left.right.equalTo(_lbAccount);
-        make.height.mas_equalTo(_tfServerID.mas_height);
+        make.height.equalTo(_tfServerID.mas_height);
     }];
     
     //  password
@@ -195,31 +204,36 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_tfPassword mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbPassword.mas_bottom);
         make.left.right.equalTo(_lbPassword);
-        make.height.mas_equalTo(_tfServerID.mas_height);
+        make.height.equalTo(_tfServerID.mas_height);
     }];
     
     //  footer button
     [_btnClear mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_tfPassword.mas_bottom).offset(50);
+        make.top.equalTo(_tfPassword.mas_bottom).offset(40);
         make.left.equalTo(_tfPassword);
         make.right.equalTo(_viewContent.mas_centerX).offset(-20);
         make.height.mas_equalTo(45.0);
     }];
+    _btnClear.clipsToBounds = YES;
     _btnClear.layer.cornerRadius = 45.0/2;
     [_btnClear setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    _btnClear.titleLabel.font = [UIFont systemFontOfSize: 16.0];
+    _btnClear.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     _btnClear.backgroundColor = [UIColor colorWithRed:(248/255.0) green:(83/255.0)
                                                  blue:(86/255.0) alpha:1.0];
     
+    _btnSave.backgroundColor = UIColor.clearColor;
+    [_btnSave setBackgroundImage:[UIImage imageNamed:@"background_header.png"]
+                        forState:UIControlStateNormal];
     [_btnSave mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_btnClear);
         make.left.equalTo(_viewContent.mas_centerX).offset(20);
         make.right.equalTo(_tfPassword.mas_right);
         make.height.mas_equalTo(_btnClear.mas_height);
     }];
+    _btnSave.clipsToBounds = YES;
     _btnSave.layer.cornerRadius = 45.0/2;
     [_btnSave setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    _btnSave.titleLabel.font = [UIFont systemFontOfSize: 16.0];
+    _btnSave.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     _btnSave.backgroundColor = [UIColor colorWithRed:(25/255.0) green:(86/255.0)
                                                 blue:(108/255.0) alpha:1.0];
     
@@ -617,6 +631,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)readerDidCancel:(QRCodeReaderViewController *)reader {
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
+
 - (void)reader:(QRCodeReaderViewController *)reader didScanResult:(NSString *)result {
     [reader stopScanning];
     
@@ -635,6 +650,54 @@ static UICompositeViewDescription *compositeDescription = nil;
     [jsonDict setObject:hashString forKey:@"HashString"];
     
     [webService callWebServiceWithLink:DecryptRSA withParams:jsonDict];
+}
+
+#pragma mark - Image picker delegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    [picker dismissViewControllerAnimated:YES completion:^{
+        [self dismissViewControllerAnimated:YES completion:NULL];
+        
+        NSString* type = [info objectForKey:UIImagePickerControllerMediaType];
+        if ([type isEqualToString: (NSString*)kUTTypeImage] ) {
+            UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+            [self getQRCodeContentFromImage: image];
+        }
+    }];
+}
+
+- (void)getQRCodeContentFromImage: (UIImage *)image {
+    NSArray *qrcodeContent = [self detectQRCode: image];
+    if (qrcodeContent != nil && qrcodeContent.count > 0) {
+        for (CIQRCodeFeature* qrFeature in qrcodeContent) {
+            [self getPBXInformationWithHashString: qrFeature.messageString];
+        }
+    }else{
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_notification] message:[appDelegate.localization localizedStringForKey:cannot_find_qrcode] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_close] otherButtonTitles: nil];
+        [alertView show];
+    }
+}
+
+- (NSArray *)detectQRCode:(UIImage *) image
+{
+    @autoreleasepool {
+        CIImage* ciImage = [[CIImage alloc] initWithCGImage: image.CGImage]; // to use if the underlying data is a CGImage
+        NSDictionary* options;
+        CIContext* context = [CIContext context];
+        options = @{ CIDetectorAccuracy : CIDetectorAccuracyHigh }; // Slow but thorough
+        //options = @{ CIDetectorAccuracy : CIDetectorAccuracyLow}; // Fast but superficial
+        
+        CIDetector* qrDetector = [CIDetector detectorOfType:CIDetectorTypeQRCode
+                                                    context:context
+                                                    options:options];
+        if ([[ciImage properties] valueForKey:(NSString*) kCGImagePropertyOrientation] == nil) {
+            options = @{ CIDetectorImageOrientation : @1};
+        } else {
+            options = @{ CIDetectorImageOrientation : [[ciImage properties] valueForKey:(NSString*) kCGImagePropertyOrientation]};
+        }
+        NSArray * features = [qrDetector featuresInImage:ciImage
+                                                 options:options];
+        return features;
+    }
 }
 
 
