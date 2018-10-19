@@ -1141,4 +1141,12 @@
     }
 }
 
++ (PBXContact *)getPBXContactFromListWithPhoneNumber: (NSString *)pbxPhone {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_number CONTAINS[cd] ", pbxPhone];
+    NSArray *filter = [appDelegate.pbxContacts filteredArrayUsingPredicate: predicate];
+    if (filter.count > 0) {
+        [listPhoneSearched addObjectsFromArray: filter];
+    }
+}
+
 @end

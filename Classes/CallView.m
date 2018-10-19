@@ -1555,6 +1555,13 @@ static UICompositeViewDescription *compositeDescription = nil;
             NSString *folder = [NSString stringWithFormat:@"/avatars/%@", avatarName];
             [AppUtils saveFileToFolder:data withName: folder];
             _avatarImage.image = [UIImage imageWithData: data];
+            
+            //  set avatar value for pbx contact list if exists
+            sssss
+            
+            
+            
+            
         }
     });
 }

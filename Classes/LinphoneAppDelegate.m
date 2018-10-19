@@ -1501,6 +1501,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         NSString *sipNumber = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNamePhoneticProperty);
         if (sipNumber != nil && [sipNumber isEqualToString: keySyncPBX])
         {
+            NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
             ABMultiValueRef phones = ABRecordCopyValue(aPerson, kABPersonPhoneProperty);
             if (ABMultiValueGetCount(phones) > 0)
             {
@@ -1523,6 +1524,20 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                         NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
                         pbxContact._nameForSearch = nameForSearch;
                         
+                        if (![AppUtils isNullOrEmpty: pbxServer]) {
+                            NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, curPhoneValue];
+                            NSString *localFile = [NSString stringWithFormat:@"/avatars/%@", avatarName];
+                            NSData *avatarData = [AppUtils getFileDataFromDirectoryWithFileName:localFile];
+                            if (avatarData != nil) {
+                                NSString *strAvatar;
+                                if ([avatarData respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
+                                    strAvatar = [avatarData base64EncodedStringWithOptions: 0];
+                                } else {
+                                    strAvatar = [avatarData base64Encoding];
+                                }
+                                pbxContact._avatar = strAvatar;
+                            }
+                        }
                         [pbxContacts addObject: pbxContact];
                     }
                 }

@@ -243,7 +243,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                                     blue:(220/255.0) alpha:1.0]];
     
     //  Check for first time, after installed app
-    [self checkForShowFirstSettingAccount];
+    //  [self checkForShowFirstSettingAccount];
 }
 
 - (void)testAction {
@@ -361,7 +361,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (_addressField.text.length > 0) {
         [pressTimer invalidate];
         pressTimer = nil;
-        pressTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self
+        pressTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self
                                                     selector:@selector(searchPhoneBookWithThread)
                                                     userInfo:nil repeats:false];
     }else{
@@ -462,11 +462,20 @@ static UICompositeViewDescription *compositeDescription = nil;
         _addContactButton.hidden = YES;
     }
     
-    [self searchPhoneBookWithThread];
+    [pressTimer invalidate];
+    pressTimer = nil;
+    pressTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self
+                                                selector:@selector(searchPhoneBookWithThread)
+                                                userInfo:nil repeats:false];
+    //  [self searchPhoneBookWithThread];
 }
 
 - (IBAction)_btnCallPressed:(UIButton *)sender {
-    
+    [pressTimer invalidate];
+    pressTimer = nil;
+    pressTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self
+                                                selector:@selector(searchPhoneBookWithThread)
+                                                userInfo:nil repeats:false];
 }
 
 #pragma mark - Khai Le Functions
@@ -532,7 +541,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (filter.count > 0) {
         [listPhoneSearched addObjectsFromArray: filter];
     }
-    
 }
 
 - (void)searchForContactName: (NSString *)search {
@@ -556,12 +564,15 @@ static UICompositeViewDescription *compositeDescription = nil;
             NSString *name = @"";
             NSString *phone = @"";
             NSString *nameForSearch = @"";
+            NSString *avatar = @"";
+            
             BOOL isPBXContact = NO;
             id searchObj = [listPhoneSearched firstObject];
             if ([searchObj isKindOfClass:[PBXContact class]]) {
                 name = [(PBXContact *)searchObj _name];
                 phone = [(PBXContact *)searchObj _number];
                 nameForSearch = [(PBXContact *)searchObj _nameForSearch];
+                avatar = [(PBXContact *)searchObj _avatar];
                 
                 isPBXContact = YES;
             }else{
@@ -609,7 +620,11 @@ static UICompositeViewDescription *compositeDescription = nil;
                 
                 // setup avatar
                 if (isPBXContact) {
-                    imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                    if (![AppUtils isNullOrEmpty: avatar]) {
+                        imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
+                    }else{
+                        imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                    }
                 }else{
                     NSString *avatar = [NSDatabase getAvatarOfContactWithPhoneNumber: phone];
                     if (![avatar isEqualToString:@""]) {

@@ -291,6 +291,14 @@
                                         <action selector="_btnHotlinePressed:" destination="-1" eventType="touchUpInside" id="vrM-99-Clu"/>
                                     </connections>
                                 </button>
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mZY-R6-lzQ">
+                                    <rect key="frame" x="132" y="247" width="70" height="70"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" backgroundImage="add_call.png"/>
+                                    <connections>
+                                        <action selector="_btnAddCallPressed:" destination="-1" eventType="touchUpInside" id="lA4-Hw-1D6"/>
+                                    </connections>
+                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="SWb-OV-7Fe">
                                     <rect key="frame" x="132" y="247" width="70" height="70"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -309,6 +317,7 @@
                                     </state>
                                     <state key="highlighted" image="call_hover.png"/>
                                     <connections>
+                                        <action selector="_btnCallPressed:" destination="-1" eventType="touchUpInside" id="I9R-AJ-CVF"/>
                                         <outlet property="addressField" destination="4" id="235"/>
                                     </connections>
                                 </button>
@@ -336,14 +345,6 @@
                                         <action selector="onBackClick:" destination="-1" eventType="touchUpInside" id="233"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mZY-R6-lzQ">
-                                    <rect key="frame" x="132" y="247" width="70" height="70"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" backgroundImage="add_call.png"/>
-                                    <connections>
-                                        <action selector="_btnAddCallPressed:" destination="-1" eventType="touchUpInside" id="lA4-Hw-1D6"/>
-                                    </connections>
-                                </button>
                             </subviews>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
@@ -354,7 +355,7 @@
             <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="854" y="-288"/>
+            <point key="canvasLocation" x="575" y="-337"/>
         </view>
     </objects>
     <resources>
