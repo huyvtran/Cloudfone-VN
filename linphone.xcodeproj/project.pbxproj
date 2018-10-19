@@ -77,6 +77,10 @@
 		159002D72168618E00CECB7A /* ic_call_missed.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002CE2168618B00CECB7A /* ic_call_missed.png */; };
 		159002D82168618E00CECB7A /* ic_call_outgoing.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002D52168618C00CECB7A /* ic_call_outgoing.png */; };
 		159002D92168618E00CECB7A /* ic_call_incoming.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002D62168618D00CECB7A /* ic_call_incoming.png */; };
+		159E0871217984BD0056E2BB /* RegisterPBXWithPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */; };
+		159E0879217984F00056E2BB /* RegisterPBXWithPhoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */; };
+		159E08842179E9130056E2BB /* ic_not_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 159E08822179E9110056E2BB /* ic_not_check.png */; };
+		159E08852179E9130056E2BB /* ic_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 159E08832179E9120056E2BB /* ic_checked.png */; };
 		15A64D92216C5A3D00D194BD /* ic_call_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A64D91216C5A3C00D194BD /* ic_call_contact.png */; };
 		15A64DA0216C8BC700D194BD /* InfoForNewContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A64D9E216C8BC700D194BD /* InfoForNewContactTableCell.m */; };
 		15A64DA1216C8BC700D194BD /* InfoForNewContactTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15A64D9F216C8BC700D194BD /* InfoForNewContactTableCell.xib */; };
@@ -86,6 +90,7 @@
 		15D21BE42176E70000FEBED2 /* EditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15D21BE22176E6FF00FEBED2 /* EditProfileViewController.m */; };
 		15D21BE52176E70000FEBED2 /* EditProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15D21BE32176E70000FEBED2 /* EditProfileViewController.xib */; };
 		15E1D8CE21708AE900E23B2C /* add_contact_dialer.png in Resources */ = {isa = PBXBuildFile; fileRef = 15E1D8C721708AE700E23B2C /* add_contact_dialer.png */; };
+		15E641B22179779900A9E15E /* ic_phone_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 15E641AB2179779700A9E15E /* ic_phone_login.png */; };
 		15F2E5F5216B56F60076CB1F /* ic_setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 15F2E5F1216B56E30076CB1F /* ic_setting.png */; };
 		15F2E5F6216B56F60076CB1F /* ic_term.png in Resources */ = {isa = PBXBuildFile; fileRef = 15F2E5F2216B56E50076CB1F /* ic_term.png */; };
 		15F2E5F7216B56F60076CB1F /* ic_setup.png in Resources */ = {isa = PBXBuildFile; fileRef = 15F2E5F3216B56E60076CB1F /* ic_setup.png */; };
@@ -797,8 +802,6 @@
 		84C4435E1FBE00B90015854C /* IntroduceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C4435C1FBE00B90015854C /* IntroduceViewController.xib */; };
 		84C4436E1FBE01680015854C /* PolicyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C4436C1FBE01680015854C /* PolicyViewController.m */; };
 		84C4436F1FBE01680015854C /* PolicyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C4436D1FBE01680015854C /* PolicyViewController.xib */; };
-		84C443731FBE03640015854C /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C443711FBE03640015854C /* FeedbackViewController.m */; };
-		84C443741FBE03640015854C /* FeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C443721FBE03640015854C /* FeedbackViewController.xib */; };
 		84C443811FBE0F600015854C /* NewContactFromChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C4437F1FBE0F600015854C /* NewContactFromChatViewController.m */; };
 		84C443821FBE0F600015854C /* NewContactFromChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C443801FBE0F600015854C /* NewContactFromChatViewController.xib */; };
 		84C443851FBE0FFA0015854C /* TypePhoneObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C443841FBE0FFA0015854C /* TypePhoneObject.m */; };
@@ -1220,6 +1223,11 @@
 		159002CE2168618B00CECB7A /* ic_call_missed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_missed.png; sourceTree = "<group>"; };
 		159002D52168618C00CECB7A /* ic_call_outgoing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_outgoing.png; sourceTree = "<group>"; };
 		159002D62168618D00CECB7A /* ic_call_incoming.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_incoming.png; sourceTree = "<group>"; };
+		159E086F217984BD0056E2BB /* RegisterPBXWithPhoneView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RegisterPBXWithPhoneView.h; path = AppUI/RegisterPBXWithPhoneView.h; sourceTree = "<group>"; };
+		159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RegisterPBXWithPhoneView.m; path = AppUI/RegisterPBXWithPhoneView.m; sourceTree = "<group>"; };
+		159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RegisterPBXWithPhoneView.xib; path = AppUI/RegisterPBXWithPhoneView.xib; sourceTree = "<group>"; };
+		159E08822179E9110056E2BB /* ic_not_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_not_check.png; sourceTree = "<group>"; };
+		159E08832179E9120056E2BB /* ic_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_checked.png; sourceTree = "<group>"; };
 		15A64D91216C5A3C00D194BD /* ic_call_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_contact.png; sourceTree = "<group>"; };
 		15A64D9D216C8BC600D194BD /* InfoForNewContactTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = InfoForNewContactTableCell.h; path = AppUI/InfoForNewContactTableCell.h; sourceTree = "<group>"; };
 		15A64D9E216C8BC700D194BD /* InfoForNewContactTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = InfoForNewContactTableCell.m; path = AppUI/InfoForNewContactTableCell.m; sourceTree = "<group>"; };
@@ -1231,6 +1239,7 @@
 		15D21BE22176E6FF00FEBED2 /* EditProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EditProfileViewController.m; path = More/EditProfileViewController.m; sourceTree = "<group>"; };
 		15D21BE32176E70000FEBED2 /* EditProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditProfileViewController.xib; path = More/EditProfileViewController.xib; sourceTree = "<group>"; };
 		15E1D8C721708AE700E23B2C /* add_contact_dialer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_contact_dialer.png; sourceTree = "<group>"; };
+		15E641AB2179779700A9E15E /* ic_phone_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_phone_login.png; sourceTree = "<group>"; };
 		15F2E5F1216B56E30076CB1F /* ic_setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_setting.png; sourceTree = "<group>"; };
 		15F2E5F2216B56E50076CB1F /* ic_term.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_term.png; sourceTree = "<group>"; };
 		15F2E5F3216B56E60076CB1F /* ic_setup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_setup.png; sourceTree = "<group>"; };
@@ -2110,9 +2119,6 @@
 		84C4436B1FBE01680015854C /* PolicyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PolicyViewController.h; path = More/PolicyViewController.h; sourceTree = "<group>"; };
 		84C4436C1FBE01680015854C /* PolicyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PolicyViewController.m; path = More/PolicyViewController.m; sourceTree = "<group>"; };
 		84C4436D1FBE01680015854C /* PolicyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PolicyViewController.xib; path = More/PolicyViewController.xib; sourceTree = "<group>"; };
-		84C443701FBE03640015854C /* FeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeedbackViewController.h; path = More/FeedbackViewController.h; sourceTree = "<group>"; };
-		84C443711FBE03640015854C /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeedbackViewController.m; path = More/FeedbackViewController.m; sourceTree = "<group>"; };
-		84C443721FBE03640015854C /* FeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FeedbackViewController.xib; path = More/FeedbackViewController.xib; sourceTree = "<group>"; };
 		84C4437E1FBE0F600015854C /* NewContactFromChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewContactFromChatViewController.h; path = Contacts/NewContactFromChatViewController.h; sourceTree = "<group>"; };
 		84C4437F1FBE0F600015854C /* NewContactFromChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewContactFromChatViewController.m; path = Contacts/NewContactFromChatViewController.m; sourceTree = "<group>"; };
 		84C443801FBE0F600015854C /* NewContactFromChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewContactFromChatViewController.xib; path = Contacts/NewContactFromChatViewController.xib; sourceTree = "<group>"; };
@@ -3327,6 +3333,9 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				159E08832179E9120056E2BB /* ic_checked.png */,
+				159E08822179E9110056E2BB /* ic_not_check.png */,
+				15E641AB2179779700A9E15E /* ic_phone_login.png */,
 				15C878522178339A00661873 /* button_back_dialer.png */,
 				154E400A217440FC0030A6B8 /* no_avatar_blue.png */,
 				154E4003217440FB0030A6B8 /* no_avatar.png */,
@@ -3819,9 +3828,6 @@
 			isa = PBXGroup;
 			children = (
 				84E07EFA2025F36B0000CD12 /* Cells */,
-				84C443701FBE03640015854C /* FeedbackViewController.h */,
-				84C443711FBE03640015854C /* FeedbackViewController.m */,
-				84C443721FBE03640015854C /* FeedbackViewController.xib */,
 				843ED65D1FB658F9005FE1C1 /* MoreViewController.h */,
 				843ED65E1FB658F9005FE1C1 /* MoreViewController.m */,
 				843ED65F1FB658F9005FE1C1 /* MoreViewController.xib */,
@@ -4145,6 +4151,9 @@
 				15857BFA216DEC0000DB5237 /* UIContactPhoneCell.h */,
 				15857BFB216DEC0000DB5237 /* UIContactPhoneCell.m */,
 				15857BFC216DEC0000DB5237 /* UIContactPhoneCell.xib */,
+				159E086F217984BD0056E2BB /* RegisterPBXWithPhoneView.h */,
+				159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */,
+				159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */,
 			);
 			name = AppUI;
 			sourceTree = "<group>";
@@ -5059,7 +5068,6 @@
 				633FEE511D3CD5590014B822 /* deselect_all@2x.png in Resources */,
 				841EB1662169818E00B59B8E /* add_call.png in Resources */,
 				8440F197216BA82000BB559C /* mini_key_3.png in Resources */,
-				84C443741FBE03640015854C /* FeedbackViewController.xib in Resources */,
 				F088488A19FF8C41007FFCF3 /* UIContactCell.xib in Resources */,
 				633FEE381D3CD5590014B822 /* contact_add_default.png in Resources */,
 				633FEE6F1D3CD5590014B822 /* footer_history_default@2x.png in Resources */,
@@ -5090,6 +5098,7 @@
 				633FEDFE1D3CD5590014B822 /* camera_switch_disabled.png in Resources */,
 				633FEE7F1D3CD5590014B822 /* history_missed_selected@2x.png in Resources */,
 				633FEDC01D3CD5590014B822 /* call_back_disabled.png in Resources */,
+				159E08852179E9130056E2BB /* ic_checked.png in Resources */,
 				63130FB21C1ED06900371918 /* SideMenuView~ipad.xib in Resources */,
 				633FEE3B1D3CD5590014B822 /* contact_add_disabled@2x.png in Resources */,
 				633FEF011D3CD55A0014B822 /* options_default@2x.png in Resources */,
@@ -5170,6 +5179,7 @@
 				633FEE831D3CD5590014B822 /* led_disconnected@2x.png in Resources */,
 				633FEE031D3CD5590014B822 /* cancel_edit_default@2x.png in Resources */,
 				633FEDE01D3CD5590014B822 /* call_start_body_over~ipad.png in Resources */,
+				15E641B22179779900A9E15E /* ic_phone_login.png in Resources */,
 				D34F6F9E1594D3FB0095705B /* InAppSettings.bundle in Resources */,
 				633FEE4D1D3CD5590014B822 /* delete_field_default@2x.png in Resources */,
 				639CEB091A1DF4FA004DE38F /* UIChatCell.xib in Resources */,
@@ -5259,6 +5269,7 @@
 				84D0321E1FB52F6C002D2524 /* ContactNormalCell.xib in Resources */,
 				633FEE241D3CD5590014B822 /* chat_start_body_over~ipad.png in Resources */,
 				153D002E2164D537007B69B3 /* menu_keypad_en_def.png in Resources */,
+				159E0879217984F00056E2BB /* RegisterPBXWithPhoneView.xib in Resources */,
 				842DEC441FC478F300E7F74D /* UIMiniKeypad.xib in Resources */,
 				633FEE091D3CD5590014B822 /* chat_add_disabled@2x.png in Resources */,
 				633FEE191D3CD5590014B822 /* chat_send_over@2x.png in Resources */,
@@ -5274,6 +5285,7 @@
 				633FEF351D3CD55A0014B822 /* routes_default@2x.png in Resources */,
 				633FEE5C1D3CD5590014B822 /* edit_disabled.png in Resources */,
 				633FEDCA1D3CD5590014B822 /* call_outgoing.png in Resources */,
+				159E08842179E9130056E2BB /* ic_not_check.png in Resources */,
 				633FEDF81D3CD5590014B822 /* camera_disabled.png in Resources */,
 				633FEE331D3CD5590014B822 /* color_M.png in Resources */,
 				633FEE811D3CD5590014B822 /* led_connected@2x.png in Resources */,
@@ -5699,11 +5711,11 @@
 				2214EB7A12F846B1002A5394 /* UICallButton.m in Sources */,
 				84C4438F1FBE105F0015854C /* NewPhoneCell.m in Sources */,
 				8442A3591FB12CCA00F08F11 /* ChooseAccountCell.m in Sources */,
-				84C443731FBE03640015854C /* FeedbackViewController.m in Sources */,
 				84D032181FB52E7A002D2524 /* AllContactsViewController.m in Sources */,
 				84EFFE171FF3E6B60085A9F4 /* DGActivityIndicatorThreeDotsAnimation.m in Sources */,
 				84E067141FBE63E300C49F66 /* PBXContact.m in Sources */,
 				6352A5751BE0D4B800594C1C /* CallSideMenuView.m in Sources */,
+				159E0871217984BD0056E2BB /* RegisterPBXWithPhoneView.m in Sources */,
 				84E286C51FC9E1AC009CBA27 /* UIButton+WebCache.m in Sources */,
 				2214EB8912F84EBB002A5394 /* UIHangUpButton.m in Sources */,
 				630CF5571AF7CE1500539F7A /* UITextField+DoneButton.m in Sources */,

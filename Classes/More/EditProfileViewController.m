@@ -74,6 +74,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)icBackClick:(UIButton *)sender {
+    [[PhoneMainView instance] popCurrentView];
 }
 
 - (IBAction)btnChooseAvatarPress:(UIButton *)sender {
@@ -161,8 +162,15 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.height.mas_equalTo(20.0);
     }];
     
+    tfAccountName.borderStyle = UITextBorderStyleNone;
+    tfAccountName.layer.cornerRadius = 3.0;
+    tfAccountName.layer.borderWidth = 1.0;
+    tfAccountName.layer.borderColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
+                                                       blue:(235/255.0) alpha:1.0].CGColor;
+    tfAccountName.keyboardType = UIKeyboardTypePhonePad;
+    tfAccountName.font = [UIFont fontWithName:MYRIADPRO_BOLD size:16.0];
     [tfAccountName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewHeader.mas_bottom).offset(40);
+        make.top.equalTo(imgChangeAvatar.mas_bottom).offset(40);
         make.left.equalTo(self.view).offset(50);
         make.right.equalTo(self.view).offset(-50);
         make.height.mas_equalTo(35.0);
@@ -183,6 +191,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.height.mas_equalTo(40.0);
     }];
     
+    btnSave.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     [btnSave setTitle:[appDelegate.localization localizedStringForKey:@"Save"]
              forState:UIControlStateNormal];
     btnSave.backgroundColor = [UIColor colorWithRed:(20/255.0) green:(129/255.0)
@@ -196,6 +205,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.equalTo(btnCancel.mas_width);
         make.height.equalTo(btnCancel.mas_height);
     }];
+    setup cho man hinh nay
 //    [btnSave addTarget:self
 //                action:@selector(saveContactPressed:)
 //      forControlEvents:UIControlEventTouchUpInside];

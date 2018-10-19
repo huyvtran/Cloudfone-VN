@@ -12,6 +12,7 @@
 #import "InfoForNewContactTableCell.h"
 #import <CommonCrypto/CommonDigest.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "CustomTextAttachment.h"
 
 @interface PBXSettingViewController (){
     LinphoneAppDelegate *appDelegate;
@@ -25,12 +26,13 @@
     NSString *passwordPBX;
     NSString *ipPBX;
     NSString *portPBX;
+    RegisterPBXWithPhoneView *viewPBXRegisterWithPhone;
 }
 
 @end
 
 @implementation PBXSettingViewController
-@synthesize _viewHeader, bgHeader, _iconBack, _lbTitle, _iconQRCode, _icWaiting;
+@synthesize _viewHeader, bgHeader, _iconBack, _lbTitle, _iconQRCode, _icWaiting, btnLoginWithPhone, lbVersion;
 @synthesize _viewContent, _lbPBX, _swChange, _lbSepa, _lbServerID, _tfServerID, _lbAccount, _tfAccount, _lbPassword, _tfPassword, _btnClear, _btnSave;
 @synthesize webService;
 
@@ -77,8 +79,16 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
     if (defaultConfig == NULL) {
-        [_swChange setOn: NO];
+        _swChange.on = NO;
     }
+    
+    //  set value for label version
+    lbVersion.attributedText = [AppUtils getVersionStringForApp];
+    
+    //  set title for button login with phone number
+    NSString *phoneContent = [NSString stringWithFormat:@" %@", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Register with phone number"]];
+    NSAttributedString *phoneStr = [self createAttributeStringWithContent:phoneContent imageName:@"ic_phone_login.png" isLeadImage:YES withHeight:22.0];
+    [btnLoginWithPhone setAttributedTitle:phoneStr forState:UIControlStateNormal];
     
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(registrationUpdateEvent:)
                                                name:kLinphoneRegistrationUpdate object:nil];
@@ -101,8 +111,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     
     float marginX = 20.0;
-    self.view.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
-                                                 blue:(240/255.0) alpha:1.0];
+    self.view.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
+                                                 blue:(230/255.0) alpha:1.0];
     
     _icWaiting.backgroundColor = UIColor.whiteColor;
     _icWaiting.alpha = 0.5;
@@ -269,6 +279,28 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnSave.backgroundColor = [UIColor colorWithRed:(25/255.0) green:(86/255.0)
                                                 blue:(108/255.0) alpha:1.0];
     
+    //  button login with phone number
+    btnLoginWithPhone.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(189/255.0)
+                                                         blue:(86/255.0) alpha:1.0];
+    [btnLoginWithPhone setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    btnLoginWithPhone.clipsToBounds = YES;
+    btnLoginWithPhone.layer.cornerRadius = 45.0/2;
+    btnLoginWithPhone.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
+    [btnLoginWithPhone mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewContent.mas_bottom).offset(30);
+        make.left.equalTo(self.view).offset(30);
+        make.right.equalTo(self.view).offset(-30);
+        make.height.mas_equalTo(45.0);
+    }];
+    
+    //  label version
+    lbVersion.backgroundColor = UIColor.clearColor;
+    lbVersion.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
+                                           blue:(50/255.0) alpha:1.0];
+    [lbVersion mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.view);
+        make.height.mas_equalTo(45.0);
+    }];
 }
 
 - (IBAction)_iconBackClicked:(UIButton *)sender {
@@ -358,6 +390,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)showContentForView {
+    _lbTitle.text = [appDelegate.localization localizedStringForKey:@"PBX account"];
+    
     _lbPBX.text = [appDelegate.localization localizedStringForKey:@"PBX"];
     _lbServerID.text = [appDelegate.localization localizedStringForKey:@"Server ID"];
     _lbAccount.text = [appDelegate.localization localizedStringForKey:@"Account"];
@@ -781,5 +815,67 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 
 - (IBAction)btnLoginWithPhonePress:(UIButton *)sender {
+    NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"RegisterPBXWithPhoneView" owner:nil options:nil];
+    for(id currentObject in toplevelObject){
+        if ([currentObject isKindOfClass:[RegisterPBXWithPhoneView class]]) {
+            viewPBXRegisterWithPhone = (RegisterPBXWithPhoneView *) currentObject;
+            break;
+        }
+    }
+    viewPBXRegisterWithPhone.delegate = self;
+    viewPBXRegisterWithPhone.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
+    [viewPBXRegisterWithPhone setupUIForView];
+    [self.view addSubview: viewPBXRegisterWithPhone];
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        viewPBXRegisterWithPhone.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    }];
 }
+
+- (NSMutableAttributedString *)createAttributeStringWithContent: (NSString *)content imageName: (NSString *)imageName isLeadImage: (BOOL)isLeadImage withHeight: (float)height
+{
+    UIImage *iconImg = [UIImage imageNamed:imageName];
+    if (iconImg != nil) {
+        CustomTextAttachment *attachment = [[CustomTextAttachment alloc] init];
+        attachment.image = iconImg;
+        [attachment setImageHeight: height];
+        
+        NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
+        
+        NSMutableAttributedString *contentString = [[NSMutableAttributedString alloc] initWithString:content];
+        
+        if (isLeadImage) {
+            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString: attachmentString];
+            [result appendAttributedString: contentString];
+            
+            return result;
+        }else{
+            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString: contentString];
+            [result appendAttributedString: attachmentString];
+            return result;
+        }
+    }else{
+        return [[NSMutableAttributedString alloc] initWithString:content];
+    }
+}
+
+#pragma mark - RegisterPBXWithPhoneViewDelegate
+- (void)onIconCloseClick {
+    [UIView animateWithDuration:0.25 animations:^{
+        viewPBXRegisterWithPhone.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
+    }];
+}
+
+- (void)onIconQRCodeScanClick {
+    [UIView animateWithDuration:0.25 animations:^{
+        viewPBXRegisterWithPhone.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
+    }completion:^(BOOL finished) {
+        [self _iconQRCodeClicked: nil];
+    }];
+}
+
+- (void)onButtonContinuePress {
+    
+}
+
 @end

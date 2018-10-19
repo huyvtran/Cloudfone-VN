@@ -104,9 +104,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)autoLayoutForView
 {
     if (SCREEN_WIDTH > 320) {
-        _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:20.0];
+        _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
     }else{
-        _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:18.0];
+        _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }
     
     //  header view
@@ -166,9 +166,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     LanguageObject *langObj = [listLanguage objectAtIndex: indexPath.row];
     [cell._lbTitle setText: langObj._title];
     if ([langObj._code isEqualToString: curLanguage]) {
-        cell._imgSelect.image = [UIImage imageNamed:@"menu_select_did_checked.png"];
+        cell._imgSelect.image = [UIImage imageNamed:@"ic_checked.png"];
     }else{
-        cell._imgSelect.image = [UIImage imageNamed:@"menu_select_did_not_check.png"];
+        cell._imgSelect.image = [UIImage imageNamed:@"ic_not_check.png"];
     }
     
     return cell;

@@ -52,10 +52,6 @@
 "text_email_invalid"    =   "Email không hợp lệ"
 "text_accept_terms"     =   "Vui lòng chấp nhận điều khoản sử dụng của CloudFone"
 
-"text_status_online"    =   "Sẵn sàng"
-"text_status_offline"   =   "Chưa kết nối"
-"text_status_connecting"=   "Đang kết nối"
-
 "text_not_setup_pbx"        =   "You have not set up a PBX account!"
 "text_pbx_server_empty"     =   "Mã dịch vụ không được rỗng"
 "text_pbx_username_empty"   =   "Username không được rỗng"
@@ -84,43 +80,17 @@
 "text_app_settings"     =   "Cài đặt ứng dụng"
 "text_outbot_proxy"     =   "Outbound Proxy"
 
-"text_feedback"         =   "Phản hồi"
-
-"text_policy"               =   "Chính sách";
-
-"text_policy_title1"        =   "You are collecting personal data"
-"text_policy_content1"      =   "Even the display of ads or the use of analytics means you're collecting personal data the user should known about"
-
-"text_policy_title2"        =   "You are third-party services"
-"text_policy_content2"      =   "Services like Google Analytics or AdSense require you to have a privacy policy stating the use of their service"
-
-"text_policy_title3"        =   "Regulations require privacy policies"
-"text_policy_content3"      =   "Services like Google Analytics or AdSense require you to have a privacy stating the use of their service"
-
 "text_ods_company"          =   "ONLINE DATA SERVICES J.S.C"
 "text_introduce_content"    =   "Là Doanh Nghiệp sở hữu một trong những trung tâm dữ liệu (DataCenter) được đầu tư bài bản tại số 54 đường C1, Phường 13, Quận Tân Bình. ODS đã có hơn 06 năm tham gia thị trường công nghệ thông tin, viễn thông và Internet, ODS đã tạo dựng được thương hiệu và chỗ đứng vững chắc ở Việt Nam, đặc biệt trong lĩnh vực Internet, DataCenter, VoIP-Cloudfone, giải pháp ảo hoá hạ tầng điện toán đám mây (IaaS) và bản quyền phần mềm,… Việc kinh doanh của chúng tôi phát triển nhanh chóng với các lĩnh vực mới và đa dạng, ODS đã tạo được thế mạnh, hình ảnh và thương hiệu của mình."
 
 "text_alert_logout_title"   =   "Đăng xuất"
 "text_alert_logout_content" =   "Bạn có muốn đăng xuất hay không?"
 
-"text_pbx_on"       =   "Bật"
-"text_pbx_off"      =   "Tắt"
-
 "text_change_acc_name"      =   "Đổi tên tài khoản"
 "text_trunking"             =   "Trung kế"
 "text_change_password"      =   "Đổi mật khẩu"
 "text_close_account"        =   "Đóng tài khoản"
 
-"text_trunking_account"     =   "Tài khoản"
-"text_trunking_pbx"         =   "PBX"
-
-"text_trunking_id"          =   "ID"
-"text_trunking_user"        =   "Tên đăng nhập"
-"text_trunking_pass"        =   "Mật khẩu"
-"text_trunking_clear"       =   "Đặt lại"
-"text_trunking_save"        =   "Lưu"
-
-"text_trunking_header"      =   "Chọn tài khoản"
 "text_refresh"              =   "Cập nhật"
 "text_popup_account"        =   "Tài khoản: "
 "text_popup_account_pbx"    =   "PBX: "
@@ -687,8 +657,6 @@
 
 
 "TEXT_UPDATING"     =   "Đang cập nhật..."
-"TEXT_TRUNKING_OFF" =   "Đã tắt"
-"TEXT_TRUNKING_ON"  =   "Đã bật"
 "TEXT_LOADING"      =   "Đang tải..."
 
 "TEXT_NO_MESSAGES"      = "Không có tin nhắn"
@@ -1122,6 +1090,53 @@
 "text_capture_sent" =   "Ảnh đã được gửi"
 
 
+
+
+"Online" = "Sẵn sàng"
+"Offline" = "Chưa kết nối"
+"Connecting" = "Đang kết nối"
+
+"PBX" = "Nội bộ"
+"Contacts" = "Danh bạ"
+"Type name or phone number" = "Nhập tên hoặc số điện thoại"
+
+"All" = "Tất cả"
+"Missed" = "Gọi nhỡ"
+
+"Account settings" = "Cài đặt tài khoản"
+"Settings" = "Thiết lập chung"
+"Feedback" = "Phản hồi"
+"Privacy Policy" = "Chính sách bảo mật"
+"Introduction" = "Giới thiệu"
+
+"PBX account" = "Tài khoản PBX"
+"Change password" = "Đổi mật khẩu"
+"No account" = "Không có tài khoản"
+"Off" = "Tắt"
+"On" = "Bật"
+
+"Server ID" = "Địa chỉ máy chủ"
+"Account" = "Tài khoản"
+"Password" = "Mật khẩu"
+"Clear" = "Xóa"
+
+"Current password" = "Mật khẩu hiện tại"
+"New password" = "Mật khẩu mới"
+"Confirm password" = "Xác nhận mật khẩu mới"
+"Password are at least 6 characters long" = "Mật khẩu phải có ít nhất 6 kí tự"
+"Input password" = "Nhập mật khẩu"
+"Reset" = "Nhập lại"
+"Confirm password not match" = "Xác nhận mật khẩu không chính xác"
+"Current password not correct" = "Mật khẩu hiện tại không chính xác"
+
+"Change language" = "Đổi ngôn ngữ"
+"Call settings" = "Cài đặt cuộc gọi"
+"Vietnamese" = "Tiếng việt"
+"English" = "Tiếng anh"
+
+
+
+
 "Ringing" = "Đang đổ chuông...";"
 "Calling" = "Đang gọi..."
 "Feedback" = "Gửi phản hồi"
@@ -1167,3 +1182,7 @@
 "Create new contact"      =   "Tạo số liên lạc mới"
 "Add to existing contact"   =   "Thêm vào danh bạ"
 "Choose contact" = "Chọn liên hệ"
+
+"Register with phone number" = "Đăng ký với số điện thoại"
+"Continue" = "Tiếp tục"
+"Input phone number" = "Nhập số điện thoại"

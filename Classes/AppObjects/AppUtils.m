@@ -12,6 +12,7 @@
 #import "PBXContact.h"
 #import <sys/utsname.h>
 #import "JSONKit.h"
+#import "CustomTextAttachment.h"
 
 @implementation AppUtils
 
@@ -1083,5 +1084,36 @@
 +(BOOL)isNullOrEmpty:(NSString*)string{
     return string == nil || string==(id)[NSNull null] || [string isEqualToString: @""];
 }
+
++ (NSString *)getAppVersion {
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+}
+
++ (UIImage *)imageWithColor:(UIColor *)color andBounds:(CGRect)imgBounds {
+    UIGraphicsBeginImageContextWithOptions(imgBounds.size, NO, 0);
+    [color setFill];
+    UIRectFill(imgBounds);
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return img;
+}
+
++ (NSAttributedString *)getVersionStringForApp {
+    CustomTextAttachment *attachment = [[CustomTextAttachment alloc] init];
+    attachment.image = [UIImage imageNamed:@"ic_about.png"];
+    [attachment setImageHeight: 24.0];
+    
+    NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
+    
+    NSString *content = [NSString stringWithFormat:@" %@ %@", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Version"], [AppUtils getAppVersion]];
+    NSMutableAttributedString *contentString = [[NSMutableAttributedString alloc] initWithString:content];
+    
+    NSMutableAttributedString *verString = [[NSMutableAttributedString alloc] initWithAttributedString: attachmentString];
+    //
+    [verString appendAttributedString: contentString];
+    return verString;
+}
+
 
 @end

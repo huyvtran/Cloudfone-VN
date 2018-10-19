@@ -187,19 +187,10 @@
 #define text_pbx_username_empty @"text_pbx_username_empty"
 #define text_pbx_password_empty @"text_pbx_password_empty"
 
-#define text_trunking_header    @"text_trunking_header"
-#define text_refresh            @"text_refresh"
-#define text_popup_account      @"text_popup_account"
-#define text_popup_account_pbx  @"text_popup_account_pbx"
-
 #define text_delete             @"text_delete"
 #define text_cancel             @"text_cancel"
 #define text_setup              @"text_setup"
 #define text_edit_profile       @"text_edit_profile"
-
-#define text_status_online      @"text_status_online"
-#define text_status_offline     @"text_status_offline"
-#define text_status_connecting  @"text_status_connecting"
 
 #define text_connected          @"text_connected"
 #define text_quality_good       @"text_quality_good"
@@ -267,9 +258,6 @@
 
 #define welcomeToCloudFone      @"Welcome to CloudFone"
 
-#define text_pbx_on             @"text_pbx_on"
-#define text_pbx_off            @"text_pbx_off"
-
 #define text_change_acc_name    @"text_change_acc_name"
 #define text_trunking           @"text_trunking"
 #define text_change_password    @"text_change_password"
@@ -278,15 +266,6 @@
 #define text_reset_successfully @"text_reset_successfully"
 #define text_successfully       @"text_successfully"
 #define text_update_failed      @"text_update_failed"
-
-#define text_trunking_account   @"text_trunking_account"
-#define text_trunking_pbx       @"text_trunking_pbx"
-
-#define text_trunking_id        @"text_trunking_id"
-#define text_trunking_user      @"text_trunking_user"
-#define text_trunking_pass      @"text_trunking_pass"
-#define text_trunking_clear     @"text_trunking_clear"
-#define text_trunking_save      @"text_trunking_save"
 
 #define text_old_pass           @"text_old_pass"
 #define text_new_pass           @"text_new_pass"
@@ -318,18 +297,9 @@
 #define text_unblock_user       @"text_unblock_user"
 #define text_call_missed        @"text_call_missed"
 
-#define text_policy             @"text_policy"
-#define text_policy_title1      @"text_policy_title1"
-#define text_policy_content1    @"text_policy_content1"
-#define text_policy_title2      @"text_policy_title2"
-#define text_policy_content2    @"text_policy_content2"
-#define text_policy_title3      @"text_policy_title3"
-#define text_policy_content3    @"text_policy_content3"
-
 #define text_ods_company        @"text_ods_company"
 #define text_introduce_content  @"text_introduce_content"
 
-#define text_feedback           @"text_feedback"
 #define text_saving             @"text_saving"
 #define text_contact_sipPhone   @"text_contact_sipPhone"
 #define text_contact_company    @"text_contact_company"

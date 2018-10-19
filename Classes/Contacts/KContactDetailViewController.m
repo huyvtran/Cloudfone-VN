@@ -160,8 +160,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)autoLayoutForView
 {
-    self.view.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
-                                                 blue:(240/255.0) alpha:1.0];
+    self.view.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
+                                                 blue:(230/255.0) alpha:1.0];
     if (SCREEN_WIDTH > 320) {
         hCell = 55.0;
         textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];

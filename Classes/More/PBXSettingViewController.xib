@@ -30,6 +30,7 @@
                 <outlet property="_viewHeader" destination="HCe-Rs-E8t" id="R6f-pv-yXy"/>
                 <outlet property="bgHeader" destination="Wee-rK-Fn0" id="hZg-Pd-6Zs"/>
                 <outlet property="btnLoginWithPhone" destination="LcG-7n-kvX" id="xXe-Hx-8v9"/>
+                <outlet property="lbVersion" destination="LRf-5H-xDS" id="jVc-Hl-hab"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -164,13 +165,20 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LcG-7n-kvX">
-                    <rect key="frame" x="43" y="430" width="235" height="30"/>
+                    <rect key="frame" x="43" y="409" width="235" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Login with phone number"/>
                     <connections>
                         <action selector="btnLoginWithPhonePress:" destination="-1" eventType="touchUpInside" id="7YE-Gl-a16"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Version" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LRf-5H-xDS">
+                    <rect key="frame" x="132" y="459" width="57" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

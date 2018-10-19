@@ -127,5 +127,8 @@
 //  Get first name and last name of contact
 + (NSArray *)getFirstNameAndLastNameOfContact: (ABRecordRef)aPerson;
 +(BOOL)isNullOrEmpty:(NSString*)string;
++ (NSString *)getAppVersion;
++ (UIImage *)imageWithColor:(UIColor *)color andBounds:(CGRect)imgBounds;
++ (NSAttributedString *)getVersionStringForApp;
 
 @end

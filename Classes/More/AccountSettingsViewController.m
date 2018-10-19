@@ -14,6 +14,7 @@
 
 @interface AccountSettingsViewController (){
     LinphoneAppDelegate *appDelegate;
+    BOOL hasAccount;
 }
 @end
 
@@ -54,6 +55,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     _lbHeader.text = [appDelegate.localization localizedStringForKey:@"Account settings"];
     
+    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+    if (defaultConfig == NULL) {
+        hasAccount = NO;
+    }else{
+        hasAccount = YES;
+    }
+    
     [_tbContent reloadData];
 }
 
@@ -88,13 +96,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }
-    self.view.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
-                                                 blue:(235/255.0) alpha:1.0];
+    self.view.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
+                                                 blue:(230/255.0) alpha:1.0];
 
     //  Header view
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState);
+        make.height.mas_equalTo(appDelegate._hRegistrationState);
     }];
     
     [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -102,7 +110,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     [_lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus);
+        make.top.equalTo(_viewHeader).offset(appDelegate._hStatus);
         make.bottom.equalTo(_viewHeader);
         make.centerX.equalTo(_viewHeader.mas_centerX);
         make.width.mas_equalTo(200);
@@ -114,16 +122,16 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.height.mas_equalTo(HEADER_ICON_WIDTH);
     }];
     
-    _tbContent.delegate = self;
-    _tbContent.dataSource = self;
-    _tbContent.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tbContent.scrollEnabled = NO;
     _tbContent.backgroundColor = UIColor.clearColor;
     [_tbContent mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_viewHeader.mas_bottom);
         make.left.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
     }];
+    _tbContent.delegate = self;
+    _tbContent.dataSource = self;
+    _tbContent.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tbContent.scrollEnabled = NO;
 }
 
 #pragma mark - UITableview Delegate
@@ -147,13 +155,18 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     switch (indexPath.section) {
         case 0:{
-            cell.lbTitle.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Trunking"];
+            cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"PBX account"];
             [self showStatusOfAccount: cell];
             break;
         }
         case 1:{
-            cell.lbTitle.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Change password"];
-            cell.lbDescription.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Cập nhật lần cuối 22/08/2018"];
+            cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Change password"];
+            [cell.lbTitle mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(cell).offset(10);
+                make.right.equalTo(cell.imgArrow).offset(-10);
+                make.top.bottom.equalTo(cell);
+            }];
+            cell.lbDescription.text = @"";
             break;
         }
         default:
@@ -167,12 +180,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (indexPath.section == 0) {
         [[PhoneMainView instance] changeCurrentView:[PBXSettingViewController compositeViewDescription] push:YES];
     }else if (indexPath.section == 1){
-        LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-        if (defaultConfig == NULL) {
-            [self.view makeToast:[appDelegate.localization localizedStringForKey:@"No account. Please register an account to change password"] duration:3.0 position:CSToastPositionCenter];
-            return;
+        if (!hasAccount) {
+            [self.view makeToast:[appDelegate.localization localizedStringForKey:@"No account"] duration:3.0 position:CSToastPositionCenter];
+        }else{
+            [[PhoneMainView instance] changeCurrentView:[ManagerPasswordViewController compositeViewDescription] push:YES];
         }
-        [[PhoneMainView instance] changeCurrentView:[ManagerPasswordViewController compositeViewDescription] push:YES];
     }
 }
 
@@ -188,13 +200,23 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)showStatusOfAccount: (NewSettingCell *)cell {
-    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-    if (defaultConfig == NULL) {
+    if (!hasAccount) {
         cell.lbDescription.text = [appDelegate.localization localizedStringForKey:@"Off"];
     }else{
         cell.lbDescription.text = [appDelegate.localization localizedStringForKey:@"On"];
     }
 }
+
+- (NSString *)getPBXNumberFromCurrentAccount {
+    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+    const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
+    NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
+    if (defaultUsername != nil) {
+        return defaultUsername;
+    }
+    return @"";
+}
+
 
 
 @end

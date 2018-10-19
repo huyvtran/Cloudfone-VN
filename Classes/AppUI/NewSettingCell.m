@@ -13,7 +13,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    
+    self.contentView.backgroundColor = UIColor.whiteColor;
     [imgArrow mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self).offset(-10);
         make.centerY.equalTo(self.mas_centerY);

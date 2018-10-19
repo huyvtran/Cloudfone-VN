@@ -8,10 +8,7 @@
 
 #import "IntroduceViewController.h"
 
-@interface IntroduceViewController (){
-    UIFont *textFont;
-}
-
+@interface IntroduceViewController ()
 @end
 
 @implementation IntroduceViewController
@@ -46,7 +43,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
-    _lbIntroduce.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Introduce"];
+    _lbIntroduce.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Introduction"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -73,11 +70,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)autoLayoutForView
 {
     if (SCREEN_WIDTH > 320) {
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
-        _lbIntroduce.font = [UIFont fontWithName:MYRIADPRO_BOLD size:20.0];
+        _lbIntroduce.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
     }else{
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
-        _lbIntroduce.font = [UIFont fontWithName:MYRIADPRO_BOLD size:18.0];
+        _lbIntroduce.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }
     
     //  header view
@@ -90,7 +85,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.top.left.bottom.right.equalTo(_viewHeader);
     }];
     
-    _lbIntroduce.font = textFont;
     [_lbIntroduce mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus);
         make.bottom.equalTo(_viewHeader);

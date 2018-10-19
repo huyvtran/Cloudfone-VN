@@ -973,8 +973,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)displayAssistantConfigurationError {
-    [_lbStatus setTextColor:[UIColor orangeColor]];
-    [_lbStatus setText: [appDelegate.localization localizedStringForKey:text_status_offline]];
+    _lbStatus.textColor = UIColor.orangeColor;
+    _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Offline"];
 }
 
 #pragma mark - Actionsheet Delegate

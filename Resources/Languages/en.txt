@@ -54,9 +54,6 @@
 "text_email_invalid"    =   "Email invalid"
 "text_accept_terms"     =   "Please Accept The terms of use of CloudFone"
 
-"text_status_online"    =   "Online"
-"text_status_offline"   =   "Offline"
-"text_status_connecting"=   "Connecting"
 
 "text_not_setup_pbx"        =   "You have not set up a PBX account!"
 "text_pbx_server_empty"     =   "Service can not empty"
@@ -85,43 +82,17 @@
 "text_app_settings"         =   "App settings"
 "text_outbot_proxy"         =   "Outbound Proxy"
 
-"text_feedback"             =   "Feedback"
-
-"text_policy"               =   "Privacy Policy";
-
-"text_policy_title1"        =   "You are collecting personal data"
-"text_policy_content1"      =   "Even the display of ads or the use of analytics means you're collecting personal data the user should known about"
-
-"text_policy_title2"        =   "You are third-party services"
-"text_policy_content2"      =   "Services like Google Analytics or AdSense require you to have a privacy policy stating the use of their service"
-
-"text_policy_title3"        =   "Regulations require privacy policies"
-"text_policy_content3"      =   "Services like Google Analytics or AdSense require you to have a privacy stating the use of their service"
-
 "text_ods_company"          =   "ONLINE DATA SERVICES J.S.C"
 "text_introduce_content"    =   "Là Doanh Nghiệp sở hữu một trong những trung tâm dữ liệu (DataCenter) được đầu tư bài bản tại số 54 đường C1, Phường 13, Quận Tân Bình. ODS đã có hơn 06 năm tham gia thị trường công nghệ thông tin, viễn thông và Internet, ODS đã tạo dựng được thương hiệu và chỗ đứng vững chắc ở Việt Nam, đặc biệt trong lĩnh vực Internet, DataCenter, VoIP-Cloudfone, giải pháp ảo hoá hạ tầng điện toán đám mây (IaaS) và bản quyền phần mềm,… Việc kinh doanh của chúng tôi phát triển nhanh chóng với các lĩnh vực mới và đa dạng, ODS đã tạo được thế mạnh, hình ảnh và thương hiệu của mình."
 
 "text_alert_logout_title"   =   "Logout"
 "text_alert_logout_content" =   "Are you sure, you want to logout?"
 
-"text_pbx_on"       =   "On"
-"text_pbx_off"      =   "Off"
-
 "text_change_acc_name"      =   "Change account name"
 "text_trunking"             =   "Trunking"
 "text_change_password"      =   "Change password"
 "text_close_account"        =   "Close account"
 
-"text_trunking_account"     =   "Account"
-"text_trunking_pbx"         =   "PBX"
-
-"text_trunking_id"          =   "ID"
-"text_trunking_user"        =   "Username"
-"text_trunking_pass"        =   "Password"
-"text_trunking_clear"       =   "Clear"
-"text_trunking_save"        =   "Save"
-
-"text_trunking_header"      =   "Selecting Account"
 "text_refresh"              =   "Refresh"
 "text_popup_account"        =   "Account: "
 "text_popup_account_pbx"    =   "PBX: "
@@ -671,8 +642,6 @@
 
 
 "TEXT_UPDATING"     =   "Updating..."
-"TEXT_TRUNKING_OFF" =   "Off"
-"TEXT_TRUNKING_ON"  =   "On"
 "TEXT_LOADING"      =   "Loading..."
 
 
@@ -1093,6 +1062,50 @@
 
 
 
+
+"Online" = "Online"
+"Offline" = "Offline"
+"Connecting" = "Connecting"
+
+"PBX" = "PBX"
+"Contacts" = "Contacts"
+"Type name or phone number" = "Type name or phone number"
+
+"All" = "All"
+"Missed" = "Missed"
+
+"Account settings" = "Account settings"
+"Settings" = "Settings"
+"Feedback" = "Feedback"
+"Privacy Policy" = "Privacy Policy"
+"Introduction" = "Introduction"
+
+"PBX account" = "PBX account"
+"Change password" = "Change password"
+"No account" = "No account"
+"Off" = "Off"
+"On" = "On"
+
+"Server ID" = "Server ID"
+"Account" = "Account"
+"Password" = "Password"
+"Clear" = "Clear"
+
+"Current password" = "Current password"
+"New password" = "New password"
+"Confirm password" = "Confirm password"
+"Password are at least 6 characters long" = "Password are at least 6 characters long"
+"Input password" = "Input password"
+"Reset" = "Reset"
+"Confirm password not match" = "Confirm password not match"
+"Current password not correct" = "Current password not correct"
+
+"Change language" = "Change language"
+"Call settings" = "Call settings"
+"Vietnamese" = "Vietnamese"
+"English" = "English"
+
+
 "Ringing" = "Ringing..."
 "Calling" = "Calling..."
 "Feedback" = "Feedback"
@@ -1138,3 +1151,7 @@
 "Create new contact"      =   "Create new contact"
 "Add to existing contact"   =   "Add to existing contact"
 "Choose contact" = "Choose contact"
+
+"Register with phone number" = "Register with phone number"
+"Continue" = "Continue"
+"Input phone number" = "Input phone number"

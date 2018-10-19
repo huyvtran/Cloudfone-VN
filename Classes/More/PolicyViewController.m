@@ -38,15 +38,15 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidLoad {
     [super viewDidLoad];
     //  my code here
-    self.view.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
-                                                 blue:(240/255.0) alpha:(240/255.0)];
+    self.view.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
+                                                 blue:(230/255.0) alpha:1.0];
     
     [self setupUIForView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
-    _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_policy];
+    _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Privacy Policy"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -74,9 +74,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)setupUIForView
 {
     if (SCREEN_WIDTH > 320) {
-        _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:20.0];
+        _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
     }else{
-        _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:18.0];
+        _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }
     
     //  header view

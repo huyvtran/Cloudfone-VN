@@ -11,14 +11,12 @@
 #import "EditProfileViewController.h"
 #import "AccountSettingsViewController.h"
 #import "KSettingViewController.h"
-#import "FeedbackViewController.h"
 #import "PolicyViewController.h"
 #import "IntroduceViewController.h"
 #import "TabBarView.h"
 #import "StatusBarView.h"
 #import "NSData+Base64.h"
 #import "JSONKit.h"
-#import "CustomTextAttachment.h"
 
 @interface MoreViewController () {
     float hInfo;
@@ -92,6 +90,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)showContentWithCurrentLanguage {
     [self createDataForMenuView];
     [_tbContent reloadData];
+    
+    lbVersion.attributedText = [AppUtils getVersionStringForApp];
 }
 
 - (void)updateInformationOfUser
@@ -183,6 +183,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     //  label version
     lbVersion.backgroundColor = UIColor.clearColor;
+    lbVersion.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
+                                           blue:(50/255.0) alpha:1.0];
     [lbVersion mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(self.view);
         make.height.mas_equalTo(45.0);
@@ -198,21 +200,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     _tbContent.dataSource = self;
     _tbContent.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tbContent.scrollEnabled = NO;
-    
-    CustomTextAttachment *attachment = [[CustomTextAttachment alloc] init];
-    attachment.image = [UIImage imageNamed:@"ic_about.png"];
-    [attachment setImageHeight: 24.0];
-    
-    NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
-    
-    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    NSString *content = [NSString stringWithFormat:@" %@: %@", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Version"], version];
-    NSMutableAttributedString *contentString = [[NSMutableAttributedString alloc] initWithString:content];
-    
-    NSMutableAttributedString *verString = [[NSMutableAttributedString alloc] initWithAttributedString: attachmentString];
-    //
-    [verString appendAttributedString: contentString];
-    lbVersion.attributedText = verString;
 }
 
 - (void)didReceiveMemoryWarning
@@ -268,7 +255,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             NSURL *linkCloudfoneOnAppStore = [NSURL URLWithString:@"https://itunes.apple.com/vn/app/cloudfone/id1275900068?mt=8"];
             [[UIApplication sharedApplication] openURL: linkCloudfoneOnAppStore];
             
-            //  [[PhoneMainView instance] changeCurrentView:[FeedbackViewController compositeViewDescription] push:true];
             break;
         }
         case ePolicy:{
