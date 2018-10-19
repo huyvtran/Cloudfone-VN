@@ -55,9 +55,10 @@
                 NSString *value = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                 _namePicture = value;
                 finishUploadBlock(self);
+            }else if (error){
+                self.uploadError = error;
+                finishUploadBlock(self);
             }
-            else if (error)
-                NSLog(@"%@",error);
         }];
         
         if (beginUploadBlock) {

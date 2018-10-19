@@ -203,7 +203,24 @@
         
         if (aCall._phoneAvatar == nil || [aCall._phoneAvatar isEqualToString:@""] || [aCall._phoneAvatar isEqualToString:@"(null)"] || [aCall._phoneAvatar isEqualToString:@"null"] || [aCall._phoneAvatar isEqualToString:@"<null>"])
         {
-            cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+            if (aCall._phoneNumber.length < 10) {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+                    NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, aCall._phoneNumber];
+                    NSString *localFile = [NSString stringWithFormat:@"/avatars/%@", avatarName];
+                    NSData *avatarData = [AppUtils getFileDataFromDirectoryWithFileName:localFile];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^(void){
+                        if (avatarData != nil) {
+                            cell._imgAvatar.image = [UIImage imageWithData: avatarData];
+                        }else{
+                            cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                        }
+                    });
+                });
+            }else{
+                cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+            }
         }else{
             NSData *imgData = [[NSData alloc] initWithData:[NSData dataFromBase64String: aCall._phoneAvatar]];
             cell._imgAvatar.image = [UIImage imageWithData: imgData];

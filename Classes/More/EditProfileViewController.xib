@@ -16,6 +16,7 @@
                 <outlet property="btnChooseAvatar" destination="tho-zS-Z18" id="wUu-s6-QMN"/>
                 <outlet property="btnSave" destination="LeV-Oy-9lg" id="1dk-vX-JbI"/>
                 <outlet property="icBack" destination="cAB-Xc-ZUN" id="d4V-Lr-usD"/>
+                <outlet property="icWaiting" destination="9mQ-Or-RLq" id="774-3N-fhi"/>
                 <outlet property="imgAvatar" destination="H2o-SC-wVa" id="9MX-WJ-VLp"/>
                 <outlet property="imgChangeAvatar" destination="TvB-Qh-Rfc" id="TAb-5i-nSM"/>
                 <outlet property="lbHeader" destination="7dG-Tb-FCI" id="rj8-2v-fBH"/>
@@ -93,6 +94,10 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="9mQ-Or-RLq">
+                    <rect key="frame" x="150" y="264" width="20" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

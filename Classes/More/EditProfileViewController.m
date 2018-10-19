@@ -7,16 +7,19 @@
 
 #import "EditProfileViewController.h"
 #import "NSData+Base64.h"
+#import "PECropViewController.h"
+#import "UploadPicture.h"
 
-@interface EditProfileViewController (){
+@interface EditProfileViewController ()<PECropViewControllerDelegate>{
     LinphoneAppDelegate *appDelegate;
     NSString *myAvatar;
+    PECropViewController *PECropController;
 }
 
 @end
 
 @implementation EditProfileViewController
-@synthesize viewHeader, bgHeader, icBack, lbHeader, btnChooseAvatar, imgAvatar, imgChangeAvatar, tfAccountName, btnCancel, btnSave;
+@synthesize viewHeader, bgHeader, icBack, lbHeader, btnChooseAvatar, imgAvatar, imgChangeAvatar, tfAccountName, btnCancel, btnSave, icWaiting;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -48,6 +51,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
+    lbHeader.text = [appDelegate.localization localizedStringForKey:@"Edit profile"];
+    tfAccountName.placeholder = [appDelegate.localization localizedStringForKey:@"Account name"];
+    
     LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
     const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
     NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
@@ -58,12 +64,18 @@ static UICompositeViewDescription *compositeDescription = nil;
             tfAccountName.text = name;
         }
         
-        NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", defaultUsername];
-        NSString *avatar = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyAvatar];
-        if (avatar != nil && ![avatar isEqualToString:@""]){
-            imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: avatar]];
+        if (appDelegate._dataCrop != nil) {
+            imgAvatar.image = [UIImage imageWithData: appDelegate._dataCrop];
         }else{
-            imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+            NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", defaultUsername];
+            NSString *avatar = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyAvatar];
+            if (avatar != nil && ![avatar isEqualToString:@""])
+            {
+                imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: avatar]];
+            }else{
+                //  Check avatar exists on server
+                [self checkDataExistsOnServer];
+            }
         }
     }
 }
@@ -74,6 +86,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)icBackClick:(UIButton *)sender {
+    appDelegate._dataCrop = nil;
     [[PhoneMainView instance] popCurrentView];
 }
 
@@ -101,7 +114,24 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (IBAction)btnCancelPress:(UIButton *)sender {
 }
 
-- (IBAction)btnSavePress:(UIButton *)sender {
+- (IBAction)btnSavePress:(UIButton *)sender
+{
+    [self.view endEditing: YES];
+    
+    if ([LinphoneManager instance].connectivity == none){
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    
+    NSString *configName = [self getPBXPhoneFromConfig];
+    NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+    if (![AppUtils isNullOrEmpty: configName] && ![AppUtils isNullOrEmpty: configName]) {
+        icWaiting.hidden = NO;
+        [icWaiting startAnimating];
+        
+        NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, configName];
+        [self startUploadImage:appDelegate._dataCrop withName: avatarName];
+    }
 }
 
 - (void)autoLayoutForView {
@@ -165,21 +195,24 @@ static UICompositeViewDescription *compositeDescription = nil;
     tfAccountName.borderStyle = UITextBorderStyleNone;
     tfAccountName.layer.cornerRadius = 3.0;
     tfAccountName.layer.borderWidth = 1.0;
-    tfAccountName.layer.borderColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
-                                                       blue:(235/255.0) alpha:1.0].CGColor;
-    tfAccountName.keyboardType = UIKeyboardTypePhonePad;
-    tfAccountName.font = [UIFont fontWithName:MYRIADPRO_BOLD size:16.0];
+    tfAccountName.layer.borderColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
+                                                       blue:(230/255.0) alpha:1.0].CGColor;
+    tfAccountName.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     [tfAccountName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(imgChangeAvatar.mas_bottom).offset(40);
-        make.left.equalTo(self.view).offset(50);
-        make.right.equalTo(self.view).offset(-50);
-        make.height.mas_equalTo(35.0);
+        make.top.equalTo(imgChangeAvatar.mas_bottom).offset(40.0);
+        make.left.equalTo(self.view).offset(30.0);
+        make.right.equalTo(self.view).offset(-30.0);
+        make.height.mas_equalTo(40.0);
     }];
+    tfAccountName.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8.0, 40.0)];
+    tfAccountName.leftViewMode = UITextFieldViewModeAlways;
     
+    //  cancel button
+    btnCancel.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     [btnCancel setTitle:[appDelegate.localization localizedStringForKey:@"Cancel"]
                forState:UIControlStateNormal];
-    btnCancel.backgroundColor = [UIColor colorWithRed:(210/255.0) green:(51/255.0)
-                                                 blue:(92/255.0) alpha:1.0];
+    btnCancel.backgroundColor = [UIColor colorWithRed:(250/255.0) green:(80/255.0)
+                                                 blue:(80/255.0) alpha:1.0];
     [btnCancel setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     btnCancel.clipsToBounds = YES;
     btnCancel.layer.cornerRadius = 40.0/2;
@@ -187,34 +220,240 @@ static UICompositeViewDescription *compositeDescription = nil;
     [btnCancel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(tfAccountName.mas_bottom).offset(30);
         make.right.equalTo(tfAccountName.mas_centerX).offset(-10);
-        make.width.mas_equalTo(140.0);
+        make.left.equalTo(tfAccountName.mas_left);
         make.height.mas_equalTo(40.0);
     }];
     
     btnSave.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     [btnSave setTitle:[appDelegate.localization localizedStringForKey:@"Save"]
              forState:UIControlStateNormal];
-    btnSave.backgroundColor = [UIColor colorWithRed:(20/255.0) green:(129/255.0)
-                                               blue:(211/255.0) alpha:1.0];
+    [btnSave setBackgroundImage:[UIImage imageNamed:@"background_header.png"]
+                       forState:UIControlStateNormal];
     [btnSave setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     btnSave.clipsToBounds = YES;
     btnSave.layer.cornerRadius = 40.0/2;
     [btnSave mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(tfAccountName.mas_centerX).offset(10);
         make.centerY.equalTo(btnCancel.mas_centerY);
-        make.width.equalTo(btnCancel.mas_width);
+        make.right.equalTo(tfAccountName.mas_right);
         make.height.equalTo(btnCancel.mas_height);
     }];
-    setup cho man hinh nay
 //    [btnSave addTarget:self
 //                action:@selector(saveContactPressed:)
 //      forControlEvents:UIControlEventTouchUpInside];
+    
+    icWaiting.backgroundColor = UIColor.whiteColor;
+    icWaiting.alpha = 0.5;
+    [icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self.view);
+    }];
+    icWaiting.hidden = YES;
 }
 
 //  Tap vào màn hình chính để đóng bàn phím
 - (void)whenTapOnMainScreen {
     [self.view endEditing: true];
 }
+
+#pragma mark - ActionSheet Delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:{
+            [self pressOnGallery];
+            break;
+        }
+        case 1:{
+            [self pressOnCamera];
+            break;
+        }
+        case 2:{
+            [self removeAvatar];
+            break;
+        }
+        case 3:{
+            NSLog(@"Cancel");
+            break;
+        }
+    }
+}
+
+- (void)pressOnGallery {
+    appDelegate.fromImagePicker = YES;
+    UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
+    pickerController.delegate = self;
+    [self presentViewController:pickerController animated:YES completion:nil];
+}
+
+- (void)pressOnCamera {
+    appDelegate.fromImagePicker = YES;
+    
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    [picker setDelegate: self];
+    [picker setSourceType: UIImagePickerControllerSourceTypeCamera];
+    [self presentViewController:picker animated:YES completion:NULL];
+}
+
+- (void)removeAvatar {
+    appDelegate._newContact._avatar = @"";
+    imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+    appDelegate._dataCrop = nil;
+}
+
+#pragma mark - ContactDetailsImagePickerDelegate Functions
+
+- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo
+{
+    appDelegate._cropAvatar = image;
+    
+    [picker dismissViewControllerAnimated:YES completion:^{
+        [self openEditor];
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)openEditor {
+    PECropController = [[PECropViewController alloc] init];
+    PECropController.delegate = self;
+    PECropController.image = appDelegate._cropAvatar;
+    
+    UIImage *image = appDelegate._cropAvatar;
+    CGFloat width = image.size.width;
+    CGFloat height = image.size.height;
+    CGFloat length = MIN(width, height);
+    PECropController.imageCropRect = CGRectMake((width - length) / 2,
+                                                (height - length) / 2,
+                                                length,
+                                                length);
+    PECropController.keepingCropAspectRatio = true;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: PECropController];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+    [[PhoneMainView instance] changeCurrentView:PECropViewController.compositeViewDescription
+                                           push:true];
+    
+    //  [self presentViewController:navigationController animated:YES completion:NULL];
+}
+
+#pragma mark - PECropViewControllerDelegate methods
+
+- (void)cropViewController:(PECropViewController *)controller didFinishCroppingImage:(UIImage *)croppedImage transform:(CGAffineTransform)transform cropRect:(CGRect)cropRect
+{
+    [controller dismissViewControllerAnimated:YES completion:NULL];
+    appDelegate._dataCrop = UIImagePNGRepresentation(croppedImage);
+}
+
+- (void)cropViewControllerDidCancel:(PECropViewController *)controller
+{
+    [controller dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)startUploadImage: (NSData *)uploadData withName: (NSString *)imageName
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        UploadPicture *session = [[UploadPicture alloc] init];
+        [session uploadData:uploadData withName:imageName beginUploadBlock:nil finishUploadBlock:^(UploadPicture *uploadSession) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                icWaiting.hidden = YES;
+                [icWaiting stopAnimating];
+                
+                if (uploadSession.uploadError != nil) {
+                    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Failed. Please try later!"] duration:2.0 position:CSToastPositionCenter];
+                }else{
+                    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your avatar has been uploaded"] duration:2.0 position:CSToastPositionCenter];
+                    
+                    //  save avatar to get from local
+                    NSString *configName = [self getPBXPhoneFromConfig];
+                    NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", configName];
+                    
+                    NSString *strAvatar = @"";
+                    if ([uploadData respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
+                        strAvatar = [uploadData base64EncodedStringWithOptions: 0];
+                    } else {
+                        strAvatar = [uploadData base64Encoding];
+                    }
+                    
+                    [[NSUserDefaults standardUserDefaults] setObject:strAvatar forKey:pbxKeyAvatar];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
+                
+                if (tfAccountName.text.length > 0) {
+                    NSString *defaultUsername = [self getPBXPhoneFromConfig];
+                    NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", defaultUsername];
+                    [[NSUserDefaults standardUserDefaults] setObject:tfAccountName.text forKey:pbxKeyName];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
+            });
+        }];
+    });
+}
+
+- (NSString *)getPBXPhoneFromConfig {
+    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+    const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
+    NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
+    if (defaultUsername != nil) {
+        return defaultUsername;
+        /*
+        NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", defaultUsername];
+        NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyName];
+        if (name != nil){
+            tfAccountName.text = name;
+        }
+        
+        if (appDelegate._dataCrop != nil) {
+            imgAvatar.image = [UIImage imageWithData: appDelegate._dataCrop];
+        }else{
+            NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", defaultUsername];
+            NSString *avatar = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyAvatar];
+            if (avatar != nil && ![avatar isEqualToString:@""]){
+                imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: avatar]];
+            }else{
+                imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+            }
+        }   */
+    }
+    return @"";
+}
+
+- (void)checkDataExistsOnServer {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSString *configName = [self getPBXPhoneFromConfig];
+        NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+        NSData * data = nil;
+        if (![AppUtils isNullOrEmpty: configName] && ![AppUtils isNullOrEmpty: configName]) {
+            NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, configName];
+            
+            NSString *linkAvatar = [NSString stringWithFormat:@"%@/%@", link_picutre_chat_group, avatarName];
+            data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: linkAvatar]];
+            NSString *strAvatar = @"";
+            if (data != nil) {
+                if ([data respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
+                    strAvatar = [data base64EncodedStringWithOptions: 0];
+                } else {
+                    strAvatar = [data base64Encoding];
+                }
+            }
+            
+            NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", configName];
+            [[NSUserDefaults standardUserDefaults] setObject:strAvatar forKey:pbxKeyAvatar];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            if (data == nil) {
+                imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+            }else{
+                imgAvatar.image = [UIImage imageWithData: data];
+            }
+        });
+    });
+}
+
 
 
 @end

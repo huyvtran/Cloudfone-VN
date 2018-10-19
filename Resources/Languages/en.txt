@@ -1155,3 +1155,9 @@
 "Register with phone number" = "Register with phone number"
 "Continue" = "Continue"
 "Input phone number" = "Input phone number"
+
+"Not set" = "Not set"
+"Edit profile" = "Edit profile"
+"Please check your internet connection!" = "Please check your internet connection!"
+"Failed. Please try later!" = "Failed. Please try later!"
+"Your avatar has been uploaded success" = "Your avatar has been uploaded"

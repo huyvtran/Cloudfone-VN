@@ -18,5 +18,6 @@
 @property (nonatomic, strong) NSMutableData *responseData;
 @property (nonatomic, strong) NSString *idMessage;
 @property (nonatomic, strong) NSString *namePicture;
+@property (nonatomic, strong) NSError *uploadError;
 
 @end

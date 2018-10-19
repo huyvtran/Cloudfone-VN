@@ -1115,5 +1115,30 @@
     return verString;
 }
 
+// Ghi video file vào folder document
++ (BOOL)saveFileToFolder: (NSData *)fileData withName: (NSString *)fileName
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    NSString *tempPath = [documentsDirectory stringByAppendingFormat:@"%@", fileName];
+    BOOL success = [fileData writeToFile:tempPath atomically:NO];
+    return success;
+}
+
++ (NSData *)getFileDataFromDirectoryWithFileName: (NSString *)fileName
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *pathFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", fileName]];
+    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath: pathFile];
+    
+    if (!fileExists) {
+        return nil;
+    }else{
+        NSData *fileData = [NSData dataWithContentsOfFile: pathFile];
+        return fileData;
+    }
+}
 
 @end

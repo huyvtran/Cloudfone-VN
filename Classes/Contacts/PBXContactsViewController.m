@@ -201,6 +201,26 @@
         [cell.icCall addTarget:self
                         action:@selector(onIconCallClicked:)
               forControlEvents:UIControlEventTouchUpInside];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+            NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, contact._number];
+            NSString *localFile = [NSString stringWithFormat:@"/avatars/%@", avatarName];
+            NSData *avatarData = [AppUtils getFileDataFromDirectoryWithFileName:localFile];
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                if (avatarData != nil) {
+                    cell._imgAvatar.image = [UIImage imageWithData: avatarData];
+                }else{
+                    NSString *firstChar = [contact._name substringToIndex:1];
+                    UIImage *avatar = [UIImage imageForName:[firstChar uppercaseString] size:CGSizeMake(60.0, 60.0)
+                                            backgroundColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0]
+                                                  textColor:UIColor.whiteColor
+                                                       font:[UIFont fontWithName:HelveticaNeue size:30.0]];
+                    cell._imgAvatar.image = avatar;
+                }
+            });
+        });
     }else{
         cell._lbPhone.text = @"";
         cell.icCall.hidden = YES;
@@ -208,13 +228,6 @@
     
     if ([contact._name isEqualToString:@""]) {
         UIImage *avatar = [UIImage imageForName:@"#" size:CGSizeMake(60.0, 60.0)
-                                backgroundColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0]
-                                      textColor:UIColor.whiteColor
-                                           font:[UIFont fontWithName:HelveticaNeue size:30.0]];
-        cell._imgAvatar.image = avatar;
-    }else{
-        NSString *firstChar = [contact._name substringToIndex:1];
-        UIImage *avatar = [UIImage imageForName:[firstChar uppercaseString] size:CGSizeMake(60.0, 60.0)
                                 backgroundColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0]
                                       textColor:UIColor.whiteColor
                                            font:[UIFont fontWithName:HelveticaNeue size:30.0]];

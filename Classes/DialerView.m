@@ -1167,8 +1167,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)whenTappedOnStatusAccount
 {
     if ([LinphoneManager instance].connectivity == none){
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection"]
-                    duration:2.0 position:CSToastPositionCenter];
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
     NSString *currentTitle = _lbStatus.text;

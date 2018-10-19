@@ -1186,3 +1186,9 @@
 "Register with phone number" = "Đăng ký với số điện thoại"
 "Continue" = "Tiếp tục"
 "Input phone number" = "Nhập số điện thoại"
+
+"Not set" = "Chưa cài đặt"
+"Edit profile" = "Cập nhật hồ sơ"
+"Please check your internet connection!" = "Vui lòng kiểm tra kết nối mạng của bạn!"
+"Failed. Please try later!" = "Thất bại. Vui lòng thử lại sau!"
+"Your avatar has been uploaded success" = "Ảnh đại diện của bạn đã được tải lên thành công"

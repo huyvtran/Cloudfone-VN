@@ -47,6 +47,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGLDrawable.h>
 #import "UploadPicture.h"
+#import "UIImageView+WebCache.h"
 
 void message_received(LinphoneCore *lc, LinphoneChatRoom *room, const LinphoneAddress *from, const char *message) {
     printf(" Message [%s] received from [%s] \n",message,linphone_address_as_string (from));
@@ -177,7 +178,19 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-    [self setupUIForView];
+    //  Download avatar of user if exists
+    [self checkToDownloadAvatarOfUser: phoneNumber];
+    //  [self setupUIForView];
+    
+    NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+    NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, phoneNumber];
+    NSString *localFile = [NSString stringWithFormat:@"/avatars/%@", avatarName];
+    NSData *avatarData = [AppUtils getFileDataFromDirectoryWithFileName:localFile];
+    if (avatarData != nil) {
+        _avatarImage.image = [UIImage imageWithData: avatarData];
+    }else{
+        _avatarImage.image = [UIImage imageNamed:@"default-avatar"];
+    }
     
     //  Leo Kelvin
     [self addScrollview];
@@ -958,12 +971,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             
             if ([phoneNumber isEqualToString:hotline]) {
                  _avatarImage.image = [UIImage imageNamed:@"hotline_avatar.png"];
-            }else{
-                if (![avatar isEqualToString:@""]) {
-                    _avatarImage.image = [UIImage imageWithData: [NSData dataFromBase64String: avatar]];
-                }else{
-                    _avatarImage.image = [UIImage imageNamed:@"default-avatar"];
-                }
             }
         });
     });
@@ -1230,15 +1237,19 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.left.equalTo(_callView).offset(20);
     }];
     
-    [_avatarImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_lbQuality.mas_bottom).offset(10);
-        make.centerX.equalTo(_callView.mas_centerX);
-        make.width.height.mas_equalTo(120.0);
-    }];
+    _avatarImage.clipsToBounds = YES;
     _avatarImage.layer.cornerRadius = 120.0/2;
     _avatarImage.layer.borderColor = [UIColor colorWithRed:(45/255.0) green:(136/255.0)
                                                       blue:(250/255.0) alpha:1.0].CGColor;
     _avatarImage.layer.borderWidth = 3.0;
+    _avatarImage.backgroundColor = UIColor.clearColor;
+    [_avatarImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_lbQuality.mas_bottom).offset(10);
+        make.centerX.equalTo(_callView.mas_centerX);
+        make.width.mas_equalTo(120.0);
+        make.height.mas_equalTo(120.0);
+    }];
+    
     
     [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_avatarImage.mas_bottom).offset(10);
@@ -1527,6 +1538,25 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     [self callQualityUpdate];
     qualityTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(callQualityUpdate) userInfo:nil repeats:YES];
+}
+
+- (void)checkToDownloadAvatarOfUser: (NSString *)phone
+{
+    if (phone.length > 9) {
+        return;
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+        NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, phoneNumber];
+        NSString *linkAvatar = [NSString stringWithFormat:@"%@/%@", link_picutre_chat_group, avatarName];
+        NSData *data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: linkAvatar]];
+        
+        if (data != nil) {
+            NSString *folder = [NSString stringWithFormat:@"/avatars/%@", avatarName];
+            [AppUtils saveFileToFolder:data withName: folder];
+            _avatarImage.image = [UIImage imageWithData: data];
+        }
+    });
 }
 
 @end

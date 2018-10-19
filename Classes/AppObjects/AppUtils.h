@@ -130,5 +130,7 @@
 + (NSString *)getAppVersion;
 + (UIImage *)imageWithColor:(UIColor *)color andBounds:(CGRect)imgBounds;
 + (NSAttributedString *)getVersionStringForApp;
++ (BOOL)saveFileToFolder: (NSData *)fileData withName: (NSString *)fileName;
++ (NSData *)getFileDataFromDirectoryWithFileName: (NSString *)fileName;
 
 @end

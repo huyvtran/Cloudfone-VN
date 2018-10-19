@@ -15,4 +15,8 @@
 @property (nonatomic, strong) NSString *_nameForSearch;
 @property (nonatomic, assign) int _idContact;
 
+
+check pbx contact avatar
+
+
 @end

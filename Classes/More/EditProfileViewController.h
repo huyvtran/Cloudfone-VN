@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "UICompositeView.h"
 
-@interface EditProfileViewController : UIViewController<UICompositeViewDelegate, UIActionSheetDelegate>
+@interface EditProfileViewController : UIViewController<UICompositeViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewHeader;
 @property (weak, nonatomic) IBOutlet UIImageView *bgHeader;
@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnCancel;
 @property (weak, nonatomic) IBOutlet UIButton *btnSave;
 @property (weak, nonatomic) IBOutlet UITextField *tfAccountName;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *icWaiting;
 
 - (IBAction)icBackClick:(UIButton *)sender;
 - (IBAction)btnChooseAvatarPress:(UIButton *)sender;
