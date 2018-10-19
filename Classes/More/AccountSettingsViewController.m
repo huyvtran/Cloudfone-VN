@@ -84,9 +84,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)autoLayoutForMainView {
     if (SCREEN_WIDTH > 320) {
-        _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:20.0];
+        _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
     }else{
-        _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:18.0];
+        _lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }
     self.view.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
                                                  blue:(235/255.0) alpha:1.0];
@@ -110,7 +110,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [_iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewHeader);
-        make.centerY.equalTo(_viewHeader.mas_centerY);
+        make.centerY.equalTo(_lbHeader.mas_centerY);
         make.width.height.mas_equalTo(HEADER_ICON_WIDTH);
     }];
     

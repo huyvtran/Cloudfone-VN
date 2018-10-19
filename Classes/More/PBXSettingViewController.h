@@ -45,5 +45,7 @@ typedef enum{
 - (IBAction)_btnSavePressed:(UIButton *)sender;
 
 @property (nonatomic, strong) WebServices *webService;
+@property (weak, nonatomic) IBOutlet UIButton *btnLoginWithPhone;
+- (IBAction)btnLoginWithPhonePress:(UIButton *)sender;sss
 
 @end

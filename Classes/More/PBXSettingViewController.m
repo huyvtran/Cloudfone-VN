@@ -23,6 +23,8 @@
     NSString *serverPBX;
     NSString *accountPBX;
     NSString *passwordPBX;
+    NSString *ipPBX;
+    NSString *portPBX;
 }
 
 @end
@@ -92,8 +94,13 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)autoLayoutForMainView {
-    float marginX = 20.0;
+    if (SCREEN_WIDTH > 320) {
+        _lbTitle.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
+    }else{
+        _lbTitle.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
+    }
     
+    float marginX = 20.0;
     self.view.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
                                                  blue:(240/255.0) alpha:1.0];
     
@@ -140,14 +147,15 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.top.equalTo(_viewHeader.mas_bottom);
         //  make.left.right.bottom.equalTo(self.view);
         make.left.right.equalTo(self.view);
-        make.height.mas_equalTo(465.0);
+        make.height.mas_equalTo(430.0);
     }];
     
-    _lbPBX.textColor = UIColor.darkGrayColor;
+    _lbPBX.textColor = [UIColor colorWithRed:(80/255.0) green:(80/255.0)
+                                        blue:(80/255.0) alpha:1.0];
     [_lbPBX mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewContent).offset(marginX);
         make.top.equalTo(_viewContent);
-        make.height.mas_equalTo(70.0);
+        make.height.mas_equalTo(60.0);
         make.right.equalTo(_viewContent.mas_centerX);
     }];
     
@@ -158,58 +166,82 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.mas_equalTo(49.0);
     }];
     
+    _lbSepa.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
+                                               blue:(235/255.0) alpha:1.0];
     [_lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbPBX.mas_bottom);
         make.left.equalTo(_lbPBX);
         make.right.equalTo(_swChange.mas_right);
-        make.height.mas_equalTo(1.0);
+        make.height.mas_equalTo(2.0);
     }];
     
     //  server ID
     _lbServerID.textColor = _lbPBX.textColor;
     [_lbServerID mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_lbSepa.mas_bottom).offset(20);
+        make.top.equalTo(_lbSepa.mas_bottom).offset(15);
         make.left.right.equalTo(_lbSepa);
         make.height.mas_equalTo(35.0);
     }];
     
+    _tfServerID.borderStyle = UITextBorderStyleNone;
+    _tfServerID.layer.cornerRadius = 3.0;
+    _tfServerID.layer.borderWidth = 1.0;
+    _tfServerID.layer.borderColor = _lbSepa.backgroundColor.CGColor;
+    _tfServerID.font = [UIFont fontWithName:MYRIADPRO_BOLD size:16.0];
     [_tfServerID mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbServerID.mas_bottom);
         make.left.right.equalTo(_lbServerID);
         make.height.mas_equalTo(40.0);
     }];
     
+    _tfServerID.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8.0, 40.0)];
+    _tfServerID.leftViewMode = UITextFieldViewModeAlways;
+    
     //  account
     _lbAccount.textColor = _lbPBX.textColor;
     [_lbAccount mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_tfServerID.mas_bottom).offset(20);
+        make.top.equalTo(_tfServerID.mas_bottom).offset(15);
         make.left.right.equalTo(_tfServerID);
         make.height.mas_equalTo(_lbServerID.mas_height);
     }];
     
+    _tfAccount.borderStyle = UITextBorderStyleNone;
+    _tfAccount.layer.cornerRadius = 3.0;
+    _tfAccount.layer.borderWidth = 1.0;
+    _tfAccount.layer.borderColor = _lbSepa.backgroundColor.CGColor;
+    _tfAccount.font = [UIFont fontWithName:MYRIADPRO_BOLD size:16.0];
     [_tfAccount mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbAccount.mas_bottom);
         make.left.right.equalTo(_lbAccount);
         make.height.equalTo(_tfServerID.mas_height);
     }];
+    _tfAccount.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8.0, 40.0)];
+    _tfAccount.leftViewMode = UITextFieldViewModeAlways;
     
     //  password
     _lbPassword.textColor = _lbPBX.textColor;
     [_lbPassword mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_tfAccount.mas_bottom).offset(20);
+        make.top.equalTo(_tfAccount.mas_bottom).offset(15);
         make.left.right.equalTo(_tfAccount);
         make.height.mas_equalTo(_lbServerID.mas_height);
     }];
     
+    _tfPassword.borderStyle = UITextBorderStyleNone;
+    _tfPassword.layer.cornerRadius = 3.0;
+    _tfPassword.layer.borderWidth = 1.0;
+    _tfPassword.layer.borderColor = _lbSepa.backgroundColor.CGColor;
+    _tfPassword.font = [UIFont fontWithName:MYRIADPRO_BOLD size:16.0];
     [_tfPassword mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbPassword.mas_bottom);
         make.left.right.equalTo(_lbPassword);
         make.height.equalTo(_tfServerID.mas_height);
     }];
+    _tfPassword.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8.0, 40.0)];
+    _tfPassword.leftViewMode = UITextFieldViewModeAlways;
     
     //  footer button
     [_btnClear mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_tfPassword.mas_bottom).offset(40);
+        make.top.equalTo(_tfPassword.mas_bottom).offset(30);
         make.left.equalTo(_tfPassword);
         make.right.equalTo(_viewContent.mas_centerX).offset(-20);
         make.height.mas_equalTo(45.0);
@@ -281,6 +313,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnClearPressed:(UIButton *)sender {
+    [self removeAllAccountLoginedBefore];
+    return;
     const MSList *proxies = linphone_core_get_proxy_config_list(LC);
     int numAcc = ms_list_size(proxies);
     if (numAcc == 0) {
@@ -409,7 +443,20 @@ static UICompositeViewDescription *compositeDescription = nil;
             accountPBX = _tfAccount.text;
             passwordPBX = _tfPassword.text;
         }
-        [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:pbxIp port:pbxPort];
+        //  save info if must clear all before account
+        ipPBX = pbxIp;
+        portPBX = pbxPort;
+        
+        //  Check to make sure if have any account, remove it before login
+        const MSList *proxies = linphone_core_get_proxy_config_list(LC);
+        int curAccNum = ms_list_size(proxies);
+        if (curAccNum > 0) {
+            NSLog(@"%@ - Exists %d accounts, please wait for us clear all before login your pbx account", SHOW_LOGS, curAccNum);
+            [self removeAllAccountLoginedBefore];
+        }else{
+            NSLog(@"%@ - Start login with PBX account %@ with server %@", SHOW_LOGS, accountPBX, serverPBX);
+            [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:ipPBX port:portPBX];
+        }
     }else{
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your information again!"] duration:2.0 position:CSToastPositionCenter];
     }
@@ -443,16 +490,19 @@ static UICompositeViewDescription *compositeDescription = nil;
                      message:message];
 }
 
-- (void)registrationUpdate:(LinphoneRegistrationState)state forProxy:(LinphoneProxyConfig *)proxy message:(NSString *)message {
+- (void)registrationUpdate:(LinphoneRegistrationState)state forProxy:(LinphoneProxyConfig *)proxy message:(NSString *)message
+{
     switch (state) {
         case LinphoneRegistrationOk: {
+            NSLog(@"%@ - LinphoneRegistrationOk", SHOW_LOGS);
+            
             if (typeRegister == normalLogin)
             {
                 if (![_tfAccount.text isEqualToString:@""] && ![_tfPassword.text isEqualToString:@""]) {
                     [[NSUserDefaults standardUserDefaults] setObject:_tfAccount.text forKey:key_login];
                     [[NSUserDefaults standardUserDefaults] setObject:_tfPassword.text forKey:key_password];
                     [[NSUserDefaults standardUserDefaults] synchronize];
-                    
+
                     if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
                         [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
                     }else{
@@ -464,7 +514,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                     [[NSUserDefaults standardUserDefaults] setObject:accountPBX forKey:key_login];
                     [[NSUserDefaults standardUserDefaults] setObject:passwordPBX forKey:key_password];
                     [[NSUserDefaults standardUserDefaults] synchronize];
-                    
+
                     if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
                         [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
                     }else{
@@ -472,9 +522,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                     }
                 }
             }
-            
-            
-            NSLog(@"LinphoneRegistrationOk");
             break;
         }
         case LinphoneRegistrationNone:{
@@ -486,13 +533,25 @@ static UICompositeViewDescription *compositeDescription = nil;
             // _waitView.hidden = true;
             break;
         }
-        case LinphoneRegistrationFailed: {
+        case LinphoneRegistrationFailed:
+        {
+            NSLog(@"%@ - LinphoneRegistrationFailed", SHOW_LOGS);
+            //  Check if clear all account for login new pbx account
             const MSList *proxies = linphone_core_get_proxy_config_list(LC);
-            int numAccount = ms_list_size(proxies);
-            if (numAccount == 0) {
-                [self whenClearPBXSuccessfully];
+            int curAccNum = ms_list_size(proxies);
+            if (curAccNum == 0) {
+                [self loginPBXWithNewAccountIfNeed];
+            }else{
+                NSLog(@"%@ - Exists %d accounts, please wait for us clear all before login your pbx account", SHOW_LOGS, curAccNum);
+                [self removeAllAccountLoginedBefore];
             }
-            NSLog(@"LinphoneRegistrationFailed");
+//            const MSList *proxies = linphone_core_get_proxy_config_list(LC);
+//            int numAccount = ms_list_size(proxies);
+//            if (numAccount == 0) {
+//                [self whenClearPBXSuccessfully];
+//            }
+            
+            
             break;
         }
         case LinphoneRegistrationProgress: {
@@ -515,6 +574,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     _tfServerID.text = serverPBX;
     _tfAccount.text = accountPBX;
     _tfPassword.text = passwordPBX;
+    
+    portPBX = @"";
+    ipPBX = @"";
+    serverPBX = @"";
+    accountPBX = @"";
+    passwordPBX = @"";
     
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
@@ -700,5 +765,21 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
+- (void)removeAllAccountLoginedBefore {
+    linphone_core_clear_proxy_config(LC);
+    [[LinphoneManager instance] removeAllAccounts];
+}
 
+- (void)loginPBXWithNewAccountIfNeed
+{
+    if (![AppUtils isNullOrEmpty: ipPBX] && ![AppUtils isNullOrEmpty: portPBX] && ![AppUtils isNullOrEmpty: accountPBX] && ![AppUtils isNullOrEmpty: passwordPBX])
+    {
+        NSLog(@"%@ - Login after finished clear all account", SHOW_LOGS);
+        [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:ipPBX port:portPBX];
+    }
+}
+
+
+- (IBAction)btnLoginWithPhonePress:(UIButton *)sender {
+}
 @end

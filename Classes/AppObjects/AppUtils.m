@@ -1080,4 +1080,8 @@
     return formattedDateString;
 }
 
++(BOOL)isNullOrEmpty:(NSString*)string{
+    return string == nil || string==(id)[NSNull null] || [string isEqualToString: @""];
+}
+
 @end

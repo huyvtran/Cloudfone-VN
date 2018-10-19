@@ -126,5 +126,6 @@
 
 //  Get first name and last name of contact
 + (NSArray *)getFirstNameAndLastNameOfContact: (ABRecordRef)aPerson;
++(BOOL)isNullOrEmpty:(NSString*)string;
 
 @end

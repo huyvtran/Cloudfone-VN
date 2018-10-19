@@ -9,6 +9,7 @@
 #ifndef AppStrings_h
 #define AppStrings_h
 
+#define SHOW_LOGS @"[Show logs]"
 #define HEADER_ICON_WIDTH 35.0
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"
 
