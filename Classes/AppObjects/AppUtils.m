@@ -9,7 +9,6 @@
 #import "AppUtils.h"
 #import "NSDatabase.h"
 #import "NSData+Base64.h"
-#import "PBXContact.h"
 #import <sys/utsname.h>
 #import "JSONKit.h"
 #import "CustomTextAttachment.h"
@@ -1142,11 +1141,12 @@
 }
 
 + (PBXContact *)getPBXContactFromListWithPhoneNumber: (NSString *)pbxPhone {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_number CONTAINS[cd] ", pbxPhone];
-    NSArray *filter = [appDelegate.pbxContacts filteredArrayUsingPredicate: predicate];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_number CONTAINS[cd] %@", pbxPhone];
+    NSArray *filter = [[LinphoneAppDelegate sharedInstance].pbxContacts filteredArrayUsingPredicate: predicate];
     if (filter.count > 0) {
-        [listPhoneSearched addObjectsFromArray: filter];
+        return [filter firstObject];
     }
+    return nil;
 }
 
 @end

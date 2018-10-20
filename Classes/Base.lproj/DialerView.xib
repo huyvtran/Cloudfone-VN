@@ -295,6 +295,7 @@
                                     <rect key="frame" x="132" y="247" width="70" height="70"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <state key="normal" backgroundImage="add_call.png"/>
+                                    <state key="highlighted" backgroundImage="add_call_hover.png"/>
                                     <connections>
                                         <action selector="_btnAddCallPressed:" destination="-1" eventType="touchUpInside" id="lA4-Hw-1D6"/>
                                     </connections>
@@ -303,6 +304,7 @@
                                     <rect key="frame" x="132" y="247" width="70" height="70"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <state key="normal" backgroundImage="transfer_call.png"/>
+                                    <state key="highlighted" backgroundImage="transfer_call_hover.png"/>
                                     <connections>
                                         <action selector="_btnTransferPressed:" destination="-1" eventType="touchUpInside" id="vtO-xY-hz9"/>
                                     </connections>
@@ -341,6 +343,7 @@
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <state key="disabled" image="call_alt_back_disabled.png"/>
+                                    <state key="highlighted" backgroundImage="button_back_dialer_hover.png"/>
                                     <connections>
                                         <action selector="onBackClick:" destination="-1" eventType="touchUpInside" id="233"/>
                                     </connections>
@@ -355,15 +358,17 @@
             <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="575" y="-337"/>
+            <point key="canvasLocation" x="649" y="-307"/>
         </view>
     </objects>
     <resources>
-        <image name="add_call.png" width="200" height="200"/>
+        <image name="add_call.png" width="201" height="201"/>
+        <image name="add_call_hover.png" width="201" height="201"/>
         <image name="add_contact_dialer.png" width="200" height="200"/>
         <image name="background_header.png" width="750" height="130"/>
         <image name="backspace_hover_1" width="241" height="149"/>
         <image name="button_back_dialer.png" width="201" height="201"/>
+        <image name="button_back_dialer_hover.png" width="201" height="201"/>
         <image name="call_alt_back_disabled.png" width="51" height="36"/>
         <image name="call_default.png" width="201" height="201"/>
         <image name="call_hover.png" width="201" height="201"/>
@@ -396,6 +401,7 @@
         <image name="numpad_two_hover" width="241" height="149"/>
         <image name="numpad_zero_default.png" width="201" height="201"/>
         <image name="numpad_zero_hover" width="241" height="141"/>
-        <image name="transfer_call.png" width="200" height="200"/>
+        <image name="transfer_call.png" width="201" height="201"/>
+        <image name="transfer_call_hover.png" width="201" height="201"/>
     </resources>
 </document>

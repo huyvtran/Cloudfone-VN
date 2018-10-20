@@ -51,6 +51,8 @@ typedef enum typeCall{
 
 @property (weak, nonatomic) IBOutlet UIImageView *bgCall;
 @property (weak, nonatomic) IBOutlet UIButton *icBack;
+- (IBAction)icBackClick:(UIButton *)sender;
+
 @property (weak, nonatomic) IBOutlet UILabel *lbPhoneNumber;
 @property (weak, nonatomic) IBOutlet UILabel *lbMute;
 @property (weak, nonatomic) IBOutlet UILabel *lbKeypad;

@@ -245,8 +245,8 @@ HMLocalization *localization;
         avatar = aContact._avatar;
     }else{
         //  get name pbx truoc
-        NSString *pbxName = [AppUtils getPBXNameWithPhoneNumber: phonenumber];
-        if ([pbxName isEqualToString:@""]) {
+        PBXContact *pbxContact = [AppUtils getPBXContactFromListWithPhoneNumber: phonenumber];
+        if ([pbxContact._name isEqualToString:@""]) {
             NSString *stringValue = [appDelegate._allPhonesDict objectForKey: phonenumber];
             if (![stringValue isEqualToString:@""]) {
                 NSArray *tmpArr = [stringValue componentsSeparatedByString:@"|"];
@@ -260,7 +260,8 @@ HMLocalization *localization;
                 }
             }
         }else{
-           fullName = pbxName;
+            fullName = pbxContact._name;
+            avatar = pbxContact._avatar;
         }
     }
     return [NSArray arrayWithObjects:fullName, avatar, nil];

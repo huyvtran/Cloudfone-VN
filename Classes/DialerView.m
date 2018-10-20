@@ -39,7 +39,6 @@
 
 @interface DialerView (){
     LinphoneAppDelegate *appDelegate;
-    UIFont *textFont;
     NSMutableArray *listPhoneSearched;
     
     UITapGestureRecognizer *tapOnScreen;
@@ -104,13 +103,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     _addressField.text = @"";
     searchView.hidden = YES;
     
-    if (SCREEN_WIDTH > 320) {
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
-    }else{
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:15.0];
-    }
-    [self autoLayoutForView];
-    
     //  Cập nhật token push
     if (![LinphoneAppDelegate sharedInstance]._updateTokenSuccess && [LinphoneAppDelegate sharedInstance]._deviceToken != nil && ![[LinphoneAppDelegate sharedInstance]._deviceToken isEqualToString: @""]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:updateTokenForXmpp
@@ -138,6 +130,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(registrationUpdateEvent:)
                                                name:kLinphoneRegistrationUpdate object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(afterEndCallForTransfer)
+                                                 name:reloadHistoryCall object:nil];
     
 	// Update on show
 	LinphoneCall *call = linphone_core_get_current_call(LC);
@@ -168,6 +163,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[super viewDidLoad];
     
     appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    [self autoLayoutForView];
     
     //  my code here
     _zeroButton.digit = '0';
@@ -246,10 +243,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  [self checkForShowFirstSettingAccount];
 }
 
-- (void)testAction {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"facepro://call?type=video&user_id=0700130"]];
-}
-
 #pragma mark - Event Functions
 
 - (void)callUpdateEvent:(NSNotification *)notif {
@@ -294,6 +287,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)setAddress:(NSString *)address {
     _addressField.text = address;
+}
+
+- (void)afterEndCallForTransfer {
+    _addContactButton.hidden = YES;
+    _addressField.text = @"";
+    searchView.hidden = YES;
 }
 
 #pragma mark - UITextFieldDelegate Functions
@@ -710,7 +709,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     //  status label
-    _lbStatus.font = textFont;
+    _lbStatus.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     [_lbStatus mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewStatus.mas_centerX);
         make.top.bottom.equalTo(_lbAccount);
@@ -840,6 +839,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     //  fifth layer
+    _callButton.clipsToBounds = YES;
     _callButton.layer.cornerRadius = wEndCall/2;
     _callButton.clipsToBounds = YES;
     [_callButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -848,12 +848,20 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.height.mas_equalTo(wEndCall);
     }];
     
+    //  transfer button
+    _btnTransferCall.clipsToBounds = YES;
+    _btnTransferCall.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
+                                                        blue:(235/255.0) alpha:1.0];
     _btnTransferCall.layer.cornerRadius = wEndCall/2;
     _btnTransferCall.clipsToBounds = YES;
     [_btnTransferCall mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.equalTo(_callButton);
     }];
     
+    //  Add call button
+    _btnAddCall.clipsToBounds = YES;
+    _btnAddCall.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
+                                                        blue:(235/255.0) alpha:1.0];
     _btnAddCall.layer.cornerRadius = wEndCall/2;
     _btnAddCall.clipsToBounds = YES;
     [_btnAddCall mas_makeConstraints:^(MASConstraintMaker *make) {

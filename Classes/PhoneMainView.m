@@ -380,14 +380,11 @@ static RootViewManager *rootViewManagerInstance = nil;
 			break;
 		}
 		case LinphoneCallStreamsRunning: {
-            NSLog(@"-------> LinphoneCallStreamsRunning");
-            
             //  Add new by Khai Le on 05/07/2018
-            NSString *address = [self getPhoneNumberOfCall: call];
-            if ([address isEqualToString:hotline]) {
-                NSLog(@"Don't need change current view");
-            }else{
+            if (![PhoneMainView.instance.currentView isEqual: CallView.compositeViewDescription]) {
                 [self changeCurrentView:CallView.compositeViewDescription push:TRUE];
+            }else{
+                NSLog(@"%@ - %@", SHOW_LOGS, @"You are at Callview, don't need go to again!");
             }
             
             //  ------

@@ -9,9 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <AddressBook/AddressBook.h>
 #import <AddressBook/ABRecord.h>
-
+#import "PBXContact.h"
 #import "ContactObject.h"
-#import "LinphoneAppDelegate.h"
 
 @interface AppUtils : NSObject
 
@@ -132,5 +131,6 @@
 + (NSAttributedString *)getVersionStringForApp;
 + (BOOL)saveFileToFolder: (NSData *)fileData withName: (NSString *)fileName;
 + (NSData *)getFileDataFromDirectoryWithFileName: (NSString *)fileName;
++ (PBXContact *)getPBXContactFromListWithPhoneNumber: (NSString *)pbxPhone;
 
 @end

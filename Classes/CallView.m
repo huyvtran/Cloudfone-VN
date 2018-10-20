@@ -1554,16 +1554,25 @@ static UICompositeViewDescription *compositeDescription = nil;
         if (data != nil) {
             NSString *folder = [NSString stringWithFormat:@"/avatars/%@", avatarName];
             [AppUtils saveFileToFolder:data withName: folder];
-            _avatarImage.image = [UIImage imageWithData: data];
             
             //  set avatar value for pbx contact list if exists
-            sssss
-            
-            
-            
-            
+            PBXContact *contact = [AppUtils getPBXContactFromListWithPhoneNumber: phoneNumber];
+            if (contact != nil) {
+                if ([data respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
+                    contact._avatar = [data base64EncodedStringWithOptions: 0];
+                } else {
+                    contact._avatar = [data base64Encoding];
+                }
+            }
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                _avatarImage.image = [UIImage imageWithData: data];
+            });
         }
     });
+}
+
+- (IBAction)icBackClick:(UIButton *)sender {
+    [[PhoneMainView instance] popCurrentView];
 }
 
 @end
