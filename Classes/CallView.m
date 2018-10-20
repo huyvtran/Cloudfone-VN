@@ -81,7 +81,7 @@ const NSInteger MINI_KEYPAD_TAG = 101;
 @implementation CallView {
 	BOOL hiddenVolume;
 }
-@synthesize bgCall, icBack, lbPhoneNumber, lbMute, lbKeypad, lbSpeaker, icAddCall, lbAddCall, lbPause, lbTransfer;
+@synthesize bgCall, lbPhoneNumber, lbMute, lbKeypad, lbSpeaker, icAddCall, lbAddCall, lbPause, lbTransfer;
 @synthesize _lbQuality, _viewCommand, _scrollView;
 @synthesize detailConference, _bgHeaderConf, lbAddressConf, _lbConferenceDuration, btnAddCallConf, btnEndCallConf, avatarConference, collectionConference;
 @synthesize durationTimer, phoneNumber;
@@ -1220,22 +1220,16 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.top.left.bottom.right.equalTo(_callView);
     }];
     
-    [icBack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_callView).offset([LinphoneAppDelegate sharedInstance]._hStatus);
-        make.left.equalTo(_callView);
-        make.width.height.mas_equalTo(35.0);
-    }];
-    icBack.hidden = YES;
-    
     _lbQuality.text = [appDelegate.localization localizedStringForKey: text_quality];
     _lbQuality.backgroundColor = UIColor.clearColor;
     _lbQuality.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
     _lbQuality.textColor = UIColor.whiteColor;
     _lbQuality.textAlignment = NSTextAlignmentCenter;
     [_lbQuality mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(icBack);
+        make.top.equalTo(_callView).offset([LinphoneAppDelegate sharedInstance]._hStatus);
         make.right.equalTo(_callView).offset(-20);
         make.left.equalTo(_callView).offset(20);
+        make.height.mas_equalTo(35.0);
     }];
     
     _avatarImage.clipsToBounds = YES;
@@ -1570,10 +1564,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             });
         }
     });
-}
-
-- (IBAction)icBackClick:(UIButton *)sender {
-    [[PhoneMainView instance] popCurrentView];
 }
 
 @end

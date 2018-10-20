@@ -38,7 +38,6 @@
                 <outlet property="hangupButton" destination="Xpw-A4-BZO" id="3hc-8p-CLb"/>
                 <outlet property="hashButton" destination="DqJ-35-h1Y" id="bVr-gn-5yW"/>
                 <outlet property="icAddCall" destination="FXW-VO-dUZ" id="OV5-4F-JL3"/>
-                <outlet property="icBack" destination="cm2-GR-ywt" id="VOt-an-i1M"/>
                 <outlet property="landscapeView" destination="mPH-MF-S0K" id="Qnt-pg-nbO"/>
                 <outlet property="lbAddCall" destination="KCe-tC-lHK" id="dPK-6Q-0rs"/>
                 <outlet property="lbAddressConf" destination="pWG-pD-l54" id="HCs-0B-529"/>
@@ -107,14 +106,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="625"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>
-                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cm2-GR-ywt">
-                                    <rect key="frame" x="20" y="20" width="40" height="40"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" backgroundImage="ic_back.png"/>
-                                    <connections>
-                                        <action selector="icBackClick:" destination="-1" eventType="touchUpInside" id="vcg-Te-zGv"/>
-                                    </connections>
-                                </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Đường truyền: Tốt" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SwD-uY-YBl">
                                     <rect key="frame" x="68" y="20" width="106" height="42"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1332,7 +1323,6 @@
         <image name="footer_dialer_default.png" width="27" height="27"/>
         <image name="footer_dialer_disabled.png" width="27" height="27"/>
         <image name="history_chat_indicator.png" width="14" height="13"/>
-        <image name="ic_back.png" width="100" height="100"/>
         <image name="micro_default.png" width="29" height="37"/>
         <image name="micro_disabled.png" width="29" height="37"/>
         <image name="micro_selected.png" width="29" height="37"/>
