@@ -227,7 +227,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     btnSave.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     [btnSave setTitle:[appDelegate.localization localizedStringForKey:@"Save"]
              forState:UIControlStateNormal];
-    [btnSave setBackgroundImage:[UIImage imageNamed:@"background_header.png"]
+    [btnSave setBackgroundImage:[UIImage imageNamed:@"bg_button.png"]
                        forState:UIControlStateNormal];
     [btnSave setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     btnSave.clipsToBounds = YES;

@@ -275,7 +275,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnSave.layer.cornerRadius = 45.0/2;
     [_btnSave setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     _btnSave.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
-    [_btnSave setBackgroundImage:[UIImage imageNamed:@"background_header.png"]
+    [_btnSave setBackgroundImage:[UIImage imageNamed:@"bg_button.png"]
                         forState:UIControlStateNormal];
     
     //  label version

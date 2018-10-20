@@ -114,7 +114,7 @@
                                                                    blue:(200/255.0) alpha:1.0]
                                         andBounds:CGRectMake(0, 0, 300, 120)];
     [btnContinue setBackgroundImage:bgDisable forState:UIControlStateDisabled];
-    [btnContinue setBackgroundImage:[UIImage imageNamed:@"background_header.png"]
+    [btnContinue setBackgroundImage:[UIImage imageNamed:@"bg_button.png"]
                            forState:UIControlStateNormal];
     btnContinue.enabled = NO;
     [btnContinue setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];

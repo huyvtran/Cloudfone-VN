@@ -261,7 +261,9 @@ HMLocalization *localization;
             }
         }else{
             fullName = pbxContact._name;
-            avatar = pbxContact._avatar;
+            if (pbxContact._avatar != nil){
+                avatar = pbxContact._avatar;
+            }
         }
     }
     return [NSArray arrayWithObjects:fullName, avatar, nil];

@@ -264,7 +264,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                  blue:(86/255.0) alpha:1.0];
     
     _btnSave.backgroundColor = UIColor.clearColor;
-    [_btnSave setBackgroundImage:[UIImage imageNamed:@"background_header.png"]
+    [_btnSave setBackgroundImage:[UIImage imageNamed:@"bg_button.png"]
                         forState:UIControlStateNormal];
     [_btnSave mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_btnClear);

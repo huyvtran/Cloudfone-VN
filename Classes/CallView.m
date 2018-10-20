@@ -1225,6 +1225,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.left.equalTo(_callView);
         make.width.height.mas_equalTo(35.0);
     }];
+    icBack.hidden = YES;
     
     _lbQuality.text = [appDelegate.localization localizedStringForKey: text_quality];
     _lbQuality.backgroundColor = UIColor.clearColor;

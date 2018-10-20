@@ -81,6 +81,7 @@
 		15906E35217AE959000877A9 /* transfer_call_hover.png in Resources */ = {isa = PBXBuildFile; fileRef = 15906E34217AE958000877A9 /* transfer_call_hover.png */; };
 		15906E38217AEA1E000877A9 /* button_back_dialer_hover.png in Resources */ = {isa = PBXBuildFile; fileRef = 15906E36217AEA1B000877A9 /* button_back_dialer_hover.png */; };
 		15906E39217AEA1E000877A9 /* button_back_dialer.png in Resources */ = {isa = PBXBuildFile; fileRef = 15906E37217AEA1C000877A9 /* button_back_dialer.png */; };
+		15906E3B217AEBCF000877A9 /* bg_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 15906E3A217AEBCD000877A9 /* bg_button.png */; };
 		159E0871217984BD0056E2BB /* RegisterPBXWithPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */; };
 		159E0879217984F00056E2BB /* RegisterPBXWithPhoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */; };
 		159E08842179E9130056E2BB /* ic_not_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 159E08822179E9110056E2BB /* ic_not_check.png */; };
@@ -1228,6 +1229,7 @@
 		15906E34217AE958000877A9 /* transfer_call_hover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = transfer_call_hover.png; path = Resources/images/keypad/transfer_call_hover.png; sourceTree = SOURCE_ROOT; };
 		15906E36217AEA1B000877A9 /* button_back_dialer_hover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_back_dialer_hover.png; path = Resources/images/keypad/button_back_dialer_hover.png; sourceTree = SOURCE_ROOT; };
 		15906E37217AEA1C000877A9 /* button_back_dialer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_back_dialer.png; path = Resources/images/keypad/button_back_dialer.png; sourceTree = SOURCE_ROOT; };
+		15906E3A217AEBCD000877A9 /* bg_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_button.png; sourceTree = "<group>"; };
 		159E086F217984BD0056E2BB /* RegisterPBXWithPhoneView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RegisterPBXWithPhoneView.h; path = AppUI/RegisterPBXWithPhoneView.h; sourceTree = "<group>"; };
 		159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RegisterPBXWithPhoneView.m; path = AppUI/RegisterPBXWithPhoneView.m; sourceTree = "<group>"; };
 		159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RegisterPBXWithPhoneView.xib; path = AppUI/RegisterPBXWithPhoneView.xib; sourceTree = "<group>"; };
@@ -3337,6 +3339,7 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				15906E3A217AEBCD000877A9 /* bg_button.png */,
 				159E08832179E9120056E2BB /* ic_checked.png */,
 				159E08822179E9110056E2BB /* ic_not_check.png */,
 				15E641AB2179779700A9E15E /* ic_phone_login.png */,
@@ -5186,6 +5189,7 @@
 				D34F6F9E1594D3FB0095705B /* InAppSettings.bundle in Resources */,
 				633FEE4D1D3CD5590014B822 /* delete_field_default@2x.png in Resources */,
 				639CEB091A1DF4FA004DE38F /* UIChatCell.xib in Resources */,
+				15906E3B217AEBCF000877A9 /* bg_button.png in Resources */,
 				153D00522164D9D3007B69B3 /* numpad_seven_hover.png in Resources */,
 				633FEE961D3CD55A0014B822 /* micro_disabled.png in Resources */,
 				63AADBF61B6A0FF200AA16FD /* linphonerc-factory in Resources */,
