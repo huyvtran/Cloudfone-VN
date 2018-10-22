@@ -14,6 +14,7 @@
     LinphoneAppDelegate *appDelegate;
     NSString *myAvatar;
     PECropViewController *PECropController;
+    BOOL isRemoveAvatar;
 }
 
 @end
@@ -68,10 +69,10 @@ static UICompositeViewDescription *compositeDescription = nil;
             imgAvatar.image = [UIImage imageWithData: appDelegate._dataCrop];
         }else{
             NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", defaultUsername];
-            NSString *avatar = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyAvatar];
-            if (avatar != nil && ![avatar isEqualToString:@""])
+            myAvatar = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyAvatar];
+            if (myAvatar != nil && ![myAvatar isEqualToString:@""])
             {
-                imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: avatar]];
+                imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: myAvatar]];
             }else{
                 //  Check avatar exists on server
                 [self checkDataExistsOnServer];
@@ -126,11 +127,20 @@ static UICompositeViewDescription *compositeDescription = nil;
     NSString *configName = [self getPBXPhoneFromConfig];
     NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
     if (![AppUtils isNullOrEmpty: configName] && ![AppUtils isNullOrEmpty: configName]) {
-        icWaiting.hidden = NO;
-        [icWaiting startAnimating];
-        
-        NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, configName];
-        [self startUploadImage:appDelegate._dataCrop withName: avatarName];
+        if (appDelegate._dataCrop != nil) {
+            icWaiting.hidden = NO;
+            [icWaiting startAnimating];
+            isRemoveAvatar = NO;
+            
+            NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, configName];
+            [self startUploadImage:appDelegate._dataCrop withName: avatarName];
+        }else if ([myAvatar isEqualToString:@""]){
+            isRemoveAvatar = YES;
+            
+            NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, configName];
+            UIImage *noneImage = [UIImage imageNamed:@"no_avatar.png"];
+            [self startUploadImage:UIImagePNGRepresentation(noneImage) withName: avatarName];
+        }
     }
 }
 
@@ -257,22 +267,39 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - ActionSheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-        case 0:{
-            [self pressOnGallery];
-            break;
+    if (actionSheet.tag == 101) {
+        switch (buttonIndex) {
+            case 0:{
+                [self pressOnGallery];
+                break;
+            }
+            case 1:{
+                [self pressOnCamera];
+                break;
+            }
+            case 2:{
+                NSLog(@"Cancel");
+                break;
+            }
         }
-        case 1:{
-            [self pressOnCamera];
-            break;
-        }
-        case 2:{
-            [self removeAvatar];
-            break;
-        }
-        case 3:{
-            NSLog(@"Cancel");
-            break;
+    }else if (actionSheet.tag == 100){
+        switch (buttonIndex) {
+            case 0:{
+                [self pressOnGallery];
+                break;
+            }
+            case 1:{
+                [self pressOnCamera];
+                break;
+            }
+            case 2:{
+                [self removeAvatar];
+                break;
+            }
+            case 3:{
+                NSLog(@"Cancel");
+                break;
+            }
         }
     }
 }
@@ -294,9 +321,17 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)removeAvatar {
-    appDelegate._newContact._avatar = @"";
-    imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-    appDelegate._dataCrop = nil;
+    if (appDelegate._dataCrop != nil) {
+        appDelegate._dataCrop = nil;
+        if ([AppUtils isNullOrEmpty: myAvatar]) {
+            imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+        }else{
+            imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: myAvatar]];
+        }
+    }else if (myAvatar != nil && ![myAvatar isEqualToString:@""]){
+        myAvatar = @"";
+        imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+    }
 }
 
 #pragma mark - ContactDetailsImagePickerDelegate Functions
@@ -365,7 +400,11 @@ static UICompositeViewDescription *compositeDescription = nil;
                 if (uploadSession.uploadError != nil) {
                     [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Failed. Please try later!"] duration:2.0 position:CSToastPositionCenter];
                 }else{
-                    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your avatar has been uploaded"] duration:2.0 position:CSToastPositionCenter];
+                    if (isRemoveAvatar) {
+                        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your avatar has been removed"] duration:2.0 position:CSToastPositionCenter];
+                    }else{
+                        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your avatar has been uploaded"] duration:2.0 position:CSToastPositionCenter];
+                    }
                     
                     //  save avatar to get from local
                     NSString *configName = [self getPBXPhoneFromConfig];

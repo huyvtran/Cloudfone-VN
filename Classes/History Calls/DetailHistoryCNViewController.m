@@ -346,40 +346,40 @@ static UICompositeViewDescription *compositeDescription = nil;
             if (aCall._duration < 60) {
                 cell.lbDuration.text = [NSString stringWithFormat:@"%d %@", aCall._duration, [appDelegate.localization localizedStringForKey:@"sec"]];
             }else{
-                NSInteger hour = aCall._duration/3600;
-                NSInteger minutes = (aCall._duration - hour*3600)/60;
-                NSInteger seconds = aCall._duration - hour*3600 - minutes*60;
+                int hour = aCall._duration/3600;
+                int minutes = (aCall._duration - hour*3600)/60;
+                int seconds = aCall._duration - hour*3600 - minutes*60;
                 
                 NSString *str = @"";
                 if (hour > 0) {
                     if (hour == 1) {
-                        str = [NSString stringWithFormat:@"%ld %@", hour, [appDelegate.localization localizedStringForKey:@"hour"]];
+                        str = [NSString stringWithFormat:@"%ld %@", (long)hour, [appDelegate.localization localizedStringForKey:@"hour"]];
                     }else{
-                        str = [NSString stringWithFormat:@"%ld %@", hour, [appDelegate.localization localizedStringForKey:@"hours"]];
+                        str = [NSString stringWithFormat:@"%ld %@", (long)hour, [appDelegate.localization localizedStringForKey:@"hours"]];
                     }
                 }
                 
                 if (minutes > 0) {
                     if (![str isEqualToString:@""]) {
                         if (minutes == 1) {
-                            str = [NSString stringWithFormat:@"%@ %ld %@", str, minutes, [appDelegate.localization localizedStringForKey:@"minute"]];
+                            str = [NSString stringWithFormat:@"%@ %d %@", str, minutes, [appDelegate.localization localizedStringForKey:@"minute"]];
                         }else{
-                            str = [NSString stringWithFormat:@"%@ %ld %@", str, minutes, [appDelegate.localization localizedStringForKey:@"minutes"]];
+                            str = [NSString stringWithFormat:@"%@ %d %@", str, minutes, [appDelegate.localization localizedStringForKey:@"minutes"]];
                         }
                     }else{
                         if (minutes == 1) {
-                            str = [NSString stringWithFormat:@"%ld %@", minutes, [appDelegate.localization localizedStringForKey:@"minute"]];
+                            str = [NSString stringWithFormat:@"%d %@", minutes, [appDelegate.localization localizedStringForKey:@"minute"]];
                         }else{
-                            str = [NSString stringWithFormat:@"%ld %@", minutes, [appDelegate.localization localizedStringForKey:@"minutes"]];
+                            str = [NSString stringWithFormat:@"%d %@", minutes, [appDelegate.localization localizedStringForKey:@"minutes"]];
                         }
                     }
                 }
                 
                 if (seconds > 0) {
                     if (![str isEqualToString:@""]) {
-                        str = [NSString stringWithFormat:@"%@ %ld %@", str, seconds, [appDelegate.localization localizedStringForKey:@"sec"]];
+                        str = [NSString stringWithFormat:@"%@ %d %@", str, seconds, [appDelegate.localization localizedStringForKey:@"sec"]];
                     }else{
-                        str = [NSString stringWithFormat:@"%ld %@", seconds, [appDelegate.localization localizedStringForKey:@"sec"]];
+                        str = [NSString stringWithFormat:@"%d %@", seconds, [appDelegate.localization localizedStringForKey:@"sec"]];
                     }
                 }
                 cell.lbDuration.text = str;

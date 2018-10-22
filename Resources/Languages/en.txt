@@ -1161,3 +1161,6 @@
 "Please check your internet connection!" = "Please check your internet connection!"
 "Failed. Please try later!" = "Failed. Please try later!"
 "Your avatar has been uploaded success" = "Your avatar has been uploaded"
+"Your avatar has been uploaded removed" = "Your avatar has been removed"
+
+"This feature have not supported yet. Please try later!" = "This feature have not supported yet. Please try later!"

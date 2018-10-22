@@ -21,7 +21,7 @@
 @synthesize zeroButton;
 @synthesize sharpButton;
 @synthesize starButton;
-@synthesize iconBack, iconMiniKeypadEndCall, tfNumber, lbQuality, lbQualityValue, viewKeypad, bgCall;
+@synthesize iconBack, iconMiniKeypadEndCall, tfNumber, lbQualityValue, viewKeypad, bgCall;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -34,6 +34,18 @@
 
 
 - (void)setupUIForView {
+    float wIcon = 65.0;
+    float spaceMarginY = 10.0;
+    float spaceMarginX = 20.0;
+    
+    float wEndCall = 70.0;
+    if (!IS_IPHONE && !IS_IPOD) {
+        wEndCall = 100.0;
+        wIcon = 85.0;
+        spaceMarginY = 20.0;
+        spaceMarginX = 40.0;
+    }
+    
     [bgCall mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.equalTo(self);
     }];
@@ -41,29 +53,23 @@
     [iconMiniKeypadEndCall mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.mas_centerX);
         make.bottom.equalTo(self).offset(-20);
-        make.width.height.mas_equalTo(70.0);
+        make.width.height.mas_equalTo(wEndCall);
     }];
     
     [iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset([LinphoneAppDelegate sharedInstance]._hStatus);
         make.left.equalTo(self);
-        make.width.height.mas_equalTo(35.0);
-    }];
-    
-    [lbQuality mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(iconBack);
-        make.left.equalTo(iconBack.mas_right).offset(10);
-        make.right.equalTo(self.mas_centerX);
+        make.width.height.mas_equalTo(HEADER_ICON_WIDTH);
     }];
     
     [lbQualityValue mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(iconBack);
-        make.left.equalTo((self.mas_centerX)).offset(5);
-        make.right.equalTo(self).offset(-10);
+        make.left.equalTo(iconBack.mas_right).offset(10);
+        make.right.equalTo(self).offset(-10-HEADER_ICON_WIDTH);
     }];
     
     [tfNumber mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(lbQuality.mas_bottom).offset(20);
+        make.top.equalTo(lbQualityValue.mas_bottom).offset(20);
         make.left.equalTo(self).offset(20);
         make.right.equalTo(self).offset(-20);
         make.height.mas_equalTo(60.0);
@@ -82,10 +88,6 @@
         make.top.equalTo(tfNumber.mas_bottom).offset(10);
         make.bottom.equalTo(iconMiniKeypadEndCall.mas_top).offset(-10);
     }];
-    
-    float wIcon = 65.0;
-    float spaceMarginY = 10.0;
-    float spaceMarginX = 20.0;
     
     
     [fiveButton mas_makeConstraints:^(MASConstraintMaker *make) {

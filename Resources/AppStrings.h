@@ -624,7 +624,7 @@
 #define incomming_call          @"Incomming"
 #define outgoing_call           @"Outgoing"
 #define text_phone_not_exists   @"text_phone_not_exists"
-#define hotline                 @"1495214952"
+#define hotline                 @"4113"
 
 #define text_dien_day_tu_thong_tin  @"text_dien_day_tu_thong_tin"
 #define text_contact_company        @"text_contact_company"

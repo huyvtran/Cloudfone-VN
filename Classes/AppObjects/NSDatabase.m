@@ -246,25 +246,30 @@ HMLocalization *localization;
     }else{
         //  get name pbx truoc
         PBXContact *pbxContact = [AppUtils getPBXContactFromListWithPhoneNumber: phonenumber];
-        if ([pbxContact._name isEqualToString:@""]) {
-            NSString *stringValue = [appDelegate._allPhonesDict objectForKey: phonenumber];
-            if (![stringValue isEqualToString:@""]) {
-                NSArray *tmpArr = [stringValue componentsSeparatedByString:@"|"];
-                if (tmpArr.count > 0) {
-                    NSString *name = [tmpArr objectAtIndex: 0];
-                    NSString *idContact = [appDelegate._allIDDict objectForKey: phonenumber];
-                    if (name != nil && idContact != nil) {
-                        fullName = name;
-                        avatar = [AppUtils getAvatarOfContact:[idContact intValue]];
+        if (pbxContact != nil) {
+            if ([pbxContact._name isEqualToString:@""]) {
+                NSString *stringValue = [appDelegate._allPhonesDict objectForKey: phonenumber];
+                if (![stringValue isEqualToString:@""]) {
+                    NSArray *tmpArr = [stringValue componentsSeparatedByString:@"|"];
+                    if (tmpArr.count > 0) {
+                        NSString *name = [tmpArr objectAtIndex: 0];
+                        NSString *idContact = [appDelegate._allIDDict objectForKey: phonenumber];
+                        if (name != nil && idContact != nil) {
+                            fullName = name;
+                            avatar = [AppUtils getAvatarOfContact:[idContact intValue]];
+                        }
                     }
+                }
+            }else{
+                fullName = pbxContact._name;
+                if (pbxContact._avatar != nil){
+                    avatar = pbxContact._avatar;
                 }
             }
         }else{
-            fullName = pbxContact._name;
-            if (pbxContact._avatar != nil){
-                avatar = pbxContact._avatar;
-            }
+            fullName = phonenumber;
         }
+        
     }
     return [NSArray arrayWithObjects:fullName, avatar, nil];
 }

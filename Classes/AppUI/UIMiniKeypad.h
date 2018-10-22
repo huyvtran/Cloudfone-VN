@@ -26,7 +26,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *iconBack;
 @property (weak, nonatomic) IBOutlet UIButton *iconMiniKeypadEndCall;
 @property (weak, nonatomic) IBOutlet UIAddressTextField *tfNumber;
-@property (weak, nonatomic) IBOutlet UILabel *lbQuality;
 @property (weak, nonatomic) IBOutlet UILabel *lbQualityValue;
 @property (weak, nonatomic) IBOutlet UIView *viewKeypad;
 @property (weak, nonatomic) IBOutlet UIImageView *bgCall;

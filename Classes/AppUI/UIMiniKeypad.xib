@@ -192,15 +192,8 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" backgroundImage="ic_back.png"/>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Đường truyền:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bwH-dW-l8K">
-                    <rect key="frame" x="49" y="21" width="112" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Tốt" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jO9-lG-xU7">
-                    <rect key="frame" x="169" y="21" width="82" height="18"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jO9-lG-xU7">
+                    <rect key="frame" x="82" y="21" width="169" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.094117647060000004" green="0.72549019609999998" blue="0.072059461805555503" alpha="1" colorSpace="calibratedRGB"/>
@@ -224,7 +217,6 @@
                 <outlet property="fourButton" destination="OuM-Up-ff3" id="Oan-ta-TzO"/>
                 <outlet property="iconBack" destination="bmD-dg-RTd" id="18f-dl-5nb"/>
                 <outlet property="iconMiniKeypadEndCall" destination="33O-hB-9Tq" id="aP6-4b-Fgx"/>
-                <outlet property="lbQuality" destination="bwH-dW-l8K" id="wiC-zb-T0F"/>
                 <outlet property="lbQualityValue" destination="jO9-lG-xU7" id="f5w-NG-cRg"/>
                 <outlet property="nineButton" destination="OCI-eb-ClV" id="8vo-Tp-eeD"/>
                 <outlet property="oneButton" destination="hMZ-h3-1Zg" id="qqv-H3-2c8"/>
@@ -238,7 +230,7 @@
                 <outlet property="viewKeypad" destination="Yyd-ME-4Y3" id="o3C-we-oxk"/>
                 <outlet property="zeroButton" destination="fi9-OS-xvc" id="2Vq-tG-gj5"/>
             </connections>
-            <point key="canvasLocation" x="-1159" y="-168"/>
+            <point key="canvasLocation" x="-1310" y="-47"/>
         </view>
     </objects>
     <resources>

@@ -76,6 +76,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [super viewWillAppear: animated];
     
     [self showContentForView];
+    [self showPBXAccountInformation];
     
     LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
     if (defaultConfig == NULL) {
@@ -175,6 +176,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.height.mas_equalTo(31.0);
         make.width.mas_equalTo(49.0);
     }];
+    _swChange.enabled = NO;
     
     _lbSepa.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
                                                blue:(235/255.0) alpha:1.0];
@@ -369,6 +371,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnSavePressed:(UIButton *)sender {
+    [self.view endEditing: YES];
     if ([_tfServerID.text isEqualToString:@""]) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Server ID can't empty"] duration:2.0 position:CSToastPositionCenter];
     }else if ([_tfAccount.text isEqualToString:@""]){
@@ -402,9 +405,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_btnSave setTitle:[appDelegate.localization localizedStringForKey:@"Save"]
               forState:UIControlStateNormal];
     
-    _tfServerID.text = @"CF-BS-3165";
-    _tfAccount.text = @"14951";
-    _tfPassword.text = @"cloudfone@123";
+//    _tfServerID.text = @"CF-BS-3165";
+//    _tfAccount.text = @"14951";
+//    _tfPassword.text = @"cloudfone@123";
     
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
@@ -425,7 +428,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
     [jsonDict setObject:AuthUser forKey:@"AuthUser"];
     [jsonDict setObject:AuthKey forKey:@"AuthKey"];
-    [jsonDict setObject:USERNAME forKey:@"UserName"];
+    [jsonDict setObject:@"" forKey:@"UserName"];
     [jsonDict setObject:tokenValue forKey:@"IOSToken"];
     [jsonDict setObject:pbxService forKey:@"PBXID"];
     [jsonDict setObject:pbxUsername forKey:@"PBXExt"];
@@ -815,6 +818,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 
 - (IBAction)btnLoginWithPhonePress:(UIButton *)sender {
+    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"This feature have not supported yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
+    return;
     NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"RegisterPBXWithPhoneView" owner:nil options:nil];
     for(id currentObject in toplevelObject){
         if ([currentObject isKindOfClass:[RegisterPBXWithPhoneView class]]) {
@@ -876,6 +881,20 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)onButtonContinuePress {
     
+}
+
+- (void)showPBXAccountInformation
+{
+    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+    if (defaultConfig != NULL) {
+        const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
+        NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
+        if (defaultUsername != nil) {
+            _tfAccount.text = defaultUsername;
+            _tfPassword.text = [[NSUserDefaults standardUserDefaults] objectForKey: key_password];
+            _tfServerID.text = [[NSUserDefaults standardUserDefaults] objectForKey: PBX_ID];
+        }
+    }
 }
 
 @end

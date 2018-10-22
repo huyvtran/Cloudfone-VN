@@ -33,6 +33,7 @@
 #import "UIDigitButton.h"
 #import "UIRoundedImageView.h"
 #import "UIBouncingView.h"
+#import "PulsingHaloLayer.h"
 
 typedef enum typeCall{
     callIncoming,
@@ -41,7 +42,7 @@ typedef enum typeCall{
 
 @class VideoView;
 
-@interface CallView : TPMultiLayoutViewController <UIGestureRecognizerDelegate, UICompositeViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource> {
+@interface CallView : TPMultiLayoutViewController <UIGestureRecognizerDelegate, UICompositeViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, CAAnimationDelegate> {
   @private
 	UITapGestureRecognizer *singleFingerTap;
 	NSTimer *hideControlsTimer;
@@ -134,5 +135,6 @@ typedef enum typeCall{
 @property (nonatomic, strong) NSTimer *durationTimer;
 @property (nonatomic, strong) NSString *phoneNumber;
 
+@property (nonatomic, weak) PulsingHaloLayer *halo;
 
 @end

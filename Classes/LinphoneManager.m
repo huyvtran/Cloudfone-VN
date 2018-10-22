@@ -2758,16 +2758,24 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
 		NSDictionary *dict = [NSDictionary
 			dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:_bluetoothAvailable], @"available", nil];
 		[NSNotificationCenter.defaultCenter postNotificationName:kLinphoneBluetoothAvailabilityUpdate
-														  object:self
-														userInfo:dict];
+														  object:self userInfo:dict];
+        
+        if (notif.userInfo != nil) {
+            NSDictionary *info = notif.userInfo;
+            id headphonesObj = [info objectForKey:@"AVAudioSessionRouteChangeReasonKey"];
+            if (headphonesObj != nil && [headphonesObj isKindOfClass:[NSNumber class]]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"headsetPluginChanged" object:headphonesObj];
+            }
+        }
+        
 	}
 }
 
 - (void)setSpeakerEnabled:(BOOL)enable {
 	_speakerEnabled = enable;
 	NSError *err;
-
-	if (enable && [self allowSpeaker]) {
+	//  if (enable && [self allowSpeaker]) {
+    if (enable) {
 		[[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&err];
 		_bluetoothEnabled = FALSE;
 	} else {

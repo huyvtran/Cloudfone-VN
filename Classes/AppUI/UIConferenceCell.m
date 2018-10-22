@@ -57,6 +57,7 @@
 
 - (void)updateCell
 {
+    return;
     _userAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
     
     const LinphoneAddress* addr = linphone_call_get_remote_address(call);
