@@ -27,6 +27,7 @@
     NSString *ipPBX;
     NSString *portPBX;
     RegisterPBXWithPhoneView *viewPBXRegisterWithPhone;
+    float hTextfield;
 }
 
 @end
@@ -104,11 +105,23 @@ static UICompositeViewDescription *compositeDescription = nil;
     // Dispose of any resources that can be recreated.
 }
 
-- (void)autoLayoutForMainView {
+- (void)autoLayoutForMainView
+{
     if (SCREEN_WIDTH > 320) {
         _lbTitle.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
     }else{
         _lbTitle.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
+    }
+    //  [Khai le - 22/10/2018]: detect with iPhone 5, 5s, 5c and SE
+    //  float hMargin = 15.0;
+    float hLabel = 35.0;
+    hTextfield = 40.0;
+    
+    NSString *modelPhone = [DeviceUtils getModelsOfCurrentDevice];
+    if ([modelPhone isEqualToString:@"iPhone5,1"] || [modelPhone isEqualToString:@"iPhone5,2"] || [modelPhone isEqualToString:@"iPhone5,3"] || [modelPhone isEqualToString:@"iPhone5,4"] || [modelPhone isEqualToString:@"iPhone6,1"] || [modelPhone isEqualToString:@"iPhone6,2"] || [modelPhone isEqualToString:@"iPhone8,4"])
+    {
+        hTextfield = 32.0;
+        hLabel = 30.0;
     }
     
     float marginX = 20.0;
@@ -192,7 +205,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_lbServerID mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbSepa.mas_bottom).offset(15);
         make.left.right.equalTo(_lbSepa);
-        make.height.mas_equalTo(35.0);
+        make.height.mas_equalTo(hLabel);
     }];
     
     _tfServerID.borderStyle = UITextBorderStyleNone;
@@ -203,7 +216,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_tfServerID mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbServerID.mas_bottom);
         make.left.right.equalTo(_lbServerID);
-        make.height.mas_equalTo(40.0);
+        make.height.mas_equalTo(hTextfield);
     }];
     
     _tfServerID.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8.0, 40.0)];

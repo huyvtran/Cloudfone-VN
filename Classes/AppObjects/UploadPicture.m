@@ -25,7 +25,7 @@
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         //  CFRunLoopWakeUp(CFRunLoopGetCurrent());
-        NSString *urlString = [ NSString stringWithFormat:@"%@/ios_upload_file.php", link_picutre_chat_group];
+        NSString *urlString = [ NSString stringWithFormat:@"%@/ios_upload_file.php", link_picture_chat_group];
         
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
         [request setURL:[NSURL URLWithString:urlString]];

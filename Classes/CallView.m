@@ -1598,7 +1598,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
         NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, phoneNumber];
-        NSString *linkAvatar = [NSString stringWithFormat:@"%@/%@", link_picutre_chat_group, avatarName];
+        NSString *linkAvatar = [NSString stringWithFormat:@"%@/%@", link_picture_chat_group, avatarName];
         NSData *data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: linkAvatar]];
         
         if (data != nil) {

@@ -74,6 +74,7 @@
 		15857C08216E136500DB5237 /* TypePhonePopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15857C03216E136100DB5237 /* TypePhonePopupView.m */; };
 		15857C09216E136500DB5237 /* TypePhoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15857C04216E136200DB5237 /* TypePhoneCell.m */; };
 		15857C0A216E136500DB5237 /* TypePhoneCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15857C06216E136300DB5237 /* TypePhoneCell.xib */; };
+		158A87C5217D83720093A641 /* DeviceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 158A87C4217D83720093A641 /* DeviceUtils.m */; };
 		159002D72168618E00CECB7A /* ic_call_missed.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002CE2168618B00CECB7A /* ic_call_missed.png */; };
 		159002D82168618E00CECB7A /* ic_call_outgoing.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002D52168618C00CECB7A /* ic_call_outgoing.png */; };
 		159002D92168618E00CECB7A /* ic_call_incoming.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002D62168618D00CECB7A /* ic_call_incoming.png */; };
@@ -1222,6 +1223,8 @@
 		15857C05216E136300DB5237 /* TypePhoneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TypePhoneCell.h; path = AppUI/TypePhoneCell.h; sourceTree = "<group>"; };
 		15857C06216E136300DB5237 /* TypePhoneCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TypePhoneCell.xib; path = AppUI/TypePhoneCell.xib; sourceTree = "<group>"; };
 		15857C07216E136400DB5237 /* TypePhonePopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TypePhonePopupView.h; path = AppUI/TypePhonePopupView.h; sourceTree = "<group>"; };
+		158A87C3217D83720093A641 /* DeviceUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DeviceUtils.h; path = Utils/DeviceUtils.h; sourceTree = "<group>"; };
+		158A87C4217D83720093A641 /* DeviceUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DeviceUtils.m; path = Utils/DeviceUtils.m; sourceTree = "<group>"; };
 		159002CE2168618B00CECB7A /* ic_call_missed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_missed.png; sourceTree = "<group>"; };
 		159002D52168618C00CECB7A /* ic_call_outgoing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_outgoing.png; sourceTree = "<group>"; };
 		159002D62168618D00CECB7A /* ic_call_incoming.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_incoming.png; sourceTree = "<group>"; };
@@ -4583,6 +4586,8 @@
 				63423C091C4501D000D9A050 /* Contact.m */,
 				8C1B67081E6718BC001EA2FE /* AudioHelper.h */,
 				8C1B67051E671826001EA2FE /* AudioHelper.m */,
+				158A87C3217D83720093A641 /* DeviceUtils.h */,
+				158A87C4217D83720093A641 /* DeviceUtils.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -5754,6 +5759,7 @@
 				34216F401547EBCD00EA9777 /* VideoZoomHandler.m in Sources */,
 				84E286F11FC9FE08009CBA27 /* OptionsCell.m in Sources */,
 				D3F83EEC1582021700336684 /* CallView.m in Sources */,
+				158A87C5217D83720093A641 /* DeviceUtils.m in Sources */,
 				84D0320C1FB51C50002D2524 /* ContactCell.m in Sources */,
 				84BCC9E81FC1E162001F26FE /* PEResizeControl.m in Sources */,
 				84E286C01FC9E1AC009CBA27 /* SDWebImagePrefetcher.m in Sources */,

@@ -468,7 +468,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         if (![AppUtils isNullOrEmpty: configName] && ![AppUtils isNullOrEmpty: configName]) {
             NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, configName];
             
-            NSString *linkAvatar = [NSString stringWithFormat:@"%@/%@", link_picutre_chat_group, avatarName];
+            NSString *linkAvatar = [NSString stringWithFormat:@"%@/%@", link_picture_chat_group, avatarName];
             data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: linkAvatar]];
             NSString *strAvatar = @"";
             if (data != nil) {

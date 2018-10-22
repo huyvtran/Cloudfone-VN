@@ -51,7 +51,7 @@
 
 #pragma mark - Fonts
 
-#define link_picutre_chat_group @"http://anh.ods.vn/uploads"
+#define link_picture_chat_group @"http://anh.ods.vn/uploads"
 
 #define MYRIADPRO_REGULAR       @"MYRIADPRO-REGULAR"
 #define MYRIADPRO_BOLD          @"MYRIADPRO-BOLD"

@@ -6,7 +6,6 @@
 //
 
 #import "SipUtils.h"
-#import "PhoneMainView.h"
 
 @implementation SipUtils
 
