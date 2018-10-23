@@ -113,15 +113,18 @@ static UICompositeViewDescription *compositeDescription = nil;
         _lbTitle.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }
     //  [Khai le - 22/10/2018]: detect with iPhone 5, 5s, 5c and SE
-    //  float hMargin = 15.0;
+    float hMargin = 30.0;
     float hLabel = 35.0;
     hTextfield = 40.0;
+    float hButton = 45.0;
     
     NSString *modelPhone = [DeviceUtils getModelsOfCurrentDevice];
-    if ([modelPhone isEqualToString:@"iPhone5,1"] || [modelPhone isEqualToString:@"iPhone5,2"] || [modelPhone isEqualToString:@"iPhone5,3"] || [modelPhone isEqualToString:@"iPhone5,4"] || [modelPhone isEqualToString:@"iPhone6,1"] || [modelPhone isEqualToString:@"iPhone6,2"] || [modelPhone isEqualToString:@"iPhone8,4"])
+    if ([modelPhone isEqualToString:@"iPhone5,1"] || [modelPhone isEqualToString:@"iPhone5,2"] || [modelPhone isEqualToString:@"iPhone5,3"] || [modelPhone isEqualToString:@"iPhone5,4"] || [modelPhone isEqualToString:@"iPhone6,1"] || [modelPhone isEqualToString:@"iPhone6,2"] || [modelPhone isEqualToString:@"iPhone8,4"] || [modelPhone isEqualToString:@"x86_64"])
     {
         hTextfield = 32.0;
         hLabel = 30.0;
+        hMargin = 20.0;
+        hButton = 38.0;
     }
     
     float marginX = 20.0;
@@ -166,12 +169,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     //  content view
+    float hViewContent = 60.0 + 2.0 + (hLabel + hTextfield) + 15 + (hLabel + hTextfield) + 15 + (hLabel + hTextfield) + 30 + 45.0 + 30;
     _viewContent.backgroundColor = UIColor.whiteColor;
     [_viewContent mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_viewHeader.mas_bottom);
         //  make.left.right.bottom.equalTo(self.view);
         make.left.right.equalTo(self.view);
-        make.height.mas_equalTo(430.0);
+        make.height.mas_equalTo(hViewContent);
     }];
     
     _lbPBX.textColor = [UIColor colorWithRed:(80/255.0) green:(80/255.0)
@@ -266,13 +270,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     //  footer button
     [_btnClear mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_tfPassword.mas_bottom).offset(30);
+        make.top.equalTo(_tfPassword.mas_bottom).offset(hMargin);
         make.left.equalTo(_tfPassword);
         make.right.equalTo(_viewContent.mas_centerX).offset(-20);
-        make.height.mas_equalTo(45.0);
+        make.height.mas_equalTo(hButton);
     }];
     _btnClear.clipsToBounds = YES;
-    _btnClear.layer.cornerRadius = 45.0/2;
+    _btnClear.layer.cornerRadius = hButton/2;
     [_btnClear setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     _btnClear.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     _btnClear.backgroundColor = [UIColor colorWithRed:(248/255.0) green:(83/255.0)
@@ -288,7 +292,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.height.mas_equalTo(_btnClear.mas_height);
     }];
     _btnSave.clipsToBounds = YES;
-    _btnSave.layer.cornerRadius = 45.0/2;
+    _btnSave.layer.cornerRadius = hButton/2;
     [_btnSave setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     _btnSave.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     _btnSave.backgroundColor = [UIColor colorWithRed:(25/255.0) green:(86/255.0)
@@ -299,13 +303,13 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                          blue:(86/255.0) alpha:1.0];
     [btnLoginWithPhone setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     btnLoginWithPhone.clipsToBounds = YES;
-    btnLoginWithPhone.layer.cornerRadius = 45.0/2;
+    btnLoginWithPhone.layer.cornerRadius = hButton/2;
     btnLoginWithPhone.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     [btnLoginWithPhone mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_viewContent.mas_bottom).offset(30);
         make.left.equalTo(self.view).offset(30);
         make.right.equalTo(self.view).offset(-30);
-        make.height.mas_equalTo(45.0);
+        make.height.mas_equalTo(hButton);
     }];
     
     //  label version

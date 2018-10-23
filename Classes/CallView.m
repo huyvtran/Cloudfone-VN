@@ -61,9 +61,7 @@ const NSInteger MINI_KEYPAD_TAG = 101;
 
 @interface CallView (){
     LinphoneAppDelegate *appDelegate;
-    UIFont *textFont;
     
-    float wButton;
     float wCollection;
     float marginX;
     
@@ -72,7 +70,6 @@ const NSInteger MINI_KEYPAD_TAG = 101;
     const MSList *list;
     
     NSTimer *updateTimeConf;
-    float hIconEndCall;
     UIMiniKeypad *viewKeypad;
     
     NSTimer *qualityTimer;
@@ -1024,15 +1021,22 @@ static UICompositeViewDescription *compositeDescription = nil;
 //  add scroll view khi goi
 - (void)addScrollview
 {
+    
     float wFeatureIcon = 70.0;
     if (!IS_IPHONE && !IS_IPOD) {
         wFeatureIcon = 100.0;
+    }else{
+        NSString *modelPhone = [DeviceUtils getModelsOfCurrentDevice];
+        if ([modelPhone isEqualToString:@"iPhone5,1"] || [modelPhone isEqualToString:@"iPhone5,2"] || [modelPhone isEqualToString:@"iPhone5,3"] || [modelPhone isEqualToString:@"iPhone5,4"] || [modelPhone isEqualToString:@"iPhone6,1"] || [modelPhone isEqualToString:@"iPhone6,2"] || [modelPhone isEqualToString:@"iPhone8,4"] || [modelPhone isEqualToString:@"x86_64"])
+        {
+            wFeatureIcon = 60.0;
+        }
     }
+    
     float marginX = (SCREEN_WIDTH - 3*wFeatureIcon)/4;
     
     _scrollView.minimumZoomScale = 0.5;
     _scrollView.maximumZoomScale = 3;
-    _scrollView.contentSize = CGSizeMake(5*wButton, 2*wButton);
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.showsVerticalScrollIndicator = NO;
     _scrollView.scrollEnabled = NO;
@@ -1239,25 +1243,21 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)setupUIForView
 {
-    float hInfo;
-    if (SCREEN_WIDTH > 320) {
-        hIconEndCall = 60.0;
-        hInfo = 120.0;
-        wButton = 100.0;
-    }else{
-        hIconEndCall = 60.0;
-        hInfo = 90.0;
-        wButton = 90.0;
+    float wEndCall = 70.0;
+    float wAvatar = 120.0;
+    float hDuration = 40.0;
+    float margin = 10.0;
+    NSString *modelPhone = [DeviceUtils getModelsOfCurrentDevice];
+    if ([modelPhone isEqualToString:@"iPhone5,1"] || [modelPhone isEqualToString:@"iPhone5,2"] || [modelPhone isEqualToString:@"iPhone5,3"] || [modelPhone isEqualToString:@"iPhone5,4"] || [modelPhone isEqualToString:@"iPhone6,1"] || [modelPhone isEqualToString:@"iPhone6,2"] || [modelPhone isEqualToString:@"iPhone8,4"] || [modelPhone isEqualToString:@"x86_64"])
+    {
+        wEndCall = 60.0;
+        wAvatar = 100.0;
+        hDuration = 30.0;
+        margin = 5.0;
     }
     
-    if (SCREEN_WIDTH > 320) {
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
-    }else{
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
-    }
     
     //  View call binh thuong
-    float wEndCall = 70.0;
     [_callView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.equalTo(self.view);
     }];
@@ -1288,7 +1288,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     _avatarImage.clipsToBounds = YES;
-    _avatarImage.layer.cornerRadius = 120.0/2;
+    _avatarImage.layer.cornerRadius = wAvatar/2;
     _avatarImage.layer.borderColor = [UIColor colorWithRed:(45/255.0) green:(136/255.0)
                                                       blue:(250/255.0) alpha:1.0].CGColor;
     _avatarImage.layer.borderWidth = 3.0;
@@ -1296,8 +1296,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_avatarImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbQuality.mas_bottom).offset(10);
         make.centerX.equalTo(_callView.mas_centerX);
-        make.width.mas_equalTo(120.0);
-        make.height.mas_equalTo(120.0);
+        make.width.mas_equalTo(wAvatar);
+        make.height.mas_equalTo(wAvatar);
     }];
     
     
@@ -1326,10 +1326,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     lbPhoneNumber.font = [UIFont systemFontOfSize: 14.0];
     
     [_durationLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(lbPhoneNumber.mas_bottom).offset(10);
+        make.top.equalTo(lbPhoneNumber.mas_bottom).offset(margin);
         make.left.equalTo(_callView).offset(20);
         make.right.equalTo(_callView).offset(-20);
-        make.height.mas_equalTo(40.0);
+        make.height.mas_equalTo(hDuration);
     }];
     _durationLabel.font = [UIFont systemFontOfSize:28.0 weight:UIFontWeightThin];
     _durationLabel.backgroundColor = UIColor.clearColor;
@@ -1350,15 +1350,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     marginX = 5.0;
     wCollection = (SCREEN_WIDTH - 6*marginX)/2;
-    [detailConference setFrame: CGRectMake(0, 0, SCREEN_WIDTH, hInfo)];
+    [detailConference setFrame: CGRectMake(0, 0, SCREEN_WIDTH, 0)];
     
     [_bgHeaderConf setFrame: CGRectMake(0, 0, detailConference.frame.size.width, detailConference.frame.size.height)];
-    [avatarConference setFrame: CGRectMake(5, 5, hInfo-10, hInfo-10)];
+    [avatarConference setFrame: CGRectMake(5, 5, 0-10, 0-10)];
     [lbAddressConf setFrame: CGRectMake(avatarConference.frame.origin.x+avatarConference.frame.size.width+10, avatarConference.frame.origin.y, SCREEN_WIDTH-(2*avatarConference.frame.origin.x+avatarConference.frame.size.width+10), avatarConference.frame.size.height/3)];
-    [lbAddressConf setFont: textFont];
     
     [_lbConferenceDuration setFrame: CGRectMake(lbAddressConf.frame.origin.x, lbAddressConf.frame.origin.y+lbAddressConf.frame.size.height, lbAddressConf.frame.size.width, lbAddressConf.frame.size.height)];
-    [_lbConferenceDuration setFont: textFont];
     
     [btnAddCallConf setFrame: CGRectMake(_lbConferenceDuration.frame.origin.x, _lbConferenceDuration.frame.origin.y+_lbConferenceDuration.frame.size.height, (_lbConferenceDuration.frame.size.width-20)/2, _lbConferenceDuration.frame.size.height)];
     [btnEndCallConf setFrame: CGRectMake(btnAddCallConf.frame.origin.x+btnAddCallConf.frame.size.width+20, btnAddCallConf.frame.origin.y, btnAddCallConf.frame.size.width, btnAddCallConf.frame.size.height)];
@@ -1371,7 +1369,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [collectionConference setDataSource: self];
     [collectionConference setBackgroundColor:[UIColor clearColor]];
     
-    [btnAddCallConf.titleLabel setFont: textFont];
     [btnAddCallConf setTitle:[appDelegate.localization localizedStringForKey:CN_TEXT_ADD_CONFERENCE]
                     forState:UIControlStateNormal];
     [btnAddCallConf setBackgroundImage:[UIImage imageNamed:@"btn_add_conf_over.png"]
@@ -1382,7 +1379,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                        action:@selector(onAddCallForConference)
              forControlEvents:UIControlEventTouchUpInside];
     
-    [btnEndCallConf.titleLabel setFont: textFont];
     [btnEndCallConf setTitle: [appDelegate.localization localizedStringForKey:CN_TEXT_END_CONFERENCE]
                     forState:UIControlStateNormal];
     [btnEndCallConf setBackgroundImage:[UIImage imageNamed:@"btn_end_conf_over.png"]
@@ -1592,7 +1588,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)checkToDownloadAvatarOfUser: (NSString *)phone
 {
-    if (phone.length > 9) {
+    if (phone.length > 9 || [phone isEqualToString:hotline]) {
         return;
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
