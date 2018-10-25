@@ -84,6 +84,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
     
+    UIView *view = [[UIView alloc] init];
+    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self.view);
+    }];
+    
     //  Added by Khai Le on 30/09/2018
     [self checkAccountForApp];
     
@@ -648,11 +653,15 @@ static UICompositeViewDescription *compositeDescription = nil;
         LinphoneRegistrationState state = [object intValue];
         switch (state) {
             case LinphoneRegistrationOk:{
+                DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: State is %@", __FUNCTION__, @"LinphoneRegistrationOk"]);
+                
                 _lbStatus.textColor = UIColor.greenColor;
                 _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Online"];
                 break;
             }
             case LinphoneRegistrationProgress:{
+                DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: State is %@", __FUNCTION__, @"LinphoneRegistrationProgress"]);
+                
                 _lbStatus.textColor = UIColor.whiteColor;
                 _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Connecting"];
                 break;
@@ -660,6 +669,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             case LinphoneRegistrationNone:
             case LinphoneRegistrationCleared:
             case LinphoneRegistrationFailed:{
+                DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: State is %@", __FUNCTION__, @"LinphoneRegistrationFailed"]);
+                
                 _lbStatus.textColor = UIColor.orangeColor;
                 _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Offline"];
                 break;

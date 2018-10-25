@@ -11,6 +11,7 @@
 #import "DDFileLogger.h"
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
+#import "DDLegacyMacros.h"
 
 @interface Constant : NSObject
 

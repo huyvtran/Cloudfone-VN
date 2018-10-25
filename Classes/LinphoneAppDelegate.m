@@ -360,12 +360,15 @@ void onUncaughtException(NSException* exception)
     
     NSString *messageSend = [NSString stringWithFormat:@"------------------------------\nDevice: %@\nOS Version: %@\nApp version: %@\nApp bundle ID: %@\n------------------------------\nAccount ID: %@\n------------------------------\nReason: %@\n------------------------------\n%@", device, osVersion, appVersion, bundleIdentifier, USERNAME, reason, crashContent];
     
+    DDLogInfo(@"%@", messageSend);
+    
     NSString *totalEmail = [NSString stringWithFormat:@"mailto:%@?subject=%@&body=%@", @"lekhai0212@gmail.com,cfreport@cloudfone.vn", [NSString stringWithFormat:@"Report crash from %@", USERNAME], messageSend];
     NSString *url = [totalEmail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
     UIApplication *app = [UIApplication sharedApplication];
 	UIApplicationState state = app.applicationState;
     
@@ -376,7 +379,7 @@ void onUncaughtException(NSException* exception)
     
     //  [Khai le - 25/10/2018]: Add write logs for app
     [self setupForWriteLogFileForApp];
-
+    DDLogInfo(@"\n-------------------------didFinishLaunchingWithOptions-------------------------\n");
     
     //  Khoi tao
     webService = [[WebServices alloc] init];
@@ -1437,7 +1440,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     switch (internetStatus)
     {
         case NotReachable: {
-            NSLog(@"The internet is down.");
+            DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"The internet is down!!!!"]);
+            
             _internetActive = false;
             [[NSNotificationCenter defaultCenter] postNotificationName:networkChanged
                                                                 object:nil];
@@ -1445,7 +1449,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"The internet is working via WIFI.");
+            DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"The internet is working via WIFI."]);
+            
             _internetActive = true;
             [[NSNotificationCenter defaultCenter] postNotificationName:networkChanged
                                                                 object:nil];
@@ -1453,7 +1458,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"The internet is working via WWAN.");
+            DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"The internet is working via WWAN."]);
+            
             _internetActive = true;
             [[NSNotificationCenter defaultCenter] postNotificationName:networkChanged
                                                                 object:nil];
@@ -1466,6 +1472,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 - (void)getContactsListForFirstLoad
 {
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s", __FUNCTION__]);
+    
     if (listContacts == nil) {
         listContacts = [[NSMutableArray alloc] init];
     }
@@ -1482,6 +1490,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             contactLoaded = YES;
             [[NSNotificationCenter defaultCenter] postNotificationName:finishLoadContacts
                                                                 object:nil];
+            DDLogInfo(@"Finish get contact from addressbook");
         });
     });
 }
@@ -2068,7 +2077,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     DDLogFileManagerDefault *documentsFileManager = [[DDLogFileManagerDefault alloc] initWithLogsDirectory:logFilePath];
     DDFileLogger *fileLogger = [[DDFileLogger alloc] initWithLogFileManager:documentsFileManager];
     
-    [fileLogger setMaximumFileSize:(1024 * 1)];
+    [fileLogger setMaximumFileSize:(1024 * 2 * 1024)];  //  2MB for each log file
     [fileLogger setRollingFrequency:(3600.0 * 24.0)];  // roll everyday
     [[fileLogger logFileManager] setMaximumNumberOfLogFiles:5];
     [fileLogger setLogFormatter:[[DDLogFileFormatterDefault alloc]init]];

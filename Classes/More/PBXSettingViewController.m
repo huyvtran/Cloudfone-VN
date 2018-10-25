@@ -389,20 +389,33 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)_btnSavePressed:(UIButton *)sender {
     [self.view endEditing: YES];
+    
+    if ([LinphoneManager instance].connectivity == none){
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    
     if ([_tfServerID.text isEqualToString:@""]) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Server ID can't empty"] duration:2.0 position:CSToastPositionCenter];
-    }else if ([_tfAccount.text isEqualToString:@""]){
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Account can't empty"] duration:2.0 position:CSToastPositionCenter];
-    }else if ([_tfPassword.text isEqualToString:@""]){
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Password can't empty"] duration:2.0 position:CSToastPositionCenter];
-    }else{
-        typeRegister = normalLogin;
-        
-        _icWaiting.hidden = NO;
-        [_icWaiting startAnimating];
-        
-        [self getInfoForPBXWithServerName: _tfServerID.text];
+        return;
     }
+    
+    if ([_tfAccount.text isEqualToString:@""]){
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Account can't empty"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    
+    if ([_tfPassword.text isEqualToString:@""]){
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Password can't empty"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    
+    typeRegister = normalLogin;
+    
+    _icWaiting.hidden = NO;
+    [_icWaiting startAnimating];
+    
+    [self getInfoForPBXWithServerName: _tfServerID.text];
 }
 
 - (void)closeKeyboard {
@@ -432,6 +445,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)getInfoForPBXWithServerName: (NSString *)serverName
 {
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: serverName = %@", __FUNCTION__, serverName]);
+    
     NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
     [jsonDict setObject:AuthUser forKey:@"AuthUser"];
     [jsonDict setObject:AuthKey forKey:@"AuthKey"];
@@ -457,6 +472,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - Webservice Delegate
 
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: API FUNCTION NAME is %@\nError: %@", __FUNCTION__, link, error]);
+    
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
     if ([link isEqualToString:getServerInfoFunc]) {
@@ -470,6 +487,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: response data for function %@: %@", __FUNCTION__, link, @[data]]);
+    
     [_icWaiting stopAnimating];
     if ([link isEqualToString:getServerInfoFunc]) {
         [self startLoginPBXWithInfo: data];
@@ -486,6 +505,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)startLoginPBXWithInfo: (NSDictionary *)info
 {
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, @[info]]);
+    
     NSString *pbxIp = [info objectForKey:@"ipAddress"];
     NSString *pbxPort = [info objectForKey:@"port"];
     NSString *serverName = [info objectForKey:@"serverName"];
@@ -505,10 +526,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         const MSList *proxies = linphone_core_get_proxy_config_list(LC);
         int curAccNum = ms_list_size(proxies);
         if (curAccNum > 0) {
-            NSLog(@"%@ - Exists %d accounts, please wait for us clear all before login your pbx account", SHOW_LOGS, curAccNum);
             [self removeAllAccountLoginedBefore];
         }else{
-            NSLog(@"%@ - Start login with PBX account %@ with server %@", SHOW_LOGS, accountPBX, serverPBX);
             [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:ipPBX port:portPBX];
         }
     }else{
@@ -530,6 +549,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         NSString *pbxPassword = [data objectAtIndex: 2];
         NSString *pbxPort = [data objectAtIndex: 3];
         
+        DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: pbxDomain = %@, pbxAccount = %@, pbxPort = %@", __FUNCTION__, pbxDomain, pbxAccount, pbxPort]);
+        
         BOOL success = [SipUtils loginSipWithDomain:pbxDomain username:pbxAccount password:pbxPassword port:pbxPort];
         if (success) {
             [SipUtils registerProxyWithUsername:pbxAccount password:pbxPassword domain:pbxDomain port:pbxPort];
@@ -548,7 +569,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 {
     switch (state) {
         case LinphoneRegistrationOk: {
-            NSLog(@"%@ - LinphoneRegistrationOk", SHOW_LOGS);
+            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationOk"]);
             
             if (typeRegister == normalLogin)
             {
@@ -579,32 +600,28 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneRegistrationNone:{
-            NSLog(@"LinphoneRegistrationNone");
+            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationNone"]);
+            
             break;
         }
         case LinphoneRegistrationCleared: {
-            NSLog(@"LinphoneRegistrationCleared");
+            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationCleared"]);
+            
             // _waitView.hidden = true;
             break;
         }
         case LinphoneRegistrationFailed:
         {
-            NSLog(@"%@ - LinphoneRegistrationFailed", SHOW_LOGS);
+            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationFailed"]);
+            
             //  Check if clear all account for login new pbx account
             const MSList *proxies = linphone_core_get_proxy_config_list(LC);
             int curAccNum = ms_list_size(proxies);
             if (curAccNum == 0) {
                 [self loginPBXWithNewAccountIfNeed];
             }else{
-                NSLog(@"%@ - Exists %d accounts, please wait for us clear all before login your pbx account", SHOW_LOGS, curAccNum);
                 [self removeAllAccountLoginedBefore];
             }
-//            const MSList *proxies = linphone_core_get_proxy_config_list(LC);
-//            int numAccount = ms_list_size(proxies);
-//            if (numAccount == 0) {
-//                [self whenClearPBXSuccessfully];
-//            }
-            
             
             break;
         }
@@ -755,6 +772,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     [reader stopScanning];
     
     [self dismissViewControllerAnimated:YES completion:^{
+        DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s", __FUNCTION__]);
+        
         [self getPBXInformationWithHashString: result];
     }];
 }
@@ -763,6 +782,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)getPBXInformationWithHashString: (NSString *)hashString
 {
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: hashString = %@", __FUNCTION__, hashString]);
+    
     NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
     [jsonDict setObject:AuthUser forKey:@"AuthUser"];
     [jsonDict setObject:AuthKey forKey:@"AuthKey"];
@@ -820,6 +841,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)removeAllAccountLoginedBefore {
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s", __FUNCTION__]);
+    
     linphone_core_clear_proxy_config(LC);
     [[LinphoneManager instance] removeAllAccounts];
 }
@@ -828,7 +851,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 {
     if (![AppUtils isNullOrEmpty: ipPBX] && ![AppUtils isNullOrEmpty: portPBX] && ![AppUtils isNullOrEmpty: accountPBX] && ![AppUtils isNullOrEmpty: passwordPBX])
     {
-        NSLog(@"%@ - Login after finished clear all account", SHOW_LOGS);
+        DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: accountPBX = %@, ipPBX = %@, portPBX = %@", __FUNCTION__, accountPBX, ipPBX, portPBX]);
+        
         [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:ipPBX port:portPBX];
     }
 }

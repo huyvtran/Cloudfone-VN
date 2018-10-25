@@ -111,6 +111,7 @@
 		15F2E600216B66830076CB1F /* ic_about.png in Resources */ = {isa = PBXBuildFile; fileRef = 15F2E5FF216B66830076CB1F /* ic_about.png */; };
 		15F2E603216B6DA60076CB1F /* CustomTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 15F2E602216B6DA60076CB1F /* CustomTextAttachment.m */; };
 		15F728741B16FF9A00A1C901 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 152F22351B15E889008C0621 /* libxml2.dylib */; };
+		18D49D6FAD0FBBF7CC45B8E3 /* Pods_liblinphoneTesterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD5165C8DCE6B127797DC1D3 /* Pods_liblinphoneTesterTests.framework */; };
 		1D3623260D0F684500981E51 /* LinphoneAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* LinphoneAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -671,7 +672,6 @@
 		63FD3F121CA17FA400E9AECC /* libmbedx509.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63FD3F081CA17F9100E9AECC /* libmbedx509.a */; };
 		70E542F313E147E3002BA2C0 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70E542F213E147E3002BA2C0 /* OpenGLES.framework */; };
 		70E542F513E147EB002BA2C0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70E542F413E147EB002BA2C0 /* QuartzCore.framework */; };
-		83205C0254416DF2C1C71F22 /* libPods-liblinphoneTester.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A8567BB4FA1FAB12736E65F /* libPods-liblinphoneTester.a */; };
 		840531DE1FCB07E300A27A03 /* SettingPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 840531DC1FCB07E100A27A03 /* SettingPopupView.m */; };
 		840531E71FCB097C00A27A03 /* ContactAddGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 840531E41FCB097800A27A03 /* ContactAddGroupCell.m */; };
 		840531E81FCB097C00A27A03 /* ContactAddGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 840531E51FCB097900A27A03 /* ContactAddGroupCell.xib */; };
@@ -967,9 +967,9 @@
 		8C300D9B1E40E0CC00728EF3 /* lime_ko@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C300D991E40E0CC00728EF3 /* lime_ko@2x.png */; };
 		8C73477C1D9BA3A00022EE8C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C73477B1D9BA3A00022EE8C /* UserNotifications.framework */; };
 		8CA2004C1D8158440095F859 /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CA2004B1D8158440095F859 /* PushKit.framework */; };
-		90BEE0D91131CC1B7E8EEE61 /* libPods-liblinphoneTesterTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB0D99C11CF373562664F7DF /* libPods-liblinphoneTesterTests.a */; };
 		9EC6C1E31DF969AA006C2FD2 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EC6C1E21DF969AA006C2FD2 /* libturbojpeg.a */; };
 		9EC6C1E41DF969D1006C2FD2 /* libturbojpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EC6C1E21DF969AA006C2FD2 /* libturbojpeg.a */; };
+		B2835A1B3594CFB260260928 /* Pods_liblinphoneTester.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A99737C187F05B077BB8E0 /* Pods_liblinphoneTester.framework */; };
 		C2401C36A419949AFB4C294D /* libPods-linphoneTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 888B75431B1859C14849ED48 /* libPods-linphoneTests.a */; };
 		C90FAA7915AF54E6002091CB /* HistoryDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = C90FAA7715AF54E6002091CB /* HistoryDetailsView.m */; };
 		D306459E1611EC2A00BB571E /* UILoadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D306459D1611EC2900BB571E /* UILoadingImageView.m */; };
@@ -2436,14 +2436,12 @@
 		8C73477B1D9BA3A00022EE8C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		8CA2004B1D8158440095F859 /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		96325A3C1E8EDDFB00334F86 /* linphone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = linphone.entitlements; sourceTree = "<group>"; };
-		9A8567BB4FA1FAB12736E65F /* libPods-liblinphoneTester.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-liblinphoneTester.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BFB1C1D7BDFF0DE3FA6F98B /* Pods-linphone.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-linphone.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-linphone/Pods-linphone.distribution.xcconfig"; sourceTree = "<group>"; };
 		9EC6C1E01DF96991006C2FD2 /* armv7-apple-darwin.ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "armv7-apple-darwin.ios"; path = "liblinphone-sdk/armv7-apple-darwin.ios"; sourceTree = "<group>"; };
 		9EC6C1E21DF969AA006C2FD2 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = "liblinphone-sdk/apple-darwin/lib/libturbojpeg.a"; sourceTree = "<group>"; };
 		A28FC15FB5CF7FDEBB7E5591 /* Pods-linphoneTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-linphoneTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-linphoneTests/Pods-linphoneTests.distribution.xcconfig"; sourceTree = "<group>"; };
 		A8D476BF4B2C434344F80933 /* Pods-liblinphoneTester.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-liblinphoneTester.release.xcconfig"; path = "Pods/Target Support Files/Pods-liblinphoneTester/Pods-liblinphoneTester.release.xcconfig"; sourceTree = "<group>"; };
 		A9CF20F6D49248C821AC6AC3 /* Pods-linphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-linphone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-linphone/Pods-linphone.debug.xcconfig"; sourceTree = "<group>"; };
-		AB0D99C11CF373562664F7DF /* libPods-liblinphoneTesterTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-liblinphoneTesterTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B356AB9046ADB887CA60A97D /* libPods-linphone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-linphone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C90FAA7615AF54E6002091CB /* HistoryDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryDetailsView.h; sourceTree = "<group>"; };
 		C90FAA7715AF54E6002091CB /* HistoryDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryDetailsView.m; sourceTree = "<group>"; };
@@ -2563,6 +2561,7 @@
 		D3F83EEA1582021700336684 /* CallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallView.m; sourceTree = "<group>"; };
 		D3F83F8C158229C500336684 /* PhoneMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneMainView.h; sourceTree = "<group>"; };
 		D3F83F8D15822ABD00336684 /* PhoneMainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneMainView.m; sourceTree = "<group>"; };
+		D4A99737C187F05B077BB8E0 /* Pods_liblinphoneTester.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_liblinphoneTester.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB515BC47E76CA358ABB98FE /* Pods-liblinphoneTesterTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-liblinphoneTesterTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-liblinphoneTesterTests/Pods-liblinphoneTesterTests.release.xcconfig"; sourceTree = "<group>"; };
 		F0181B6B18BF7B1200A9A357 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		F03A9B7E18C0D9C900C4D7FE /* libcunit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcunit.a; path = "liblinphone-sdk/apple-darwin/lib/libcunit.a"; sourceTree = "<group>"; };
@@ -2630,6 +2629,7 @@
 		F0BB8C4A193631B300974404 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		F0F952001A6AEB1000254160 /* linphoneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = linphoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0FF66AA1ACAEEB0008A4486 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = ../../../../Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = "<group>"; };
+		FD5165C8DCE6B127797DC1D3 /* Pods_liblinphoneTesterTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_liblinphoneTesterTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2726,7 +2726,7 @@
 			files = (
 				F08F118719C09C6B007D70C2 /* UIKit.framework in Frameworks */,
 				F08F118619C09C6B007D70C2 /* Foundation.framework in Frameworks */,
-				90BEE0D91131CC1B7E8EEE61 /* libPods-liblinphoneTesterTests.a in Frameworks */,
+				18D49D6FAD0FBBF7CC45B8E3 /* Pods_liblinphoneTesterTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2783,7 +2783,7 @@
 				F0BB8C2D1936245300974404 /* libvpx.a in Frameworks */,
 				F0BB8BD81936208100974404 /* UIKit.framework in Frameworks */,
 				F0BB8BD61936208100974404 /* Foundation.framework in Frameworks */,
-				83205C0254416DF2C1C71F22 /* libPods-liblinphoneTester.a in Frameworks */,
+				B2835A1B3594CFB260260928 /* Pods_liblinphoneTester.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3246,10 +3246,10 @@
 				2264B6D111200342002C2C53 /* SystemConfiguration.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				F03A9B7E18C0D9C900C4D7FE /* libcunit.a */,
-				9A8567BB4FA1FAB12736E65F /* libPods-liblinphoneTester.a */,
-				AB0D99C11CF373562664F7DF /* libPods-liblinphoneTesterTests.a */,
 				B356AB9046ADB887CA60A97D /* libPods-linphone.a */,
 				888B75431B1859C14849ED48 /* libPods-linphoneTests.a */,
+				D4A99737C187F05B077BB8E0 /* Pods_liblinphoneTester.framework */,
+				FD5165C8DCE6B127797DC1D3 /* Pods_liblinphoneTesterTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
