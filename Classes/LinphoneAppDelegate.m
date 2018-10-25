@@ -371,6 +371,13 @@ void onUncaughtException(NSException* exception)
     
     NSSetUncaughtExceptionHandler(&onUncaughtException);
     
+    //  [Khai le - 25/10/2018]: add log files folder
+    [NgnFileUtils createDirectoryAndSubDirectory:@"chats/records"];
+    
+    //  [Khai le - 25/10/2018]: Add write logs for app
+    [self setupForWriteLogFileForApp];
+
+    
     //  Khoi tao
     webService = [[WebServices alloc] init];
     webService.delegate = self;
@@ -2041,6 +2048,32 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 -(void)receivedResponeCode:(NSString *)link withCode:(int)responeCode {
     
+}
+
+//  [Khai le - 25/10/2018]: Add write logs for app
+- (void)setupForWriteLogFileForApp
+{
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    
+    //  create folder to contain log files
+    [NgnFileUtils createDirectoryAndSubDirectory: logsFolderName];
+    
+    //  set logs file path
+    NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDir = [documentPaths objectAtIndex:0];
+    
+    NSString *logFilePath = [documentsDir stringByAppendingPathComponent:logsFolderName];
+    
+    DDLogFileManagerDefault *documentsFileManager = [[DDLogFileManagerDefault alloc] initWithLogsDirectory:logFilePath];
+    DDFileLogger *fileLogger = [[DDFileLogger alloc] initWithLogFileManager:documentsFileManager];
+    
+    [fileLogger setMaximumFileSize:(1024 * 1)];
+    [fileLogger setRollingFrequency:(3600.0 * 24.0)];  // roll everyday
+    [[fileLogger logFileManager] setMaximumNumberOfLogFiles:5];
+    [fileLogger setLogFormatter:[[DDLogFileFormatterDefault alloc]init]];
+    
+    [DDLog addLogger:fileLogger];
 }
 
 @end

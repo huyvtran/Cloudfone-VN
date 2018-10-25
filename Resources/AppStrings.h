@@ -13,6 +13,9 @@
 #define HEADER_ICON_WIDTH 35.0
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"
 
+//  [Khai le - 25/10/2018]
+#define logsFolderName @"LogFiles"
+
 #define USERNAME ([[NSUserDefaults standardUserDefaults] objectForKey:key_login])
 #define PASSWORD ([[NSUserDefaults standardUserDefaults] objectForKey:key_password])
 #define SIP_DOMAIN ([[NSUserDefaults standardUserDefaults] objectForKey:key_ip])

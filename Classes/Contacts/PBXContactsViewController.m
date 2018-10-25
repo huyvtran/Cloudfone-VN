@@ -148,12 +148,6 @@
     }];
 }
 
-//  Click sync pbx contact
-- (void)clickSyncPBXContacts {
-
-    
-}
-
 #pragma mark - UITableview
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
