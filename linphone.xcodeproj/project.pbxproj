@@ -99,6 +99,8 @@
 		15A64DA5216CACD900D194BD /* ic_add_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A64DA3216CACD700D194BD /* ic_add_phone.png */; };
 		15D21BE42176E70000FEBED2 /* EditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15D21BE22176E6FF00FEBED2 /* EditProfileViewController.m */; };
 		15D21BE52176E70000FEBED2 /* EditProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15D21BE32176E70000FEBED2 /* EditProfileViewController.xib */; };
+		15E01DBB2182BC3700C0A40F /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15E01DB92182BC3700C0A40F /* AboutViewController.m */; };
+		15E01DBC2182BC3700C0A40F /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15E01DBA2182BC3700C0A40F /* AboutViewController.xib */; };
 		15E1D8CE21708AE900E23B2C /* add_contact_dialer.png in Resources */ = {isa = PBXBuildFile; fileRef = 15E1D8C721708AE700E23B2C /* add_contact_dialer.png */; };
 		15E641B22179779900A9E15E /* ic_phone_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 15E641AB2179779700A9E15E /* ic_phone_login.png */; };
 		15F2E5F5216B56F60076CB1F /* ic_setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 15F2E5F1216B56E30076CB1F /* ic_setting.png */; };
@@ -1259,6 +1261,9 @@
 		15D21BE12176E6FF00FEBED2 /* EditProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EditProfileViewController.h; path = More/EditProfileViewController.h; sourceTree = "<group>"; };
 		15D21BE22176E6FF00FEBED2 /* EditProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EditProfileViewController.m; path = More/EditProfileViewController.m; sourceTree = "<group>"; };
 		15D21BE32176E70000FEBED2 /* EditProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditProfileViewController.xib; path = More/EditProfileViewController.xib; sourceTree = "<group>"; };
+		15E01DB82182BC3700C0A40F /* AboutViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = More/AboutViewController.h; sourceTree = "<group>"; };
+		15E01DB92182BC3700C0A40F /* AboutViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = More/AboutViewController.m; sourceTree = "<group>"; };
+		15E01DBA2182BC3700C0A40F /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AboutViewController.xib; path = More/AboutViewController.xib; sourceTree = "<group>"; };
 		15E1D8C721708AE700E23B2C /* add_contact_dialer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_contact_dialer.png; sourceTree = "<group>"; };
 		15E641AB2179779700A9E15E /* ic_phone_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_phone_login.png; sourceTree = "<group>"; };
 		15F2E5F1216B56E30076CB1F /* ic_setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_setting.png; sourceTree = "<group>"; };
@@ -3882,6 +3887,9 @@
 				84C4436B1FBE01680015854C /* PolicyViewController.h */,
 				84C4436C1FBE01680015854C /* PolicyViewController.m */,
 				84C4436D1FBE01680015854C /* PolicyViewController.xib */,
+				15E01DB82182BC3700C0A40F /* AboutViewController.h */,
+				15E01DB92182BC3700C0A40F /* AboutViewController.m */,
+				15E01DBA2182BC3700C0A40F /* AboutViewController.xib */,
 			);
 			name = More;
 			sourceTree = "<group>";
@@ -5397,6 +5405,7 @@
 				633FEE691D3CD5590014B822 /* footer_contacts_disabled@2x.png in Resources */,
 				633FEE891D3CD5590014B822 /* linphone_logo@2x.png in Resources */,
 				8440F18F216BA82000BB559C /* mini_key_sharp.png in Resources */,
+				15E01DBC2182BC3700C0A40F /* AboutViewController.xib in Resources */,
 				633FEF071D3CD55A0014B822 /* options_start_conference_default@2x.png in Resources */,
 				633FEE151D3CD5590014B822 /* chat_send_default@2x.png in Resources */,
 				153D001B2164A67E007B69B3 /* numpad_star_default.png in Resources */,
@@ -5738,6 +5747,7 @@
 				633671611BCBAAD200BFCBDE /* ChatConversationCreateView.m in Sources */,
 				84E343A41FDAFEA90042D048 /* UploadPicture.m in Sources */,
 				84EFFE0F1FF3E6B60085A9F4 /* DGActivityIndicatorRotatingSquaresAnimation.m in Sources */,
+				15E01DBB2182BC3700C0A40F /* AboutViewController.m in Sources */,
 				84C443811FBE0F600015854C /* NewContactFromChatViewController.m in Sources */,
 				1556A8DC21817FC1002E8D26 /* Constant.m in Sources */,
 				634610061B61330300548952 /* UILabel+Boldify.m in Sources */,

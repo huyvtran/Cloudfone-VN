@@ -1109,6 +1109,7 @@
 "Privacy Policy" = "Chính sách bảo mật"
 "Introduction" = "Giới thiệu"
 "Send logs" = "Gửi logs"
+"About" = "Thông tin"
 
 "PBX account" = "Tài khoản PBX"
 "Change password" = "Đổi mật khẩu"

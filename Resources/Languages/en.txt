@@ -1080,6 +1080,7 @@
 "Privacy Policy" = "Privacy Policy"
 "Introduction" = "Introduction"
 "Send logs" = "Send logs"
+"About" = "About"
 
 "PBX account" = "PBX account"
 "Change password" = "Change password"

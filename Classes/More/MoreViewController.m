@@ -13,6 +13,7 @@
 #import "KSettingViewController.h"
 #import "PolicyViewController.h"
 #import "IntroduceViewController.h"
+#import "AboutViewController.h"
 #import "TabBarView.h"
 #import "StatusBarView.h"
 #import "NSData+Base64.h"
@@ -210,9 +211,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 //  Khoi tao du lieu cho view
 - (void)createDataForMenuView {
-    listTitle = [[NSArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Account settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Feedback"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Privacy Policy"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Introduction"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Send logs"], nil];
+    listTitle = [[NSArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Account settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Feedback"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Privacy Policy"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Introduction"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Send logs"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"About"], nil];
     
-    listIcon = [[NSArray alloc] initWithObjects: @"ic_setup.png", @"ic_setting.png", @"ic_support.png", @"ic_term.png", @"ic_introduce.png", @"ic_introduce.png", nil];
+    listIcon = [[NSArray alloc] initWithObjects: @"ic_setup.png", @"ic_setting.png", @"ic_support.png", @"ic_term.png", @"ic_introduce.png", @"ic_introduce.png", @"ic_introduce.png", nil];
 }
 
 #pragma mark - uitableview delegate
@@ -264,6 +265,15 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         case eIntroduce:{
             [[PhoneMainView instance] changeCurrentView:[IntroduceViewController compositeViewDescription]
+                                                   push:true];
+            break;
+        }
+        case eSendLogs:{
+            [self.view makeToast:@"We haven't supported this feature yet" duration:2.0 position:CSToastPositionCenter];
+            break;
+        }
+        case eAbout:{
+            [[PhoneMainView instance] changeCurrentView:[AboutViewController compositeViewDescription]
                                                    push:true];
             break;
         }

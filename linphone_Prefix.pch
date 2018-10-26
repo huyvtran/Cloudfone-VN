@@ -24,6 +24,7 @@
 #import "HMLocalization.h"
 #import "Masonry.h"
 #import "PhoneMainView.h"
+#import "UICompositeView.h"
 //  Utils
 #import "DeviceUtils.h"
 #import "AppUtils.h"
