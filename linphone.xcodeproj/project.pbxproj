@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		150F39A321840647000A8F37 /* ic_info.png in Resources */ = {isa = PBXBuildFile; fileRef = 150F399C21840644000A8F37 /* ic_info.png */; };
 		152F22361B15E889008C0621 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 152F22351B15E889008C0621 /* libxml2.dylib */; };
 		153D000D2164A67E007B69B3 /* numpad_sharp_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 153DFFFE2164A678007B69B3 /* numpad_sharp_default.png */; };
 		153D000E2164A67E007B69B3 /* numpad_four_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 153DFFFF2164A678007B69B3 /* numpad_four_default.png */; };
@@ -1159,6 +1160,7 @@
 /* Begin PBXFileReference section */
 		04384AF25CC5D4D3E47815DA /* Pods-linphoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-linphoneTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-linphoneTests/Pods-linphoneTests.release.xcconfig"; sourceTree = "<group>"; };
 		045B5CB218D72E9A0088350C /* libbzrtp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbzrtp.a; path = "liblinphone-sdk/apple-darwin/lib/libbzrtp.a"; sourceTree = "<group>"; };
+		150F399C21840644000A8F37 /* ic_info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_info.png; sourceTree = "<group>"; };
 		152F22351B15E889008C0621 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		153D00002164A679007B69B3 /* numpad_six_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = numpad_six_default.png; path = Resources/images/keypad/numpad_six_default.png; sourceTree = SOURCE_ROOT; };
 		153D00012164A679007B69B3 /* numpad_zero_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = numpad_zero_default.png; path = Resources/images/keypad/numpad_zero_default.png; sourceTree = SOURCE_ROOT; };
@@ -3380,6 +3382,7 @@
 				15F2E5FF216B66830076CB1F /* ic_about.png */,
 				15F2E5F1216B56E30076CB1F /* ic_setting.png */,
 				15F2E5F3216B56E60076CB1F /* ic_setup.png */,
+				150F399C21840644000A8F37 /* ic_info.png */,
 				15F2E5F4216B56F20076CB1F /* ic_support.png */,
 				15F2E5F2216B56E50076CB1F /* ic_term.png */,
 				159002D62168618D00CECB7A /* ic_call_incoming.png */,
@@ -4995,6 +4998,7 @@
 				84ECF9C2216679A70067B4B6 /* ic_keypad_act.png in Resources */,
 				63AADBFF1B6A0FF200AA16FD /* assistant_external_sip.rc in Resources */,
 				634610121B6140A500548952 /* CallOutgoingView.xib in Resources */,
+				150F39A321840647000A8F37 /* ic_info.png in Resources */,
 				633FEDC21D3CD5590014B822 /* call_hangup_default.png in Resources */,
 				84ECF9A921666C840067B4B6 /* decline_call_over.png in Resources */,
 				8442A37A1FB13D0D00F08F11 /* PBXContactsViewController.xib in Resources */,
