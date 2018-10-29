@@ -27,7 +27,7 @@
                     <rect key="frame" x="57" y="191" width="261" height="285"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="logo.png" id="pz0-nR-x0f" userLabel="logoImage">
+                        <imageView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="lauch_icon.png" id="pz0-nR-x0f" userLabel="logoImage">
                             <rect key="frame" x="32" y="26" width="197" height="150"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         </imageView>
@@ -48,8 +48,8 @@
         </view>
     </objects>
     <resources>
+        <image name="lauch_icon.png" width="626" height="626"/>
         <image name="launch_bg.png" width="1280" height="1280"/>
         <image name="launch_logo.png" width="513" height="97"/>
-        <image name="logo.png" width="1024" height="1024"/>
     </resources>
 </document>

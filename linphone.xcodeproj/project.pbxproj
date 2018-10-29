@@ -767,6 +767,7 @@
 		8489DED02160B16100A7A1DD /* NewSettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8489DECE2160B16100A7A1DD /* NewSettingCell.xib */; };
 		8489DED22160B2EC00A7A1DD /* icon-next.png in Resources */ = {isa = PBXBuildFile; fileRef = 8489DED12160B2EC00A7A1DD /* icon-next.png */; };
 		8489DED42160B5FA00A7A1DD /* right-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 8489DED32160B5FA00A7A1DD /* right-arrow.png */; };
+		84AA051E21855ADD008CA775 /* lauch_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AA051721855ADC008CA775 /* lauch_icon.png */; };
 		84AEA9241FC4FD5500DAA68A /* EditContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEA9221FC4FD5500DAA68A /* EditContactViewController.m */; };
 		84AEA9251FC4FD5500DAA68A /* EditContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AEA9231FC4FD5500DAA68A /* EditContactViewController.xib */; };
 		84B889E51FAF6C1D008D88C5 /* PhoneBookObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B889E41FAF6C1D008D88C5 /* PhoneBookObject.m */; };
@@ -2065,6 +2066,7 @@
 		8489DECE2160B16100A7A1DD /* NewSettingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = NewSettingCell.xib; path = AppUI/NewSettingCell.xib; sourceTree = "<group>"; };
 		8489DED12160B2EC00A7A1DD /* icon-next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-next.png"; sourceTree = "<group>"; };
 		8489DED32160B5FA00A7A1DD /* right-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right-arrow.png"; sourceTree = "<group>"; };
+		84AA051721855ADC008CA775 /* lauch_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lauch_icon.png; sourceTree = "<group>"; };
 		84AEA9211FC4FD5500DAA68A /* EditContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditContactViewController.h; path = Contacts/EditContactViewController.h; sourceTree = "<group>"; };
 		84AEA9221FC4FD5500DAA68A /* EditContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditContactViewController.m; path = Contacts/EditContactViewController.m; sourceTree = "<group>"; };
 		84AEA9231FC4FD5500DAA68A /* EditContactViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditContactViewController.xib; path = Contacts/EditContactViewController.xib; sourceTree = "<group>"; };
@@ -3363,6 +3365,7 @@
 			children = (
 				1556A8E02181C346002E8D26 /* launch_bg.png */,
 				1556A8DF2181C346002E8D26 /* launch_logo.png */,
+				84AA051721855ADC008CA775 /* lauch_icon.png */,
 				1556A8DD2181BE66002E8D26 /* logo.png */,
 				15906E3A217AEBCD000877A9 /* bg_button.png */,
 				159E08832179E9120056E2BB /* ic_checked.png */,
@@ -5540,6 +5543,7 @@
 				633FEE8D1D3CD55A0014B822 /* linphone_user~ipad@2x.png in Resources */,
 				8442A3651FB1321D00F08F11 /* MYRIADPRO-REGULAR.OTF in Resources */,
 				84E07EFF2025F39E0000CD12 /* SettingSoundCell.xib in Resources */,
+				84AA051E21855ADD008CA775 /* lauch_icon.png in Resources */,
 				633FEF0C1D3CD55A0014B822 /* options_transfer_call_disabled.png in Resources */,
 				633FEE911D3CD55A0014B822 /* list_details_over@2x.png in Resources */,
 				633FEE121D3CD5590014B822 /* chat_message_not_delivered.png in Resources */,

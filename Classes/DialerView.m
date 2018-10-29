@@ -49,11 +49,14 @@
     UILabel *lbSearchName;
     UILabel *lbSearchPhone;
     float hSearch;
+    
+    BOOL isNewSearch;
+    UITextView *tvSearch;
 }
 @end
 
 @implementation DialerView
-@synthesize _viewStatus, _imgLogoSmall, _lbAccount, _lbStatus;
+@synthesize _viewStatus, _imgLogoSmall, _lbAccount, _lbStatus, lbSearchResult;
 @synthesize _viewNumber;
 @synthesize _btnHotline, _btnAddCall, _btnTransferCall;
 
@@ -83,11 +86,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-    
-    UIView *view = [[UIView alloc] init];
-    [view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(self.view);
-    }];
     
     //  Added by Khai Le on 30/09/2018
     [self checkAccountForApp];
@@ -168,6 +166,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[super viewDidLoad];
     
     appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
+    isNewSearch = YES;
     
     [self autoLayoutForView];
     
@@ -587,62 +586,76 @@ static UICompositeViewDescription *compositeDescription = nil;
             }
             
             if (![name isEqualToString:@""] && ![phone isEqualToString:@""]) {
-                // Tô màu cho tên contact đầu tiên được tìm thấy
-                NSMutableAttributedString *nameColor = [[NSMutableAttributedString alloc] initWithString: name];
-                
-                NSRange firstRange = [nameForSearch rangeOfString: _addressField.text options:NSCaseInsensitiveSearch];
-                
-                if (firstRange.location != NSNotFound) {
-                    [nameColor addAttribute:NSForegroundColorAttributeName
-                                      value:[UIColor colorWithRed:(244/255.0) green:(179/255.0)
-                                                             blue:(15/255.0) alpha:1.0]
-                                      range:NSMakeRange(firstRange.location, _addressField.text.length)];
-                }else{
-                    [nameColor addAttribute:NSForegroundColorAttributeName
-                                      value:[UIColor colorWithRed:(20/255.0) green:(20/255.0)
-                                                             blue:(20/255.0) alpha:1.0]
-                                      range:NSMakeRange(0, name.length)];
-                }
-                lbSearchName.attributedText = nameColor;
-                
-                //  to mau cho phone number
-                NSMutableAttributedString *phoneColor = [[NSMutableAttributedString alloc] initWithString: phone];
-                NSRange phoneRange = [phone rangeOfString: _addressField.text options:NSCaseInsensitiveSearch];
-
-                if (phoneRange.location != NSNotFound) {
-                    [phoneColor addAttribute:NSForegroundColorAttributeName
-                                      value:[UIColor colorWithRed:(244/255.0) green:(179/255.0)
-                                                             blue:(15/255.0) alpha:1.0]
-                                      range:NSMakeRange(phoneRange.location, _addressField.text.length)];
-                }else{
-                    [phoneColor addAttribute:NSForegroundColorAttributeName
-                                       value:[UIColor colorWithRed:(20/255.0) green:(20/255.0)
-                                                              blue:(20/255.0) alpha:1.0]
-                                       range:NSMakeRange(0, phone.length)];
-                }
-                lbSearchPhone.attributedText = phoneColor;
-                
-                // setup avatar
-                if (isPBXContact) {
-                    if (![AppUtils isNullOrEmpty: avatar]) {
-                        imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
+                if (!isNewSearch) {
+                    // Tô màu cho tên contact đầu tiên được tìm thấy
+                    NSMutableAttributedString *nameColor = [[NSMutableAttributedString alloc] initWithString: name];
+                    
+                    NSRange firstRange = [nameForSearch rangeOfString: _addressField.text options:NSCaseInsensitiveSearch];
+                    
+                    if (firstRange.location != NSNotFound) {
+                        [nameColor addAttribute:NSForegroundColorAttributeName
+                                          value:[UIColor colorWithRed:(244/255.0) green:(179/255.0)
+                                                                 blue:(15/255.0) alpha:1.0]
+                                          range:NSMakeRange(firstRange.location, _addressField.text.length)];
                     }else{
-                        imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                        [nameColor addAttribute:NSForegroundColorAttributeName
+                                          value:[UIColor colorWithRed:(20/255.0) green:(20/255.0)
+                                                                 blue:(20/255.0) alpha:1.0]
+                                          range:NSMakeRange(0, name.length)];
                     }
-                }else{
-                    NSString *avatar = [NSDatabase getAvatarOfContactWithPhoneNumber: phone];
-                    if (![avatar isEqualToString:@""]) {
-                        imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
+                    lbSearchName.attributedText = nameColor;
+                    
+                    
+                    
+                    //  to mau cho phone number
+                    NSMutableAttributedString *phoneColor = [[NSMutableAttributedString alloc] initWithString: phone];
+                    NSRange phoneRange = [phone rangeOfString: _addressField.text options:NSCaseInsensitiveSearch];
+                    
+                    if (phoneRange.location != NSNotFound) {
+                        [phoneColor addAttribute:NSForegroundColorAttributeName
+                                           value:[UIColor colorWithRed:(244/255.0) green:(179/255.0)
+                                                                  blue:(15/255.0) alpha:1.0]
+                                           range:NSMakeRange(phoneRange.location, _addressField.text.length)];
                     }else{
-                        imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                        [phoneColor addAttribute:NSForegroundColorAttributeName
+                                           value:[UIColor colorWithRed:(20/255.0) green:(20/255.0)
+                                                                  blue:(20/255.0) alpha:1.0]
+                                           range:NSMakeRange(0, phone.length)];
                     }
+                    lbSearchPhone.attributedText = phoneColor;
+                    
+                    // setup avatar
+                    if (isPBXContact) {
+                        if (![AppUtils isNullOrEmpty: avatar]) {
+                            imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
+                        }else{
+                            imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                        }
+                    }else{
+                        NSString *avatar = [NSDatabase getAvatarOfContactWithPhoneNumber: phone];
+                        if (![avatar isEqualToString:@""]) {
+                            imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
+                        }else{
+                            imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                        }
+                    }
+                    searchView.hidden = NO;
+                }else{
+                    tvSearch.hidden = NO;
+                    tvSearch.attributedText = [self getSearchValueFromResult: listPhoneSearched];
+                    
+                    lbSearchResult.hidden = YES;
+                    lbSearchResult.attributedText = [self getSearchValueFromResult: listPhoneSearched];
                 }
-                searchView.hidden = NO;
             }else{
+                tvSearch.hidden = YES;
                 searchView.hidden = YES;
+                lbSearchResult.hidden = YES;
             }
         }else{
+            tvSearch.hidden = YES;
             searchView.hidden = YES;
+            lbSearchResult.hidden = YES;
         }
     }
 }
@@ -730,55 +743,100 @@ static UICompositeViewDescription *compositeDescription = nil;
     _lbStatus.userInteractionEnabled = YES;
     [_lbStatus addGestureRecognizer: tapOnStatus];
     
-    //  Number keypad
-    float wEndCall = 70.0;
-    float wIcon = 65.0;
-    float spaceMarginY = 10.0;
-    float spaceMarginX = 20.0;
-    if (!IS_IPHONE && !IS_IPOD) {
-        wEndCall = 100.0;
-        wIcon = 85.0;
-        spaceMarginY = 20.0;
-        spaceMarginX = 40.0;
-    }
+    //  Number view
+    [_viewNumber mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.top.equalTo(_viewStatus.mas_bottom);
+        make.height.mas_equalTo(100.0);
+    }];
     
-    float hKeypad = 4*wIcon + wEndCall + 6*spaceMarginY;
+    
+    [_addressField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewNumber).offset(10);
+        make.left.equalTo(self.view).offset(80);
+        make.right.equalTo(self.view).offset(-80);
+        make.height.mas_equalTo(60.0);
+    }];
+    _addressField.keyboardType = UIKeyboardTypePhonePad;
+    _addressField.enabled = YES;
+    _addressField.textAlignment = NSTextAlignmentCenter;
+    _addressField.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:45.0];
+    _addressField.adjustsFontSizeToFitWidth = YES;
+    _addressField.delegate = self;
+    
+    lbSearchResult.hidden = YES;
+    lbSearchResult.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:17.0];
+    [lbSearchResult mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewNumber).offset(10.0);
+        make.right.equalTo(_viewNumber).offset(-10.0);
+        make.top.equalTo(_addressField.mas_bottom);
+        make.height.mas_equalTo(30.0);
+    }];
+    
+    tvSearch = [[UITextView alloc] init];
+    tvSearch.backgroundColor = UIColor.clearColor;
+    tvSearch.editable = NO;
+    tvSearch.hidden = YES;
+    tvSearch.delegate = self;
+    [_viewNumber addSubview: tvSearch];
+    
+    [tvSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewNumber).offset(10.0);
+        make.right.equalTo(_viewNumber).offset(-10.0);
+        make.top.equalTo(_addressField.mas_bottom);
+        make.height.mas_equalTo(30.0);
+    }];
+    //  tvSearch.linkTextAttributes = @{NSUnderlineStyleAttributeName: NSUnderlineStyleNone};
+    
+    [_addContactButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_viewNumber).offset(10.0);
+        make.centerY.equalTo(_addressField.mas_centerY).offset(-3);
+        make.width.height.mas_equalTo(40.0);
+    }];
+    
+    
+    //  Number keypad
+    NSString *modelName = [DeviceUtils getModelsOfCurrentDevice];
+    float wIcon = [DeviceUtils getSizeOfKeypadButtonForDevice: modelName];
+    float spaceMarginY = [DeviceUtils getSpaceYBetweenKeypadButtonsForDevice: modelName];
+    float spaceMarginX = [DeviceUtils getSpaceXBetweenKeypadButtonsForDevice: modelName];
+    
     _padView.backgroundColor = UIColor.clearColor;
     [_padView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_viewNumber.mas_bottom);
         make.left.right.bottom.equalTo(self.view);
-        make.height.mas_equalTo(hKeypad);
     }];
     
-    //  first layer
-    _twoButton.layer.cornerRadius = wIcon/2;
-    _twoButton.clipsToBounds = YES;
-    [_twoButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_padView).offset(spaceMarginY);
+    //  7, 8, 9
+    _eightButton.layer.cornerRadius = wIcon/2;
+    _eightButton.clipsToBounds = YES;
+    [_eightButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_padView.mas_centerX);
+        make.centerY.equalTo(_padView.mas_centerY);
         make.width.height.mas_equalTo(wIcon);
     }];
     
-    _oneButton.layer.cornerRadius = wIcon/2;
-    _oneButton.clipsToBounds = YES;
-    [_oneButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_twoButton.mas_top);
-        make.right.equalTo(_twoButton.mas_left).offset(-spaceMarginX);
+    _sevenButton.layer.cornerRadius = wIcon/2;
+    _sevenButton.clipsToBounds = YES;
+    [_sevenButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_eightButton.mas_top);
+        make.right.equalTo(_eightButton.mas_left).offset(-spaceMarginX);
         make.width.height.mas_equalTo(wIcon);
     }];
     
-    _threeButton.layer.cornerRadius = wIcon/2;
-    _threeButton.clipsToBounds = YES;
-    [_threeButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_twoButton.mas_top);
-        make.left.equalTo(_twoButton.mas_right).offset(spaceMarginX);
+    _nineButton.layer.cornerRadius = wIcon/2;
+    _nineButton.clipsToBounds = YES;
+    [_nineButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_eightButton.mas_top);
+        make.left.equalTo(_eightButton.mas_right).offset(spaceMarginX);
         make.width.height.mas_equalTo(wIcon);
     }];
     
-    //  second layer
+    //  4, 5, 6
     _fiveButton.layer.cornerRadius = wIcon/2;
     _fiveButton.clipsToBounds = YES;
     [_fiveButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_twoButton.mas_bottom).offset(spaceMarginY);
+        make.bottom.equalTo(_eightButton.mas_top).offset(-spaceMarginY);
         make.centerX.equalTo(_padView.mas_centerX);
         make.width.height.mas_equalTo(wIcon);
     }];
@@ -799,32 +857,33 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.height.mas_equalTo(wIcon);
     }];
     
-    //  third layer
-    _eightButton.layer.cornerRadius = wIcon/2;
-    _eightButton.clipsToBounds = YES;
-    [_eightButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_fiveButton.mas_bottom).offset(spaceMarginY);
+    //  1, 2, 3
+    _twoButton.backgroundColor = UIColor.clearColor;
+    _twoButton.layer.cornerRadius = wIcon/2;
+    _twoButton.clipsToBounds = YES;
+    [_twoButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(_fiveButton.mas_top).offset(-spaceMarginY);
         make.centerX.equalTo(_padView.mas_centerX);
         make.width.height.mas_equalTo(wIcon);
     }];
     
-    _sevenButton.layer.cornerRadius = wIcon/2;
-    _sevenButton.clipsToBounds = YES;
-    [_sevenButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_eightButton.mas_top);
-        make.right.equalTo(_eightButton.mas_left).offset(-spaceMarginX);
+    _oneButton.layer.cornerRadius = wIcon/2;
+    _oneButton.clipsToBounds = YES;
+    [_oneButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_twoButton.mas_top);
+        make.right.equalTo(_twoButton.mas_left).offset(-spaceMarginX);
         make.width.height.mas_equalTo(wIcon);
     }];
     
-    _nineButton.layer.cornerRadius = wIcon/2;
-    _nineButton.clipsToBounds = YES;
-    [_nineButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_eightButton.mas_top);
-        make.left.equalTo(_eightButton.mas_right).offset(spaceMarginX);
+    _threeButton.layer.cornerRadius = wIcon/2;
+    _threeButton.clipsToBounds = YES;
+    [_threeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_twoButton.mas_top);
+        make.left.equalTo(_twoButton.mas_right).offset(spaceMarginX);
         make.width.height.mas_equalTo(wIcon);
     }];
     
-    //  fourth layer
+    //  *, 0, #
     _zeroButton.layer.cornerRadius = wIcon/2;
     _zeroButton.clipsToBounds = YES;
     [_zeroButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -850,31 +909,28 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     //  fifth layer
-    _callButton.clipsToBounds = YES;
-    _callButton.layer.cornerRadius = wEndCall/2;
+    _callButton.layer.cornerRadius = wIcon/2;
     _callButton.clipsToBounds = YES;
     [_callButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_zeroButton.mas_bottom).offset(spaceMarginY);
         make.centerX.equalTo(_padView.mas_centerX);
-        make.width.height.mas_equalTo(wEndCall);
+        make.width.height.mas_equalTo(wIcon);
     }];
     
     //  transfer button
+    _btnTransferCall.layer.cornerRadius = wIcon/2;
     _btnTransferCall.clipsToBounds = YES;
     _btnTransferCall.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
                                                         blue:(235/255.0) alpha:1.0];
-    _btnTransferCall.layer.cornerRadius = wEndCall/2;
-    _btnTransferCall.clipsToBounds = YES;
     [_btnTransferCall mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.equalTo(_callButton);
     }];
     
     //  Add call button
+    _btnAddCall.layer.cornerRadius = wIcon/2;
     _btnAddCall.clipsToBounds = YES;
     _btnAddCall.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
                                                         blue:(235/255.0) alpha:1.0];
-    _btnAddCall.layer.cornerRadius = wEndCall/2;
-    _btnAddCall.clipsToBounds = YES;
     [_btnAddCall mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.equalTo(_callButton);
     }];
@@ -899,32 +955,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.top.equalTo(_callButton.mas_top);
         make.left.equalTo(_callButton.mas_right).offset(spaceMarginX);
         make.width.height.mas_equalTo(wIcon);
-    }];
-    
-    //  Number view
-    [_viewNumber mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self.view);
-        make.top.equalTo(_viewStatus.mas_bottom);
-        make.bottom.equalTo(_padView.mas_top);
-    }];
-    
-    [_addressField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_viewNumber).offset(20);
-        make.left.equalTo(self.view).offset(80);
-        make.right.equalTo(self.view).offset(-80);
-        make.height.mas_equalTo(60.0);
-    }];
-    _addressField.keyboardType = UIKeyboardTypePhonePad;
-    _addressField.enabled = YES;
-    _addressField.textAlignment = NSTextAlignmentCenter;
-    _addressField.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:45.0];
-    _addressField.adjustsFontSizeToFitWidth = YES;
-    _addressField.delegate = self;
-    
-    [_addContactButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_viewNumber).offset(10.0);
-        make.centerY.equalTo(_addressField.mas_centerY).offset(-3);
-        make.width.height.mas_equalTo(40.0);
     }];
     
     //  search contact
@@ -969,6 +999,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     lbSearchPhone.textColor = [UIColor colorWithRed:(20/255.0) green:(20/255.0)
                                                blue:(20/255.0) alpha:1.0];
     [searchView addSubview: lbSearchPhone];
+    
     [lbSearchPhone mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(lbSearchName);
         make.top.equalTo(lbSearchName.mas_bottom);
@@ -1176,6 +1207,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
+//  Sẽ duyệt trong kết quả search, contact nào có đầy đủ tên và số phone sẽ đc chọn
 - (NSArray *)getValidResultFromSearchResult
 {
     NSString *name = @"";
@@ -1230,11 +1262,142 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
+- (NSAttributedString *)getSearchValueFromResult: (NSArray *)searchs
+{
+    NSString *name = @"";
+    NSString *phone = @"";
+    
+    UIFont *font = [UIFont fontWithName:MYRIADPRO_BOLD size:16.0];
+    NSMutableAttributedString *attrResult = [[NSMutableAttributedString alloc] init];
+    
+    if (searchs.count == 1) {
+        id searchObj = [listPhoneSearched firstObject];
+        if ([searchObj isKindOfClass:[PBXContact class]]) {
+            name = [(PBXContact *)searchObj _name];
+            phone = [(PBXContact *)searchObj _number];
+        }else{
+            NSArray *tmpArr = [searchObj componentsSeparatedByString:@"|"];
+            if (tmpArr.count >= 3) {
+                name = [tmpArr firstObject];
+                phone = [tmpArr lastObject];
+            }
+        }
+        [attrResult appendAttributedString:[[NSAttributedString alloc] initWithString: name]];
+        [attrResult addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, name.length)];
+        [attrResult addAttribute: NSLinkAttributeName value:phone range: NSMakeRange(0, name.length)];
+    }else if (searchs.count == 2)
+    {
+        id firstContact = [listPhoneSearched firstObject];
+        if ([firstContact isKindOfClass:[PBXContact class]]) {
+            name = [(PBXContact *)firstContact _name];
+        }else{
+            NSArray *tmpArr = [firstContact componentsSeparatedByString:@"|"];
+            if (tmpArr.count >= 3) {
+                name = [tmpArr firstObject];
+            }
+        }
+        [attrResult appendAttributedString:[[NSAttributedString alloc] initWithString: name]];
+        [attrResult addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, name.length)];
+        [attrResult addAttribute: NSLinkAttributeName value:phone range: NSMakeRange(0, name.length)];
+        
+        name = @"";
+        phone = @"";
+        
+        id secondContact = [listPhoneSearched lastObject];
+        if ([secondContact isKindOfClass:[PBXContact class]]) {
+            name = [(PBXContact *)secondContact _name];
+        }else{
+            NSArray *tmpArr = [secondContact componentsSeparatedByString:@"|"];
+            if (tmpArr.count >= 3) {
+                name = [tmpArr firstObject];
+            }
+        }
+        NSString *strOR = [NSString stringWithFormat:@" %@ ", [appDelegate.localization localizedStringForKey:@"or"]];
+        [attrResult appendAttributedString:[[NSAttributedString alloc] initWithString: strOR]];
+        
+        NSMutableAttributedString *secondAttr = [[NSMutableAttributedString alloc] initWithString: name];
+        [secondAttr addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, name.length)];
+        [secondAttr addAttribute: NSLinkAttributeName value:phone range: NSMakeRange(0, name.length)];
+        [attrResult appendAttributedString:secondAttr];
+    }else{
+        
+        id searchObj = [listPhoneSearched firstObject];
+        if ([searchObj isKindOfClass:[PBXContact class]]) {
+            name = [(PBXContact *)searchObj _name];
+            phone = [(PBXContact *)searchObj _number];
+        }else{
+            NSArray *tmpArr = [searchObj componentsSeparatedByString:@"|"];
+            if (tmpArr.count >= 3) {
+                name = [tmpArr firstObject];
+                phone = [tmpArr lastObject];
+            }
+        }
+        
+        NSMutableAttributedString * str1 = [[NSMutableAttributedString alloc] initWithString:name];
+        [str1 addAttribute: NSLinkAttributeName value:phone range: NSMakeRange(0, name.length)];
+        [str1 addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleNone) range:NSMakeRange(0, name.length)];
+        [str1 addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, name.length)];
+        [attrResult appendAttributedString:str1];
+        
+        NSString *strAND = [NSString stringWithFormat:@" %@ ", [appDelegate.localization localizedStringForKey:@"and"]];
+        NSMutableAttributedString * attrAnd = [[NSMutableAttributedString alloc] initWithString:strAND];
+        [attrAnd addAttribute: NSFontAttributeName value: [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0]
+                        range: NSMakeRange(0, strAND.length)];
+        [attrResult appendAttributedString:attrAnd];
+        
+        NSString *strOthers = [NSString stringWithFormat:@"%lu %@", searchs.count-1, [appDelegate.localization localizedStringForKey:@"others"]];
+        NSMutableAttributedString * str2 = [[NSMutableAttributedString alloc] initWithString:strOthers];
+        [str2 addAttribute: NSLinkAttributeName value: @"others" range: NSMakeRange(0, strOthers.length)];
+        [str2 addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleNone) range:NSMakeRange(0, strOthers.length)];
+        [str2 addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, strOthers.length)];
+        [attrResult appendAttributedString:str2];
+    }
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setAlignment:NSTextAlignmentCenter];
+    [attrResult addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attrResult.string.length)];
+    
+    return attrResult;
+}
+
+//  Sẽ duyệt trong kết quả search, contact nào có đầy đủ tên và số phone sẽ đc chọn
+- (NSArray *)convertContentToArrayValue: (NSString *)content
+{
+    NSString *name = @"";
+    NSString *phone = @"";
+    NSString *nameForSearch = @"";
+    
+    NSArray *tmpArr = [content componentsSeparatedByString:@"|"];
+    if (tmpArr.count >= 3) {
+        name = [tmpArr firstObject];
+        phone = [tmpArr lastObject];
+        nameForSearch = [tmpArr objectAtIndex: 1];
+        
+        if (![name isEqualToString:@""] && ![phone isEqualToString:@""] && ![nameForSearch isEqualToString:@""]) {
+            return @[name, nameForSearch, phone];
+        }
+    }
+    
+    return @[@"", @"", @""];
+}
+
 #pragma mark - UIAlertview Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1){
         [[PhoneMainView instance] changeCurrentView:[PBXSettingViewController compositeViewDescription] push:YES];
     }
+}
+
+#pragma mark - UITextview delegate
+-(BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange{
+    // Call your method here.
+    if (![URL.absoluteString containsString:[appDelegate.localization localizedStringForKey:@"others"]]) {
+        _addressField.text = URL.absoluteString;
+        tvSearch.hidden = YES;
+    }else{
+        NSLog(@"OTHERSSSSSSSSSS");
+    }
+    return NO;
 }
 
 

@@ -13,6 +13,27 @@
 #define HEADER_ICON_WIDTH 35.0
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"
 
+#define simulator       @"x86_64"
+#define Iphone6         @"iPhone7,2"
+#define Iphone6_Plus    @"iPhone7,1"
+#define Iphone6s        @"iPhone8,1"
+#define Iphone6s_Plus   @"iPhone8,2"
+#define IphoneSE        @"iPhone8,4"
+#define Iphone7_1       @"iPhone9,1"
+#define Iphone7_2       @"iPhone9,3"
+#define Iphone7_Plus1   @"iPhone9,2"
+#define Iphone7_Plus2   @"iPhone9,4"
+#define Iphone8_1       @"iPhone10,1"
+#define Iphone8_2       @"iPhone10,4"
+#define Iphone8_Plus1   @"iPhone10,2"
+#define Iphone8_Plus2   @"iPhone10,5"
+#define IphoneX_1       @"iPhone10,3"
+#define IphoneX_2       @"iPhone10,6"
+#define IphoneXR        @"iPhone11,8"
+#define IphoneXS        @"iPhone11,2"
+#define IphoneXS_Max1   @"iPhone11,6"
+#define IphoneXS_Max2   @"iPhone11,4"
+
 //  [Khai le - 25/10/2018]
 #define logsFolderName @"LogFiles"
 

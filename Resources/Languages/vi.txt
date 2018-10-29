@@ -1196,3 +1196,7 @@
 "Your avatar has been uploaded success" = "Ảnh đại diện của bạn đã được tải lên thành công"
 "Your avatar has been uploaded removed" = "Ảnh đại diện của bạn đã được xoá thành công"
 "This feature have not supported yet. Please try later!" = "Tính năng này chưa được hỗ trợ. Vui lòng thử lại sau!"
+
+"and" = "và"
+"or" = "hoặc"
+"others" = "người khác"

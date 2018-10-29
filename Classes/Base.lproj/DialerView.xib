@@ -29,6 +29,7 @@
                 <outlet property="fourButton" destination="30" id="194"/>
                 <outlet property="hashButton" destination="41" id="4Vx-Tl-ywI"/>
                 <outlet property="landscapeView" destination="171" id="mdM-t5-k4V"/>
+                <outlet property="lbSearchResult" destination="7c8-q1-Nmc" id="RoY-ff-LOg"/>
                 <outlet property="nineButton" destination="36" id="200"/>
                 <outlet property="oneButton" destination="38" id="191"/>
                 <outlet property="padView" destination="180" id="bxG-9v-Pvj"/>
@@ -89,7 +90,6 @@
                                     <accessibility key="accessibilityConfiguration" label="Add to contact"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <state key="normal" backgroundImage="add_contact_dialer.png"/>
-                                    <state key="disabled" image="contact_add_disabled.png"/>
                                     <connections>
                                         <action selector="onAddContactClick:" destination="-1" eventType="touchUpInside" id="230"/>
                                     </connections>
@@ -107,6 +107,13 @@
                                         <outlet property="delegate" destination="-1" id="190"/>
                                     </connections>
                                 </textField>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7c8-q1-Nmc">
+                                    <rect key="frame" x="160" y="18" width="0.0" height="0.0"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                         </view>
                         <view contentMode="scaleToFill" misplaced="YES" id="180" userLabel="pad">
@@ -358,7 +365,7 @@
             <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="649" y="-307"/>
+            <point key="canvasLocation" x="311" y="-609"/>
         </view>
     </objects>
     <resources>
@@ -372,7 +379,6 @@
         <image name="call_alt_back_disabled.png" width="51" height="36"/>
         <image name="call_default.png" width="201" height="201"/>
         <image name="call_hover.png" width="201" height="201"/>
-        <image name="contact_add_disabled.png" width="34" height="29"/>
         <image name="hotline_default.png" width="201" height="201"/>
         <image name="hotline_hover.png" width="201" height="201"/>
         <image name="ic_logo" width="200" height="200"/>

@@ -26,7 +26,7 @@
 
 @class UICallButton;
 @interface DialerView
-	: TPMultiLayoutViewController <UITextFieldDelegate, UICompositeViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UICallButtonDelegate, UIAlertViewDelegate> {
+	: TPMultiLayoutViewController <UITextFieldDelegate, UICompositeViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UICallButtonDelegate, UIAlertViewDelegate, UITextViewDelegate> {
 }
 
 
@@ -58,6 +58,7 @@
 @property (weak, nonatomic) IBOutlet UIView *_viewNumber;
 @property(nonatomic, strong) IBOutlet UITextField *addressField;
 @property(nonatomic, strong) IBOutlet UIButton *addContactButton;
+@property (weak, nonatomic) IBOutlet UILabel *lbSearchResult;
 
 @property (weak, nonatomic) IBOutlet UIButton *_btnAddCall;
 @property (weak, nonatomic) IBOutlet UIButton *_btnTransferCall;
