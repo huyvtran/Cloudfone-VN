@@ -89,6 +89,7 @@
 		15906E38217AEA1E000877A9 /* button_back_dialer_hover.png in Resources */ = {isa = PBXBuildFile; fileRef = 15906E36217AEA1B000877A9 /* button_back_dialer_hover.png */; };
 		15906E39217AEA1E000877A9 /* button_back_dialer.png in Resources */ = {isa = PBXBuildFile; fileRef = 15906E37217AEA1C000877A9 /* button_back_dialer.png */; };
 		15906E3B217AEBCF000877A9 /* bg_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 15906E3A217AEBCD000877A9 /* bg_button.png */; };
+		15932B6B2186AF8700F53B90 /* SearchContactPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15932B6A2186AF8700F53B90 /* SearchContactPopupView.m */; };
 		159E0871217984BD0056E2BB /* RegisterPBXWithPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */; };
 		159E0879217984F00056E2BB /* RegisterPBXWithPhoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */; };
 		159E08842179E9130056E2BB /* ic_not_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 159E08822179E9110056E2BB /* ic_not_check.png */; };
@@ -1250,6 +1251,8 @@
 		15906E36217AEA1B000877A9 /* button_back_dialer_hover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_back_dialer_hover.png; path = Resources/images/keypad/button_back_dialer_hover.png; sourceTree = SOURCE_ROOT; };
 		15906E37217AEA1C000877A9 /* button_back_dialer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_back_dialer.png; path = Resources/images/keypad/button_back_dialer.png; sourceTree = SOURCE_ROOT; };
 		15906E3A217AEBCD000877A9 /* bg_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_button.png; sourceTree = "<group>"; };
+		15932B692186AF8700F53B90 /* SearchContactPopupView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SearchContactPopupView.h; path = AppUI/SearchContactPopupView.h; sourceTree = "<group>"; };
+		15932B6A2186AF8700F53B90 /* SearchContactPopupView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SearchContactPopupView.m; path = AppUI/SearchContactPopupView.m; sourceTree = "<group>"; };
 		159E086F217984BD0056E2BB /* RegisterPBXWithPhoneView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RegisterPBXWithPhoneView.h; path = AppUI/RegisterPBXWithPhoneView.h; sourceTree = "<group>"; };
 		159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RegisterPBXWithPhoneView.m; path = AppUI/RegisterPBXWithPhoneView.m; sourceTree = "<group>"; };
 		159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RegisterPBXWithPhoneView.xib; path = AppUI/RegisterPBXWithPhoneView.xib; sourceTree = "<group>"; };
@@ -4098,6 +4101,8 @@
 				15857C06216E136300DB5237 /* TypePhoneCell.xib */,
 				15857C07216E136400DB5237 /* TypePhonePopupView.h */,
 				15857C03216E136100DB5237 /* TypePhonePopupView.m */,
+				15932B692186AF8700F53B90 /* SearchContactPopupView.h */,
+				15932B6A2186AF8700F53B90 /* SearchContactPopupView.m */,
 				8489DECC2160B16100A7A1DD /* NewSettingCell.h */,
 				8489DECD2160B16100A7A1DD /* NewSettingCell.m */,
 				8489DECE2160B16100A7A1DD /* NewSettingCell.xib */,
@@ -5879,6 +5884,7 @@
 				570742611D5A09B8004B9C84 /* ShopView.m in Sources */,
 				63F1DF4F1BCE985F00EDED90 /* UICallConferenceCell.m in Sources */,
 				D37DC6C11594AE1800B2A5EB /* LinphoneCoreSettingsStore.m in Sources */,
+				15932B6B2186AF8700F53B90 /* SearchContactPopupView.m in Sources */,
 				63CD4B4F1A5AAC8C00B84282 /* DTAlertView.m in Sources */,
 				84EFFE131FF3E6B60085A9F4 /* DGActivityIndicatorLineScalePulseOutRapidAnimation.m in Sources */,
 				D3EA53FD159850E80037DC6B /* LinphoneManager.m in Sources */,
