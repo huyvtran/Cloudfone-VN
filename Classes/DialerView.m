@@ -370,6 +370,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         _addContactButton.hidden = YES;
         searchView.hidden = YES;
+        lbSearchResult.hidden = YES;
     }
 }
 
@@ -377,6 +378,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     _addressField.text = @"";
     _addContactButton.hidden = YES;
     searchView.hidden = YES;
+    lbSearchResult.hidden = YES;
 }
 
 - (void)onZeroLongClick:(id)sender {
@@ -1395,11 +1397,14 @@ static UICompositeViewDescription *compositeDescription = nil;
         _addressField.text = URL.absoluteString;
         tvSearch.hidden = YES;
     }else{
-        popupSearchContacts = [[SearchContactPopupView alloc] init];
+        float totalHeight = listPhoneSearched.count * 60.0;
+        if (totalHeight > SCREEN_HEIGHT - 50.0*2) {
+            totalHeight = SCREEN_HEIGHT - 50.0*2;
+        }
+        popupSearchContacts = [[SearchContactPopupView alloc] initWithFrame:CGRectMake(30.0, (SCREEN_HEIGHT-50.0)/2, SCREEN_WIDTH-60.0, totalHeight)];
         popupSearchContacts.contacts = listPhoneSearched;
+        [popupSearchContacts.tbContacts reloadData];
         [popupSearchContacts showInView:appDelegate.window animated:YES];
-        
-        NSLog(@"OTHERSSSSSSSSSS");
     }
     return NO;
 }
