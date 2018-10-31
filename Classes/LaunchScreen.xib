@@ -24,8 +24,8 @@
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </imageView>
                 <view contentMode="scaleAspectFit" misplaced="YES" id="4JK-Mw-ZzG">
-                    <rect key="frame" x="57" y="191" width="261" height="285"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <rect key="frame" x="57" y="64" width="261" height="285"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="lauch_icon.png" id="pz0-nR-x0f" userLabel="logoImage">
                             <rect key="frame" x="32" y="26" width="197" height="150"/>

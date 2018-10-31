@@ -81,6 +81,12 @@
     }
     address = [AppUtils removeAllSpecialInString: address];
     
+    BOOL success = [SipUtils makeCallWithPhoneNumber: address];
+    if (!success) {
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Can not make call. Please check your network connection or you have not signned your account yet"] duration:3.0 position:CSToastPositionCenter];
+    }
+    return;
+    
 	if ([address length] > 0) {
 		LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:address];
 		[LinphoneManager.instance call:addr];
