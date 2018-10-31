@@ -34,7 +34,6 @@
 
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
-#import "Masonry.h"
 #import "PBXContact.h"
 
 @interface DialerView (){
@@ -52,6 +51,7 @@
     
     BOOL isNewSearch;
     UITextView *tvSearch;
+    SearchContactPopupView *popupSearchContacts;
 }
 @end
 
@@ -1401,6 +1401,10 @@ static UICompositeViewDescription *compositeDescription = nil;
         _addressField.text = URL.absoluteString;
         tvSearch.hidden = YES;
     }else{
+        popupSearchContacts = [[SearchContactPopupView alloc] init];
+        popupSearchContacts.contacts = listPhoneSearched;
+        [popupSearchContacts showInView:appDelegate.window animated:YES];
+        
         NSLog(@"OTHERSSSSSSSSSS");
     }
     return NO;

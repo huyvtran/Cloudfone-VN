@@ -23,6 +23,7 @@
 #import "UICamSwitch.h"
 #import "UICallButton.h"
 #import "UIDigitButton.h"
+#import "SearchContactPopupView.h"
 
 @class UICallButton;
 @interface DialerView

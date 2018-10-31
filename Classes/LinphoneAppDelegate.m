@@ -1564,55 +1564,62 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             [[NSUserDefaults standardUserDefaults] synchronize];
             continue;
         }
-        
-        ContactObject *aContact = [[ContactObject alloc] init];
-        aContact.person = aPerson;
-        aContact._id_contact = idOfContact;
-        aContact._fullName = [AppUtils getNameOfContact: aPerson];
-        NSArray *nameInfo = [AppUtils getFirstNameAndLastNameOfContact: aPerson];
-        aContact._firstName = [nameInfo objectAtIndex: 0];
-        aContact._lastName = [nameInfo objectAtIndex: 1];
-        
-        if (![aContact._fullName isEqualToString:@""]) {
-            NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: aContact._fullName];
-            aContact._nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
-        }
-        
-        //  Email
-        ABMultiValueRef map = ABRecordCopyValue(aPerson, kABPersonEmailProperty);
-        if (map) {
-            for (int i = 0; i < ABMultiValueGetCount(map); ++i) {
-                ABMultiValueIdentifier identifier = ABMultiValueGetIdentifierAtIndex(map, i);
-                NSInteger index = ABMultiValueGetIndexForIdentifier(map, identifier);
-                if (index != -1) {
-                    NSString *valueRef = CFBridgingRelease(ABMultiValueCopyValueAtIndex(map, index));
-                    if (valueRef != NULL && ![valueRef isEqualToString:@""]) {
-                        //  just get one email for contact
-                        aContact._email = valueRef;
-                        break;
+        //  [Khai le - 29/10/2018]: Check if contact has phone numbers
+        NSString *fullname = [AppUtils getNameOfContact: aPerson];
+        if (![AppUtils isNullOrEmpty: fullname])
+        {
+            NSMutableArray *listPhone = [self getListPhoneOfContactPerson: aPerson withName: fullname];
+            if (listPhone != nil && listPhone.count > 0) {
+                ContactObject *aContact = [[ContactObject alloc] init];
+                aContact.person = aPerson;
+                aContact._id_contact = idOfContact;
+                aContact._fullName = fullname;
+                NSArray *nameInfo = [AppUtils getFirstNameAndLastNameOfContact: aPerson];
+                aContact._firstName = [nameInfo objectAtIndex: 0];
+                aContact._lastName = [nameInfo objectAtIndex: 1];
+                
+                NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: aContact._fullName];
+                aContact._nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
+                
+                //  Email
+                ABMultiValueRef map = ABRecordCopyValue(aPerson, kABPersonEmailProperty);
+                if (map) {
+                    for (int i = 0; i < ABMultiValueGetCount(map); ++i) {
+                        ABMultiValueIdentifier identifier = ABMultiValueGetIdentifierAtIndex(map, i);
+                        NSInteger index = ABMultiValueGetIndexForIdentifier(map, identifier);
+                        if (index != -1) {
+                            NSString *valueRef = CFBridgingRelease(ABMultiValueCopyValueAtIndex(map, index));
+                            if (valueRef != NULL && ![valueRef isEqualToString:@""]) {
+                                //  just get one email for contact
+                                aContact._email = valueRef;
+                                break;
+                            }
+                        }
+                    }
+                    CFRelease(map);
+                }
+                
+                //  Company
+                CFStringRef companyRef  = ABRecordCopyValue(aPerson, kABPersonOrganizationProperty);
+                if (companyRef != NULL && companyRef != nil){
+                    NSString *company = (__bridge NSString *)companyRef;
+                    if (company != nil && ![company isEqualToString:@""]){
+                        aContact._company = company;
                     }
                 }
+                
+                aContact._avatar = [self getAvatarOfContact: aPerson];
+                aContact._listPhone = listPhone;
+                [listContacts addObject: aContact];
+                
+                //  Added by Khai Le on 09/10/2018
+                if (aContact._listPhone.count > 0) {
+                    ContactDetailObj *anItem = [aContact._listPhone firstObject];
+                    aContact._sipPhone = anItem._valueStr;
+                }
+            }else{
+                NSLog(@"This contact don't have any phone number!!!");
             }
-            CFRelease(map);
-        }
-        
-        //  Company
-        CFStringRef companyRef  = ABRecordCopyValue(aPerson, kABPersonOrganizationProperty);
-        if (companyRef != NULL && companyRef != nil){
-            NSString *company = (__bridge NSString *)companyRef;
-            if (company != nil && ![company isEqualToString:@""]){
-                aContact._company = company;
-            }
-        }
-        
-        aContact._avatar = [self getAvatarOfContact: aPerson];
-        aContact._listPhone = [self getListPhoneOfContactPerson: aPerson withName: aContact._fullName];
-        [listContacts addObject: aContact];
-        
-        //  Added by Khai Le on 09/10/2018
-        if (aContact._listPhone.count > 0) {
-            ContactDetailObj *anItem = [aContact._listPhone firstObject];
-            aContact._sipPhone = anItem._valueStr;
         }
     }
 }
