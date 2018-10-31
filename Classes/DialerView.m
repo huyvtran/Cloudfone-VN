@@ -479,7 +479,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnCallPressed:(UIButton *)sender {
-    check goi khi khong co network o khap noi
     [pressTimer invalidate];
     pressTimer = nil;
     pressTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self

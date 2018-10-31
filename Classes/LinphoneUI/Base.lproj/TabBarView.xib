@@ -103,7 +103,7 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-309" y="-81"/>
+            <point key="canvasLocation" x="-88" y="-198"/>
         </view>
         <view contentMode="scaleToFill" id="ni3-kk-RmM">
             <rect key="frame" x="0.0" y="0.0" width="90" height="333"/>
@@ -186,7 +186,7 @@
             </subviews>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="526" y="86.5"/>
+            <point key="canvasLocation" x="217" y="11"/>
         </view>
     </objects>
     <resources>

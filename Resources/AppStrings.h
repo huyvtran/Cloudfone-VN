@@ -14,6 +14,12 @@
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"
 
 #define simulator       @"x86_64"
+#define Iphone5_1       @"iPhone5,1"
+#define Iphone5_2       @"iPhone5,2"
+#define Iphone5c_1      @"iPhone5,3"
+#define Iphone5c_2      @"iPhone5,4"
+#define Iphone5s_1      @"iPhone6,1"
+#define Iphone5s_2      @"iPhone6,2"
 #define Iphone6         @"iPhone7,2"
 #define Iphone6_Plus    @"iPhone7,1"
 #define Iphone6s        @"iPhone8,1"
