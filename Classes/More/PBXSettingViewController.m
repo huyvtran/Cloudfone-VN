@@ -523,13 +523,13 @@ static UICompositeViewDescription *compositeDescription = nil;
         portPBX = pbxPort;
         
         //  Check to make sure if have any account, remove it before login
-        const MSList *proxies = linphone_core_get_proxy_config_list(LC);
-        int curAccNum = ms_list_size(proxies);
-        if (curAccNum > 0) {
-            [self removeAllAccountLoginedBefore];
-        }else{
+//        const MSList *proxies = linphone_core_get_proxy_config_list(LC);
+//        int curAccNum = ms_list_size(proxies);
+//        if (curAccNum > 0) {
+//            [self removeAllAccountLoginedBefore];
+//        }else{
             [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:ipPBX port:portPBX];
-        }
+//        }
     }else{
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your information again!"] duration:2.0 position:CSToastPositionCenter];
     }
@@ -570,6 +570,16 @@ static UICompositeViewDescription *compositeDescription = nil;
     switch (state) {
         case LinphoneRegistrationOk: {
             DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationOk"]);
+            linphone_core_clear_proxy_config(LC);
+            linphone_core_add_proxy_config(LC, proxy);
+            linphone_core_set_default_proxy_config(LC, proxy);
+            linphone_proxy_config_enable_register(proxy, YES);
+            linphone_proxy_config_register_enabled(proxy);
+            linphone_proxy_config_done(proxy);
+            
+            linphone_core_refresh_registers(LC);
+            
+            //  [self removeOthersProxyConfigAfterRegiseteredWithProxyConfig: proxy];
             
             if (typeRegister == normalLogin)
             {
@@ -612,16 +622,32 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         case LinphoneRegistrationFailed:
         {
-            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationFailed"]);
+            if (proxy != NULL) {
+                const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(proxy));
+                NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
+                if (defaultUsername != nil) {
+                    DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ for proxyUsername %@", __FUNCTION__, @"LinphoneRegistrationFailed", defaultUsername]);
+                    if ([defaultUsername isEqualToString: accountPBX]) {
+                        _icWaiting.hidden = YES;
+                        [_icWaiting stopAnimating];
+                        
+                        linphone_core_remove_proxy_config(LC, proxy);
+                        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your information again!"] duration:2.0 position:CSToastPositionCenter];
+                    }else{
+                        
+                    }
+                    NSLog(@"[KL] %@", [NSString stringWithFormat:@"\n%s: state is %@ for proxyUsername %@", __FUNCTION__, @"LinphoneRegistrationFailed", defaultUsername]);
+                }
+            }
             
             //  Check if clear all account for login new pbx account
-            const MSList *proxies = linphone_core_get_proxy_config_list(LC);
-            int curAccNum = ms_list_size(proxies);
-            if (curAccNum == 0) {
-                [self loginPBXWithNewAccountIfNeed];
-            }else{
-                [self removeAllAccountLoginedBefore];
-            }
+//            const MSList *proxies = linphone_core_get_proxy_config_list(LC);
+//            int curAccNum = ms_list_size(proxies);
+//            if (curAccNum == 0) {
+//                [self loginPBXWithNewAccountIfNeed];
+//            }else{
+//                [self removeAllAccountLoginedBefore];
+//            }
             
             break;
         }
@@ -936,6 +962,37 @@ static UICompositeViewDescription *compositeDescription = nil;
             _tfServerID.text = [[NSUserDefaults standardUserDefaults] objectForKey: PBX_ID];
         }
     }
+    
+    _tfAccount.text = @"14953";
+    _tfPassword.text = @"cloudfone@123";
+    _tfServerID.text = @"CF-BS-3165";
 }
+
+- (void)removeOthersProxyConfigAfterRegiseteredWithProxyConfig: (LinphoneProxyConfig *)defaultProxyConfig {
+    //`NSMutableArray *listRemove = [[NSMutableArray alloc] init];
+    const MSList *proxies = linphone_core_get_proxy_config_list(LC);
+    while (proxies) {
+        LinphoneProxyConfig *pConfig = (LinphoneProxyConfig *)proxies->data;
+        if (pConfig != NULL) {
+            if (defaultProxyConfig != pConfig) {
+                [self performSelector:@selector(removeProxyConfig:) withObject:(__bridge id _Nullable)(pConfig) afterDelay:1.0];
+                //  [listRemove addObject: pConfig];
+            }else{
+                NSLog(@"[kl]----Dung co xoa chu e nay nha");
+            }
+        }
+        proxies = proxies->next;
+    }
+}
+
+- (void)removeProxyConfig: (LinphoneProxyConfig *)proxy {
+    if (proxy != NULL) {
+        const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(proxy));
+        NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
+        NSLog(@"[kl] remove proxyUsername = %@", defaultUsername);
+        linphone_core_remove_proxy_config(LC, proxy);
+    }
+}
+
 
 @end
