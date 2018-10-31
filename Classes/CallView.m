@@ -1027,9 +1027,12 @@ static UICompositeViewDescription *compositeDescription = nil;
         wFeatureIcon = 100.0;
     }else{
         NSString *modelPhone = [DeviceUtils getModelsOfCurrentDevice];
-        if ([modelPhone isEqualToString:@"iPhone5,1"] || [modelPhone isEqualToString:@"iPhone5,2"] || [modelPhone isEqualToString:@"iPhone5,3"] || [modelPhone isEqualToString:@"iPhone5,4"] || [modelPhone isEqualToString:@"iPhone6,1"] || [modelPhone isEqualToString:@"iPhone6,2"] || [modelPhone isEqualToString:@"iPhone8,4"] || [modelPhone isEqualToString:@"x86_64"])
+        if ([modelPhone isEqualToString:@"iPhone5,1"] || [modelPhone isEqualToString:@"iPhone5,2"] || [modelPhone isEqualToString:@"iPhone5,3"] || [modelPhone isEqualToString:@"iPhone5,4"] || [modelPhone isEqualToString:@"iPhone6,1"] || [modelPhone isEqualToString:@"iPhone6,2"] || [modelPhone isEqualToString:@"iPhone8,4"])
         {
             wFeatureIcon = 60.0;
+        }else if ([modelPhone isEqualToString: IphoneX_1] || [modelPhone isEqualToString: IphoneX_2] || [modelPhone isEqualToString: IphoneXR] || [modelPhone isEqualToString: IphoneXS] || [modelPhone isEqualToString: IphoneXS_Max1] || [modelPhone isEqualToString: IphoneXS_Max2] || [modelPhone isEqualToString: simulator])
+        {
+            wFeatureIcon = 80.0;
         }
     }
     
@@ -1243,17 +1246,27 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)setupUIForView
 {
+    float bottomHangupIcon = 20.0;
+    
     float wEndCall = 70.0;
     float wAvatar = 120.0;
     float hDuration = 40.0;
     float margin = 10.0;
     NSString *modelPhone = [DeviceUtils getModelsOfCurrentDevice];
-    if ([modelPhone isEqualToString:@"iPhone5,1"] || [modelPhone isEqualToString:@"iPhone5,2"] || [modelPhone isEqualToString:@"iPhone5,3"] || [modelPhone isEqualToString:@"iPhone5,4"] || [modelPhone isEqualToString:@"iPhone6,1"] || [modelPhone isEqualToString:@"iPhone6,2"] || [modelPhone isEqualToString:@"iPhone8,4"] || [modelPhone isEqualToString:@"x86_64"])
+    
+    if ([modelPhone isEqualToString:@"iPhone5,1"] || [modelPhone isEqualToString:@"iPhone5,2"] || [modelPhone isEqualToString:@"iPhone5,3"] || [modelPhone isEqualToString:@"iPhone5,4"] || [modelPhone isEqualToString:@"iPhone6,1"] || [modelPhone isEqualToString:@"iPhone6,2"] || [modelPhone isEqualToString:@"iPhone8,4"])
     {
         wEndCall = 60.0;
         wAvatar = 100.0;
         hDuration = 30.0;
         margin = 5.0;
+    }else if ([modelPhone isEqualToString: IphoneX_1] || [modelPhone isEqualToString: IphoneX_2] || [modelPhone isEqualToString: IphoneXR] || [modelPhone isEqualToString: IphoneXS] || [modelPhone isEqualToString: IphoneXS_Max1] || [modelPhone isEqualToString: IphoneXS_Max2] || [modelPhone isEqualToString: simulator])
+    {
+        wEndCall = 80.0;
+        wAvatar = 120.0;
+        hDuration = 30.0;
+        margin = 5.0;
+        bottomHangupIcon = 40.0;
     }
     
     
@@ -1263,7 +1276,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     [_hangupButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(_callView).offset(-20);
+        make.bottom.equalTo(_callView).offset(-bottomHangupIcon);
         make.centerX.equalTo(_callView.mas_centerX);
         make.width.height.mas_equalTo(wEndCall);
     }];

@@ -455,7 +455,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnHotlinePressed:(UIButton *)sender {
-    [SipUtils makeCallWithPhoneNumber: hotline];
+    BOOL success = [SipUtils makeCallWithPhoneNumber: hotline];
+    if (!success) {
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Can not make call. Please check your network connection or you have not signned your account yet"] duration:3.0 position:CSToastPositionCenter];
+    }
 }
 
 - (IBAction)_btnNumberPressed:(id)sender {
@@ -476,6 +479,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnCallPressed:(UIButton *)sender {
+    check goi khi khong co network o khap noi
     [pressTimer invalidate];
     pressTimer = nil;
     pressTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self
