@@ -1164,13 +1164,16 @@
         // Convert to date
         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
         [dateFormat setDateFormat:@"LLL d yyyy HH:mm:ss"];
-        dateFormat.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"vi"];
+        dateFormat.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"vi-VN"];
         NSDate *date = [dateFormat dateFromString:dateStr];
         
+        NSString *refDateString = [[AppUtils historyEventDate] stringFromDate:date];
+        buildDate = refDateString;//[NSString stringWithFormat:@"%s",IMOMEET_BUILD_DATE];
+        ten tieng viet
         // Set output format and convert to string
         //[dateFormat setDateFormat:@"yyMMddHHmm"];
-        dateFormat.dateStyle = NSDateFormatterLongStyle;
-        buildDate = [dateFormat stringFromDate:date];
+        //  dateFormat.dateStyle = NSDateFormatterLongStyle;
+        //  buildDate = [dateFormat stringFromDate:date];
     }else{
         NSString *dateStr = [NSString stringWithFormat:@"%@ %@", [NSString stringWithUTF8String:__DATE__], [NSString stringWithUTF8String:__TIME__]];
         
