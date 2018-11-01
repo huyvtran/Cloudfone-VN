@@ -1157,13 +1157,14 @@
     }
     
     NSString *buildDate;
-    if ([curLanguage isEqualToString: key_en]) {
+    if ([curLanguage isEqualToString: key_vi]) {
         // Get build date and time, format to 'yyMMddHHmm'
         NSString *dateStr = [NSString stringWithFormat:@"%@ %@", [NSString stringWithUTF8String:__DATE__], [NSString stringWithUTF8String:__TIME__]];
         
         // Convert to date
         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
         [dateFormat setDateFormat:@"LLL d yyyy HH:mm:ss"];
+        dateFormat.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"vi"];
         NSDate *date = [dateFormat dateFromString:dateStr];
         
         // Set output format and convert to string

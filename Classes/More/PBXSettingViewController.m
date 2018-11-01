@@ -28,6 +28,8 @@
     NSString *portPBX;
     RegisterPBXWithPhoneView *viewPBXRegisterWithPhone;
     float hTextfield;
+    
+    LinphoneProxyConfig *enableProxyConfig;
 }
 
 @end
@@ -437,7 +439,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
 //    _tfServerID.text = @"CF-BS-3165";
 //    _tfAccount.text = @"14951";
-//    _tfPassword.text = @"cloudfone@123";
+    _tfPassword.text = @"cloudfone@123";
     
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
@@ -445,7 +447,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)getInfoForPBXWithServerName: (NSString *)serverName
 {
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: serverName = %@", __FUNCTION__, serverName]);
+    //  DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: serverName = %@", __FUNCTION__, serverName]);
     
     NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
     [jsonDict setObject:AuthUser forKey:@"AuthUser"];
@@ -522,14 +524,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         ipPBX = pbxIp;
         portPBX = pbxPort;
         
-        //  Check to make sure if have any account, remove it before login
-//        const MSList *proxies = linphone_core_get_proxy_config_list(LC);
-//        int curAccNum = ms_list_size(proxies);
-//        if (curAccNum > 0) {
-//            [self removeAllAccountLoginedBefore];
-//        }else{
-            [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:ipPBX port:portPBX];
-//        }
+        [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:ipPBX port:portPBX];
     }else{
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your information again!"] duration:2.0 position:CSToastPositionCenter];
     }
@@ -568,54 +563,72 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)registrationUpdate:(LinphoneRegistrationState)state forProxy:(LinphoneProxyConfig *)proxy message:(NSString *)message
 {
     switch (state) {
-        case LinphoneRegistrationOk: {
-            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationOk"]);
-            linphone_core_clear_proxy_config(LC);
-            linphone_core_add_proxy_config(LC, proxy);
-            linphone_core_set_default_proxy_config(LC, proxy);
-            linphone_proxy_config_enable_register(proxy, YES);
-            linphone_proxy_config_register_enabled(proxy);
-            linphone_proxy_config_done(proxy);
+        case LinphoneRegistrationOk:
+        {
+            NSLog(@"LinphoneRegistrationOk");
             
-            linphone_core_refresh_registers(LC);
-            
-            //  [self removeOthersProxyConfigAfterRegiseteredWithProxyConfig: proxy];
-            
-            if (typeRegister == normalLogin)
-            {
-                if (![_tfAccount.text isEqualToString:@""] && ![_tfPassword.text isEqualToString:@""]) {
-                    [[NSUserDefaults standardUserDefaults] setObject:_tfAccount.text forKey:key_login];
-                    [[NSUserDefaults standardUserDefaults] setObject:_tfPassword.text forKey:key_password];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-
-                    if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
-                        [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
-                    }else{
-                        [self whenTurnOnPBXSuccessfully];
+            if (enableProxyConfig == nil) {
+                //  DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> gọi linphone_core_clear_proxy_config", __FUNCTION__, @"LinphoneRegistrationOk"]);
+                NSLog(@"LinphoneRegistration------> gọi hàm clear_proxy_config để đăng ký lại account mới");
+                
+                enableProxyConfig = proxy;
+                linphone_core_clear_proxy_config(LC);
+                
+            }else if (enableProxyConfig == proxy){
+                NSLog(@"LinphoneRegistration------> đã đăng ký thành công");
+                
+                //  DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> register thành công sau khi clear proxy config", __FUNCTION__, @"LinphoneRegistrationOk"]);
+                
+                enableProxyConfig = nil;
+                    
+                if (typeRegister == normalLogin)
+                {
+                    if (![_tfAccount.text isEqualToString:@""] && ![_tfPassword.text isEqualToString:@""]) {
+                        [[NSUserDefaults standardUserDefaults] setObject:_tfAccount.text forKey:key_login];
+                        [[NSUserDefaults standardUserDefaults] setObject:_tfPassword.text forKey:key_password];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                        
+                        if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
+                            [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
+                        }else{
+                            [self whenTurnOnPBXSuccessfully];
+                        }
+                    }
+                }else if (typeRegister == qrCodeLogin){
+                    if (![accountPBX isEqualToString:@""] && ![passwordPBX isEqualToString:@""]) {
+                        [[NSUserDefaults standardUserDefaults] setObject:accountPBX forKey:key_login];
+                        [[NSUserDefaults standardUserDefaults] setObject:passwordPBX forKey:key_password];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                        
+                        if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
+                            [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
+                        }else{
+                            [self whenTurnOnPBXSuccessfully];
+                        }
                     }
                 }
-            }else if (typeRegister == qrCodeLogin){
-                if (![accountPBX isEqualToString:@""] && ![passwordPBX isEqualToString:@""]) {
-                    [[NSUserDefaults standardUserDefaults] setObject:accountPBX forKey:key_login];
-                    [[NSUserDefaults standardUserDefaults] setObject:passwordPBX forKey:key_password];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-
-                    if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
-                        [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
-                    }else{
-                        [self whenTurnOnPBXSuccessfully];
-                    }
-                }
+                
+                break;
             }
+
+            
             break;
         }
         case LinphoneRegistrationNone:{
-            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationNone"]);
-            
+            //  DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationNone"]);
             break;
         }
         case LinphoneRegistrationCleared: {
-            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationCleared"]);
+            NSLog(@"LinphoneRegistrationCleared");
+            //  DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@", __FUNCTION__, @"LinphoneRegistrationCleared"]);
+            
+            if (enableProxyConfig != NULL || enableProxyConfig != nil) {
+                //  DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@, enableProxyConfig khác NULL --> register proxy config đã lưu", __FUNCTION__, @"LinphoneRegistrationCleared"]);
+                NSLog(@"LinphoneRegistration------> tồn tại enableProxyConfig, register cho enableProxyConfig");
+                
+                [self performSelector:@selector(addRegisteredProxyConfig)
+                           withObject:nil afterDelay:2.0];
+            }
             
             // _waitView.hidden = true;
             break;
@@ -626,7 +639,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(proxy));
                 NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
                 if (defaultUsername != nil) {
-                    DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ for proxyUsername %@", __FUNCTION__, @"LinphoneRegistrationFailed", defaultUsername]);
+                    //  DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ for proxyUsername %@", __FUNCTION__, @"LinphoneRegistrationFailed", defaultUsername]);
                     if ([defaultUsername isEqualToString: accountPBX]) {
                         _icWaiting.hidden = YES;
                         [_icWaiting stopAnimating];
@@ -639,16 +652,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                     NSLog(@"[KL] %@", [NSString stringWithFormat:@"\n%s: state is %@ for proxyUsername %@", __FUNCTION__, @"LinphoneRegistrationFailed", defaultUsername]);
                 }
             }
-            
-            //  Check if clear all account for login new pbx account
-//            const MSList *proxies = linphone_core_get_proxy_config_list(LC);
-//            int curAccNum = ms_list_size(proxies);
-//            if (curAccNum == 0) {
-//                [self loginPBXWithNewAccountIfNeed];
-//            }else{
-//                [self removeAllAccountLoginedBefore];
-//            }
-            
             break;
         }
         case LinphoneRegistrationProgress: {
@@ -962,37 +965,19 @@ static UICompositeViewDescription *compositeDescription = nil;
             _tfServerID.text = [[NSUserDefaults standardUserDefaults] objectForKey: PBX_ID];
         }
     }
+}
+
+- (void)addRegisteredProxyConfig {
+    //  DDLogInfo(@"%@", [NSString stringWithFormat:@"%s", __FUNCTION__]);
+    NSLog(@"LinphoneRegistration addRegisteredProxyConfig");
     
-    _tfAccount.text = @"14953";
-    _tfPassword.text = @"cloudfone@123";
-    _tfServerID.text = @"CF-BS-3165";
+    linphone_core_add_proxy_config(LC, enableProxyConfig);
+    linphone_core_set_default_proxy_config(LC, enableProxyConfig);
+    linphone_proxy_config_enable_register(enableProxyConfig, YES);
+    linphone_proxy_config_register_enabled(enableProxyConfig);
+    linphone_proxy_config_done(enableProxyConfig);
+    
+    linphone_core_refresh_registers(LC);
 }
-
-- (void)removeOthersProxyConfigAfterRegiseteredWithProxyConfig: (LinphoneProxyConfig *)defaultProxyConfig {
-    //`NSMutableArray *listRemove = [[NSMutableArray alloc] init];
-    const MSList *proxies = linphone_core_get_proxy_config_list(LC);
-    while (proxies) {
-        LinphoneProxyConfig *pConfig = (LinphoneProxyConfig *)proxies->data;
-        if (pConfig != NULL) {
-            if (defaultProxyConfig != pConfig) {
-                [self performSelector:@selector(removeProxyConfig:) withObject:(__bridge id _Nullable)(pConfig) afterDelay:1.0];
-                //  [listRemove addObject: pConfig];
-            }else{
-                NSLog(@"[kl]----Dung co xoa chu e nay nha");
-            }
-        }
-        proxies = proxies->next;
-    }
-}
-
-- (void)removeProxyConfig: (LinphoneProxyConfig *)proxy {
-    if (proxy != NULL) {
-        const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(proxy));
-        NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
-        NSLog(@"[kl] remove proxyUsername = %@", defaultUsername);
-        linphone_core_remove_proxy_config(LC, proxy);
-    }
-}
-
 
 @end

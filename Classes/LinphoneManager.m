@@ -2301,8 +2301,7 @@ void popup_link_account_cb(LinphoneAccountCreator *creator, LinphoneAccountCreat
 	 * grab, if any */
 	linphone_core_iterate(theLinphoneCore);
 	// start scheduler
-	mIterateTimer =
-		[NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(iterate) userInfo:nil repeats:YES];
+	mIterateTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(iterate) userInfo:nil repeats:YES];
 }
 
 - (void)destroyLinphoneCore {

@@ -1180,3 +1180,5 @@
 "and" = "và"
 "or" = "hoặc"
 "others" = "người khác"
+"Release date" = "Ngày phát hành"
+

@@ -46,6 +46,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
     [btnCheckForUpdate setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Check for update"] forState:UIControlStateNormal];
+    
+    
+    NSString *str = [NSString stringWithFormat:@"%@: %@\n%@: %@", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Version"], [AppUtils getAppVersion], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Release date"], [AppUtils getBuildDate]];
+    lbVersion.text = str;
 }
 
 - (void)didReceiveMemoryWarning {
