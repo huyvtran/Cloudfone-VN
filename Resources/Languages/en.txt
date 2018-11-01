@@ -9,7 +9,6 @@
 "text_can_not_save_picture" =   "Can not dowload picture"
 
 
-"text_no_internet"      =   "Please check your internet connection"
 
 "text_sign_in"          =   "Sign In"
 "text_sign_up"          =   "Sign Up"
@@ -25,13 +24,7 @@
 "text_have_account"     =   "You have an account?"
 "text_confirm"          =   "Confirm"
 
-"TEXT_OTR_NOT_SUPPORTED"    = "This feature is not yet supported."
 "text_input_username"   =   "ID/ Phone/ Email"
-
-"text_error_connection" =   "Please check your internet connection"
-
-"text_your_contact_import_successfully" = "Your contacts have been import successfully"
-"text_please_check_your_connection"     = "Please check your internet connection!"
 
 "text_username_or_email_not_empty"  =   "Account can not empty!"
 
@@ -224,21 +217,6 @@
 "text_export_title"     =   "Save conversation"
 "text_export_content"   =   "Send after export"
 "text_export_success"   =   "History has been exported"
-
-"text_message_received_recall"  =   "Message was recalled."
-"text_message_sent_recall"      =   "Message recalled successfully."
-"text_message_sent_recall_fail" =   "Message is not able to recall."
-"text_message_image_received"   =   "Image received"
-"text_message_location"         =   "Location message"
-"text_audio_message_received"   =   "Audio received"
-"text_audio_message_sent"       =   "Audio sent"
-"text_video_message_sent"       =   "Video sent"
-"text_video_message_received"   =   "Video received"
-"text_image_message_sent"       =   "Image sent"
-
-"text_contact_message_received" =   "Received contact"
-"text_contact_message_sent"     =   "Send contact"
-"text_contact_message"          =   "Contact message"
 
 "not_connect_to_server"     =   "Can't connect to server"
 "text_joined_room_at"       =   "You has joined the room at"

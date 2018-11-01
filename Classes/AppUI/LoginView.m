@@ -151,8 +151,7 @@
                duration:2.0 position:CSToastPositionCenter];
     }else{
         if (![LinphoneAppDelegate sharedInstance]._internetActive) {
-            [self makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_no_internet]
-                   duration:2.0 position:CSToastPositionCenter];
+            
         }else{
             [_viewSignIn.waitingHud showInView:_viewSignIn animated:YES];
             

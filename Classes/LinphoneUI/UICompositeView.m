@@ -597,6 +597,7 @@
 	//	3. tab bar - on portrait full width at bottom / on landscape on left, starting below status bar
 	// Resize TabBar
 	//  CGRect tabFrame = self.tabBarView.frame;
+    
     CGRect tabFrame = CGRectMake(self.tabBarView.frame.origin.x, self.tabBarView.frame.origin.y, self.tabBarView.frame.size.width, [LinphoneAppDelegate sharedInstance]._hTabbar);
     
 	if (self.tabBarViewController != nil && currentViewDescription.tabBarEnabled) {
@@ -611,6 +612,16 @@
 		tabFrame.origin.x = -tabFrame.size.width;
 		tabFrame.origin.y = viewFrame.size.height;
 	}
+    
+    //  [Khai le - 01/11/2018] UI with iPhoneX
+    NSString *deviceMode = [DeviceUtils getModelsOfCurrentDevice];
+    if ([deviceMode isEqualToString: IphoneX_1] || [deviceMode isEqualToString: IphoneX_2] || [deviceMode isEqualToString: simulator]) {
+        if (@available(iOS 11.0, *)) {
+            UIWindow *window = UIApplication.sharedApplication.keyWindow;
+            CGFloat bottomPadding = window.safeAreaInsets.bottom;
+            tabFrame.origin.y = tabFrame.origin.y - bottomPadding;
+        }
+    }
 
 	//	4. main view and details view - space left width of 35%/65% each
 	CGRect mainFrame = viewFrame;

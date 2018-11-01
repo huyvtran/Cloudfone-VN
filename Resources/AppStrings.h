@@ -151,7 +151,6 @@
 #define time_register_expire    @"time_register_expire"
 #define random_key_register     @"random_key_register"
 
-#define text_error_connection   @"text_error_connection"
 #define text_default_error      @"text_default_error"
 
 #define time_register_expire    @"time_register_expire"
@@ -194,7 +193,6 @@
 
 #define text_username_empty     @"text_username_empty"
 #define text_password_empty     @"text_password_empty"
-#define text_no_internet        @"text_no_internet"
 
 #define text_confirm_change_password        @"text_confirm_change_password"
 #define text_username_or_email_not_empty    @"text_username_or_email_not_empty"
@@ -349,19 +347,6 @@
 #define text_name_number_not_empty  @"text_name_number_not_empty"
 #define text_sync_pbx_contact       @"text_sync_pbx_contact"
 #define text_pbx_contact_exists     @"text_pbx_contact_exists"
-#define text_please_check_your_connection   @"text_please_check_your_connection"
-
-#define text_message_received_recall    @"text_message_received_recall"
-#define text_message_sent_recall        @"text_message_sent_recall"
-#define text_message_sent_recall_fail   @"text_message_sent_recall_fail"
-#define text_message_image_received     @"text_message_image_received"
-
-#define text_message_location           @"text_message_location"
-#define text_audio_message_received     @"text_audio_message_received"
-#define text_audio_message_sent         @"text_audio_message_sent"
-#define text_video_message_sent         @"text_video_message_sent"
-#define text_video_message_received     @"text_video_message_received"
-#define text_image_message_sent         @"text_image_message_sent"
 
 #define text_gallery_header             @"text_gallery_header"
 
@@ -740,7 +725,6 @@
 
 #define text_contacts_xmpp_sync_success @"text_contacts_xmpp_sync_success"
 
-#define TEXT_OTR_NOT_SUPPORTED  @"TEXT_OTR_NOT_SUPPORTED"
 #define scan_from_photo     @"scan_from_photo"
 #define text_notification   @"text_notification"
 #define cannot_find_qrcode  @"cannot_find_qrcode"

@@ -1149,4 +1149,50 @@
     return nil;
 }
 
++ (NSString *)getBuildDate
+{
+    NSString *curLanguage = [[NSUserDefaults standardUserDefaults] objectForKey:language_key];
+    if (curLanguage == nil) {
+        curLanguage = key_en;
+    }
+    
+    NSString *buildDate;
+    if ([curLanguage isEqualToString: key_en]) {
+        // Get build date and time, format to 'yyMMddHHmm'
+        NSString *dateStr = [NSString stringWithFormat:@"%@ %@", [NSString stringWithUTF8String:__DATE__], [NSString stringWithUTF8String:__TIME__]];
+        
+        // Convert to date
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"LLL d yyyy HH:mm:ss"];
+        NSDate *date = [dateFormat dateFromString:dateStr];
+        
+        // Set output format and convert to string
+        //[dateFormat setDateFormat:@"yyMMddHHmm"];
+        dateFormat.dateStyle = NSDateFormatterLongStyle;
+        buildDate = [dateFormat stringFromDate:date];
+    }else{
+        NSString *dateStr = [NSString stringWithFormat:@"%@ %@", [NSString stringWithUTF8String:__DATE__], [NSString stringWithUTF8String:__TIME__]];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"LLL d yyyy HH:mm:ss"];
+        dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+        NSDate *date1 = [dateFormatter dateFromString:dateStr];
+        
+        NSString *refDateString = [[AppUtils historyEventDate] stringFromDate:date1];
+        buildDate = refDateString;//[NSString stringWithFormat:@"%s",IMOMEET_BUILD_DATE];
+    }
+    
+    return buildDate;
+}
+
++(NSDateFormatter*) historyEventDate{
+    static NSDateFormatter* sHistoryEventDate = nil;
+    if(!sHistoryEventDate){
+        sHistoryEventDate = [[NSDateFormatter alloc] init];
+        [sHistoryEventDate setTimeStyle:NSDateFormatterNoStyle];
+        [sHistoryEventDate setDateStyle:NSDateFormatterMediumStyle];
+    }
+    return sHistoryEventDate;
+}
+
 @end

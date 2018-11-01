@@ -343,8 +343,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                       duration:2.0 position:CSToastPositionCenter];
     }else{
         if (![LinphoneAppDelegate sharedInstance]._internetActive) {
-            [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_please_check_your_connection]
-                                                          duration:2.0 position:CSToastPositionCenter];
+            
         }else{
             if (![LinphoneAppDelegate sharedInstance]._threadDatabase.open) {
                 [NSDatabase connectDatabaseForSyncContact];

@@ -133,4 +133,7 @@
 + (NSData *)getFileDataFromDirectoryWithFileName: (NSString *)fileName;
 + (PBXContact *)getPBXContactFromListWithPhoneNumber: (NSString *)pbxPhone;
 
++ (NSString *)getBuildDate;
++(NSDateFormatter*) historyEventDate;
+
 @end

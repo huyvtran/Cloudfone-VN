@@ -29,7 +29,6 @@
                 <outlet property="fourButton" destination="30" id="194"/>
                 <outlet property="hashButton" destination="41" id="4Vx-Tl-ywI"/>
                 <outlet property="landscapeView" destination="171" id="mdM-t5-k4V"/>
-                <outlet property="lbSearchResult" destination="7c8-q1-Nmc" id="RoY-ff-LOg"/>
                 <outlet property="nineButton" destination="36" id="200"/>
                 <outlet property="oneButton" destination="38" id="191"/>
                 <outlet property="padView" destination="180" id="bxG-9v-Pvj"/>
@@ -107,13 +106,6 @@
                                         <outlet property="delegate" destination="-1" id="190"/>
                                     </connections>
                                 </textField>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7c8-q1-Nmc">
-                                    <rect key="frame" x="160" y="18" width="0.0" height="0.0"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                             </subviews>
                         </view>
                         <view contentMode="scaleToFill" misplaced="YES" id="180" userLabel="pad">

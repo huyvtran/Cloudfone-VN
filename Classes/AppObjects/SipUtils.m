@@ -225,8 +225,9 @@
 + (BOOL)makeCallWithPhoneNumber: (NSString *)phoneNumber {
     if (phoneNumber != nil && phoneNumber.length > 0)
     {
-        if (!linphone_core_is_network_reachable(LC)) {
-            //  return NO;
+        BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+        if (!networkReady) {
+            return NO;
         }
         
         LinphoneAddress *addr = linphone_core_interpret_url(LC, phoneNumber.UTF8String);

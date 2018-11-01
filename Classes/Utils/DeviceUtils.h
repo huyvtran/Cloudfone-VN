@@ -14,5 +14,6 @@
 + (float)getSizeOfKeypadButtonForDevice: (NSString *)deviceMode;
 + (float)getSpaceXBetweenKeypadButtonsForDevice: (NSString *)deviceMode;
 + (float)getSpaceYBetweenKeypadButtonsForDevice: (NSString *)deviceMode;
++ (BOOL)checkNetworkAvailable;
 
 @end

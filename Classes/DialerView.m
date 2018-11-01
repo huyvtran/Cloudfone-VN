@@ -50,13 +50,13 @@
     float hSearch;
     
     BOOL isNewSearch;
-    UITextView *tvSearch;
+    UITextView *tvSearchResult;
     SearchContactPopupView *popupSearchContacts;
 }
 @end
 
 @implementation DialerView
-@synthesize _viewStatus, _imgLogoSmall, _lbAccount, _lbStatus, lbSearchResult;
+@synthesize _viewStatus, _imgLogoSmall, _lbAccount, _lbStatus;
 @synthesize _viewNumber;
 @synthesize _btnHotline, _btnAddCall, _btnTransferCall;
 
@@ -370,7 +370,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         _addContactButton.hidden = YES;
         searchView.hidden = YES;
-        lbSearchResult.hidden = YES;
+        tvSearchResult.hidden = YES;
     }
 }
 
@@ -378,7 +378,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     _addressField.text = @"";
     _addContactButton.hidden = YES;
     searchView.hidden = YES;
-    lbSearchResult.hidden = YES;
+    tvSearchResult.hidden = YES;
 }
 
 - (void)onZeroLongClick:(id)sender {
@@ -455,9 +455,15 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnHotlinePressed:(UIButton *)sender {
+    BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+    if (!networkReady) {
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    
     BOOL success = [SipUtils makeCallWithPhoneNumber: hotline];
     if (!success) {
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Can not make call. Please check your network connection or you have not signned your account yet"] duration:3.0 position:CSToastPositionCenter];
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Can not make call. Perhaps you have not signned your account yet"] duration:3.0 position:CSToastPositionCenter];
     }
 }
 
@@ -519,6 +525,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)searchPhoneBookWithThread {
+    //  [Khai le - 01/11/2018]: Just search contact when contact was loaded
+    if (!appDelegate.contactLoaded) {
+        return;
+    }
+    //  ----
+    
     NSString *searchStr = _addressField.text;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         if (listPhoneSearched == nil) {
@@ -646,21 +658,16 @@ static UICompositeViewDescription *compositeDescription = nil;
                     }
                     searchView.hidden = NO;
                 }else{
-                    tvSearch.hidden = NO;
-                    tvSearch.attributedText = [self getSearchValueFromResult: listPhoneSearched];
-                    
-                    lbSearchResult.hidden = YES;
-                    lbSearchResult.attributedText = [self getSearchValueFromResult: listPhoneSearched];
+                    tvSearchResult.hidden = NO;
+                    tvSearchResult.attributedText = [self getSearchValueFromResult: listPhoneSearched];
                 }
             }else{
-                tvSearch.hidden = YES;
                 searchView.hidden = YES;
-                lbSearchResult.hidden = YES;
+                tvSearchResult.hidden = YES;
             }
         }else{
-            tvSearch.hidden = YES;
             searchView.hidden = YES;
-            lbSearchResult.hidden = YES;
+            tvSearchResult.hidden = YES;
         }
     }
 }
@@ -769,29 +776,20 @@ static UICompositeViewDescription *compositeDescription = nil;
     _addressField.adjustsFontSizeToFitWidth = YES;
     _addressField.delegate = self;
     
-    lbSearchResult.hidden = YES;
-    lbSearchResult.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:17.0];
-    [lbSearchResult mas_makeConstraints:^(MASConstraintMaker *make) {
+    tvSearchResult = [[UITextView alloc] init];
+    tvSearchResult.backgroundColor = UIColor.clearColor;
+    tvSearchResult.editable = NO;
+    tvSearchResult.hidden = YES;
+    tvSearchResult.delegate = self;
+    [_viewNumber addSubview: tvSearchResult];
+    
+    [tvSearchResult mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewNumber).offset(10.0);
         make.right.equalTo(_viewNumber).offset(-10.0);
         make.top.equalTo(_addressField.mas_bottom);
         make.height.mas_equalTo(30.0);
     }];
-    
-    tvSearch = [[UITextView alloc] init];
-    tvSearch.backgroundColor = UIColor.clearColor;
-    tvSearch.editable = NO;
-    tvSearch.hidden = YES;
-    tvSearch.delegate = self;
-    [_viewNumber addSubview: tvSearch];
-    
-    [tvSearch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_viewNumber).offset(10.0);
-        make.right.equalTo(_viewNumber).offset(-10.0);
-        make.top.equalTo(_addressField.mas_bottom);
-        make.height.mas_equalTo(30.0);
-    }];
-    //  tvSearch.linkTextAttributes = @{NSUnderlineStyleAttributeName: NSUnderlineStyleNone};
+    //  tvSearchResult.linkTextAttributes = @{NSUnderlineStyleAttributeName: NSUnderlineStyleNone};
     
     [_addContactButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewNumber).offset(10.0);
@@ -1398,13 +1396,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     // Call your method here.
     if (![URL.absoluteString containsString:[appDelegate.localization localizedStringForKey:@"others"]]) {
         _addressField.text = URL.absoluteString;
-        tvSearch.hidden = YES;
+        tvSearchResult.hidden = YES;
     }else{
         float totalHeight = listPhoneSearched.count * 60.0;
         if (totalHeight > SCREEN_HEIGHT - 50.0*2) {
             totalHeight = SCREEN_HEIGHT - 50.0*2;
         }
-        popupSearchContacts = [[SearchContactPopupView alloc] initWithFrame:CGRectMake(30.0, (SCREEN_HEIGHT-50.0)/2, SCREEN_WIDTH-60.0, totalHeight)];
+        popupSearchContacts = [[SearchContactPopupView alloc] initWithFrame:CGRectMake(30.0, (SCREEN_HEIGHT-totalHeight)/2, SCREEN_WIDTH-60.0, totalHeight)];
         popupSearchContacts.contacts = listPhoneSearched;
         [popupSearchContacts.tbContacts reloadData];
         [popupSearchContacts showInView:appDelegate.window animated:YES];

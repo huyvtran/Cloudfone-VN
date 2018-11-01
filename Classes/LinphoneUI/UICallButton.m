@@ -61,6 +61,13 @@
 #pragma mark -
 
 - (void)touchUp:(id)sender {
+    BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+    if (!networkReady) {
+        
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    
 	NSString *address = addressField.text;
 	if (address.length == 0) {
         NSString *phoneNumber = [NSDatabase getLastCallOfUser];
@@ -83,9 +90,9 @@
     
     BOOL success = [SipUtils makeCallWithPhoneNumber: address];
     if (!success) {
-        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Can not make call. Please check your network connection or you have not signned your account yet"] duration:3.0 position:CSToastPositionCenter];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Can not make call. Perhaps you have not signned your account yet!"] duration:3.0 position:CSToastPositionCenter];
+        return;
     }
-    return;
     
 	if ([address length] > 0) {
 		LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:address];

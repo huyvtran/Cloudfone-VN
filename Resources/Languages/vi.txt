@@ -10,7 +10,6 @@
 "change_subject_failed"     =   "Đổi chủ đề thất bại!"
 "leave_room_failed"         =   "Thất bại. Vui lòng thử lại sau!"
 
-"text_no_internet"      =   "Vui lòng kiểm tra kết nối internet"
 "text_sign_in"          =   "Đăng nhập"
 "text_sign_up"          =   "Đăng ký"
 
@@ -25,12 +24,7 @@
 "text_have_account"     =   "Bạn đã có tài khoản?"
 "text_confirm"          =   "Xác nhận"
 
-"TEXT_OTR_NOT_SUPPORTED"    = "Tính năng này chưa được hỗ trợ."
 "text_input_username"   =   "ID/ Di động/ Email"
-"text_error_connection" =   "Vui lòng kiểm tra kết nối internet của bạn"
-
-"text_your_contact_import_successfully" = "Danh bạ của bạn đã được thêm mới thành công"
-"text_please_check_your_connection"     = "Vui lòng kiểm tra kết nối mạng của bạn!"
 
 "text_username_or_email_not_empty"  =   "Tài khoản không được rỗng!"
 
@@ -226,20 +220,6 @@
 "text_export_title"     =   "Lưu cuộc trò chuyện"
 "text_export_content"   =   "Gửi sau khi lưu"
 "text_export_success"   =   "Cuộc trò chuyện đã được lưu"
-
-"text_message_received_recall"  =   "Tin nhắn đã được thu hồi."
-"text_message_sent_recall"      =   "Tin nhắn đã được thu hồi."
-"text_message_sent_recall_fail" =   "Tin nhắn không thể thu hồi."
-"text_message_image_received"   =   "Đã nhận hình ảnh"
-"text_message_location"         =   "Tin nhắn vị trí"
-"text_audio_message_received"   =   "Nhận tin nhắn thoại"
-"text_audio_message_sent"       =   "Gửi tin nhắn thoại"
-"text_video_message_sent"       =   "Gửi video"
-"text_video_message_received"   =   "Nhận video"
-"text_image_message_sent"       =   "Đã gửi hình ảnh"
-"text_contact_message_received" =   "Nhận liên hệ"
-"text_contact_message_sent"     =   "Gửi liên hệ"
-"text_contact_message"          =   "Tin nhắn liên hệ"
 
 "not_connect_to_server"     =   "Không thể kết nối máy chủ"
 "text_joined_room_at"       =   "Bạn đã tham gia cuộc hội thoại lúc"

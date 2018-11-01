@@ -40,6 +40,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     //  my code here
     [self setupUIForView];
+    NSLog(@"%@", [AppUtils getBuildDate]);
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
