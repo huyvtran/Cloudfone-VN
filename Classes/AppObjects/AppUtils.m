@@ -1169,7 +1169,7 @@
         
         NSString *refDateString = [[AppUtils historyEventDate] stringFromDate:date];
         buildDate = refDateString;//[NSString stringWithFormat:@"%s",IMOMEET_BUILD_DATE];
-        ten tieng viet
+        
         // Set output format and convert to string
         //[dateFormat setDateFormat:@"yyMMddHHmm"];
         //  dateFormat.dateStyle = NSDateFormatterLongStyle;

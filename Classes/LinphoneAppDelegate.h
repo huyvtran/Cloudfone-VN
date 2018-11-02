@@ -36,6 +36,13 @@
 #import "WebServices.h"
 #import "Constant.h"
 
+//  [Khai le - 02/11/2018]
+typedef enum typePhoneNumber{
+    ePBXPhone,
+    eNormalPhone,
+}typePhoneNumber;
+//  -----
+
 enum messageState {
     eMessageError,
     eMessageSend,
@@ -62,8 +69,8 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 @property (nonatomic, strong) ProviderDelegate *del;
 
 
-@property (nonatomic, assign) BOOL _internetActive;
-@property (strong, nonatomic) Reachability *_internetReachable;
+@property (nonatomic, assign) BOOL internetActive;
+@property (strong, nonatomic) Reachability *internetReachable;
 @property (nonatomic, strong) HMLocalization *localization;
 
 @property (nonatomic, assign) float _hRegistrationState;
@@ -100,7 +107,7 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 @property (nonatomic, assign) BOOL _isSyncing;
 
 @property (nonatomic, strong) NSMutableDictionary *_allPhonesDict;
-//  diction mapping giữa contact id và phone number (kể cả cloudfoneiD)
+//  dictionary mapping giữa contact id và phone number (kể cả cloudfoneiD)
 @property (nonatomic, strong) NSMutableDictionary *_allIDDict;
 
 @property (nonatomic, assign) BOOL contactLoaded;
@@ -115,6 +122,10 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 @property (nonatomic, strong) NSArray *listNumber;
 
 - (ContactObject *)getContactInPhoneBookWithIdRecord: (int)idRecord;
+
+//  [Khai le - 02/11/2018]
+@property (nonatomic, strong) NSMutableArray *listInfoPhoneNumber;
+@property (nonatomic, assign) BOOL newSearchMethod;
 
 @end
 

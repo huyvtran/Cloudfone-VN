@@ -15,7 +15,6 @@
 #import "ChooseAvatarPopupView.h"
 #import "NSDatabase.h"
 #import "NSData+Base64.h"
-#import "PhoneObject.h"
 #import "ContactDetailObj.h"
 #import "PECropViewController.h"
 #import "TypePhonePopupView.h"
@@ -435,16 +434,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [tbContents reloadData];
 }
 
-- (void)updateStateNewForPhoneList {
-    for (int iCount=0; iCount<detailsContact._listPhone.count; iCount++) {
-        PhoneObject *aPhone = [detailsContact._listPhone objectAtIndex: iCount];
-        if (iCount == detailsContact._listPhone.count-1) {
-            [aPhone set_isNew: true];
-        }else{
-            [aPhone set_isNew: false];
-        }
-    }
-}
 
 - (void)whenTextfieldPhoneDidChanged: (UITextField *)textfield {
     int row = (int)[textfield tag];

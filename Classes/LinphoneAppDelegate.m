@@ -43,6 +43,7 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import "NSData+Base64.h"
+#import "PhoneObject.h"
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -60,7 +61,7 @@
 @synthesize configURL;
 @synthesize window;
 
-@synthesize _internetActive, _internetReachable;
+@synthesize internetActive, internetReachable;
 @synthesize localization;
 @synthesize _hRegistrationState, _hStatus, _hHeader, _wSubMenu, _hTabbar;
 @synthesize _deviceToken, _updateTokenSuccess;
@@ -75,7 +76,7 @@
 @synthesize fromImagePicker;
 @synthesize _isSyncing;
 @synthesize _allPhonesDict, _allIDDict, contactLoaded;
-@synthesize webService, keepAwakeTimer, listNumber;
+@synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, newSearchMethod;
 
 #pragma mark - Lifecycle Functions
 
@@ -393,10 +394,12 @@ void onUncaughtException(NSException* exception)
     [NSDatabase connectCallnexDB];
     
     //  Ghi âm cuộc gọi
+    newSearchMethod = YES;
     _isSyncing = false;
     
     _allPhonesDict = [[NSMutableDictionary alloc] init];
     _allIDDict = [[NSMutableDictionary alloc] init];
+    listInfoPhoneNumber = [[NSMutableArray alloc] init];
     
     // check for internet connection
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:)
@@ -405,8 +408,8 @@ void onUncaughtException(NSException* exception)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadContactListAfterAddSuccess)
                                                  name:@"reloadContactAfterAdd" object:nil];
     
-    _internetReachable = [Reachability reachabilityForInternetConnection];
-    [_internetReachable startNotifier];
+    internetReachable = [Reachability reachabilityForInternetConnection];
+    [internetReachable startNotifier];
     
     // check if a pathway to a random host exists
     hostReachable = [Reachability reachabilityWithHostName:@"www.apple.com"];
@@ -1436,13 +1439,13 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 - (void)checkNetworkStatus:(NSNotification *)notice
 {
     // called after network status changes
-    NetworkStatus internetStatus = [_internetReachable currentReachabilityStatus];
+    NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
     switch (internetStatus)
     {
         case NotReachable: {
             DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"The internet is down!!!!"]);
             
-            _internetActive = false;
+            internetActive = false;
             [[NSNotificationCenter defaultCenter] postNotificationName:networkChanged
                                                                 object:nil];
             break;
@@ -1451,7 +1454,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         {
             DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"The internet is working via WIFI."]);
             
-            _internetActive = true;
+            internetActive = true;
             [[NSNotificationCenter defaultCenter] postNotificationName:networkChanged
                                                                 object:nil];
             break;
@@ -1460,7 +1463,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         {
             DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"The internet is working via WWAN."]);
             
-            _internetActive = true;
+            internetActive = true;
             [[NSNotificationCenter defaultCenter] postNotificationName:networkChanged
                                                                 object:nil];
             break;
@@ -1511,7 +1514,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     for (peopleCounter = 0; peopleCounter < [arrayOfAllPeople count]; peopleCounter++)
     {
         ABRecordRef aPerson = (__bridge ABRecordRef)[arrayOfAllPeople objectAtIndex:peopleCounter];
-        int idOfContact = ABRecordGetRecordID(aPerson);
+        int contactId = ABRecordGetRecordID(aPerson);
         
         //  Kiem tra co phai la contact pbx hay ko?
         NSString *sipNumber = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNamePhoneticProperty);
@@ -1526,40 +1529,52 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     CFStringRef phoneNumberRef = ABMultiValueCopyValueAtIndex(phones, j);
                     CFStringRef locLabel = ABMultiValueCopyLabelAtIndex(phones, j);
                     
-                    NSString *curPhoneValue = (__bridge NSString *)phoneNumberRef;
-                    curPhoneValue = [[curPhoneValue componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+                    NSString *phoneStr = (__bridge NSString *)phoneNumberRef;
+                    phoneStr = [[phoneStr componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
                     
-                    NSString *nameValue = (__bridge NSString *)locLabel;
+                    NSString *nameStr = (__bridge NSString *)locLabel;
                     
-                    if (curPhoneValue != nil && nameValue != nil) {
+                    if (phoneStr != nil && nameStr != nil) {
                         PBXContact *pbxContact = [[PBXContact alloc] init];
-                        pbxContact._name = nameValue;
-                        pbxContact._number = curPhoneValue;
+                        pbxContact._name = nameStr;
+                        pbxContact._number = phoneStr;
                         
-                        NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: nameValue];
+                        NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: nameStr];
                         NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
                         pbxContact._nameForSearch = nameForSearch;
                         
+                        NSString *avatarStr = @"";
                         if (![AppUtils isNullOrEmpty: pbxServer]) {
-                            NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, curPhoneValue];
+                            NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, phoneStr];
                             NSString *localFile = [NSString stringWithFormat:@"/avatars/%@", avatarName];
                             NSData *avatarData = [AppUtils getFileDataFromDirectoryWithFileName:localFile];
                             if (avatarData != nil) {
-                                NSString *strAvatar;
+                                
                                 if ([avatarData respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
-                                    strAvatar = [avatarData base64EncodedStringWithOptions: 0];
+                                    avatarStr = [avatarData base64EncodedStringWithOptions: 0];
                                 } else {
-                                    strAvatar = [avatarData base64Encoding];
+                                    avatarStr = [avatarData base64Encoding];
                                 }
-                                pbxContact._avatar = strAvatar;
+                                pbxContact._avatar = avatarStr;
                             }
                         }
                         [pbxContacts addObject: pbxContact];
+                        
+                        //  [Khai le - 02/11/2018]
+                        PhoneObject *phone = [[PhoneObject alloc] init];
+                        phone.number = phoneStr;
+                        phone.name = nameStr;
+                        phone.nameForSearch = nameForSearch;
+                        phone.avatar = avatarStr;
+                        phone.contactId = contactId;
+                        phone.phoneType = ePBXPhone;
+                        
+                        [listInfoPhoneNumber addObject: phone];
                     }
                 }
             }
             
-            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:idOfContact]
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:contactId]
                                                       forKey:@"PBX_ID_CONTACT"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             continue;
@@ -1572,7 +1587,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             if (listPhone != nil && listPhone.count > 0) {
                 ContactObject *aContact = [[ContactObject alloc] init];
                 aContact.person = aPerson;
-                aContact._id_contact = idOfContact;
+                aContact._id_contact = contactId;
                 aContact._fullName = fullname;
                 NSArray *nameInfo = [AppUtils getFirstNameAndLastNameOfContact: aPerson];
                 aContact._firstName = [nameInfo objectAtIndex: 0];
@@ -1613,9 +1628,22 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 [listContacts addObject: aContact];
                 
                 //  Added by Khai Le on 09/10/2018
-                if (aContact._listPhone.count > 0) {
-                    ContactDetailObj *anItem = [aContact._listPhone firstObject];
-                    aContact._sipPhone = anItem._valueStr;
+                ContactDetailObj *anItem = [aContact._listPhone firstObject];
+                aContact._sipPhone = anItem._valueStr;
+                
+                //  [Khai le - 02/11/2018]
+                for (int i=0; i<listPhone.count; i++) {
+                    ContactDetailObj *phoneItem = [listPhone objectAtIndex: i];
+                    
+                    PhoneObject *phone = [[PhoneObject alloc] init];
+                    phone.number = phoneItem._valueStr;
+                    phone.name = fullname;
+                    phone.nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
+                    phone.avatar = [self getAvatarOfContact: aPerson];
+                    phone.contactId = contactId;
+                    phone.phoneType = eNormalPhone;
+                    
+                    [listInfoPhoneNumber addObject: phone];
                 }
             }else{
                 NSLog(@"This contact don't have any phone number!!!");

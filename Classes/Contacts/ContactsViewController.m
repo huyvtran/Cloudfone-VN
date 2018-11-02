@@ -342,7 +342,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_not_id_pbx]
                                                       duration:2.0 position:CSToastPositionCenter];
     }else{
-        if (![LinphoneAppDelegate sharedInstance]._internetActive) {
+        if (![LinphoneAppDelegate sharedInstance].internetActive) {
             
         }else{
             if (![LinphoneAppDelegate sharedInstance]._threadDatabase.open) {

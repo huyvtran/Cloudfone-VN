@@ -63,7 +63,7 @@
 }
 
 + (BOOL)checkNetworkAvailable {
-    NetworkStatus internetStatus = [[LinphoneAppDelegate sharedInstance]._internetReachable currentReachabilityStatus];
+    NetworkStatus internetStatus = [[LinphoneAppDelegate sharedInstance].internetReachable currentReachabilityStatus];
     if (internetStatus == ReachableViaWiFi || internetStatus == ReachableViaWWAN) {
         return YES;
     }

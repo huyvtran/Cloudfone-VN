@@ -7,6 +7,8 @@
 
 #import "SearchContactPopupView.h"
 #import "ContactCell.h"
+#import "NSData+Base64.h"
+#import "NSDatabase.h"
 
 @implementation SearchContactPopupView
 @synthesize tbContacts, tapGesture, contacts;
@@ -15,19 +17,17 @@
     self = [super initWithFrame: frame];
     if (self) {
         // Initialization code
-        self.layer.borderWidth = 3.0;
-        self.layer.borderColor = [UIColor colorWithRed:(23/255.0) green:(184/255.0)
-                                                  blue:(151/255.0) alpha:1.0].CGColor;
+        self.clipsToBounds = YES;
+        self.layer.cornerRadius = 10.0;
         
         tbContacts = [[UITableView alloc] init];
         tbContacts.delegate = self;
         tbContacts.dataSource = self;
         tbContacts.separatorStyle = UITableViewCellSeparatorStyleNone;
-        tbContacts.scrollEnabled = NO;
         [self addSubview: tbContacts];
         
         [tbContacts mas_makeConstraints:^(MASConstraintMaker *make) {
-            
+            make.top.left.bottom.right.equalTo(self);
         }];
     }
     return self;
@@ -95,24 +95,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *name = @"";
-    NSString *phone = @"";
-    NSString *avatar = @"";
-    id searchObj = [contacts objectAtIndex: indexPath.row];
-    if ([searchObj isKindOfClass:[PBXContact class]]) {
-        name = [(PBXContact *)searchObj _name];
-        phone = [(PBXContact *)searchObj _number];
-        //  nameForSearch = [(PBXContact *)searchObj _nameForSearch];
-        avatar = [(PBXContact *)searchObj _avatar];
-    }else{
-        NSArray *tmpArr = [searchObj componentsSeparatedByString:@"|"];
-        if (tmpArr.count >= 3) {
-            name = [tmpArr firstObject];
-            phone = [tmpArr lastObject];
-            //  nameForSearch = [tmpArr objectAtIndex: 1];
-        }
-    }
-    
     static NSString *identifier = @"ContactCell";
     ContactCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
     if (cell == nil) {
@@ -121,39 +103,22 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    //  contact name
-    if ([AppUtils isNullOrEmpty: name]) {
-        cell.name.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_unknown];
-    }else{
-        cell.name.text = name;
-    }
-    /*
-    if (contact._avatar != nil && ![contact._avatar isEqualToString:@""] && ![contact._avatar isEqualToString:@"<null>"] && ![contact._avatar isEqualToString:@"(null)"] && ![contact._avatar isEqualToString:@"null"])
-    {
-        NSData *imageData = [NSData dataFromBase64String:contact._avatar];
-        cell.image.image = [UIImage imageWithData: imageData];
-    }else {
-        NSString *keyAvatar = @"";
-        if (contact._lastName != nil && ![contact._lastName isEqualToString:@""]) {
-            keyAvatar = [contact._lastName substringToIndex: 1];
-        }
-        
-        if (contact._firstName != nil && ![contact._firstName isEqualToString:@""]) {
-            if (![keyAvatar isEqualToString:@""]) {
-                keyAvatar = [NSString stringWithFormat:@"%@ %@", keyAvatar, [contact._firstName substringToIndex: 1]];
-            }else{
-                keyAvatar = [contact._firstName substringToIndex: 1];
-            }
-        }
-        
-        UIImage *avatar = [UIImage imageForName:[keyAvatar uppercaseString] size:CGSizeMake(60.0, 60.0)
-                                backgroundColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0]
-                                      textColor:UIColor.whiteColor
-                                           font:nil];
-        cell.image.image = avatar;
-    }   */
+    PhoneObject *phone = [contacts objectAtIndex: indexPath.row];
     
-    cell.phone.text = phone;
+    cell.icCall.hidden = YES;
+    cell.name.text = phone.name;
+    cell.phone.text = phone.number;
+    if (![AppUtils isNullOrEmpty: phone.avatar]) {
+        cell.image.image = [UIImage imageWithData:[NSData dataFromBase64String: phone.avatar]];
+    }else{
+        cell.image.image = [UIImage imageNamed:@"no_avatar.png"];
+    }
+    cell.icCall.hidden = YES;
+    
+    [cell._lbSepa mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(cell);
+        make.height.mas_equalTo(1.0);
+    }];
     
     return cell;
 }

@@ -23,6 +23,7 @@
 #import "UIView+Toast.h"
 #import "HMLocalization.h"
 #import "Masonry.h"
+#import "PhoneObject.h"
 #import "PhoneMainView.h"
 #import "UICompositeView.h"
 //  Utils

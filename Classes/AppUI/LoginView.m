@@ -150,7 +150,7 @@
         [self makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_password_empty]
                duration:2.0 position:CSToastPositionCenter];
     }else{
-        if (![LinphoneAppDelegate sharedInstance]._internetActive) {
+        if (![LinphoneAppDelegate sharedInstance].internetActive) {
             
         }else{
             [_viewSignIn.waitingHud showInView:_viewSignIn animated:YES];

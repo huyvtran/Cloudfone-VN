@@ -10,6 +10,6 @@
 
 @implementation PhoneObject
 
-@synthesize _isNew, _phoneType, _phoneNumber;
+@synthesize number, name, nameForSearch, avatar, contactId, phoneType;
 
 @end

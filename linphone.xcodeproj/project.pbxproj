@@ -90,6 +90,7 @@
 		15906E39217AEA1E000877A9 /* button_back_dialer.png in Resources */ = {isa = PBXBuildFile; fileRef = 15906E37217AEA1C000877A9 /* button_back_dialer.png */; };
 		15906E3B217AEBCF000877A9 /* bg_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 15906E3A217AEBCD000877A9 /* bg_button.png */; };
 		15932B6B2186AF8700F53B90 /* SearchContactPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15932B6A2186AF8700F53B90 /* SearchContactPopupView.m */; };
+		15935B85218C56CD00072BA5 /* ContactUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 15935B84218C56CD00072BA5 /* ContactUtils.m */; };
 		159E0871217984BD0056E2BB /* RegisterPBXWithPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */; };
 		159E0879217984F00056E2BB /* RegisterPBXWithPhoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */; };
 		159E08842179E9130056E2BB /* ic_not_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 159E08822179E9110056E2BB /* ic_not_check.png */; };
@@ -817,8 +818,6 @@
 		84C4435E1FBE00B90015854C /* IntroduceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C4435C1FBE00B90015854C /* IntroduceViewController.xib */; };
 		84C4436E1FBE01680015854C /* PolicyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C4436C1FBE01680015854C /* PolicyViewController.m */; };
 		84C4436F1FBE01680015854C /* PolicyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C4436D1FBE01680015854C /* PolicyViewController.xib */; };
-		84C443811FBE0F600015854C /* NewContactFromChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C4437F1FBE0F600015854C /* NewContactFromChatViewController.m */; };
-		84C443821FBE0F600015854C /* NewContactFromChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C443801FBE0F600015854C /* NewContactFromChatViewController.xib */; };
 		84C443851FBE0FFA0015854C /* TypePhoneObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C443841FBE0FFA0015854C /* TypePhoneObject.m */; };
 		84C443881FBE101B0015854C /* PhoneObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C443871FBE101B0015854C /* PhoneObject.m */; };
 		84C4438F1FBE105F0015854C /* NewPhoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C4438D1FBE105F0015854C /* NewPhoneCell.m */; };
@@ -1255,6 +1254,8 @@
 		15906E3A217AEBCD000877A9 /* bg_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_button.png; sourceTree = "<group>"; };
 		15932B692186AF8700F53B90 /* SearchContactPopupView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SearchContactPopupView.h; path = AppUI/SearchContactPopupView.h; sourceTree = "<group>"; };
 		15932B6A2186AF8700F53B90 /* SearchContactPopupView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SearchContactPopupView.m; path = AppUI/SearchContactPopupView.m; sourceTree = "<group>"; };
+		15935B83218C56CD00072BA5 /* ContactUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ContactUtils.h; path = Utils/ContactUtils.h; sourceTree = "<group>"; };
+		15935B84218C56CD00072BA5 /* ContactUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ContactUtils.m; path = Utils/ContactUtils.m; sourceTree = "<group>"; };
 		159E086F217984BD0056E2BB /* RegisterPBXWithPhoneView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RegisterPBXWithPhoneView.h; path = AppUI/RegisterPBXWithPhoneView.h; sourceTree = "<group>"; };
 		159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RegisterPBXWithPhoneView.m; path = AppUI/RegisterPBXWithPhoneView.m; sourceTree = "<group>"; };
 		159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RegisterPBXWithPhoneView.xib; path = AppUI/RegisterPBXWithPhoneView.xib; sourceTree = "<group>"; };
@@ -2155,9 +2156,6 @@
 		84C4436B1FBE01680015854C /* PolicyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PolicyViewController.h; path = More/PolicyViewController.h; sourceTree = "<group>"; };
 		84C4436C1FBE01680015854C /* PolicyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PolicyViewController.m; path = More/PolicyViewController.m; sourceTree = "<group>"; };
 		84C4436D1FBE01680015854C /* PolicyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PolicyViewController.xib; path = More/PolicyViewController.xib; sourceTree = "<group>"; };
-		84C4437E1FBE0F600015854C /* NewContactFromChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewContactFromChatViewController.h; path = Contacts/NewContactFromChatViewController.h; sourceTree = "<group>"; };
-		84C4437F1FBE0F600015854C /* NewContactFromChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewContactFromChatViewController.m; path = Contacts/NewContactFromChatViewController.m; sourceTree = "<group>"; };
-		84C443801FBE0F600015854C /* NewContactFromChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewContactFromChatViewController.xib; path = Contacts/NewContactFromChatViewController.xib; sourceTree = "<group>"; };
 		84C443831FBE0FFA0015854C /* TypePhoneObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TypePhoneObject.h; path = AppObjects/TypePhoneObject.h; sourceTree = "<group>"; };
 		84C443841FBE0FFA0015854C /* TypePhoneObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TypePhoneObject.m; path = AppObjects/TypePhoneObject.m; sourceTree = "<group>"; };
 		84C443861FBE101B0015854C /* PhoneObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhoneObject.h; path = AppObjects/PhoneObject.h; sourceTree = "<group>"; };
@@ -3968,9 +3966,6 @@
 				84D0321F1FB531B5002D2524 /* KContactDetailViewController.h */,
 				84D032201FB531B5002D2524 /* KContactDetailViewController.m */,
 				84D032211FB531B5002D2524 /* KContactDetailViewController.xib */,
-				84C4437E1FBE0F600015854C /* NewContactFromChatViewController.h */,
-				84C4437F1FBE0F600015854C /* NewContactFromChatViewController.m */,
-				84C443801FBE0F600015854C /* NewContactFromChatViewController.xib */,
 				84E87DD71FC1DE3B0074A54C /* NewContactViewController.h */,
 				84E87DD81FC1DE3B0074A54C /* NewContactViewController.m */,
 				84E87DD91FC1DE3B0074A54C /* NewContactViewController.xib */,
@@ -4634,6 +4629,8 @@
 				1556A8D221817BFE002E8D26 /* NgnFileUtils.m */,
 				1556A8DA21817FC0002E8D26 /* Constant.h */,
 				1556A8DB21817FC0002E8D26 /* Constant.m */,
+				15935B83218C56CD00072BA5 /* ContactUtils.h */,
+				15935B84218C56CD00072BA5 /* ContactUtils.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -5151,7 +5148,6 @@
 				846586951FCA9AC900C5142C /* KMessageViewController.xib in Resources */,
 				633FEF1B1D3CD55A0014B822 /* presence_away@2x.png in Resources */,
 				633FEE281D3CD5590014B822 /* checkbox_unchecked.png in Resources */,
-				84C443821FBE0F600015854C /* NewContactFromChatViewController.xib in Resources */,
 				1575279A21661D44007D789A /* tf_close_bg.png in Resources */,
 				633FEDFE1D3CD5590014B822 /* camera_switch_disabled.png in Resources */,
 				633FEE7F1D3CD5590014B822 /* history_missed_selected@2x.png in Resources */,
@@ -5770,7 +5766,7 @@
 				84E343A41FDAFEA90042D048 /* UploadPicture.m in Sources */,
 				84EFFE0F1FF3E6B60085A9F4 /* DGActivityIndicatorRotatingSquaresAnimation.m in Sources */,
 				15E01DBB2182BC3700C0A40F /* AboutViewController.m in Sources */,
-				84C443811FBE0F600015854C /* NewContactFromChatViewController.m in Sources */,
+				15935B85218C56CD00072BA5 /* ContactUtils.m in Sources */,
 				1556A8DC21817FC1002E8D26 /* Constant.m in Sources */,
 				634610061B61330300548952 /* UILabel+Boldify.m in Sources */,
 				2248E90E12F7E4CF00220D9C /* UIDigitButton.m in Sources */,

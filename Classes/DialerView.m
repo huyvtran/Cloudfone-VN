@@ -23,7 +23,6 @@
 #import "AllContactListViewController.h"
 #import "PBXSettingViewController.h"
 #import "LinphoneManager.h"
-#import "PhoneMainView.h"
 #import <AVFoundation/AVFoundation.h>
 #import "PhoneBookContactCell.h"
 #import "NSData+Base64.h"
@@ -538,9 +537,16 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         [listPhoneSearched removeAllObjects];
         
-        //  search name with list pbx first
-        [self searchContactInPBXList: searchStr];
-        if (listPhoneSearched.count <= 0) {
+        if ([LinphoneAppDelegate sharedInstance].newSearchMethod)
+        {
+            NSArray *searchArr = [self searchAllContactsWithString:searchStr inList:appDelegate.listInfoPhoneNumber];
+            if (searchArr.count > 0) {
+                [listPhoneSearched addObjectsFromArray: searchArr];
+            }
+        }else{
+            //  search name with list pbx first
+            [self searchContactInPBXList: searchStr];
+            
             //  Continue search with person list
             [self searchForContactName: searchStr];
             
@@ -548,11 +554,16 @@ static UICompositeViewDescription *compositeDescription = nil;
             [listPhoneSearched removeAllObjects];
             [listPhoneSearched addObjectsFromArray: cleanedArray];
         }
-        
         dispatch_async(dispatch_get_main_queue(), ^(void){
             [self afterGetContactPhoneBookSuccessfully];
         });
     });
+}
+
+- (NSArray *)searchAllContactsWithString: (NSString *)search inList: (NSArray *)list {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@ OR number CONTAINS[cd] %@ OR nameForSearch CONTAINS[cd] %@", search, search, search];
+    NSArray *filter = [list filteredArrayUsingPredicate: predicate];
+    return filter;
 }
 
 - (void)searchContactInPBXList: (NSString *)search {
@@ -575,99 +586,110 @@ static UICompositeViewDescription *compositeDescription = nil;
 // Search duoc danh sach
 - (void)afterGetContactPhoneBookSuccessfully
 {
-    if ([_addressField.text length] == 0) {
+    if (_addressField.text.length == 0) {
         _addContactButton.hidden = YES;
     }else{
         _addContactButton.hidden = NO;
         
-        if (listPhoneSearched.count > 0) {
-            NSString *name = @"";
-            NSString *phone = @"";
-            NSString *nameForSearch = @"";
-            NSString *avatar = @"";
-            
-            BOOL isPBXContact = NO;
-            id searchObj = [listPhoneSearched firstObject];
-            if ([searchObj isKindOfClass:[PBXContact class]]) {
-                name = [(PBXContact *)searchObj _name];
-                phone = [(PBXContact *)searchObj _number];
-                nameForSearch = [(PBXContact *)searchObj _nameForSearch];
-                avatar = [(PBXContact *)searchObj _avatar];
-                
-                isPBXContact = YES;
-            }else{
-                NSArray *value = [self getValidResultFromSearchResult];
-                name = [value firstObject];
-                phone = [value lastObject];
-                nameForSearch = [value objectAtIndex: 1];
-            }
-            
-            if (![name isEqualToString:@""] && ![phone isEqualToString:@""]) {
-                if (!isNewSearch) {
-                    // Tô màu cho tên contact đầu tiên được tìm thấy
-                    NSMutableAttributedString *nameColor = [[NSMutableAttributedString alloc] initWithString: name];
-                    
-                    NSRange firstRange = [nameForSearch rangeOfString: _addressField.text options:NSCaseInsensitiveSearch];
-                    
-                    if (firstRange.location != NSNotFound) {
-                        [nameColor addAttribute:NSForegroundColorAttributeName
-                                          value:[UIColor colorWithRed:(244/255.0) green:(179/255.0)
-                                                                 blue:(15/255.0) alpha:1.0]
-                                          range:NSMakeRange(firstRange.location, _addressField.text.length)];
-                    }else{
-                        [nameColor addAttribute:NSForegroundColorAttributeName
-                                          value:[UIColor colorWithRed:(20/255.0) green:(20/255.0)
-                                                                 blue:(20/255.0) alpha:1.0]
-                                          range:NSMakeRange(0, name.length)];
-                    }
-                    lbSearchName.attributedText = nameColor;
-                    
-                    
-                    
-                    //  to mau cho phone number
-                    NSMutableAttributedString *phoneColor = [[NSMutableAttributedString alloc] initWithString: phone];
-                    NSRange phoneRange = [phone rangeOfString: _addressField.text options:NSCaseInsensitiveSearch];
-                    
-                    if (phoneRange.location != NSNotFound) {
-                        [phoneColor addAttribute:NSForegroundColorAttributeName
-                                           value:[UIColor colorWithRed:(244/255.0) green:(179/255.0)
-                                                                  blue:(15/255.0) alpha:1.0]
-                                           range:NSMakeRange(phoneRange.location, _addressField.text.length)];
-                    }else{
-                        [phoneColor addAttribute:NSForegroundColorAttributeName
-                                           value:[UIColor colorWithRed:(20/255.0) green:(20/255.0)
-                                                                  blue:(20/255.0) alpha:1.0]
-                                           range:NSMakeRange(0, phone.length)];
-                    }
-                    lbSearchPhone.attributedText = phoneColor;
-                    
-                    // setup avatar
-                    if (isPBXContact) {
-                        if (![AppUtils isNullOrEmpty: avatar]) {
-                            imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
-                        }else{
-                            imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-                        }
-                    }else{
-                        NSString *avatar = [NSDatabase getAvatarOfContactWithPhoneNumber: phone];
-                        if (![avatar isEqualToString:@""]) {
-                            imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
-                        }else{
-                            imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-                        }
-                    }
-                    searchView.hidden = NO;
-                }else{
-                    tvSearchResult.hidden = NO;
-                    tvSearchResult.attributedText = [self getSearchValueFromResult: listPhoneSearched];
-                }
+        if (appDelegate.newSearchMethod) {
+            //  [khai le - 02/11/2018]
+            if (listPhoneSearched.count > 0) {
+                tvSearchResult.hidden = NO;
+                tvSearchResult.attributedText = [self getSearchValueFromResultForNewSearchMethod: listPhoneSearched];
             }else{
                 searchView.hidden = YES;
                 tvSearchResult.hidden = YES;
             }
         }else{
-            searchView.hidden = YES;
-            tvSearchResult.hidden = YES;
+            if (listPhoneSearched.count > 0) {
+                NSString *name = @"";
+                NSString *phone = @"";
+                NSString *nameForSearch = @"";
+                NSString *avatar = @"";
+                
+                BOOL isPBXContact = NO;
+                id searchObj = [listPhoneSearched firstObject];
+                if ([searchObj isKindOfClass:[PBXContact class]]) {
+                    name = [(PBXContact *)searchObj _name];
+                    phone = [(PBXContact *)searchObj _number];
+                    nameForSearch = [(PBXContact *)searchObj _nameForSearch];
+                    avatar = [(PBXContact *)searchObj _avatar];
+                    
+                    isPBXContact = YES;
+                }else{
+                    NSArray *value = [self getValidResultFromSearchResult];
+                    name = [value firstObject];
+                    phone = [value lastObject];
+                    nameForSearch = [value objectAtIndex: 1];
+                }
+                
+                if (![name isEqualToString:@""] && ![phone isEqualToString:@""]) {
+                    if (!isNewSearch) {
+                        // Tô màu cho tên contact đầu tiên được tìm thấy
+                        NSMutableAttributedString *nameColor = [[NSMutableAttributedString alloc] initWithString: name];
+                        
+                        NSRange firstRange = [nameForSearch rangeOfString: _addressField.text options:NSCaseInsensitiveSearch];
+                        
+                        if (firstRange.location != NSNotFound) {
+                            [nameColor addAttribute:NSForegroundColorAttributeName
+                                              value:[UIColor colorWithRed:(244/255.0) green:(179/255.0)
+                                                                     blue:(15/255.0) alpha:1.0]
+                                              range:NSMakeRange(firstRange.location, _addressField.text.length)];
+                        }else{
+                            [nameColor addAttribute:NSForegroundColorAttributeName
+                                              value:[UIColor colorWithRed:(20/255.0) green:(20/255.0)
+                                                                     blue:(20/255.0) alpha:1.0]
+                                              range:NSMakeRange(0, name.length)];
+                        }
+                        lbSearchName.attributedText = nameColor;
+                        
+                        
+                        
+                        //  to mau cho phone number
+                        NSMutableAttributedString *phoneColor = [[NSMutableAttributedString alloc] initWithString: phone];
+                        NSRange phoneRange = [phone rangeOfString: _addressField.text options:NSCaseInsensitiveSearch];
+                        
+                        if (phoneRange.location != NSNotFound) {
+                            [phoneColor addAttribute:NSForegroundColorAttributeName
+                                               value:[UIColor colorWithRed:(244/255.0) green:(179/255.0)
+                                                                      blue:(15/255.0) alpha:1.0]
+                                               range:NSMakeRange(phoneRange.location, _addressField.text.length)];
+                        }else{
+                            [phoneColor addAttribute:NSForegroundColorAttributeName
+                                               value:[UIColor colorWithRed:(20/255.0) green:(20/255.0)
+                                                                      blue:(20/255.0) alpha:1.0]
+                                               range:NSMakeRange(0, phone.length)];
+                        }
+                        lbSearchPhone.attributedText = phoneColor;
+                        
+                        // setup avatar
+                        if (isPBXContact) {
+                            if (![AppUtils isNullOrEmpty: avatar]) {
+                                imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
+                            }else{
+                                imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                            }
+                        }else{
+                            NSString *avatar = [NSDatabase getAvatarOfContactWithPhoneNumber: phone];
+                            if (![avatar isEqualToString:@""]) {
+                                imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
+                            }else{
+                                imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                            }
+                        }
+                        searchView.hidden = NO;
+                    }else{
+                        tvSearchResult.hidden = NO;
+                        tvSearchResult.attributedText = [self getSearchValueFromResult: listPhoneSearched];
+                    }
+                }else{
+                    searchView.hidden = YES;
+                    tvSearchResult.hidden = YES;
+                }
+            }else{
+                searchView.hidden = YES;
+                tvSearchResult.hidden = YES;
+            }
         }
     }
 }
@@ -1201,7 +1223,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)whenNetworkChanged {
-    NetworkStatus internetStatus = [appDelegate._internetReachable currentReachabilityStatus];
+    NetworkStatus internetStatus = [appDelegate.internetReachable currentReachabilityStatus];
     if (internetStatus == NotReachable) {
         _lbStatus.text = [appDelegate.localization localizedStringForKey:@"No network"];
         _lbStatus.textColor = UIColor.orangeColor;
@@ -1340,6 +1362,64 @@ static UICompositeViewDescription *compositeDescription = nil;
         [str1 addAttribute: NSLinkAttributeName value:phone range: NSMakeRange(0, name.length)];
         [str1 addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleNone) range:NSMakeRange(0, name.length)];
         [str1 addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, name.length)];
+        [attrResult appendAttributedString:str1];
+        
+        NSString *strAND = [NSString stringWithFormat:@" %@ ", [appDelegate.localization localizedStringForKey:@"and"]];
+        NSMutableAttributedString * attrAnd = [[NSMutableAttributedString alloc] initWithString:strAND];
+        [attrAnd addAttribute: NSFontAttributeName value: [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0]
+                        range: NSMakeRange(0, strAND.length)];
+        [attrResult appendAttributedString:attrAnd];
+        
+        NSString *strOthers = [NSString stringWithFormat:@"%lu %@", searchs.count-1, [appDelegate.localization localizedStringForKey:@"others"]];
+        NSMutableAttributedString * str2 = [[NSMutableAttributedString alloc] initWithString:strOthers];
+        [str2 addAttribute: NSLinkAttributeName value: @"others" range: NSMakeRange(0, strOthers.length)];
+        [str2 addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleNone) range:NSMakeRange(0, strOthers.length)];
+        [str2 addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, strOthers.length)];
+        [attrResult appendAttributedString:str2];
+    }
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setAlignment:NSTextAlignmentCenter];
+    [attrResult addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attrResult.string.length)];
+    
+    return attrResult;
+}
+
+- (NSAttributedString *)getSearchValueFromResultForNewSearchMethod: (NSArray *)searchs
+{
+    UIFont *font = [UIFont fontWithName:MYRIADPRO_BOLD size:16.0];
+    NSMutableAttributedString *attrResult = [[NSMutableAttributedString alloc] init];
+    
+    if (searchs.count == 1) {
+        PhoneObject *phone = [searchs firstObject];
+        
+        [attrResult appendAttributedString:[[NSAttributedString alloc] initWithString: phone.name]];
+        [attrResult addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, phone.name.length)];
+        [attrResult addAttribute: NSLinkAttributeName value:phone.number range: NSMakeRange(0, phone.name.length)];
+    }else if (searchs.count == 2)
+    {
+        PhoneObject *phone = [searchs firstObject];
+        
+        [attrResult appendAttributedString:[[NSAttributedString alloc] initWithString: phone.name]];
+        [attrResult addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, phone.name.length)];
+        [attrResult addAttribute: NSLinkAttributeName value:phone.number range: NSMakeRange(0, phone.name.length)];
+        
+        phone = [searchs lastObject];
+        
+        NSString *strOR = [NSString stringWithFormat:@" %@ ", [appDelegate.localization localizedStringForKey:@"or"]];
+        [attrResult appendAttributedString:[[NSAttributedString alloc] initWithString: strOR]];
+        
+        NSMutableAttributedString *secondAttr = [[NSMutableAttributedString alloc] initWithString: phone.name];
+        [secondAttr addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, phone.name.length)];
+        [secondAttr addAttribute: NSLinkAttributeName value:phone.number range: NSMakeRange(0, phone.name.length)];
+        [attrResult appendAttributedString:secondAttr];
+    }else{
+        PhoneObject *phone = [searchs firstObject];
+        
+        NSMutableAttributedString * str1 = [[NSMutableAttributedString alloc] initWithString:phone.name];
+        [str1 addAttribute: NSLinkAttributeName value:phone range: NSMakeRange(0, phone.name.length)];
+        [str1 addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleNone) range:NSMakeRange(0, phone.name.length)];
+        [str1 addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, phone.name.length)];
         [attrResult appendAttributedString:str1];
         
         NSString *strAND = [NSString stringWithFormat:@" %@ ", [appDelegate.localization localizedStringForKey:@"and"]];

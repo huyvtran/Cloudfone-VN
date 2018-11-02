@@ -366,27 +366,13 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnClearPressed:(UIButton *)sender {
-    [self removeAllAccountLoginedBefore];
-    return;
-    const MSList *proxies = linphone_core_get_proxy_config_list(LC);
-    int numAcc = ms_list_size(proxies);
-    if (numAcc == 0) {
-        NSLog(@"What the hell");
-        return;
-    }
-    
-    linphone_core_clear_proxy_config(LC);
-    [[LinphoneManager instance] removeAllAccounts];
-    
-    
-    
-    timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self
-                                                  selector:@selector(registerPBXTimeOut)
-                                                  userInfo:nil repeats:false];
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s", __FUNCTION__]);
     
     [_icWaiting startAnimating];
     _icWaiting.hidden = NO;
-    [self clearAllProxyConfigAndAccount];
+    
+    linphone_core_clear_proxy_config(LC);
+    [[LinphoneManager instance] removeAllAccounts];
 }
 
 - (IBAction)_btnSavePressed:(UIButton *)sender {
@@ -439,7 +425,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
 //    _tfServerID.text = @"CF-BS-3165";
 //    _tfAccount.text = @"14951";
-    _tfPassword.text = @"cloudfone@123";
+//    _tfPassword.text = @"cloudfone@123";
     
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
@@ -699,12 +685,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     timeoutTimer = nil;
 }
 
-//  Clear tất cả các proxy config và account của nó
-- (void)clearAllProxyConfigAndAccount {
-    linphone_core_clear_proxy_config(LC);
-    [[LinphoneManager instance] removeAllAccounts];
-}
-
 - (void)whenClearPBXSuccessfully {
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
@@ -867,13 +847,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                  options:options];
         return features;
     }
-}
-
-- (void)removeAllAccountLoginedBefore {
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s", __FUNCTION__]);
-    
-    linphone_core_clear_proxy_config(LC);
-    [[LinphoneManager instance] removeAllAccounts];
 }
 
 - (void)loginPBXWithNewAccountIfNeed
