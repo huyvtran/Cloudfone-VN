@@ -76,7 +76,7 @@
 @synthesize fromImagePicker;
 @synthesize _isSyncing;
 @synthesize _allPhonesDict, _allIDDict, contactLoaded;
-@synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, newSearchMethod;
+@synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber;
 
 #pragma mark - Lifecycle Functions
 
@@ -394,7 +394,6 @@ void onUncaughtException(NSException* exception)
     [NSDatabase connectCallnexDB];
     
     //  Ghi âm cuộc gọi
-    newSearchMethod = YES;
     _isSyncing = false;
     
     _allPhonesDict = [[NSMutableDictionary alloc] init];

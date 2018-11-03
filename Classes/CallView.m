@@ -182,17 +182,29 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-    //  Download avatar of user if exists
-    [self checkToDownloadAvatarOfUser: phoneNumber];
+    //  [Khai le - 03/11/2018]
+    PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
+    if (contact.phoneType == ePBXPhone) {
+        if (![AppUtils isNullOrEmpty: contact.avatar]) {
+            _avatarImage.image = [UIImage imageWithData: [NSData dataFromBase64String:contact.avatar]];
+        }else{
+            _avatarImage.image = [UIImage imageNamed:@"no_avatar.png"];
+        }
+        
+        //  Download avatar of user if exists
+        [self checkToDownloadAvatarOfUser: phoneNumber];
+    }else{
+        hehe
+    }
     
     NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
     NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, phoneNumber];
     NSString *localFile = [NSString stringWithFormat:@"/avatars/%@", avatarName];
     NSData *avatarData = [AppUtils getFileDataFromDirectoryWithFileName:localFile];
     if (avatarData != nil) {
-        _avatarImage.image = [UIImage imageWithData: avatarData];
+        
     }else{
-        _avatarImage.image = [UIImage imageNamed:@"default-avatar"];
+        
     }
     
     //  Leo Kelvin

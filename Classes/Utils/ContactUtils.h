@@ -9,4 +9,6 @@
 
 @interface ContactUtils : NSObject
 
++ (PhoneObject *)getContactPhoneObjectWithNumber: (NSString *)number;
+
 @end

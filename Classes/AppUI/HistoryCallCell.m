@@ -121,4 +121,21 @@
     }
 }
 
+- (void)updateFrameForHotline: (BOOL)isHotline {
+    if (isHotline) {
+        [_lbName mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.equalTo(_imgAvatar);
+            make.left.equalTo(_imgAvatar.mas_right).offset(5);
+            make.right.equalTo(_lbTime.mas_left).offset(-5);
+        }];
+    }else{
+        [_lbName mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_imgAvatar).offset(4);
+            make.left.equalTo(_imgAvatar.mas_right).offset(5);
+            make.bottom.equalTo(_imgAvatar.mas_centerY);
+            make.right.equalTo(_lbTime.mas_left).offset(-5);
+        }];
+    }
+}
+
 @end

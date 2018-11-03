@@ -31,3 +31,4 @@
 #import "AppUtils.h"
 #import "SipUtils.h"
 #import "NgnFileUtils.h"
+#import "ContactUtils.h"

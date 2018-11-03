@@ -63,12 +63,6 @@
 //  Xoá lịch sử các cuộc gọi nhỡ của user
 + (BOOL)deleteAllMissedCallOfUser: (NSString *)user;
 
-// Get tất cả các section trong của cuoc goi ghi am của 1 user
-+ (NSMutableArray *)getHistoryRecordCallListOfUser: (NSString *)mySip;
-
-// Get danh sách cho từng section call của user
-+ (NSMutableArray *)getAllRecordCallOnDate: (NSString *)dateStr ofUser: (NSString *)mySip;
-
 //  Search contact trong danh bạ PBX
 + (void)searchPhoneNumberInPBXContact: (NSString *)searchStr withCurrentList: (NSMutableArray *)currentList;
 

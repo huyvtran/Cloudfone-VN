@@ -465,7 +465,6 @@
 
 
 "text_phone_not_exists"     =   "Số điện thoại không tồn tại"
-"text_call_detail_header"   =   "Chi tiết cuộc gọi"
 
 "text_outging_call"     =   "Cuộc gọi đi"
 "text_incomming_call"   =   "Cuộc gọi đến"
@@ -1169,7 +1168,7 @@
 "Continue" = "Tiếp tục"
 "Input phone number" = "Nhập số điện thoại"
 
-"Not set" = "Chưa cài đặt"
+"Not set" = "Chưa có tên"
 "Edit profile" = "Cập nhật hồ sơ"
 "Please check your internet connection!" = "Vui lòng kiểm tra kết nối mạng của bạn!"
 "Failed. Please try later!" = "Thất bại. Vui lòng thử lại sau!"
@@ -1182,3 +1181,4 @@
 "others" = "người khác"
 "Release date" = "Ngày phát hành"
 
+"Calls detail" = "Chi tiết cuộc gọi"

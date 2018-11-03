@@ -125,7 +125,6 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 
 //  [Khai le - 02/11/2018]
 @property (nonatomic, strong) NSMutableArray *listInfoPhoneNumber;
-@property (nonatomic, assign) BOOL newSearchMethod;
 
 @end
 

@@ -194,14 +194,20 @@
     if ([aCall._phoneNumber isEqualToString: hotline]) {
         cell._lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Hotline"];
         cell._imgAvatar.image = [UIImage imageNamed:@"hotline_avatar.png"];
+        
+        [cell updateFrameForHotline: YES];
+        cell._lbPhone.hidden = YES;
     }else{
+        [cell updateFrameForHotline: NO];
+        cell._lbPhone.hidden = NO;
+        
         if ([aCall._phoneName isEqualToString:@""]) {
             cell._lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
         }else{
             cell._lbName.text = aCall._phoneName;
         }
         
-        if (aCall._phoneAvatar == nil || [aCall._phoneAvatar isEqualToString:@""] || [aCall._phoneAvatar isEqualToString:@"(null)"] || [aCall._phoneAvatar isEqualToString:@"null"] || [aCall._phoneAvatar isEqualToString:@"<null>"])
+        if ([AppUtils isNullOrEmpty: aCall._phoneAvatar])
         {
             if (aCall._phoneNumber.length < 10) {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{

@@ -319,8 +319,6 @@
 #define text_thong_bao_rung     @"text_thong_bao_rung"
 #define text_rung_tin_nhan      @"text_rung_tin_nhan"
 
-#define text_call_detail_header @"text_call_detail_header"
-
 #define text_block_user         @"text_block_user"
 #define text_unblock_user       @"text_unblock_user"
 #define text_call_missed        @"text_call_missed"

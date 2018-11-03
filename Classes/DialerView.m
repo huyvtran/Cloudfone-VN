@@ -42,12 +42,6 @@
     UITapGestureRecognizer *tapOnScreen;
     NSTimer *pressTimer;
     
-    UIView *searchView;
-    UIImageView *imgSearchAvatar;
-    UILabel *lbSearchName;
-    UILabel *lbSearchPhone;
-    float hSearch;
-    
     BOOL isNewSearch;
     UITextView *tvSearchResult;
     SearchContactPopupView *popupSearchContacts;
@@ -103,7 +97,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     // invisible icon add contact & icon delete address
     _addContactButton.hidden = YES;
     _addressField.text = @"";
-    searchView.hidden = YES;
     
     //  Cập nhật token push
     if (![LinphoneAppDelegate sharedInstance]._updateTokenSuccess && [LinphoneAppDelegate sharedInstance]._deviceToken != nil && ![[LinphoneAppDelegate sharedInstance]._deviceToken isEqualToString: @""]) {
@@ -239,9 +232,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[super viewDidAppear:animated];
 	[LinphoneManager.instance shouldPresentLinkPopup];
     
-    [self addBoxShadowForView:searchView withColor:[UIColor colorWithRed:(220/255.0) green:(220/255.0)
-                                                                    blue:(220/255.0) alpha:1.0]];
-    
     //  Check for first time, after installed app
     //  [self checkForShowFirstSettingAccount];
 }
@@ -295,7 +285,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)afterEndCallForTransfer {
     _addContactButton.hidden = YES;
     _addressField.text = @"";
-    searchView.hidden = YES;
 }
 
 #pragma mark - UITextFieldDelegate Functions
@@ -368,7 +357,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                     userInfo:nil repeats:false];
     }else{
         _addContactButton.hidden = YES;
-        searchView.hidden = YES;
         tvSearchResult.hidden = YES;
     }
 }
@@ -376,7 +364,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)onBackspaceLongClick:(id)sender {
     _addressField.text = @"";
     _addContactButton.hidden = YES;
-    searchView.hidden = YES;
     tvSearchResult.hidden = YES;
 }
 
@@ -480,10 +467,14 @@ static UICompositeViewDescription *compositeDescription = nil;
     pressTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self
                                                 selector:@selector(searchPhoneBookWithThread)
                                                 userInfo:nil repeats:false];
-    //  [self searchPhoneBookWithThread];
 }
 
 - (IBAction)_btnCallPressed:(UIButton *)sender {
+    if (_addressField.text.length > 0) {
+        tvSearchResult.hidden = YES;
+        return;
+    }
+    
     [pressTimer invalidate];
     pressTimer = nil;
     pressTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self
@@ -532,28 +523,17 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     NSString *searchStr = _addressField.text;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        //  remove data before search
         if (listPhoneSearched == nil) {
             listPhoneSearched = [[NSMutableArray alloc] init];
         }
         [listPhoneSearched removeAllObjects];
         
-        if ([LinphoneAppDelegate sharedInstance].newSearchMethod)
-        {
-            NSArray *searchArr = [self searchAllContactsWithString:searchStr inList:appDelegate.listInfoPhoneNumber];
-            if (searchArr.count > 0) {
-                [listPhoneSearched addObjectsFromArray: searchArr];
-            }
-        }else{
-            //  search name with list pbx first
-            [self searchContactInPBXList: searchStr];
-            
-            //  Continue search with person list
-            [self searchForContactName: searchStr];
-            
-            NSArray *cleanedArray = [[NSSet setWithArray: listPhoneSearched] allObjects];
-            [listPhoneSearched removeAllObjects];
-            [listPhoneSearched addObjectsFromArray: cleanedArray];
+        NSArray *searchArr = [self searchAllContactsWithString:searchStr inList:appDelegate.listInfoPhoneNumber];
+        if (searchArr.count > 0) {
+            [listPhoneSearched addObjectsFromArray: searchArr];
         }
+        
         dispatch_async(dispatch_get_main_queue(), ^(void){
             [self afterGetContactPhoneBookSuccessfully];
         });
@@ -566,22 +546,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     return filter;
 }
 
-- (void)searchContactInPBXList: (NSString *)search {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_name CONTAINS[cd] %@ OR _number CONTAINS[cd] %@ OR _nameForSearch CONTAINS[cd] %@", search, search, search];
-    NSArray *filter = [appDelegate.pbxContacts filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        [listPhoneSearched addObjectsFromArray: filter];
-    }
-}
-
-- (void)searchForContactName: (NSString *)search {
-    NSArray *allName = [appDelegate._allPhonesDict allValues];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", search];
-    NSArray *filter = [allName filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        [listPhoneSearched addObjectsFromArray: filter];
-    }
-}
 
 // Search duoc danh sach
 - (void)afterGetContactPhoneBookSuccessfully
@@ -591,105 +555,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         _addContactButton.hidden = NO;
         
-        if (appDelegate.newSearchMethod) {
-            //  [khai le - 02/11/2018]
-            if (listPhoneSearched.count > 0) {
-                tvSearchResult.hidden = NO;
-                tvSearchResult.attributedText = [self getSearchValueFromResultForNewSearchMethod: listPhoneSearched];
-            }else{
-                searchView.hidden = YES;
-                tvSearchResult.hidden = YES;
-            }
+        //  [khai le - 02/11/2018]
+        if (listPhoneSearched.count > 0) {
+            tvSearchResult.hidden = NO;
+            tvSearchResult.attributedText = [self getSearchValueFromResultForNewSearchMethod: listPhoneSearched];
         }else{
-            if (listPhoneSearched.count > 0) {
-                NSString *name = @"";
-                NSString *phone = @"";
-                NSString *nameForSearch = @"";
-                NSString *avatar = @"";
-                
-                BOOL isPBXContact = NO;
-                id searchObj = [listPhoneSearched firstObject];
-                if ([searchObj isKindOfClass:[PBXContact class]]) {
-                    name = [(PBXContact *)searchObj _name];
-                    phone = [(PBXContact *)searchObj _number];
-                    nameForSearch = [(PBXContact *)searchObj _nameForSearch];
-                    avatar = [(PBXContact *)searchObj _avatar];
-                    
-                    isPBXContact = YES;
-                }else{
-                    NSArray *value = [self getValidResultFromSearchResult];
-                    name = [value firstObject];
-                    phone = [value lastObject];
-                    nameForSearch = [value objectAtIndex: 1];
-                }
-                
-                if (![name isEqualToString:@""] && ![phone isEqualToString:@""]) {
-                    if (!isNewSearch) {
-                        // Tô màu cho tên contact đầu tiên được tìm thấy
-                        NSMutableAttributedString *nameColor = [[NSMutableAttributedString alloc] initWithString: name];
-                        
-                        NSRange firstRange = [nameForSearch rangeOfString: _addressField.text options:NSCaseInsensitiveSearch];
-                        
-                        if (firstRange.location != NSNotFound) {
-                            [nameColor addAttribute:NSForegroundColorAttributeName
-                                              value:[UIColor colorWithRed:(244/255.0) green:(179/255.0)
-                                                                     blue:(15/255.0) alpha:1.0]
-                                              range:NSMakeRange(firstRange.location, _addressField.text.length)];
-                        }else{
-                            [nameColor addAttribute:NSForegroundColorAttributeName
-                                              value:[UIColor colorWithRed:(20/255.0) green:(20/255.0)
-                                                                     blue:(20/255.0) alpha:1.0]
-                                              range:NSMakeRange(0, name.length)];
-                        }
-                        lbSearchName.attributedText = nameColor;
-                        
-                        
-                        
-                        //  to mau cho phone number
-                        NSMutableAttributedString *phoneColor = [[NSMutableAttributedString alloc] initWithString: phone];
-                        NSRange phoneRange = [phone rangeOfString: _addressField.text options:NSCaseInsensitiveSearch];
-                        
-                        if (phoneRange.location != NSNotFound) {
-                            [phoneColor addAttribute:NSForegroundColorAttributeName
-                                               value:[UIColor colorWithRed:(244/255.0) green:(179/255.0)
-                                                                      blue:(15/255.0) alpha:1.0]
-                                               range:NSMakeRange(phoneRange.location, _addressField.text.length)];
-                        }else{
-                            [phoneColor addAttribute:NSForegroundColorAttributeName
-                                               value:[UIColor colorWithRed:(20/255.0) green:(20/255.0)
-                                                                      blue:(20/255.0) alpha:1.0]
-                                               range:NSMakeRange(0, phone.length)];
-                        }
-                        lbSearchPhone.attributedText = phoneColor;
-                        
-                        // setup avatar
-                        if (isPBXContact) {
-                            if (![AppUtils isNullOrEmpty: avatar]) {
-                                imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
-                            }else{
-                                imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-                            }
-                        }else{
-                            NSString *avatar = [NSDatabase getAvatarOfContactWithPhoneNumber: phone];
-                            if (![avatar isEqualToString:@""]) {
-                                imgSearchAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
-                            }else{
-                                imgSearchAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-                            }
-                        }
-                        searchView.hidden = NO;
-                    }else{
-                        tvSearchResult.hidden = NO;
-                        tvSearchResult.attributedText = [self getSearchValueFromResult: listPhoneSearched];
-                    }
-                }else{
-                    searchView.hidden = YES;
-                    tvSearchResult.hidden = YES;
-                }
-            }else{
-                searchView.hidden = YES;
-                tvSearchResult.hidden = YES;
-            }
+            tvSearchResult.hidden = YES;
         }
     }
 }
@@ -700,15 +571,11 @@ static UICompositeViewDescription *compositeDescription = nil;
         LinphoneRegistrationState state = [object intValue];
         switch (state) {
             case LinphoneRegistrationOk:{
-                DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: State is %@", __FUNCTION__, @"LinphoneRegistrationOk"]);
-                
                 _lbStatus.textColor = UIColor.greenColor;
                 _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Online"];
                 break;
             }
             case LinphoneRegistrationProgress:{
-                DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: State is %@", __FUNCTION__, @"LinphoneRegistrationProgress"]);
-                
                 _lbStatus.textColor = UIColor.whiteColor;
                 _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Connecting"];
                 break;
@@ -716,7 +583,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             case LinphoneRegistrationNone:
             case LinphoneRegistrationCleared:
             case LinphoneRegistrationFailed:{
-                DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: State is %@", __FUNCTION__, @"LinphoneRegistrationFailed"]);
                 
                 _lbStatus.textColor = UIColor.orangeColor;
                 _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Offline"];
@@ -981,68 +847,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.left.equalTo(_callButton.mas_right).offset(spaceMarginX);
         make.width.height.mas_equalTo(wIcon);
     }];
-    
-    //  search contact
-    hSearch = 60.0;
-    searchView = [[UIView alloc] init];
-    searchView.backgroundColor = UIColor.whiteColor;
-    searchView.layer.cornerRadius = 5.0;
-    
-    [_viewNumber addSubview: searchView];
-    [searchView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_addressField.mas_bottom).offset(10);
-        make.centerX.equalTo(_viewNumber.mas_centerX);
-        make.height.mas_equalTo(hSearch);
-        make.width.mas_equalTo(280);
-    }];
-    
-    imgSearchAvatar = [[UIImageView alloc] init];
-    imgSearchAvatar.backgroundColor = UIColor.redColor;
-    imgSearchAvatar.clipsToBounds = YES;
-    imgSearchAvatar.layer.cornerRadius = 45.0/2;
-    [searchView addSubview: imgSearchAvatar];
-    [imgSearchAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(searchView).offset((hSearch-45.0)/2);
-        make.centerY.equalTo(searchView.mas_centerY);
-        make.width.height.mas_equalTo(45.0);
-    }];
-    
-    lbSearchName = [[UILabel alloc] init];
-    lbSearchName.text = @"Khai Le";
-    lbSearchName.textColor = [UIColor colorWithRed:(20/255.0) green:(20/255.0)
-                                              blue:(20/255.0) alpha:1.0];
-    [searchView addSubview: lbSearchName];
-    [lbSearchName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(imgSearchAvatar.mas_right).offset(10);
-        make.right.equalTo(searchView).offset(-(hSearch-45.0)/2);
-        make.top.equalTo(imgSearchAvatar.mas_top);
-        make.bottom.equalTo(imgSearchAvatar.mas_centerY);
-    }];
-    
-    lbSearchPhone = [[UILabel alloc] init];
-    lbSearchPhone.text = @"+841663430737";
-    lbSearchPhone.textColor = [UIColor colorWithRed:(20/255.0) green:(20/255.0)
-                                               blue:(20/255.0) alpha:1.0];
-    [searchView addSubview: lbSearchPhone];
-    
-    [lbSearchPhone mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(lbSearchName);
-        make.top.equalTo(lbSearchName.mas_bottom);
-        make.bottom.equalTo(imgSearchAvatar.mas_bottom);
-    }];
-    
-    UITapGestureRecognizer *tapOnSearch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(whenTapOnSearchResult)];
-    [searchView addGestureRecognizer: tapOnSearch];
-    searchView.hidden = YES;
-}
-
-- (void)whenTapOnSearchResult {
-    NSString *phoneNumber = lbSearchPhone.text;
-    if (![phoneNumber isEqualToString:@""]) {
-        NSString *newPhoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
-        _addressField.text = newPhoneNumber;
-        searchView.hidden = YES;
-    }
 }
 
 //  Kiểm tra folder chứa ảnh và tạo list emotion
@@ -1211,7 +1015,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 //  Added by Khai Le on 03/10/2018
 - (void)addBoxShadowForView: (UIView *)view withColor: (UIColor *)color{
-    view.layer.shadowRadius  = 5.0f;
+    view.layer.shadowRadius  = view.layer.cornerRadius;
     view.layer.shadowColor   = color.CGColor;
     view.layer.shadowOffset  = CGSizeMake(0.0f, 0.0f);
     view.layer.shadowOpacity = 0.9f;
@@ -1285,104 +1089,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"SHOWED_SETTINGS_ACCOUNT_FOR_FIRST"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
-}
-
-- (NSAttributedString *)getSearchValueFromResult: (NSArray *)searchs
-{
-    NSString *name = @"";
-    NSString *phone = @"";
-    
-    UIFont *font = [UIFont fontWithName:MYRIADPRO_BOLD size:16.0];
-    NSMutableAttributedString *attrResult = [[NSMutableAttributedString alloc] init];
-    
-    if (searchs.count == 1) {
-        id searchObj = [listPhoneSearched firstObject];
-        if ([searchObj isKindOfClass:[PBXContact class]]) {
-            name = [(PBXContact *)searchObj _name];
-            phone = [(PBXContact *)searchObj _number];
-        }else{
-            NSArray *tmpArr = [searchObj componentsSeparatedByString:@"|"];
-            if (tmpArr.count >= 3) {
-                name = [tmpArr firstObject];
-                phone = [tmpArr lastObject];
-            }
-        }
-        [attrResult appendAttributedString:[[NSAttributedString alloc] initWithString: name]];
-        [attrResult addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, name.length)];
-        [attrResult addAttribute: NSLinkAttributeName value:phone range: NSMakeRange(0, name.length)];
-    }else if (searchs.count == 2)
-    {
-        id firstContact = [listPhoneSearched firstObject];
-        if ([firstContact isKindOfClass:[PBXContact class]]) {
-            name = [(PBXContact *)firstContact _name];
-        }else{
-            NSArray *tmpArr = [firstContact componentsSeparatedByString:@"|"];
-            if (tmpArr.count >= 3) {
-                name = [tmpArr firstObject];
-            }
-        }
-        [attrResult appendAttributedString:[[NSAttributedString alloc] initWithString: name]];
-        [attrResult addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, name.length)];
-        [attrResult addAttribute: NSLinkAttributeName value:phone range: NSMakeRange(0, name.length)];
-        
-        name = @"";
-        phone = @"";
-        
-        id secondContact = [listPhoneSearched lastObject];
-        if ([secondContact isKindOfClass:[PBXContact class]]) {
-            name = [(PBXContact *)secondContact _name];
-        }else{
-            NSArray *tmpArr = [secondContact componentsSeparatedByString:@"|"];
-            if (tmpArr.count >= 3) {
-                name = [tmpArr firstObject];
-            }
-        }
-        NSString *strOR = [NSString stringWithFormat:@" %@ ", [appDelegate.localization localizedStringForKey:@"or"]];
-        [attrResult appendAttributedString:[[NSAttributedString alloc] initWithString: strOR]];
-        
-        NSMutableAttributedString *secondAttr = [[NSMutableAttributedString alloc] initWithString: name];
-        [secondAttr addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, name.length)];
-        [secondAttr addAttribute: NSLinkAttributeName value:phone range: NSMakeRange(0, name.length)];
-        [attrResult appendAttributedString:secondAttr];
-    }else{
-        
-        id searchObj = [listPhoneSearched firstObject];
-        if ([searchObj isKindOfClass:[PBXContact class]]) {
-            name = [(PBXContact *)searchObj _name];
-            phone = [(PBXContact *)searchObj _number];
-        }else{
-            NSArray *tmpArr = [searchObj componentsSeparatedByString:@"|"];
-            if (tmpArr.count >= 3) {
-                name = [tmpArr firstObject];
-                phone = [tmpArr lastObject];
-            }
-        }
-        
-        NSMutableAttributedString * str1 = [[NSMutableAttributedString alloc] initWithString:name];
-        [str1 addAttribute: NSLinkAttributeName value:phone range: NSMakeRange(0, name.length)];
-        [str1 addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleNone) range:NSMakeRange(0, name.length)];
-        [str1 addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, name.length)];
-        [attrResult appendAttributedString:str1];
-        
-        NSString *strAND = [NSString stringWithFormat:@" %@ ", [appDelegate.localization localizedStringForKey:@"and"]];
-        NSMutableAttributedString * attrAnd = [[NSMutableAttributedString alloc] initWithString:strAND];
-        [attrAnd addAttribute: NSFontAttributeName value: [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0]
-                        range: NSMakeRange(0, strAND.length)];
-        [attrResult appendAttributedString:attrAnd];
-        
-        NSString *strOthers = [NSString stringWithFormat:@"%lu %@", searchs.count-1, [appDelegate.localization localizedStringForKey:@"others"]];
-        NSMutableAttributedString * str2 = [[NSMutableAttributedString alloc] initWithString:strOthers];
-        [str2 addAttribute: NSLinkAttributeName value: @"others" range: NSMakeRange(0, strOthers.length)];
-        [str2 addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleNone) range:NSMakeRange(0, strOthers.length)];
-        [str2 addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, strOthers.length)];
-        [attrResult appendAttributedString:str2];
-    }
-    
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setAlignment:NSTextAlignmentCenter];
-    [attrResult addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attrResult.string.length)];
-    
-    return attrResult;
 }
 
 - (NSAttributedString *)getSearchValueFromResultForNewSearchMethod: (NSArray *)searchs
@@ -1479,15 +1185,21 @@ static UICompositeViewDescription *compositeDescription = nil;
         tvSearchResult.hidden = YES;
     }else{
         float totalHeight = listPhoneSearched.count * 60.0;
-        if (totalHeight > SCREEN_HEIGHT - 50.0*2) {
-            totalHeight = SCREEN_HEIGHT - 50.0*2;
+        if (totalHeight > SCREEN_HEIGHT - 70.0*2) {
+            totalHeight = SCREEN_HEIGHT - 70.0*2;
         }
         popupSearchContacts = [[SearchContactPopupView alloc] initWithFrame:CGRectMake(30.0, (SCREEN_HEIGHT-totalHeight)/2, SCREEN_WIDTH-60.0, totalHeight)];
         popupSearchContacts.contacts = listPhoneSearched;
         [popupSearchContacts.tbContacts reloadData];
+        popupSearchContacts.delegate = self;
         [popupSearchContacts showInView:appDelegate.window animated:YES];
     }
     return NO;
+}
+
+- (void)selectContactFromSearchPopup:(NSString *)phoneNumber {
+    _addressField.text = phoneNumber;
+    tvSearchResult.hidden = YES;
 }
 
 

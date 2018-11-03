@@ -123,6 +123,12 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self fadeOut];
+    PhoneObject *phone = [contacts objectAtIndex: indexPath.row];
+    [self.delegate selectContactFromSearchPopup: phone.number];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 60.0;
 }

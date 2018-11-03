@@ -19,7 +19,6 @@
 
 #import <UIKit/UIKit.h>
 #import "UICompositeView.h"
-#import "PhoneMainView.h"
 #import "UICamSwitch.h"
 #import "UICallButton.h"
 #import "UIDigitButton.h"
@@ -27,7 +26,7 @@
 
 @class UICallButton;
 @interface DialerView
-	: TPMultiLayoutViewController <UITextFieldDelegate, UICompositeViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UICallButtonDelegate, UIAlertViewDelegate, UITextViewDelegate> {
+	: TPMultiLayoutViewController <UITextFieldDelegate, UICompositeViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UICallButtonDelegate, UIAlertViewDelegate, UITextViewDelegate, SearchContactPopupViewDelegate> {
 }
 
 

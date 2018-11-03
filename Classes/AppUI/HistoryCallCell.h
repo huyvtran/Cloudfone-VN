@@ -24,5 +24,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lbDuration;
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+//  [Khai le - 03/11/2018]
+- (void)updateFrameForHotline: (BOOL)isHotline;
 
 @end

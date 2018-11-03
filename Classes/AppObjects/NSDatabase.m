@@ -130,14 +130,15 @@ HMLocalization *localization;
         aCall._prefixPhone = @"";
         aCall._phoneNumber = phoneNumber;
         
-        NSArray *infos = [self getNameAndAvatarOfContactWithPhoneNumber: phoneNumber];
+        //  [Khai le - 03/11/2018]
+        PhoneObject *aPhone = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
         aCall._callId = callId;
         aCall._status = status;
         aCall._callDirection = callDirection;
         aCall._callTime = callTime;
         aCall._callDate = callDate;
-        aCall._phoneName = [infos objectAtIndex: 0];
-        aCall._phoneAvatar = [infos objectAtIndex: 1];
+        aCall._phoneName = aPhone.name;
+        aCall._phoneAvatar = aPhone.avatar;
         aCall.duration = [[rsDict objectForKey:@"duration"] intValue];
         aCall.timeInt = timeInt;
         
@@ -510,62 +511,6 @@ HMLocalization *localization;
     return [appDelegate._database executeUpdate:tSQL];
 }
 
-// Get tất cả các section trong của cuoc goi ghi am của 1 user
-+ (NSMutableArray *)getHistoryRecordCallListOfUser: (NSString *)mySip {
-    NSMutableArray *resultArr = [[NSMutableArray alloc] init];
-    NSString *tSQL = [NSString stringWithFormat:@"SELECT date FROM history WHERE my_sip = '%@' GROUP BY date ORDER BY _id DESC", mySip];
-    FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
-    while ([rs next]) {
-        NSDictionary *rsDict = [rs resultDictionary];
-        NSString *dateStr = [rsDict objectForKey:@"date"];
-        
-        // Dict chứa dữ liệu cho từng ngày
-        NSMutableDictionary *oneDateDict = [[NSMutableDictionary alloc] init];
-        [oneDateDict setObject:dateStr forKey:@"title"];
-        
-        NSMutableArray *callArray = [self getAllRecordCallOnDate:dateStr ofUser:mySip];
-        if (callArray.count > 0) {
-            [oneDateDict setObject:callArray forKey:@"rows"];
-            [resultArr addObject: oneDateDict];
-        }
-    }
-    [rs close];
-    return resultArr;
-}
-
-// Get danh sách cho từng section call của user
-
-+ (NSMutableArray *)getAllRecordCallOnDate: (NSString *)dateStr ofUser: (NSString *)mySip{
-    NSMutableArray *resultArr = [[NSMutableArray alloc] init];
-    NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND date = '%@' AND record_files != '%@' AND record_files != '%@' ORDER BY _id DESC", mySip, dateStr, @"", @"0"];
-    FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
-    while ([rs next]) {
-        NSDictionary *rsDict = [rs resultDictionary];
-        KHistoryCallObject *aCall = [[KHistoryCallObject alloc] init];
-        int callId        = [[rsDict objectForKey:@"_id"] intValue];
-        NSString *status        = [rsDict objectForKey:@"status"];
-        NSString *callDirection = [rsDict objectForKey:@"call_direction"];
-        NSString *callTime      = [rsDict objectForKey:@"time"];
-        NSString *callDate      = [rsDict objectForKey:@"date"];
-        NSString *phoneNumber = [rsDict objectForKey:@"phone_number"];
-        
-        aCall._prefixPhone = @"";
-        aCall._phoneNumber = phoneNumber;
-        NSArray *infos = [self getNameAndAvatarOfContactWithPhoneNumber: aCall._phoneNumber];
-        aCall._callId = callId;
-        aCall._status = status;
-        aCall._callDirection = callDirection;
-        aCall._callTime = callTime;
-        aCall._callDate = callDate;
-        aCall._phoneName = [infos objectAtIndex: 0];
-        aCall._phoneAvatar = [infos objectAtIndex: 1];
-        
-        [resultArr addObject: aCall];
-    }
-    [rs close];
-    return resultArr;
-}
-
 //  Search contact trong danh bạ PBX
 + (void)searchPhoneNumberInPBXContact: (NSString *)searchStr withCurrentList: (NSMutableArray *)currentList {
     // Search theo ten bat dau truoc
@@ -619,7 +564,7 @@ HMLocalization *localization;
 // Lấy số phone cuối cùng gọi đi
 + (NSString *)getLastCallOfUser {
     NSString *phone = @"";
-    NSString *tSQL = [NSString stringWithFormat:@"SELECT phone_number FROM history WHERE my_sip = '%@' AND call_direction = '%@' ORDER BY _id DESC LIMIT 0,1", USERNAME, outgoing_call];
+    NSString *tSQL = [NSString stringWithFormat:@"SELECT phone_number FROM history WHERE my_sip = '%@' AND call_direction = '%@' AND sipURI NOT LIKE '%%%@%%'  ORDER BY _id DESC LIMIT 0,1", USERNAME, outgoing_call, hotline];
     FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
     while ([rs next]) {
         NSDictionary *rsDict = [rs resultDictionary];

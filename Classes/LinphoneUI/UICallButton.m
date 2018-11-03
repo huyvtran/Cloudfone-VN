@@ -71,8 +71,13 @@
 	NSString *address = addressField.text;
 	if (address.length == 0) {
         NSString *phoneNumber = [NSDatabase getLastCallOfUser];
-        if (![phoneNumber isEqualToString: @""]) {
-            addressField.text = phoneNumber;
+        if (![phoneNumber isEqualToString: @""])
+        {
+            if ([phoneNumber isEqualToString: hotline]) {
+                addressField.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Hotline"];
+            }else{
+                addressField.text = phoneNumber;
+            }
             [delegate textfieldAddressChanged: phoneNumber];
         }
         return;

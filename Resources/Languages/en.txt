@@ -448,7 +448,6 @@
 
 
 "text_phone_not_exists"     =   "Phone number does not exists"
-"text_call_detail_header"   =   "Detail"
 
 "text_outging_call"     =   "Outgoing calls"
 "text_incomming_call"   =   "Incomming calls"
@@ -1149,3 +1148,4 @@
 "others" = "others"
 "Release date" = "Release date"
 
+"Calls detail" = "Calls detail"

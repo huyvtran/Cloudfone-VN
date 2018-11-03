@@ -106,42 +106,53 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)showContentWithCurrentLanguage {
-    _lbHeader.text = [appDelegate.localization localizedStringForKey:text_call_detail_header];
+    _lbHeader.text = [appDelegate.localization localizedStringForKey:@"Calls detail"];
 }
 
 //  Cập nhật view sau khi get xong phone number
-- (void)updateView {
-    NSArray *infos = [NSDatabase getNameAndAvatarOfContactWithPhoneNumber: _phoneNumberDetail];
-    if ([[infos objectAtIndex: 0] isEqualToString: @""]) {
-        _lbName.text = _phoneNumberDetail;
+- (void)updateView
+{
+    //  check if is call with hotline
+    if ([_phoneNumberDetail isEqualToString: hotline])
+    {
         
-        NSRange phoneRange = NSMakeRange(0, _phoneNumberDetail.length);
-        NSMutableAttributedString *contentAttr = [[NSMutableAttributedString alloc] initWithString:_phoneNumberDetail];
-        [contentAttr addAttribute:NSFontAttributeName value:[UIFont fontWithName:MYRIADPRO_BOLD size:18.0] range:phoneRange];
-        [contentAttr addAttribute:NSForegroundColorAttributeName value:UIColor.orangeColor range:phoneRange];
+        NSMutableAttributedString *contentAttr = [[NSMutableAttributedString alloc] initWithString:[appDelegate.localization localizedStringForKey:@"Hotline"]];
+        [contentAttr addAttribute:NSFontAttributeName value:[UIFont fontWithName:MYRIADPRO_BOLD size:18.0] range:NSMakeRange(0, contentAttr.length)];
+        [contentAttr addAttribute:NSForegroundColorAttributeName value:UIColor.orangeColor range:NSMakeRange(0, contentAttr.length)];
         _lbName.attributedText = contentAttr;
         
-        _iconAddNew.hidden = NO;
+        _imgAvatar.image = [UIImage imageNamed:@"hotline_avatar.png"];
     }else{
-        //  _lbName.text = [NSString stringWithFormat:@"%@ - %@", [infos objectAtIndex: 0], _phoneNumberDetail];
-        _iconAddNew.hidden = YES;
+        PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: _phoneNumberDetail];
+        if (contact != nil)
+        {
+            _iconAddNew.hidden = YES;
+            
+            NSString *content = [NSString stringWithFormat:@"%@ - %@", contact.name, _phoneNumberDetail];
+            
+            NSRange phoneRange = NSMakeRange(content.length-_phoneNumberDetail.length, _phoneNumberDetail.length);
+            
+            NSMutableAttributedString *contentAttr = [[NSMutableAttributedString alloc] initWithString:content];
+            [contentAttr addAttribute:NSFontAttributeName value:[UIFont fontWithName:MYRIADPRO_BOLD size:18.0] range:phoneRange];
+            [contentAttr addAttribute:NSForegroundColorAttributeName value:UIColor.orangeColor range:phoneRange];
+            _lbName.attributedText = contentAttr;
+        }else{
+            _iconAddNew.hidden = NO;
+            
+            _lbName.text = _phoneNumberDetail;
+            
+            NSRange phoneRange = NSMakeRange(0, _phoneNumberDetail.length);
+            NSMutableAttributedString *contentAttr = [[NSMutableAttributedString alloc] initWithString:_phoneNumberDetail];
+            [contentAttr addAttribute:NSFontAttributeName value:[UIFont fontWithName:MYRIADPRO_BOLD size:18.0] range:phoneRange];
+            [contentAttr addAttribute:NSForegroundColorAttributeName value:UIColor.orangeColor range:phoneRange];
+            _lbName.attributedText = contentAttr;
+        }
         
-        NSString *content = [NSString stringWithFormat:@"%@ - %@", [infos objectAtIndex: 0], _phoneNumberDetail];
-        
-        NSRange phoneRange = NSMakeRange(content.length-_phoneNumberDetail.length, _phoneNumberDetail.length);
-        
-        NSMutableAttributedString *contentAttr = [[NSMutableAttributedString alloc] initWithString:content];
-        [contentAttr addAttribute:NSFontAttributeName value:[UIFont fontWithName:MYRIADPRO_BOLD size:18.0] range:phoneRange];
-        [contentAttr addAttribute:NSForegroundColorAttributeName value:UIColor.orangeColor range:phoneRange];
-        _lbName.attributedText = contentAttr;
-    }
-    
-    NSString *avatar = [infos objectAtIndex:1];
-    if ([avatar isEqualToString: @""] || [avatar isEqualToString: @"(null)"] || [avatar isEqualToString: @"null"] || [avatar isEqualToString: @"<null>"]) {
-        _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-    }else{
-        NSData *imgData = [NSData dataFromBase64String: [infos objectAtIndex: 1]];
-        _imgAvatar.image = [UIImage imageWithData: imgData];
+        if (![AppUtils isNullOrEmpty: contact.avatar]) {
+            _imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: contact.avatar]];
+        }else{
+            _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+        }
     }
     
     // Check section
