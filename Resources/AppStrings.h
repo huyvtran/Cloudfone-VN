@@ -267,10 +267,6 @@
 #define text_yes            @"text_yes"
 #define text_edit           @"text_edit"
 
-#define text_no_recent_call     @"text_no_recent_call"
-#define text_no_missed_call     @"text_no_missed_call"
-#define text_no_recorded_call   @"text_no_recorded_call"
-
 #define text_more               @"text_more"
 
 

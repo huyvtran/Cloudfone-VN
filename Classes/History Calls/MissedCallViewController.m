@@ -8,7 +8,6 @@
 
 #import "MissedCallViewController.h"
 #import "DetailHistoryCNViewController.h"
-#import "PhoneMainView.h"
 #import "NSDatabase.h"
 #import "HistoryCallCell.h"
 #import "KHistoryCallObject.h"
@@ -17,8 +16,6 @@
 
 @interface MissedCallViewController ()
 {
-    HMLocalization *localization;
-    
     float hCell;
     float hSection;
     
@@ -37,8 +34,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //  MY CODE HERE
-    localization = [HMLocalization sharedInstance];
-    
     if (SCREEN_WIDTH > 320) {
         hCell = 70.0;
         hSection = 35.0;
@@ -108,19 +103,19 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (listCalls.count == 0) {
-                [_tbListCalls setHidden: true];
-                [_lbNoCalls setHidden: false];
+                _tbListCalls.hidden = YES;
+                _lbNoCalls.hidden = NO;
             }else {
-                [_tbListCalls setHidden: false];
+                _tbListCalls.hidden = NO;
+                _lbNoCalls.hidden = YES;
                 [_tbListCalls reloadData];
-                [_lbNoCalls setHidden: true];
             }
         });
     });
 }
 
 - (void)showContentWithCurrentMessage {
-    [_lbNoCalls setText:[localization localizedStringForKey:text_no_recent_call]];
+    _lbNoCalls.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No missed call in your history"];
 }
 
 //  Click trên button Edit
@@ -151,7 +146,7 @@
         if (value == 1) {
             BOOL result = [NSDatabase deleteAllMissedCallOfUser:USERNAME];
             if (!result) {
-                [self.view makeToast:[localization localizedStringForKey:text_failed] duration:2.0 position:CSToastPositionCenter];
+                [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_failed] duration:2.0 position:CSToastPositionCenter];
             }else{
                 [_lbNoCalls setHidden: false];
                 [_tbListCalls setHidden: true];
@@ -173,7 +168,7 @@
         [self reGetListCallsForHistory];
         [_tbListCalls reloadData];
     }else{
-        [self.view makeToast:[localization localizedStringForKey:text_failed] duration:2.0 position:CSToastPositionCenter];
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_failed] duration:2.0 position:CSToastPositionCenter];
     }
 }
 
@@ -181,35 +176,6 @@
 - (void)reGetListCallsForHistory {
     [listCalls removeAllObjects];
     [listCalls addObjectsFromArray:[NSDatabase getHistoryCallListOfUser: USERNAME isMissed: true]];
-}
-
-//  Chuyển số phone trong history thành số phone hiển thị lên tableview
-- (NSString *)changePhoneNumberOfUser: (NSString *)phoneNumber {
-    NSString *result = @"";
-    if (phoneNumber != nil) {
-        if ([phoneNumber isEqualToString:@"999"]) {
-            result = @"hotline";
-        }else{
-            NSArray *tmpArr = [phoneNumber componentsSeparatedByString:@"_"];
-            if (tmpArr.count > 1) {
-                //  Trường hợp gọi trunking
-                result = [tmpArr objectAtIndex: 1];
-            }else if ([phoneNumber hasPrefix:@"sv-"]){
-                //  Trường hợp gọi saving
-                result = [phoneNumber substringFromIndex: 3];
-            }else{
-                // Trường hợp gọi premium
-                NSRange range = [phoneNumber rangeOfString:@",,"];
-                if (range.location != NSNotFound) {
-                    NSString *tmpStr = [phoneNumber substringFromIndex: range.location+range.length];
-                    result = [tmpStr substringToIndex: tmpStr.length-1];
-                }else{
-                    result = phoneNumber;
-                }
-            }
-        }
-    }
-    return result;
 }
 
 #pragma mark - UITableview
@@ -233,19 +199,17 @@
     
     KHistoryCallObject *aCall = [[[listCalls objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex: indexPath.row];
     
-    // Set name for cell
-    NSString *phoneNumber = [self changePhoneNumberOfUser: aCall._phoneNumber];
-    cell._lbPhone.text = phoneNumber;
-    cell._phoneNumber = phoneNumber;
+    cell._lbPhone.text = aCall._phoneNumber;
+    cell._phoneNumber = aCall._phoneNumber;
     
     if ([aCall._phoneName isEqualToString: @""]) {
-        cell._lbName.text = phoneNumber;
+        cell._lbName.text = aCall._phoneNumber;
     }else{
         cell._lbName.text = aCall._phoneName;
     }
     
-    if ([aCall._phoneAvatar isEqualToString:@""] || [aCall._phoneAvatar isEqualToString:@"(null)"] || [aCall._phoneAvatar isEqualToString:@"null"] || [aCall._phoneAvatar isEqualToString:@"<null>"]) {
-        cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+    if ([AppUtils isNullOrEmpty: aCall._phoneAvatar]) {
+        cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar_blue.png"];
     }else{
         NSData *imgData = [[NSData alloc] initWithData:[NSData dataFromBase64String: aCall._phoneAvatar]];
         cell._imgAvatar.image = [UIImage imageWithData: imgData];
@@ -257,16 +221,17 @@
     }else{
         cell._cbDelete.hidden = YES;
         cell._btnCall.hidden = NO;
-        if ([aCall._callDirection isEqualToString:incomming_call]) {
-            if ([aCall._status isEqualToString:missed_call]) {
-                cell._imgStatus.image = [UIImage imageNamed:@"ic_call_missed.png"];
-            }else{
-                cell._imgStatus.image = [UIImage imageNamed:@"ic_call.png"];
-            }
-        }else{
-            cell._imgStatus.image = [UIImage imageNamed:@"ic_call_to.png"];
-        }
     }
+    if ([aCall._callDirection isEqualToString:incomming_call]) {
+        if ([aCall._status isEqualToString:missed_call]) {
+            cell._imgStatus.image = [UIImage imageNamed:@"ic_call_missed.png"];
+        }else{
+            cell._imgStatus.image = [UIImage imageNamed:@"ic_call.png"];
+        }
+    }else{
+        cell._imgStatus.image = [UIImage imageNamed:@"ic_call_to.png"];
+    }
+    
     cell._cbDelete._indexPath = indexPath;
     cell._cbDelete._idHisCall = aCall._callId;
     cell._cbDelete.delegate = self;
@@ -307,7 +272,7 @@
             [[PhoneMainView instance] changeCurrentView:[DetailHistoryCNViewController compositeViewDescription]
                                                    push:true];
         }else{
-            [self.view makeToast:[localization localizedStringForKey:text_phone_not_exists] duration:2.0 position:CSToastPositionCenter];
+            [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_phone_not_exists] duration:2.0 position:CSToastPositionCenter];
         }
     }
 }
@@ -336,11 +301,11 @@
     NSString *currentDate = [[listCalls objectAtIndex: section] valueForKey:@"title"];
     NSString *today = [AppUtils checkTodayForHistoryCall: currentDate];
     if ([today isEqualToString: @"Today"]) {
-        titleHeader =  [localization localizedStringForKey:@"TODAY"];
+        titleHeader =  [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"TODAY"];
     }else{
         NSString *yesterday = [AppUtils checkYesterdayForHistoryCall:currentDate];
         if ([yesterday isEqualToString:@"Yesterday"]) {
-            titleHeader =  [localization localizedStringForKey:@"YESTERDAY"];
+            titleHeader =  [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"YESTERDAY"];
         }else{
             titleHeader = currentDate;
         }

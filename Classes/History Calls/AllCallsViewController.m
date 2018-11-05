@@ -132,7 +132,7 @@
 }
 
 - (void)showContentWithCurrentLanguage {
-    _lbNoCalls.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_no_recent_call];
+    _lbNoCalls.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No call in your history"];
 }
 
 //  Click trên button Edit
@@ -220,12 +220,12 @@
                         if (avatarData != nil) {
                             cell._imgAvatar.image = [UIImage imageWithData: avatarData];
                         }else{
-                            cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                            cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar_blue.png"];
                         }
                     });
                 });
             }else{
-                cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar_blue.png"];
             }
         }else{
             NSData *imgData = [[NSData alloc] initWithData:[NSData dataFromBase64String: aCall._phoneAvatar]];
@@ -247,17 +247,18 @@
     }else{
         cell._cbDelete.hidden = YES;
         cell._btnCall.hidden = NO;
-        
-        if ([aCall._callDirection isEqualToString: incomming_call]) {
-            if ([aCall._status isEqualToString: missed_call]) {
-                cell._imgStatus.image = [UIImage imageNamed:@"ic_call_missed.png"];
-            }else{
-                cell._imgStatus.image = [UIImage imageNamed:@"ic_call_incoming.png"];
-            }
-        }else{
-            cell._imgStatus.image = [UIImage imageNamed:@"ic_call_outgoing.png"];
-        }
     }
+    
+    if ([aCall._callDirection isEqualToString: incomming_call]) {
+        if ([aCall._status isEqualToString: missed_call]) {
+            cell._imgStatus.image = [UIImage imageNamed:@"ic_call_missed.png"];
+        }else{
+            cell._imgStatus.image = [UIImage imageNamed:@"ic_call_incoming.png"];
+        }
+    }else{
+        cell._imgStatus.image = [UIImage imageNamed:@"ic_call_outgoing.png"];
+    }
+    
     cell._cbDelete._indexPath = indexPath;
     cell._cbDelete._idHisCall = aCall._callId;
     cell._cbDelete.delegate = self;

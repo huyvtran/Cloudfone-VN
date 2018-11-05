@@ -27,6 +27,8 @@
     }
     
     _imgAvatar.clipsToBounds = YES;
+    _imgAvatar.layer.borderColor = [UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0].CGColor;
+    _imgAvatar.layer.borderWidth = 1.0;
     _imgAvatar.layer.cornerRadius = 50.0/2;
     [_imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(20);
@@ -40,15 +42,15 @@
     _imgStatus.layer.borderWidth = 1.0;
     
     [_imgStatus mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_imgAvatar.mas_right).offset(-15);
-        make.top.equalTo(_imgAvatar.mas_bottom).offset(-16);
+        make.left.equalTo(_imgAvatar.mas_right).offset(-16);
+        make.top.equalTo(_imgAvatar.mas_bottom).offset(-15);
         make.width.height.mas_equalTo(17.0);
     }];
     
     [_btnCall setBackgroundImage:[UIImage imageNamed:@"ic_call_history_over.png"]
                         forState:UIControlStateHighlighted];
     [_btnCall mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self).offset(-20);
+        make.right.equalTo(self).offset(-10);
         make.centerY.equalTo(self.mas_centerY);
         make.width.height.mas_equalTo(35.0);
     }];

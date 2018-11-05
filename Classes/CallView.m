@@ -169,6 +169,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     //  Added by Khai Le on 06/10/2018
     _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Calling"];
+    _durationLabel.textColor = UIColor.whiteColor;
     
     [self addScrollview];
 }
@@ -182,33 +183,25 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-    //  [Khai le - 03/11/2018]
-    PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
-    if (contact.phoneType == ePBXPhone) {
-        if (![AppUtils isNullOrEmpty: contact.avatar]) {
-            _avatarImage.image = [UIImage imageWithData: [NSData dataFromBase64String:contact.avatar]];
-        }else{
-            _avatarImage.image = [UIImage imageNamed:@"no_avatar.png"];
-        }
-        
-        //  Download avatar of user if exists
-        [self checkToDownloadAvatarOfUser: phoneNumber];
-    }else{
-        hehe
+    int count = linphone_core_get_calls_nb([LinphoneManager getLc]);
+    if (count > 0) {
+        phoneNumber = [self getPhoneNumberOfCall];
     }
     
-    NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
-    NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, phoneNumber];
-    NSString *localFile = [NSString stringWithFormat:@"/avatars/%@", avatarName];
-    NSData *avatarData = [AppUtils getFileDataFromDirectoryWithFileName:localFile];
-    if (avatarData != nil) {
-        
+    //  [Khai le - 03/11/2018]
+    PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
+    if (![AppUtils isNullOrEmpty: contact.avatar]) {
+        _avatarImage.image = [UIImage imageWithData: [NSData dataFromBase64String:contact.avatar]];
     }else{
-        
+        _avatarImage.image = [UIImage imageNamed:@"no_avatar.png"];
+    }
+    
+    if (contact.phoneType == ePBXPhone) {
+        //  Download avatar of user if exists
+        [self checkToDownloadAvatarOfUser: phoneNumber];
     }
     
     //  Leo Kelvin
-    //  [self addScrollview];
     _bottomBar.hidden = YES;
     _bottomBar.clipsToBounds = YES;
     
@@ -238,8 +231,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  Update address
     [self updateAddress];
     
-    int count = linphone_core_get_calls_nb([LinphoneManager getLc]);
-    NSLog(@"So cuoc goi: %d", count);
+    
     
     /*--Khong co goi conference--*/
     if(count < 2 ){
@@ -249,6 +241,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         _conferenceView.hidden = YES;
         if (count == 0) {
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Calling"];
+            _durationLabel.textColor = UIColor.whiteColor;
         }else{
             LinphoneCall *curCall = linphone_core_get_current_call([LinphoneManager getLc]);
             if (curCall == NULL) {
@@ -265,17 +258,16 @@ static UICompositeViewDescription *compositeDescription = nil;
         _callView.hidden = YES;
         _conferenceView.hidden = NO;
     }
-    
-    [self addAnimationForOutgoingCall];
 }
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
+    
     self.halo.position = _avatarImage.center;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
+    [super viewDidAppear:animated];
 
 	[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 	UIDevice.currentDevice.proximityMonitoringEnabled = YES;
@@ -292,6 +284,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
+    
 	if (hiddenVolume) {
 		[PhoneMainView.instance setVolumeHidden:FALSE];
 		hiddenVolume = FALSE;
@@ -304,8 +297,12 @@ static UICompositeViewDescription *compositeDescription = nil;
             durationTimer = nil;
         }
         
+        phoneNumber = @"";
+        
         // Remove observer
         [NSNotificationCenter.defaultCenter removeObserver:self];
+    }else{
+        NSLog(@"Van con call ne");
     }
 }
 
@@ -378,6 +375,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (list != NULL) {
         duration = linphone_call_get_duration((LinphoneCall*)list->data);
         _durationLabel.text = [LinphoneUtils durationToString:duration];
+        _durationLabel.textColor = UIColor.greenColor;
         _lbQuality.hidden = NO;
     }else{
         duration = 0;
@@ -617,7 +615,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 	switch (state) {
         case LinphoneCallOutgoingRinging:{
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Ringing"];
-            NSLog(@"[Show logs] Ringing.....");
+            _durationLabel.textColor = UIColor.whiteColor;
+            
             [self getPhoneNumberOfCall];
             break;
         }
@@ -628,14 +627,16 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         case LinphoneCallOutgoingProgress:{
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Calling"];
+            _durationLabel.textColor = UIColor.whiteColor;
+            
             break;
         }
         case LinphoneCallOutgoingInit:{
-            NSLog(@"[Show logs] OutgoingInit.....");
             //  Added by Khai Le on 21/10/2018
-            if (self.halo != nil) {
-                [self.halo start];
+            if (self.halo == nil) {
+                [self addAnimationForOutgoingCall];
             }
+            [self.halo start];
             
             // Nếu không phải Outgoing trong conference thì set disable các button
             if (!changeConference) {
@@ -673,6 +674,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             [self updateQualityForCall];
             
             //  Stop halo waiting
+            self.halo = nil;
             [self.halo removeFromSuperlayer];
             
             break;
@@ -738,6 +740,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             }
             
             //  Stop halo waiting
+            self.halo = nil;
             [self.halo removeFromSuperlayer];
             
             break;
@@ -989,45 +992,19 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)updateAddress {
     [self view]; //Force view load
-    __block NSString *avatar = @"";
-    __block NSString *fullName = @"";
+    PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_sipPhone == %@", phoneNumber];
-        NSArray *filter = [appDelegate.listContacts filteredArrayUsingPredicate: predicate];
-        if (filter.count > 0) {
-            ContactObject *aContact = [filter objectAtIndex: 0];
-            avatar = aContact._avatar;
+    if ([phoneNumber isEqualToString:hotline]) {
+        _avatarImage.image = [UIImage imageNamed:@"hotline_avatar.png"];
+    }else{
+        if ([AppUtils isNullOrEmpty: contact.avatar]) {
+            _avatarImage.image = [UIImage imageNamed:@"no_avatar.png"];
         }else{
-            for (int iCount=0; iCount<appDelegate.listContacts.count; iCount++) {
-                ContactObject *contact = [appDelegate.listContacts objectAtIndex: iCount];
-                predicate = [NSPredicate predicateWithFormat:@"_valueStr = %@", phoneNumber];
-                filter = [contact._listPhone filteredArrayUsingPredicate: predicate];
-                if (filter.count > 0) {
-                    avatar = contact._avatar;
-                    break;
-                }
-            }
+            _avatarImage.image = [UIImage imageWithData:[NSData dataFromBase64String: contact.avatar]];
         }
-        
-        if ([phoneNumber isEqualToString:hotline]) {
-            fullName = [appDelegate.localization localizedStringForKey:@"Hotline"];
-        }else{
-            fullName = [NSDatabase getNameOfContactWithPhoneNumber: phoneNumber];
-            if ([fullName isEqualToString:@""]) {
-                fullName = [appDelegate.localization localizedStringForKey:@"Unknown"];
-            }
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^(void){
-            _nameLabel.text = fullName;
-            lbAddressConf.text = fullName;
-            
-            if ([phoneNumber isEqualToString:hotline]) {
-                 _avatarImage.image = [UIImage imageNamed:@"hotline_avatar.png"];
-            }
-        });
-    });
+    }
+    _nameLabel.text = contact.name;
+    lbPhoneNumber.text = phoneNumber;
 }
 
 //  add scroll view khi goi
@@ -1057,11 +1034,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     _scrollView.scrollEnabled = NO;
     
     //  numpad button
+    lbKeypad.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
     [lbKeypad mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(_scrollView.mas_centerY);
         make.centerX.equalTo(_scrollView.mas_centerX);
         make.height.mas_equalTo(30);
-        make.width.mas_equalTo(wFeatureIcon);
+        make.width.mas_equalTo(wFeatureIcon+marginX);
     }];
     lbKeypad.backgroundColor = UIColor.clearColor;
     lbKeypad.text = [appDelegate.localization localizedStringForKey:@"Keypad"];
@@ -1089,6 +1067,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     _microButton.backgroundColor = UIColor.clearColor;
     _microButton.enabled = NO;
     
+    lbMute.font = lbKeypad.font;
     [lbMute mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbKeypad.mas_top);
         make.centerX.equalTo(_microButton.mas_centerX);
@@ -1110,6 +1089,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     _speakerButton.backgroundColor = UIColor.clearColor;
     _speakerButton.enabled = NO;
     
+    lbSpeaker.font = lbKeypad.font;
     [lbSpeaker mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbKeypad.mas_top);
         make.centerX.equalTo(_speakerButton.mas_centerX);
@@ -1131,6 +1111,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     _callPauseButton.backgroundColor = UIColor.clearColor;
     _callPauseButton.enabled = NO;
     
+    lbPause.font = lbKeypad.font;
     [lbPause mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_callPauseButton.mas_bottom);
         make.centerX.equalTo(_callPauseButton.mas_centerX);
@@ -1155,6 +1136,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                   action:@selector(onAddCallClick:)
         forControlEvents:UIControlEventTouchUpInside];
     
+    lbAddCall.font = lbKeypad.font;
     [lbAddCall mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbPause.mas_top);
         make.centerX.equalTo(icAddCall.mas_centerX);
@@ -1178,7 +1160,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 //    [_optionsTransferButton addTarget:self
 //                               action:@selector(onTransfer)
 //                     forControlEvents:UIControlEventTouchUpInside];
-    
+    lbTransfer.font = lbKeypad.font;
     [lbTransfer mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbPause.mas_top);
         make.centerX.equalTo(_optionsTransferButton.mas_centerX);
@@ -1187,11 +1169,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     lbTransfer.backgroundColor = UIColor.clearColor;
     lbTransfer.text = [appDelegate.localization localizedStringForKey:@"Transfer"];
-
-    /*  Leo Kelvin
-     
-     */
-    //  [self.scrollView addSubview:buttonTransfer];
 }
 
 /*----- Click vao button conference trong scrollView  -----*/
@@ -1262,11 +1239,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     float wEndCall = 70.0;
     float wAvatar = 120.0;
-    float hDuration = 40.0;
+    float hDuration = 45.0;
     float margin = 10.0;
     NSString *modelPhone = [DeviceUtils getModelsOfCurrentDevice];
     
-    if ([modelPhone isEqualToString:@"iPhone5,1"] || [modelPhone isEqualToString:@"iPhone5,2"] || [modelPhone isEqualToString:@"iPhone5,3"] || [modelPhone isEqualToString:@"iPhone5,4"] || [modelPhone isEqualToString:@"iPhone6,1"] || [modelPhone isEqualToString:@"iPhone6,2"] || [modelPhone isEqualToString:@"iPhone8,4"])
+    
+    
+    if ([modelPhone isEqualToString: Iphone5_1] || [modelPhone isEqualToString: Iphone5_2] || [modelPhone isEqualToString: Iphone5s_1] || [modelPhone isEqualToString: Iphone5s_2] || [modelPhone isEqualToString: Iphone5c_1] || [modelPhone isEqualToString: Iphone5c_2] || [modelPhone isEqualToString: IphoneSE])
     {
         wEndCall = 60.0;
         wAvatar = 100.0;
@@ -1344,11 +1323,10 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.right.equalTo(_callView).offset(-20);
         make.height.mas_equalTo(20.0);
     }];
-    lbPhoneNumber.text = phoneNumber;
     lbPhoneNumber.textAlignment = NSTextAlignmentCenter;
     lbPhoneNumber.textColor = [UIColor colorWithRed:(200/255.0) green:(200/255.0)
                                                blue:(200/255.0) alpha:1.0];
-    lbPhoneNumber.font = [UIFont systemFontOfSize: 14.0];
+    lbPhoneNumber.font = [UIFont systemFontOfSize: 16.0];
     
     [_durationLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbPhoneNumber.mas_bottom).offset(margin);
@@ -1356,7 +1334,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.right.equalTo(_callView).offset(-20);
         make.height.mas_equalTo(hDuration);
     }];
-    _durationLabel.font = [UIFont systemFontOfSize:28.0 weight:UIFontWeightThin];
+    _durationLabel.font = [UIFont systemFontOfSize:35.0 weight:UIFontWeightThin];
     _durationLabel.backgroundColor = UIColor.clearColor;
     
     [_viewCommand mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1588,6 +1566,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 break;
             case LinphoneReasonBusy:
                 _durationLabel.text = [appDelegate.localization localizedStringForKey:@"The user is busy"];
+                _durationLabel.textColor = UIColor.whiteColor;
                 break;
             default:
                 if (message != nil) {

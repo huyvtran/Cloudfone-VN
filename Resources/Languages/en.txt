@@ -400,12 +400,6 @@
 "text_confirm_content1"  =   "We sent confirm code to you."
 "text_confirm_content2"  =   "Please check your message."
 
-
-
-"text_no_recent_call"   =   "No call in your history"
-"text_no_missed_call"   =   "No missed call in your history"
-"text_no_recorded_call" =   "No recorded call in your history"
-
 "text_edit"             =   "Edit"
 
 
@@ -1149,3 +1143,13 @@
 "Release date" = "Release date"
 
 "Calls detail" = "Calls detail"
+"No call in your history" = "No call in your history"
+"No missed call in your history" = "No missed call in your history"
+"Quality" = "Quality"
+
+"Mute" = "Mute"
+"Keypad" = "Keypad"
+"Speaker" = "Speaker"
+"Add call" = "Add call"
+"Hold" = "Hold"
+"Transfer" = "Transfer"

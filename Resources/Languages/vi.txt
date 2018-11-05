@@ -392,13 +392,6 @@
 "text_default_error"    =   "Lỗi không xác định!"
 
 
-
-
-"text_no_recent_call"   =   "Không có cuộc gọi"
-"text_no_missed_call"   =   "Không có cuộc gọi nhỡ"
-"text_no_recorded_call" =   "Không có cuộc gọi được ghi âm"
-
-
 "text_edit"             =   "Sửa"
 
 
@@ -1180,5 +1173,15 @@
 "or" = "hoặc"
 "others" = "người khác"
 "Release date" = "Ngày phát hành"
-
 "Calls detail" = "Chi tiết cuộc gọi"
+
+"No call in your history" = "Không có cuộc gọi"
+"No missed call in your history" = "Không có cuộc gọi nhỡ"
+"Quality" = "Chất lượng"
+
+"Mute" = "Tắt tiếng"
+"Keypad" = "Bàn phím"
+"Speaker" = "Loa ngoài"
+"Add call" = "Thêm cuộc gọi"
+"Hold" = "Giữ cuộc gọi"
+"Transfer" = "Chuyển cuộc gọi"

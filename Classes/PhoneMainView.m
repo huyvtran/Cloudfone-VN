@@ -421,17 +421,9 @@ static RootViewManager *rootViewManagerInstance = nil;
 			break;
 		}
 		case LinphoneCallEnd: {
-			const MSList *calls = linphone_core_get_calls(LC);
-			if (calls == NULL) {
-				while ((currentView == CallView.compositeViewDescription) ||
-					   (currentView == IncomingCallViewController.compositeViewDescription) ||
-					   (currentView == CallOutgoingView.compositeViewDescription)) {
-					[self popCurrentView];
-				}
-			} else {
-				linphone_core_resume_call(LC, (LinphoneCall *)calls->data);
-				[self changeCurrentView:CallView.compositeViewDescription push:TRUE];
-			}
+            [self performSelector:@selector(hideCallView)
+                       withObject:nil afterDelay:1.0];
+			
 			break;
 		}
 		case LinphoneCallEarlyUpdatedByRemote:
@@ -480,6 +472,20 @@ static RootViewManager *rootViewManagerInstance = nil;
 			break;
 	}
 	[self updateApplicationBadgeNumber];
+}
+
+- (void)hideCallView {
+    const MSList *calls = linphone_core_get_calls(LC);
+    if (calls == NULL) {
+        while ((currentView == CallView.compositeViewDescription) ||
+               (currentView == IncomingCallViewController.compositeViewDescription) ||
+               (currentView == CallOutgoingView.compositeViewDescription)) {
+            [self popCurrentView];
+        }
+    } else {
+        linphone_core_resume_call(LC, (LinphoneCall *)calls->data);
+        [self changeCurrentView:CallView.compositeViewDescription push:TRUE];
+    }
 }
 
 #pragma mark -

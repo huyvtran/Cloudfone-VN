@@ -34,17 +34,11 @@
 
 
 - (void)setupUIForView {
-    float wIcon = 65.0;
-    float spaceMarginY = 10.0;
-    float spaceMarginX = 20.0;
-    
-    float wEndCall = 70.0;
-    if (!IS_IPHONE && !IS_IPOD) {
-        wEndCall = 100.0;
-        wIcon = 85.0;
-        spaceMarginY = 20.0;
-        spaceMarginX = 40.0;
-    }
+    //  Number keypad
+    NSString *modelName = [DeviceUtils getModelsOfCurrentDevice];
+    float wIcon = [DeviceUtils getSizeOfKeypadButtonForDevice: modelName];
+    float spaceMarginY = [DeviceUtils getSpaceYBetweenKeypadButtonsForDevice: modelName];
+    float spaceMarginX = [DeviceUtils getSpaceXBetweenKeypadButtonsForDevice: modelName];
     
     [bgCall mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.equalTo(self);
@@ -53,7 +47,7 @@
     [iconMiniKeypadEndCall mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.mas_centerX);
         make.bottom.equalTo(self).offset(-20);
-        make.width.height.mas_equalTo(wEndCall);
+        make.width.height.mas_equalTo(wIcon);
     }];
     
     [iconBack mas_makeConstraints:^(MASConstraintMaker *make) {

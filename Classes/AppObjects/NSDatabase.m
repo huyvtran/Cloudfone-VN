@@ -87,14 +87,12 @@ HMLocalization *localization;
         int callId        = [[rsDict objectForKey:@"_id"] intValue];
         NSString *status        = [rsDict objectForKey:@"status"];
         NSString *phoneNumber = [rsDict objectForKey:@"phone_number"];
-        //NSArray *phoneInfo = [self changePhoneMobileWithSavingCall: [rsDict objectForKey:@"phone_number"]];
-        //NSString *prefixStr = [phoneInfo objectAtIndex: 0];
-        //NSString *phoneNumber   = [phoneInfo objectAtIndex: 1];
         
         NSString *callDirection = [rsDict objectForKey:@"call_direction"];
         NSString *callTime      = [rsDict objectForKey:@"time"];
         NSString *callDate      = [rsDict objectForKey:@"date"];
-        NSArray *infos = [self getNameAndAvatarOfContactWithPhoneNumber: phoneNumber];
+        
+        PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
         
         aCall._callId = callId;
         aCall._status = status;
@@ -103,8 +101,8 @@ HMLocalization *localization;
         aCall._callDirection = callDirection;
         aCall._callTime = callTime;
         aCall._callDate = callDate;
-        aCall._phoneName = [infos objectAtIndex: 0];
-        aCall._phoneAvatar = [infos objectAtIndex: 1];
+        aCall._phoneName = contact.name;
+        aCall._phoneAvatar = contact.avatar;
         
         [resultArr addObject: aCall];
     }
