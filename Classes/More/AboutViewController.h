@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AboutViewController : UIViewController<UICompositeViewDelegate>
+@interface AboutViewController : UIViewController<UICompositeViewDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewHeader;
 @property (weak, nonatomic) IBOutlet UIImageView *bgHeader;

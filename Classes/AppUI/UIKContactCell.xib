@@ -46,7 +46,7 @@
                 <outlet property="lbTitle" destination="23R-50-KOV" id="7Tf-gJ-8Px"/>
                 <outlet property="lbValue" destination="mP9-EF-bBx" id="Hdq-ao-uj6"/>
             </connections>
-            <point key="canvasLocation" x="-119" y="-10.5"/>
+            <point key="canvasLocation" x="-54" y="-14"/>
         </tableViewCell>
     </objects>
 </document>

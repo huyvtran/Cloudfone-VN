@@ -9,7 +9,6 @@
 #import "EditContactViewController.h"
 #import "DGActivityIndicatorView.h"
 #import "ContactCell.h"
-#import "ContactNormalCell.h"
 #import "NSData+Base64.h"
 #import "UIImage+GKContact.h"
 
@@ -389,7 +388,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     // Tên contact
     if (contact._fullName != nil) {
         if ([contact._fullName isEqualToString: @""]) {
-            cell.name.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_unknown];
+            cell.name.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
         }else{
             cell.name.text = contact._fullName;
         }

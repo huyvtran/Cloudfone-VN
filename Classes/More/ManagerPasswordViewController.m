@@ -34,7 +34,7 @@
 
 @implementation ManagerPasswordViewController
 @synthesize _viewHeader, bgHeader, _icBack, _lbHeader;
-@synthesize _viewContent, _lbPassword, _tfPassword, _lbNewPassword, _tfNewPassword, _lbConfirmPassword, _tfConfirmPassword, _lbPasswordDesc, _btnCancel, _btnSave, _icWaiting, lbVersion;
+@synthesize _viewContent, _lbPassword, _tfPassword, _lbNewPassword, _tfNewPassword, _lbConfirmPassword, _tfConfirmPassword, _lbPasswordDesc, _btnCancel, _btnSave, _icWaiting;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -277,21 +277,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnSave.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
     [_btnSave setBackgroundImage:[UIImage imageNamed:@"bg_button.png"]
                         forState:UIControlStateNormal];
-    
-    //  label version
-    lbVersion.backgroundColor = UIColor.clearColor;
-    lbVersion.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
-                                           blue:(50/255.0) alpha:1.0];
-    [lbVersion mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(self.view);
-        make.height.mas_equalTo(45.0);
-    }];
-    
 }
 
 - (void)showContentForView {
-    lbVersion.attributedText = [AppUtils getVersionStringForApp];
-    
     _lbHeader.text = [appDelegate.localization localizedStringForKey:@"Change password"];
     _lbPassword.text = [appDelegate.localization localizedStringForKey:@"Current password"];
     _lbNewPassword.text = [appDelegate.localization localizedStringForKey:@"New password"];

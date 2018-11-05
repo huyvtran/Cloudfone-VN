@@ -125,7 +125,6 @@
 "text_gallery_header"       =   "Gallery"
 "text_hi"                   =   "Hi"
 
-"text_unknown"              =   "Unknown"
 "text_list_friend_accept"   =   "Friends list requested"
 
 "text_failed"               =   "Failed!"
@@ -238,8 +237,6 @@
 
 "text_add"      =   "Add"
 "text_you"      =   "You"
-
-"receive_call_from" =   "You have a call from"
 
 "text_expire_none"  =   "None"
 "text_expire_5s"    =   "5s"
@@ -953,12 +950,6 @@
 
 "text_dien_day_tu_thong_tin"    =   "Please complete all information"
 
-"login_pbx_success_not_update_token" = "PBX has registerd successful. But failed when update token for PBX account!"
-"register_pbx_failed"   =   "Register PBX failed!"
-"pbx_has_been_deleted"  =   "PBX account has been deleted!"
-"pbx_turn_off"          =   "Turn off PBX account successful!"
-"pbx_turn_on"           =   "Turn on PBX account successful!"
-
 "future_not_support"    =   "This feature is not yet supported!"
 
 "text_calling"      =   "Calling..."
@@ -967,7 +958,7 @@
 "text_terminating"  =   "Terminating"
 "text_terminated"   =   "Terminated"
 
-"Close" = "Close"
+
 "Chat images" = "Chat Images"
 "Change background" = "Change background"
 "Receive notifications" = "Receive notifications"
@@ -1005,9 +996,6 @@
 
 "text_clear_history_group_chat" =   "Clear chat history in this group"
 "text_leave_and_clear_history_group"    =   "Leave room and clear all messages?"
-
-"check_pbx_account"         =   "Please check PBX account"
-"clear_pbx_successfully"    =   "Clear PBX successfully"
 
 "text_message_settings" =   "MESSAGES"
 "text_call_settings"    =   "CALL"
@@ -1153,3 +1141,18 @@
 "Add call" = "Add call"
 "Hold" = "Hold"
 "Transfer" = "Transfer"
+
+"About" = "About"
+"Check for update" = "Check for update"
+"Close" = "Close"
+"Current version on App Store is %@. Do you want to update right now?" = "Current version on App Store is %@. Do you want to update right now?"
+"Update" = "Update"
+"We have not supported this feature yet. Please try later!" = "We have not supported this feature yet. Please try later!"
+
+"Your account was removed" = "Your account was removed"
+"Your account was registered successful." = "Your account was registered successful."
+"This account has been registered" = "This account has been registered"
+"Unknown" = "Unknown"
+"Account name" = "Account name"
+"You have a call from %@" = "You have a call from %@"
+"The user is busy" = "The user is busy"

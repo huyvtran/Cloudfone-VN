@@ -69,9 +69,6 @@
 + (NSString *)stringTimeFromInterval: (NSTimeInterval)interval;
 + (NSString *)stringDateFromInterval: (NSTimeInterval)interval;
 
-// get data của hình ảnh với tên file
-+ (NSData *)getFileDataOfMessageResend: (NSString *)fileName andFileType: (NSString *)fileType;
-
 // Get string của hình ảnh với tên hình ảnh
 + (NSString *)getImageDataStringOfDirectoryWithName: (NSString *)imageName;
 
@@ -126,7 +123,7 @@
 //  Get first name and last name of contact
 + (NSArray *)getFirstNameAndLastNameOfContact: (ABRecordRef)aPerson;
 +(BOOL)isNullOrEmpty:(NSString*)string;
-+ (NSString *)getAppVersion;
++ (NSString *)getAppVersionWithBuildVersion: (BOOL)showBuildVersion;
 + (UIImage *)imageWithColor:(UIColor *)color andBounds:(CGRect)imgBounds;
 + (NSAttributedString *)getVersionStringForApp;
 + (BOOL)saveFileToFolder: (NSData *)fileData withName: (NSString *)fileName;

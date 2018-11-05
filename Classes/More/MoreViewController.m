@@ -33,7 +33,7 @@
 @end
 
 @implementation MoreViewController
-@synthesize _viewHeader, bgHeader, _imgAvatar, _lbName, lbPBXAccount, icEdit, _tbContent, lbVersion;
+@synthesize _viewHeader, bgHeader, _imgAvatar, _lbName, lbPBXAccount, icEdit, _tbContent;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -91,8 +91,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)showContentWithCurrentLanguage {
     [self createDataForMenuView];
     [_tbContent reloadData];
-    
-    lbVersion.attributedText = [AppUtils getVersionStringForApp];
 }
 
 - (void)updateInformationOfUser
@@ -182,20 +180,11 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.bottom.equalTo(_imgAvatar.mas_bottom);
     }];
     
-    //  label version
-    lbVersion.backgroundColor = UIColor.clearColor;
-    lbVersion.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
-                                           blue:(50/255.0) alpha:1.0];
-    [lbVersion mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(self.view);
-        make.height.mas_equalTo(45.0);
-    }];
     
     _tbContent.backgroundColor = UIColor.clearColor;
     [_tbContent mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_viewHeader.mas_bottom);
-        make.left.right.equalTo(self.view);
-        make.bottom.equalTo(lbVersion.mas_top);
+        make.left.bottom.right.equalTo(self.view);
     }];
     _tbContent.delegate = self;
     _tbContent.dataSource = self;
@@ -269,7 +258,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case eSendLogs:{
-            [self.view makeToast:@"We haven't supported this feature yet" duration:2.0 position:CSToastPositionCenter];
+            [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"We have not supported this feature yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
             break;
         }
         case eAbout:{

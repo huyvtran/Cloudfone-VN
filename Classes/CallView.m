@@ -264,6 +264,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     [super viewDidLayoutSubviews];
     
     self.halo.position = _avatarImage.center;
+    if (_avatarImage.frame.origin.y == appDelegate._hStatus + 35.0 + 10) {
+        self.halo.hidden = NO;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -636,6 +639,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             if (self.halo == nil) {
                 [self addAnimationForOutgoingCall];
             }
+            self.halo.hidden = YES;
             [self.halo start];
             
             // Nếu không phải Outgoing trong conference thì set disable các button
@@ -674,6 +678,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             [self updateQualityForCall];
             
             //  Stop halo waiting
+            self.halo.hidden = YES;
+            [self.halo start];
             self.halo = nil;
             [self.halo removeFromSuperlayer];
             
@@ -740,6 +746,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             }
             
             //  Stop halo waiting
+            self.halo.hidden = YES;
+            [self.halo start];
             self.halo = nil;
             [self.halo removeFromSuperlayer];
             
@@ -755,6 +763,25 @@ static UICompositeViewDescription *compositeDescription = nil;
                 qualityTimer = nil;
             }
             [self displayCallError:call message:message];
+            [self performSelector:@selector(hideCallView) withObject:nil afterDelay:2.0];
+            break;
+        }
+        case LinphoneCallReleased:{
+            if (durationTimer != nil) {
+                [durationTimer invalidate];
+                durationTimer = nil;
+            }
+            if (qualityTimer != nil) {
+                [qualityTimer invalidate];
+                qualityTimer = nil;
+            }
+            
+            //  Stop halo waiting
+            self.halo.hidden = YES;
+            [self.halo start];
+            self.halo = nil;
+            [self.halo removeFromSuperlayer];
+            
             [self performSelector:@selector(hideCallView) withObject:nil afterDelay:2.0];
             break;
         }
@@ -1015,11 +1042,17 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (!IS_IPHONE && !IS_IPOD) {
         wFeatureIcon = 100.0;
     }else{
-        NSString *modelPhone = [DeviceUtils getModelsOfCurrentDevice];
-        if ([modelPhone isEqualToString:@"iPhone5,1"] || [modelPhone isEqualToString:@"iPhone5,2"] || [modelPhone isEqualToString:@"iPhone5,3"] || [modelPhone isEqualToString:@"iPhone5,4"] || [modelPhone isEqualToString:@"iPhone6,1"] || [modelPhone isEqualToString:@"iPhone6,2"] || [modelPhone isEqualToString:@"iPhone8,4"])
+        NSString *deviceMode = [DeviceUtils getModelsOfCurrentDevice];
+        if ([deviceMode isEqualToString: Iphone5_1] || [deviceMode isEqualToString: Iphone5_2] || [deviceMode isEqualToString: Iphone5c_1] || [deviceMode isEqualToString: Iphone5c_2] || [deviceMode isEqualToString: Iphone5s_1] || [deviceMode isEqualToString: Iphone5s_2] || [deviceMode isEqualToString: IphoneSE])
         {
             wFeatureIcon = 60.0;
-        }else if ([modelPhone isEqualToString: IphoneX_1] || [modelPhone isEqualToString: IphoneX_2] || [modelPhone isEqualToString: IphoneXR] || [modelPhone isEqualToString: IphoneXS] || [modelPhone isEqualToString: IphoneXS_Max1] || [modelPhone isEqualToString: IphoneXS_Max2] || [modelPhone isEqualToString: simulator])
+        }else if ([deviceMode isEqualToString: Iphone6] || [deviceMode isEqualToString: Iphone6s] || [deviceMode isEqualToString: Iphone7_1] || [deviceMode isEqualToString: Iphone7_2] || [deviceMode isEqualToString: Iphone8_1] || [deviceMode isEqualToString: Iphone8_2])
+        {
+            wFeatureIcon = 70.0;
+        }else if ([deviceMode isEqualToString: Iphone6_Plus] || [deviceMode isEqualToString: Iphone6s_Plus] || [deviceMode isEqualToString: Iphone7_Plus1] || [deviceMode isEqualToString: Iphone7_Plus2] || [deviceMode isEqualToString: Iphone8_Plus1] || [deviceMode isEqualToString: Iphone8_Plus2])
+        {
+            wFeatureIcon = 80.0;
+        }else if ([deviceMode isEqualToString: IphoneX_1] || [deviceMode isEqualToString: IphoneX_2] || [deviceMode isEqualToString: IphoneXR] || [deviceMode isEqualToString: IphoneXS] || [deviceMode isEqualToString: IphoneXS_Max1] || [deviceMode isEqualToString: IphoneXS_Max2])
         {
             wFeatureIcon = 80.0;
         }
@@ -1038,7 +1071,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [lbKeypad mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(_scrollView.mas_centerY);
         make.centerX.equalTo(_scrollView.mas_centerX);
-        make.height.mas_equalTo(30);
+        make.height.mas_equalTo(40);
         make.width.mas_equalTo(wFeatureIcon+marginX);
     }];
     lbKeypad.backgroundColor = UIColor.clearColor;
@@ -1241,25 +1274,35 @@ static UICompositeViewDescription *compositeDescription = nil;
     float wAvatar = 120.0;
     float hDuration = 45.0;
     float margin = 10.0;
-    NSString *modelPhone = [DeviceUtils getModelsOfCurrentDevice];
+    NSString *deviceMode = [DeviceUtils getModelsOfCurrentDevice];
     
-    
-    
-    if ([modelPhone isEqualToString: Iphone5_1] || [modelPhone isEqualToString: Iphone5_2] || [modelPhone isEqualToString: Iphone5s_1] || [modelPhone isEqualToString: Iphone5s_2] || [modelPhone isEqualToString: Iphone5c_1] || [modelPhone isEqualToString: Iphone5c_2] || [modelPhone isEqualToString: IphoneSE])
+    if ([deviceMode isEqualToString: Iphone5_1] || [deviceMode isEqualToString: Iphone5_2] || [deviceMode isEqualToString: Iphone5s_1] || [deviceMode isEqualToString: Iphone5s_2] || [deviceMode isEqualToString: Iphone5c_1] || [deviceMode isEqualToString: Iphone5c_2] || [deviceMode isEqualToString: IphoneSE])
     {
         wEndCall = 60.0;
         wAvatar = 100.0;
         hDuration = 30.0;
         margin = 5.0;
-    }else if ([modelPhone isEqualToString: IphoneX_1] || [modelPhone isEqualToString: IphoneX_2] || [modelPhone isEqualToString: IphoneXR] || [modelPhone isEqualToString: IphoneXS] || [modelPhone isEqualToString: IphoneXS_Max1] || [modelPhone isEqualToString: IphoneXS_Max2] || [modelPhone isEqualToString: simulator])
+    }else if ([deviceMode isEqualToString: Iphone6] || [deviceMode isEqualToString: Iphone6s] || [deviceMode isEqualToString: Iphone7_1] || [deviceMode isEqualToString: Iphone7_2] || [deviceMode isEqualToString: Iphone8_1] || [deviceMode isEqualToString: Iphone8_2])
+    {
+        wEndCall = 70.0;
+        wAvatar = 120.0;
+        hDuration = 45.0;
+        margin = 10.0;
+    }else if ([deviceMode isEqualToString: Iphone6_Plus] || [deviceMode isEqualToString: Iphone6s_Plus] || [deviceMode isEqualToString: Iphone7_Plus1] || [deviceMode isEqualToString: Iphone7_Plus2] || [deviceMode isEqualToString: Iphone8_Plus1] || [deviceMode isEqualToString: Iphone8_Plus2])
     {
         wEndCall = 80.0;
-        wAvatar = 120.0;
-        hDuration = 30.0;
-        margin = 5.0;
+        wAvatar = 140.0;
+        hDuration = 45.0;
+        margin = 10.0;
+        bottomHangupIcon = 40.0;
+    }else if ([deviceMode isEqualToString: IphoneX_1] || [deviceMode isEqualToString: IphoneX_2] || [deviceMode isEqualToString: IphoneXR] || [deviceMode isEqualToString: IphoneXS] || [deviceMode isEqualToString: IphoneXS_Max1] || [deviceMode isEqualToString: IphoneXS_Max2] || [deviceMode isEqualToString: simulator])
+    {
+        wEndCall = 80.0;
+        wAvatar = 140.0;
+        hDuration = 45.0;
+        margin = 10.0;
         bottomHangupIcon = 40.0;
     }
-    
     
     //  View call binh thuong
     [_callView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1334,7 +1377,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.right.equalTo(_callView).offset(-20);
         make.height.mas_equalTo(hDuration);
     }];
-    _durationLabel.font = [UIFont systemFontOfSize:35.0 weight:UIFontWeightThin];
+    _durationLabel.font = [UIFont systemFontOfSize:32.0 weight:UIFontWeightThin];
     _durationLabel.backgroundColor = UIColor.clearColor;
     
     [_viewCommand mas_makeConstraints:^(MASConstraintMaker *make) {

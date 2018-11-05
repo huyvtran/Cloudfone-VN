@@ -7,8 +7,11 @@
 
 #import "AboutViewController.h"
 
-@interface AboutViewController ()
-
+@interface AboutViewController (){
+    LinphoneAppDelegate *appDelegate;
+    NSString *linkToAppStore;
+    NSString* appStoreVersion;
+}
 @end
 
 @implementation AboutViewController
@@ -38,17 +41,17 @@ static UICompositeViewDescription *compositeDescription = nil;
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
     //  my code here
     [self setupUIForView];
-    NSLog(@"%@", [AppUtils getBuildDate]);
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    linkToAppStore = @"";
+    lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"About"];
     [btnCheckForUpdate setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Check for update"] forState:UIControlStateNormal];
     
-    
-    NSString *str = [NSString stringWithFormat:@"%@: %@\n%@: %@", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Version"], [AppUtils getAppVersion], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Release date"], [AppUtils getBuildDate]];
+    NSString *str = [NSString stringWithFormat:@"%@: %@\n%@: %@", [appDelegate.localization localizedStringForKey:@"Version"], [AppUtils getAppVersionWithBuildVersion: YES], [appDelegate.localization localizedStringForKey:@"Release date"], [AppUtils getBuildDate]];
     lbVersion.text = str;
 }
 
@@ -62,9 +65,53 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)btnCheckForUpdatePress:(UIButton *)sender {
+    if (![DeviceUtils checkNetworkAvailable]) {
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:1.5 position:CSToastPositionBottom style:nil];
+        return;
+    }
+    
+    //  Add new by Khai Le on 23/03/2018
+    linkToAppStore = [self checkNewVersionOnAppStore];
+    if (![AppUtils isNullOrEmpty: linkToAppStore] && ![AppUtils isNullOrEmpty: appStoreVersion]) {
+        NSString *content = [NSString stringWithFormat:[appDelegate.localization localizedStringForKey:@"Current version on App Store is %@. Do you want to update right now?"], appStoreVersion];
+        
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"CFBundleDisplayName"] message:content delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Close"] otherButtonTitles:[appDelegate.localization localizedStringForKey:@"Update"], nil];
+        alert.tag = 2;
+        [alert show];
+    }else{
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"CFBundleDisplayName"] message:[appDelegate.localization localizedStringForKey:@"You are the newest version!"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Close"] otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    return;
+    //  -----
 }
 
 #pragma mark - my functions
+
+- (NSString *)checkNewVersionOnAppStore {
+    NSDictionary* infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString* appID = infoDictionary[@"CFBundleIdentifier"];
+    if (appID.length > 0) {
+        NSURL* url = [NSURL URLWithString:[NSString stringWithFormat:@"http://itunes.apple.com/lookup?bundleId=%@", appID]];
+        NSData* data = [NSData dataWithContentsOfURL:url];
+        
+        if (data) {
+            NSDictionary* lookup = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            
+            if ([lookup[@"resultCount"] integerValue] == 1){
+                appStoreVersion = lookup[@"results"][0][@"version"];
+                NSString* currentVersion = infoDictionary[@"CFBundleShortVersionString"];
+                
+                if ([appStoreVersion compare:currentVersion options:NSNumericSearch] == NSOrderedDescending) {
+                    // app needs to be updated
+                    return lookup[@"results"][0][@"trackViewUrl"] ? lookup[@"results"][0][@"trackViewUrl"] : @"";
+                }
+            }
+        }
+    }
+    
+    return @"";
+}
 
 //  setup ui trong view
 - (void)setupUIForView
@@ -124,7 +171,13 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.right.equalTo(lbVersion.mas_right);
         make.height.mas_equalTo(40.0);
     }];
-    
+}
+
+#pragma mark - UIAlertview Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 2 && buttonIndex == 1) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkToAppStore]];
+    }
 }
 
 @end

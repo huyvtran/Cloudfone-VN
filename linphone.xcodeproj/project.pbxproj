@@ -73,6 +73,7 @@
 		1579B72421674989002BECE3 /* ic_add_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 1579B71D21674988002BECE3 /* ic_add_contact.png */; };
 		1579B72521674989002BECE3 /* ic_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 1579B71E21674988002BECE3 /* ic_back.png */; };
 		1579B72721674A6B002BECE3 /* call_disable.png in Resources */ = {isa = PBXBuildFile; fileRef = 1579B72621674A67002BECE3 /* call_disable.png */; };
+		15814E26219050AA00E1C48C /* ic_introduce.png in Resources */ = {isa = PBXBuildFile; fileRef = 15814E25219050A900E1C48C /* ic_introduce.png */; };
 		15857BFD216DEC0000DB5237 /* UIContactPhoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15857BFB216DEC0000DB5237 /* UIContactPhoneCell.m */; };
 		15857BFE216DEC0000DB5237 /* UIContactPhoneCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15857BFC216DEC0000DB5237 /* UIContactPhoneCell.xib */; };
 		15857C00216DED4800DB5237 /* call_default_mini.png in Resources */ = {isa = PBXBuildFile; fileRef = 15857BFF216DED4700DB5237 /* call_default_mini.png */; };
@@ -205,35 +206,6 @@
 		633888451BFB2C49001D5E7B /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 633888421BFB2C49001D5E7B /* HPGrowingTextView.m */; };
 		633888461BFB2C49001D5E7B /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 633888441BFB2C49001D5E7B /* HPTextViewInternal.m */; };
 		633E41821D74259000320475 /* AssistantLinkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 633E41801D74258F00320475 /* AssistantLinkView.m */; };
-		633FED9C1D3CD5590014B822 /* add_field_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBE21D3CD5570014B822 /* add_field_default.png */; };
-		633FED9D1D3CD5590014B822 /* add_field_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBE31D3CD5570014B822 /* add_field_default@2x.png */; };
-		633FED9E1D3CD5590014B822 /* add_field_over.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBE41D3CD5570014B822 /* add_field_over.png */; };
-		633FED9F1D3CD5590014B822 /* add_field_over@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBE51D3CD5570014B822 /* add_field_over@2x.png */; };
-		633FEDA01D3CD5590014B822 /* avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBE61D3CD5570014B822 /* avatar.png */; };
-		633FEDA11D3CD5590014B822 /* avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBE71D3CD5570014B822 /* avatar@2x.png */; };
-		633FEDA21D3CD5590014B822 /* avatar~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBE81D3CD5570014B822 /* avatar~ipad.png */; };
-		633FEDA31D3CD5590014B822 /* avatar~ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBE91D3CD5570014B822 /* avatar~ipad@2x.png */; };
-		633FEDA41D3CD5590014B822 /* back_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBEA1D3CD5570014B822 /* back_default.png */; };
-		633FEDA51D3CD5590014B822 /* back_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBEB1D3CD5570014B822 /* back_default@2x.png */; };
-		633FEDA61D3CD5590014B822 /* back_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBEC1D3CD5570014B822 /* back_disabled.png */; };
-		633FEDA71D3CD5590014B822 /* back_disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBED1D3CD5570014B822 /* back_disabled@2x.png */; };
-		633FEDA91D3CD5590014B822 /* backspace_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBEF1D3CD5570014B822 /* backspace_default@2x.png */; };
-		633FEDAA1D3CD5590014B822 /* backspace_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBF01D3CD5570014B822 /* backspace_disabled.png */; };
-		633FEDAB1D3CD5590014B822 /* backspace_disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBF11D3CD5570014B822 /* backspace_disabled@2x.png */; };
-		633FEDAC1D3CD5590014B822 /* backspace_over.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBF21D3CD5570014B822 /* backspace_over.png */; };
-		633FEDAD1D3CD5590014B822 /* backspace_over@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBF31D3CD5570014B822 /* backspace_over@2x.png */; };
-		633FEDAE1D3CD5590014B822 /* call_add_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBF41D3CD5570014B822 /* call_add_default.png */; };
-		633FEDAF1D3CD5590014B822 /* call_add_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBF51D3CD5570014B822 /* call_add_default@2x.png */; };
-		633FEDB01D3CD5590014B822 /* call_add_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBF61D3CD5570014B822 /* call_add_disabled.png */; };
-		633FEDB11D3CD5590014B822 /* call_add_disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBF71D3CD5570014B822 /* call_add_disabled@2x.png */; };
-		633FEDB21D3CD5590014B822 /* call_alt_back_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBF81D3CD5570014B822 /* call_alt_back_default.png */; };
-		633FEDB31D3CD5590014B822 /* call_alt_back_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBF91D3CD5570014B822 /* call_alt_back_default@2x.png */; };
-		633FEDB41D3CD5590014B822 /* call_alt_back_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBFA1D3CD5570014B822 /* call_alt_back_disabled.png */; };
-		633FEDB51D3CD5590014B822 /* call_alt_back_disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBFB1D3CD5570014B822 /* call_alt_back_disabled@2x.png */; };
-		633FEDB61D3CD5590014B822 /* call_alt_start_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBFC1D3CD5570014B822 /* call_alt_start_default.png */; };
-		633FEDB71D3CD5590014B822 /* call_alt_start_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBFD1D3CD5570014B822 /* call_alt_start_default@2x.png */; };
-		633FEDB81D3CD5590014B822 /* call_alt_start_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBFE1D3CD5570014B822 /* call_alt_start_disabled.png */; };
-		633FEDB91D3CD5590014B822 /* call_alt_start_disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEBFF1D3CD5570014B822 /* call_alt_start_disabled@2x.png */; };
 		633FEDBA1D3CD5590014B822 /* call_audio_start_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC001D3CD5570014B822 /* call_audio_start_default.png */; };
 		633FEDBB1D3CD5590014B822 /* call_audio_start_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC011D3CD5570014B822 /* call_audio_start_default@2x.png */; };
 		633FEDBC1D3CD5590014B822 /* call_audio_start_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC021D3CD5570014B822 /* call_audio_start_disabled.png */; };
@@ -246,12 +218,6 @@
 		633FEDC31D3CD5590014B822 /* call_hangup_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC091D3CD5570014B822 /* call_hangup_default@2x.png */; };
 		633FEDC41D3CD5590014B822 /* call_hangup_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC0A1D3CD5570014B822 /* call_hangup_disabled.png */; };
 		633FEDC51D3CD5590014B822 /* call_hangup_disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC0B1D3CD5570014B822 /* call_hangup_disabled@2x.png */; };
-		633FEDC61D3CD5590014B822 /* call_incoming.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC0C1D3CD5570014B822 /* call_incoming.png */; };
-		633FEDC71D3CD5590014B822 /* call_incoming@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC0D1D3CD5570014B822 /* call_incoming@2x.png */; };
-		633FEDC81D3CD5590014B822 /* call_missed.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC0E1D3CD5570014B822 /* call_missed.png */; };
-		633FEDC91D3CD5590014B822 /* call_missed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC0F1D3CD5570014B822 /* call_missed@2x.png */; };
-		633FEDCA1D3CD5590014B822 /* call_outgoing.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC101D3CD5570014B822 /* call_outgoing.png */; };
-		633FEDCB1D3CD5590014B822 /* call_outgoing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC111D3CD5570014B822 /* call_outgoing@2x.png */; };
 		633FEDCC1D3CD5590014B822 /* call_quality_indicator_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC121D3CD5570014B822 /* call_quality_indicator_0.png */; };
 		633FEDCD1D3CD5590014B822 /* call_quality_indicator_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC131D3CD5570014B822 /* call_quality_indicator_0@2x.png */; };
 		633FEDCE1D3CD5590014B822 /* call_quality_indicator_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC141D3CD5570014B822 /* call_quality_indicator_1.png */; };
@@ -262,30 +228,6 @@
 		633FEDD31D3CD5590014B822 /* call_quality_indicator_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC191D3CD5570014B822 /* call_quality_indicator_3@2x.png */; };
 		633FEDD41D3CD5590014B822 /* call_quality_indicator_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC1A1D3CD5570014B822 /* call_quality_indicator_4.png */; };
 		633FEDD51D3CD5590014B822 /* call_quality_indicator_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC1B1D3CD5570014B822 /* call_quality_indicator_4@2x.png */; };
-		633FEDD61D3CD5590014B822 /* call_start_body_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC1C1D3CD5570014B822 /* call_start_body_default.png */; };
-		633FEDD71D3CD5590014B822 /* call_start_body_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC1D1D3CD5570014B822 /* call_start_body_default@2x.png */; };
-		633FEDD81D3CD5590014B822 /* call_start_body_default~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC1E1D3CD5570014B822 /* call_start_body_default~ipad.png */; };
-		633FEDD91D3CD5590014B822 /* call_start_body_default~ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC1F1D3CD5570014B822 /* call_start_body_default~ipad@2x.png */; };
-		633FEDDA1D3CD5590014B822 /* call_start_body_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC201D3CD5570014B822 /* call_start_body_disabled.png */; };
-		633FEDDB1D3CD5590014B822 /* call_start_body_disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC211D3CD5570014B822 /* call_start_body_disabled@2x.png */; };
-		633FEDDC1D3CD5590014B822 /* call_start_body_disabled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC221D3CD5570014B822 /* call_start_body_disabled~ipad.png */; };
-		633FEDDD1D3CD5590014B822 /* call_start_body_disabled~ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC231D3CD5570014B822 /* call_start_body_disabled~ipad@2x.png */; };
-		633FEDDE1D3CD5590014B822 /* call_start_body_over.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC241D3CD5570014B822 /* call_start_body_over.png */; };
-		633FEDDF1D3CD5590014B822 /* call_start_body_over@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC251D3CD5570014B822 /* call_start_body_over@2x.png */; };
-		633FEDE01D3CD5590014B822 /* call_start_body_over~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC261D3CD5570014B822 /* call_start_body_over~ipad.png */; };
-		633FEDE11D3CD5590014B822 /* call_start_body_over~ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC271D3CD5570014B822 /* call_start_body_over~ipad@2x.png */; };
-		633FEDE21D3CD5590014B822 /* call_status_incoming.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC281D3CD5570014B822 /* call_status_incoming.png */; };
-		633FEDE31D3CD5590014B822 /* call_status_incoming@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC291D3CD5570014B822 /* call_status_incoming@2x.png */; };
-		633FEDE41D3CD5590014B822 /* call_status_incoming~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC2A1D3CD5570014B822 /* call_status_incoming~ipad.png */; };
-		633FEDE51D3CD5590014B822 /* call_status_incoming~ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC2B1D3CD5570014B822 /* call_status_incoming~ipad@2x.png */; };
-		633FEDE61D3CD5590014B822 /* call_status_missed.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC2C1D3CD5570014B822 /* call_status_missed.png */; };
-		633FEDE71D3CD5590014B822 /* call_status_missed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC2D1D3CD5570014B822 /* call_status_missed@2x.png */; };
-		633FEDE81D3CD5590014B822 /* call_status_missed~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC2E1D3CD5570014B822 /* call_status_missed~ipad.png */; };
-		633FEDE91D3CD5590014B822 /* call_status_missed~ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC2F1D3CD5570014B822 /* call_status_missed~ipad@2x.png */; };
-		633FEDEA1D3CD5590014B822 /* call_status_outgoing.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC301D3CD5570014B822 /* call_status_outgoing.png */; };
-		633FEDEB1D3CD5590014B822 /* call_status_outgoing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC311D3CD5570014B822 /* call_status_outgoing@2x.png */; };
-		633FEDEC1D3CD5590014B822 /* call_status_outgoing~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC321D3CD5570014B822 /* call_status_outgoing~ipad.png */; };
-		633FEDED1D3CD5590014B822 /* call_status_outgoing~ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC331D3CD5570014B822 /* call_status_outgoing~ipad@2x.png */; };
 		633FEDEE1D3CD5590014B822 /* call_transfer_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC341D3CD5570014B822 /* call_transfer_default.png */; };
 		633FEDEF1D3CD5590014B822 /* call_transfer_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC351D3CD5570014B822 /* call_transfer_default@2x.png */; };
 		633FEDF01D3CD5590014B822 /* call_transfer_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC361D3CD5570014B822 /* call_transfer_disabled.png */; };
@@ -294,18 +236,6 @@
 		633FEDF31D3CD5590014B822 /* call_video_start_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC391D3CD5570014B822 /* call_video_start_default@2x.png */; };
 		633FEDF41D3CD5590014B822 /* call_video_start_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC3A1D3CD5570014B822 /* call_video_start_disabled.png */; };
 		633FEDF51D3CD5590014B822 /* call_video_start_disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC3B1D3CD5570014B822 /* call_video_start_disabled@2x.png */; };
-		633FEDF61D3CD5590014B822 /* camera_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC3C1D3CD5570014B822 /* camera_default.png */; };
-		633FEDF71D3CD5590014B822 /* camera_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC3D1D3CD5570014B822 /* camera_default@2x.png */; };
-		633FEDF81D3CD5590014B822 /* camera_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC3E1D3CD5570014B822 /* camera_disabled.png */; };
-		633FEDF91D3CD5590014B822 /* camera_disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC3F1D3CD5570014B822 /* camera_disabled@2x.png */; };
-		633FEDFA1D3CD5590014B822 /* camera_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC401D3CD5570014B822 /* camera_selected.png */; };
-		633FEDFB1D3CD5590014B822 /* camera_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC411D3CD5570014B822 /* camera_selected@2x.png */; };
-		633FEDFC1D3CD5590014B822 /* camera_switch_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC421D3CD5570014B822 /* camera_switch_default.png */; };
-		633FEDFD1D3CD5590014B822 /* camera_switch_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC431D3CD5570014B822 /* camera_switch_default@2x.png */; };
-		633FEDFE1D3CD5590014B822 /* camera_switch_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC441D3CD5570014B822 /* camera_switch_disabled.png */; };
-		633FEDFF1D3CD5590014B822 /* camera_switch_disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC451D3CD5570014B822 /* camera_switch_disabled@2x.png */; };
-		633FEE001D3CD5590014B822 /* camera_switch_over.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC461D3CD5570014B822 /* camera_switch_over.png */; };
-		633FEE011D3CD5590014B822 /* camera_switch_over@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC471D3CD5570014B822 /* camera_switch_over@2x.png */; };
 		633FEE021D3CD5590014B822 /* cancel_edit_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC481D3CD5570014B822 /* cancel_edit_default.png */; };
 		633FEE031D3CD5590014B822 /* cancel_edit_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC491D3CD5570014B822 /* cancel_edit_default@2x.png */; };
 		633FEE041D3CD5590014B822 /* cancel_edit_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 633FEC4A1D3CD5570014B822 /* cancel_edit_disabled.png */; };
@@ -679,9 +609,6 @@
 		63FD3F121CA17FA400E9AECC /* libmbedx509.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63FD3F081CA17F9100E9AECC /* libmbedx509.a */; };
 		70E542F313E147E3002BA2C0 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70E542F213E147E3002BA2C0 /* OpenGLES.framework */; };
 		70E542F513E147EB002BA2C0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70E542F413E147EB002BA2C0 /* QuartzCore.framework */; };
-		840531DE1FCB07E300A27A03 /* SettingPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 840531DC1FCB07E100A27A03 /* SettingPopupView.m */; };
-		840531E71FCB097C00A27A03 /* ContactAddGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 840531E41FCB097800A27A03 /* ContactAddGroupCell.m */; };
-		840531E81FCB097C00A27A03 /* ContactAddGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 840531E51FCB097900A27A03 /* ContactAddGroupCell.xib */; };
 		840B574020061FD300DCBA7E /* QRToggleTorchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573720061FD100DCBA7E /* QRToggleTorchButton.m */; };
 		840B574120061FD300DCBA7E /* QRCodeReaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573820061FD100DCBA7E /* QRCodeReaderView.m */; };
 		840B574220061FD300DCBA7E /* QRCodeReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573920061FD100DCBA7E /* QRCodeReader.m */; };
@@ -737,8 +664,6 @@
 		8440F196216BA82000BB559C /* mini_key_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8440F17E216BA82000BB559C /* mini_key_2.png */; };
 		8440F197216BA82000BB559C /* mini_key_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8440F17F216BA82000BB559C /* mini_key_3.png */; };
 		8440F198216BA82000BB559C /* mini_key_6_hover.png in Resources */ = {isa = PBXBuildFile; fileRef = 8440F180216BA82000BB559C /* mini_key_6_hover.png */; };
-		8442A3591FB12CCA00F08F11 /* ChooseAccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8442A3571FB12CCA00F08F11 /* ChooseAccountCell.m */; };
-		8442A35A1FB12CCA00F08F11 /* ChooseAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8442A3581FB12CCA00F08F11 /* ChooseAccountCell.xib */; };
 		8442A3641FB1321D00F08F11 /* MYRIADPRO-BOLD.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 8442A3621FB1321D00F08F11 /* MYRIADPRO-BOLD.OTF */; };
 		8442A3651FB1321D00F08F11 /* MYRIADPRO-REGULAR.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 8442A3631FB1321D00F08F11 /* MYRIADPRO-REGULAR.OTF */; };
 		8442A36A1FB13C0F00F08F11 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8442A3681FB13C0F00F08F11 /* ContactsViewController.m */; };
@@ -752,7 +677,6 @@
 		8459953B216F8CE00004143A /* ic_add_def@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84599539216F8CDF0004143A /* ic_add_def@2x.png */; };
 		845A13311FE2C70300640B51 /* PBXContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 845A132F1FE2C70300640B51 /* PBXContactTableCell.m */; };
 		845A13321FE2C70300640B51 /* PBXContactTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 845A13301FE2C70300640B51 /* PBXContactTableCell.xib */; };
-		8462F40A20E73BAB005964D7 /* bg_chat_default.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8462F40320E73BAA005964D7 /* bg_chat_default.jpg */; };
 		846586951FCA9AC900C5142C /* KMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 846586921FCA9AC600C5142C /* KMessageViewController.xib */; };
 		846586961FCA9AC900C5142C /* KMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846586931FCA9AC700C5142C /* KMessageViewController.m */; };
 		846586991FCA9BD600C5142C /* SwipeableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 846586981FCA9BD600C5142C /* SwipeableTableViewCell.m */; };
@@ -786,26 +710,13 @@
 		84BCC9E91FC1E162001F26FE /* UIImage+PECrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BCC9E41FC1E162001F26FE /* UIImage+PECrop.m */; };
 		84BE100221651F5B00831E36 /* background_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BE0FFB21651F5A00831E36 /* background_header.png */; };
 		84C1E20B1FAEB3EB00EED0B9 /* HMLocalization.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E20A1FAEB3EB00EED0B9 /* HMLocalization.m */; };
-		84C1E2101FAEB43100EED0B9 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E20E1FAEB43100EED0B9 /* LoginView.m */; };
-		84C1E2111FAEB43100EED0B9 /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C1E20F1FAEB43100EED0B9 /* LoginView.xib */; };
-		84C1E21C1FAEB74600EED0B9 /* SignInView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E21A1FAEB74600EED0B9 /* SignInView.m */; };
-		84C1E21D1FAEB74600EED0B9 /* SignInView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C1E21B1FAEB74600EED0B9 /* SignInView.xib */; };
 		84C1E2211FAEB7F800EED0B9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E2201FAEB7F800EED0B9 /* MBProgressHUD.m */; };
 		84C1E2291FAEB94500EED0B9 /* en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 84C1E2271FAEB94500EED0B9 /* en.txt */; };
 		84C1E22A1FAEB94500EED0B9 /* vi.txt in Resources */ = {isa = PBXBuildFile; fileRef = 84C1E2281FAEB94500EED0B9 /* vi.txt */; };
-		84C1E22E1FAEBA4C00EED0B9 /* RegisterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E22C1FAEBA4C00EED0B9 /* RegisterView.m */; };
-		84C1E22F1FAEBA4C00EED0B9 /* RegisterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C1E22D1FAEBA4C00EED0B9 /* RegisterView.xib */; };
 		84C1E2371FAEBAE100EED0B9 /* BEMAnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E2321FAEBAE100EED0B9 /* BEMAnimationManager.m */; };
 		84C1E2381FAEBAE100EED0B9 /* BEMCheckBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E2341FAEBAE100EED0B9 /* BEMCheckBox.m */; };
 		84C1E2391FAEBAE100EED0B9 /* BEMPathManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E2361FAEBAE100EED0B9 /* BEMPathManager.m */; };
-		84C1E23C1FAEBB0500EED0B9 /* PrivacyPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E23B1FAEBB0500EED0B9 /* PrivacyPopupView.m */; };
 		84C1E2401FAEBB5300EED0B9 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E23F1FAEBB5300EED0B9 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		84C1E2441FAEBB8100EED0B9 /* ConfirmView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E2421FAEBB8100EED0B9 /* ConfirmView.m */; };
-		84C1E2451FAEBB8100EED0B9 /* ConfirmView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C1E2431FAEBB8100EED0B9 /* ConfirmView.xib */; };
-		84C1E24C1FAEBBAF00EED0B9 /* ConfirmResetPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E2471FAEBBAF00EED0B9 /* ConfirmResetPasswordView.m */; };
-		84C1E24D1FAEBBAF00EED0B9 /* ConfirmResetPasswordView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C1E2481FAEBBAF00EED0B9 /* ConfirmResetPasswordView.xib */; };
-		84C1E24E1FAEBBAF00EED0B9 /* ResetPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E24A1FAEBBAF00EED0B9 /* ResetPasswordView.m */; };
-		84C1E24F1FAEBBAF00EED0B9 /* ResetPasswordView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C1E24B1FAEBBAF00EED0B9 /* ResetPasswordView.xib */; };
 		84C1E25F1FAEBE4B00EED0B9 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E2551FAEBE4B00EED0B9 /* FMDatabase.m */; };
 		84C1E2601FAEBE4B00EED0B9 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E2571FAEBE4B00EED0B9 /* FMDatabaseAdditions.m */; };
 		84C1E2611FAEBE4B00EED0B9 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E2591FAEBE4B00EED0B9 /* FMDatabasePool.m */; };
@@ -844,12 +755,6 @@
 		84C47D121FB631710015695E /* DetailHistoryCNViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C47D101FB631710015695E /* DetailHistoryCNViewController.xib */; };
 		84C47D161FB632640015695E /* IncomingCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C47D141FB632640015695E /* IncomingCallViewController.m */; };
 		84C47D171FB632640015695E /* IncomingCallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C47D151FB632640015695E /* IncomingCallViewController.xib */; };
-		84C54BAF1FAFE6A300651151 /* countries.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84C54BA91FAFE6A300651151 /* countries.plist */; };
-		84C54BB01FAFE6A300651151 /* NatureEmotion.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84C54BAA1FAFE6A300651151 /* NatureEmotion.plist */; };
-		84C54BB11FAFE6A300651151 /* ObjectEmotion.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84C54BAB1FAFE6A300651151 /* ObjectEmotion.plist */; };
-		84C54BB21FAFE6A300651151 /* PeopleEmotion.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84C54BAC1FAFE6A300651151 /* PeopleEmotion.plist */; };
-		84C54BB31FAFE6A300651151 /* PlaceEmotion.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84C54BAD1FAFE6A300651151 /* PlaceEmotion.plist */; };
-		84C54BB41FAFE6A300651151 /* SymbolEmotion.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84C54BAE1FAFE6A300651151 /* SymbolEmotion.plist */; };
 		84C8B23F1FBBBDB50080D673 /* UIHistoryDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C8B23D1FBBBDB50080D673 /* UIHistoryDetailCell.m */; };
 		84C8B2401FBBBDB50080D673 /* UIHistoryDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C8B23E1FBBBDB50080D673 /* UIHistoryDetailCell.xib */; };
 		84C8B24A1FBBBE4D0080D673 /* contactBlackListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C8B2491FBBBE4D0080D673 /* contactBlackListCell.m */; };
@@ -859,8 +764,6 @@
 		84D0320D1FB51C50002D2524 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D0320B1FB51C50002D2524 /* ContactCell.xib */; };
 		84D032181FB52E7A002D2524 /* AllContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D032161FB52E7A002D2524 /* AllContactsViewController.m */; };
 		84D032191FB52E7A002D2524 /* AllContactsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D032171FB52E7A002D2524 /* AllContactsViewController.xib */; };
-		84D0321D1FB52F6C002D2524 /* ContactNormalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D0321B1FB52F6C002D2524 /* ContactNormalCell.m */; };
-		84D0321E1FB52F6C002D2524 /* ContactNormalCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D0321C1FB52F6C002D2524 /* ContactNormalCell.xib */; };
 		84D032221FB531B5002D2524 /* KContactDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D032201FB531B5002D2524 /* KContactDetailViewController.m */; };
 		84D032231FB531B5002D2524 /* KContactDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D032211FB531B5002D2524 /* KContactDetailViewController.xib */; };
 		84D1EC2D2000E4C500AF337C /* NSString+Emojize.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D1EC2C2000E4C500AF337C /* NSString+Emojize.m */; };
@@ -887,12 +790,8 @@
 		84E286CC1FC9E1AC009CBA27 /* UIImage+WebP.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E286BB1FC9E1AA009CBA27 /* UIImage+WebP.m */; };
 		84E286CD1FC9E1AC009CBA27 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E286BD1FC9E1AA009CBA27 /* UIView+WebCacheOperation.m */; };
 		84E286CE1FC9E1AC009CBA27 /* UIImage+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E286BE1FC9E1AB009CBA27 /* UIImage+GIF.m */; };
-		84E286E61FC9FA76009CBA27 /* ChatProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E286E41FC9FA74009CBA27 /* ChatProfileCell.m */; };
-		84E286E71FC9FA76009CBA27 /* ChatProfileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E286E51FC9FA75009CBA27 /* ChatProfileCell.xib */; };
 		84E286EB1FC9FC52009CBA27 /* PhoneCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E286E91FC9FC50009CBA27 /* PhoneCell.xib */; };
 		84E286EC1FC9FC52009CBA27 /* PhoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E286EA1FC9FC51009CBA27 /* PhoneCell.m */; };
-		84E286F01FC9FE08009CBA27 /* OptionsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E286ED1FC9FE07009CBA27 /* OptionsCell.xib */; };
-		84E286F11FC9FE08009CBA27 /* OptionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E286EF1FC9FE08009CBA27 /* OptionsCell.m */; };
 		84E2BB4E200A4B9200F152C1 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E2BB47200A4B9200F152C1 /* AVKit.framework */; };
 		84E343A41FDAFEA90042D048 /* UploadPicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E343A31FDAFEA90042D048 /* UploadPicture.m */; };
 		84E87DDA1FC1DE3B0074A54C /* NewContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E87DD81FC1DE3B0074A54C /* NewContactViewController.m */; };
@@ -1232,6 +1131,7 @@
 		1579B71D21674988002BECE3 /* ic_add_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_add_contact.png; sourceTree = "<group>"; };
 		1579B71E21674988002BECE3 /* ic_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_back.png; sourceTree = "<group>"; };
 		1579B72621674A67002BECE3 /* call_disable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = call_disable.png; path = Resources/images/keypad/call_disable.png; sourceTree = SOURCE_ROOT; };
+		15814E25219050A900E1C48C /* ic_introduce.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_introduce.png; sourceTree = "<group>"; };
 		15857BFA216DEC0000DB5237 /* UIContactPhoneCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UIContactPhoneCell.h; path = AppUI/UIContactPhoneCell.h; sourceTree = "<group>"; };
 		15857BFB216DEC0000DB5237 /* UIContactPhoneCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UIContactPhoneCell.m; path = AppUI/UIContactPhoneCell.m; sourceTree = "<group>"; };
 		15857BFC216DEC0000DB5237 /* UIContactPhoneCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = UIContactPhoneCell.xib; path = AppUI/UIContactPhoneCell.xib; sourceTree = "<group>"; };
@@ -1441,35 +1341,6 @@
 		633E388219FFB0F400936D1C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		633E417F1D74258F00320475 /* AssistantLinkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssistantLinkView.h; sourceTree = "<group>"; };
 		633E41801D74258F00320475 /* AssistantLinkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssistantLinkView.m; sourceTree = "<group>"; };
-		633FEBE21D3CD5570014B822 /* add_field_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_field_default.png; sourceTree = "<group>"; };
-		633FEBE31D3CD5570014B822 /* add_field_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_field_default@2x.png"; sourceTree = "<group>"; };
-		633FEBE41D3CD5570014B822 /* add_field_over.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_field_over.png; sourceTree = "<group>"; };
-		633FEBE51D3CD5570014B822 /* add_field_over@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_field_over@2x.png"; sourceTree = "<group>"; };
-		633FEBE61D3CD5570014B822 /* avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar.png; sourceTree = "<group>"; };
-		633FEBE71D3CD5570014B822 /* avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar@2x.png"; sourceTree = "<group>"; };
-		633FEBE81D3CD5570014B822 /* avatar~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar~ipad.png"; sourceTree = "<group>"; };
-		633FEBE91D3CD5570014B822 /* avatar~ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar~ipad@2x.png"; sourceTree = "<group>"; };
-		633FEBEA1D3CD5570014B822 /* back_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_default.png; sourceTree = "<group>"; };
-		633FEBEB1D3CD5570014B822 /* back_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_default@2x.png"; sourceTree = "<group>"; };
-		633FEBEC1D3CD5570014B822 /* back_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_disabled.png; sourceTree = "<group>"; };
-		633FEBED1D3CD5570014B822 /* back_disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_disabled@2x.png"; sourceTree = "<group>"; };
-		633FEBEF1D3CD5570014B822 /* backspace_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backspace_default@2x.png"; sourceTree = "<group>"; };
-		633FEBF01D3CD5570014B822 /* backspace_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backspace_disabled.png; sourceTree = "<group>"; };
-		633FEBF11D3CD5570014B822 /* backspace_disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backspace_disabled@2x.png"; sourceTree = "<group>"; };
-		633FEBF21D3CD5570014B822 /* backspace_over.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backspace_over.png; sourceTree = "<group>"; };
-		633FEBF31D3CD5570014B822 /* backspace_over@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backspace_over@2x.png"; sourceTree = "<group>"; };
-		633FEBF41D3CD5570014B822 /* call_add_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_add_default.png; sourceTree = "<group>"; };
-		633FEBF51D3CD5570014B822 /* call_add_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_add_default@2x.png"; sourceTree = "<group>"; };
-		633FEBF61D3CD5570014B822 /* call_add_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_add_disabled.png; sourceTree = "<group>"; };
-		633FEBF71D3CD5570014B822 /* call_add_disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_add_disabled@2x.png"; sourceTree = "<group>"; };
-		633FEBF81D3CD5570014B822 /* call_alt_back_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_alt_back_default.png; sourceTree = "<group>"; };
-		633FEBF91D3CD5570014B822 /* call_alt_back_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_alt_back_default@2x.png"; sourceTree = "<group>"; };
-		633FEBFA1D3CD5570014B822 /* call_alt_back_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_alt_back_disabled.png; sourceTree = "<group>"; };
-		633FEBFB1D3CD5570014B822 /* call_alt_back_disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_alt_back_disabled@2x.png"; sourceTree = "<group>"; };
-		633FEBFC1D3CD5570014B822 /* call_alt_start_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_alt_start_default.png; sourceTree = "<group>"; };
-		633FEBFD1D3CD5570014B822 /* call_alt_start_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_alt_start_default@2x.png"; sourceTree = "<group>"; };
-		633FEBFE1D3CD5570014B822 /* call_alt_start_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_alt_start_disabled.png; sourceTree = "<group>"; };
-		633FEBFF1D3CD5570014B822 /* call_alt_start_disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_alt_start_disabled@2x.png"; sourceTree = "<group>"; };
 		633FEC001D3CD5570014B822 /* call_audio_start_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_audio_start_default.png; sourceTree = "<group>"; };
 		633FEC011D3CD5570014B822 /* call_audio_start_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_audio_start_default@2x.png"; sourceTree = "<group>"; };
 		633FEC021D3CD5570014B822 /* call_audio_start_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_audio_start_disabled.png; sourceTree = "<group>"; };
@@ -1482,12 +1353,6 @@
 		633FEC091D3CD5570014B822 /* call_hangup_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_hangup_default@2x.png"; sourceTree = "<group>"; };
 		633FEC0A1D3CD5570014B822 /* call_hangup_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_hangup_disabled.png; sourceTree = "<group>"; };
 		633FEC0B1D3CD5570014B822 /* call_hangup_disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_hangup_disabled@2x.png"; sourceTree = "<group>"; };
-		633FEC0C1D3CD5570014B822 /* call_incoming.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_incoming.png; sourceTree = "<group>"; };
-		633FEC0D1D3CD5570014B822 /* call_incoming@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_incoming@2x.png"; sourceTree = "<group>"; };
-		633FEC0E1D3CD5570014B822 /* call_missed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_missed.png; sourceTree = "<group>"; };
-		633FEC0F1D3CD5570014B822 /* call_missed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_missed@2x.png"; sourceTree = "<group>"; };
-		633FEC101D3CD5570014B822 /* call_outgoing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_outgoing.png; sourceTree = "<group>"; };
-		633FEC111D3CD5570014B822 /* call_outgoing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_outgoing@2x.png"; sourceTree = "<group>"; };
 		633FEC121D3CD5570014B822 /* call_quality_indicator_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_quality_indicator_0.png; sourceTree = "<group>"; };
 		633FEC131D3CD5570014B822 /* call_quality_indicator_0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_quality_indicator_0@2x.png"; sourceTree = "<group>"; };
 		633FEC141D3CD5570014B822 /* call_quality_indicator_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_quality_indicator_1.png; sourceTree = "<group>"; };
@@ -1498,30 +1363,6 @@
 		633FEC191D3CD5570014B822 /* call_quality_indicator_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_quality_indicator_3@2x.png"; sourceTree = "<group>"; };
 		633FEC1A1D3CD5570014B822 /* call_quality_indicator_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_quality_indicator_4.png; sourceTree = "<group>"; };
 		633FEC1B1D3CD5570014B822 /* call_quality_indicator_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_quality_indicator_4@2x.png"; sourceTree = "<group>"; };
-		633FEC1C1D3CD5570014B822 /* call_start_body_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_start_body_default.png; sourceTree = "<group>"; };
-		633FEC1D1D3CD5570014B822 /* call_start_body_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_start_body_default@2x.png"; sourceTree = "<group>"; };
-		633FEC1E1D3CD5570014B822 /* call_start_body_default~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_start_body_default~ipad.png"; sourceTree = "<group>"; };
-		633FEC1F1D3CD5570014B822 /* call_start_body_default~ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_start_body_default~ipad@2x.png"; sourceTree = "<group>"; };
-		633FEC201D3CD5570014B822 /* call_start_body_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_start_body_disabled.png; sourceTree = "<group>"; };
-		633FEC211D3CD5570014B822 /* call_start_body_disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_start_body_disabled@2x.png"; sourceTree = "<group>"; };
-		633FEC221D3CD5570014B822 /* call_start_body_disabled~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_start_body_disabled~ipad.png"; sourceTree = "<group>"; };
-		633FEC231D3CD5570014B822 /* call_start_body_disabled~ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_start_body_disabled~ipad@2x.png"; sourceTree = "<group>"; };
-		633FEC241D3CD5570014B822 /* call_start_body_over.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_start_body_over.png; sourceTree = "<group>"; };
-		633FEC251D3CD5570014B822 /* call_start_body_over@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_start_body_over@2x.png"; sourceTree = "<group>"; };
-		633FEC261D3CD5570014B822 /* call_start_body_over~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_start_body_over~ipad.png"; sourceTree = "<group>"; };
-		633FEC271D3CD5570014B822 /* call_start_body_over~ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_start_body_over~ipad@2x.png"; sourceTree = "<group>"; };
-		633FEC281D3CD5570014B822 /* call_status_incoming.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_status_incoming.png; sourceTree = "<group>"; };
-		633FEC291D3CD5570014B822 /* call_status_incoming@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_status_incoming@2x.png"; sourceTree = "<group>"; };
-		633FEC2A1D3CD5570014B822 /* call_status_incoming~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_status_incoming~ipad.png"; sourceTree = "<group>"; };
-		633FEC2B1D3CD5570014B822 /* call_status_incoming~ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_status_incoming~ipad@2x.png"; sourceTree = "<group>"; };
-		633FEC2C1D3CD5570014B822 /* call_status_missed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_status_missed.png; sourceTree = "<group>"; };
-		633FEC2D1D3CD5570014B822 /* call_status_missed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_status_missed@2x.png"; sourceTree = "<group>"; };
-		633FEC2E1D3CD5570014B822 /* call_status_missed~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_status_missed~ipad.png"; sourceTree = "<group>"; };
-		633FEC2F1D3CD5570014B822 /* call_status_missed~ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_status_missed~ipad@2x.png"; sourceTree = "<group>"; };
-		633FEC301D3CD5570014B822 /* call_status_outgoing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_status_outgoing.png; sourceTree = "<group>"; };
-		633FEC311D3CD5570014B822 /* call_status_outgoing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_status_outgoing@2x.png"; sourceTree = "<group>"; };
-		633FEC321D3CD5570014B822 /* call_status_outgoing~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_status_outgoing~ipad.png"; sourceTree = "<group>"; };
-		633FEC331D3CD5570014B822 /* call_status_outgoing~ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_status_outgoing~ipad@2x.png"; sourceTree = "<group>"; };
 		633FEC341D3CD5570014B822 /* call_transfer_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_transfer_default.png; sourceTree = "<group>"; };
 		633FEC351D3CD5570014B822 /* call_transfer_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_transfer_default@2x.png"; sourceTree = "<group>"; };
 		633FEC361D3CD5570014B822 /* call_transfer_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_transfer_disabled.png; sourceTree = "<group>"; };
@@ -1530,18 +1371,6 @@
 		633FEC391D3CD5570014B822 /* call_video_start_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_video_start_default@2x.png"; sourceTree = "<group>"; };
 		633FEC3A1D3CD5570014B822 /* call_video_start_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = call_video_start_disabled.png; sourceTree = "<group>"; };
 		633FEC3B1D3CD5570014B822 /* call_video_start_disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_video_start_disabled@2x.png"; sourceTree = "<group>"; };
-		633FEC3C1D3CD5570014B822 /* camera_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_default.png; sourceTree = "<group>"; };
-		633FEC3D1D3CD5570014B822 /* camera_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_default@2x.png"; sourceTree = "<group>"; };
-		633FEC3E1D3CD5570014B822 /* camera_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_disabled.png; sourceTree = "<group>"; };
-		633FEC3F1D3CD5570014B822 /* camera_disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_disabled@2x.png"; sourceTree = "<group>"; };
-		633FEC401D3CD5570014B822 /* camera_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_selected.png; sourceTree = "<group>"; };
-		633FEC411D3CD5570014B822 /* camera_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_selected@2x.png"; sourceTree = "<group>"; };
-		633FEC421D3CD5570014B822 /* camera_switch_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_switch_default.png; sourceTree = "<group>"; };
-		633FEC431D3CD5570014B822 /* camera_switch_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_switch_default@2x.png"; sourceTree = "<group>"; };
-		633FEC441D3CD5570014B822 /* camera_switch_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_switch_disabled.png; sourceTree = "<group>"; };
-		633FEC451D3CD5570014B822 /* camera_switch_disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_switch_disabled@2x.png"; sourceTree = "<group>"; };
-		633FEC461D3CD5570014B822 /* camera_switch_over.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_switch_over.png; sourceTree = "<group>"; };
-		633FEC471D3CD5570014B822 /* camera_switch_over@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_switch_over@2x.png"; sourceTree = "<group>"; };
 		633FEC481D3CD5570014B822 /* cancel_edit_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_edit_default.png; sourceTree = "<group>"; };
 		633FEC491D3CD5570014B822 /* cancel_edit_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel_edit_default@2x.png"; sourceTree = "<group>"; };
 		633FEC4A1D3CD5570014B822 /* cancel_edit_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_edit_disabled.png; sourceTree = "<group>"; };
@@ -1920,11 +1749,6 @@
 		70E542F413E147EB002BA2C0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7E599B9756B814FDA3BCCB7C /* Pods-linphoneTests.distributionadhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-linphoneTests.distributionadhoc.xcconfig"; path = "Pods/Target Support Files/Pods-linphoneTests/Pods-linphoneTests.distributionadhoc.xcconfig"; sourceTree = "<group>"; };
 		81B3173DDA19A03CB8EB76EC /* Pods-linphone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-linphone.release.xcconfig"; path = "Pods/Target Support Files/Pods-linphone/Pods-linphone.release.xcconfig"; sourceTree = "<group>"; };
-		840531DC1FCB07E100A27A03 /* SettingPopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingPopupView.m; path = AppUI/SettingPopupView.m; sourceTree = "<group>"; };
-		840531DD1FCB07E200A27A03 /* SettingPopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingPopupView.h; path = AppUI/SettingPopupView.h; sourceTree = "<group>"; };
-		840531E41FCB097800A27A03 /* ContactAddGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactAddGroupCell.m; path = AppUI/ContactAddGroupCell.m; sourceTree = "<group>"; };
-		840531E51FCB097900A27A03 /* ContactAddGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ContactAddGroupCell.xib; path = AppUI/ContactAddGroupCell.xib; sourceTree = "<group>"; };
-		840531E61FCB097B00A27A03 /* ContactAddGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactAddGroupCell.h; path = AppUI/ContactAddGroupCell.h; sourceTree = "<group>"; };
 		840B573520061FD000DCBA7E /* QRCodeReaderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRCodeReaderDelegate.h; path = OutSources/QRCodeReader/QRCodeReaderDelegate.h; sourceTree = "<group>"; };
 		840B573620061FD000DCBA7E /* QRCodeReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRCodeReaderViewController.h; path = OutSources/QRCodeReader/QRCodeReaderViewController.h; sourceTree = "<group>"; };
 		840B573720061FD100DCBA7E /* QRToggleTorchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QRToggleTorchButton.m; path = OutSources/QRCodeReader/QRToggleTorchButton.m; sourceTree = "<group>"; };
@@ -1998,9 +1822,6 @@
 		8440F17E216BA82000BB559C /* mini_key_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mini_key_2.png; sourceTree = "<group>"; };
 		8440F17F216BA82000BB559C /* mini_key_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mini_key_3.png; sourceTree = "<group>"; };
 		8440F180216BA82000BB559C /* mini_key_6_hover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mini_key_6_hover.png; sourceTree = "<group>"; };
-		8442A3561FB12CCA00F08F11 /* ChooseAccountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseAccountCell.h; sourceTree = "<group>"; };
-		8442A3571FB12CCA00F08F11 /* ChooseAccountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseAccountCell.m; sourceTree = "<group>"; };
-		8442A3581FB12CCA00F08F11 /* ChooseAccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseAccountCell.xib; sourceTree = "<group>"; };
 		8442A3621FB1321D00F08F11 /* MYRIADPRO-BOLD.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MYRIADPRO-BOLD.OTF"; path = "Fonts/MYRIADPRO-BOLD.OTF"; sourceTree = "<group>"; };
 		8442A3631FB1321D00F08F11 /* MYRIADPRO-REGULAR.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MYRIADPRO-REGULAR.OTF"; path = "Fonts/MYRIADPRO-REGULAR.OTF"; sourceTree = "<group>"; };
 		8442A3671FB13C0F00F08F11 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsViewController.h; path = Contacts/ContactsViewController.h; sourceTree = "<group>"; };
@@ -2019,7 +1840,6 @@
 		845A132E1FE2C70300640B51 /* PBXContactTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PBXContactTableCell.h; path = AppUI/PBXContactTableCell.h; sourceTree = "<group>"; };
 		845A132F1FE2C70300640B51 /* PBXContactTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PBXContactTableCell.m; path = AppUI/PBXContactTableCell.m; sourceTree = "<group>"; };
 		845A13301FE2C70300640B51 /* PBXContactTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PBXContactTableCell.xib; path = AppUI/PBXContactTableCell.xib; sourceTree = "<group>"; };
-		8462F40320E73BAA005964D7 /* bg_chat_default.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg_chat_default.jpg; sourceTree = "<group>"; };
 		846586921FCA9AC600C5142C /* KMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KMessageViewController.xib; path = Chats/KMessageViewController.xib; sourceTree = "<group>"; };
 		846586931FCA9AC700C5142C /* KMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KMessageViewController.m; path = Chats/KMessageViewController.m; sourceTree = "<group>"; };
 		846586941FCA9AC800C5142C /* KMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KMessageViewController.h; path = Chats/KMessageViewController.h; sourceTree = "<group>"; };
@@ -2100,39 +1920,19 @@
 		84BE0FFB21651F5A00831E36 /* background_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_header.png; sourceTree = "<group>"; };
 		84C1E2091FAEB3EB00EED0B9 /* HMLocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HMLocalization.h; path = OutSources/HMLocalization/HMLocalization.h; sourceTree = "<group>"; };
 		84C1E20A1FAEB3EB00EED0B9 /* HMLocalization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HMLocalization.m; path = OutSources/HMLocalization/HMLocalization.m; sourceTree = "<group>"; };
-		84C1E20D1FAEB43100EED0B9 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginView.h; path = AppUI/LoginView.h; sourceTree = "<group>"; };
-		84C1E20E1FAEB43100EED0B9 /* LoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginView.m; path = AppUI/LoginView.m; sourceTree = "<group>"; };
-		84C1E20F1FAEB43100EED0B9 /* LoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginView.xib; path = AppUI/LoginView.xib; sourceTree = "<group>"; };
 		84C1E2181FAEB48500EED0B9 /* AppStrings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppStrings.h; sourceTree = "<group>"; };
-		84C1E2191FAEB74600EED0B9 /* SignInView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignInView.h; path = AppUI/SignInView.h; sourceTree = "<group>"; };
-		84C1E21A1FAEB74600EED0B9 /* SignInView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignInView.m; path = AppUI/SignInView.m; sourceTree = "<group>"; };
-		84C1E21B1FAEB74600EED0B9 /* SignInView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SignInView.xib; path = AppUI/SignInView.xib; sourceTree = "<group>"; };
 		84C1E21F1FAEB7F800EED0B9 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = OutSources/MBProgressHUD/MBProgressHUD.h; sourceTree = "<group>"; };
 		84C1E2201FAEB7F800EED0B9 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = OutSources/MBProgressHUD/MBProgressHUD.m; sourceTree = "<group>"; };
 		84C1E2271FAEB94500EED0B9 /* en.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = en.txt; path = Languages/en.txt; sourceTree = "<group>"; };
 		84C1E2281FAEB94500EED0B9 /* vi.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vi.txt; path = Languages/vi.txt; sourceTree = "<group>"; };
-		84C1E22B1FAEBA4C00EED0B9 /* RegisterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegisterView.h; path = AppUI/RegisterView.h; sourceTree = "<group>"; };
-		84C1E22C1FAEBA4C00EED0B9 /* RegisterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RegisterView.m; path = AppUI/RegisterView.m; sourceTree = "<group>"; };
-		84C1E22D1FAEBA4C00EED0B9 /* RegisterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RegisterView.xib; path = AppUI/RegisterView.xib; sourceTree = "<group>"; };
 		84C1E2311FAEBAE100EED0B9 /* BEMAnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMAnimationManager.h; path = OutSources/BEMCheckBox/BEMAnimationManager.h; sourceTree = "<group>"; };
 		84C1E2321FAEBAE100EED0B9 /* BEMAnimationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BEMAnimationManager.m; path = OutSources/BEMCheckBox/BEMAnimationManager.m; sourceTree = "<group>"; };
 		84C1E2331FAEBAE100EED0B9 /* BEMCheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMCheckBox.h; path = OutSources/BEMCheckBox/BEMCheckBox.h; sourceTree = "<group>"; };
 		84C1E2341FAEBAE100EED0B9 /* BEMCheckBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BEMCheckBox.m; path = OutSources/BEMCheckBox/BEMCheckBox.m; sourceTree = "<group>"; };
 		84C1E2351FAEBAE100EED0B9 /* BEMPathManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BEMPathManager.h; path = OutSources/BEMCheckBox/BEMPathManager.h; sourceTree = "<group>"; };
 		84C1E2361FAEBAE100EED0B9 /* BEMPathManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BEMPathManager.m; path = OutSources/BEMCheckBox/BEMPathManager.m; sourceTree = "<group>"; };
-		84C1E23A1FAEBB0500EED0B9 /* PrivacyPopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrivacyPopupView.h; path = AppUI/PrivacyPopupView.h; sourceTree = "<group>"; };
-		84C1E23B1FAEBB0500EED0B9 /* PrivacyPopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrivacyPopupView.m; path = AppUI/PrivacyPopupView.m; sourceTree = "<group>"; };
 		84C1E23E1FAEBB5300EED0B9 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = OutSources/JSONKit/JSONKit.h; sourceTree = "<group>"; };
 		84C1E23F1FAEBB5300EED0B9 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = OutSources/JSONKit/JSONKit.m; sourceTree = "<group>"; };
-		84C1E2411FAEBB8100EED0B9 /* ConfirmView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConfirmView.h; path = AppUI/ConfirmView.h; sourceTree = "<group>"; };
-		84C1E2421FAEBB8100EED0B9 /* ConfirmView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConfirmView.m; path = AppUI/ConfirmView.m; sourceTree = "<group>"; };
-		84C1E2431FAEBB8100EED0B9 /* ConfirmView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConfirmView.xib; path = AppUI/ConfirmView.xib; sourceTree = "<group>"; };
-		84C1E2461FAEBBAF00EED0B9 /* ConfirmResetPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConfirmResetPasswordView.h; path = AppUI/ConfirmResetPasswordView.h; sourceTree = "<group>"; };
-		84C1E2471FAEBBAF00EED0B9 /* ConfirmResetPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConfirmResetPasswordView.m; path = AppUI/ConfirmResetPasswordView.m; sourceTree = "<group>"; };
-		84C1E2481FAEBBAF00EED0B9 /* ConfirmResetPasswordView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConfirmResetPasswordView.xib; path = AppUI/ConfirmResetPasswordView.xib; sourceTree = "<group>"; };
-		84C1E2491FAEBBAF00EED0B9 /* ResetPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResetPasswordView.h; path = AppUI/ResetPasswordView.h; sourceTree = "<group>"; };
-		84C1E24A1FAEBBAF00EED0B9 /* ResetPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ResetPasswordView.m; path = AppUI/ResetPasswordView.m; sourceTree = "<group>"; };
-		84C1E24B1FAEBBAF00EED0B9 /* ResetPasswordView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ResetPasswordView.xib; path = AppUI/ResetPasswordView.xib; sourceTree = "<group>"; };
 		84C1E2541FAEBE4B00EED0B9 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = OutSources/FMDB/FMDatabase.h; sourceTree = "<group>"; };
 		84C1E2551FAEBE4B00EED0B9 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = OutSources/FMDB/FMDatabase.m; sourceTree = "<group>"; };
 		84C1E2561FAEBE4B00EED0B9 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = OutSources/FMDB/FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -2199,12 +1999,6 @@
 		84C47D131FB632640015695E /* IncomingCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingCallViewController.h; sourceTree = "<group>"; };
 		84C47D141FB632640015695E /* IncomingCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingCallViewController.m; sourceTree = "<group>"; };
 		84C47D151FB632640015695E /* IncomingCallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IncomingCallViewController.xib; sourceTree = "<group>"; };
-		84C54BA91FAFE6A300651151 /* countries.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = countries.plist; path = emotion/countries.plist; sourceTree = "<group>"; };
-		84C54BAA1FAFE6A300651151 /* NatureEmotion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = NatureEmotion.plist; path = emotion/NatureEmotion.plist; sourceTree = "<group>"; };
-		84C54BAB1FAFE6A300651151 /* ObjectEmotion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ObjectEmotion.plist; path = emotion/ObjectEmotion.plist; sourceTree = "<group>"; };
-		84C54BAC1FAFE6A300651151 /* PeopleEmotion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PeopleEmotion.plist; path = emotion/PeopleEmotion.plist; sourceTree = "<group>"; };
-		84C54BAD1FAFE6A300651151 /* PlaceEmotion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PlaceEmotion.plist; path = emotion/PlaceEmotion.plist; sourceTree = "<group>"; };
-		84C54BAE1FAFE6A300651151 /* SymbolEmotion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SymbolEmotion.plist; path = emotion/SymbolEmotion.plist; sourceTree = "<group>"; };
 		84C8B23C1FBBBDB50080D673 /* UIHistoryDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIHistoryDetailCell.h; path = AppUI/UIHistoryDetailCell.h; sourceTree = "<group>"; };
 		84C8B23D1FBBBDB50080D673 /* UIHistoryDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIHistoryDetailCell.m; path = AppUI/UIHistoryDetailCell.m; sourceTree = "<group>"; };
 		84C8B23E1FBBBDB50080D673 /* UIHistoryDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UIHistoryDetailCell.xib; path = AppUI/UIHistoryDetailCell.xib; sourceTree = "<group>"; };
@@ -2220,9 +2014,6 @@
 		84D032151FB52E7A002D2524 /* AllContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AllContactsViewController.h; path = Contacts/AllContactsViewController.h; sourceTree = "<group>"; };
 		84D032161FB52E7A002D2524 /* AllContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AllContactsViewController.m; path = Contacts/AllContactsViewController.m; sourceTree = "<group>"; };
 		84D032171FB52E7A002D2524 /* AllContactsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AllContactsViewController.xib; path = Contacts/AllContactsViewController.xib; sourceTree = "<group>"; };
-		84D0321A1FB52F6C002D2524 /* ContactNormalCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactNormalCell.h; path = AppUI/ContactNormalCell.h; sourceTree = "<group>"; };
-		84D0321B1FB52F6C002D2524 /* ContactNormalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactNormalCell.m; path = AppUI/ContactNormalCell.m; sourceTree = "<group>"; };
-		84D0321C1FB52F6C002D2524 /* ContactNormalCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ContactNormalCell.xib; path = AppUI/ContactNormalCell.xib; sourceTree = "<group>"; };
 		84D0321F1FB531B5002D2524 /* KContactDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KContactDetailViewController.h; path = Contacts/KContactDetailViewController.h; sourceTree = "<group>"; };
 		84D032201FB531B5002D2524 /* KContactDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KContactDetailViewController.m; path = Contacts/KContactDetailViewController.m; sourceTree = "<group>"; };
 		84D032211FB531B5002D2524 /* KContactDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KContactDetailViewController.xib; path = Contacts/KContactDetailViewController.xib; sourceTree = "<group>"; };
@@ -2269,15 +2060,9 @@
 		84E286BD1FC9E1AA009CBA27 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+WebCacheOperation.m"; path = "OutSources/SDWebImage/UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		84E286BE1FC9E1AB009CBA27 /* UIImage+GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+GIF.m"; path = "OutSources/SDWebImage/UIImage+GIF.m"; sourceTree = "<group>"; };
 		84E286BF1FC9E1AB009CBA27 /* SDWebImageDownloaderOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDWebImageDownloaderOperation.h; path = OutSources/SDWebImage/SDWebImageDownloaderOperation.h; sourceTree = "<group>"; };
-		84E286E31FC9FA74009CBA27 /* ChatProfileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatProfileCell.h; path = AppUI/ChatProfileCell.h; sourceTree = "<group>"; };
-		84E286E41FC9FA74009CBA27 /* ChatProfileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChatProfileCell.m; path = AppUI/ChatProfileCell.m; sourceTree = "<group>"; };
-		84E286E51FC9FA75009CBA27 /* ChatProfileCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ChatProfileCell.xib; path = AppUI/ChatProfileCell.xib; sourceTree = "<group>"; };
 		84E286E81FC9FC4F009CBA27 /* PhoneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhoneCell.h; path = AppUI/PhoneCell.h; sourceTree = "<group>"; };
 		84E286E91FC9FC50009CBA27 /* PhoneCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PhoneCell.xib; path = AppUI/PhoneCell.xib; sourceTree = "<group>"; };
 		84E286EA1FC9FC51009CBA27 /* PhoneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhoneCell.m; path = AppUI/PhoneCell.m; sourceTree = "<group>"; };
-		84E286ED1FC9FE07009CBA27 /* OptionsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OptionsCell.xib; path = AppUI/OptionsCell.xib; sourceTree = "<group>"; };
-		84E286EE1FC9FE07009CBA27 /* OptionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OptionsCell.h; path = AppUI/OptionsCell.h; sourceTree = "<group>"; };
-		84E286EF1FC9FE08009CBA27 /* OptionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OptionsCell.m; path = AppUI/OptionsCell.m; sourceTree = "<group>"; };
 		84E2BB47200A4B9200F152C1 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		84E343A21FDAFEA90042D048 /* UploadPicture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UploadPicture.h; path = AppObjects/UploadPicture.h; sourceTree = "<group>"; };
 		84E343A31FDAFEA90042D048 /* UploadPicture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UploadPicture.m; path = AppObjects/UploadPicture.m; sourceTree = "<group>"; };
@@ -3372,6 +3157,7 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				15814E25219050A900E1C48C /* ic_introduce.png */,
 				1556A8E02181C346002E8D26 /* launch_bg.png */,
 				1556A8DF2181C346002E8D26 /* launch_logo.png */,
 				84AA051721855ADC008CA775 /* lauch_icon.png */,
@@ -3423,38 +3209,8 @@
 				842FA3AE2162687700C59DDA /* qr-code-scan.png */,
 				8489DED32160B5FA00A7A1DD /* right-arrow.png */,
 				8489DED12160B2EC00A7A1DD /* icon-next.png */,
-				8462F40320E73BAA005964D7 /* bg_chat_default.jpg */,
 				8C300D981E40E0CC00728EF3 /* lime_ko.png */,
 				8C300D991E40E0CC00728EF3 /* lime_ko@2x.png */,
-				633FEBE21D3CD5570014B822 /* add_field_default.png */,
-				633FEBE31D3CD5570014B822 /* add_field_default@2x.png */,
-				633FEBE41D3CD5570014B822 /* add_field_over.png */,
-				633FEBE51D3CD5570014B822 /* add_field_over@2x.png */,
-				633FEBE61D3CD5570014B822 /* avatar.png */,
-				633FEBE71D3CD5570014B822 /* avatar@2x.png */,
-				633FEBE81D3CD5570014B822 /* avatar~ipad.png */,
-				633FEBE91D3CD5570014B822 /* avatar~ipad@2x.png */,
-				633FEBEA1D3CD5570014B822 /* back_default.png */,
-				633FEBEB1D3CD5570014B822 /* back_default@2x.png */,
-				633FEBEC1D3CD5570014B822 /* back_disabled.png */,
-				633FEBED1D3CD5570014B822 /* back_disabled@2x.png */,
-				633FEBEF1D3CD5570014B822 /* backspace_default@2x.png */,
-				633FEBF01D3CD5570014B822 /* backspace_disabled.png */,
-				633FEBF11D3CD5570014B822 /* backspace_disabled@2x.png */,
-				633FEBF21D3CD5570014B822 /* backspace_over.png */,
-				633FEBF31D3CD5570014B822 /* backspace_over@2x.png */,
-				633FEBF41D3CD5570014B822 /* call_add_default.png */,
-				633FEBF51D3CD5570014B822 /* call_add_default@2x.png */,
-				633FEBF61D3CD5570014B822 /* call_add_disabled.png */,
-				633FEBF71D3CD5570014B822 /* call_add_disabled@2x.png */,
-				633FEBF81D3CD5570014B822 /* call_alt_back_default.png */,
-				633FEBF91D3CD5570014B822 /* call_alt_back_default@2x.png */,
-				633FEBFA1D3CD5570014B822 /* call_alt_back_disabled.png */,
-				633FEBFB1D3CD5570014B822 /* call_alt_back_disabled@2x.png */,
-				633FEBFC1D3CD5570014B822 /* call_alt_start_default.png */,
-				633FEBFD1D3CD5570014B822 /* call_alt_start_default@2x.png */,
-				633FEBFE1D3CD5570014B822 /* call_alt_start_disabled.png */,
-				633FEBFF1D3CD5570014B822 /* call_alt_start_disabled@2x.png */,
 				633FEC001D3CD5570014B822 /* call_audio_start_default.png */,
 				633FEC011D3CD5570014B822 /* call_audio_start_default@2x.png */,
 				633FEC021D3CD5570014B822 /* call_audio_start_disabled.png */,
@@ -3467,12 +3223,6 @@
 				633FEC091D3CD5570014B822 /* call_hangup_default@2x.png */,
 				633FEC0A1D3CD5570014B822 /* call_hangup_disabled.png */,
 				633FEC0B1D3CD5570014B822 /* call_hangup_disabled@2x.png */,
-				633FEC0C1D3CD5570014B822 /* call_incoming.png */,
-				633FEC0D1D3CD5570014B822 /* call_incoming@2x.png */,
-				633FEC0E1D3CD5570014B822 /* call_missed.png */,
-				633FEC0F1D3CD5570014B822 /* call_missed@2x.png */,
-				633FEC101D3CD5570014B822 /* call_outgoing.png */,
-				633FEC111D3CD5570014B822 /* call_outgoing@2x.png */,
 				633FEC121D3CD5570014B822 /* call_quality_indicator_0.png */,
 				633FEC131D3CD5570014B822 /* call_quality_indicator_0@2x.png */,
 				633FEC141D3CD5570014B822 /* call_quality_indicator_1.png */,
@@ -3483,30 +3233,6 @@
 				633FEC191D3CD5570014B822 /* call_quality_indicator_3@2x.png */,
 				633FEC1A1D3CD5570014B822 /* call_quality_indicator_4.png */,
 				633FEC1B1D3CD5570014B822 /* call_quality_indicator_4@2x.png */,
-				633FEC1C1D3CD5570014B822 /* call_start_body_default.png */,
-				633FEC1D1D3CD5570014B822 /* call_start_body_default@2x.png */,
-				633FEC1E1D3CD5570014B822 /* call_start_body_default~ipad.png */,
-				633FEC1F1D3CD5570014B822 /* call_start_body_default~ipad@2x.png */,
-				633FEC201D3CD5570014B822 /* call_start_body_disabled.png */,
-				633FEC211D3CD5570014B822 /* call_start_body_disabled@2x.png */,
-				633FEC221D3CD5570014B822 /* call_start_body_disabled~ipad.png */,
-				633FEC231D3CD5570014B822 /* call_start_body_disabled~ipad@2x.png */,
-				633FEC241D3CD5570014B822 /* call_start_body_over.png */,
-				633FEC251D3CD5570014B822 /* call_start_body_over@2x.png */,
-				633FEC261D3CD5570014B822 /* call_start_body_over~ipad.png */,
-				633FEC271D3CD5570014B822 /* call_start_body_over~ipad@2x.png */,
-				633FEC281D3CD5570014B822 /* call_status_incoming.png */,
-				633FEC291D3CD5570014B822 /* call_status_incoming@2x.png */,
-				633FEC2A1D3CD5570014B822 /* call_status_incoming~ipad.png */,
-				633FEC2B1D3CD5570014B822 /* call_status_incoming~ipad@2x.png */,
-				633FEC2C1D3CD5570014B822 /* call_status_missed.png */,
-				633FEC2D1D3CD5570014B822 /* call_status_missed@2x.png */,
-				633FEC2E1D3CD5570014B822 /* call_status_missed~ipad.png */,
-				633FEC2F1D3CD5570014B822 /* call_status_missed~ipad@2x.png */,
-				633FEC301D3CD5570014B822 /* call_status_outgoing.png */,
-				633FEC311D3CD5570014B822 /* call_status_outgoing@2x.png */,
-				633FEC321D3CD5570014B822 /* call_status_outgoing~ipad.png */,
-				633FEC331D3CD5570014B822 /* call_status_outgoing~ipad@2x.png */,
 				633FEC341D3CD5570014B822 /* call_transfer_default.png */,
 				633FEC351D3CD5570014B822 /* call_transfer_default@2x.png */,
 				633FEC361D3CD5570014B822 /* call_transfer_disabled.png */,
@@ -3515,18 +3241,6 @@
 				633FEC391D3CD5570014B822 /* call_video_start_default@2x.png */,
 				633FEC3A1D3CD5570014B822 /* call_video_start_disabled.png */,
 				633FEC3B1D3CD5570014B822 /* call_video_start_disabled@2x.png */,
-				633FEC3C1D3CD5570014B822 /* camera_default.png */,
-				633FEC3D1D3CD5570014B822 /* camera_default@2x.png */,
-				633FEC3E1D3CD5570014B822 /* camera_disabled.png */,
-				633FEC3F1D3CD5570014B822 /* camera_disabled@2x.png */,
-				633FEC401D3CD5570014B822 /* camera_selected.png */,
-				633FEC411D3CD5570014B822 /* camera_selected@2x.png */,
-				633FEC421D3CD5570014B822 /* camera_switch_default.png */,
-				633FEC431D3CD5570014B822 /* camera_switch_default@2x.png */,
-				633FEC441D3CD5570014B822 /* camera_switch_disabled.png */,
-				633FEC451D3CD5570014B822 /* camera_switch_disabled@2x.png */,
-				633FEC461D3CD5570014B822 /* camera_switch_over.png */,
-				633FEC471D3CD5570014B822 /* camera_switch_over@2x.png */,
 				633FEC481D3CD5570014B822 /* cancel_edit_default.png */,
 				633FEC491D3CD5570014B822 /* cancel_edit_default@2x.png */,
 				633FEC4A1D3CD5570014B822 /* cancel_edit_disabled.png */,
@@ -3778,7 +3492,6 @@
 			isa = PBXGroup;
 			children = (
 				8442A3611FB1320F00F08F11 /* Fonts */,
-				84C54BA21FAFE69700651151 /* emotion */,
 				84C1E2261FAEB93400EED0B9 /* Languages */,
 				63AADBE31B6A0FF200AA16FD /* assistant_external_sip.rc */,
 				63AADBE41B6A0FF200AA16FD /* assistant_linphone_create.rc */,
@@ -4109,19 +3822,8 @@
 				8489DECC2160B16100A7A1DD /* NewSettingCell.h */,
 				8489DECD2160B16100A7A1DD /* NewSettingCell.m */,
 				8489DECE2160B16100A7A1DD /* NewSettingCell.xib */,
-				840531E61FCB097B00A27A03 /* ContactAddGroupCell.h */,
-				840531E41FCB097800A27A03 /* ContactAddGroupCell.m */,
-				840531E51FCB097900A27A03 /* ContactAddGroupCell.xib */,
-				840531DD1FCB07E200A27A03 /* SettingPopupView.h */,
-				840531DC1FCB07E100A27A03 /* SettingPopupView.m */,
 				846586971FCA9BD500C5142C /* SwipeableTableViewCell.h */,
 				846586981FCA9BD600C5142C /* SwipeableTableViewCell.m */,
-				84E286EE1FC9FE07009CBA27 /* OptionsCell.h */,
-				84E286EF1FC9FE08009CBA27 /* OptionsCell.m */,
-				84E286ED1FC9FE07009CBA27 /* OptionsCell.xib */,
-				84E286E31FC9FA74009CBA27 /* ChatProfileCell.h */,
-				84E286E41FC9FA74009CBA27 /* ChatProfileCell.m */,
-				84E286E51FC9FA75009CBA27 /* ChatProfileCell.xib */,
 				84E286E81FC9FC4F009CBA27 /* PhoneCell.h */,
 				84E286EA1FC9FC51009CBA27 /* PhoneCell.m */,
 				84E286E91FC9FC50009CBA27 /* PhoneCell.xib */,
@@ -4156,41 +3858,15 @@
 				84C47CD41FB5E8B60015695E /* UIKContactCell.h */,
 				84C47CD51FB5E8B60015695E /* UIKContactCell.m */,
 				84C47CD61FB5E8B60015695E /* UIKContactCell.xib */,
-				84D0321A1FB52F6C002D2524 /* ContactNormalCell.h */,
-				84D0321B1FB52F6C002D2524 /* ContactNormalCell.m */,
-				84D0321C1FB52F6C002D2524 /* ContactNormalCell.xib */,
 				84D032091FB51C50002D2524 /* ContactCell.h */,
 				84D0320A1FB51C50002D2524 /* ContactCell.m */,
 				84D0320B1FB51C50002D2524 /* ContactCell.xib */,
 				841F97E31FB4B2DC00A9A8CD /* UIConferenceCell.h */,
 				841F97E41FB4B2DC00A9A8CD /* UIConferenceCell.m */,
 				841F97E51FB4B2DC00A9A8CD /* UIConferenceCell.xib */,
-				8442A3561FB12CCA00F08F11 /* ChooseAccountCell.h */,
-				8442A3571FB12CCA00F08F11 /* ChooseAccountCell.m */,
-				8442A3581FB12CCA00F08F11 /* ChooseAccountCell.xib */,
 				84B889EC1FAF6C73008D88C5 /* PhoneBookContactCell.h */,
 				84B889ED1FAF6C73008D88C5 /* PhoneBookContactCell.m */,
 				84B889EE1FAF6C73008D88C5 /* PhoneBookContactCell.xib */,
-				84C1E23A1FAEBB0500EED0B9 /* PrivacyPopupView.h */,
-				84C1E23B1FAEBB0500EED0B9 /* PrivacyPopupView.m */,
-				84C1E20D1FAEB43100EED0B9 /* LoginView.h */,
-				84C1E20E1FAEB43100EED0B9 /* LoginView.m */,
-				84C1E20F1FAEB43100EED0B9 /* LoginView.xib */,
-				84C1E2191FAEB74600EED0B9 /* SignInView.h */,
-				84C1E21A1FAEB74600EED0B9 /* SignInView.m */,
-				84C1E21B1FAEB74600EED0B9 /* SignInView.xib */,
-				84C1E22B1FAEBA4C00EED0B9 /* RegisterView.h */,
-				84C1E22C1FAEBA4C00EED0B9 /* RegisterView.m */,
-				84C1E22D1FAEBA4C00EED0B9 /* RegisterView.xib */,
-				84C1E2411FAEBB8100EED0B9 /* ConfirmView.h */,
-				84C1E2421FAEBB8100EED0B9 /* ConfirmView.m */,
-				84C1E2431FAEBB8100EED0B9 /* ConfirmView.xib */,
-				84C1E2461FAEBBAF00EED0B9 /* ConfirmResetPasswordView.h */,
-				84C1E2471FAEBBAF00EED0B9 /* ConfirmResetPasswordView.m */,
-				84C1E2481FAEBBAF00EED0B9 /* ConfirmResetPasswordView.xib */,
-				84C1E2491FAEBBAF00EED0B9 /* ResetPasswordView.h */,
-				84C1E24A1FAEBBAF00EED0B9 /* ResetPasswordView.m */,
-				84C1E24B1FAEBBAF00EED0B9 /* ResetPasswordView.xib */,
 				15A64D9D216C8BC600D194BD /* InfoForNewContactTableCell.h */,
 				15A64D9E216C8BC700D194BD /* InfoForNewContactTableCell.m */,
 				15A64D9F216C8BC700D194BD /* InfoForNewContactTableCell.xib */,
@@ -4347,19 +4023,6 @@
 				84C47D041FB62C660015695E /* callnex.sqlite */,
 			);
 			name = database;
-			sourceTree = "<group>";
-		};
-		84C54BA21FAFE69700651151 /* emotion */ = {
-			isa = PBXGroup;
-			children = (
-				84C54BA91FAFE6A300651151 /* countries.plist */,
-				84C54BAA1FAFE6A300651151 /* NatureEmotion.plist */,
-				84C54BAB1FAFE6A300651151 /* ObjectEmotion.plist */,
-				84C54BAC1FAFE6A300651151 /* PeopleEmotion.plist */,
-				84C54BAD1FAFE6A300651151 /* PlaceEmotion.plist */,
-				84C54BAE1FAFE6A300651151 /* SymbolEmotion.plist */,
-			);
-			name = emotion;
 			sourceTree = "<group>";
 		};
 		84CDD2361FD0E6F0003DB5AD /* UIImage+GKContact */ = {
@@ -4969,7 +4632,6 @@
 				153D00562164D9D3007B69B3 /* numpad_four_hover.png in Resources */,
 				633FEE871D3CD5590014B822 /* led_inprogress@2x.png in Resources */,
 				633FEF021D3CD55A0014B822 /* options_disabled.png in Resources */,
-				633FEDC81D3CD5590014B822 /* call_missed.png in Resources */,
 				633FEF4B1D3CD55A0014B822 /* splashscreen@2x.png in Resources */,
 				8C300D9A1E40E0CC00728EF3 /* lime_ko.png in Resources */,
 				633FEE311D3CD5590014B822 /* color_I.png in Resources */,
@@ -4983,7 +4645,6 @@
 				633FEE171D3CD5590014B822 /* chat_send_disabled@2x.png in Resources */,
 				633FEE431D3CD5590014B822 /* contacts_sip_default@2x.png in Resources */,
 				633FEE6E1D3CD5590014B822 /* footer_history_default.png in Resources */,
-				633FEDC61D3CD5590014B822 /* call_incoming.png in Resources */,
 				633FEF2D1D3CD55A0014B822 /* route_earpiece_selected@2x.png in Resources */,
 				633FEEFF1D3CD55A0014B822 /* options_add_call_disabled@2x.png in Resources */,
 				633FEF091D3CD55A0014B822 /* options_start_conference_disabled@2x.png in Resources */,
@@ -4995,7 +4656,6 @@
 				153D00552164D9D3007B69B3 /* numpad_five_hover.png in Resources */,
 				633FEF381D3CD55A0014B822 /* routes_selected.png in Resources */,
 				633FEE0B1D3CD5590014B822 /* chat_attachment_default@2x.png in Resources */,
-				633FEDDC1D3CD5590014B822 /* call_start_body_disabled~ipad.png in Resources */,
 				63E802DB1C625AEF000D5509 /* (null) in Resources */,
 				633FEE2E1D3CD5590014B822 /* color_F.png in Resources */,
 				84C443901FBE105F0015854C /* NewPhoneCell.xib in Resources */,
@@ -5007,12 +4667,12 @@
 				84ECF9C8216679A70067B4B6 /* ic_mute_dis.png in Resources */,
 				633FEE541D3CD5590014B822 /* dialer_back_default.png in Resources */,
 				633FEF0B1D3CD55A0014B822 /* options_transfer_call_default@2x.png in Resources */,
-				633FEDE81D3CD5590014B822 /* call_status_missed~ipad.png in Resources */,
 				84ECF9C2216679A70067B4B6 /* ic_keypad_act.png in Resources */,
 				63AADBFF1B6A0FF200AA16FD /* assistant_external_sip.rc in Resources */,
 				634610121B6140A500548952 /* CallOutgoingView.xib in Resources */,
 				150F39A321840647000A8F37 /* ic_info.png in Resources */,
 				633FEDC21D3CD5590014B822 /* call_hangup_default.png in Resources */,
+				15814E26219050AA00E1C48C /* ic_introduce.png in Resources */,
 				84ECF9A921666C840067B4B6 /* decline_call_over.png in Resources */,
 				8442A37A1FB13D0D00F08F11 /* PBXContactsViewController.xib in Resources */,
 				84ECF9C7216679A70067B4B6 /* ic_keypad_dis.png in Resources */,
@@ -5026,16 +4686,12 @@
 				633FEF331D3CD55A0014B822 /* route_speaker_selected@2x.png in Resources */,
 				633FEE6C1D3CD5590014B822 /* footer_dialer_disabled.png in Resources */,
 				633FEF231D3CD55A0014B822 /* route_bluetooth_default@2x.png in Resources */,
-				633FED9C1D3CD5590014B822 /* add_field_default.png in Resources */,
 				153D00102164A67E007B69B3 /* numpad_zero_default.png in Resources */,
 				633FEE411D3CD5590014B822 /* contacts_all_selected@2x.png in Resources */,
 				D38187F815FE355D00C3EDCA /* TabBarView.xib in Resources */,
 				633FEE2F1D3CD5590014B822 /* color_G.png in Resources */,
-				633FEDAB1D3CD5590014B822 /* backspace_disabled@2x.png in Resources */,
-				633FEDD91D3CD5590014B822 /* call_start_body_default~ipad@2x.png in Resources */,
 				841EB1672169818E00B59B8E /* transfer_call.png in Resources */,
 				633FEE401D3CD5590014B822 /* contacts_all_selected.png in Resources */,
-				84C54BB21FAFE6A300651151 /* PeopleEmotion.plist in Resources */,
 				633FEE0C1D3CD5590014B822 /* chat_attachment_disabled.png in Resources */,
 				1575279821661D1A007D789A /* ic_search.png in Resources */,
 				84EA0AE21FE9243000C3C78E /* ringbacktone.mp3 in Resources */,
@@ -5049,7 +4705,6 @@
 				633FEE441D3CD5590014B822 /* contacts_sip_disabled.png in Resources */,
 				84767D6121664BCA00561A85 /* call-background.jpg in Resources */,
 				15F2E5F8216B56F60076CB1F /* ic_support.png in Resources */,
-				633FEDFA1D3CD5590014B822 /* camera_selected.png in Resources */,
 				15857C02216E0AF900DB5237 /* ic_change_photo.png in Resources */,
 				633FEF451D3CD55A0014B822 /* speaker_default@2x.png in Resources */,
 				84ECF9C9216679A70067B4B6 /* ic_speaker_act.png in Resources */,
@@ -5062,17 +4717,14 @@
 				D38187BD15FE342800C3EDCA /* ContactsListView.xib in Resources */,
 				633FEF0E1D3CD55A0014B822 /* pause_big_default.png in Resources */,
 				633FEF191D3CD55A0014B822 /* pause_small_over_selected@2x.png in Resources */,
-				633FEDA71D3CD5590014B822 /* back_disabled@2x.png in Resources */,
 				633FEDBD1D3CD5590014B822 /* call_audio_start_disabled@2x.png in Resources */,
 				633FEE981D3CD55A0014B822 /* micro_selected.png in Resources */,
 				633FEE041D3CD5590014B822 /* cancel_edit_disabled.png in Resources */,
 				633FEF4C1D3CD55A0014B822 /* splashscreen~ipad.png in Resources */,
-				633FEDE61D3CD5590014B822 /* call_status_missed.png in Resources */,
 				633FEE7A1D3CD5590014B822 /* history_missed_default.png in Resources */,
 				153D00532164D9D3007B69B3 /* numpad_nine_hover.png in Resources */,
 				15E1D8CE21708AE900E23B2C /* add_contact_dialer.png in Resources */,
 				633FEF121D3CD55A0014B822 /* pause_big_over_selected.png in Resources */,
-				633FED9D1D3CD5590014B822 /* add_field_default@2x.png in Resources */,
 				153D00122164A67E007B69B3 /* numpad_eight_default.png in Resources */,
 				639E9CB01C0DB83000019A75 /* SideMenuView.xib in Resources */,
 				633FEDBB1D3CD5590014B822 /* call_audio_start_default@2x.png in Resources */,
@@ -5080,7 +4732,6 @@
 				843ED6711FB669B1005FE1C1 /* AccountSettingsViewController.xib in Resources */,
 				154E400B217440FD0030A6B8 /* no_avatar.png in Resources */,
 				639E9CB51C0DB88200019A75 /* PhoneMainView.xib in Resources */,
-				633FEDB61D3CD5590014B822 /* call_alt_start_default.png in Resources */,
 				6352A5761BE0D4B800594C1C /* CallSideMenuView.xib in Resources */,
 				633FEF0D1D3CD55A0014B822 /* options_transfer_call_disabled@2x.png in Resources */,
 				15F2E5FD216B575D0076CB1F /* background_header@2x.png in Resources */,
@@ -5093,7 +4744,6 @@
 				84E286EB1FC9FC52009CBA27 /* PhoneCell.xib in Resources */,
 				633FEE271D3CD5590014B822 /* checkbox_checked@2x.png in Resources */,
 				633FEDCC1D3CD5590014B822 /* call_quality_indicator_0.png in Resources */,
-				633FEDEB1D3CD5590014B822 /* call_status_outgoing@2x.png in Resources */,
 				633FEDEE1D3CD5590014B822 /* call_transfer_default.png in Resources */,
 				63DFE04B1C40161700DA5E87 /* notes_of_the_optimistic.caf in Resources */,
 				639E9C931C0DB7BE00019A75 /* FirstLoginView.xib in Resources */,
@@ -5106,8 +4756,6 @@
 				633FEE531D3CD5590014B822 /* dialer_alt_back@2x.png in Resources */,
 				633FEE3E1D3CD5590014B822 /* contacts_all_disabled.png in Resources */,
 				841F97E71FB4B2DC00A9A8CD /* UIConferenceCell.xib in Resources */,
-				633FEDAD1D3CD5590014B822 /* backspace_over@2x.png in Resources */,
-				84C54BB01FAFE6A300651151 /* NatureEmotion.plist in Resources */,
 				153D00132164A67E007B69B3 /* numpad_five_default.png in Resources */,
 				633FEF4A1D3CD55A0014B822 /* splashscreen.png in Resources */,
 				633FEE1F1D3CD5590014B822 /* chat_start_body_disabled@2x.png in Resources */,
@@ -5116,7 +4764,6 @@
 				639CEAFD1A1DF4D9004DE38F /* StatusBarView.xib in Resources */,
 				84ECF9CC216679A70067B4B6 /* ic_transfer_act.png in Resources */,
 				153D004B2164D9D3007B69B3 /* numpad_start_hover.png in Resources */,
-				633FEDE91D3CD5590014B822 /* call_status_missed~ipad@2x.png in Resources */,
 				84ECF9BE216679A70067B4B6 /* ic_speaker_def.png in Resources */,
 				84515E67200EEE1A007246E9 /* msg.wav in Resources */,
 				639E9CAC1C0DB80300019A75 /* UIContactDetailsCell.xib in Resources */,
@@ -5135,21 +4782,18 @@
 				633FEF491D3CD55A0014B822 /* speaker_selected@2x.png in Resources */,
 				633FEF541D3CD55A0014B822 /* waiting_time.png in Resources */,
 				633FEE861D3CD5590014B822 /* led_inprogress.png in Resources */,
-				633FEDFC1D3CD5590014B822 /* camera_switch_default.png in Resources */,
 				8440F187216BA82000BB559C /* mini_key_star_hover.png in Resources */,
 				843ED6611FB658F9005FE1C1 /* MoreViewController.xib in Resources */,
 				633FEE4B1D3CD5590014B822 /* delete_disabled@2x.png in Resources */,
 				159002D72168618E00CECB7A /* ic_call_missed.png in Resources */,
 				633FEE181D3CD5590014B822 /* chat_send_over.png in Resources */,
 				84ECF9BC216679A70067B4B6 /* ic_transfer_def.png in Resources */,
-				633FEDED1D3CD5590014B822 /* call_status_outgoing~ipad@2x.png in Resources */,
 				153D00392164D537007B69B3 /* menu_history_act.png in Resources */,
 				633FEE2D1D3CD5590014B822 /* color_E.png in Resources */,
 				846586951FCA9AC900C5142C /* KMessageViewController.xib in Resources */,
 				633FEF1B1D3CD55A0014B822 /* presence_away@2x.png in Resources */,
 				633FEE281D3CD5590014B822 /* checkbox_unchecked.png in Resources */,
 				1575279A21661D44007D789A /* tf_close_bg.png in Resources */,
-				633FEDFE1D3CD5590014B822 /* camera_switch_disabled.png in Resources */,
 				633FEE7F1D3CD5590014B822 /* history_missed_selected@2x.png in Resources */,
 				633FEDC01D3CD5590014B822 /* call_back_disabled.png in Resources */,
 				159E08852179E9130056E2BB /* ic_checked.png in Resources */,
@@ -5158,20 +4802,17 @@
 				633FEF011D3CD55A0014B822 /* options_default@2x.png in Resources */,
 				63CDC4661C3BDE370085F529 /* shortring.caf in Resources */,
 				633FEDD51D3CD5590014B822 /* call_quality_indicator_4@2x.png in Resources */,
-				633FEDE71D3CD5590014B822 /* call_status_missed@2x.png in Resources */,
 				1579B72721674A6B002BECE3 /* call_disable.png in Resources */,
 				633FEE1E1D3CD5590014B822 /* chat_start_body_disabled.png in Resources */,
 				1579B72221674989002BECE3 /* ic_back@2x.png in Resources */,
 				639CEB001A1DF4E4004DE38F /* UIHistoryCell.xib in Resources */,
 				633FEE841D3CD5590014B822 /* led_error.png in Resources */,
-				633FEDEA1D3CD5590014B822 /* call_status_outgoing.png in Resources */,
 				633FEF511D3CD55A0014B822 /* valid_disabled@2x.png in Resources */,
 				633FEF2B1D3CD55A0014B822 /* route_earpiece_disabled@2x.png in Resources */,
 				84ECF9BF216679A70067B4B6 /* ic_speaker_dis.png in Resources */,
 				639E9CA31C0DB7EA00019A75 /* UIChatBubbleTextCell.xib in Resources */,
 				633FEDD21D3CD5590014B822 /* call_quality_indicator_3.png in Resources */,
 				15F2E5F6216B56F60076CB1F /* ic_term.png in Resources */,
-				633FEDAF1D3CD5590014B822 /* call_add_default@2x.png in Resources */,
 				633FEE931D3CD55A0014B822 /* menu@2x.png in Resources */,
 				633FEF3D1D3CD55A0014B822 /* security_ok@2x.png in Resources */,
 				633FEF161D3CD55A0014B822 /* pause_small_disabled.png in Resources */,
@@ -5180,13 +4821,11 @@
 				633FEE711D3CD5590014B822 /* footer_history_disabled@2x.png in Resources */,
 				633FEF141D3CD55A0014B822 /* pause_small_default.png in Resources */,
 				D38187B115FE340500C3EDCA /* ChatsListView.xib in Resources */,
-				633FEDA41D3CD5590014B822 /* back_default.png in Resources */,
 				8440F198216BA82000BB559C /* mini_key_6_hover.png in Resources */,
 				153D00512164D9D3007B69B3 /* numpad_six_hover.png in Resources */,
 				84D032191FB52E7A002D2524 /* AllContactsViewController.xib in Resources */,
 				633FEE2C1D3CD5590014B822 /* color_D.png in Resources */,
 				84F742BE20163334000F7FFF /* FriendForAcceptCell.xib in Resources */,
-				633FEDAC1D3CD5590014B822 /* backspace_over.png in Resources */,
 				639E9C9D1C0DB7DF00019A75 /* UICallPausedCell.xib in Resources */,
 				633FEE1B1D3CD5590014B822 /* chat_start_body_default@2x.png in Resources */,
 				153D00352164D537007B69B3 /* menu_history_def.png in Resources */,
@@ -5195,19 +4834,13 @@
 				633FEE651D3CD5590014B822 /* footer_chat_disabled@2x.png in Resources */,
 				633FEE8E1D3CD55A0014B822 /* list_details_default.png in Resources */,
 				633FEF2A1D3CD55A0014B822 /* route_earpiece_disabled.png in Resources */,
-				633FEDDB1D3CD5590014B822 /* call_start_body_disabled@2x.png in Resources */,
-				84E286F01FC9FE08009CBA27 /* OptionsCell.xib in Resources */,
-				84C54BB11FAFE6A300651151 /* ObjectEmotion.plist in Resources */,
-				633FEDFD1D3CD5590014B822 /* camera_switch_default@2x.png in Resources */,
 				15906E39217AEA1E000877A9 /* button_back_dialer.png in Resources */,
 				633FEE721D3CD5590014B822 /* history_all_default.png in Resources */,
 				633FEF0A1D3CD55A0014B822 /* options_transfer_call_default.png in Resources */,
 				84ECF9CA216679A70067B4B6 /* ic_addcall_act.png in Resources */,
 				15906E38217AEA1E000877A9 /* button_back_dialer_hover.png in Resources */,
-				633FEDA51D3CD5590014B822 /* back_default@2x.png in Resources */,
 				633FEF311D3CD55A0014B822 /* route_speaker_disabled@2x.png in Resources */,
 				84C47D171FB632640015695E /* IncomingCallViewController.xib in Resources */,
-				633FEDA31D3CD5590014B822 /* avatar~ipad@2x.png in Resources */,
 				633FEF461D3CD55A0014B822 /* speaker_disabled.png in Resources */,
 				638F1A911C21993D004B8E02 /* UICompositeView~ipad.xib in Resources */,
 				633FEE211D3CD5590014B822 /* chat_start_body_disabled~ipad@2x.png in Resources */,
@@ -5227,14 +4860,10 @@
 				636316D41A1DEC650009B839 /* SettingsView.xib in Resources */,
 				633FEE801D3CD5590014B822 /* led_connected.png in Resources */,
 				84B889F01FAF6C73008D88C5 /* PhoneBookContactCell.xib in Resources */,
-				633FEDDE1D3CD5590014B822 /* call_start_body_over.png in Resources */,
-				633FEDFB1D3CD5590014B822 /* camera_selected@2x.png in Resources */,
 				633FEF051D3CD55A0014B822 /* options_selected@2x.png in Resources */,
 				153D00362164D537007B69B3 /* menu_contacts_en_def.png in Resources */,
-				633FEDD61D3CD5590014B822 /* call_start_body_default.png in Resources */,
 				633FEE831D3CD5590014B822 /* led_disconnected@2x.png in Resources */,
 				633FEE031D3CD5590014B822 /* cancel_edit_default@2x.png in Resources */,
-				633FEDE01D3CD5590014B822 /* call_start_body_over~ipad.png in Resources */,
 				15E641B22179779900A9E15E /* ic_phone_login.png in Resources */,
 				D34F6F9E1594D3FB0095705B /* InAppSettings.bundle in Resources */,
 				633FEE4D1D3CD5590014B822 /* delete_field_default@2x.png in Resources */,
@@ -5249,7 +4878,6 @@
 				D38187D915FE347700C3EDCA /* CallIncomingView.xib in Resources */,
 				63CDC45F1C3BDE370085F529 /* ringback.wav in Resources */,
 				633FEE251D3CD5590014B822 /* chat_start_body_over~ipad@2x.png in Resources */,
-				633FEDF91D3CD5590014B822 /* camera_disabled@2x.png in Resources */,
 				633FEE161D3CD5590014B822 /* chat_send_disabled.png in Resources */,
 				153D001A2164A67E007B69B3 /* numpad_three_default.png in Resources */,
 				633FEE1A1D3CD5590014B822 /* chat_start_body_default.png in Resources */,
@@ -5258,15 +4886,12 @@
 				633FEF041D3CD55A0014B822 /* options_selected.png in Resources */,
 				63E27A521C50EDB000D332AE /* hold.mkv in Resources */,
 				84D032231FB531B5002D2524 /* KContactDetailViewController.xib in Resources */,
-				633FEDAE1D3CD5590014B822 /* call_add_default.png in Resources */,
 				633FEE1D1D3CD5590014B822 /* chat_start_body_default~ipad@2x.png in Resources */,
 				633FEF221D3CD55A0014B822 /* route_bluetooth_default.png in Resources */,
 				633FEE701D3CD5590014B822 /* footer_history_disabled.png in Resources */,
-				633FEDC91D3CD5590014B822 /* call_missed@2x.png in Resources */,
 				84C4436F1FBE01680015854C /* PolicyViewController.xib in Resources */,
 				84FE45C520E4D0740067405F /* keepawake.wav in Resources */,
 				1556A8E12181C347002E8D26 /* launch_logo.png in Resources */,
-				633FEDB51D3CD5590014B822 /* call_alt_back_disabled@2x.png in Resources */,
 				631098521D4660630041F2B3 /* CountryListView.xib in Resources */,
 				84C47CF71FB628540015695E /* MissedCallViewController.xib in Resources */,
 				633FEF271D3CD55A0014B822 /* route_bluetooth_selected@2x.png in Resources */,
@@ -5280,52 +4905,36 @@
 				84EDEE501FB712F200FF665C /* NotificationSettingsViewController.xib in Resources */,
 				15D21BE52176E70000FEBED2 /* EditProfileViewController.xib in Resources */,
 				633FEF3A1D3CD55A0014B822 /* security_ko.png in Resources */,
-				633FEDA01D3CD5590014B822 /* avatar.png in Resources */,
 				153D004E2164D9D3007B69B3 /* numpad_clear_hover.png in Resources */,
 				153D000E2164A67E007B69B3 /* numpad_four_default.png in Resources */,
-				633FEDF71D3CD5590014B822 /* camera_default@2x.png in Resources */,
-				84C1E24D1FAEBBAF00EED0B9 /* ConfirmResetPasswordView.xib in Resources */,
-				633FEDB31D3CD5590014B822 /* call_alt_back_default@2x.png in Resources */,
 				633FEDCF1D3CD5590014B822 /* call_quality_indicator_1@2x.png in Resources */,
 				633FEF131D3CD55A0014B822 /* pause_big_over_selected@2x.png in Resources */,
 				63AADBF81B6A0FF200AA16FD /* linphonerc~ipad in Resources */,
 				633FEE8F1D3CD55A0014B822 /* list_details_default@2x.png in Resources */,
 				15906E35217AE959000877A9 /* transfer_call_hover.png in Resources */,
-				84C1E2111FAEB43100EED0B9 /* LoginView.xib in Resources */,
 				633FEE5E1D3CD5590014B822 /* edit_list_default.png in Resources */,
-				633FEDB11D3CD5590014B822 /* call_add_disabled@2x.png in Resources */,
-				633FEDB21D3CD5590014B822 /* call_alt_back_default.png in Resources */,
 				153D00112164A67E007B69B3 /* call_default.png in Resources */,
 				633FEE3D1D3CD5590014B822 /* contacts_all_default@2x.png in Resources */,
 				15A64DA4216CACD900D194BD /* ic_delete_phone.png in Resources */,
 				8440F189216BA82000BB559C /* mini_key_2_hover.png in Resources */,
-				84C54BB31FAFE6A300651151 /* PlaceEmotion.plist in Resources */,
 				633FEF251D3CD55A0014B822 /* route_bluetooth_disabled@2x.png in Resources */,
 				84AEA9251FC4FD5500DAA68A /* EditContactViewController.xib in Resources */,
-				633FEDD81D3CD5590014B822 /* call_start_body_default~ipad.png in Resources */,
-				633FEDD71D3CD5590014B822 /* call_start_body_default@2x.png in Resources */,
 				633FEE571D3CD5590014B822 /* dialer_back_disabled@2x.png in Resources */,
 				63CDC45E1C3BDE370085F529 /* msg.caf in Resources */,
 				633FEE6D1D3CD5590014B822 /* footer_dialer_disabled@2x.png in Resources */,
 				633FEF171D3CD55A0014B822 /* pause_small_disabled@2x.png in Resources */,
 				8459953A216F8CE00004143A /* ic_add_def.png in Resources */,
 				D38187DD15FE348A00C3EDCA /* AssistantView.xib in Resources */,
-				633FEDA61D3CD5590014B822 /* back_disabled.png in Resources */,
 				8489DED02160B16100A7A1DD /* NewSettingCell.xib in Resources */,
 				153D00322164D537007B69B3 /* menu_more_en_def.png in Resources */,
 				15F2E5F5216B56F60076CB1F /* ic_setting.png in Resources */,
-				633FEDA11D3CD5590014B822 /* avatar@2x.png in Resources */,
-				633FED9E1D3CD5590014B822 /* add_field_over.png in Resources */,
 				633FEE0A1D3CD5590014B822 /* chat_attachment_default.png in Resources */,
 				633FEE201D3CD5590014B822 /* chat_start_body_disabled~ipad.png in Resources */,
 				633FEE5B1D3CD5590014B822 /* edit_default@2x.png in Resources */,
-				633FEDE11D3CD5590014B822 /* call_start_body_over~ipad@2x.png in Resources */,
-				84C54BAF1FAFE6A300651151 /* countries.plist in Resources */,
 				153D000F2164A67E007B69B3 /* numpad_six_default.png in Resources */,
 				153D004C2164D9D3007B69B3 /* numpad_two_hover.png in Resources */,
 				153D00592164D9D3007B69B3 /* hotline_hover.png in Resources */,
 				633FEF4F1D3CD55A0014B822 /* valid_default@2x.png in Resources */,
-				84D0321E1FB52F6C002D2524 /* ContactNormalCell.xib in Resources */,
 				633FEE241D3CD5590014B822 /* chat_start_body_over~ipad.png in Resources */,
 				153D002E2164D537007B69B3 /* menu_keypad_en_def.png in Resources */,
 				159E0879217984F00056E2BB /* RegisterPBXWithPhoneView.xib in Resources */,
@@ -5335,7 +4944,6 @@
 				84ECF9C6216679A70067B4B6 /* ic_addcall_dis.png in Resources */,
 				633FEF181D3CD55A0014B822 /* pause_small_over_selected.png in Resources */,
 				15F2E5FC216B575D0076CB1F /* background_more.png in Resources */,
-				633FEE001D3CD5590014B822 /* camera_switch_over.png in Resources */,
 				633FEF401D3CD55A0014B822 /* select_all_default.png in Resources */,
 				153D00382164D537007B69B3 /* menu_keypad_act.png in Resources */,
 				633FEDF01D3CD5590014B822 /* call_transfer_disabled.png in Resources */,
@@ -5343,9 +4951,7 @@
 				633FEE9A1D3CD55A0014B822 /* nowebcamCIF.jpg in Resources */,
 				633FEF351D3CD55A0014B822 /* routes_default@2x.png in Resources */,
 				633FEE5C1D3CD5590014B822 /* edit_disabled.png in Resources */,
-				633FEDCA1D3CD5590014B822 /* call_outgoing.png in Resources */,
 				159E08842179E9130056E2BB /* ic_not_check.png in Resources */,
-				633FEDF81D3CD5590014B822 /* camera_disabled.png in Resources */,
 				633FEE331D3CD5590014B822 /* color_M.png in Resources */,
 				633FEE811D3CD5590014B822 /* led_connected@2x.png in Resources */,
 				8489DED42160B5FA00A7A1DD /* right-arrow.png in Resources */,
@@ -5355,20 +4961,15 @@
 				633FEE451D3CD5590014B822 /* contacts_sip_disabled@2x.png in Resources */,
 				633FEEFD1D3CD55A0014B822 /* options_add_call_default@2x.png in Resources */,
 				1556A8E22181C347002E8D26 /* launch_bg.png in Resources */,
-				8442A35A1FB12CCA00F08F11 /* ChooseAccountCell.xib in Resources */,
 				D38187AD15FE340100C3EDCA /* ChatConversationView.xib in Resources */,
 				8440F192216BA82000BB559C /* mini_key_0_hover.png in Resources */,
 				8482CE2B2115554000E26650 /* PBXSettingViewController.xib in Resources */,
 				633FEE7C1D3CD5590014B822 /* history_missed_disabled.png in Resources */,
 				633FEE581D3CD5590014B822 /* dialer_background.png in Resources */,
 				633FEDF11D3CD5590014B822 /* call_transfer_disabled@2x.png in Resources */,
-				633FEDFF1D3CD5590014B822 /* camera_switch_disabled@2x.png in Resources */,
-				633FEDDF1D3CD5590014B822 /* call_start_body_over@2x.png in Resources */,
 				D38187B915FE342200C3EDCA /* ContactDetailsView.xib in Resources */,
 				633FEE921D3CD55A0014B822 /* menu.png in Resources */,
 				84EDEE431FB7121C00FF665C /* KSettingViewController.xib in Resources */,
-				840531E81FCB097C00A27A03 /* ContactAddGroupCell.xib in Resources */,
-				633FEDE41D3CD5590014B822 /* call_status_incoming~ipad.png in Resources */,
 				633FEF4D1D3CD55A0014B822 /* splashscreen~ipad@2x.png in Resources */,
 				84ECF9CB216679A70067B4B6 /* ic_mute_def.png in Resources */,
 				8440F195216BA82000BB559C /* mini_key_0.png in Resources */,
@@ -5390,16 +4991,12 @@
 				63AADC001B6A0FF200AA16FD /* assistant_linphone_create.rc in Resources */,
 				633FEF1C1D3CD55A0014B822 /* presence_offline.png in Resources */,
 				8440F186216BA82000BB559C /* mini_key_5_hover.png in Resources */,
-				84C1E22F1FAEBA4C00EED0B9 /* RegisterView.xib in Resources */,
 				633FEE901D3CD55A0014B822 /* list_details_over.png in Resources */,
 				84ECF9C0216679A70067B4B6 /* ic_pause_dis.png in Resources */,
-				633FEDE31D3CD5590014B822 /* call_status_incoming@2x.png in Resources */,
-				84C1E21D1FAEB74600EED0B9 /* SignInView.xib in Resources */,
 				84ECF9BD216679A70067B4B6 /* ic_keypad_def.png in Resources */,
 				153D00582164D9D3007B69B3 /* numpad_zero_hover.png in Resources */,
 				633FEE821D3CD5590014B822 /* led_disconnected.png in Resources */,
 				15857BFE216DEC0000DB5237 /* UIContactPhoneCell.xib in Resources */,
-				633FEDB01D3CD5590014B822 /* call_add_disabled.png in Resources */,
 				15906E33217AE4A1000877A9 /* add_call_hover.png in Resources */,
 				153D004D2164D9D3007B69B3 /* numpad_sharp_hover.png in Resources */,
 				63EC8D391D7438660066547B /* AssistantLinkView.xib in Resources */,
@@ -5410,14 +5007,9 @@
 				633FEE0D1D3CD5590014B822 /* chat_attachment_disabled@2x.png in Resources */,
 				639E9CA61C0DB7F200019A75 /* UIChatCreateCell.xib in Resources */,
 				633FEF2E1D3CD55A0014B822 /* route_speaker_default.png in Resources */,
-				633FEDA91D3CD5590014B822 /* backspace_default@2x.png in Resources */,
-				633FEDF61D3CD5590014B822 /* camera_default.png in Resources */,
 				F0642EF119DAC891009DB336 /* MainStoryboard.storyboard in Resources */,
 				633FEE731D3CD5590014B822 /* history_all_default@2x.png in Resources */,
-				633FEDE21D3CD5590014B822 /* call_status_incoming.png in Resources */,
 				8440F185216BA82000BB559C /* mini_key_9.png in Resources */,
-				633FEDDA1D3CD5590014B822 /* call_start_body_disabled.png in Resources */,
-				633FEDB91D3CD5590014B822 /* call_alt_start_disabled@2x.png in Resources */,
 				84EDEE4E1FB712F200FF665C /* LanguageViewController.xib in Resources */,
 				633FEE691D3CD5590014B822 /* footer_contacts_disabled@2x.png in Resources */,
 				633FEE891D3CD5590014B822 /* linphone_logo@2x.png in Resources */,
@@ -5460,9 +5052,7 @@
 				633FEE6B1D3CD5590014B822 /* footer_dialer_default@2x.png in Resources */,
 				633FEE0E1D3CD5590014B822 /* chat_attachment_over.png in Resources */,
 				633FEE7B1D3CD5590014B822 /* history_missed_default@2x.png in Resources */,
-				633FEDEC1D3CD5590014B822 /* call_status_outgoing~ipad.png in Resources */,
 				1579B72121674989002BECE3 /* ic_edit.png in Resources */,
-				633FEDE51D3CD5590014B822 /* call_status_incoming~ipad@2x.png in Resources */,
 				84ECF9A821666C840067B4B6 /* decline_call_def.png in Resources */,
 				633FEF101D3CD55A0014B822 /* pause_big_disabled.png in Resources */,
 				633FEE221D3CD5590014B822 /* chat_start_body_over.png in Resources */,
@@ -5476,7 +5066,6 @@
 				633FEE561D3CD5590014B822 /* dialer_back_disabled.png in Resources */,
 				633FEDBF1D3CD5590014B822 /* call_back_default@2x.png in Resources */,
 				633FEE141D3CD5590014B822 /* chat_send_default.png in Resources */,
-				84C1E24F1FAEBBAF00EED0B9 /* ResetPasswordView.xib in Resources */,
 				633FEF421D3CD55A0014B822 /* select_all_disabled.png in Resources */,
 				8442A36B1FB13C0F00F08F11 /* ContactsViewController.xib in Resources */,
 				8440F18D216BA82000BB559C /* mini_key_7_hover.png in Resources */,
@@ -5489,7 +5078,6 @@
 				633FEE4A1D3CD5590014B822 /* delete_disabled.png in Resources */,
 				153D002D2164D537007B69B3 /* menu_keypad_en_act.png in Resources */,
 				633FEF151D3CD55A0014B822 /* pause_small_default@2x.png in Resources */,
-				633FEDCB1D3CD5590014B822 /* call_outgoing@2x.png in Resources */,
 				8459953B216F8CE00004143A /* ic_add_def@2x.png in Resources */,
 				633FEE8B1D3CD5590014B822 /* linphone_user@2x.png in Resources */,
 				633FEF501D3CD55A0014B822 /* valid_disabled.png in Resources */,
@@ -5498,13 +5086,11 @@
 				8440F18A216BA82000BB559C /* mini_key_9_hover.png in Resources */,
 				15857C0A216E136500DB5237 /* TypePhoneCell.xib in Resources */,
 				633FEE1C1D3CD5590014B822 /* chat_start_body_default~ipad.png in Resources */,
-				633FEE011D3CD5590014B822 /* camera_switch_over@2x.png in Resources */,
 				845A13321FE2C70300640B51 /* PBXContactTableCell.xib in Resources */,
 				153D00372164D537007B69B3 /* menu_contacts_en_act.png in Resources */,
 				153D00312164D537007B69B3 /* menu_keypad_def.png in Resources */,
 				633FEF3E1D3CD55A0014B822 /* security_pending.png in Resources */,
 				153D00192164A67E007B69B3 /* numpad_two_default.png in Resources */,
-				84C1E2451FAEBB8100EED0B9 /* ConfirmView.xib in Resources */,
 				1579B72521674989002BECE3 /* ic_back.png in Resources */,
 				D381881915FE3FCA00C3EDCA /* CallView.xib in Resources */,
 				153D00542164D9D3007B69B3 /* numpad_three_hover.png in Resources */,
@@ -5513,26 +5099,18 @@
 				8440F18E216BA82000BB559C /* mini_key_7.png in Resources */,
 				633FEF531D3CD55A0014B822 /* voicemail@2x.png in Resources */,
 				633FEF2C1D3CD55A0014B822 /* route_earpiece_selected.png in Resources */,
-				84C54BB41FAFE6A300651151 /* SymbolEmotion.plist in Resources */,
 				8440F184216BA82000BB559C /* mini_key_star.png in Resources */,
 				633FEE8C1D3CD55A0014B822 /* linphone_user~ipad.png in Resources */,
 				633FEE681D3CD5590014B822 /* footer_contacts_disabled.png in Resources */,
-				633FEDB71D3CD5590014B822 /* call_alt_start_default@2x.png in Resources */,
 				D3D5126C160B3A8E00946DF8 /* AssistantViewScreens.xib in Resources */,
-				84E286E71FC9FA76009CBA27 /* ChatProfileCell.xib in Resources */,
 				63AADBEA1B6A0FF200AA16FD /* Images.xcassets in Resources */,
-				633FEDC71D3CD5590014B822 /* call_incoming@2x.png in Resources */,
-				633FEDB81D3CD5590014B822 /* call_alt_start_disabled.png in Resources */,
 				633FEF3C1D3CD55A0014B822 /* security_ok.png in Resources */,
-				633FED9F1D3CD5590014B822 /* add_field_over@2x.png in Resources */,
 				159002D82168618E00CECB7A /* ic_call_outgoing.png in Resources */,
 				84C4435E1FBE00B90015854C /* IntroduceViewController.xib in Resources */,
 				639E9CA91C0DB7FB00019A75 /* UIConfirmationDialog.xib in Resources */,
 				153D00162164A67E007B69B3 /* numpad_seven_default.png in Resources */,
 				633FEF111D3CD55A0014B822 /* pause_big_disabled@2x.png in Resources */,
 				633FEE321D3CD5590014B822 /* color_L.png in Resources */,
-				8462F40A20E73BAB005964D7 /* bg_chat_default.jpg in Resources */,
-				633FEDB41D3CD5590014B822 /* call_alt_back_disabled.png in Resources */,
 				633FEE631D3CD5590014B822 /* footer_chat_default@2x.png in Resources */,
 				84ECF9C1216679A70067B4B6 /* ic_transfer_dis.png in Resources */,
 				843ED6661FB65989005FE1C1 /* MenuCell.xib in Resources */,
@@ -5563,7 +5141,6 @@
 				84ECF9C4216679A70067B4B6 /* ic_addcall_def.png in Resources */,
 				570742581D5A0691004B9C84 /* ShopView.xib in Resources */,
 				633FEE361D3CD5590014B822 /* conference_exit_over.png in Resources */,
-				633FEDAA1D3CD5590014B822 /* backspace_disabled.png in Resources */,
 				F0938159188E629800A55DFA /* iTunesArtwork in Resources */,
 				633FEE791D3CD5590014B822 /* history_chat_indicator@2x.png in Resources */,
 				633FEE371D3CD5590014B822 /* conference_exit_over@2x.png in Resources */,
@@ -5572,7 +5149,6 @@
 				633FEE4E1D3CD5590014B822 /* delete_field_over.png in Resources */,
 				633FEE501D3CD5590014B822 /* deselect_all.png in Resources */,
 				633FEF2F1D3CD55A0014B822 /* route_speaker_default@2x.png in Resources */,
-				633FEDDD1D3CD5590014B822 /* call_start_body_disabled~ipad@2x.png in Resources */,
 				842FA3B52162687800C59DDA /* qr-code-scan.png in Resources */,
 				633FEE781D3CD5590014B822 /* history_chat_indicator.png in Resources */,
 				15F2E5FE216B575D0076CB1F /* background_more@2x.png in Resources */,
@@ -5580,7 +5156,6 @@
 				8440F194216BA82000BB559C /* mini_key_1.png in Resources */,
 				633FEE771D3CD5590014B822 /* history_all_selected@2x.png in Resources */,
 				633FEF031D3CD55A0014B822 /* options_disabled@2x.png in Resources */,
-				633FEDA21D3CD5590014B822 /* avatar~ipad.png in Resources */,
 				153D00332164D537007B69B3 /* menu_more_def.png in Resources */,
 				633FEF211D3CD55A0014B822 /* presence_unregistered@2x.png in Resources */,
 			);
@@ -5756,7 +5331,6 @@
 				84C47D021FB62A750015695E /* NSDatabase.m in Sources */,
 				84C47D161FB632640015695E /* IncomingCallViewController.m in Sources */,
 				22F2508E107141E100AC9B3F /* DialerView.m in Sources */,
-				84C1E21C1FAEB74600EED0B9 /* SignInView.m in Sources */,
 				633756451B67D2B200E21BAD /* SideMenuView.m in Sources */,
 				15857C09216E136500DB5237 /* TypePhoneCell.m in Sources */,
 				843ED6751FB66A36005FE1C1 /* SettingCell.m in Sources */,
@@ -5775,7 +5349,6 @@
 				841D338C216112ED00FFCD72 /* ManagerPasswordViewController.m in Sources */,
 				2214EB7A12F846B1002A5394 /* UICallButton.m in Sources */,
 				84C4438F1FBE105F0015854C /* NewPhoneCell.m in Sources */,
-				8442A3591FB12CCA00F08F11 /* ChooseAccountCell.m in Sources */,
 				84D032181FB52E7A002D2524 /* AllContactsViewController.m in Sources */,
 				84EFFE171FF3E6B60085A9F4 /* DGActivityIndicatorThreeDotsAnimation.m in Sources */,
 				84E067141FBE63E300C49F66 /* PBXContact.m in Sources */,
@@ -5789,7 +5362,6 @@
 				843ED6831FB66BBC005FE1C1 /* CallnexSwitchButton.m in Sources */,
 				84C1E2371FAEBAE100EED0B9 /* BEMAnimationManager.m in Sources */,
 				84E286C71FC9E1AC009CBA27 /* SDWebImageDecoder.m in Sources */,
-				84E286E61FC9FA76009CBA27 /* ChatProfileCell.m in Sources */,
 				84B889E51FAF6C1D008D88C5 /* PhoneBookObject.m in Sources */,
 				2214EBF312F86360002A5394 /* UIMutedMicroButton.m in Sources */,
 				22968A5F12F875C600588287 /* UISpeakerButton.m in Sources */,
@@ -5809,7 +5381,6 @@
 				340751E7150F38FD00B89C47 /* UIVideoButton.m in Sources */,
 				84EFFE021FF3E6B60085A9F4 /* DGActivityIndicatorFiveDotsAnimation.m in Sources */,
 				34216F401547EBCD00EA9777 /* VideoZoomHandler.m in Sources */,
-				84E286F11FC9FE08009CBA27 /* OptionsCell.m in Sources */,
 				D3F83EEC1582021700336684 /* CallView.m in Sources */,
 				158A87C5217D83720093A641 /* DeviceUtils.m in Sources */,
 				84D0320C1FB51C50002D2524 /* ContactCell.m in Sources */,
@@ -5917,10 +5488,7 @@
 				84EFFDB91FF3E6980085A9F4 /* DGActivityIndicatorView.m in Sources */,
 				84E286C91FC9E1AC009CBA27 /* NSData+ImageContentType.m in Sources */,
 				D350F20E15A43BB100149E54 /* AssistantView.m in Sources */,
-				84C1E22E1FAEBA4C00EED0B9 /* RegisterView.m in Sources */,
-				84C1E23C1FAEBB0500EED0B9 /* PrivacyPopupView.m in Sources */,
 				D3F795D615A582810077328B /* ChatConversationView.m in Sources */,
-				840531E71FCB097C00A27A03 /* ContactAddGroupCell.m in Sources */,
 				D32B6E2915A5BC440033019F /* ChatConversationTableView.m in Sources */,
 				D3A8BB7015A6C7D500F96BE5 /* UIChatBubbleTextCell.m in Sources */,
 				15857C08216E136500DB5237 /* TypePhonePopupView.m in Sources */,
@@ -5946,8 +5514,6 @@
 				84EFFE071FF3E6B60085A9F4 /* DGActivityIndicatorBallClipRotatePulseAnimation.m in Sources */,
 				84C1E26B1FAEBEA500EED0B9 /* ContactObject.m in Sources */,
 				84C47CD71FB5E8B60015695E /* UIKContactCell.m in Sources */,
-				840531DE1FCB07E300A27A03 /* SettingPopupView.m in Sources */,
-				84C1E24E1FAEBBAF00EED0B9 /* ResetPasswordView.m in Sources */,
 				63C441C31BBC23ED0053DC5E /* UIAssistantTextField.m in Sources */,
 				8442A36A1FB13C0F00F08F11 /* ContactsViewController.m in Sources */,
 				6346100F1B61409800548952 /* CallOutgoingView.m in Sources */,
@@ -5982,11 +5548,9 @@
 				639E9C801C0DB13D00019A75 /* UICheckBoxTableView.m in Sources */,
 				D3807FF615C2894A005BE9BC /* IASKSpecifier.m in Sources */,
 				D3807FF815C2894A005BE9BC /* IASKPSSliderSpecifierViewCell.m in Sources */,
-				84C1E2441FAEBB8100EED0B9 /* ConfirmView.m in Sources */,
 				84C1E2381FAEBAE100EED0B9 /* BEMCheckBox.m in Sources */,
 				D3807FFA15C2894A005BE9BC /* IASKPSTextFieldSpecifierViewCell.m in Sources */,
 				84E286CA1FC9E1AC009CBA27 /* SDWebImageDownloaderOperation.m in Sources */,
-				84C1E2101FAEB43100EED0B9 /* LoginView.m in Sources */,
 				84C4436E1FBE01680015854C /* PolicyViewController.m in Sources */,
 				84E286CE1FC9E1AC009CBA27 /* UIImage+GIF.m in Sources */,
 				84C1E2401FAEBB5300EED0B9 /* JSONKit.m in Sources */,
@@ -6001,7 +5565,6 @@
 				84EDEE4F1FB712F200FF665C /* NotificationSettingsViewController.m in Sources */,
 				D380800015C2894A005BE9BC /* IASKSwitch.m in Sources */,
 				84EFFE0B1FF3E6B60085A9F4 /* DGActivityIndicatorBallPulseAnimation.m in Sources */,
-				84C1E24C1FAEBBAF00EED0B9 /* ConfirmResetPasswordView.m in Sources */,
 				D380800215C2894A005BE9BC /* IASKTextField.m in Sources */,
 				84EFFE141FF3E6B60085A9F4 /* DGActivityIndicatorTriplePulseAnimation.m in Sources */,
 				84EFFE121FF3E6B60085A9F4 /* DGActivityIndicatorCookieTerminatorAnimation.m in Sources */,
@@ -6016,7 +5579,6 @@
 				84EFFE1E1FF3E6B60085A9F4 /* DGActivityIndicatorBallScaleAnimation.m in Sources */,
 				15E4B96721895271008677AA /* TabBarView~ipad.m in Sources */,
 				15F2E603216B6DA60076CB1F /* CustomTextAttachment.m in Sources */,
-				84D0321D1FB52F6C002D2524 /* ContactNormalCell.m in Sources */,
 				84C8B24D1FBBBE6E0080D673 /* CallHistoryObject.m in Sources */,
 				63BC49E21BA2CDFC004EC273 /* UICallPausedCell.m in Sources */,
 				840B574320061FD300DCBA7E /* QRCodeReaderViewController.m in Sources */,
@@ -6582,7 +6144,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
-				PROVISIONING_PROFILE = "2b4c379b-81d4-4ba6-9067-da90f21b1a94";
+				PROVISIONING_PROFILE = "eed53176-957f-41a1-9420-f7a555ec04a8";
 				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";

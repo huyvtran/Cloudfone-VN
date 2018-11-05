@@ -70,7 +70,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)showContentWithCurrentLanguage {
     _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Settings"];
     
-    listTitle = [[NSMutableArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Change language"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Call settings"], nil];
+    if ([LinphoneAppDelegate sharedInstance].enableForTest) {
+        listTitle = [[NSMutableArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Change language"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Call settings"], nil];
+    }else{
+        listTitle = [[NSMutableArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Change language"], nil];
+    }
+    
     [_tbSettings reloadData];
 }
 

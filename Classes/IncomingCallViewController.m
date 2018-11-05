@@ -144,7 +144,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         NSString *name = [info objectAtIndex: 0];
         NSString *avatar = [info objectAtIndex: 1];
         if ([name isEqualToString:@""]) {
-            _lbName.text = [localization localizedStringForKey: text_unknown];
+            _lbName.text = [localization localizedStringForKey: @"Unknown"];
         }else{
             _lbName.text = name;
         }

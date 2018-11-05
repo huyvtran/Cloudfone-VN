@@ -126,5 +126,8 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 //  [Khai le - 02/11/2018]
 @property (nonatomic, strong) NSMutableArray *listInfoPhoneNumber;
 
+//  [Khai le - 05/11/2018]
+@property (nonatomic, assign) BOOL enableForTest;
+
 @end
 

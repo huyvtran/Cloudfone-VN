@@ -239,7 +239,6 @@
 #define text_send_request_msg   @"text_send_request_msg"
 
 #define text_login_failed       @"text_login_failed"
-#define text_unknown            @"text_unknown"
 #define text_pull_to_refresh    @"text_pull_to_refresh"
 
 #define text_detail_call        @"text_detail_call"
@@ -490,19 +489,8 @@
 #define text_save           @"text_save"
 
 #define leave_room_failed   @"leave_room_failed"
-
-
-#define receive_call_from   @"receive_call_from"
-
 #pragma mark - Key for notifications
 
-#define showConfirmCodeView     @"showConfirmCodeView"
-#define cannotGetHashString     @"cannotGetHashString"
-#define registerAccountSuccess  @"registerAccountSuccess"
-
-#define cannotGetHashString     @"cannotGetHashString"
-#define registerAccountSuccess  @"registerAccountSuccess"
-#define showConfirmCodeView     @"showConfirmCodeView"
 #define closeViewForgotPassword @"closeViewForgotPassword"
 #define registerWithAccount     @"registerWithAccount"
 #define callnexFriendsRequest   @"callnexFriendsRequest"
@@ -633,8 +621,7 @@
 #define incomming_call          @"Incomming"
 #define outgoing_call           @"Outgoing"
 #define text_phone_not_exists   @"text_phone_not_exists"
-//  #define hotline                 @"4113"
-#define hotline                 @"14954"
+#define hotline                 @"4113"
 
 #define text_dien_day_tu_thong_tin  @"text_dien_day_tu_thong_tin"
 #define text_contact_company        @"text_contact_company"
@@ -657,12 +644,6 @@
 #define text_register_success   @"text_register_success"
 #define text_type_to_search     @"text_type_to_search"
 #define text_contact_message    @"text_contact_message"
-
-#define login_pbx_success_not_update_token  @"login_pbx_success_not_update_token"
-#define register_pbx_failed     @"register_pbx_failed"
-#define pbx_has_been_deleted    @"pbx_has_been_deleted"
-#define pbx_turn_off            @"pbx_turn_off"
-#define pbx_turn_on             @"pbx_turn_on"
 
 #define text_delete_conv_title          @"text_delete_conv_title"
 #define text_delete_conv_content        @"text_delete_conv_content"
@@ -734,10 +715,6 @@
 #define TEXT_NONE           @"TEXT_NONE"
 
 #define text_leave_and_clear_history_group  @"text_leave_and_clear_history_group"
-
-
-#define check_pbx_account       @"check_pbx_account"
-#define clear_pbx_successfully  @"clear_pbx_successfully"
 
 #define text_message_settings   @"text_message_settings"
 #define text_call_settings      @"text_call_settings"

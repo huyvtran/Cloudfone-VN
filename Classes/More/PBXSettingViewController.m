@@ -30,12 +30,13 @@
     float hTextfield;
     
     LinphoneProxyConfig *enableProxyConfig;
+    BOOL clearingAccount;
 }
 
 @end
 
 @implementation PBXSettingViewController
-@synthesize _viewHeader, bgHeader, _iconBack, _lbTitle, _iconQRCode, _icWaiting, btnLoginWithPhone, lbVersion;
+@synthesize _viewHeader, bgHeader, _iconBack, _lbTitle, _iconQRCode, _icWaiting, btnLoginWithPhone;
 @synthesize _viewContent, _lbPBX, _swChange, _lbSepa, _lbServerID, _tfServerID, _lbAccount, _tfAccount, _lbPassword, _tfPassword, _btnClear, _btnSave;
 @synthesize webService;
 
@@ -78,16 +79,18 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
+    clearingAccount = NO;
+    
     [self showContentForView];
     [self showPBXAccountInformation];
     
     LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
     if (defaultConfig == NULL) {
         _swChange.on = NO;
+        _btnClear.enabled = NO;
+    }else{
+        _btnClear.enabled = YES;
     }
-    
-    //  set value for label version
-    lbVersion.attributedText = [AppUtils getVersionStringForApp];
     
     //  set title for button login with phone number
     NSString *phoneContent = [NSString stringWithFormat:@" %@", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Register with phone number"]];
@@ -214,6 +217,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.height.mas_equalTo(hLabel);
     }];
     
+    
     _tfServerID.borderStyle = UITextBorderStyleNone;
     _tfServerID.layer.cornerRadius = 3.0;
     _tfServerID.layer.borderWidth = 1.0;
@@ -224,6 +228,9 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.left.right.equalTo(_lbServerID);
         make.height.mas_equalTo(hTextfield);
     }];
+    [_tfServerID addTarget:self
+                    action:@selector(whenTextfieldDidChanged)
+          forControlEvents:UIControlEventEditingChanged];
     
     _tfServerID.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8.0, 40.0)];
     _tfServerID.leftViewMode = UITextFieldViewModeAlways;
@@ -249,6 +256,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     _tfAccount.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8.0, 40.0)];
     _tfAccount.leftViewMode = UITextFieldViewModeAlways;
     
+    [_tfAccount addTarget:self
+                   action:@selector(whenTextfieldDidChanged)
+         forControlEvents:UIControlEventEditingChanged];
+    
     //  password
     _lbPassword.textColor = _lbPBX.textColor;
     [_lbPassword mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -269,6 +280,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     _tfPassword.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8.0, 40.0)];
     _tfPassword.leftViewMode = UITextFieldViewModeAlways;
+    [_tfPassword addTarget:self
+                    action:@selector(whenTextfieldDidChanged)
+          forControlEvents:UIControlEventEditingChanged];
     
     //  footer button
     [_btnClear mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -281,12 +295,28 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnClear.layer.cornerRadius = hButton/2;
     [_btnClear setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     _btnClear.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
-    _btnClear.backgroundColor = [UIColor colorWithRed:(248/255.0) green:(83/255.0)
-                                                 blue:(86/255.0) alpha:1.0];
     
-    _btnSave.backgroundColor = UIColor.clearColor;
-    [_btnSave setBackgroundImage:[UIImage imageNamed:@"bg_button.png"]
-                        forState:UIControlStateNormal];
+    UIImage *bgClear = [AppUtils imageWithColor:[UIColor colorWithRed:(248/255.0) green:(83/255.0)
+                                                                 blue:(86/255.0) alpha:1.0]
+                                      andBounds:CGRectMake(0, 0, 100, 50)];
+    UIImage *bgClearDisable = [AppUtils imageWithColor:[UIColor colorWithRed:(248/255.0) green:(83/255.0)
+                                                                        blue:(86/255.0) alpha:0.5]
+                                             andBounds:CGRectMake(0, 0, 100, 50)];
+    
+    [_btnClear setBackgroundImage:bgClear forState:UIControlStateNormal];
+    [_btnClear setBackgroundImage:bgClearDisable forState:UIControlStateDisabled];
+    
+    //  save button
+    UIImage *bgSave = [AppUtils imageWithColor:[UIColor colorWithRed:(27/255.0) green:(104/255.0)
+                                                                blue:(213/255.0) alpha:1.0]
+                                     andBounds:CGRectMake(0, 0, 100, 50)];
+    UIImage *bgSaveDisable = [AppUtils imageWithColor:[UIColor colorWithRed:(27/255.0) green:(104/255.0)
+                                                                       blue:(213/255.0) alpha:0.5]
+                                            andBounds:CGRectMake(0, 0, 100, 50)];
+    
+    [_btnSave setBackgroundImage:bgSave forState:UIControlStateNormal];
+    [_btnSave setBackgroundImage:bgSaveDisable forState:UIControlStateDisabled];
+    
     [_btnSave mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_btnClear);
         make.left.equalTo(_viewContent.mas_centerX).offset(20);
@@ -297,8 +327,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnSave.layer.cornerRadius = hButton/2;
     [_btnSave setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     _btnSave.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
-    _btnSave.backgroundColor = [UIColor colorWithRed:(25/255.0) green:(86/255.0)
-                                                blue:(108/255.0) alpha:1.0];
     
     //  button login with phone number
     btnLoginWithPhone.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(189/255.0)
@@ -308,19 +336,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     btnLoginWithPhone.layer.cornerRadius = hButton/2;
     btnLoginWithPhone.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     [btnLoginWithPhone mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_viewContent.mas_bottom).offset(30);
+        make.bottom.equalTo(self.view).offset(-30);
         make.left.equalTo(self.view).offset(30);
         make.right.equalTo(self.view).offset(-30);
         make.height.mas_equalTo(hButton);
-    }];
-    
-    //  label version
-    lbVersion.backgroundColor = UIColor.clearColor;
-    lbVersion.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
-                                           blue:(50/255.0) alpha:1.0];
-    [lbVersion mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(self.view);
-        make.height.mas_equalTo(45.0);
     }];
 }
 
@@ -370,9 +389,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [_icWaiting startAnimating];
     _icWaiting.hidden = NO;
-    
+    clearingAccount = YES;
     linphone_core_clear_proxy_config(LC);
-    [[LinphoneManager instance] removeAllAccounts];
+    //  [[LinphoneManager instance] removeAllAccounts];
 }
 
 - (IBAction)_btnSavePressed:(UIButton *)sender {
@@ -431,9 +450,29 @@ static UICompositeViewDescription *compositeDescription = nil;
     _icWaiting.hidden = YES;
 }
 
+- (void)whenTextfieldDidChanged {
+    NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey: PBX_ID];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey: key_login];
+    NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey: key_password];
+    
+    //  check value is empty
+    if ([_tfServerID.text isEqualToString: @""] || [_tfAccount.text isEqualToString: @""] || [_tfPassword.text isEqualToString: @""]) {
+        _btnSave.enabled = NO;
+        return;
+    }
+    
+    //  Check with current account
+    if ([_tfServerID.text isEqualToString: server] && [_tfAccount.text isEqualToString: username] && [_tfPassword.text isEqualToString: password]) {
+        _btnSave.enabled = NO;
+        return;
+    }
+    
+    _btnSave.enabled = YES;
+}
+
 - (void)getInfoForPBXWithServerName: (NSString *)serverName
 {
-    //  DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: serverName = %@", __FUNCTION__, serverName]);
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: serverName = %@", __FUNCTION__, serverName]);
     
     NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
     [jsonDict setObject:AuthUser forKey:@"AuthUser"];
@@ -481,7 +520,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     if ([link isEqualToString:getServerInfoFunc]) {
         [self startLoginPBXWithInfo: data];
     }else if ([link isEqualToString: ChangeCustomerIOSToken]){
-        [self whenTurnOnPBXSuccessfully];
+        if (clearingAccount) {
+            [self whenClearPBXSuccessfully];
+        }else{
+            [self whenTurnOnPBXSuccessfully];
+        }
     }else if ([link isEqualToString: DecryptRSA]) {
         [self receiveDataFromQRCode: data];
     }
@@ -554,16 +597,13 @@ static UICompositeViewDescription *compositeDescription = nil;
             NSLog(@"LinphoneRegistrationOk");
             
             if (enableProxyConfig == nil) {
-                //  DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> gọi linphone_core_clear_proxy_config", __FUNCTION__, @"LinphoneRegistrationOk"]);
-                NSLog(@"LinphoneRegistration------> gọi hàm clear_proxy_config để đăng ký lại account mới");
+                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> gọi linphone_core_clear_proxy_config", __FUNCTION__, @"LinphoneRegistrationOk"]);
                 
                 enableProxyConfig = proxy;
                 linphone_core_clear_proxy_config(LC);
                 
             }else if (enableProxyConfig == proxy){
-                NSLog(@"LinphoneRegistration------> đã đăng ký thành công");
-                
-                //  DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> register thành công sau khi clear proxy config", __FUNCTION__, @"LinphoneRegistrationOk"]);
+                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> register thành công sau khi clear proxy config", __FUNCTION__, @"LinphoneRegistrationOk"]);
                 
                 enableProxyConfig = nil;
                     
@@ -601,19 +641,28 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneRegistrationNone:{
-            //  DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationNone"]);
+            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationNone"]);
             break;
         }
         case LinphoneRegistrationCleared: {
-            NSLog(@"LinphoneRegistrationCleared");
-            //  DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@", __FUNCTION__, @"LinphoneRegistrationCleared"]);
+            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@", __FUNCTION__, @"LinphoneRegistrationCleared"]);
             
             if (enableProxyConfig != NULL || enableProxyConfig != nil) {
-                //  DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@, enableProxyConfig khác NULL --> register proxy config đã lưu", __FUNCTION__, @"LinphoneRegistrationCleared"]);
-                NSLog(@"LinphoneRegistration------> tồn tại enableProxyConfig, register cho enableProxyConfig");
+                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@, enableProxyConfig khác NULL --> register proxy config đã lưu", __FUNCTION__, @"LinphoneRegistrationCleared"]);
                 
                 [self performSelector:@selector(addRegisteredProxyConfig)
                            withObject:nil afterDelay:2.0];
+            }else{
+                //  Check if clear pbx successfully, update token for user
+                if (clearingAccount) {
+                    NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+                    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:key_login];
+                    if (![AppUtils isNullOrEmpty: server] && ![AppUtils isNullOrEmpty: username]) {
+                        [self updateCustomerTokenIOSForPBX:server andUsername:username withTokenValue:@""];
+                    }else{
+                        [self whenClearPBXSuccessfully];
+                    }
+                }
             }
             
             // _waitView.hidden = true;
@@ -625,7 +674,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(proxy));
                 NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
                 if (defaultUsername != nil) {
-                    //  DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ for proxyUsername %@", __FUNCTION__, @"LinphoneRegistrationFailed", defaultUsername]);
+                    DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ for proxyUsername %@", __FUNCTION__, @"LinphoneRegistrationFailed", defaultUsername]);
                     if ([defaultUsername isEqualToString: accountPBX]) {
                         _icWaiting.hidden = YES;
                         [_icWaiting stopAnimating];
@@ -635,7 +684,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                     }else{
                         
                     }
-                    NSLog(@"[KL] %@", [NSString stringWithFormat:@"\n%s: state is %@ for proxyUsername %@", __FUNCTION__, @"LinphoneRegistrationFailed", defaultUsername]);
                 }
             }
             break;
@@ -670,8 +718,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
     [_swChange setOn:YES animated:YES];
+    _btnClear.enabled = YES;
+    _btnSave.enabled = NO;
     
-    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Turn on PBX account successful."]
+    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was registered successful."]
                 duration:2.0 position:CSToastPositionCenter];
 }
 
@@ -689,13 +739,28 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
     
+    serverPBX = @"";
+    accountPBX = @"";
+    passwordPBX = @"";
+    ipPBX = @"";
+    portPBX = @"";
+    
+    _tfAccount.text = @"";
+    _tfPassword.text = @"";
+    _tfServerID.text = @"";
+    
+    typeRegister = normalLogin;
+    _btnClear.enabled = NO;
+    _btnSave.enabled = NO;
+    
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_ID];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:key_login];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:key_password];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Clear PBX successfully"]
+    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was removed"]
                 duration:2.0 position:CSToastPositionCenter];
-    [self performSelector:@selector(popCurrentView) withObject:nil afterDelay:2.0];
+    //  [self performSelector:@selector(popCurrentView) withObject:nil afterDelay:2.0];
 }
 
 - (void)popCurrentView {
@@ -741,6 +806,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)loginPBXFromStringHashCodeResult: (NSString *)message {
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, message]);
+    
     NSArray *tmpArr = [message componentsSeparatedByString:@"/"];
     if (tmpArr.count == 3)
     {
@@ -762,9 +829,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                 
                 [self getInfoForPBXWithServerName: pbxDomain];
             }
-        }else {
-            [self.view makeToast:[appDelegate.localization localizedStringForKey:text_dien_day_tu_thong_tin]
-                        duration:2.0 position:CSToastPositionCenter];
         }
     }else{
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_notification] message:[appDelegate.localization localizedStringForKey:cannot_find_qrcode] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_close] otherButtonTitles: nil];
@@ -936,13 +1000,16 @@ static UICompositeViewDescription *compositeDescription = nil;
             _tfAccount.text = defaultUsername;
             _tfPassword.text = [[NSUserDefaults standardUserDefaults] objectForKey: key_password];
             _tfServerID.text = [[NSUserDefaults standardUserDefaults] objectForKey: PBX_ID];
+            
+            _btnSave.enabled = NO;
         }
+    }else{
+        _btnSave.enabled = NO;
     }
 }
 
 - (void)addRegisteredProxyConfig {
-    //  DDLogInfo(@"%@", [NSString stringWithFormat:@"%s", __FUNCTION__]);
-    NSLog(@"LinphoneRegistration addRegisteredProxyConfig");
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s", __FUNCTION__]);
     
     linphone_core_add_proxy_config(LC, enableProxyConfig);
     linphone_core_set_default_proxy_config(LC, enableProxyConfig);

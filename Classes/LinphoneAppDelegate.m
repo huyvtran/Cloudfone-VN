@@ -76,7 +76,7 @@
 @synthesize fromImagePicker;
 @synthesize _isSyncing;
 @synthesize _allPhonesDict, _allIDDict, contactLoaded;
-@synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber;
+@synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest;
 
 #pragma mark - Lifecycle Functions
 
@@ -395,6 +395,7 @@ void onUncaughtException(NSException* exception)
     
     //  Ghi âm cuộc gọi
     _isSyncing = false;
+    enableForTest = NO;
     
     _allPhonesDict = [[NSMutableDictionary alloc] init];
     _allIDDict = [[NSMutableDictionary alloc] init];
@@ -636,19 +637,19 @@ void onUncaughtException(NSException* exception)
         NSString *loc_key = [aps objectForKey:@"loc-key"];
         NSString *callId = [aps objectForKey:@"call-id"];
         
-        NSString *address = [self getNameForCurrentPhoneNumber: callId];
-        if ([address isEqualToString: callId]) {
-            address = [self getNameOfContactWithPhoneNumber: callId];
-            if ([address isEqualToString:@""]) {
-                address = callId;
-            }
+        NSString *caller = callId;
+        PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: callId];
+        if (![AppUtils isNullOrEmpty: contact.name]) {
+            caller = contact.name;
         }
+        
+        NSString *content = [NSString stringWithFormat:[localization localizedStringForKey:@"You have a call from %@"], caller];
         
         UILocalNotification *messageNotif = [[UILocalNotification alloc] init];
         messageNotif.fireDate = [NSDate dateWithTimeIntervalSinceNow: 0.1];
         messageNotif.timeZone = [NSTimeZone defaultTimeZone];
         messageNotif.timeZone = [NSTimeZone defaultTimeZone];
-        messageNotif.alertBody = [NSString stringWithFormat:@"%@ %@", [localization localizedStringForKey:receive_call_from], address];
+        messageNotif.alertBody = content;
         messageNotif.soundName = UILocalNotificationDefaultSoundName;
         [[UIApplication sharedApplication] scheduleLocalNotification: messageNotif];
         
@@ -1873,50 +1874,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     }else {
         NSLog(@"%@", [NSString stringWithFormat:@"Folder %@ da ton tai", folderName]);
     }
-}
-
-- (NSString *)getNameOfContactWithPhoneNumber: (NSString *)phonenumber
-{
-    NSString *fullName = @"";
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_sipPhone == %@", phonenumber];
-    NSArray *filter = [listContacts filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        ContactObject *aContact = [filter objectAtIndex: 0];
-        fullName = aContact._fullName;
-    }else{
-        for (int iCount=0; iCount<listContacts.count; iCount++) {
-            ContactObject *contact = [listContacts objectAtIndex: iCount];
-            predicate = [NSPredicate predicateWithFormat:@"_valueStr = %@", phonenumber];
-            filter = [contact._listPhone filteredArrayUsingPredicate: predicate];
-            if (filter.count > 0) {
-                fullName = contact._fullName;
-                break;
-            }
-        }
-    }
-    return fullName;
-}
-
-//  Add new by Khai Le on 01/12/2017
-- (NSString *)getNameForCurrentPhoneNumber: (NSString *)callerId {
-    NSString *result = @"";
-    if ([callerId hasPrefix:@"778899"]) {
-        result = callerId;
-    }else{
-        ABRecordRef contact = [self getPBXContactInPhoneBook];
-        if (contact != nil) {
-            result = [AppUtils getNameOfPhoneOfContact:contact andPhoneNumber:callerId];
-            if ([result isEqualToString:@""]) {
-                result = callerId;
-            }else{
-                result = [NSString stringWithFormat:@"%@ - %@", result, callerId];
-            }
-        }else{
-            result = callerId;
-        }
-    }
-    return result;
 }
 
 - (ABRecordRef)getPBXContactInPhoneBook

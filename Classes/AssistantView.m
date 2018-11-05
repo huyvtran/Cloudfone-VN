@@ -29,9 +29,6 @@
 #import "UIAssistantTextField.h"
 #import "UITextField+DoneButton.h"
 
-#pragma mark - Khải Lê
-#import "LoginView.h"
-
 typedef enum _ViewElement {
 	ViewElement_Username = 100,
 	ViewElement_Password = 101,
@@ -54,9 +51,7 @@ typedef enum _ViewElement {
 	ViewElement_EmailFormView = 182,
 } ViewElement;
 
-@interface AssistantView ()<LoginViewDelegate>{
-    LoginView *_lkLoginView;
-    
+@interface AssistantView (){
     //  View thong bao
     UIView *messageView;
     UILabel *lbMessage;
@@ -105,19 +100,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    NSNumber *timeRegister = [[NSUserDefaults standardUserDefaults] objectForKey:time_register_expire];
-    if (timeRegister != nil) {
-        NSTimeInterval timeInSeconds = [[NSDate date] timeIntervalSince1970];
-        if (timeInSeconds - [timeRegister integerValue] < 60*5) {
-            if (_lkLoginView == nil) {
-                [self addViewLoginForMainViewIfNotExists];
-                [_lkLoginView addViewRegisterForMainView];
-            }
-            
-            [self showViewConfirmCode];
-        }
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -137,17 +119,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(configuringUpdate:)
 											   name:kLinphoneConfiguringStateUpdate object:nil];
     
-    //  Hiển thị view confirm code
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showViewConfirmCode)
-                                                 name:showConfirmCodeView object:nil];
-    
-    //  Không thể get được thông tin cho bước confirm
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cannotGetInformationForStep2)
-                                                 name:cannotGetHashString object:nil];
-    //  Đăng ký thành công
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registerNewAccountSuccess)
-                                                 name:registerAccountSuccess object:nil];
-    
 	if (!mustRestoreView) {
 		new_config = NULL;
 		number_of_configs_before = bctbx_list_size(linphone_core_get_proxy_config_list(LC));
@@ -157,9 +128,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 	mustRestoreView = NO;
 	_outgoingView = DialerView.compositeViewDescription;
     
-    //  Add new by Khải Lê on 05/11/2017
     nextView = _loginView;
-    [self addViewLoginForMainViewIfNotExists];      //  Add view login to main view if not exists
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -1385,66 +1354,6 @@ void assistant_is_account_linked(LinphoneAccountCreator *creator, LinphoneAccoun
 	[self shouldEnableNextButton];
 }
 
-#pragma mark - Khải Lê functions
-
-//  Hiển thị view xác nhận
-- (void)showViewConfirmCode {
-    [UIView animateWithDuration:0.3 animations:^{
-        [_lkLoginView._viewConfirm setAlpha:1.0];
-        [_lkLoginView._viewRegister setAlpha: 0.0];
-    }];
-}
-
-- (void)cannotGetInformationForStep2 {
-    [UIView animateWithDuration:0.3 animations:^{
-        [_lkLoginView._viewRegister setAlpha: 1.0];
-        [_lkLoginView._viewConfirm setAlpha:0.0];
-    }];
-}
-
-- (void)registerNewAccountSuccess {
-    [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_register_success]
-                duration:2.0 position:CSToastPositionCenter];
-    _lkLoginView._viewConfirm.alpha = 0;
-    _lkLoginView._viewRegister.alpha = 0;
-    _lkLoginView._viewSignIn.alpha = 1;
-    
-    if (USERNAME != nil && PASSWORD != nil) {
-        _lkLoginView._viewSignIn._tfUsername.text = USERNAME;
-        _lkLoginView._viewSignIn._lbUsername.hidden = YES;
-        
-        _lkLoginView._viewSignIn._tfPassword.text = PASSWORD;
-        _lkLoginView._viewSignIn._lbPassword.hidden = YES;
-    }
-}
-
-/*----Function add view login to main view if not exists
-    (Add new by Khải Lê on 05/11/2017)
-*/
-- (void)addViewLoginForMainViewIfNotExists
-{
-    [self loadAssistantConfig:@"assistant_external_sip.rc"];
-    
-    if (_lkLoginView == nil) {
-        NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"LoginView" owner:nil options:nil];
-        for(id currentObject in toplevelObject){
-            if ([currentObject isKindOfClass:[LoginView class]]) {
-                _lkLoginView = (LoginView *) currentObject;
-                break;
-            }
-        }
-        [_lkLoginView setFrame: CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-        [_lkLoginView setupUIForView];
-        
-        [_lkLoginView._btnSignIn addTarget:self
-                                    action:@selector(pressOnLoginButton)
-                          forControlEvents:UIControlEventTouchUpInside];
-        
-        [self.view addSubview: _lkLoginView];
-    }
-    _lkLoginView.delegate = self;
-}
-
 - (void)pressOnLoginButton {
     nextView = _loginView;
     [self loadAssistantConfig:@"assistant_external_sip.rc"];
@@ -1468,35 +1377,5 @@ void assistant_is_account_linked(LinphoneAccountCreator *creator, LinphoneAccoun
     _waitView.hidden = YES;
     return;
 }
-
-#pragma mark - LoginViewDelegate
-- (void)loginToSipWithInfo:(NSDictionary *)sipInfo {
-    NSString *domain = [sipInfo objectForKey:@"sipIP"];
-    NSString *sipPort = [sipInfo objectForKey:@"sipPort"];
-    NSString *userName = [sipInfo objectForKey:@"userName"];
-    NSString *password = _lkLoginView._viewSignIn._tfPassword.text;
-    
-    if ([domain isKindOfClass:[NSString class]] && [sipPort isKindOfClass:[NSString class]] && [userName isKindOfClass:[NSString class]] && password != nil && ![password isEqualToString:@""])
-    {
-        [[NSUserDefaults standardUserDefaults] setObject: userName forKey:key_login];
-        [[NSUserDefaults standardUserDefaults] setObject: password forKey: key_password];
-        [[NSUserDefaults standardUserDefaults] setObject:domain forKey:key_ip];
-        [[NSUserDefaults standardUserDefaults] setObject:sipPort forKey:key_port];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        BOOL success = [SipUtils loginSipWithDomain:domain username:userName password:password port:sipPort];
-        if (success) {
-            [SipUtils registerProxyWithUsername:userName password:password domain:domain port:sipPort];
-            [PhoneMainView.instance changeCurrentView:DialerView.compositeViewDescription];
-        }else {
-            [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_failed]
-                        duration:2.0 position:CSToastPositionCenter];
-        }
-    }else{
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_failed]
-                    duration:2.0 position:CSToastPositionCenter];
-    }
-}
-
 
 @end

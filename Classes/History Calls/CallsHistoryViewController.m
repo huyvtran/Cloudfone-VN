@@ -123,19 +123,31 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_iconAllClicked:(id)sender {
+    if (currentView == eAllCalls) {
+        return;
+    }
+    
     currentView = eAllCalls;
     [self updateStateIconWithView:currentView];
     [_pageViewController setViewControllers:@[allCallsVC]
                                   direction:UIPageViewControllerNavigationDirectionReverse
                                    animated:false completion:nil];
+    
+    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete"] forState:UIControlStateNormal];
 }
 
 - (IBAction)_iconMissedClicked:(id)sender {
+    if (currentView == eMissedCalls) {
+        return;
+    }
+    
     currentView = eMissedCalls;
     [self updateStateIconWithView:currentView];
     [_pageViewController setViewControllers: @[missedCallsVC]
                                   direction: UIPageViewControllerNavigationDirectionReverse
                                    animated: false completion: nil];
+    
+    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete"] forState:UIControlStateNormal];
 }
 
 - (IBAction)_btnEditPressed:(id)sender {

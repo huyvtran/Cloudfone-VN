@@ -10,7 +10,6 @@
 #import "TypePhoneObject.h"
 #import "NewPhoneCell.h"
 #import "InfoForNewContactTableCell.h"
-#import "MenuCell.h"
 #import "SettingItem.h"
 #import "ChooseAvatarPopupView.h"
 #import "NSDatabase.h"

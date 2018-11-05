@@ -30,7 +30,6 @@
                 <outlet property="_viewHeader" destination="HCe-Rs-E8t" id="R6f-pv-yXy"/>
                 <outlet property="bgHeader" destination="Wee-rK-Fn0" id="hZg-Pd-6Zs"/>
                 <outlet property="btnLoginWithPhone" destination="LcG-7n-kvX" id="xXe-Hx-8v9"/>
-                <outlet property="lbVersion" destination="LRf-5H-xDS" id="jVc-Hl-hab"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -168,13 +167,6 @@
                         <action selector="btnLoginWithPhonePress:" destination="-1" eventType="touchUpInside" id="7YE-Gl-a16"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Version" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LRf-5H-xDS">
-                    <rect key="frame" x="132" y="459" width="57" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="1I0-rd-ZVU">
                     <rect key="frame" x="150" y="230" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

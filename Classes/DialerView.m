@@ -1004,6 +1004,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (defaultConfig == NULL) {
         _lbAccount.text = NSLocalizedString(@"", nil);
         _lbStatus.text = [appDelegate.localization localizedStringForKey:@"No account"];
+        _lbStatus.textColor = UIColor.orangeColor;
     }else{
         const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
         NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
@@ -1134,7 +1135,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                         range: NSMakeRange(0, strAND.length)];
         [attrResult appendAttributedString:attrAnd];
         
-        NSString *strOthers = [NSString stringWithFormat:@"%lu %@", searchs.count-1, [appDelegate.localization localizedStringForKey:@"others"]];
+        NSString *strOthers = [NSString stringWithFormat:@"%d %@", (int)searchs.count-1, [appDelegate.localization localizedStringForKey:@"others"]];
         NSMutableAttributedString * str2 = [[NSMutableAttributedString alloc] initWithString:strOthers];
         [str2 addAttribute: NSLinkAttributeName value: @"others" range: NSMakeRange(0, strOthers.length)];
         [str2 addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleNone) range:NSMakeRange(0, strOthers.length)];

@@ -47,7 +47,6 @@ typedef enum{
 
 @property (nonatomic, strong) WebServices *webService;
 @property (weak, nonatomic) IBOutlet UIButton *btnLoginWithPhone;
-@property (weak, nonatomic) IBOutlet UILabel *lbVersion;
 
 - (IBAction)btnLoginWithPhonePress:(UIButton *)sender;
 

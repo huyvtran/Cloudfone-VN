@@ -121,7 +121,6 @@
 "text_gallery_header"       =   "Thư viện"
 "text_hi"                   =   "Xin chào"
 
-"text_unknown"              =   "Không xác định"
 "text_list_friend_accept"   = "Danh sách kết bạn"
 "text_failed"               =   "Thất bại!"
 
@@ -238,8 +237,6 @@
 
 "text_add"          =   "Thêm"
 "text_you"          =   "Bạn"
-
-"receive_call_from" =   "Bạn có cuộc gọi từ"
 
 "text_expire_none"  =   "Không có"
 "text_expire_5s"    =   "5 giây"
@@ -984,12 +981,6 @@
 
 "text_dien_day_tu_thong_tin"    =   "Vui lòng điền đầy đủ thông tin"
 
-"login_pbx_success_not_update_token" = "Đăng ký PBX thành công. Nhưng cập nhật token cho tài khoản PBX thất bại!"
-"register_pbx_failed"   =   "Đăng ký PBX thất bại!"
-"pbx_has_been_deleted"  =   "Tài khoản PBX đã được xoá!"
-"pbx_turn_off"          =   "Tài khoản PBX đã được tắt!"
-"pbx_turn_on"           =   "Tài khoản PBX đã được bật!"
-
 "future_not_support"    =   "Tính năng này chưa được hỗ trợ!"
 
 "text_calling"      =   "Đang gọi..."
@@ -998,7 +989,6 @@
 "text_terminating"  =   "Kết thúc"
 "text_terminated"   =   "Kết thúc cuộc gọi"
 
-"Close" = "Đóng"
 "Chat images" = "Hình ảnh chung"
 "Change background" = "Đổi hình nền"
 "Receive notifications" = "Báo tin nhắn mới"
@@ -1036,9 +1026,6 @@
 
 "text_clear_history_group_chat" =   "Bạn có muốn xoá tất cả tin nhắn?"
 "phòng"    =   "Rời phòng và xoá tin nhắn?"
-
-"check_pbx_account"         =   "Vui lòng kiểm tra tài khoản PBX"
-"clear_pbx_successfully"    =   "Xoá PBX thành công"
 
 "text_message_settings" =   "TIN NHẮN"
 "text_call_settings"    =   "CUỘC GỌI"
@@ -1185,3 +1172,18 @@
 "Add call" = "Thêm cuộc gọi"
 "Hold" = "Giữ cuộc gọi"
 "Transfer" = "Chuyển cuộc gọi"
+
+"About" = "Thông tin"
+"Check for update" = "Kiểm tra cập nhật"
+"Close" = "Đóng"
+"Current version on App Store is %@. Do you want to update right now?" = "Phiên bản hiện tại trên App Store là %@. Bạn có muốn cập nhật ngay bây giờ?"
+"Update" = "Cập nhật"
+"We have not supported this feature yet. Please try later!" = "Chúng tôi chưa hỗ trợ tính năng này. Vui lòng thử lại sau!"
+
+"Your account was removed" = "Tài khoản đã được xoá"
+"Your account was registered successful." = "Tài khoản đã được đăng ký thành công."
+"This account has been registered" = "Tài khoản này đã được đăng ký"
+"Unknown" = "Chưa xác định"
+"Account name" = "Tên tài khoản"
+"You have a call from %@" = "Bạn có cuộc gọi từ %@"
+"The user is busy" = "Người dùng đang bận"

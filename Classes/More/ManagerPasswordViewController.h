@@ -28,7 +28,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *_btnCancel;
 @property (weak, nonatomic) IBOutlet UIButton *_btnSave;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *_icWaiting;
-@property (weak, nonatomic) IBOutlet UILabel *lbVersion;
 
 - (IBAction)_icBackClicked:(UIButton *)sender;
 - (IBAction)_btnCancelPressed:(UIButton *)sender;

@@ -14,9 +14,7 @@
 //  #import "NSDBCallnex.h"
 
 #import "NSData+Base64.h"
-
 #import "ContactCell.h"
-#import "ContactNormalCell.h"
 #import "ContactObject.h"
 #import "ContactDetailObj.h"
 
@@ -215,7 +213,7 @@
 
 - (NSString *)subTowString: (NSString *)str1 andString: (NSString *)str2{
     if ([str1 isEqualToString: @""] && [str2 isEqualToString: @""]) {
-        return [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_unknown];
+        return [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
     }else if ([str1 isEqualToString: @""] && ![str2 isEqualToString: @""]){
         return str2;
     }else if (![str1 isEqualToString: @""] && [str2 isEqualToString: @""]){
@@ -266,7 +264,7 @@
     // Tên contact
     if (contact._fullName != nil) {
         if ([contact._fullName isEqualToString: @""]) {
-            cell.name.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_unknown];
+            cell.name.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
         }else{
             cell.name.text = contact._fullName;
         }

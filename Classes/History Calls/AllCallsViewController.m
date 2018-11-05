@@ -201,7 +201,7 @@
         [cell updateFrameForHotline: NO];
         cell._lbPhone.hidden = NO;
         
-        if ([aCall._phoneName isEqualToString:@""]) {
+        if ([AppUtils isNullOrEmpty: aCall._phoneName]) {
             cell._lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
         }else{
             cell._lbName.text = aCall._phoneName;

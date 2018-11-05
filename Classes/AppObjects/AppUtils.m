@@ -477,31 +477,23 @@
 }
 
 + (NSString *)stringDateFromInterval: (NSTimeInterval)interval{
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970: interval];
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
-    [dateFormat setDateFormat:@"dd-MM-yyyy"];
-    NSString *dateString = [dateFormat stringFromDate:date];
-    return dateString;
-}
-
-// get data của hình ảnh với tên file
-+ (NSData *)getFileDataOfMessageResend: (NSString *)fileName andFileType: (NSString *)fileType{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *pathFile = @"";
-    if ([fileType isEqualToString: imageMessage]) {
-        pathFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/files/%@", fileName]];
-    }else{
-        NSLog(@"...Loai file khac");
+    NSString *language = [[NSUserDefaults standardUserDefaults] objectForKey:language_key];
+    if (language == nil) {
+        language = key_en;
+        [[NSUserDefaults standardUserDefaults] setObject:language forKey:language_key];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
-    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath: pathFile];
-    if (!fileExists) {
-        return nil;
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970: interval];
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
+    if ([language isEqualToString: key_en]) {
+        [dateFormat setDateFormat:@"MM-dd-yyyy"];
     }else{
-        NSData *fileData = [NSData dataWithContentsOfFile: pathFile];
-        return fileData;
+        [dateFormat setDateFormat:@"dd-MM-yyyy"];
     }
+    
+    NSString *dateString = [dateFormat stringFromDate:date];
+    return dateString;
 }
 
 // Lấy hình ảnh với tên
@@ -1084,8 +1076,16 @@
     return string == nil || string==(id)[NSNull null] || [string isEqualToString: @""];
 }
 
-+ (NSString *)getAppVersion {
-    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
++ (NSString *)getAppVersionWithBuildVersion: (BOOL)showBuildVersion {
+    NSString *version = @"";
+    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+    
+    if (!showBuildVersion) {
+        version = [info objectForKey:@"CFBundleShortVersionString"];
+    }else{
+        version = [NSString stringWithFormat:@"%@ (%@)", [info objectForKey:@"CFBundleShortVersionString"], [info objectForKey:@"CFBundleVersion"]];
+    }
+    return version;
 }
 
 + (UIImage *)imageWithColor:(UIColor *)color andBounds:(CGRect)imgBounds {
@@ -1105,7 +1105,7 @@
     
     NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
     
-    NSString *content = [NSString stringWithFormat:@" %@ %@", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Version"], [AppUtils getAppVersion]];
+    NSString *content = [NSString stringWithFormat:@" %@ %@", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Version"], [AppUtils getAppVersionWithBuildVersion: NO]];
     NSMutableAttributedString *contentString = [[NSMutableAttributedString alloc] initWithString:content];
     
     NSMutableAttributedString *verString = [[NSMutableAttributedString alloc] initWithAttributedString: attachmentString];
@@ -1151,51 +1151,23 @@
 
 + (NSString *)getBuildDate
 {
-    NSString *curLanguage = [[NSUserDefaults standardUserDefaults] objectForKey:language_key];
-    if (curLanguage == nil) {
-        curLanguage = key_en;
-    }
+    NSString *dateStr = [NSString stringWithFormat:@"%@ %@", [NSString stringWithUTF8String:__DATE__], [NSString stringWithUTF8String:__TIME__]];
     
-    NSString *buildDate;
-    if ([curLanguage isEqualToString: key_vi]) {
-        // Get build date and time, format to 'yyMMddHHmm'
-        NSString *dateStr = [NSString stringWithFormat:@"%@ %@", [NSString stringWithUTF8String:__DATE__], [NSString stringWithUTF8String:__TIME__]];
-        
-        // Convert to date
-        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:@"LLL d yyyy HH:mm:ss"];
-        dateFormat.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"vi-VN"];
-        NSDate *date = [dateFormat dateFromString:dateStr];
-        
-        NSString *refDateString = [[AppUtils historyEventDate] stringFromDate:date];
-        buildDate = refDateString;//[NSString stringWithFormat:@"%s",IMOMEET_BUILD_DATE];
-        
-        // Set output format and convert to string
-        //[dateFormat setDateFormat:@"yyMMddHHmm"];
-        //  dateFormat.dateStyle = NSDateFormatterLongStyle;
-        //  buildDate = [dateFormat stringFromDate:date];
-    }else{
-        NSString *dateStr = [NSString stringWithFormat:@"%@ %@", [NSString stringWithUTF8String:__DATE__], [NSString stringWithUTF8String:__TIME__]];
-        
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"LLL d yyyy HH:mm:ss"];
-        dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
-        NSDate *date1 = [dateFormatter dateFromString:dateStr];
-        
-        NSString *refDateString = [[AppUtils historyEventDate] stringFromDate:date1];
-        buildDate = refDateString;//[NSString stringWithFormat:@"%s",IMOMEET_BUILD_DATE];
-    }
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"LLL d yyyy HH:mm:ss"];
+    dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    NSDate *date1 = [dateFormatter dateFromString:dateStr];
     
-    return buildDate;
+    NSTimeInterval time = [date1 timeIntervalSince1970];
+    NSString *dateResult = [AppUtils stringDateFromInterval: time];
+    NSString *timeResult = [AppUtils stringTimeFromInterval: time];
+    return [NSString stringWithFormat:@"%@ %@", dateResult, timeResult];
 }
 
 +(NSDateFormatter*) historyEventDate{
-    static NSDateFormatter* sHistoryEventDate = nil;
-    if(!sHistoryEventDate){
-        sHistoryEventDate = [[NSDateFormatter alloc] init];
-        [sHistoryEventDate setTimeStyle:NSDateFormatterNoStyle];
-        [sHistoryEventDate setDateStyle:NSDateFormatterMediumStyle];
-    }
+    NSDateFormatter* sHistoryEventDate = [[NSDateFormatter alloc] init];
+    [sHistoryEventDate setTimeStyle:NSDateFormatterNoStyle];
+    [sHistoryEventDate setDateStyle:NSDateFormatterMediumStyle];
     return sHistoryEventDate;
 }
 
