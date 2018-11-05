@@ -788,10 +788,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     [scanQRCodeVC presentViewController:pickerController animated:YES completion:nil];
 }
 
-- (void)receiveDataFromQRCode: (NSDictionary *)data {
-    [_icWaiting stopAnimating];
-    _icWaiting.hidden = YES;
-    
+- (void)receiveDataFromQRCode: (NSDictionary *)data
+{
     if (data != nil) {
         NSString *result = [data objectForKey:@"result"];
         if (result != nil && [result isEqualToString:@"success"]) {
@@ -801,6 +799,9 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         return;
     }
+    [_icWaiting stopAnimating];
+    _icWaiting.hidden = YES;
+    
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Notification"] message:[appDelegate.localization localizedStringForKey:@"Can not find QR Code!"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Close"] otherButtonTitles: nil];
     [alertView show];
 }
@@ -817,20 +818,22 @@ static UICompositeViewDescription *compositeDescription = nil;
         
         if (![pbxDomain isEqualToString:@""] && ![pbxAccount isEqualToString:@""] && ![pbxPassword isEqualToString:@""])
         {
-            if ([pbxAccount isEqualToString:USERNAME]) {
-                //  Hiển thị thông báo nếu account từ QRCode trùng với account đã đc login hiện tại
-                [self.view makeToast:[appDelegate.localization localizedStringForKey:@"This account has been registered"] duration:3.0 position:CSToastPositionCenter];
-            }else{
-                typeRegister = qrCodeLogin;
-                
-                serverPBX = pbxDomain;
-                accountPBX = pbxAccount;
-                passwordPBX = pbxPassword;
-                
-                [self getInfoForPBXWithServerName: pbxDomain];
-            }
+            typeRegister = qrCodeLogin;
+            
+            serverPBX = pbxDomain;
+            accountPBX = pbxAccount;
+            passwordPBX = pbxPassword;
+            
+            _tfAccount.text = accountPBX;
+            _tfServerID.text = serverPBX;
+            _tfPassword.text = passwordPBX;
+            
+            [self getInfoForPBXWithServerName: pbxDomain];
         }
     }else{
+        [_icWaiting stopAnimating];
+        _icWaiting.hidden = YES;
+        
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_notification] message:[appDelegate.localization localizedStringForKey:cannot_find_qrcode] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_close] otherButtonTitles: nil];
         [alertView show];
     }
@@ -846,6 +849,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [self dismissViewControllerAnimated:YES completion:^{
         DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s", __FUNCTION__]);
+        
+        _icWaiting.hidden = NO;
+        [_icWaiting startAnimating];
         
         [self getPBXInformationWithHashString: result];
     }];
@@ -881,8 +887,13 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)getQRCodeContentFromImage: (UIImage *)image {
     NSArray *qrcodeContent = [self detectQRCode: image];
     if (qrcodeContent != nil && qrcodeContent.count > 0) {
-        for (CIQRCodeFeature* qrFeature in qrcodeContent) {
+        for (CIQRCodeFeature* qrFeature in qrcodeContent)
+        {
+            _icWaiting.hidden = NO;
+            [_icWaiting startAnimating];
+            
             [self getPBXInformationWithHashString: qrFeature.messageString];
+            break;
         }
     }else{
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_notification] message:[appDelegate.localization localizedStringForKey:cannot_find_qrcode] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_close] otherButtonTitles: nil];

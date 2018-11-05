@@ -925,7 +925,7 @@ void onUncaughtException(NSException* exception)
         _deviceToken = [_deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
         _deviceToken = [_deviceToken stringByReplacingOccurrencesOfString:@"<" withString:@""];
         _deviceToken = [_deviceToken stringByReplacingOccurrencesOfString:@">" withString:@""];
-        
+        NSLog(@"%@", _deviceToken);
         //  Cap nhat token cho phan chat
         if (USERNAME != nil && ![USERNAME isEqualToString: @""]) {
             [self updateCustomerTokenIOS];
