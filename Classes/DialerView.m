@@ -362,9 +362,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)onBackspaceLongClick:(id)sender {
-    _addressField.text = @"";
-    _addContactButton.hidden = YES;
-    tvSearchResult.hidden = YES;
+    [self hideSearchView];
 }
 
 - (void)onZeroLongClick:(id)sender {
@@ -663,6 +661,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     _addressField.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:45.0];
     _addressField.adjustsFontSizeToFitWidth = YES;
     _addressField.delegate = self;
+    [_addressField addTarget:self
+                      action:@selector(addressfieldDidChanged:)
+            forControlEvents:UIControlEventEditingChanged];
     
     tvSearchResult = [[UITextView alloc] init];
     tvSearchResult.backgroundColor = UIColor.clearColor;
@@ -876,6 +877,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (actionSheet.tag == 100) {
         switch (buttonIndex) {
             case 0:{
+                [self hideSearchView];
+                
                 NewContactViewController *controller = VIEW(NewContactViewController);
                 if (controller) {
                     controller.currentPhoneNumber = _addressField.text;
@@ -886,6 +889,8 @@ static UICompositeViewDescription *compositeDescription = nil;
                 break;
             }
             case 1:{
+                [self hideSearchView];
+                
                 AllContactListViewController *controller = VIEW(AllContactListViewController);
                 if (controller != nil) {
                     controller.phoneNumber = _addressField.text;
@@ -1150,25 +1155,27 @@ static UICompositeViewDescription *compositeDescription = nil;
     return attrResult;
 }
 
-//  Sẽ duyệt trong kết quả search, contact nào có đầy đủ tên và số phone sẽ đc chọn
-- (NSArray *)convertContentToArrayValue: (NSString *)content
-{
-    NSString *name = @"";
-    NSString *phone = @"";
-    NSString *nameForSearch = @"";
-    
-    NSArray *tmpArr = [content componentsSeparatedByString:@"|"];
-    if (tmpArr.count >= 3) {
-        name = [tmpArr firstObject];
-        phone = [tmpArr lastObject];
-        nameForSearch = [tmpArr objectAtIndex: 1];
+- (void)addressfieldDidChanged: (UITextField *)textfield {
+    if ([textfield.text isEqualToString:@""]) {
+        _addContactButton.hidden = YES;
+        tvSearchResult.hidden = YES;
         
-        if (![name isEqualToString:@""] && ![phone isEqualToString:@""] && ![nameForSearch isEqualToString:@""]) {
-            return @[name, nameForSearch, phone];
-        }
+        _addContactButton.hidden = YES;
+    }else{
+        _addContactButton.hidden = NO;
+        
+        [pressTimer invalidate];
+        pressTimer = nil;
+        pressTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self
+                                                    selector:@selector(searchPhoneBookWithThread)
+                                                    userInfo:nil repeats:false];
     }
-    
-    return @[@"", @"", @""];
+}
+
+- (void)hideSearchView {
+    _addressField.text = @"";
+    _addContactButton.hidden = YES;
+    tvSearchResult.hidden = YES;
 }
 
 #pragma mark - UIAlertview Delegate
@@ -1202,6 +1209,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     _addressField.text = phoneNumber;
     tvSearchResult.hidden = YES;
 }
+
+
 
 
 @end
