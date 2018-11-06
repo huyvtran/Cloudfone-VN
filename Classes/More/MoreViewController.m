@@ -120,6 +120,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 _imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: avatar]];
             }else{
                 _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+                [self downloadMyAvatar: defaultUsername];
             }
             icEdit.hidden = NO;
         }else{
@@ -278,6 +279,38 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (IBAction)icEditClicked:(UIButton *)sender {
     [[PhoneMainView instance] changeCurrentView:[EditProfileViewController compositeViewDescription]
                                            push:YES];
+}
+
+- (void)downloadMyAvatar: (NSString *)myaccount
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+        NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, myaccount];
+        NSString *linkAvatar = [NSString stringWithFormat:@"%@/%@", link_picture_chat_group, avatarName];
+        NSData *data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: linkAvatar]];
+        
+        if (data != nil) {
+            NSString *folder = [NSString stringWithFormat:@"/avatars/%@", avatarName];
+            [AppUtils saveFileToFolder:data withName: folder];
+            
+            //  save avatar to get from local
+            NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", myaccount];
+            
+            NSString *strAvatar = @"";
+            if ([data respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
+                strAvatar = [data base64EncodedStringWithOptions: 0];
+            } else {
+                strAvatar = [data base64Encoding];
+            }
+            
+            [[NSUserDefaults standardUserDefaults] setObject:strAvatar forKey:pbxKeyAvatar];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                _imgAvatar.image = [UIImage imageWithData: data];
+            });
+        }
+    });
 }
 
 @end

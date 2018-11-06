@@ -1020,15 +1020,17 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)addRegisteredProxyConfig {
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s", __FUNCTION__]);
-    
-    linphone_core_add_proxy_config(LC, enableProxyConfig);
-    linphone_core_set_default_proxy_config(LC, enableProxyConfig);
-    linphone_proxy_config_enable_register(enableProxyConfig, YES);
-    linphone_proxy_config_register_enabled(enableProxyConfig);
-    linphone_proxy_config_done(enableProxyConfig);
-    
-    linphone_core_refresh_registers(LC);
+    if (enableProxyConfig != NULL) {
+        DDLogInfo(@"%@", [NSString stringWithFormat:@"%s", __FUNCTION__]);
+        
+        linphone_core_add_proxy_config(LC, enableProxyConfig);
+        linphone_core_set_default_proxy_config(LC, enableProxyConfig);
+        linphone_proxy_config_enable_register(enableProxyConfig, YES);
+        linphone_proxy_config_register_enabled(enableProxyConfig);
+        linphone_proxy_config_done(enableProxyConfig);
+        
+        linphone_core_refresh_registers(LC);
+    }
 }
 
 @end

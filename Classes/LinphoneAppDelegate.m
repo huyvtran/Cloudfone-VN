@@ -395,7 +395,7 @@ void onUncaughtException(NSException* exception)
     
     //  Ghi âm cuộc gọi
     _isSyncing = false;
-    enableForTest = NO;
+    enableForTest = YES;
     
     _allPhonesDict = [[NSMutableDictionary alloc] init];
     _allIDDict = [[NSMutableDictionary alloc] init];

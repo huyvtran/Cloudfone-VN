@@ -344,6 +344,11 @@
 		840B574320061FD300DCBA7E /* QRCodeReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573A20061FD200DCBA7E /* QRCodeReaderViewController.m */; };
 		840B574420061FD300DCBA7E /* QRCameraSwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573E20061FD300DCBA7E /* QRCameraSwitchButton.m */; };
 		8419017620EAA01B003F524C /* PulsingHaloLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8419016E20EAA01B003F524C /* PulsingHaloLayer.m */; };
+		841B35912191F1360019BD45 /* ConferenceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 841B358F2191F1360019BD45 /* ConferenceTableViewCell.m */; };
+		841B35922191F1360019BD45 /* ConferenceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 841B35902191F1360019BD45 /* ConferenceTableViewCell.xib */; };
+		841B359C2191F26D0019BD45 /* ic-pause-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 841B35992191F26B0019BD45 /* ic-pause-active.png */; };
+		841B359D2191F26D0019BD45 /* ic-pause-default.png in Resources */ = {isa = PBXBuildFile; fileRef = 841B359A2191F26C0019BD45 /* ic-pause-default.png */; };
+		841B359E2191F26D0019BD45 /* button-endcall.png in Resources */ = {isa = PBXBuildFile; fileRef = 841B359B2191F26D0019BD45 /* button-endcall.png */; };
 		841D338C216112ED00FFCD72 /* ManagerPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841D338A216112ED00FFCD72 /* ManagerPasswordViewController.m */; };
 		841D338D216112ED00FFCD72 /* ManagerPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 841D338B216112ED00FFCD72 /* ManagerPasswordViewController.xib */; };
 		841EB1662169818E00B59B8E /* add_call.png in Resources */ = {isa = PBXBuildFile; fileRef = 841EB1622169818D00B59B8E /* add_call.png */; };
@@ -1219,6 +1224,12 @@
 		8419016B20EAA01B003F524C /* PulsingHaloLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulsingHaloLayer.h; sourceTree = "<group>"; };
 		8419016D20EAA01B003F524C /* PulsingHalo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulsingHalo.h; sourceTree = "<group>"; };
 		8419016E20EAA01B003F524C /* PulsingHaloLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PulsingHaloLayer.m; sourceTree = "<group>"; };
+		841B358E2191F1360019BD45 /* ConferenceTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ConferenceTableViewCell.h; path = AppUI/ConferenceTableViewCell.h; sourceTree = "<group>"; };
+		841B358F2191F1360019BD45 /* ConferenceTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ConferenceTableViewCell.m; path = AppUI/ConferenceTableViewCell.m; sourceTree = "<group>"; };
+		841B35902191F1360019BD45 /* ConferenceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ConferenceTableViewCell.xib; path = AppUI/ConferenceTableViewCell.xib; sourceTree = "<group>"; };
+		841B35992191F26B0019BD45 /* ic-pause-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic-pause-active.png"; sourceTree = "<group>"; };
+		841B359A2191F26C0019BD45 /* ic-pause-default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic-pause-default.png"; sourceTree = "<group>"; };
+		841B359B2191F26D0019BD45 /* button-endcall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-endcall.png"; sourceTree = "<group>"; };
 		841D3389216112ED00FFCD72 /* ManagerPasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ManagerPasswordViewController.h; path = More/ManagerPasswordViewController.h; sourceTree = "<group>"; };
 		841D338A216112ED00FFCD72 /* ManagerPasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ManagerPasswordViewController.m; path = More/ManagerPasswordViewController.m; sourceTree = "<group>"; };
 		841D338B216112ED00FFCD72 /* ManagerPasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ManagerPasswordViewController.xib; path = More/ManagerPasswordViewController.xib; sourceTree = "<group>"; };
@@ -2611,6 +2622,9 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				841B359B2191F26D0019BD45 /* button-endcall.png */,
+				841B35992191F26B0019BD45 /* ic-pause-active.png */,
+				841B359A2191F26C0019BD45 /* ic-pause-default.png */,
 				15814E25219050A900E1C48C /* ic_introduce.png */,
 				1556A8E02181C346002E8D26 /* launch_bg.png */,
 				1556A8DF2181C346002E8D26 /* launch_logo.png */,
@@ -3057,6 +3071,9 @@
 				159E086F217984BD0056E2BB /* RegisterPBXWithPhoneView.h */,
 				159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */,
 				159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */,
+				841B358E2191F1360019BD45 /* ConferenceTableViewCell.h */,
+				841B358F2191F1360019BD45 /* ConferenceTableViewCell.m */,
+				841B35902191F1360019BD45 /* ConferenceTableViewCell.xib */,
 			);
 			name = AppUI;
 			sourceTree = "<group>";
@@ -3828,6 +3845,7 @@
 				84ECF9C7216679A70067B4B6 /* ic_keypad_dis.png in Resources */,
 				8440F188216BA82000BB559C /* mini_key_sharp_hover.png in Resources */,
 				84E07EF72025DD8A0000CD12 /* callnex_ring.wav in Resources */,
+				841B35922191F1360019BD45 /* ConferenceTableViewCell.xib in Resources */,
 				153D00152164A67E007B69B3 /* numpad_clear.png in Resources */,
 				843ED6761FB66A36005FE1C1 /* SettingCell.xib in Resources */,
 				15E4B96821895271008677AA /* TabBarView~ipad.xib in Resources */,
@@ -3918,6 +3936,7 @@
 				63E27A321C4FECD000D332AE /* LaunchScreen.xib in Resources */,
 				636316D41A1DEC650009B839 /* SettingsView.xib in Resources */,
 				84B889F01FAF6C73008D88C5 /* PhoneBookContactCell.xib in Resources */,
+				841B359D2191F26D0019BD45 /* ic-pause-default.png in Resources */,
 				153D00362164D537007B69B3 /* menu_contacts_en_def.png in Resources */,
 				15E641B22179779900A9E15E /* ic_phone_login.png in Resources */,
 				D34F6F9E1594D3FB0095705B /* InAppSettings.bundle in Resources */,
@@ -3961,6 +3980,7 @@
 				15F2E5F5216B56F60076CB1F /* ic_setting.png in Resources */,
 				153D000F2164A67E007B69B3 /* numpad_six_default.png in Resources */,
 				153D004C2164D9D3007B69B3 /* numpad_two_hover.png in Resources */,
+				841B359E2191F26D0019BD45 /* button-endcall.png in Resources */,
 				153D00592164D9D3007B69B3 /* hotline_hover.png in Resources */,
 				153D002E2164D537007B69B3 /* menu_keypad_en_def.png in Resources */,
 				159E0879217984F00056E2BB /* RegisterPBXWithPhoneView.xib in Resources */,
@@ -3989,6 +4009,7 @@
 				8440F186216BA82000BB559C /* mini_key_5_hover.png in Resources */,
 				84ECF9C0216679A70067B4B6 /* ic_pause_dis.png in Resources */,
 				84ECF9BD216679A70067B4B6 /* ic_keypad_def.png in Resources */,
+				841B359C2191F26D0019BD45 /* ic-pause-active.png in Resources */,
 				153D00582164D9D3007B69B3 /* numpad_zero_hover.png in Resources */,
 				15857BFE216DEC0000DB5237 /* UIContactPhoneCell.xib in Resources */,
 				15906E33217AE4A1000877A9 /* add_call_hover.png in Resources */,
@@ -4346,6 +4367,7 @@
 				84EFFE041FF3E6B60085A9F4 /* DGActivityIndicatorBallTrianglePathAnimation.m in Sources */,
 				84E07EFE2025F39E0000CD12 /* SettingSoundCell.m in Sources */,
 				D36FB2D51589EF7C0036F6F2 /* UIPauseButton.m in Sources */,
+				841B35912191F1360019BD45 /* ConferenceTableViewCell.m in Sources */,
 				84E286C31FC9E1AC009CBA27 /* UIImage+MultiFormat.m in Sources */,
 				8487DA6020E3879E006307BF /* WebServices.m in Sources */,
 				84EFFE0C1FF3E6B60085A9F4 /* DGActivityIndicatorLineScaleAnimation.m in Sources */,

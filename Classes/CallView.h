@@ -42,7 +42,7 @@ typedef enum typeCall{
 
 @class VideoView;
 
-@interface CallView : TPMultiLayoutViewController <UIGestureRecognizerDelegate, UICompositeViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, CAAnimationDelegate> {
+@interface CallView : TPMultiLayoutViewController <UIGestureRecognizerDelegate, UICompositeViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, CAAnimationDelegate, UITableViewDelegate, UITableViewDataSource> {
   @private
 	UITapGestureRecognizer *singleFingerTap;
 	NSTimer *hideControlsTimer;
@@ -122,13 +122,20 @@ typedef enum typeCall{
 @property (weak, nonatomic) IBOutlet UIScrollView *_scrollView;
 
 //  Conference view
+@property (weak, nonatomic) IBOutlet UILabel *lbConfQuality;
+@property (weak, nonatomic) IBOutlet UILabel *lbConfName;
+@property (weak, nonatomic) IBOutlet UILabel *lbConfDuration;
+@property (weak, nonatomic) IBOutlet UIButton *btnConfMute;
+@property (weak, nonatomic) IBOutlet UIButton *btnConfHold;
+@property (weak, nonatomic) IBOutlet UIButton *btnConfSpeaker;
+
 @property (weak, nonatomic) IBOutlet UIView *detailConference;
-@property (weak, nonatomic) IBOutlet UIImageView *_bgHeaderConf;
 @property (weak, nonatomic) IBOutlet UIImageView *avatarConference;
 @property (weak, nonatomic) IBOutlet UILabel *lbAddressConf;
-@property (weak, nonatomic) IBOutlet UILabel *_lbConferenceDuration;
+@property (weak, nonatomic) IBOutlet UIButton *btnEndConf;
+@property (weak, nonatomic) IBOutlet UITableView *tbConf;
+
 @property (weak, nonatomic) IBOutlet UIButton *btnAddCallConf;
-@property (weak, nonatomic) IBOutlet UIButton *btnEndCallConf;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionConference;
 

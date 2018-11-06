@@ -48,9 +48,12 @@
 #import <OpenGLES/EAGLDrawable.h>
 #import "UploadPicture.h"
 #import "UIImageView+WebCache.h"
+#import "ConferenceTableViewCell.h"
 
 #define kMaxRadius 200
 #define kMaxDuration 10
+
+#define MIN_FOR_CONFERENCE 1
 
 void message_received(LinphoneCore *lc, LinphoneChatRoom *room, const LinphoneAddress *from, const char *message) {
     printf(" Message [%s] received from [%s] \n",message,linphone_address_as_string (from));
@@ -85,7 +88,8 @@ const NSInteger MINI_KEYPAD_TAG = 101;
 }
 @synthesize bgCall, lbPhoneNumber, lbMute, lbKeypad, lbSpeaker, icAddCall, lbAddCall, lbPause, lbTransfer;
 @synthesize _lbQuality, _viewCommand, _scrollView;
-@synthesize detailConference, _bgHeaderConf, lbAddressConf, _lbConferenceDuration, btnAddCallConf, btnEndCallConf, avatarConference, collectionConference;
+@synthesize detailConference, lbConfQuality, lbConfName, lbConfDuration, btnAddCallConf, avatarConference, collectionConference, btnConfMute, btnConfHold, btnConfSpeaker, btnEndConf, tbConf;
+
 @synthesize durationTimer, phoneNumber;
 
 #pragma mark - Lifecycle Functions
@@ -127,6 +131,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
+    //  Add ney by Khai Le on 09/11/2017
+    appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     [self setupUIForView];
     
 	_routesEarpieceButton.enabled = !IPAD;
@@ -163,8 +170,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[_hashButton setDigit:'#'];
 	[_hashButton setDtmf:true];
     
-    //  Add ney by Khai Le on 09/11/2017
-    appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     [_speakerButton setHidden: YES];
     
     //  Added by Khai Le on 06/10/2018
@@ -207,7 +213,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
 	LinphoneManager.instance.nextCallIsTransfer = NO;
     _nameLabel.text = @"";
-    lbAddressConf.text = @"";
 
 	// Update on show
 	[self hideRoutes:TRUE animated:FALSE];
@@ -231,10 +236,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  Update address
     [self updateAddress];
     
-    
-    
     /*--Khong co goi conference--*/
-    if(count < 2 ){
+    if(count < MIN_FOR_CONFERENCE ){
         [self btnHideKeypadPressed];
         
         _callView.hidden = NO;
@@ -590,7 +593,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 	}
     
     /*--Khong co goi conference--*/
-    if(linphone_core_get_calls_nb([LinphoneManager getLc]) < 2 ){
+    if(linphone_core_get_calls_nb([LinphoneManager getLc]) < MIN_FOR_CONFERENCE ){
         [self btnHideKeypadPressed];
         
         _callView.hidden = NO;
@@ -1207,7 +1210,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 /*----- Click vao button conference trong scrollView  -----*/
 -(void)onConference {
     changeConference = YES;
-    _lbConferenceDuration.text = [appDelegate.localization localizedStringForKey:text_connected];
     icAddCall.backgroundColor = UIColor.clearColor;
     _callView.hidden = YES;
     _conferenceView.hidden = NO;
@@ -1224,7 +1226,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         avatarConference.image = [UIImage imageNamed:@"no_avatar"];
     }
-    lbAddressConf.text = USERNAME;
     
     updateTimeConf = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateConference) userInfo:nil repeats:YES];
 }
@@ -1392,28 +1393,88 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     //  conference
-    [_conferenceView setFrame: CGRectMake(0, 0, SCREEN_WIDTH, _callView.frame.size.height)];
+    [_conferenceView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self.view);
+    }];
     
-    marginX = 5.0;
-    wCollection = (SCREEN_WIDTH - 6*marginX)/2;
-    [detailConference setFrame: CGRectMake(0, 0, SCREEN_WIDTH, 0)];
+    [lbConfQuality mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_conferenceView).offset(appDelegate._hStatus);
+        make.left.right.equalTo(_conferenceView);
+        make.height.mas_equalTo(50.0);
+    }];
+    lbConfQuality.text = @"Quality: Good";
+    lbConfQuality.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:26.0];
+    lbConfQuality.textAlignment = NSTextAlignmentCenter;
     
-    [_bgHeaderConf setFrame: CGRectMake(0, 0, detailConference.frame.size.width, detailConference.frame.size.height)];
-    [avatarConference setFrame: CGRectMake(5, 5, 0-10, 0-10)];
-    [lbAddressConf setFrame: CGRectMake(avatarConference.frame.origin.x+avatarConference.frame.size.width+10, avatarConference.frame.origin.y, SCREEN_WIDTH-(2*avatarConference.frame.origin.x+avatarConference.frame.size.width+10), avatarConference.frame.size.height/3)];
+    [lbConfName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(lbConfQuality.mas_bottom);
+        make.left.equalTo(_conferenceView).offset(15.0);
+        make.right.equalTo(_conferenceView.mas_centerX);
+        make.height.equalTo(lbConfName.mas_height);
+    }];
+    lbConfName.textAlignment = NSTextAlignmentLeft;
+    lbConfName.text = @"Conference call";
+    lbConfName.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:26.0];
     
-    [_lbConferenceDuration setFrame: CGRectMake(lbAddressConf.frame.origin.x, lbAddressConf.frame.origin.y+lbAddressConf.frame.size.height, lbAddressConf.frame.size.width, lbAddressConf.frame.size.height)];
+    [lbConfDuration mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(lbConfQuality.mas_bottom);
+        make.left.equalTo(_conferenceView.mas_centerX);
+        make.right.equalTo(_conferenceView.mas_right).offset(-15.0);
+        make.height.equalTo(lbConfName.mas_height);
+    }];
+    lbConfDuration.textColor = UIColor.greenColor;
+    lbConfDuration.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:26.0];
+    lbConfDuration.textAlignment = NSTextAlignmentRight;
+    lbConfDuration.text = @"05:06";
     
-    [btnAddCallConf setFrame: CGRectMake(_lbConferenceDuration.frame.origin.x, _lbConferenceDuration.frame.origin.y+_lbConferenceDuration.frame.size.height, (_lbConferenceDuration.frame.size.width-20)/2, _lbConferenceDuration.frame.size.height)];
-    [btnEndCallConf setFrame: CGRectMake(btnAddCallConf.frame.origin.x+btnAddCallConf.frame.size.width+20, btnAddCallConf.frame.origin.y, btnAddCallConf.frame.size.width, btnAddCallConf.frame.size.height)];
+    [btnEndConf mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(_conferenceView).offset(-bottomHangupIcon);
+        make.centerX.equalTo(_conferenceView.mas_centerX);
+        make.width.height.mas_equalTo(wEndCall);
+    }];
     
-    [collectionConference setFrame: CGRectMake(marginX, detailConference.frame.origin.y+detailConference.frame.size.height, SCREEN_WIDTH-2*marginX, SCREEN_HEIGHT-(detailConference.frame.origin.y+detailConference.frame.size.height+appDelegate._hStatus))];
+    float wConfIcon = 60.0;
+    btnConfHold.backgroundColor = UIColor.clearColor;
+    btnConfHold.clipsToBounds = YES;
+    btnConfHold.layer.cornerRadius = wConfIcon/2;
+    [btnConfHold mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_conferenceView.mas_centerX);
+        make.bottom.equalTo(btnEndConf.mas_top).offset(-40);
+        make.width.height.mas_equalTo(wConfIcon);
+    }];
+    
+    btnConfMute.backgroundColor = UIColor.clearColor;
+    btnConfMute.clipsToBounds = YES;
+    btnConfMute.layer.cornerRadius = wConfIcon/2;
+    [btnConfMute mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(btnConfHold.mas_left).offset(-30);
+        make.top.equalTo(btnConfHold);
+        make.width.height.mas_equalTo(wConfIcon);
+    }];
+    
+    btnConfSpeaker.backgroundColor = UIColor.clearColor;
+    btnConfSpeaker.clipsToBounds = YES;
+    btnConfSpeaker.layer.cornerRadius = wConfIcon/2;
+    [btnConfSpeaker mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(btnConfHold.mas_right).offset(30);
+        make.top.equalTo(btnConfHold);
+        make.width.height.mas_equalTo(wConfIcon);
+    }];
+    
+    [tbConf mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(lbConfName.mas_bottom);
+        make.left.right.equalTo(_conferenceView);
+        make.bottom.equalTo(btnConfSpeaker.mas_top).offset(-20);
+    }];
+    tbConf.delegate = self;
+    tbConf.dataSource = self;
     
     //  Setup for conference collection
     [collectionConference registerNib:[UINib nibWithNibName:@"UIConferenceCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"UIConferenceCell"];
     [collectionConference setDelegate: self];
     [collectionConference setDataSource: self];
     [collectionConference setBackgroundColor:[UIColor clearColor]];
+    collectionConference.hidden = YES;
     
     [btnAddCallConf setTitle:[appDelegate.localization localizedStringForKey:CN_TEXT_ADD_CONFERENCE]
                     forState:UIControlStateNormal];
@@ -1425,13 +1486,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                        action:@selector(onAddCallForConference)
              forControlEvents:UIControlEventTouchUpInside];
     
-    [btnEndCallConf setTitle: [appDelegate.localization localizedStringForKey:CN_TEXT_END_CONFERENCE]
-                    forState:UIControlStateNormal];
-    [btnEndCallConf setBackgroundImage:[UIImage imageNamed:@"btn_end_conf_over.png"]
-                              forState:UIControlStateHighlighted];
-    [btnEndCallConf setTitleColor:[UIColor whiteColor]
-                         forState:UIControlStateNormal];
-    [btnEndCallConf addTarget:self
+    [btnEndConf addTarget:self
                        action:@selector(endConferenceCall)
              forControlEvents:UIControlEventTouchUpInside];
 }
@@ -1710,7 +1765,88 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)onAddCallClick: (UIButton *)sender {
-    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"This feature have not supported yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
+    if (!appDelegate.enableForTest) {
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"This feature have not supported yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    
+    DialerView *view = VIEW(DialerView);
+    [view setAddress:@""];
+    LinphoneManager.instance.nextCallIsTransfer = NO;
+    [PhoneMainView.instance changeCurrentView:view.compositeViewDescription];
 }
+
+#pragma mark - UITableview
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    int count = linphone_core_get_calls_nb(LC);
+    return count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier = @"ConferenceTableViewCell";
+    ConferenceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+    if (cell == nil) {
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ConferenceTableViewCell" owner:self options:nil];
+        cell = topLevelObjects[0];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    list = linphone_core_get_calls(LC);
+    int i = 0;
+    while (i < indexPath.row) {
+        i++;
+        list = list->next;
+    }
+    
+    NSString *phone = [self getPhoneNumberOfCall: (LinphoneCall *)list->data];
+    if (![AppUtils isNullOrEmpty: phone]) {
+        PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phone];
+        cell.lbName.text = contact.name;
+        cell.lbPhone.text = contact.number;
+    }else{
+        cell.lbName.text = @"Ten";
+        cell.lbPhone.text = @"So phone";
+    }
+    
+    //set tag for ui
+    int callState = linphone_call_get_state((LinphoneCall *)list->data);
+    if (callState == LinphoneCallPaused) {
+        [cell.icPause setBackgroundImage:[UIImage imageNamed:@"ic-pause-default.png"]
+                                  forState:UIControlStateNormal];
+    }else{
+        [cell.icPause setBackgroundImage:[UIImage imageNamed:@"ic-play-default.png"]
+                                forState:UIControlStateNormal];
+    }
+    [cell.icPause addTarget:self action:@selector(onClickPause:)
+             forControlEvents:UIControlEventTouchUpInside];
+    
+    [cell.icEndCall addTarget:self action:@selector(onClickEndCallConf:)
+               forControlEvents:UIControlEventTouchUpInside];
+    
+    return cell;
+}
+
+- (NSString *)getPhoneNumberOfCall: (LinphoneCall *)call {
+    NSString *phone = @"";
+    const LinphoneAddress* addr = linphone_call_get_remote_address(call);
+    if (addr != NULL) {
+        // contact name
+        char* lAddress = linphone_address_as_string_uri_only(addr);
+        if(lAddress) {
+            NSString *normalizedSipAddress = [FastAddressBook normalizeSipURI:[NSString stringWithUTF8String:lAddress]];
+            if (normalizedSipAddress.length >= 7) {
+                phone = [normalizedSipAddress substringWithRange:NSMakeRange(4, 10)];
+            }
+            ms_free(lAddress);
+        }
+    }
+    return phone;
+}
+
 
 @end
