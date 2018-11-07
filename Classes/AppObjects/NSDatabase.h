@@ -41,7 +41,6 @@
 + (NSString *)filePath;
 
 + (NSArray *)getNameAndAvatarOfContactWithPhoneNumber: (NSString *)phonenumber;
-+ (NSDictionary *)getProfileInfoOfAccount: (NSString *)account;
 + (NSString *)getAvatarOfAccount: (NSString *)account;
 + (NSString *)getNameOfContactWithPhoneNumber: (NSString *)phonenumber;
 + (NSString *)getAvatarOfContactWithPhoneNumber: (NSString *)phonenumber;

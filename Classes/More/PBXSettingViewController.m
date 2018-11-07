@@ -13,6 +13,7 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "CustomTextAttachment.h"
+#import "CustomSwitchButton.h"
 
 @interface PBXSettingViewController (){
     LinphoneAppDelegate *appDelegate;
@@ -31,6 +32,8 @@
     
     LinphoneProxyConfig *enableProxyConfig;
     BOOL clearingAccount;
+    
+    CustomSwitchButton *swAccount;
 }
 
 @end
@@ -192,6 +195,15 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.right.equalTo(_viewContent.mas_centerX);
     }];
     
+    BOOL state = NO;
+    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+    if (defaultConfig != NULL) {
+        state = YES;
+    }
+    float tmpWidth = 70.0;
+    swAccount = [[CustomSwitchButton alloc] initWithState:state frame:CGRectMake(SCREEN_WIDTH-marginX-tmpWidth, (60.0-31.0)/2, tmpWidth, 31.0)];
+    [_viewContent addSubview: swAccount];
+    
     [_swChange mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(_viewContent).offset(-marginX);
         make.centerY.equalTo(_lbPBX.mas_centerY);
@@ -199,13 +211,14 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.mas_equalTo(49.0);
     }];
     _swChange.enabled = NO;
+    _swChange.hidden = YES;
     
     _lbSepa.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
                                                blue:(235/255.0) alpha:1.0];
     [_lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbPBX.mas_bottom);
-        make.left.equalTo(_lbPBX);
-        make.right.equalTo(_swChange.mas_right);
+        make.left.equalTo(_viewContent).offset(marginX);
+        make.right.equalTo(_viewContent).offset(-marginX);
         make.height.mas_equalTo(2.0);
     }];
     

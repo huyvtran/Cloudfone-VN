@@ -326,18 +326,6 @@ HMLocalization *localization;
     return avatar;
 }
 
-+ (NSDictionary *)getProfileInfoOfAccount: (NSString *)account
-{
-    NSDictionary *rsDict;
-    NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM profile WHERE account = '%@'", account];
-    FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
-    while ([rs next]) {
-        rsDict = [rs resultDictionary];
-    }
-    [rs close];
-    return rsDict;
-}
-
 + (NSString *)getAvatarOfAccount: (NSString *)account
 {
     NSString *avatar;

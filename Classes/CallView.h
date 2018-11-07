@@ -130,7 +130,6 @@ typedef enum typeCall{
 @property (weak, nonatomic) IBOutlet UIButton *btnConfSpeaker;
 
 @property (weak, nonatomic) IBOutlet UIView *detailConference;
-@property (weak, nonatomic) IBOutlet UIImageView *avatarConference;
 @property (weak, nonatomic) IBOutlet UILabel *lbAddressConf;
 @property (weak, nonatomic) IBOutlet UIButton *btnEndConf;
 @property (weak, nonatomic) IBOutlet UITableView *tbConf;
