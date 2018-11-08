@@ -13,7 +13,6 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "CustomTextAttachment.h"
-#import "CustomSwitchButton.h"
 
 @interface PBXSettingViewController (){
     LinphoneAppDelegate *appDelegate;
@@ -40,7 +39,7 @@
 
 @implementation PBXSettingViewController
 @synthesize _viewHeader, bgHeader, _iconBack, _lbTitle, _iconQRCode, _icWaiting, btnLoginWithPhone;
-@synthesize _viewContent, _lbPBX, _swChange, _lbSepa, _lbServerID, _tfServerID, _lbAccount, _tfAccount, _lbPassword, _tfPassword, _btnClear, _btnSave;
+@synthesize _viewContent, _lbPBX, _lbSepa, _lbServerID, _tfServerID, _lbAccount, _tfAccount, _lbPassword, _tfPassword, _btnClear, _btnSave;
 @synthesize webService;
 
 #pragma mark - UICompositeViewDelegate Functions
@@ -89,9 +88,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
     if (defaultConfig == NULL) {
-        _swChange.on = NO;
+        [swAccount setUIForDisableState];
         _btnClear.enabled = NO;
     }else{
+        [swAccount setUIForEnableState];
         _btnClear.enabled = YES;
     }
     
@@ -196,22 +196,18 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     BOOL state = NO;
+    BOOL isEnabled = YES;
     LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
     if (defaultConfig != NULL) {
         state = YES;
+    }else{
+        isEnabled = NO;
     }
-    float tmpWidth = 70.0;
-    swAccount = [[CustomSwitchButton alloc] initWithState:state frame:CGRectMake(SCREEN_WIDTH-marginX-tmpWidth, (60.0-31.0)/2, tmpWidth, 31.0)];
-    [_viewContent addSubview: swAccount];
     
-    [_swChange mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_viewContent).offset(-marginX);
-        make.centerY.equalTo(_lbPBX.mas_centerY);
-        make.height.mas_equalTo(31.0);
-        make.width.mas_equalTo(49.0);
-    }];
-    _swChange.enabled = NO;
-    _swChange.hidden = YES;
+    float tmpWidth = 70.0;
+    swAccount = [[CustomSwitchButton alloc] initWithState:state frame:CGRectMake(SCREEN_WIDTH-marginX-tmpWidth, (60.0-31.0)/2, tmpWidth, 31.0) withEnable: isEnabled];
+    swAccount.delegate = self;
+    [_viewContent addSubview: swAccount];
     
     _lbSepa.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
                                                blue:(235/255.0) alpha:1.0];
@@ -730,9 +726,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
-    [_swChange setOn:YES animated:YES];
     _btnClear.enabled = YES;
     _btnSave.enabled = NO;
+    
+    swAccount.isEnabled = YES;
+    [swAccount setUIForEnableState];
     
     [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was registered successful."]
                 duration:2.0 position:CSToastPositionCenter];
@@ -771,9 +769,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:key_password];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
+    swAccount.isEnabled = NO;
+    [swAccount setUIForDisableState];
+    
     [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was removed"]
                 duration:2.0 position:CSToastPositionCenter];
-    //  [self performSelector:@selector(popCurrentView) withObject:nil afterDelay:2.0];
 }
 
 - (void)popCurrentView {
@@ -1043,6 +1043,18 @@ static UICompositeViewDescription *compositeDescription = nil;
         linphone_proxy_config_done(enableProxyConfig);
         
         linphone_core_refresh_registers(LC);
+    }
+}
+
+#pragma mark - Switch Custom Delegate
+- (void)switchButtonEnabled {
+    
+}
+
+- (void)switchButtonDisabled {
+    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+    if (defaultConfig != NULL) {
+        //  linphone_proxy_config_d
     }
 }
 

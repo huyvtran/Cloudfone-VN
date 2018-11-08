@@ -9,9 +9,9 @@
 
 @implementation CustomSwitchButton
 
-@synthesize lbBackground, btnEnable, btnDisable, btnThumb, curState, lbState, border, wIcon, bgOn, bgOff;
+@synthesize lbBackground, btnEnable, btnDisable, btnThumb, curState, lbState, border, wIcon, bgOn, bgOff, startPoint, isEnabled, endPoint, delegate;
 
-- (id)initWithState: (BOOL)state frame: (CGRect)frame
+- (id)initWithState: (BOOL)state frame: (CGRect)frame withEnable: (BOOL)enable
 {
     self = [super initWithFrame: frame];
     if (self) {
@@ -30,12 +30,19 @@
         lbBackground = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self addSubview: lbBackground];
         
+        //  button thumbnail
         btnThumb = [UIButton buttonWithType: UIButtonTypeCustom];
         btnThumb.clipsToBounds = YES;
         btnThumb.layer.cornerRadius = wIcon/2;
         btnThumb.backgroundColor = UIColor.whiteColor;
         [self addSubview: btnThumb];
         
+        UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(btnThumbMoved:)];
+        [panGesture setMinimumNumberOfTouches:1];
+        [panGesture setMaximumNumberOfTouches:1];
+        [self addGestureRecognizer: panGesture];
+        
+        //  state label
         lbState = [[UILabel alloc] init];
         lbState.font = [UIFont fontWithName:MYRIADPRO_BOLD size:16.0];
         lbState.textColor = UIColor.whiteColor;
@@ -59,21 +66,9 @@
             lbState.text = [[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"OFF"] uppercaseString];
             lbBackground.backgroundColor = bgOff;
         }
+        isEnabled = enable;
     }
     return self;
-}
-
-//  Chuyển view gồm 2 ảnh thành ảnh
-- (UIImage *)imageFromView:(UIView *) view {
-    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-        UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, [[UIScreen mainScreen] scale]);
-    } else {
-        UIGraphicsBeginImageContext(view.frame.size);
-    }
-    [view.layer renderInContext: UIGraphicsGetCurrentContext()];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
 }
 
 - (void)onButtonEnableClicked: (UIButton *)sender
@@ -104,8 +99,8 @@
     }];
 }
 
-//  Set trạng thái của switch khi disable
-- (void)setUIForDisableState{
+- (void)setUIForDisableState
+{
     [UIView animateWithDuration:0.2 animations:^{
         btnThumb.frame = CGRectMake(border, border, wIcon, wIcon);
         lbState.frame = CGRectMake(btnThumb.frame.origin.x+btnThumb.frame.size.width, border, self.frame.size.width-(2*border+wIcon), self.frame.size.height-border);
@@ -114,11 +109,12 @@
         lbBackground.backgroundColor = bgOff;
     } completion:^(BOOL finished) {
         curState = NO;
+        [delegate switchButtonDisabled];
     }];
 }
 
-//  Set trạng thái của switch khi đc enable
-- (void)setUIForEnableState {
+- (void)setUIForEnableState
+{
     [UIView animateWithDuration:0.2 animations:^{
         btnThumb.frame = CGRectMake(self.frame.size.width-border-wIcon, border, wIcon, wIcon);
         lbState.frame = CGRectMake(0, border, self.frame.size.width-(2*border+wIcon), self.frame.size.height-border);
@@ -126,14 +122,46 @@
         lbBackground.backgroundColor = bgOn;
     }completion:^(BOOL finished) {
         curState = YES;
+        [delegate switchButtonEnabled];
     }];
 }
 
 - (void)tapToChangeValue {
+    if (!isEnabled) {
+        NSLog(@"You can not change value when switch button in disable state");
+        return;
+    }
+    
     if (curState) {
         [self setUIForDisableState];
     }else{
         [self setUIForEnableState];
+    }
+}
+
+- (void)btnThumbMoved:(UIPanGestureRecognizer *)gesture {
+    if ([gesture state] == UIGestureRecognizerStateBegan) {
+        startPoint = [gesture locationInView: self];
+    }else if ([gesture state] == UIGestureRecognizerStateEnded){
+        endPoint = [gesture locationInView: self];
+        [self checkToChangeUI];
+    }
+}
+
+- (void)checkToChangeUI {
+    if (!isEnabled) {
+        NSLog(@"You can not change value when switch button in disable state");
+        return;
+    }
+    
+    if (curState) {
+        if (startPoint.x - endPoint.x > 10) {
+            [self setUIForDisableState];
+        }
+    }else{
+        if (endPoint.x - startPoint.x > 10) {
+            [self setUIForEnableState];
+        }
     }
 }
 

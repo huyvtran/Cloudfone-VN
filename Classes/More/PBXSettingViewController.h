@@ -10,13 +10,14 @@
 #import "WebServices.h"
 #import "QRCodeReaderDelegate.h"
 #import "RegisterPBXWithPhoneView.h"
+#import "CustomSwitchButton.h"
 
 typedef enum{
     normalLogin,
     qrCodeLogin,
 }typeLoginPBX;
 
-@interface PBXSettingViewController : UIViewController<UICompositeViewDelegate, WebServicesDelegate, QRCodeReaderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RegisterPBXWithPhoneViewDelegate>
+@interface PBXSettingViewController : UIViewController<UICompositeViewDelegate, WebServicesDelegate, QRCodeReaderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RegisterPBXWithPhoneViewDelegate, CustomSwitchButtonDelegate>
 @property (weak, nonatomic) IBOutlet UIView *_viewHeader;
 @property (weak, nonatomic) IBOutlet UIButton *_iconBack;
 @property (weak, nonatomic) IBOutlet UILabel *_lbTitle;
@@ -25,7 +26,6 @@ typedef enum{
 
 @property (weak, nonatomic) IBOutlet UIView *_viewContent;
 @property (weak, nonatomic) IBOutlet UILabel *_lbPBX;
-@property (weak, nonatomic) IBOutlet UISwitch *_swChange;
 @property (weak, nonatomic) IBOutlet UILabel *_lbSepa;
 @property (weak, nonatomic) IBOutlet UILabel *_lbServerID;
 @property (weak, nonatomic) IBOutlet UITextField *_tfServerID;
