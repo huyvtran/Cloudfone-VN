@@ -230,6 +230,12 @@
             return NO;
         }
         
+        if ([phoneNumber isEqualToString: USERNAME]) {
+            NSString *content = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Can not make call with yourself"];
+            [[LinphoneAppDelegate sharedInstance].window makeToast:content duration:2.0 position:CSToastPositionCenter];
+            return NO;
+        }
+        
         LinphoneAddress *addr = linphone_core_interpret_url(LC, phoneNumber.UTF8String);
         if (!addr) {
             return NO;
@@ -247,6 +253,32 @@
         return YES;
     }
     return NO;
+}
+
++ (AccountState)getStateOfDefaultProxyConfig {
+    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+    if (defaultConfig == NULL) {
+        return eAccountNone;
+    }else{
+        BOOL isEnable = linphone_proxy_config_register_enabled(defaultConfig);
+        if (isEnable) {
+            return eAccountOn;
+        }else{
+            return eAccountOff;
+        }
+    }
+}
+
++ (NSString *)getAccountIdOfDefaultProxyConfig {
+    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+    if (defaultConfig != NULL) {
+        const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
+        NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
+        if (![AppUtils isNullOrEmpty: defaultUsername]) {
+            return defaultUsername;
+        }
+    }
+    return @"";
 }
 
 @end

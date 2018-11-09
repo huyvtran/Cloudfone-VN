@@ -15,4 +15,7 @@
 
 + (BOOL)makeCallWithPhoneNumber: (NSString *)phoneNumber;
 
++ (AccountState)getStateOfDefaultProxyConfig;
++ (NSString *)getAccountIdOfDefaultProxyConfig;
+
 @end

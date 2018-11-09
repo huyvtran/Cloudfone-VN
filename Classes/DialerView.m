@@ -580,10 +580,14 @@ static UICompositeViewDescription *compositeDescription = nil;
             }
             case LinphoneRegistrationNone:
             case LinphoneRegistrationCleared:
-            case LinphoneRegistrationFailed:{
-                
+            case LinphoneRegistrationFailed:
+            {
                 _lbStatus.textColor = UIColor.orangeColor;
-                _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Offline"];
+                if ([SipUtils getStateOfDefaultProxyConfig] == eAccountOff) {
+                    _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Disabled"];
+                }else{
+                    _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Offline"];
+                }
                 break;
             }
             default:
@@ -867,11 +871,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)displayAssistantConfigurationError {
-    _lbStatus.textColor = UIColor.orangeColor;
-    _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Offline"];
-}
-
 #pragma mark - Actionsheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (actionSheet.tag == 100) {
@@ -1005,16 +1004,16 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 //  Added by Khai Le on 30/09/2018
 - (void)checkAccountForApp {
-    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-    if (defaultConfig == NULL) {
-        _lbAccount.text = NSLocalizedString(@"", nil);
+    AccountState curState = [SipUtils getStateOfDefaultProxyConfig];
+    if (curState == eAccountNone) {
+        _lbAccount.text = @"";
         _lbStatus.text = [appDelegate.localization localizedStringForKey:@"No account"];
         _lbStatus.textColor = UIColor.orangeColor;
-    }else{
-        const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
-        NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
-        if (defaultUsername != nil) {
-            _lbAccount.text = defaultUsername;
+    }else {
+        NSString *accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
+        _lbAccount.text = accountID;
+        if (curState == eAccountOff) {
+            _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Disabled"];
         }
     }
 }
@@ -1071,14 +1070,28 @@ static UICompositeViewDescription *compositeDescription = nil;
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
-    NSString *currentTitle = _lbStatus.text;
-    if ([currentTitle isEqualToString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"]]){
+    
+    AccountState curState = [SipUtils getStateOfDefaultProxyConfig];
+    //  No account
+    if (curState == eAccountNone) {
         NSString *content = [NSString stringWithFormat:@"%@", [appDelegate.localization localizedStringForKey:@"You have not set up an account yet. Do you want to setup now?"]];
         
         UIAlertView *alertAcc = [[UIAlertView alloc] initWithTitle:nil message:content delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] otherButtonTitles: [appDelegate.localization localizedStringForKey:@"Go to settings?"], nil];
+        alertAcc.delegate = self;
+        alertAcc.tag = 1;
         [alertAcc show];
         return;
     }
+    
+    //  account was disabled
+    if (curState == eAccountOff) {
+        UIAlertView *alertAcc = [[UIAlertView alloc] initWithTitle:nil message:[appDelegate.localization localizedStringForKey:@"Do you want to enable this account?"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"No"] otherButtonTitles: [appDelegate.localization localizedStringForKey:@"Yes"], nil];
+        alertAcc.delegate = self;
+        alertAcc.tag = 2;
+        [alertAcc show];
+        return;
+    }
+    
     [LinphoneManager.instance refreshRegisters];
 }
 
@@ -1180,8 +1193,21 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - UIAlertview Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1){
-        [[PhoneMainView instance] changeCurrentView:[PBXSettingViewController compositeViewDescription] push:YES];
+    if (alertView.tag == 1)
+    {
+        if (buttonIndex == 1){
+            [[PhoneMainView instance] changeCurrentView:[PBXSettingViewController compositeViewDescription] push:YES];
+        }
+    }
+    else if (alertView.tag == 2){
+        LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+        if (defaultConfig != NULL) {
+            linphone_proxy_config_enable_register(defaultConfig, YES);
+            linphone_proxy_config_refresh_register(defaultConfig);
+            linphone_proxy_config_done(defaultConfig);
+            
+            linphone_core_refresh_registers(LC);
+        }
     }
 }
 

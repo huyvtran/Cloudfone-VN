@@ -441,7 +441,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)btnDeleteContactPressed: (UIButton *)sender {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Delete contact"] message:[appDelegate.localization localizedStringForKey:@"Are you sure, you want to delete this contact?"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"No"] otherButtonTitles:[appDelegate.localization localizedStringForKey:@"Yes"], nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Delete contact"] message:[appDelegate.localization localizedStringForKey:@"Are you sure, you want to delete this contact?"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] otherButtonTitles:[appDelegate.localization localizedStringForKey:@"Accept"], nil];
     alertView.delegate = self;
     [alertView show];
 }

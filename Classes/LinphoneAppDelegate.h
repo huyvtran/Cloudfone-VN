@@ -36,6 +36,12 @@
 #import "WebServices.h"
 #import "Constant.h"
 
+typedef enum AccountState{
+    eAccountNone,
+    eAccountOff,
+    eAccountOn,
+}AccountState;
+
 //  [Khai le - 02/11/2018]
 typedef enum typePhoneNumber{
     ePBXPhone,

@@ -14,7 +14,7 @@
 
 @interface AccountSettingsViewController (){
     LinphoneAppDelegate *appDelegate;
-    BOOL hasAccount;
+    AccountState stateAccount;
 }
 @end
 
@@ -54,14 +54,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [super viewWillAppear: animated];
     
     _lbHeader.text = [appDelegate.localization localizedStringForKey:@"Account settings"];
-    
-    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-    if (defaultConfig == NULL) {
-        hasAccount = NO;
-    }else{
-        hasAccount = YES;
-    }
-    
+    stateAccount = [SipUtils getStateOfDefaultProxyConfig];
     [_tbContent reloadData];
 }
 
@@ -156,7 +149,21 @@ static UICompositeViewDescription *compositeDescription = nil;
     switch (indexPath.section) {
         case 0:{
             cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"PBX account"];
-            [self showStatusOfAccount: cell];
+            
+            switch (stateAccount) {
+                case eAccountNone:
+                    
+                    break;
+                case eAccountOff:{
+                    cell.lbDescription.text = [appDelegate.localization localizedStringForKey:@"Disabled"];
+                    break;
+                }
+                case eAccountOn:{
+                    cell.lbDescription.text = [appDelegate.localization localizedStringForKey:@"Enabled"];
+                    break;
+                }
+            }
+            
             break;
         }
         case 1:{
@@ -180,7 +187,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (indexPath.section == 0) {
         [[PhoneMainView instance] changeCurrentView:[PBXSettingViewController compositeViewDescription] push:YES];
     }else if (indexPath.section == 1){
-        if (!hasAccount) {
+        if (stateAccount == eAccountNone) {
             [self.view makeToast:[appDelegate.localization localizedStringForKey:@"No account"] duration:3.0 position:CSToastPositionCenter];
         }else{
             [[PhoneMainView instance] changeCurrentView:[ManagerPasswordViewController compositeViewDescription] push:YES];
@@ -197,14 +204,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 70.0;
-}
-
-- (void)showStatusOfAccount: (NewSettingCell *)cell {
-    if (!hasAccount) {
-        cell.lbDescription.text = [appDelegate.localization localizedStringForKey:@"Off"];
-    }else{
-        cell.lbDescription.text = [appDelegate.localization localizedStringForKey:@"On"];
-    }
 }
 
 - (NSString *)getPBXNumberFromCurrentAccount {

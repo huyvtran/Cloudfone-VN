@@ -95,37 +95,31 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)updateInformationOfUser
 {
-    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-    if (defaultConfig == NULL) {
+    if ([SipUtils getStateOfDefaultProxyConfig] == eAccountNone) {
         _lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"];
         lbPBXAccount.text = @"-.-";
         icEdit.hidden = YES;
     }else{
-        const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
-        NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
-        if (defaultUsername != nil) {
-            NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", defaultUsername];
-            NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyName];
-            if (name != nil){
-                _lbName.text = name;
-                lbPBXAccount.text = defaultUsername;
-            }else{
-                _lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Not set"];
-                lbPBXAccount.text = defaultUsername;
-            }
-            
-            NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", defaultUsername];
-            NSString *avatar = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyAvatar];
-            if (avatar != nil && ![avatar isEqualToString:@""]){
-                _imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: avatar]];
-            }else{
-                _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-                [self downloadMyAvatar: defaultUsername];
-            }
-            icEdit.hidden = NO;
+        NSString *accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
+        lbPBXAccount.text = accountID;
+        
+        NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", accountID];
+        NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyName];
+        if (name != nil){
+            _lbName.text = name;
         }else{
-            icEdit.hidden = YES;
+            _lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Not set"];
         }
+        
+        NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", accountID];
+        NSString *avatar = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyAvatar];
+        if (avatar != nil && ![avatar isEqualToString:@""]){
+            _imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: avatar]];
+        }else{
+            _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+            [self downloadMyAvatar: accountID];
+        }
+        icEdit.hidden = NO;
     }
 }
 

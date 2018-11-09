@@ -645,7 +645,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 
                 break;
             }
-
+            udpate token sau khi disable proxy thanh cong
             
             break;
         }
@@ -1054,7 +1054,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)switchButtonDisabled {
     LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
     if (defaultConfig != NULL) {
-        //  linphone_proxy_config_d
+        linphone_proxy_config_edit(defaultConfig);
+        linphone_proxy_config_enable_register(defaultConfig, NO);
+        linphone_proxy_config_refresh_register(defaultConfig);
+        linphone_proxy_config_done(defaultConfig);
+        
+        linphone_core_refresh_registers(LC);
     }
 }
 

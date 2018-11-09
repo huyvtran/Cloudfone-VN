@@ -1047,6 +1047,9 @@
 "Off" = "Off"
 "On" = "On"
 
+"Enabled" = "On"
+"Disabled" = "Off"
+
 "Server ID" = "Server ID"
 "Account" = "Account"
 "Password" = "Password"
@@ -1096,6 +1099,8 @@
 
 "Delete contact" = "Delete contact"
 "Are you sure, you want to delete this contact?" =   "Are you sure, you want to delete this contact?"
+"Accept"          =   "Accept"
+"Cancel"           =   "Cancel"
 "Yes"          =   "Yes"
 "No"           =   "No"
 "The phone number can not empty" = "The phone number can not empty"
@@ -1156,3 +1161,5 @@
 "Account name" = "Account name"
 "You have a call from %@" = "You have a call from %@"
 "The user is busy" = "The user is busy"
+
+"Do you want to enable this account?" = "Do you want to enable this account?"
