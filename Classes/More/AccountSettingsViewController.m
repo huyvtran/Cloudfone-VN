@@ -206,16 +206,4 @@ static UICompositeViewDescription *compositeDescription = nil;
     return 70.0;
 }
 
-- (NSString *)getPBXNumberFromCurrentAccount {
-    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-    const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
-    NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
-    if (defaultUsername != nil) {
-        return defaultUsername;
-    }
-    return @"";
-}
-
-
-
 @end

@@ -33,6 +33,7 @@
     BOOL clearingAccount;
     
     CustomSwitchButton *swAccount;
+    AccountState accState;
 }
 
 @end
@@ -86,13 +87,28 @@ static UICompositeViewDescription *compositeDescription = nil;
     [self showContentForView];
     [self showPBXAccountInformation];
     
-    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-    if (defaultConfig == NULL) {
-        [swAccount setUIForDisableState];
-        _btnClear.enabled = NO;
-    }else{
-        [swAccount setUIForEnableState];
-        _btnClear.enabled = YES;
+    accState = [SipUtils getStateOfDefaultProxyConfig];
+    switch (accState) {
+        case eAccountNone:{
+            [swAccount setUIForDisableState];
+            swAccount.isEnabled = NO;
+            _btnClear.enabled = NO;
+            break;
+        }
+        case eAccountOff:{
+            [swAccount setUIForDisableState];
+            swAccount.isEnabled = YES;
+            _btnClear.enabled = YES;
+            break;
+        }
+        case eAccountOn:{
+            [swAccount setUIForEnableState];
+            swAccount.isEnabled = YES;
+            _btnClear.enabled = YES;
+            break;
+        }
+        default:
+            break;
     }
     
     //  set title for button login with phone number
@@ -195,13 +211,18 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.right.equalTo(_viewContent.mas_centerX);
     }];
     
-    BOOL state = NO;
-    BOOL isEnabled = YES;
-    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-    if (defaultConfig != NULL) {
+    BOOL state;
+    BOOL isEnabled;
+    accState = [SipUtils getStateOfDefaultProxyConfig];
+    if (accState == eAccountOn) {
+        isEnabled = YES;
         state = YES;
+    }else if (accState == eAccountOff){
+        isEnabled = YES;
+        state = NO;
     }else{
         isEnabled = NO;
+        state = NO;
     }
     
     float tmpWidth = 70.0;
@@ -645,7 +666,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                 
                 break;
             }
-            udpate token sau khi disable proxy thanh cong
             
             break;
         }
@@ -1054,6 +1074,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)switchButtonDisabled {
     LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
     if (defaultConfig != NULL) {
+        [_icWaiting startAnimating];
+        _icWaiting.hidden = NO;
+        
+        //  edit profxy config
         linphone_proxy_config_edit(defaultConfig);
         linphone_proxy_config_enable_register(defaultConfig, NO);
         linphone_proxy_config_refresh_register(defaultConfig);

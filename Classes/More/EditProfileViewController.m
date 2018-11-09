@@ -15,6 +15,8 @@
     NSString *myAvatar;
     PECropViewController *PECropController;
     BOOL isRemoveAvatar;
+    
+    NSString *accountID;
 }
 
 @end
@@ -52,14 +54,13 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
+    accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
+    
     lbHeader.text = [appDelegate.localization localizedStringForKey:@"Edit profile"];
     tfAccountName.placeholder = [appDelegate.localization localizedStringForKey:@"Account name"];
     
-    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-    const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
-    NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
-    if (defaultUsername != nil) {
-        NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", defaultUsername];
+    if (![AppUtils isNullOrEmpty: accountID]) {
+        NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", accountID];
         NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyName];
         if (name != nil){
             tfAccountName.text = name;
@@ -68,7 +69,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         if (appDelegate._dataCrop != nil) {
             imgAvatar.image = [UIImage imageWithData: appDelegate._dataCrop];
         }else{
-            NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", defaultUsername];
+            NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", accountID];
             myAvatar = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyAvatar];
             if (myAvatar != nil && ![myAvatar isEqualToString:@""])
             {
@@ -124,20 +125,19 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     
-    NSString *configName = [self getPBXPhoneFromConfig];
     NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
-    if (![AppUtils isNullOrEmpty: configName] && ![AppUtils isNullOrEmpty: configName]) {
+    if (![AppUtils isNullOrEmpty: accountID] && ![AppUtils isNullOrEmpty: pbxServer]) {
         if (appDelegate._dataCrop != nil) {
             icWaiting.hidden = NO;
             [icWaiting startAnimating];
             isRemoveAvatar = NO;
             
-            NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, configName];
+            NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, accountID];
             [self startUploadImage:appDelegate._dataCrop withName: avatarName];
         }else if ([myAvatar isEqualToString:@""]){
             isRemoveAvatar = YES;
             
-            NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, configName];
+            NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, accountID];
             UIImage *noneImage = [UIImage imageNamed:@"no_avatar.png"];
             [self startUploadImage:UIImagePNGRepresentation(noneImage) withName: avatarName];
         }
@@ -407,8 +407,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                     }
                     
                     //  save avatar to get from local
-                    NSString *configName = [self getPBXPhoneFromConfig];
-                    NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", configName];
+                    NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", accountID];
                     
                     NSString *strAvatar = @"";
                     if ([uploadData respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
@@ -422,8 +421,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 }
                 
                 if (tfAccountName.text.length > 0) {
-                    NSString *defaultUsername = [self getPBXPhoneFromConfig];
-                    NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", defaultUsername];
+                    NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", accountID];
                     [[NSUserDefaults standardUserDefaults] setObject:tfAccountName.text forKey:pbxKeyName];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                 }
@@ -432,41 +430,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     });
 }
 
-- (NSString *)getPBXPhoneFromConfig {
-    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-    const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(defaultConfig));
-    NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
-    if (defaultUsername != nil) {
-        return defaultUsername;
-        /*
-        NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", defaultUsername];
-        NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyName];
-        if (name != nil){
-            tfAccountName.text = name;
-        }
-        
-        if (appDelegate._dataCrop != nil) {
-            imgAvatar.image = [UIImage imageWithData: appDelegate._dataCrop];
-        }else{
-            NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", defaultUsername];
-            NSString *avatar = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyAvatar];
-            if (avatar != nil && ![avatar isEqualToString:@""]){
-                imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: avatar]];
-            }else{
-                imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
-            }
-        }   */
-    }
-    return @"";
-}
-
 - (void)checkDataExistsOnServer {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSString *configName = [self getPBXPhoneFromConfig];
         NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
         NSData * data = nil;
-        if (![AppUtils isNullOrEmpty: configName] && ![AppUtils isNullOrEmpty: configName]) {
-            NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, configName];
+        if (![AppUtils isNullOrEmpty: accountID] && ![AppUtils isNullOrEmpty: pbxServer]) {
+            NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, accountID];
             
             NSString *linkAvatar = [NSString stringWithFormat:@"%@/%@", link_picture_chat_group, avatarName];
             data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: linkAvatar]];
@@ -479,7 +448,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 }
             }
             
-            NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", configName];
+            NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", accountID];
             [[NSUserDefaults standardUserDefaults] setObject:strAvatar forKey:pbxKeyAvatar];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
