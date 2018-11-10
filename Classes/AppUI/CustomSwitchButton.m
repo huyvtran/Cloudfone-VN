@@ -99,7 +99,7 @@
     }];
 }
 
-- (void)setUIForDisableState
+- (void)setUIForDisableStateWithActionTarget: (BOOL)action
 {
     [UIView animateWithDuration:0.2 animations:^{
         btnThumb.frame = CGRectMake(border, border, wIcon, wIcon);
@@ -109,11 +109,13 @@
         lbBackground.backgroundColor = bgOff;
     } completion:^(BOOL finished) {
         curState = NO;
-        [delegate switchButtonDisabled];
+        if (action) {
+            [delegate switchButtonDisabled];
+        }
     }];
 }
 
-- (void)setUIForEnableState
+- (void)setUIForEnableStateWithActionTarget: (BOOL)action
 {
     [UIView animateWithDuration:0.2 animations:^{
         btnThumb.frame = CGRectMake(self.frame.size.width-border-wIcon, border, wIcon, wIcon);
@@ -122,7 +124,9 @@
         lbBackground.backgroundColor = bgOn;
     }completion:^(BOOL finished) {
         curState = YES;
-        [delegate switchButtonEnabled];
+        if (action) {
+            [delegate switchButtonEnabled];
+        }
     }];
 }
 
@@ -133,9 +137,9 @@
     }
     
     if (curState) {
-        [self setUIForDisableState];
+        [self setUIForDisableStateWithActionTarget: YES];
     }else{
-        [self setUIForEnableState];
+        [self setUIForEnableStateWithActionTarget: YES];
     }
 }
 
@@ -156,11 +160,11 @@
     
     if (curState) {
         if (startPoint.x - endPoint.x > 10) {
-            [self setUIForDisableState];
+            [self setUIForDisableStateWithActionTarget: YES];
         }
     }else{
         if (endPoint.x - startPoint.x > 10) {
-            [self setUIForEnableState];
+            [self setUIForEnableStateWithActionTarget: YES];
         }
     }
 }

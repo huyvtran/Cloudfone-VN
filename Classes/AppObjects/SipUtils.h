@@ -17,5 +17,6 @@
 
 + (AccountState)getStateOfDefaultProxyConfig;
 + (NSString *)getAccountIdOfDefaultProxyConfig;
++ (void)enableProxyConfig: (LinphoneProxyConfig *)proxy withValue: (BOOL)enable withRefresh: (BOOL)refresh;
 
 @end

@@ -32,7 +32,7 @@
 
 - (id)initWithState: (BOOL)state frame: (CGRect)frame withEnable: (BOOL)enable;
 
-- (void)setUIForDisableState;
-- (void)setUIForEnableState;
+- (void)setUIForDisableStateWithActionTarget: (BOOL)action;
+- (void)setUIForEnableStateWithActionTarget: (BOOL)action;
 
 @end

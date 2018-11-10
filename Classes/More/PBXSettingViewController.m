@@ -34,6 +34,8 @@
     
     CustomSwitchButton *swAccount;
     AccountState accState;
+    BOOL turnOffAcc;
+    BOOL turnOnAcc;
 }
 
 @end
@@ -90,19 +92,19 @@ static UICompositeViewDescription *compositeDescription = nil;
     accState = [SipUtils getStateOfDefaultProxyConfig];
     switch (accState) {
         case eAccountNone:{
-            [swAccount setUIForDisableState];
+            [swAccount setUIForDisableStateWithActionTarget: NO];
             swAccount.isEnabled = NO;
             _btnClear.enabled = NO;
             break;
         }
         case eAccountOff:{
-            [swAccount setUIForDisableState];
+            [swAccount setUIForDisableStateWithActionTarget:NO];
             swAccount.isEnabled = YES;
             _btnClear.enabled = YES;
             break;
         }
         case eAccountOn:{
-            [swAccount setUIForEnableState];
+            [swAccount setUIForEnableStateWithActionTarget:NO];
             swAccount.isEnabled = YES;
             _btnClear.enabled = YES;
             break;
@@ -415,6 +417,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnClearPressed:(UIButton *)sender {
+    BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+    if (!networkReady) {
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    
     DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s", __FUNCTION__]);
     
     [_icWaiting startAnimating];
@@ -427,7 +435,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (IBAction)_btnSavePressed:(UIButton *)sender {
     [self.view endEditing: YES];
     
-    if ([LinphoneManager instance].connectivity == none){
+    BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+    if (!networkReady) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
@@ -539,7 +548,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Can not update push token"]
                     duration:2.0 position:CSToastPositionCenter];
         
-        [self whenTurnOnPBXSuccessfully];
+        [self whenRegisterPBXSuccessfully];
     }
 }
 
@@ -550,10 +559,17 @@ static UICompositeViewDescription *compositeDescription = nil;
     if ([link isEqualToString:getServerInfoFunc]) {
         [self startLoginPBXWithInfo: data];
     }else if ([link isEqualToString: ChangeCustomerIOSToken]){
-        if (clearingAccount) {
-            [self whenClearPBXSuccessfully];
-        }else{
+        if (turnOnAcc) {
             [self whenTurnOnPBXSuccessfully];
+            
+        } else if (turnOffAcc) {
+            [self whenTurnOffPBXSuccessfully];
+            
+        }else if (clearingAccount) {
+            [self whenClearPBXSuccessfully];
+            
+        }else{
+            [self whenRegisterPBXSuccessfully];
         }
     }else if ([link isEqualToString: DecryptRSA]) {
         [self receiveDataFromQRCode: data];
@@ -625,7 +641,17 @@ static UICompositeViewDescription *compositeDescription = nil;
         case LinphoneRegistrationOk:
         {
             NSLog(@"LinphoneRegistrationOk");
-            
+            if (turnOnAcc) {
+                NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+                //  Update token after registration okay
+                if (![AppUtils isNullOrEmpty: server] && ![AppUtils isNullOrEmpty: appDelegate._deviceToken]) {
+                    [self updateCustomerTokenIOSForPBX:server andUsername: USERNAME withTokenValue:appDelegate._deviceToken];
+                }else{
+                    [self whenTurnOnPBXSuccessfully];
+                }
+                
+                break;
+            }
             if (enableProxyConfig == nil) {
                 DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> gọi linphone_core_clear_proxy_config", __FUNCTION__, @"LinphoneRegistrationOk"]);
                 
@@ -647,7 +673,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                         if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
                             [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
                         }else{
-                            [self whenTurnOnPBXSuccessfully];
+                            [self whenRegisterPBXSuccessfully];
                         }
                     }
                 }else if (typeRegister == qrCodeLogin){
@@ -659,7 +685,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                         if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
                             [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
                         }else{
-                            [self whenTurnOnPBXSuccessfully];
+                            [self whenRegisterPBXSuccessfully];
                         }
                     }
                 }
@@ -675,6 +701,11 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         case LinphoneRegistrationCleared: {
             DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@", __FUNCTION__, @"LinphoneRegistrationCleared"]);
+            if (turnOffAcc) {
+                NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+                [self updateCustomerTokenIOSForPBX:server andUsername: USERNAME withTokenValue:@""];
+                return;
+            }
             
             if (enableProxyConfig != NULL || enableProxyConfig != nil) {
                 DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@, enableProxyConfig khác NULL --> register proxy config đã lưu", __FUNCTION__, @"LinphoneRegistrationCleared"]);
@@ -727,7 +758,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)whenTurnOnPBXSuccessfully {
+- (void)whenRegisterPBXSuccessfully {
     [[NSUserDefaults standardUserDefaults] setObject:serverPBX forKey:PBX_ID];
     [[NSUserDefaults standardUserDefaults] setObject:accountPBX forKey:key_login];
     [[NSUserDefaults standardUserDefaults] setObject:passwordPBX forKey:key_password];
@@ -750,9 +781,41 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnSave.enabled = NO;
     
     swAccount.isEnabled = YES;
-    [swAccount setUIForEnableState];
+    [swAccount setUIForEnableStateWithActionTarget: NO];
     
     [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was registered successful."]
+                duration:2.0 position:CSToastPositionCenter];
+}
+
+- (void)whenTurnOnPBXSuccessfully {
+    turnOnAcc = NO;
+    
+    [_icWaiting stopAnimating];
+    _icWaiting.hidden = YES;
+    
+    _btnClear.enabled = YES;
+    _btnSave.enabled = NO;
+    
+    swAccount.isEnabled = YES;
+    [swAccount setUIForEnableStateWithActionTarget: NO];
+    
+    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was enabled successful"]
+                duration:2.0 position:CSToastPositionCenter];
+}
+
+- (void)whenTurnOffPBXSuccessfully {
+    turnOffAcc = NO;
+    
+    [_icWaiting stopAnimating];
+    _icWaiting.hidden = YES;
+    
+    _btnClear.enabled = YES;
+    _btnSave.enabled = NO;
+    
+    swAccount.isEnabled = YES;
+    [swAccount setUIForDisableStateWithActionTarget: NO];
+    
+    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was disabled successful"]
                 duration:2.0 position:CSToastPositionCenter];
 }
 
@@ -790,7 +853,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     swAccount.isEnabled = NO;
-    [swAccount setUIForDisableState];
+    [swAccount setUIForDisableStateWithActionTarget: NO];
     
     [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was removed"]
                 duration:2.0 position:CSToastPositionCenter];
@@ -883,6 +946,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     [self dismissViewControllerAnimated:YES completion:^{
         DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s", __FUNCTION__]);
         
+        BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+        if (!networkReady) {
+            [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+            return;
+        }
+        
         _icWaiting.hidden = NO;
         [_icWaiting startAnimating];
         
@@ -908,6 +977,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     [picker dismissViewControllerAnimated:YES completion:^{
         [self dismissViewControllerAnimated:YES completion:NULL];
+        
+        BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+        if (!networkReady) {
+            [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+            return;
+        }
         
         NSString* type = [info objectForKey:UIImagePickerControllerMediaType];
         if ([type isEqualToString: (NSString*)kUTTypeImage] ) {
@@ -1068,22 +1143,40 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - Switch Custom Delegate
 - (void)switchButtonEnabled {
+    BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+    if (!networkReady) {
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
     
-}
-
-- (void)switchButtonDisabled {
     LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
     if (defaultConfig != NULL) {
+        turnOffAcc = NO;
+        turnOnAcc = YES;
+        
         [_icWaiting startAnimating];
         _icWaiting.hidden = NO;
         
-        //  edit profxy config
-        linphone_proxy_config_edit(defaultConfig);
-        linphone_proxy_config_enable_register(defaultConfig, NO);
-        linphone_proxy_config_refresh_register(defaultConfig);
-        linphone_proxy_config_done(defaultConfig);
+        [SipUtils enableProxyConfig:defaultConfig withValue:YES withRefresh:YES];
+    }
+}
+
+- (void)switchButtonDisabled {
+    BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+    if (!networkReady) {
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    
+    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+    if (defaultConfig != NULL) {
+        turnOffAcc = YES;
+        turnOnAcc = NO;
         
-        linphone_core_refresh_registers(LC);
+        [_icWaiting startAnimating];
+        _icWaiting.hidden = NO;
+        
+        [SipUtils enableProxyConfig:defaultConfig withValue:NO withRefresh:YES];
     }
 }
 

@@ -281,4 +281,16 @@
     return @"";
 }
 
++ (void)enableProxyConfig: (LinphoneProxyConfig *)proxy withValue: (BOOL)enable withRefresh: (BOOL)refresh {
+    //  edit profxy config
+    linphone_proxy_config_edit(proxy);
+    linphone_proxy_config_enable_register(proxy, enable);
+    linphone_proxy_config_refresh_register(proxy);
+    linphone_proxy_config_done(proxy);
+    
+    if (refresh) {
+        linphone_core_refresh_registers(LC);
+    }
+}
+
 @end

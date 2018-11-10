@@ -1194,3 +1194,5 @@
 "The user is busy" = "Người dùng đang bận"
 
 "Do you want to enable this account?" = "Bạn có muốn kích hoạt lại tài khoản này?"
+"Your account was enabled successful" = "Tài khoản của bạn đã được bật thành công"
+"Your account was disabled successful" = "Tài khoản của bạn đã được tắt thành công"
