@@ -146,7 +146,7 @@
         if (value == 1) {
             BOOL result = [NSDatabase deleteAllMissedCallOfUser:USERNAME];
             if (!result) {
-                [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_failed] duration:2.0 position:CSToastPositionCenter];
+                [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed"] duration:2.0 position:CSToastPositionCenter];
             }else{
                 [_lbNoCalls setHidden: false];
                 [_tbListCalls setHidden: true];
@@ -168,7 +168,7 @@
         [self reGetListCallsForHistory];
         [_tbListCalls reloadData];
     }else{
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_failed] duration:2.0 position:CSToastPositionCenter];
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed"] duration:2.0 position:CSToastPositionCenter];
     }
 }
 
@@ -271,8 +271,6 @@
             }
             [[PhoneMainView instance] changeCurrentView:[DetailHistoryCNViewController compositeViewDescription]
                                                    push:true];
-        }else{
-            [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_phone_not_exists] duration:2.0 position:CSToastPositionCenter];
         }
     }
 }

@@ -345,62 +345,6 @@
     [[UIApplication sharedApplication] scheduleLocalNotification: messageNotif];
 }
 
-// Xoá file details của message
-+ (void)deleteDetailsFileOfMessage: (NSString *)typeMessage andDetails: (NSString *)detail andThumb: (NSString *)thumb{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    if ([typeMessage isEqualToString: imageMessage]) {
-        if (![detail isEqualToString:@""]) {
-            NSString *pathDetailsFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/files/%@", detail]];
-            BOOL fileDetailExists = [[NSFileManager defaultManager] fileExistsAtPath: pathDetailsFile];
-            if (fileDetailExists) {
-                [[NSFileManager defaultManager] removeItemAtPath:pathDetailsFile error:nil];
-            }
-        }
-        
-        if (![thumb isEqualToString:@""]) {
-            NSString *pathThumbFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/files/%@", thumb]];
-            BOOL fileThumbExists = [[NSFileManager defaultManager] fileExistsAtPath: pathThumbFile];
-            if (fileThumbExists) {
-                [[NSFileManager defaultManager] removeItemAtPath:pathThumbFile error:nil];
-            }
-        }
-    }else if ([typeMessage isEqualToString: audioMessage]){
-        if (![thumb isEqualToString:@""]) {
-            NSString *pathThumbFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/records/%@", thumb]];
-            BOOL fileThumbExists = [[NSFileManager defaultManager] fileExistsAtPath: pathThumbFile];
-            if (fileThumbExists) {
-                [[NSFileManager defaultManager] removeItemAtPath:pathThumbFile error:nil];
-            }
-        }
-    }else if ([typeMessage isEqualToString: videoMessage]){
-        NSString *pathDetailsFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/videos/%@", detail]];
-        BOOL fileDetailExists = [[NSFileManager defaultManager] fileExistsAtPath: pathDetailsFile];
-        if (fileDetailExists) {
-            [[NSFileManager defaultManager] removeItemAtPath:pathDetailsFile error:nil];
-        }
-    }else{
-        // do some thing
-    }
-}
-
-+ (NSString *)checkFileExtension: (NSString *)fileName{
-    if (fileName.length > 3) {
-        NSString *extensionStr = [fileName substringWithRange:NSMakeRange(fileName.length-3, 3)];
-        if ([extensionStr isEqualToString:@"jpg"] || [extensionStr isEqualToString:@"JPG"] || [extensionStr isEqualToString:@"png"] || [extensionStr isEqualToString:@"PNG"] || [extensionStr isEqualToString:@"gif"] || [extensionStr isEqualToString:@"GIF"] || [extensionStr isEqualToString:@"jpeg"] || [extensionStr isEqualToString:@"JPEG"]) {
-            return imageMessage;
-        }else if([extensionStr isEqualToString:@"m4a"] || [extensionStr isEqualToString:@"M4A"] || [extensionStr isEqualToString:@"wav"] || [extensionStr isEqualToString:@"WAV"] || [extensionStr isEqualToString:@"wma"] || [extensionStr isEqualToString:@"WMA"] || [extensionStr isEqualToString:@"aiff"] ||[extensionStr isEqualToString:@"AIFF"] || [extensionStr isEqualToString:@"3gp"] || [extensionStr isEqualToString:@"3GP"] || [extensionStr isEqualToString:@"mp3"] || [extensionStr isEqualToString:@"MP3"] || [extensionStr isEqualToString:@"m4p"] || [extensionStr isEqualToString:@"MP4"] || [extensionStr isEqualToString:@"cda"] || [extensionStr isEqualToString:@"CDA"] || [extensionStr isEqualToString:@"dat"] || [extensionStr isEqualToString:@"DAT"]){
-            return audioMessage;
-        }else if ([extensionStr isEqualToString:@"avi"] || [extensionStr isEqualToString:@"AVI"] || [extensionStr isEqualToString:@"riff"] || [extensionStr isEqualToString:@"RIFF"] || [extensionStr isEqualToString:@"mpg"] || [extensionStr isEqualToString:@"MPG"] || [extensionStr isEqualToString:@"vob"] || [extensionStr isEqualToString:@"VOB"] || [extensionStr isEqualToString:@"mp4"] || [extensionStr isEqualToString:@"MP4"] || [extensionStr isEqualToString:@"mov"] || [extensionStr isEqualToString:@"MOV"] || [extensionStr isEqualToString:@"3gp"] || [extensionStr isEqualToString:@"3GP"] || [extensionStr isEqualToString:@"mkv"] || [extensionStr isEqualToString:@"MKV"] || [extensionStr isEqualToString:@"flv"] || [extensionStr isEqualToString:@"FLV"] || [extensionStr isEqualToString:@"3gpp"] || [extensionStr isEqualToString:@"3GPP"]){
-            return videoMessage;
-        }else{
-            return @"";
-        }
-    }else{
-        return @"";
-    }
-}
-
 + (UIImage *)squareImageWithImage:(UIImage *)sourceImage withSizeWidth:(CGFloat)sideLength
 {
     // input size comes from image
@@ -934,7 +878,7 @@
 + (BOOL)soundForCallIsEnable {
     NSString *soundCallKey = [NSString stringWithFormat:@"%@_%@", key_sound_call, USERNAME];
     NSString *value = [[NSUserDefaults standardUserDefaults] objectForKey:soundCallKey];
-    if (value == nil || [value isEqualToString: text_yes]) {
+    if (value == nil || [value isEqualToString: @"YES"]) {
         return YES;
     }
     return NO;
@@ -1170,5 +1114,44 @@
     [sHistoryEventDate setDateStyle:NSDateFormatterMediumStyle];
     return sHistoryEventDate;
 }
+
++ (void)sendMissedNotificationForOfflineUser: (NSString *)IDRecipient fromSender: (NSString *)Sender withContent: (NSString *)content
+{
+    NSString *strURL = [NSString stringWithFormat:@"%@/%@", link_api, PushSharp];
+    NSURL *URL = [NSURL URLWithString:strURL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: URL];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
+    [request setTimeoutInterval: 60];
+    
+    NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
+    [jsonDict setObject:AuthUser forKey:@"AuthUser"];
+    [jsonDict setObject:AuthKey forKey:@"AuthKey"];
+    [jsonDict setObject:IDRecipient forKey:@"IDRecipient"];
+    [jsonDict setObject:@"yes" forKey:@"Xmpp"];
+    [jsonDict setObject:Sender forKey:@"Sender"];
+    [jsonDict setObject:@"missed_call" forKey:@"Type"];
+    
+    NSTimeInterval timeInSeconds = [[NSDate date] timeIntervalSince1970];
+    [jsonDict setObject:[NSString stringWithFormat:@"%f", timeInSeconds] forKey:@"Datetime"];
+    [jsonDict setObject:content forKey:@"Content"];
+    
+    NSString *jsonRequest = [jsonDict JSONString];
+    NSData *requestData = [jsonRequest dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    [request setValue:[NSString stringWithFormat:@"%d", (int)[requestData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody: requestData];
+    
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    if(connection) {
+        NSLog(@"Connection Successful");
+    }
+}
+
+
 
 @end

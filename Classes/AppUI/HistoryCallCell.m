@@ -9,7 +9,7 @@
 #import "HistoryCallCell.h"
 
 @implementation HistoryCallCell
-@synthesize _cbDelete, _imgAvatar, _imgStatus, _lbName, _btnCall, _lbSepa, _lbPhone, lbDuration;
+@synthesize _cbDelete, _imgAvatar, _imgStatus, _lbName, _btnCall, _lbSepa, _lbPhone, lbDuration, lbMissed;
 @synthesize _phoneNumber;
 
 - (void)awakeFromNib {
@@ -35,6 +35,15 @@
         make.centerY.equalTo(self.mas_centerY);
         make.width.height.mas_equalTo(50.0);
     }];
+    
+    lbMissed.clipsToBounds = YES;
+    lbMissed.layer.cornerRadius = 11.0/2;
+    [lbMissed mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_imgAvatar.mas_right).offset(-16);
+        make.top.equalTo(_imgAvatar).offset(15);
+        make.width.height.mas_equalTo(11.0);
+    }];
+    
     
     _imgStatus.clipsToBounds = YES;
     _imgStatus.layer.cornerRadius = 17.0/2;

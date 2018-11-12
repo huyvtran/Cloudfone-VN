@@ -56,12 +56,6 @@
 
 + (void)createLocalNotificationWithAlertBody: (NSString *)alertBodyStr andInfoDict: (NSDictionary *)infoDict ofUser: (NSString *)user;
 
-/* Xoá file details của message */
-+ (void)deleteDetailsFileOfMessage: (NSString *)typeMessage andDetails: (NSString *)detail andThumb: (NSString *)thumb;
-
-/*----- KIỂM TRA LOẠI CỦA FILE ĐANG NHẬN -----*/
-+ (NSString *)checkFileExtension: (NSString *)fileName;
-
 // Hàm crop image từ 1 image
 + (UIImage *)squareImageWithImage:(UIImage *)sourceImage withSizeWidth:(CGFloat)sideLength;
 
@@ -132,5 +126,6 @@
 
 + (NSString *)getBuildDate;
 +(NSDateFormatter*) historyEventDate;
++ (void)sendMissedNotificationForOfflineUser: (NSString *)IDRecipient fromSender: (NSString *)Sender withContent: (NSString *)content;
 
 @end

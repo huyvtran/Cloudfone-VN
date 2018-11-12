@@ -91,7 +91,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnSpeaker.selected = NO;
     _btnMute.selected = NO;
     
-    _lbCallState.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: text_calling];
+    _lbCallState.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: @"Calling"];
     _imgCallState.image = [UIImage imageNamed:@"icon_calling"];
     [self updateStateCallForView];
     
@@ -247,22 +247,22 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallOutgoingInit:{
-            _lbCallState.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: text_calling];
+            _lbCallState.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: @"Calling"];
             _imgCallState.image = [UIImage imageNamed:@"icon_calling"];
             break;
         }
         case LinphoneCallOutgoingRinging:{
-            _lbCallState.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: text_ringing];
+            _lbCallState.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: @"Ringing"];
             _imgCallState.image = [UIImage imageNamed:@"icon_ringing"];
             break;
         }
         case LinphoneCallOutgoingEarlyMedia:{
-            _lbCallState.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: text_calling];
+            _lbCallState.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: @"Calling"];
             _imgCallState.image = [UIImage imageNamed:@"icon_calling"];
             break;
         }
         case LinphoneCallConnected:{
-            _lbCallState.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_connected];
+            _lbCallState.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Connected"];
             
             break;
         }
@@ -284,7 +284,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             
             break;
         case LinphoneCallEnd:{
-            _lbCallState.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: text_terminated];
+            _lbCallState.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: @"Terminated"];
             _imgCallState.image = [UIImage imageNamed:@"icon_state_endcall"];
             break;
         }
@@ -300,13 +300,13 @@ static UICompositeViewDescription *compositeDescription = nil;
                     if (count > 0) {
                         [[PhoneMainView instance] popToView:CallView.compositeViewDescription];
                     }{
-                        NSString *reason = [NSString stringWithFormat:@"%@ %@", userName, [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_busy]];
+                        NSString *reason = [NSString stringWithFormat:@"%@ %@", userName, [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Busy"]];
                         _lbName.text = reason;
                     }
                     break;
                 }
                 default:
-                    _lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: text_terminated];
+                    _lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey: @"Terminated"];
                     break;
             }
             break;

@@ -13,6 +13,8 @@
 
 @property (weak, nonatomic) IBOutlet BEMCheckBox *_cbDelete;
 @property (weak, nonatomic) IBOutlet UIImageView *_imgAvatar;
+@property (weak, nonatomic) IBOutlet UILabel *lbMissed;
+
 @property (weak, nonatomic) IBOutlet UIImageView *_imgStatus;
 @property (weak, nonatomic) IBOutlet UILabel *_lbName;
 @property (weak, nonatomic) IBOutlet UIButton *_btnCall;

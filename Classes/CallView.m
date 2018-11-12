@@ -79,6 +79,7 @@ const NSInteger MINI_KEYPAD_TAG = 101;
     
     BOOL needEnableSpeaker;
     LinphoneCallDir callDirection;
+    BOOL isRemoteRinging;
 }
 
 @end
@@ -412,7 +413,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             //  Hide call quality value if have not connected yet
             viewKeypad.lbQualityValue.hidden = YES;
         }else if(quality < 1) {
-            NSString *qualityValue = [appDelegate.localization localizedStringForKey:text_quality_worse];
+            NSString *qualityValue = [appDelegate.localization localizedStringForKey:@"Worse"];
             NSString *quality = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:@"Quality"], qualityValue];
             NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString: quality];
             [attr addAttribute:NSForegroundColorAttributeName value:UIColor.whiteColor range:NSMakeRange(0, quality.length)];
@@ -423,7 +424,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             viewKeypad.lbQualityValue.hidden = NO;
             
         } else if (quality < 2) {
-            NSString *qualityValue = [appDelegate.localization localizedStringForKey:text_quality_very_low];
+            NSString *qualityValue = [appDelegate.localization localizedStringForKey:@"Very low"];
             NSString *quality = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:@"Quality"], qualityValue];
             NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString: quality];
             [attr addAttribute:NSForegroundColorAttributeName value:UIColor.whiteColor range:NSMakeRange(0, quality.length)];
@@ -434,7 +435,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             viewKeypad.lbQualityValue.hidden = NO;
             
         } else if (quality < 3) {
-            NSString *qualityValue = [appDelegate.localization localizedStringForKey:text_quality_low];
+            NSString *qualityValue = [appDelegate.localization localizedStringForKey:@"Low"];
             NSString *quality = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:@"Quality"], qualityValue];
             NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString: quality];
             [attr addAttribute:NSForegroundColorAttributeName value:UIColor.whiteColor range:NSMakeRange(0, quality.length)];
@@ -445,7 +446,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             viewKeypad.lbQualityValue.hidden = NO;
             
         } else if(quality < 4){
-            NSString *qualityValue = [appDelegate.localization localizedStringForKey:text_quality_average];
+            NSString *qualityValue = [appDelegate.localization localizedStringForKey:@"Average"];
             NSString *quality = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:@"Quality"], qualityValue];
             NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString: quality];
             [attr addAttribute:NSForegroundColorAttributeName value:UIColor.whiteColor range:NSMakeRange(0, quality.length)];
@@ -456,7 +457,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             viewKeypad.lbQualityValue.hidden = NO;
             
         } else{
-            NSString *qualityValue = [appDelegate.localization localizedStringForKey:text_quality_good];
+            NSString *qualityValue = [appDelegate.localization localizedStringForKey:@"Good"];
             NSString *quality = [NSString stringWithFormat:@"%@: %@", [appDelegate.localization localizedStringForKey:@"Quality"], qualityValue];
             NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString: quality];
             [attr addAttribute:NSForegroundColorAttributeName value:UIColor.whiteColor range:NSMakeRange(0, quality.length)];
@@ -622,6 +623,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 	switch (state) {
         case LinphoneCallOutgoingRinging:{
+            isRemoteRinging = YES;
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Ringing"];
             _durationLabel.textColor = UIColor.whiteColor;
             
@@ -629,10 +631,14 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallIncomingReceived:{
+            isRemoteRinging = NO;
+            
             [self getPhoneNumberOfCall];
             break;
         }
         case LinphoneCallOutgoingProgress:{
+            isRemoteRinging = NO;
+            
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Calling"];
             _durationLabel.textColor = UIColor.whiteColor;
             
@@ -658,6 +664,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallConnected:{
+            isRemoteRinging = YES;
+            
             //  Check if in call with hotline
             if (![phoneNumber isEqualToString:hotline]) {
                 icAddCall.enabled = YES;
@@ -1305,7 +1313,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.top.left.bottom.right.equalTo(_callView);
     }];
     
-    _lbQuality.text = [appDelegate.localization localizedStringForKey: text_quality];
+    _lbQuality.text = [appDelegate.localization localizedStringForKey: @"Quality"];
     _lbQuality.backgroundColor = UIColor.clearColor;
     _lbQuality.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
     _lbQuality.textColor = UIColor.whiteColor;
@@ -1458,7 +1466,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [collectionConference setBackgroundColor:[UIColor clearColor]];
     collectionConference.hidden = YES;
     
-    [btnAddCallConf setTitle:[appDelegate.localization localizedStringForKey:CN_TEXT_ADD_CONFERENCE]
+    [btnAddCallConf setTitle:[appDelegate.localization localizedStringForKey:@"CN_TEXT_ADD_CONFERENCE"]
                     forState:UIControlStateNormal];
     [btnAddCallConf setBackgroundImage:[UIImage imageNamed:@"btn_add_conf_over.png"]
                               forState:UIControlStateHighlighted];
@@ -1658,6 +1666,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)hideCallView {
+    if (!isRemoteRinging && callDirection == LinphoneCallOutgoing) {
+        [AppUtils sendMissedNotificationForOfflineUser:phoneNumber fromSender:USERNAME withContent:[NSString stringWithFormat:@"You have miss call from %@", USERNAME]];
+        [self.view makeToast:@"Send missed call noti" duration:2.0 position:CSToastPositionCenter];
+    }
     [[PhoneMainView instance] popCurrentView];
 }
 

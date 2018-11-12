@@ -45,6 +45,9 @@ INIT_WITH_COMMON_CF {
 }
 
 - (void)applicationWillEnterForeground:(NSNotification *)notif {
+    //  [Khai le - 12/11/2018]
+    return;
+    
 	// Force the animations
 	if (self.isHidden) {
 		self.hidden = NO;

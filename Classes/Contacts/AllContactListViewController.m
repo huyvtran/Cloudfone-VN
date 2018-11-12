@@ -239,7 +239,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     lbNoContact.textColor = UIColor.darkGrayColor;
     lbNoContact.font = [UIFont fontWithName:HelveticaNeue size:15.0];
-    lbNoContact.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_no_contact];
+    lbNoContact.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No contacts"];
     [lbNoContact mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewHeader.mas_bottom);
         make.left.bottom.right.equalTo(self.view);

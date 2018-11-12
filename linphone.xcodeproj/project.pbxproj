@@ -97,6 +97,7 @@
 		159E0879217984F00056E2BB /* RegisterPBXWithPhoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */; };
 		159E08842179E9130056E2BB /* ic_not_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 159E08822179E9110056E2BB /* ic_not_check.png */; };
 		159E08852179E9130056E2BB /* ic_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 159E08832179E9120056E2BB /* ic_checked.png */; };
+		15A2596121998DB80089941A /* ic_call_history.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A2596021998DB70089941A /* ic_call_history.png */; };
 		15A64D92216C5A3D00D194BD /* ic_call_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A64D91216C5A3C00D194BD /* ic_call_contact.png */; };
 		15A64DA0216C8BC700D194BD /* InfoForNewContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A64D9E216C8BC700D194BD /* InfoForNewContactTableCell.m */; };
 		15A64DA1216C8BC700D194BD /* InfoForNewContactTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15A64D9F216C8BC700D194BD /* InfoForNewContactTableCell.xib */; };
@@ -556,8 +557,6 @@
 		84EDEE431FB7121C00FF665C /* KSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84EDEE411FB7121C00FF665C /* KSettingViewController.xib */; };
 		84EDEE4D1FB712F200FF665C /* LanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EDEE481FB712F200FF665C /* LanguageViewController.m */; };
 		84EDEE4E1FB712F200FF665C /* LanguageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84EDEE491FB712F200FF665C /* LanguageViewController.xib */; };
-		84EDEE4F1FB712F200FF665C /* NotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EDEE4B1FB712F200FF665C /* NotificationSettingsViewController.m */; };
-		84EDEE501FB712F200FF665C /* NotificationSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84EDEE4C1FB712F200FF665C /* NotificationSettingsViewController.xib */; };
 		84EDEE531FB7136200FF665C /* LanguageObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EDEE521FB7136200FF665C /* LanguageObject.m */; };
 		84EDEE571FB7137200FF665C /* LanguageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EDEE551FB7137200FF665C /* LanguageCell.m */; };
 		84EDEE581FB7137200FF665C /* LanguageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84EDEE561FB7137200FF665C /* LanguageCell.xib */; };
@@ -896,6 +895,7 @@
 		159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RegisterPBXWithPhoneView.xib; path = AppUI/RegisterPBXWithPhoneView.xib; sourceTree = "<group>"; };
 		159E08822179E9110056E2BB /* ic_not_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_not_check.png; sourceTree = "<group>"; };
 		159E08832179E9120056E2BB /* ic_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_checked.png; sourceTree = "<group>"; };
+		15A2596021998DB70089941A /* ic_call_history.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_history.png; sourceTree = "<group>"; };
 		15A64D91216C5A3C00D194BD /* ic_call_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_contact.png; sourceTree = "<group>"; };
 		15A64D9D216C8BC600D194BD /* InfoForNewContactTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = InfoForNewContactTableCell.h; path = AppUI/InfoForNewContactTableCell.h; sourceTree = "<group>"; };
 		15A64D9E216C8BC700D194BD /* InfoForNewContactTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = InfoForNewContactTableCell.m; path = AppUI/InfoForNewContactTableCell.m; sourceTree = "<group>"; };
@@ -1566,9 +1566,6 @@
 		84EDEE471FB712F200FF665C /* LanguageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LanguageViewController.h; path = More/LanguageViewController.h; sourceTree = "<group>"; };
 		84EDEE481FB712F200FF665C /* LanguageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LanguageViewController.m; path = More/LanguageViewController.m; sourceTree = "<group>"; };
 		84EDEE491FB712F200FF665C /* LanguageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LanguageViewController.xib; path = More/LanguageViewController.xib; sourceTree = "<group>"; };
-		84EDEE4A1FB712F200FF665C /* NotificationSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotificationSettingsViewController.h; path = More/NotificationSettingsViewController.h; sourceTree = "<group>"; };
-		84EDEE4B1FB712F200FF665C /* NotificationSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotificationSettingsViewController.m; path = More/NotificationSettingsViewController.m; sourceTree = "<group>"; };
-		84EDEE4C1FB712F200FF665C /* NotificationSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NotificationSettingsViewController.xib; path = More/NotificationSettingsViewController.xib; sourceTree = "<group>"; };
 		84EDEE511FB7136200FF665C /* LanguageObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LanguageObject.h; path = AppObjects/LanguageObject.h; sourceTree = "<group>"; };
 		84EDEE521FB7136200FF665C /* LanguageObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LanguageObject.m; path = AppObjects/LanguageObject.m; sourceTree = "<group>"; };
 		84EDEE541FB7137200FF665C /* LanguageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LanguageCell.h; path = AppUI/LanguageCell.h; sourceTree = "<group>"; };
@@ -2625,6 +2622,7 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				15A2596021998DB70089941A /* ic_call_history.png */,
 				841B359B2191F26D0019BD45 /* button-endcall.png */,
 				841B35992191F26B0019BD45 /* ic-pause-active.png */,
 				841B359A2191F26C0019BD45 /* ic-pause-default.png */,
@@ -2804,9 +2802,6 @@
 				84EDEE471FB712F200FF665C /* LanguageViewController.h */,
 				84EDEE481FB712F200FF665C /* LanguageViewController.m */,
 				84EDEE491FB712F200FF665C /* LanguageViewController.xib */,
-				84EDEE4A1FB712F200FF665C /* NotificationSettingsViewController.h */,
-				84EDEE4B1FB712F200FF665C /* NotificationSettingsViewController.m */,
-				84EDEE4C1FB712F200FF665C /* NotificationSettingsViewController.xib */,
 				84C4435A1FBE00B90015854C /* IntroduceViewController.h */,
 				84C4435B1FBE00B90015854C /* IntroduceViewController.m */,
 				84C4435C1FBE00B90015854C /* IntroduceViewController.xib */,
@@ -3967,7 +3962,6 @@
 				15A64D92216C5A3D00D194BD /* ic_call_contact.png in Resources */,
 				15857C00216DED4800DB5237 /* call_default_mini.png in Resources */,
 				84ECF9C3216679A70067B4B6 /* ic_mute_act.png in Resources */,
-				84EDEE501FB712F200FF665C /* NotificationSettingsViewController.xib in Resources */,
 				15D21BE52176E70000FEBED2 /* EditProfileViewController.xib in Resources */,
 				153D004E2164D9D3007B69B3 /* numpad_clear_hover.png in Resources */,
 				153D000E2164A67E007B69B3 /* numpad_four_default.png in Resources */,
@@ -4023,6 +4017,7 @@
 				D38187CD15FE346700C3EDCA /* HistoryDetailsView.xib in Resources */,
 				639E9CA61C0DB7F200019A75 /* UIChatCreateCell.xib in Resources */,
 				F0642EF119DAC891009DB336 /* MainStoryboard.storyboard in Resources */,
+				15A2596121998DB80089941A /* ic_call_history.png in Resources */,
 				8440F185216BA82000BB559C /* mini_key_9.png in Resources */,
 				84EDEE4E1FB712F200FF665C /* LanguageViewController.xib in Resources */,
 				8440F18F216BA82000BB559C /* mini_key_sharp.png in Resources */,
@@ -4498,7 +4493,6 @@
 				84EFFE151FF3E6B60085A9F4 /* DGActivityIndicatorLineScalePulseOutAnimation.m in Sources */,
 				D3807FFC15C2894A005BE9BC /* IASKPSTitleValueSpecifierViewCell.m in Sources */,
 				D3807FFE15C2894A005BE9BC /* IASKSlider.m in Sources */,
-				84EDEE4F1FB712F200FF665C /* NotificationSettingsViewController.m in Sources */,
 				D380800015C2894A005BE9BC /* IASKSwitch.m in Sources */,
 				84EFFE0B1FF3E6B60085A9F4 /* DGActivityIndicatorBallPulseAnimation.m in Sources */,
 				D380800215C2894A005BE9BC /* IASKTextField.m in Sources */,
@@ -5251,7 +5245,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;

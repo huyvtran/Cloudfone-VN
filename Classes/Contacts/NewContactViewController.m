@@ -159,17 +159,17 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (IBAction)_btnAvatarPressed:(UIButton *)sender {
     [self.view endEditing: YES];
     if (appDelegate._dataCrop != nil) {
-        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_options] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
-                                          [appDelegate.localization localizedStringForKey:text_gallery],
-                                          [appDelegate.localization localizedStringForKey:text_camera],
-                                          [appDelegate.localization localizedStringForKey:text_remove],
+        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Options"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] destructiveButtonTitle:nil otherButtonTitles:
+                                          [appDelegate.localization localizedStringForKey:@"Gallery"],
+                                          [appDelegate.localization localizedStringForKey:@"Camera"],
+                                          [appDelegate.localization localizedStringForKey:@"Remove Avatar"],
                                           nil];
         popupAddContact.tag = 100;
         [popupAddContact showInView:self.view];
     }else{
-        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_options] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
-                                          [appDelegate.localization localizedStringForKey:text_gallery],
-                                          [appDelegate.localization localizedStringForKey:text_camera],
+        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Options"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] destructiveButtonTitle:nil otherButtonTitles:
+                                          [appDelegate.localization localizedStringForKey:@"Gallery"],
+                                          [appDelegate.localization localizedStringForKey:@"Camera"],
                                           nil];
         popupAddContact.tag = 101;
         [popupAddContact showInView:self.view];
@@ -338,7 +338,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)afterAddAndReloadContactDone {
     [waitingHud dismissAnimated:YES];
     appDelegate._newContact = nil;
-    [self.view makeToast:[appDelegate.localization localizedStringForKey:text_successfully]
+    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Successful"]
                 duration:1.0 position:CSToastPositionCenter];
     [NSTimer scheduledTimerWithTimeInterval:1.0 target:self
                                    selector:@selector(backToView)
@@ -625,7 +625,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             [cell._iconNewPhone setBackgroundImage:[UIImage imageNamed:@"ic_add_phone.png"]
                                           forState:UIControlStateNormal];
             
-            [cell._iconTypePhone setTitle:text_phone_mobile forState:UIControlStateNormal];
+            [cell._iconTypePhone setTitle:@"Mobile" forState:UIControlStateNormal];
             [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:@"btn_contacts_mobile"]
                                            forState:UIControlStateNormal];
         }else{

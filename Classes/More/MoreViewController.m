@@ -81,9 +81,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnSignOutPressed:(UIButton *)sender {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_alert_logout_title] message:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_alert_logout_content] delegate:self cancelButtonTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_no] otherButtonTitles:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_yes], nil];
-    alertView.delegate = self;
-    [alertView show];
+    
 }
 
 #pragma mark - my functions

@@ -423,7 +423,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_iconAddNewClicked:(UIButton *)sender {
-    UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:_phoneNumberDetail delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
+    UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:_phoneNumberDetail delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] destructiveButtonTitle:nil otherButtonTitles:
                                       [appDelegate.localization localizedStringForKey:@"Create new contact"],
                                       [appDelegate.localization localizedStringForKey:@"Add to existing contact"],
                                       nil];

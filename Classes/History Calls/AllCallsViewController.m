@@ -149,7 +149,7 @@
         if (value == 0) {
             BOOL result = [NSDatabase deleteAllHistoryCallOfUser: USERNAME];
             if (!result) {
-                [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_failed] duration:2.0 position:CSToastPositionCenter];
+                [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed"] duration:2.0 position:CSToastPositionCenter];
             }else{
                 _lbNoCalls.hidden = NO;
                 _tbListCalls.hidden = NO;
@@ -298,8 +298,6 @@
                 [controller setPhoneNumberForView: curCell._phoneNumber];
             }
             [[PhoneMainView instance] changeCurrentView:[DetailHistoryCNViewController compositeViewDescription] push:true];
-        }else{
-            [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_phone_not_exists] duration:2.0 position:CSToastPositionCenter];
         }
     }
 }

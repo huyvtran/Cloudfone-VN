@@ -745,7 +745,7 @@ void update_hash_cbs(LinphoneAccountCreator *creator, LinphoneAccountCreatorStat
     if (sender.file == nil || [sender.file isEqualToString:@"Root"]) {
         _backButton.hidden = YES;
         [_iconBackView setHidden: NO];
-        _titleLabel.text = [localization localizedStringForKey:text_app_settings];
+        _titleLabel.text = [localization localizedStringForKey:@"App settings"];
     }else{
         _backButton.hidden = NO;
         [_iconBackView setHidden: YES];

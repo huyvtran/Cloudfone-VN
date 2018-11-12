@@ -152,7 +152,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             
             switch (stateAccount) {
                 case eAccountNone:
-                    
+                    cell.lbDescription.text = [appDelegate.localization localizedStringForKey:@"No account"];
                     break;
                 case eAccountOff:{
                     cell.lbDescription.text = [appDelegate.localization localizedStringForKey:@"Disabled"];

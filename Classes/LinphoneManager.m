@@ -919,15 +919,6 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
             }else{
                 if ([[[PhoneMainView instance] currentView] isEqual:[DetailHistoryCNViewController compositeViewDescription]] || [[[PhoneMainView instance] currentView] isEqual:[CallsHistoryViewController compositeViewDescription]]) {
                     unread = 0;
-                }else if([[[PhoneMainView instance] currentView] isEqual:[IncomingCallViewController compositeViewDescription]]){
-                    NSLog(@"Here....");
-                    //                    int curCount = (int)[[[PhoneMainView instance] viewStack] count];
-                    //                    if (curCount >= 2) {
-                    //                        UICompositeViewController *preLast = [[[PhoneMainView instance] viewStack] objectAtIndex:curCount-2];
-                    //                        if ([preLast isEqual:[DetailHistoryCNViewController compositeViewDescription]] || [preLast isEqual:[K11HistoryViewController compositeViewDescription]]) {
-                    //                            unread = 0;
-                    //                        }
-                    //                    }
                 }
             }
             // Outgoing

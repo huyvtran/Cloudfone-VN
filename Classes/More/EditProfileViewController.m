@@ -96,17 +96,17 @@ static UICompositeViewDescription *compositeDescription = nil;
     [self.view endEditing: YES];
     
     if (myAvatar != nil && ![myAvatar isEqualToString:@""]) {
-        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_options] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
-                                          [appDelegate.localization localizedStringForKey:text_gallery],
-                                          [appDelegate.localization localizedStringForKey:text_camera],
-                                          [appDelegate.localization localizedStringForKey:text_remove],
+        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Options"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] destructiveButtonTitle:nil otherButtonTitles:
+                                          [appDelegate.localization localizedStringForKey:@"Gallery"],
+                                          [appDelegate.localization localizedStringForKey:@"Camera"],
+                                          [appDelegate.localization localizedStringForKey:@"Remove Avatar"],
                                           nil];
         popupAddContact.tag = 100;
         [popupAddContact showInView:self.view];
     }else{
-        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_options] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
-                                          [appDelegate.localization localizedStringForKey:text_gallery],
-                                          [appDelegate.localization localizedStringForKey:text_camera],
+        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Options"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] destructiveButtonTitle:nil otherButtonTitles:
+                                          [appDelegate.localization localizedStringForKey:@"Gallery"],
+                                          [appDelegate.localization localizedStringForKey:@"Camera"],
                                           nil];
         popupAddContact.tag = 101;
         [popupAddContact showInView:self.view];

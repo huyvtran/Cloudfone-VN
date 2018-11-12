@@ -395,7 +395,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         btnScanFromPhoto.layer.cornerRadius = btnScanFromPhoto.frame.size.height/2;
         btnScanFromPhoto.layer.borderColor = btnScanFromPhoto.backgroundColor.CGColor;
         btnScanFromPhoto.layer.borderWidth = 1.0;
-        [btnScanFromPhoto setTitle:[appDelegate.localization localizedStringForKey:scan_from_photo]
+        [btnScanFromPhoto setTitle:[appDelegate.localization localizedStringForKey:@"SCAN FROM PHOTO"]
                           forState:UIControlStateNormal];
         btnScanFromPhoto.titleLabel.font = [UIFont systemFontOfSize: 16.0];
         [btnScanFromPhoto addTarget:self
@@ -930,7 +930,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         [_icWaiting stopAnimating];
         _icWaiting.hidden = YES;
         
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_notification] message:[appDelegate.localization localizedStringForKey:cannot_find_qrcode] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_close] otherButtonTitles: nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Notifications"] message:[appDelegate.localization localizedStringForKey:@"Can not find QR Code!"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Close"] otherButtonTitles: nil];
         [alertView show];
     }
 }
@@ -1004,7 +1004,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
     }else{
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_notification] message:[appDelegate.localization localizedStringForKey:cannot_find_qrcode] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_close] otherButtonTitles: nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Notifications"] message:[appDelegate.localization localizedStringForKey:@"Can not find QR Code!"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Close"] otherButtonTitles: nil];
         [alertView show];
     }
 }

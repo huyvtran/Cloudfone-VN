@@ -127,7 +127,7 @@
     
     // iOs 7 tro len thi set
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
-        NSMutableAttributedString *tmpStr = [[NSMutableAttributedString alloc] initWithString: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_pull_to_refresh]];
+        NSMutableAttributedString *tmpStr = [[NSMutableAttributedString alloc] initWithString: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Pull to refresh"]];
         [tmpStr addAttribute:NSFontAttributeName
                        value:textFont
                        range:NSMakeRange(0, tmpStr.length)];
@@ -163,7 +163,7 @@
     //  khong co lien he
     _lbNoContacts.font = textFont;
     _lbNoContacts.textColor = UIColor.grayColor;
-    _lbNoContacts.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_no_contact];
+    _lbNoContacts.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No contacts"];
 }
 
 - (void)getSectionsForContactsList: (NSMutableArray *)contactList {

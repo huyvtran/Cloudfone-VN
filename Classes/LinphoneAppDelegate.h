@@ -99,7 +99,6 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 //  Biến kết nối cơ sỏ dữ liệu
 @property (nonatomic, strong) FMDatabase *_database;
 @property (nonatomic, strong) NSString *_databasePath;
-@property (nonatomic, strong) FMDatabase *_threadDatabase;
 
 // Biến cho biết user đang có cuộc gọi (không thể nghe cuộc gọi tiếp theo)
 @property (nonatomic, assign) BOOL _busyForCall;

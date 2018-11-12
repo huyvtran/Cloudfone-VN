@@ -337,32 +337,27 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)startSyncPBXContactsForAccount {
+    BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+    if (!networkReady) {
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    
     NSString *service = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
     if ([service isKindOfClass:[NSNull class]] || service == nil || [service isEqualToString: @""]) {
-        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_not_id_pbx]
-                                                      duration:2.0 position:CSToastPositionCenter];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"] duration:2.0 position:CSToastPositionCenter];
     }else{
-        if (![LinphoneAppDelegate sharedInstance].internetActive) {
+        
+        if (![LinphoneAppDelegate sharedInstance]._isSyncing) {
+            icWaiting.hidden = NO;
+            [icWaiting startAnimating];
             
+            [LinphoneAppDelegate sharedInstance]._isSyncing = YES;
+            [self startAnimationForSyncButton: _iconSyncPBXContact];
+            
+            [self getPBXContactsWithServerName: service];
         }else{
-            if (![LinphoneAppDelegate sharedInstance]._threadDatabase.open) {
-                [NSDatabase connectDatabaseForSyncContact];
-            }
-            
-            if (![LinphoneAppDelegate sharedInstance]._isSyncing) {
-                icWaiting.hidden = NO;
-                [icWaiting startAnimating];
-                
-                [LinphoneAppDelegate sharedInstance]._isSyncing = YES;
-                [self startAnimationForSyncButton: _iconSyncPBXContact];
-                
-                [self getPBXContactsWithServerName: service];
-//                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-//                    [self getPBXContactsWithServerName: service];
-//                });
-            }else{
-                [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"PBX contacts is being synchronized!"] duration:2.0 position:CSToastPositionCenter];
-            }
+            [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"PBX contacts is being synchronized!"] duration:2.0 position:CSToastPositionCenter];
         }
     }
 }
@@ -373,7 +368,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     icWaiting.hidden = YES;
     
     if ([link isEqualToString:getServerContacts]) {
-        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_error] duration:2.0 position:CSToastPositionCenter];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Error"] duration:2.0 position:CSToastPositionCenter];
     }
 }
 
@@ -627,7 +622,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[LinphoneAppDelegate sharedInstance] set_isSyncing: false];
     [_iconSyncPBXContact.layer removeAllAnimations];
     
-    [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_successfully] duration:2.0 position:CSToastPositionCenter];
+    [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Successful"] duration:2.0 position:CSToastPositionCenter];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"searchContactWithValue" object:_tfSearch.text];
 }

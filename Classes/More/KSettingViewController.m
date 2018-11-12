@@ -7,7 +7,6 @@
 //
 
 #import "KSettingViewController.h"
-#import "NotificationSettingsViewController.h"
 #import "LanguageViewController.h"
 #import "NSDatabase.h"
 #import "SettingCell.h"

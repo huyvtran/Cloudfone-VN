@@ -42,6 +42,9 @@
     }];
     //  ---
     
+    _historyNotificationView.clipsToBounds = YES;
+    _historyNotificationView.backgroundColor = [UIColor colorWithRed:(255/255.0) green:(65/255.0)
+                                                                blue:(65/255.0) alpha:1.0];
     [self setBackgroundForTabBarButton];
     
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(changeViewEvent:)
@@ -57,6 +60,11 @@
                                                  name:k11UpdateBarNotifications object:nil];
     
 	[self update:FALSE];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear: animated];
+    _historyNotificationView.layer.cornerRadius = _historyNotificationView.frame.size.height/2;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -84,32 +92,34 @@
 }
 
 - (void)messageReceived:(NSNotification *)notif {
-	[self updateUnreadMessage:TRUE];
+	
 }
 
 #pragma mark - UI Update
 
 - (void)update:(BOOL)appear {
     [self updateSelectedButton:[PhoneMainView.instance currentView]];
-    [self updateMissedCall:linphone_core_get_missed_calls_count(LC) appear:appear];
-    [self updateUnreadMessage:appear];
-    [self updateAcceptNotificationForBar: YES];
-}
-
-- (void)updateAcceptNotificationForBar: (BOOL)appear {
-    
-}
-
-- (void)updateUnreadMessage:(BOOL)appear {
-	
+    [self updateMissedCall:0 appear:appear];
 }
 
 - (void)updateMissedCall:(int)missedCall appear:(BOOL)appear {
+    _historyNotificationLabel.text = @"";
+    [_historyNotificationView stopAnimating:YES];
+    
+    if ([SipUtils getStateOfDefaultProxyConfig] == eAccountNone) {
+        [_historyNotificationView stopAnimating:appear];
+        return;
+    }
+    NSString *account = [SipUtils getAccountIdOfDefaultProxyConfig];
+    missedCall = [NSDatabase getUnreadMissedCallHisotryWithAccount: account];
+    
 	if (missedCall > 0) {
-		_historyNotificationLabel.text = [NSString stringWithFormat:@"%i", missedCall];
-		[_historyNotificationView startAnimating:appear];
+        _historyNotificationView.hidden = NO;
+        //  _historyNotificationLabel.text = [NSString stringWithFormat:@"%i", missedCall];
+		//  [_historyNotificationView startAnimating:appear];
 	} else {
-		[_historyNotificationView stopAnimating:appear];
+        _historyNotificationView.hidden = YES;
+		//  [_historyNotificationView stopAnimating:appear];
 	}
 }
 
@@ -126,9 +136,7 @@
 #pragma mark - Action Functions
 
 - (IBAction)onHistoryClick:(id)event {
-	//  [PhoneMainView.instance changeCurrentView:HistoryListView.compositeViewDescription];
-    
-    [NSDatabase resetAllMissedCallOfUser: USERNAME];
+    //  [NSDatabase resetAllMissedCallOfUser: USERNAME];
     
     linphone_core_reset_missed_calls_count(LC);
     [self update:FALSE];

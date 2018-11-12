@@ -146,17 +146,17 @@ static UICompositeViewDescription *compositeDescription = nil;
     [self.view endEditing: YES];
     
     if (appDelegate._dataCrop != nil || (detailsContact._avatar != nil && ![detailsContact._avatar isEqualToString:@""])) {
-        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_options] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
-                                          [appDelegate.localization localizedStringForKey:text_gallery],
-                                          [appDelegate.localization localizedStringForKey:text_camera],
-                                          [appDelegate.localization localizedStringForKey:text_remove],
+        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Options"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] destructiveButtonTitle:nil otherButtonTitles:
+                                          [appDelegate.localization localizedStringForKey:@"Gallery"],
+                                          [appDelegate.localization localizedStringForKey:@"Camera"],
+                                          [appDelegate.localization localizedStringForKey:@"Remove Avatar"],
                                           nil];
         popupAddContact.tag = 100;
         [popupAddContact showInView:self.view];
     }else{
-        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:text_options] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles:
-                                          [appDelegate.localization localizedStringForKey:text_gallery],
-                                          [appDelegate.localization localizedStringForKey:text_camera],
+        UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Options"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] destructiveButtonTitle:nil otherButtonTitles:
+                                          [appDelegate.localization localizedStringForKey:@"Gallery"],
+                                          [appDelegate.localization localizedStringForKey:@"Camera"],
                                           nil];
         popupAddContact.tag = 101;
         [popupAddContact showInView:self.view];
@@ -603,7 +603,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             if (locLabel == nil) {
                 ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                 anItem._iconStr = @"btn_contacts_home.png";
-                anItem._titleStr = [appDelegate.localization localizedStringForKey:text_phone_home];
+                anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Home"];
                 anItem._valueStr = phoneNumber;
                 anItem._buttonStr = @"contact_detail_icon_call.png";
                 anItem._typePhone = type_phone_home;
@@ -612,7 +612,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 if (CFStringCompare(locLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_home.png";
-                    anItem._titleStr = [appDelegate.localization localizedStringForKey:text_phone_home];
+                    anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Home"];
                     anItem._valueStr = phoneNumber;
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_home;
@@ -621,7 +621,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_work.png";
-                    anItem._titleStr = [appDelegate.localization localizedStringForKey:text_phone_work];
+                    anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Work"];
                     anItem._valueStr = phoneNumber;
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_work;
@@ -630,7 +630,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_mobile.png";
-                    anItem._titleStr = [appDelegate.localization localizedStringForKey:text_phone_mobile];
+                    anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Mobile"];
                     anItem._valueStr = phoneNumber;
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_mobile;
@@ -639,7 +639,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_fax.png";
-                    anItem._titleStr = [appDelegate.localization localizedStringForKey:text_phone_fax];
+                    anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Fax"];
                     anItem._valueStr = phoneNumber;
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_fax;
@@ -648,7 +648,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_fax.png";
-                    anItem._titleStr = [appDelegate.localization localizedStringForKey:text_phone_other];
+                    anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Other"];
                     anItem._valueStr = phoneNumber;
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_other;
@@ -656,7 +656,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 }else{
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_mobile.png";
-                    anItem._titleStr = [appDelegate.localization localizedStringForKey:text_phone_mobile];
+                    anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Mobile"];
                     anItem._valueStr = phoneNumber;
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_mobile;

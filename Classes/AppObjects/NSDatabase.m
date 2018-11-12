@@ -23,7 +23,7 @@ HMLocalization *localization;
 
 @implementation NSDatabase
 
-+ (BOOL)connectCallnexDB{
++ (BOOL)connectToDatabase {
     appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
     localization = [HMLocalization sharedInstance];
     
@@ -38,6 +38,19 @@ HMLocalization *localization;
         return NO;
     }
 }
+
++ (int)getUnreadMissedCallHisotryWithAccount: (NSString *)account {
+    int result = 0;
+    NSString *tSQL = [NSString stringWithFormat:@"SELECT COUNT(*) as numMissedCall FROM history WHERE my_sip = '%@' and status = '%@'", account, @"Missed"];
+    FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
+    while ([rs next]) {
+        NSDictionary *rsDict = [rs resultDictionary];
+        result = [[rsDict objectForKey:@"numMissedCall"] intValue];
+    }
+    [rs close];
+    return result;
+}
+
 
 /*--Cap nhat tat cac trang thai cua missed call--*/
 + (BOOL)resetAllMissedCallOfUser: (NSString *)user
@@ -162,30 +175,8 @@ HMLocalization *localization;
 //  Hàm xoá 1 record call history trong lịch sử cuộc gọi
 + (BOOL)deleteRecordCallHistory: (int)idCallRecord withRecordFile: (NSString *)recordFile {
     NSString *tSQL = [NSString stringWithFormat:@"DELETE FROM history WHERE _id = %d", idCallRecord];
-    if (![recordFile isEqualToString: @""] && ![recordFile isEqualToString:@"0"]) {
-        [self removeRecordFileOfCall: recordFile];
-    }
     BOOL result = [appDelegate._database executeUpdate: tSQL];
     return result;
-}
-
-+ (void)removeRecordFileOfCall:(NSString *)filename
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    
-    NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@/%@", folder_call_records, filename]];
-    if ([fileManager fileExistsAtPath: filePath]) {
-        NSError *error;
-        BOOL success = [fileManager removeItemAtPath:filePath error:&error];
-        if (success) {
-            NSLog(@"---Xoa file ghi am thanh cong");
-        }else {
-            NSLog(@"Could not delete file -:%@ ",[error localizedDescription]);
-        }
-    }else{
-        NSLog(@"---File ghi am khong ton tai");
-    }
 }
 
 //  Hàm xoá tất cả history call
@@ -530,21 +521,6 @@ HMLocalization *localization;
         return [filter firstObject];
     }
     return nil;
-}
-
-// Kết nối csdl cho sync contact
-+ (BOOL)connectDatabaseForSyncContact{
-    appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if (appDelegate._databasePath.length > 0) {
-        appDelegate._threadDatabase = [[FMDatabase alloc] initWithPath: appDelegate._databasePath];
-        if ([appDelegate._threadDatabase open]) {
-            return YES;
-        }else{
-            return NO;
-        }
-    }else{
-        return NO;
-    }
 }
 
 // Lấy số phone cuối cùng gọi đi

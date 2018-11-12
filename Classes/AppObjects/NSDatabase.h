@@ -11,8 +11,8 @@
 
 @interface NSDatabase : NSObject
 
-/* Connect to database */
-+ (BOOL)connectCallnexDB;
++ (BOOL)connectToDatabase;
++ (int)getUnreadMissedCallHisotryWithAccount: (NSString *)account;
 
 /*--Cap nhat tat cac trang thai cua missed call--*/
 + (BOOL)resetAllMissedCallOfUser: (NSString *)user;
@@ -67,9 +67,6 @@
 
 //  Kiểm tra trùng tên và contact trong phonebook
 + (ContactObject *)checkContactExistsInDatabase: (NSString *)contactName andCloudFone: (NSString *)cloudFoneID;
-
-// Kết nối CSDL cho sync contact
-+ (BOOL)connectDatabaseForSyncContact;
 
 /*--Get last call goi di--*/
 + (NSString *)getLastCallOfUser;

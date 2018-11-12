@@ -69,7 +69,7 @@
 @synthesize _acceptCall;
 @synthesize listContacts, pbxContacts;
 @synthesize idContact;
-@synthesize _database, _databasePath, _threadDatabase;
+@synthesize _database, _databasePath;
 @synthesize _busyForCall;
 @synthesize _newContact;
 @synthesize _cropAvatar, _dataCrop;
@@ -391,11 +391,12 @@ void onUncaughtException(NSException* exception)
     
     // Copy database and connect
     [self copyFileDataToDocument:@"callnex.sqlite"];
-    [NSDatabase connectCallnexDB];
+    [NSDatabase connectToDatabase];
+    [[NSNotificationCenter defaultCenter] postNotificationName:k11UpdateBarNotifications object:nil];
     
     //  Ghi âm cuộc gọi
     _isSyncing = false;
-    enableForTest = YES;
+    enableForTest = NO;
     
     _allPhonesDict = [[NSMutableDictionary alloc] init];
     _allIDDict = [[NSMutableDictionary alloc] init];
@@ -624,15 +625,35 @@ void onUncaughtException(NSException* exception)
 }
 
 - (void)processRemoteNotification:(NSDictionary *)userInfo {
-
+    /*  Push content
+    alert =     {
+        "call-id" = 14953;
+        "loc-key" = "Incoming call from 14953";
+    };
+    badge = 1;
+    "call-id" = 14953;
+    "content-available" = 1;
+    "loc-key" = "Incoming call from 14953";
+    sound = default;
+    title = Cloudfone;
+    */
+    
     NSDictionary *aps = [userInfo objectForKey:@"aps"];
     if (aps != nil)
     {
         NSDictionary *alert = [aps objectForKey:@"alert"];
         [[LinphoneManager instance] refreshRegisters];
         
-        [[NSUserDefaults standardUserDefaults] setObject:aps forKey:@"testkey"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSString *str = [[NSUserDefaults standardUserDefaults] objectForKey:@"testkey1"];
+        if (![AppUtils isNullOrEmpty: str]) {
+            str = [NSString stringWithFormat:@"%@\n%@", str, @[aps]];
+            [[NSUserDefaults standardUserDefaults] setObject:str forKey:@"testkey"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }else{
+            [[NSUserDefaults standardUserDefaults] setObject:aps forKey:@"testkey"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+        
         
         NSString *loc_key = [aps objectForKey:@"loc-key"];
         NSString *callId = [aps objectForKey:@"call-id"];
@@ -1735,7 +1756,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             if (locLabel == nil) {
                 ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                 anItem._iconStr = @"btn_contacts_home.png";
-                anItem._titleStr = [localization localizedStringForKey:text_phone_home];
+                anItem._titleStr = [localization localizedStringForKey:@"Home"];
                 anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                 anItem._buttonStr = @"contact_detail_icon_call.png";
                 anItem._typePhone = type_phone_home;
@@ -1744,7 +1765,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 if (CFStringCompare(locLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_home.png";
-                    anItem._titleStr = [localization localizedStringForKey:text_phone_home];
+                    anItem._titleStr = [localization localizedStringForKey:@"Home"];
                     anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_home;
@@ -1753,7 +1774,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_work.png";
-                    anItem._titleStr = [localization localizedStringForKey:text_phone_work];
+                    anItem._titleStr = [localization localizedStringForKey:@"Work"];
                     anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_work;
@@ -1762,7 +1783,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_mobile.png";
-                    anItem._titleStr = [localization localizedStringForKey:text_phone_mobile];
+                    anItem._titleStr = [localization localizedStringForKey:@"Mobile"];
                     anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_mobile;
@@ -1771,7 +1792,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_fax.png";
-                    anItem._titleStr = [localization localizedStringForKey:text_phone_fax];
+                    anItem._titleStr = [localization localizedStringForKey:@"Fax"];
                     anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_fax;
@@ -1780,7 +1801,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_fax.png";
-                    anItem._titleStr = [localization localizedStringForKey:text_phone_other];
+                    anItem._titleStr = [localization localizedStringForKey:@"Other"];
                     anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_other;
@@ -1788,7 +1809,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 }else{
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_mobile.png";
-                    anItem._titleStr = [localization localizedStringForKey:text_phone_mobile];
+                    anItem._titleStr = [localization localizedStringForKey:@"Mobile"];
                     anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_mobile;

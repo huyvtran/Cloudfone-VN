@@ -91,8 +91,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [device setProximityMonitoringEnabled: false];
     
     
-    //  setup sound và vibrate của cuộc gọi cho user hiện tại
-    [self setupSoundAndVibrateForCallOfUser];
     
     // invisible icon add contact & icon delete address
     _addContactButton.hidden = YES;
@@ -327,7 +325,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     
-    UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:_addressField.text delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:text_cancel] destructiveButtonTitle:nil otherButtonTitles: [appDelegate.localization localizedStringForKey:@"Create new contact"], [appDelegate.localization localizedStringForKey:@"Add to existing contact"], nil];
+    UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:_addressField.text delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] destructiveButtonTitle:nil otherButtonTitles: [appDelegate.localization localizedStringForKey:@"Create new contact"], [appDelegate.localization localizedStringForKey:@"Add to existing contact"], nil];
     popupAddContact.tag = 100;
     [popupAddContact showInView:self.view];
 }
@@ -481,31 +479,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 #pragma mark - Khai Le Functions
-
-//  setup sound và vibrate của cuộc gọi cho user hiện tại
-- (void)setupSoundAndVibrateForCallOfUser {
-    //  Âm thanh cho cuộc gọi
-    NSString *soundCallKey = [NSString stringWithFormat:@"%@_%@", key_sound_call, USERNAME];
-    NSString *soundCallValue = [[NSUserDefaults standardUserDefaults] objectForKey: soundCallKey];
-    if (soundCallValue == nil) {
-        [[NSUserDefaults standardUserDefaults] setObject:text_yes forKey: soundCallKey];
-    }
-    
-    //  Âm thanh cho tin nhắn
-    NSString *soundMsgKey = [NSString stringWithFormat:@"%@_%@", key_sound_message, USERNAME];
-    NSString *soundMsgValue = [[NSUserDefaults standardUserDefaults] objectForKey: soundMsgKey];
-    if (soundMsgValue == nil) {
-        [[NSUserDefaults standardUserDefaults] setObject:text_yes forKey: soundMsgKey];
-    }
-    
-    //  Rung cho tin nhắn
-    NSString *vibrateMsgKey = [NSString stringWithFormat:@"%@_%@", key_vibrate_message, USERNAME];
-    NSString *vibrateValue = [[NSUserDefaults standardUserDefaults] objectForKey: vibrateMsgKey];
-    if (vibrateValue == nil) {
-        [[NSUserDefaults standardUserDefaults] setObject:text_yes forKey:vibrateMsgKey];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
 
 - (void)networkDown {
     _lbStatus.text = [appDelegate.localization localizedStringForKey:@"No network"];

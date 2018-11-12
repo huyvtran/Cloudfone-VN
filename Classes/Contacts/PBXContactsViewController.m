@@ -116,7 +116,7 @@
 #pragma mark - my functions
 
 - (void)showContentWithCurrentLanguage {
-    [_lbContacts setText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:text_no_contact]];
+    [_lbContacts setText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No contacts"]];
 }
 
 //  setup thông tin cho tableview
