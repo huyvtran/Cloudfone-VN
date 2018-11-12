@@ -374,6 +374,9 @@ void onUncaughtException(NSException* exception)
 	UIApplicationState state = app.applicationState;
     
     NSSetUncaughtExceptionHandler(&onUncaughtException);
+    NSString *content = [[NSUserDefaults standardUserDefaults] objectForKey:@"testkey1"];
+    NSLog(@"%@", content);
+    
     
     //  [Khai le - 25/10/2018]: add log files folder
     [NgnFileUtils createDirectoryAndSubDirectory:@"chats/records"];
