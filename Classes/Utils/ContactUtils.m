@@ -24,4 +24,12 @@
     return nil;
 }
 
++ (NSString *)getContactNameWithNumber: (NSString *)number {
+    PhoneObject *contact = [self getContactPhoneObjectWithNumber: number];
+    if (![AppUtils isNullOrEmpty: contact.name]) {
+        return contact.name;
+    }
+    return number;
+}
+
 @end

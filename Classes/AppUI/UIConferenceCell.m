@@ -73,18 +73,17 @@
             ms_free(lAddress);
         }
     }
+    PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
     
-    NSArray *infos = [NSDatabase getNameAndAvatarOfContactWithPhoneNumber: phoneNumber];
-    if (![[infos objectAtIndex:0] isEqualToString: @""]) {
-        _userName.text = [infos objectAtIndex: 0];
+    if (![AppUtils isNullOrEmpty: contact.name]) {
+        _userName.text = contact.name;
     }else{
         _userName.text = phoneNumber;
     }
     _userName.text = phoneNumber;
     
-    NSString *avatar = [infos objectAtIndex:1];
-    if (![avatar isEqualToString: @""] && avatar != nil && ![avatar isEqualToString:@"null"] && ![avatar isEqualToString:@"(null)"] && ![avatar isEqualToString:@"<null>"]) {
-        _userAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String:[infos objectAtIndex:1]]];
+    if (![AppUtils isNullOrEmpty: contact.avatar]) {
+        _userAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String:contact.avatar]];
     }
     _timeCall.text = [NSString stringWithFormat:@"%02i:%02i", (duration/60), duration - 60 * (duration / 60), nil];
 }

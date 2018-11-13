@@ -138,40 +138,6 @@
     }
 }
 
-//  Click trên button xoá tất cả
-- (void)clickOnDeleAllButton: (NSNotification *)notif {
-    id object = [notif object];
-    if ([object isKindOfClass:[NSNumber class]]) {
-        int value = [object intValue];
-        if (value == 1) {
-            BOOL result = [NSDatabase deleteAllMissedCallOfUser:USERNAME];
-            if (!result) {
-                [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed"] duration:2.0 position:CSToastPositionCenter];
-            }else{
-                [_lbNoCalls setHidden: false];
-                [_tbListCalls setHidden: true];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:k11ReloadAfterDeleteAllCall
-                                                                    object:nil];
-            }
-        }
-    }
-}
-
-//  Hàm xoá 1 call record khi click vào icon xoá trên cell
-- (void)removeRecordCallInHistory: (UIButton *)sender {
-    int idCallRecord = (int)sender.tag;
-    NSString *recordFile = [NSDatabase getRecordFileNameOfCall: idCallRecord];
-    BOOL success = [NSDatabase deleteRecordCallHistory:idCallRecord withRecordFile: recordFile];
-    
-    if (success) {
-        [self reGetListCallsForHistory];
-        [_tbListCalls reloadData];
-    }else{
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed"] duration:2.0 position:CSToastPositionCenter];
-    }
-}
-
 //  Get lại danh sách các cuộc gọi sau khi xoá
 - (void)reGetListCallsForHistory {
     [listCalls removeAllObjects];
@@ -202,17 +168,53 @@
     cell._lbPhone.text = aCall._phoneNumber;
     cell._phoneNumber = aCall._phoneNumber;
     
-    if ([aCall._phoneName isEqualToString: @""]) {
-        cell._lbName.text = aCall._phoneNumber;
+    if ([aCall._phoneNumber isEqualToString: hotline]) {
+        cell._lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Hotline"];
+        cell._imgAvatar.image = [UIImage imageNamed:@"hotline_avatar.png"];
+        
+        [cell updateFrameForHotline: YES];
+        cell._lbPhone.hidden = YES;
+        cell.lbMissed.hidden = YES;
     }else{
-        cell._lbName.text = aCall._phoneName;
-    }
-    
-    if ([AppUtils isNullOrEmpty: aCall._phoneAvatar]) {
-        cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar_blue.png"];
-    }else{
-        NSData *imgData = [[NSData alloc] initWithData:[NSData dataFromBase64String: aCall._phoneAvatar]];
-        cell._imgAvatar.image = [UIImage imageWithData: imgData];
+        [cell updateFrameForHotline: NO];
+        cell._lbPhone.hidden = NO;
+        
+        if ([aCall._phoneName isEqualToString: @""]) {
+            cell._lbName.text = aCall._phoneNumber;
+        }else{
+            cell._lbName.text = aCall._phoneName;
+        }
+        
+        if ([AppUtils isNullOrEmpty: aCall._phoneAvatar]) {
+            if (aCall._phoneNumber.length < 10) {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+                    NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, aCall._phoneNumber];
+                    NSString *localFile = [NSString stringWithFormat:@"/avatars/%@", avatarName];
+                    NSData *avatarData = [AppUtils getFileDataFromDirectoryWithFileName:localFile];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^(void){
+                        if (avatarData != nil) {
+                            cell._imgAvatar.image = [UIImage imageWithData: avatarData];
+                        }else{
+                            cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar_blue.png"];
+                        }
+                    });
+                });
+            }else{
+                cell._imgAvatar.image = [UIImage imageNamed:@"no_avatar_blue.png"];
+            }
+        }else{
+            NSData *imgData = [[NSData alloc] initWithData:[NSData dataFromBase64String: aCall._phoneAvatar]];
+            cell._imgAvatar.image = [UIImage imageWithData: imgData];
+        }
+        
+        //  Show missed notification
+        if (aCall.newMissedCall > 0) {
+            cell.lbMissed.hidden = NO;
+        }else{
+            cell.lbMissed.hidden = YES;
+        }
     }
     
     if (isDeleted) {
@@ -222,6 +224,7 @@
         cell._cbDelete.hidden = YES;
         cell._btnCall.hidden = NO;
     }
+    
     if ([aCall._callDirection isEqualToString:incomming_call]) {
         if ([aCall._status isEqualToString:missed_call]) {
             cell._imgStatus.image = [UIImage imageNamed:@"ic_call_missed.png"];
@@ -241,6 +244,9 @@
     [cell._btnCall addTarget:self
                       action:@selector(btnCallOnCellPressed:)
             forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
     
     return cell;
 }
@@ -263,15 +269,13 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:updateNumberHistoryCallRemove
                                                             object:[NSNumber numberWithInt:(int)listDelete.count]];
     }else{
-        HistoryCallCell *curCell = (HistoryCallCell *)[tableView cellForRowAtIndexPath: indexPath];
-        if (![curCell._phoneNumber isEqualToString: @""]) {
-            DetailHistoryCNViewController *controller = VIEW(DetailHistoryCNViewController);
-            if (controller != nil) {
-                [controller setPhoneNumberForView: curCell._phoneNumber];
-            }
-            [[PhoneMainView instance] changeCurrentView:[DetailHistoryCNViewController compositeViewDescription]
-                                                   push:true];
+        KHistoryCallObject *aCall = [[[listCalls objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex: indexPath.row];
+        DetailHistoryCNViewController *controller = VIEW(DetailHistoryCNViewController);
+        if (controller != nil) {
+            [controller setPhoneNumberForView:aCall._phoneNumber andDate:aCall._callDate];
         }
+        [[PhoneMainView instance] changeCurrentView:[DetailHistoryCNViewController compositeViewDescription]
+                                               push:true];
     }
 }
 

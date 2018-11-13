@@ -111,9 +111,6 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 
 @property (nonatomic, assign) BOOL _isSyncing;
 
-@property (nonatomic, strong) NSMutableDictionary *_allPhonesDict;
-//  dictionary mapping giữa contact id và phone number (kể cả cloudfoneiD)
-@property (nonatomic, strong) NSMutableDictionary *_allIDDict;
 
 @property (nonatomic, assign) BOOL contactLoaded;
 @property (nonatomic, strong) NSString *phoneNumberEnd;

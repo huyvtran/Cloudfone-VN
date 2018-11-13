@@ -136,8 +136,6 @@
 #pragma mark - Action Functions
 
 - (IBAction)onHistoryClick:(id)event {
-    //  [NSDatabase resetAllMissedCallOfUser: USERNAME];
-    
     linphone_core_reset_missed_calls_count(LC);
     [self update:FALSE];
     [PhoneMainView.instance updateApplicationBadgeNumber];

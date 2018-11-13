@@ -47,44 +47,6 @@
     return [dateFormatter stringFromDate:[NSDate date]];
 }
 
-// Kiểm tra folder cho view chat
-+ (void)checkFolderToSaveFileInViewChat
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    //NSString *documentsDirectory = [paths lastObject];
-    NSString *databasePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", @"files"]];
-    BOOL isDir;
-    BOOL exists = [fileManager fileExistsAtPath:databasePath isDirectory:&isDir];
-    if (!exists) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:databasePath withIntermediateDirectories:NO attributes:nil error:&error];
-        NSLog(@"Folder da duoc tao thanh cong");
-    }
-    
-    databasePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", @"records"]];
-    exists = [fileManager fileExistsAtPath:databasePath isDirectory:&isDir];
-    if (!exists) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:databasePath withIntermediateDirectories:NO attributes:nil error:&error];
-        NSLog(@"Folder da duoc tao thanh cong");
-    }
-    
-    databasePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", @"videos"]];
-    exists = [fileManager fileExistsAtPath:databasePath isDirectory:&isDir];
-    if (!exists) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:databasePath withIntermediateDirectories:NO attributes:nil error:&error];
-        NSLog(@"Folder da duoc tao thanh cong");
-    }
-    
-    databasePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", @"avatars"]];
-    exists = [fileManager fileExistsAtPath:databasePath isDirectory:&isDir];
-    if (!exists) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:databasePath withIntermediateDirectories:NO attributes:nil error:&error];
-        NSLog(@"Folder da duoc tao thanh cong");
-    }
-}
-
 + (UIFont *)fontRegularWithSize: (float)fontSize{
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         return [UIFont fontWithName:@"MYRIADPRO-REGULAR" size:fontSize];
@@ -395,22 +357,6 @@
     return outImage;
 }
 
-//  Lấy hình ảnh với tên
-+ (UIImage *)getImageOfDirectoryWithName: (NSString *)imageName{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *pathFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/files/%@", imageName]];
-    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath: pathFile];
-    
-    if (!fileExists) {
-        return nil;
-    }else{
-        NSData *dataImage = [NSData dataWithContentsOfFile: pathFile];
-        UIImage *image = [UIImage imageWithData: dataImage];
-        return image;
-    }
-}
-
 + (NSString *)stringTimeFromInterval: (NSTimeInterval)interval{
     NSDate *date = [NSDate dateWithTimeIntervalSince1970: interval];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -440,120 +386,6 @@
     return dateString;
 }
 
-// Lấy hình ảnh với tên
-+ (NSString *)getImageDataStringOfDirectoryWithName: (NSString *)imageName
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *pathFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/files/%@", imageName]];
-    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath: pathFile];
-    
-    if (!fileExists) {
-        return nil;
-    }else{
-        NSData *dataImage = [NSData dataWithContentsOfFile: pathFile];
-        NSString *imgDataStr = [dataImage base64EncodedStringWithOptions: 0];
-        return imgDataStr;
-    }
-}
-
-//  Tạo avatar cho group chat:
-+ (UIImage *)createAvatarForCurrentGroup: (NSArray *)listAvatar {
-    switch (listAvatar.count) {
-        case 1: {
-            return [UIImage imageNamed:@"group_avatar.png"];
-            break;
-        }
-        case 2: {
-            //  Tạo avatar cho user thứ nhất
-            UIImage *img1 = [AppUtils createImageFromDataString:[listAvatar objectAtIndex:0]
-                                                       withCropSize:CGSizeMake(200, 100)];
-            UIImageView *imgView1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 100)];
-            [imgView1 setImage: img1];
-            
-            //  Tạo avatar cho user thứ 2
-            UIImage *img2 = [AppUtils createImageFromDataString:[listAvatar objectAtIndex:1]
-                                                       withCropSize:CGSizeMake(200, 100)];
-            UIImageView *imgView2 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 101, 200, 99)];
-            [imgView2 setImage: img2];
-            
-            //  Gộp 2 avatar lại với nhau
-            UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-            [avatarView addSubview: imgView1];
-            [avatarView addSubview: imgView2];
-            return [UIImage imageWithData:[AppUtils makeImageFromView: avatarView]];
-            break;
-        }
-        case 3:{
-            //  Tạo avatar cho user thứ nhất
-            UIImage *img1 = [AppUtils createImageFromDataString:[listAvatar objectAtIndex:0]
-                                                       withCropSize:CGSizeMake(200, 100)];
-            UIImageView *imgView1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 100)];
-            [imgView1 setImage: img1];
-            
-            //  Tạo avatar cho user thứ 2
-            UIImage *img2 = [AppUtils createImageFromDataString:[listAvatar objectAtIndex:1]
-                                                       withCropSize:CGSizeMake(100, 100)];
-            UIImageView *imgView2 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 101, 100, 99)];
-            [imgView2 setImage: img2];
-            
-            //  Tạo avatar cho user thứ 3
-            UIImage *img3 = [AppUtils createImageFromDataString:[listAvatar objectAtIndex:2]
-                                                       withCropSize:CGSizeMake(100, 100)];
-            UIImageView *imgView3 = [[UIImageView alloc] initWithFrame:CGRectMake(101, 101, 99, 99)];
-            [imgView3 setImage: img3];
-            
-            //  Gộp các avatar lại với nhau
-            UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-            [avatarView addSubview: imgView1];
-            [avatarView addSubview: imgView2];
-            [avatarView addSubview: imgView3];
-            return [UIImage imageWithData:[AppUtils makeImageFromView: avatarView]];
-            
-            break;
-        }
-        case 4:{
-            //  Tạo avatar cho user thứ nhất
-            UIImage *img1 = [AppUtils createImageFromDataString:[listAvatar objectAtIndex:0]
-                                                       withCropSize:CGSizeMake(100, 100)];
-            UIImageView *imgView1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-            [imgView1 setImage: img1];
-            
-            //  Tạo avatar cho user thứ 2
-            UIImage *img2 = [AppUtils createImageFromDataString:[listAvatar objectAtIndex:1]
-                                                       withCropSize:CGSizeMake(100, 100)];
-            UIImageView *imgView2 = [[UIImageView alloc] initWithFrame:CGRectMake(101, 0, 99, 100)];
-            [imgView2 setImage: img2];
-            
-            //  Tạo avatar cho user thứ 3
-            UIImage *img3 = [AppUtils createImageFromDataString:[listAvatar objectAtIndex:2]
-                                                       withCropSize:CGSizeMake(100, 100)];
-            UIImageView *imgView3 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 101, 100, 99)];
-            [imgView3 setImage: img3];
-            
-            //  Tạo avatar cho user thứ 4
-            UIImage *img4 = [AppUtils createImageFromDataString:[listAvatar objectAtIndex:3]
-                                                       withCropSize:CGSizeMake(100, 100)];
-            UIImageView *imgView4 = [[UIImageView alloc] initWithFrame:CGRectMake(101, 101, 99, 99)];
-            [imgView4 setImage: img4];
-            
-            //  Gộp các avatar lại với nhau
-            UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-            [avatarView addSubview: imgView1];
-            [avatarView addSubview: imgView2];
-            [avatarView addSubview: imgView3];
-            [avatarView addSubview: imgView4];
-            return [UIImage imageWithData:[AppUtils makeImageFromView: avatarView]];
-            
-            break;
-        }
-        default:{
-            return [UIImage imageNamed:@"group_avatar.png"];
-            break;
-        }
-    }
-}
-
 //  Hàm save một ảnh từ view
 + (NSData *)makeImageFromView: (UIView *)aView {
     CGSize pageSize = CGSizeMake(200, 200);
@@ -566,22 +398,6 @@
     NSData *data = UIImagePNGRepresentation(image);
     
     return data;
-}
-
-//  Tạo một image được crop từ một callnex
-+ (UIImage *)createImageFromDataString: (NSString *)strData withCropSize: (CGSize)cropSize {
-    NSData *avatarData;
-    if (![strData isEqualToString:@""] && ![strData isEqualToString:@"(null)"] && ![strData isEqualToString:@"<null>"] && ![strData isEqualToString:@"null"]) {
-        avatarData = [NSData dataFromBase64String: strData];
-    }
-    UIImage *imgAvatar;
-    if (avatarData != nil) {
-        imgAvatar = [UIImage imageWithData: avatarData];
-    }else{
-        imgAvatar = [UIImage imageNamed:@"no_avatar.png"];
-    }
-    imgAvatar = [AppUtils cropImageWithSize:cropSize fromImage:imgAvatar];
-    return imgAvatar;
 }
 
 //  Get thông tin của một contact

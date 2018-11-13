@@ -8,7 +8,6 @@
 
 #import "AllCallsViewController.h"
 #import "DetailHistoryCNViewController.h"
-#import "PhoneMainView.h"
 #import "NSDatabase.h"
 #import "KHistoryCallObject.h"
 #import "HistoryCallCell.h"
@@ -108,7 +107,7 @@
 #pragma mark - My functions
 
 - (void)getHistoryCallForUser {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         if (listCalls == nil) {
             listCalls = [[NSMutableArray alloc] init];
         }
@@ -139,26 +138,6 @@
 - (void)beginEditHistoryView {
     isDeleted = true;
     [_tbListCalls reloadData];
-}
-
-//  Click trên button xoá tất cả
-- (void)clickOnDeleAllButton: (NSNotification *)notif {
-    id object = [notif object];
-    if ([object isKindOfClass:[NSNumber class]]) {
-        int value = [object intValue];
-        if (value == 0) {
-            BOOL result = [NSDatabase deleteAllHistoryCallOfUser: USERNAME];
-            if (!result) {
-                [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed"] duration:2.0 position:CSToastPositionCenter];
-            }else{
-                _lbNoCalls.hidden = NO;
-                _tbListCalls.hidden = NO;
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:k11ReloadAfterDeleteAllCall
-                                                                    object:nil];
-            }
-        }
-    }
 }
 
 //  Get lại danh sách các cuộc gọi sau khi xoá
@@ -197,6 +176,7 @@
         
         [cell updateFrameForHotline: YES];
         cell._lbPhone.hidden = YES;
+        cell.lbMissed.hidden = YES;
     }else{
         [cell updateFrameForHotline: NO];
         cell._lbPhone.hidden = NO;
@@ -230,6 +210,13 @@
         }else{
             NSData *imgData = [[NSData alloc] initWithData:[NSData dataFromBase64String: aCall._phoneAvatar]];
             cell._imgAvatar.image = [UIImage imageWithData: imgData];
+        }
+        
+        //  Show missed notification
+        if (aCall.newMissedCall > 0) {
+            cell.lbMissed.hidden = NO;
+        }else{
+            cell.lbMissed.hidden = YES;
         }
     }
     
@@ -291,14 +278,12 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:updateNumberHistoryCallRemove
                                                             object:[NSNumber numberWithInt:(int)listDelete.count]];
     }else{
-        HistoryCallCell *curCell = (HistoryCallCell *)[tableView cellForRowAtIndexPath: indexPath];
-        if (![curCell._phoneNumber isEqualToString: @""]) {
-            DetailHistoryCNViewController *controller = VIEW(DetailHistoryCNViewController);
-            if (controller != nil) {
-                [controller setPhoneNumberForView: curCell._phoneNumber];
-            }
-            [[PhoneMainView instance] changeCurrentView:[DetailHistoryCNViewController compositeViewDescription] push:true];
+        KHistoryCallObject *aCall = [[[listCalls objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex: indexPath.row];
+        DetailHistoryCNViewController *controller = VIEW(DetailHistoryCNViewController);
+        if (controller != nil) {
+            [controller setPhoneNumberForView:aCall._phoneNumber andDate:aCall._callDate];
         }
+        [[PhoneMainView instance] changeCurrentView:[DetailHistoryCNViewController compositeViewDescription] push:true];
     }
 }
 

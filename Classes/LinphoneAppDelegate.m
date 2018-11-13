@@ -75,7 +75,7 @@
 @synthesize _cropAvatar, _dataCrop;
 @synthesize fromImagePicker;
 @synthesize _isSyncing;
-@synthesize _allPhonesDict, _allIDDict, contactLoaded;
+@synthesize contactLoaded;
 @synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest;
 
 #pragma mark - Lifecycle Functions
@@ -374,12 +374,10 @@ void onUncaughtException(NSException* exception)
 	UIApplicationState state = app.applicationState;
     
     NSSetUncaughtExceptionHandler(&onUncaughtException);
-    NSString *content = [[NSUserDefaults standardUserDefaults] objectForKey:@"testkey1"];
-    NSLog(@"%@", content);
-    
     
     //  [Khai le - 25/10/2018]: add log files folder
     [NgnFileUtils createDirectoryAndSubDirectory:@"chats/records"];
+    [NgnFileUtils createDirectory:@"avatars"];
     
     //  [Khai le - 25/10/2018]: Add write logs for app
     [self setupForWriteLogFileForApp];
@@ -388,9 +386,6 @@ void onUncaughtException(NSException* exception)
     //  Khoi tao
     webService = [[WebServices alloc] init];
     webService.delegate = self;
-    
-    //  Tạo folder cho ghi âm cuộc gọi
-    [self createFolderRecordsIfNotExists: folder_call_records];
     
     // Copy database and connect
     [self copyFileDataToDocument:@"callnex.sqlite"];
@@ -401,8 +396,6 @@ void onUncaughtException(NSException* exception)
     _isSyncing = false;
     enableForTest = NO;
     
-    _allPhonesDict = [[NSMutableDictionary alloc] init];
-    _allIDDict = [[NSMutableDictionary alloc] init];
     listInfoPhoneNumber = [[NSMutableArray alloc] init];
     
     // check for internet connection
@@ -641,13 +634,14 @@ void onUncaughtException(NSException* exception)
     title = Cloudfone;
     */
     
+    
     NSDictionary *aps = [userInfo objectForKey:@"aps"];
     if (aps != nil)
     {
         NSDictionary *alert = [aps objectForKey:@"alert"];
         [[LinphoneManager instance] refreshRegisters];
         
-        NSString *str = [[NSUserDefaults standardUserDefaults] objectForKey:@"testkey1"];
+        NSString *str = [[NSUserDefaults standardUserDefaults] objectForKey:@"testkey"];
         if (![AppUtils isNullOrEmpty: str]) {
             str = [NSString stringWithFormat:@"%@\n%@", str, @[aps]];
             [[NSUserDefaults standardUserDefaults] setObject:str forKey:@"testkey"];
@@ -1748,13 +1742,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             NSString *phoneNumber = (__bridge NSString *)phoneNumberRef;
             phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
             
-            if (phoneNumber != nil) {
-                int idOfContact = ABRecordGetRecordID(aPerson);
-                
-                [_allPhonesDict setObject:[NSString stringWithFormat:@"%@|%@|%@", contactName, [AppUtils getNameForSearchOfConvertName:contactName], phoneNumber] forKey:phoneNumber];
-                [_allIDDict setObject:[NSString stringWithFormat:@"%d", idOfContact] forKey:phoneNumber];
-            }
-            
             strPhone = @"";
             if (locLabel == nil) {
                 ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
@@ -1882,41 +1869,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     }
 }
 
-//   Tạo folder cho ghi âm cuộc gọi
-- (void)createFolderRecordsIfNotExists: (NSString *)folderName
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
-    // Kiểm tra folder có tồn tại hay không?
-    NSString *folderPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", folderName]];
-    BOOL isDir;
-    BOOL exists = [fileManager fileExistsAtPath:folderPath isDirectory:&isDir];
-    if (!exists) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:folderPath withIntermediateDirectories:NO attributes:nil error: nil];
-    }else {
-        NSLog(@"%@", [NSString stringWithFormat:@"Folder %@ da ton tai", folderName]);
-    }
-}
-
-- (ABRecordRef)getPBXContactInPhoneBook
-{
-    ABAddressBookRef addressListBook = ABAddressBookCreateWithOptions(NULL, NULL);
-    NSArray *arrayOfAllPeople = (__bridge  NSArray *) ABAddressBookCopyArrayOfAllPeople(addressListBook);
-    NSUInteger peopleCounter = 0;
-    
-    for (peopleCounter = 0; peopleCounter < [arrayOfAllPeople count]; peopleCounter++)
-    {
-        ABRecordRef aPerson = (__bridge ABRecordRef)[arrayOfAllPeople objectAtIndex:peopleCounter];
-        NSString *sipNumber = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNamePhoneticProperty);
-        if (sipNumber != nil && [sipNumber isEqualToString: keySyncPBX]) {
-            return aPerson;
-        }
-    }
-    return nil;
-}
-
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
 {
 //    [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"isGoToHistoryCall"];
@@ -1950,96 +1902,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 
 #pragma mark - sync contact xmpp
-
-- (void)addNewContactToPhoneBookWithFirstName: (NSString *)FirstName LastName: (NSString *)LastName Company: (NSString *)Company SipPhone: (NSString *)SipPhone Email: (NSString *)Email Avatar: (NSString *)Avatar ListPhone: (NSArray *)ListPhone Address: (NSString *)Address withContactId: (int)contactId
-{
-    ABRecordRef aRecord = ABPersonCreate();
-    CFErrorRef  anError = NULL;
-    
-    // Lưu thông tin
-    ABRecordSetValue(aRecord, kABPersonFirstNameProperty, (__bridge CFTypeRef)(FirstName), &anError);
-    ABRecordSetValue(aRecord, kABPersonLastNameProperty, (__bridge CFTypeRef)(LastName), &anError);
-    ABRecordSetValue(aRecord, kABPersonOrganizationProperty, (__bridge CFTypeRef)(Company), &anError);
-    ABRecordSetValue(aRecord, kABPersonFirstNamePhoneticProperty, (__bridge CFTypeRef)(SipPhone), &anError);
-    
-    ABMutableMultiValueRef email = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-    ABMultiValueAddValueAndLabel(email, (__bridge CFTypeRef)(Email), CFSTR("email"), NULL);
-    ABRecordSetValue(aRecord, kABPersonEmailProperty, email, &anError);
-    
-    if (Avatar != nil && ![Avatar isEqualToString: @""]) {
-        NSData *AvatarData = [NSData dataFromBase64String: Avatar];
-        if (AvatarData != nil) {
-            CFDataRef cfdata = CFDataCreate(NULL,[AvatarData bytes], [AvatarData length]);
-            ABPersonSetImageData(aRecord, cfdata, &anError);
-        }
-    }
-    
-    // Instant Message
-    NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                @"SIP", (NSString*)kABPersonInstantMessageServiceKey,
-                                SipPhone, (NSString*)kABPersonInstantMessageUsernameKey, nil];
-    CFStringRef label = NULL; // in this case 'IM' will be set. But you could use something like = CFSTR("Personal IM");
-    CFErrorRef errorf = NULL;
-    ABMutableMultiValueRef values =  ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
-    BOOL didAdd = ABMultiValueAddValueAndLabel(values, (__bridge CFTypeRef)(dictionary), label, NULL);
-    BOOL didSet = ABRecordSetValue(aRecord, kABPersonInstantMessageProperty, values, &errorf);
-    if (!didAdd || !didSet) {
-        CFStringRef errorDescription = CFErrorCopyDescription(errorf);
-        NSLog(@"%s error %@ while inserting multi dictionary property %@ into ABRecordRef", __FUNCTION__, dictionary, errorDescription);
-        CFRelease(errorDescription);
-    }
-    CFRelease(values);
-    
-    //Address
-    ABMutableMultiValueRef address = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
-    NSMutableDictionary *addressDict = [[NSMutableDictionary alloc] init];
-    [addressDict setObject:Address forKey:(NSString *)kABPersonAddressStreetKey];
-    [addressDict setObject:@"" forKey:(NSString *)kABPersonAddressZIPKey];
-    [addressDict setObject:@"" forKey:(NSString *)kABPersonAddressStateKey];
-    [addressDict setObject:@"" forKey:(NSString *)kABPersonAddressCityKey];
-    [addressDict setObject:@"" forKey:(NSString *)kABPersonAddressCountryKey];
-    ABMultiValueAddValueAndLabel(address, (__bridge CFTypeRef)(addressDict), kABWorkLabel, NULL);
-    ABRecordSetValue(aRecord, kABPersonAddressProperty, address, &anError);
-    
-    if (anError != NULL) {
-        NSLog(@"error while creating..");
-    }
-    
-    CFStringRef firstName, lastName, company;
-    firstName = ABRecordCopyValue(aRecord, kABPersonFirstNameProperty);
-    lastName  = ABRecordCopyValue(aRecord, kABPersonLastNameProperty);
-    company  = ABRecordCopyValue(aRecord, kABPersonOrganizationProperty);
-    
-    ABAddressBookRef addressBook;
-    CFErrorRef error = NULL;
-    addressBook = ABAddressBookCreateWithOptions(nil, &error);
-    
-    BOOL isAdded = ABAddressBookAddRecord (addressBook,aRecord,&error);
-    
-    if(isAdded){
-        NSLog(@"added..");
-    }
-    if (error != NULL) {
-        NSLog(@"ABAddressBookAddRecord %@", error);
-    }
-    error = NULL;
-    
-    BOOL isSaved = ABAddressBookSave (addressBook,&error);
-    if(isSaved){
-        NSLog(@"saved..");
-    }
-    
-    if (error != NULL) {
-        NSLog(@"ABAddressBookSave %@", error);
-    }
-
-    CFRelease(aRecord);
-    CFRelease(firstName);
-    CFRelease(lastName);
-    CFRelease(company);
-    CFRelease(email);
-    CFRelease(addressBook);
-}
 
 +(LinphoneAppDelegate*) sharedInstance{
     return ((LinphoneAppDelegate*) [[UIApplication sharedApplication] delegate]);

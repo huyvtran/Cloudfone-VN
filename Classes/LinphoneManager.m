@@ -713,10 +713,7 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
     NSString *callerId = [NSString stringWithUTF8String:username];
     NSString *address = [self getNameForCurrentPhoneNumber: callerId];
     if ([address isEqualToString: callerId]) {
-        address = [NSDatabase getNameOfContactWithPhoneNumber: callerId];
-        if ([address isEqualToString:@""]) {
-            address = callerId;
-        }
+        address = [ContactUtils getContactNameWithNumber: callerId];
     }
     
 	if (state == LinphoneCallIncomingReceived) {

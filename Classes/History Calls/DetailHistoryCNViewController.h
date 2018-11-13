@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *_iconBack;
 @property (retain, nonatomic) IBOutlet UILabel *_lbHeader;
 @property (weak, nonatomic) IBOutlet UIButton *_iconAddNew;
+@property (weak, nonatomic) IBOutlet UIButton *icDelete;
 
 @property (weak, nonatomic) IBOutlet UIImageView *_imgAvatar;
 @property (weak, nonatomic) IBOutlet UILabel *_lbName;
@@ -25,12 +26,12 @@
 
 - (IBAction)_iconBackClicked:(UIButton *)sender;
 - (IBAction)_iconAddNewClicked:(UIButton *)sender;
+- (IBAction)icDeleteClick:(UIButton *)sender;
 
 @property (nonatomic, retain) NSString *phoneNumber;
-@property (strong, nonatomic) UIRefreshControl *_refreshControl;
-@property (nonatomic, strong) NSString *_phoneNumberDetail;
+@property (nonatomic, strong) NSString *onDate;
 
-- (void)setPhoneNumberForView:(NSString *)phoneNumberStr;
+- (void)setPhoneNumberForView:(NSString *)phone andDate: (NSString *)date;
 - (IBAction)btnCallPressed:(UIButton *)sender;
 
 @end

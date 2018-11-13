@@ -10,5 +10,6 @@
 @interface ContactUtils : NSObject
 
 + (PhoneObject *)getContactPhoneObjectWithNumber: (NSString *)number;
++ (NSString *)getContactNameWithNumber: (NSString *)number;
 
 @end

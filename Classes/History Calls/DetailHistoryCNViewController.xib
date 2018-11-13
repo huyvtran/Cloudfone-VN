@@ -20,6 +20,7 @@
                 <outlet property="_viewHeader" destination="6JW-EO-uzs" id="YiW-OM-tqt"/>
                 <outlet property="bgHeader" destination="Fu6-yh-UkE" id="Fqa-YS-AX7"/>
                 <outlet property="btnCall" destination="c3Y-uc-TiH" id="Xeh-Mp-0hR"/>
+                <outlet property="icDelete" destination="xCa-4t-18I" id="n9z-aN-Oiu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -63,6 +64,14 @@
                                 <action selector="_iconAddNewClicked:" destination="-1" eventType="touchUpInside" id="oLB-ci-LWJ"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xCa-4t-18I">
+                            <rect key="frame" x="279" y="0.0" width="40" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" backgroundImage="ic_trash.png"/>
+                            <connections>
+                                <action selector="icDeleteClick:" destination="-1" eventType="touchUpInside" id="2nt-vJ-oCI"/>
+                            </connections>
+                        </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="no_avatar.png" id="JUm-hc-Vs2">
                             <rect key="frame" x="132" y="42" width="55" height="55"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -102,6 +111,7 @@
         <image name="call_default.png" width="201" height="201"/>
         <image name="ic_add_contact.png" width="100" height="100"/>
         <image name="ic_back.png" width="100" height="100"/>
+        <image name="ic_trash.png" width="100" height="100"/>
         <image name="no_avatar.png" width="198" height="198"/>
     </resources>
 </document>

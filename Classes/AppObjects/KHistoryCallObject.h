@@ -31,5 +31,6 @@
 @property (nonatomic, strong) NSString *_phoneAvatar;
 @property (nonatomic, assign) long duration;
 @property (nonatomic, assign) long timeInt;
+@property (nonatomic, assign) int newMissedCall;
 
 @end

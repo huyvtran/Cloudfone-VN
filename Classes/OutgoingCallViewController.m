@@ -7,7 +7,6 @@
 
 #import "OutgoingCallViewController.h"
 #import "StatusBarView.h"
-#import "PhoneMainView.h"
 #import "NSDatabase.h"
 #import "NSData+Base64.h"
 
@@ -71,21 +70,22 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
-    NSArray *contactInfo = [NSDatabase getNameAndAvatarOfContactWithPhoneNumber: _phoneNumber];
-    userName = [contactInfo objectAtIndex: 0];
-    NSString *avatar = [contactInfo objectAtIndex: 1];
     
-    if ([userName isEqualToString:@""]) {
+    PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: _phoneNumber];
+    
+    userName = contact.name;
+    
+    if ([AppUtils isNullOrEmpty: userName]) {
         userName = _phoneNumber;
         _lbName.text = _phoneNumber;
     }else{
         _lbName.text = userName;
     }
     
-    if ([avatar isEqualToString:@""]) {
+    if ([AppUtils isNullOrEmpty: contact.avatar]) {
         _imgAvatar.image = [UIImage imageNamed:@"default-avatar"];
     }else{
-        _imgAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: avatar]];
+        _imgAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: contact.avatar]];
     }
     
     _btnSpeaker.selected = NO;

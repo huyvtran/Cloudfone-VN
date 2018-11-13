@@ -103,6 +103,9 @@
 		15A64DA1216C8BC700D194BD /* InfoForNewContactTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15A64D9F216C8BC700D194BD /* InfoForNewContactTableCell.xib */; };
 		15A64DA4216CACD900D194BD /* ic_delete_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A64DA2216CACD500D194BD /* ic_delete_phone.png */; };
 		15A64DA5216CACD900D194BD /* ic_add_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A64DA3216CACD700D194BD /* ic_add_phone.png */; };
+		15C5A5FD219AAF5600FDD6C5 /* NewHistoryDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15C5A5FB219AAF5600FDD6C5 /* NewHistoryDetailCell.m */; };
+		15C5A5FE219AAF5600FDD6C5 /* NewHistoryDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15C5A5FC219AAF5600FDD6C5 /* NewHistoryDetailCell.xib */; };
+		15C5A600219ACC2000FDD6C5 /* ic_trash.png in Resources */ = {isa = PBXBuildFile; fileRef = 15C5A5FF219ACC1D00FDD6C5 /* ic_trash.png */; };
 		15D21BE42176E70000FEBED2 /* EditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15D21BE22176E6FF00FEBED2 /* EditProfileViewController.m */; };
 		15D21BE52176E70000FEBED2 /* EditProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15D21BE32176E70000FEBED2 /* EditProfileViewController.xib */; };
 		15E01DBB2182BC3700C0A40F /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15E01DB92182BC3700C0A40F /* AboutViewController.m */; };
@@ -902,6 +905,10 @@
 		15A64D9F216C8BC700D194BD /* InfoForNewContactTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = InfoForNewContactTableCell.xib; path = AppUI/InfoForNewContactTableCell.xib; sourceTree = "<group>"; };
 		15A64DA2216CACD500D194BD /* ic_delete_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_delete_phone.png; sourceTree = "<group>"; };
 		15A64DA3216CACD700D194BD /* ic_add_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_add_phone.png; sourceTree = "<group>"; };
+		15C5A5FA219AAF5600FDD6C5 /* NewHistoryDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NewHistoryDetailCell.h; path = AppUI/NewHistoryDetailCell.h; sourceTree = "<group>"; };
+		15C5A5FB219AAF5600FDD6C5 /* NewHistoryDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NewHistoryDetailCell.m; path = AppUI/NewHistoryDetailCell.m; sourceTree = "<group>"; };
+		15C5A5FC219AAF5600FDD6C5 /* NewHistoryDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = NewHistoryDetailCell.xib; path = AppUI/NewHistoryDetailCell.xib; sourceTree = "<group>"; };
+		15C5A5FF219ACC1D00FDD6C5 /* ic_trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_trash.png; sourceTree = "<group>"; };
 		15D21BE12176E6FF00FEBED2 /* EditProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EditProfileViewController.h; path = More/EditProfileViewController.h; sourceTree = "<group>"; };
 		15D21BE22176E6FF00FEBED2 /* EditProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EditProfileViewController.m; path = More/EditProfileViewController.m; sourceTree = "<group>"; };
 		15D21BE32176E70000FEBED2 /* EditProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditProfileViewController.xib; path = More/EditProfileViewController.xib; sourceTree = "<group>"; };
@@ -2656,6 +2663,7 @@
 				159002CE2168618B00CECB7A /* ic_call_missed.png */,
 				159002D52168618C00CECB7A /* ic_call_outgoing.png */,
 				1579B71D21674988002BECE3 /* ic_add_contact.png */,
+				15C5A5FF219ACC1D00FDD6C5 /* ic_trash.png */,
 				1579B71921674985002BECE3 /* ic_add_contact@2x.png */,
 				1579B71E21674988002BECE3 /* ic_back.png */,
 				1579B71B21674986002BECE3 /* ic_back@2x.png */,
@@ -3034,6 +3042,9 @@
 				84C8B23C1FBBBDB50080D673 /* UIHistoryDetailCell.h */,
 				84C8B23D1FBBBDB50080D673 /* UIHistoryDetailCell.m */,
 				84C8B23E1FBBBDB50080D673 /* UIHistoryDetailCell.xib */,
+				15C5A5FA219AAF5600FDD6C5 /* NewHistoryDetailCell.h */,
+				15C5A5FB219AAF5600FDD6C5 /* NewHistoryDetailCell.m */,
+				15C5A5FC219AAF5600FDD6C5 /* NewHistoryDetailCell.xib */,
 				84EDEE541FB7137200FF665C /* LanguageCell.h */,
 				84EDEE551FB7137200FF665C /* LanguageCell.m */,
 				84EDEE561FB7137200FF665C /* LanguageCell.xib */,
@@ -3934,6 +3945,7 @@
 				84ECF9CD216679A70067B4B6 /* ic_pause_act.png in Resources */,
 				84E07EF92025E3160000CD12 /* silence.mp3 in Resources */,
 				63E27A321C4FECD000D332AE /* LaunchScreen.xib in Resources */,
+				15C5A5FE219AAF5600FDD6C5 /* NewHistoryDetailCell.xib in Resources */,
 				636316D41A1DEC650009B839 /* SettingsView.xib in Resources */,
 				84B889F01FAF6C73008D88C5 /* PhoneBookContactCell.xib in Resources */,
 				841B359D2191F26D0019BD45 /* ic-pause-default.png in Resources */,
@@ -3950,6 +3962,7 @@
 				63CDC45F1C3BDE370085F529 /* ringback.wav in Resources */,
 				153D001A2164A67E007B69B3 /* numpad_three_default.png in Resources */,
 				153D00572164D9D3007B69B3 /* numpad_eight_hover.png in Resources */,
+				15C5A600219ACC2000FDD6C5 /* ic_trash.png in Resources */,
 				84ECF9C5216679A70067B4B6 /* ic_pause_def.png in Resources */,
 				63E27A521C50EDB000D332AE /* hold.mkv in Resources */,
 				84D032231FB531B5002D2524 /* KContactDetailViewController.xib in Resources */,
@@ -4407,6 +4420,7 @@
 				D31AAF5E159B3919002C6B02 /* CallPausedTableView.m in Sources */,
 				84B889EF1FAF6C73008D88C5 /* PhoneBookContactCell.m in Sources */,
 				84EFFDFF1FF3E6B60085A9F4 /* DGActivityIndicatorBallRotateAnimation.m in Sources */,
+				15C5A5FD219AAF5600FDD6C5 /* NewHistoryDetailCell.m in Sources */,
 				840B574020061FD300DCBA7E /* QRToggleTorchButton.m in Sources */,
 				84EFFE181FF3E6B60085A9F4 /* DGActivityIndicatorBallZigZagAnimation.m in Sources */,
 				84B889F41FAF6D25008D88C5 /* NSData+Base64.m in Sources */,
@@ -5136,7 +5150,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5354,7 +5368,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5402,7 +5416,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "b875d44d-0b66-4ed3-a4a1-d8fa0388ea2f";
-				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
+				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";

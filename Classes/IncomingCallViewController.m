@@ -134,25 +134,21 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)update {
     [self view]; //Force view load
     
-    [_imgAvatar setImage:[UIImage imageNamed:@"unknown_large.png"]];
-    
+    _imgAvatar.image = [UIImage imageNamed:@"unknown_large.png"];
     const LinphoneAddress* addr = linphone_call_get_remote_address(call);
     if (addr != NULL) {
         NSString *phonenumber = [NSString stringWithUTF8String:linphone_address_get_username(addr)];
         
-        NSArray *info = [NSDatabase getNameAndAvatarOfContactWithPhoneNumber: phonenumber];
-        NSString *name = [info objectAtIndex: 0];
-        NSString *avatar = [info objectAtIndex: 1];
-        if ([name isEqualToString:@""]) {
+        PhoneObject *contact= [ContactUtils getContactPhoneObjectWithNumber: phonenumber];
+        if ([AppUtils isNullOrEmpty: contact.name]) {
             _lbName.text = [localization localizedStringForKey: @"Unknown"];
         }else{
-            _lbName.text = name;
+            _lbName.text = contact.name;
         }
-        
         _lbPhone.text = phonenumber;
         
-        if (![avatar isEqualToString:@""]) {
-            [_imgAvatar setImage:[UIImage imageWithData:[NSData dataFromBase64String:avatar]]];
+        if (![AppUtils isNullOrEmpty: contact.avatar]) {
+            [_imgAvatar setImage:[UIImage imageWithData:[NSData dataFromBase64String:contact.avatar]]];
         }else{
             [_imgAvatar setImage:[UIImage imageNamed:@"unknown_large.png"]];
         }

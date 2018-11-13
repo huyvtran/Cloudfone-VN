@@ -194,10 +194,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[self.view addGestureRecognizer: tapOnScreen];
 
     _lbStatus.text = @"";
-    
-    // Kiểm tra folder chứa ảnh và tạo list emotion
-    [self setupForFirstLoadApp];
-    //  [self firstLoadSettingForAccount];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -226,9 +222,21 @@ static UICompositeViewDescription *compositeDescription = nil;
 	}
 }
 
+- (void)testPress{
+    [AppUtils sendMessageForOfflineForUser:@"14951" fromSender:@"14953" withContent:@"ABC DEF" andTypeMessage:@"text" withGroupID:@""];
+    [self.view makeToast:@"Da send message thanh cong" duration:2.0 position:CSToastPositionCenter];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[LinphoneManager.instance shouldPresentLinkPopup];
+    
+    UIButton *test = [[UIButton alloc] initWithFrame: CGRectMake(20, 20, 100, 40)];
+    test.backgroundColor = UIColor.redColor;
+    [test addTarget:self
+             action:@selector(testPress)
+   forControlEvents:UIControlEventTouchUpInside];
+    //  [self.view addSubview: test];
     
     //  Check for first time, after installed app
     //  [self checkForShowFirstSettingAccount];
@@ -825,23 +833,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.left.equalTo(_callButton.mas_right).offset(spaceMarginX);
         make.width.height.mas_equalTo(wIcon);
     }];
-}
-
-//  Kiểm tra folder chứa ảnh và tạo list emotion
-- (void)setupForFirstLoadApp {
-    NSThread *aThread = [[NSThread alloc] initWithTarget:self
-                                                selector:@selector(startSetupForFirstLoadApp:)
-                                                  object:nil];
-    [aThread start];
-}
-
-- (void)startSetupForFirstLoadApp: (NSThread *)thread {
-    [AppUtils checkFolderToSaveFileInViewChat];
-    
-    [thread cancel];
-    if ([thread isCancelled]) {
-        thread = nil;
-    }
 }
 
 #pragma mark - Actionsheet Delegate

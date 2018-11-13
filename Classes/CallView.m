@@ -295,21 +295,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 		[PhoneMainView.instance setVolumeHidden:FALSE];
 		hiddenVolume = FALSE;
 	}
-
-    int count = linphone_core_get_calls_nb([LinphoneManager getLc]);
-    if (count == 0) {
-        if (durationTimer != nil) {
-            [durationTimer invalidate];
-            durationTimer = nil;
-        }
-        
-        phoneNumber = @"";
-        
-        // Remove observer
-        [NSNotificationCenter.defaultCenter removeObserver:self];
-    }else{
-        NSLog(@"Van con call ne");
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -1670,6 +1655,22 @@ static UICompositeViewDescription *compositeDescription = nil;
         [AppUtils sendMissedNotificationForOfflineUser:phoneNumber fromSender:USERNAME withContent:[NSString stringWithFormat:@"You have miss call from %@", USERNAME]];
         [self.view makeToast:@"Send missed call noti" duration:2.0 position:CSToastPositionCenter];
     }
+    
+    int count = linphone_core_get_calls_nb([LinphoneManager getLc]);
+    if (count == 0) {
+        if (durationTimer != nil) {
+            [durationTimer invalidate];
+            durationTimer = nil;
+        }
+        
+        phoneNumber = @"";
+        
+        // Remove observer
+        [NSNotificationCenter.defaultCenter removeObserver:self];
+    }else{
+        NSLog(@"Van con call ne");
+    }
+    
     [[PhoneMainView instance] popCurrentView];
 }
 

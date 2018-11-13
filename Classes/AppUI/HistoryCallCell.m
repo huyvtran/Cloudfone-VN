@@ -36,12 +36,13 @@
         make.width.height.mas_equalTo(50.0);
     }];
     
+    lbMissed.backgroundColor = UIColor.redColor;
     lbMissed.clipsToBounds = YES;
-    lbMissed.layer.cornerRadius = 11.0/2;
+    lbMissed.layer.cornerRadius = 14.0/2;
     [lbMissed mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_imgAvatar.mas_right).offset(-16);
-        make.top.equalTo(_imgAvatar).offset(15);
-        make.width.height.mas_equalTo(11.0);
+        make.left.equalTo(_imgAvatar.mas_right).offset(-14.0);
+        make.top.equalTo(_imgAvatar).offset(0);
+        make.width.height.mas_equalTo(14.0);
     }];
     
     

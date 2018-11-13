@@ -594,9 +594,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             if (phoneNumber != nil) {
                 int idOfContact = ABRecordGetRecordID(aPerson);
                 phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
-                
-                [appDelegate._allPhonesDict setObject:[NSString stringWithFormat:@"%@|%@|%@", contactName, [AppUtils getNameForSearchOfConvertName:contactName], phoneNumber] forKey:phoneNumber];
-                [appDelegate._allIDDict setObject:[NSString stringWithFormat:@"%d", idOfContact] forKey:phoneNumber];
             }
             
             strPhone = @"";

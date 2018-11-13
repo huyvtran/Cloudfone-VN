@@ -23,9 +23,6 @@
 //  get giá trị ngày giờ hiện tại
 + (NSString *)getCurrentDateTime;
 
-/* Kiểm tra folder cho view chat */
-+ (void)checkFolderToSaveFileInViewChat;
-
 + (UIFont *)fontRegularWithSize: (float)fontSize;
 
 + (UIFont *)fontBoldWithSize: (float)fontSize;
@@ -58,22 +55,13 @@
 
 // Hàm crop image từ 1 image
 + (UIImage *)squareImageWithImage:(UIImage *)sourceImage withSizeWidth:(CGFloat)sideLength;
-
-+ (UIImage *)getImageOfDirectoryWithName: (NSString *)imageName;
 + (NSString *)stringTimeFromInterval: (NSTimeInterval)interval;
 + (NSString *)stringDateFromInterval: (NSTimeInterval)interval;
 
-// Get string của hình ảnh với tên hình ảnh
-+ (NSString *)getImageDataStringOfDirectoryWithName: (NSString *)imageName;
 
-//  Tạo avatar cho group chat
-+ (UIImage *)createAvatarForCurrentGroup: (NSArray *)listAvatar;
 
 /*--Hàm save một ảnh từ view--*/
 + (NSData *) makeImageFromView: (UIView *)aView;
-
-//  Tạo một image được crop từ một callnex
-+ (UIImage *)createImageFromDataString: (NSString *)strData withCropSize: (CGSize)cropSize;
 
 //  Get thông tin của một contact
 + (NSString *)getNameOfContact: (ABRecordRef)aPerson;

@@ -165,14 +165,7 @@
 }
 
 - (void)disableWhiteList{
-    /*  Leo Kelvin
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt: 0]
-                                              forKey:@"accessWhiteList"];
     
-    NSArray *blackList = [NSDBCallnex getAllUserInCallnexBlacklist];
-    [[LinphoneAppDelegate sharedInstance].myBuddy.protocol createBlackListOfMe: blackList];
-    [[LinphoneAppDelegate sharedInstance].myBuddy.protocol activeBlackListOfMe];
-    */
 }
 
 - (void)enableWhiteList{
