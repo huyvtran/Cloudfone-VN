@@ -2617,9 +2617,11 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
 
 	/*IOS specific*/
 	linphone_core_start_dtmf_stream(theLinphoneCore);
+    //  [Khai le - 14/11/2018]
+    /*
 	[AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo
 							 completionHandler:^(BOOL granted){
-							 }];
+							 }];    */
 
 	/*start the video preview in case we are in the main view*/
 	if (linphone_core_video_display_enabled(theLinphoneCore) && [self lpConfigBoolForKey:@"preview_preference"]) {

@@ -592,7 +592,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             
             NSString *phoneNumber = (__bridge NSString *)phoneNumberRef;
             if (phoneNumber != nil) {
-                int idOfContact = ABRecordGetRecordID(aPerson);
                 phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
             }
             

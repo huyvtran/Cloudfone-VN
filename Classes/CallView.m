@@ -18,6 +18,7 @@
  */
 
 #import <AVFoundation/AVAudioSession.h>
+#import <AVFoundation/AVCaptureDevice.h>
 #import <AddressBook/AddressBook.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import <OpenGLES/EAGL.h>
@@ -285,6 +286,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 	LinphoneCall *call = linphone_core_get_current_call(LC);
 	LinphoneCallState state = (call != NULL) ? linphone_call_get_state(call) : 0;
 	[self callUpdate:call state:state animated:FALSE message:@""];
+    
+    [self requestAccessToMicroIfNot];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -1853,5 +1856,26 @@ static UICompositeViewDescription *compositeDescription = nil;
     return phone;
 }
 
+- (void)requestAccessToMicroIfNot {
+    //show warning Microphone
+    if (IS_IOS7) {
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio completionHandler:^(BOOL granted){
+            if (granted) {
+                NSLog(@"granted");
+            } else {
+                NSLog(@"denied");
+                //  [[iMomeetAppDelegate sharedInstance] performSelectorOnMainThread:@selector(warningNoMicrophoneAccess) withObject:nil waitUntilDone:NO];
+            }
+        }];
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted){
+            if (granted) {
+                NSLog(@"granted");
+            } else {
+                NSLog(@"denied");
+                //  [[iMomeetAppDelegate sharedInstance] performSelectorOnMainThread:@selector(warningNoCameraAccess) withObject:nil waitUntilDone:NO];
+            }
+        }];
+    }
+}
 
 @end
