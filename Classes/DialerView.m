@@ -51,7 +51,7 @@
 @implementation DialerView
 @synthesize _viewStatus, _imgLogoSmall, _lbAccount, _lbStatus;
 @synthesize _viewNumber;
-@synthesize _btnHotline, _btnAddCall, _btnTransferCall;
+@synthesize _btnHotline, _btnAddCall, _btnTransferCall, webService;
 
 #pragma mark - UICompositeViewDelegate Functions
 
@@ -157,6 +157,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
     isNewSearch = YES;
+    
+    //
+    [self getMissedCallFromServer];
     
     [self autoLayoutForView];
     
@@ -1040,7 +1043,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (curState == eAccountNone) {
         NSString *content = [NSString stringWithFormat:@"%@", [appDelegate.localization localizedStringForKey:@"You have not set up an account yet. Do you want to setup now?"]];
         
-        UIAlertView *alertAcc = [[UIAlertView alloc] initWithTitle:nil message:content delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] otherButtonTitles: [appDelegate.localization localizedStringForKey:@"Go to settings?"], nil];
+        UIAlertView *alertAcc = [[UIAlertView alloc] initWithTitle:nil message:content delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] otherButtonTitles: [appDelegate.localization localizedStringForKey:@"Go to settings"], nil];
         alertAcc.delegate = self;
         alertAcc.tag = 1;
         [alertAcc show];
@@ -1133,6 +1136,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)addressfieldDidChanged: (UITextField *)textfield {
+    if (!textfield.isFirstResponder) {
+        NSLog(@"Just search when text changed and textfield is focus");
+        return;
+    }
     if ([textfield.text isEqualToString:@""]) {
         _addContactButton.hidden = YES;
         tvSearchResult.hidden = YES;
@@ -1178,7 +1185,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - UITextview delegate
 -(BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange{
     // Call your method here.
-    if (![URL.absoluteString containsString:[appDelegate.localization localizedStringForKey:@"others"]]) {
+    if (![URL.absoluteString containsString:@"others"]) {
         _addressField.text = URL.absoluteString;
         tvSearchResult.hidden = YES;
     }else{
@@ -1200,7 +1207,63 @@ static UICompositeViewDescription *compositeDescription = nil;
     tvSearchResult.hidden = YES;
 }
 
+- (void)getMissedCallFromServer {
+    if ([SipUtils getStateOfDefaultProxyConfig] != eAccountNone) {
+        if (webService == nil) {
+            webService = [[WebServices alloc] init];
+            webService.delegate = self;
+        }
+        NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+        server = @"123.111.22.10";
+        NSString *dateFrom = @"1542179975";
+        NSString *dateTo = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
+        dateTo = @"1542267280";
+        
+        NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
+        [jsonDict setObject:AuthUser forKey:@"AuthUser"];
+        [jsonDict setObject:AuthKey forKey:@"AuthKey"];
+        [jsonDict setObject:server forKey:@"IP"];
+        [jsonDict setObject:@"1452" forKey:@"PhoneNumberReceive"];
+        [jsonDict setObject:dateFrom forKey:@"DateFrom"];
+        [jsonDict setObject:dateTo forKey:@"DateTo"];
+        
+        [webService callWebServiceWithLink:GetInfoMissCall withParams:jsonDict inBackgroundMode:YES];
+    }
+}
 
+- (void)insertMissedCallToDatabase: (id)data {
+    if (data != nil && [data isKindOfClass:[NSArray class]]) {
+        for (int i=0; i<[(NSArray *)data count]; i++) {
+            NSDictionary *callInfo = [data objectAtIndex: i];
+            id createDate = [callInfo objectForKey:@"createDate"];
+            NSString *phoneNumberCall = [callInfo objectForKey:@"phoneNumberCall"];
+            if (createDate != nil && phoneNumberCall != nil) {
+                NSString *callId = [AppUtils randomStringWithLength: 10];
+                NSString *date = [AppUtils getDateFromInterval:[createDate doubleValue]];
+                NSString *time = [AppUtils getFullTimeStringFromTimeInterval:[createDate doubleValue]];
+                
+                [NSDatabase InsertHistory:callId status:missed_call phoneNumber:phoneNumberCall callDirection:incomming_call recordFiles:@"" duration:0 date:date time:time time_int:[createDate doubleValue] rate:0 sipURI:phoneNumberCall MySip:USERNAME kCallId:@"" andFlag:1 andUnread:1];
+            }
+        }
+    }
+}
+
+#pragma mark - Webservice delegate
+- (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: API FUNCTION NAME is %@\nError: %@", __FUNCTION__, link, error]);
+}
+
+- (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: response data for function %@: %@", __FUNCTION__, link, @[data]]);
+    
+    if ([link isEqualToString:GetInfoMissCall]) {
+        [self insertMissedCallToDatabase: data];
+    }
+}
+
+- (void)receivedResponeCode:(NSString *)link withCode:(int)responeCode {
+    NSLog(@"%d", responeCode);
+}
 
 
 @end

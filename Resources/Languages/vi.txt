@@ -101,7 +101,7 @@
 "hour" = "giờ"
 "minutes" = "phút"
 "minute" = "phút"
-"now?" = "Bạn chưa cài đặt tài khoản. Bạn có muốn cài đặt bâw giờ không?"
+"You have not set up an account yet. Do you want to setup now?" = "Bạn chưa cài đặt tài khoản. Bạn có muốn cài đặt bây giờ không?"
 "Go to settings" = "Đi đến cài đặt"
 
 "Create new contact"      =   "Tạo số liên lạc mới"
@@ -184,3 +184,5 @@
 "Can not find QR Code!"=   "Không thể tìm thấy mã QR!"
 "Close"    =   "Đóng"
 "Failed"               =   "Thất bại!"
+"Delete" = "Xóa"
+"Edit" = "Sửa"

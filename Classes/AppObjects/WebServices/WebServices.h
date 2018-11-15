@@ -18,6 +18,7 @@
 @property(nonatomic,retain) NSMutableData   *receivedData;
 
 - (void)callWebServiceWithLink: (NSString *)linkService withParams: (NSDictionary *)paramsDict;
+- (void)callWebServiceWithLink: (NSString *)linkService withParams: (NSDictionary *)paramsDict inBackgroundMode: (BOOL)isBackgroundMode;
 
 @end
 

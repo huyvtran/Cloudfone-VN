@@ -183,4 +183,6 @@
 "Can not find QR Code!" =   "Can not find QR Code!"
 
 "Close"    =   "Close"
-Failed"               =   "Thất bại!"
+Failed"               =   "Failed!"
+"Delete" = "Delete"
+"Edit" = "Edit"

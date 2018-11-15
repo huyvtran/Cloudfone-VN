@@ -433,12 +433,17 @@ void onUncaughtException(NSException* exception)
     
     listNumber = [[NSArray alloc] initWithObjects: @"+", @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil];
     
-    //  Set ngôn ngữ hiện tại
+    //  Set default language for app if haven't setted yet
     NSString *curLanguage = [[NSUserDefaults standardUserDefaults] objectForKey:language_key];
     if (curLanguage == nil) {
-        [[NSUserDefaults standardUserDefaults] setObject:key_en forKey:language_key];
+        NSString * devLanguage = [[NSLocale preferredLanguages] firstObject];
+        if (![AppUtils isNullOrEmpty: devLanguage] && [devLanguage hasPrefix:@"vi"]) {
+            curLanguage = key_vi;
+        }else{
+            curLanguage = key_en;
+        }
+        [[NSUserDefaults standardUserDefaults] setObject:curLanguage forKey:language_key];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        curLanguage = [[NSUserDefaults standardUserDefaults] objectForKey:language_key];
     }
     
     localization = [HMLocalization sharedInstance];

@@ -18,7 +18,7 @@
     if (self) {
         // Initialization code
         self.clipsToBounds = YES;
-        self.layer.cornerRadius = 10.0;
+        self.layer.cornerRadius = 12.0;
         
         tbContacts = [[UITableView alloc] init];
         tbContacts.delegate = self;

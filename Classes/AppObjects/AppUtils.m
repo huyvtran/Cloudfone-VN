@@ -92,8 +92,15 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"dd-MM-yyyy"];
     [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Bangkok"]];
+    
+    NSDateFormatter *formatter2 = [[NSDateFormatter alloc] init];
+    [formatter2 setDateFormat:@"yyyy-MM-dd"];
+    [formatter2 setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Bangkok"]];
+    
     NSString *currentTime = [formatter stringFromDate: today];
-    if ([currentTime isEqualToString: dateStr]) {
+    NSString *currentTime2 = [formatter2 stringFromDate: today];
+    
+    if ([currentTime isEqualToString: dateStr] || [currentTime2 isEqualToString: dateStr]) {
         return @"Today";
     }else{
         return currentTime;
@@ -968,6 +975,21 @@
     }
 }
 
++ (NSString *)getDateFromInterval: (double)timeInterval {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd-MM-yyyy"];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970: timeInterval];
+    NSString *formattedDateString = [dateFormatter stringFromDate:date];
+    return formattedDateString;
+}
 
++ (NSString *)getFullTimeStringFromTimeInterval:(double)timeInterval {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Bangkok"]];
+    [dateFormatter setDateFormat:@"HH:mm:ss"];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970: timeInterval];
+    NSString *formattedDateString = [dateFormatter stringFromDate:date];
+    return formattedDateString;
+}
 
 @end

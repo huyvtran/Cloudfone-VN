@@ -11,6 +11,7 @@
 #import "QRCodeReaderDelegate.h"
 #import "RegisterPBXWithPhoneView.h"
 #import "CustomSwitchButton.h"
+#import "WebServices.h"
 
 typedef enum{
     normalLogin,

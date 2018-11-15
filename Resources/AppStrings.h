@@ -119,6 +119,8 @@
 #define DecryptRSA              @"DecryptRSA"
 #define PushSharp               @"PushSharp"
 #define GetUserInChatRoom       @"GetUserInChatRoom"
+#define GetInfoMissCall         @"GetInfoMissCall"
+
 
 #pragma mark - Keys for app
 

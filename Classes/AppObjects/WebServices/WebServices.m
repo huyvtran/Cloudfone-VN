@@ -40,6 +40,64 @@
     }
 }
 
+- (void)callWebServiceWithLink: (NSString *)linkService withParams: (NSDictionary *)paramsDict inBackgroundMode: (BOOL)isBackgroundMode
+{
+    receivedData = [[NSMutableData alloc] init];
+    
+    NSString *strURL = [NSString stringWithFormat:@"%@/%@", link_api, linkService];
+    NSURL *URL = [NSURL URLWithString:strURL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: URL];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
+    [request setTimeoutInterval: 60];
+    
+    NSString *jsonRequest = [paramsDict JSONString];
+    NSData *requestData = [jsonRequest dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    [request setValue:[NSString stringWithFormat:@"%d", (int)[requestData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody: requestData];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        
+        // whatever you do on the connectionDidFinishLoading
+        // delegate can be moved here
+        if (error != nil) {
+            [delegate failedToCallWebService:strURL andError:@""];
+        }else{
+            NSString *value = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            id object = [value objectFromJSONString];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *result = [object objectForKey:@"result"];
+                if (![result isKindOfClass:[NSNull class]] && result != nil)
+                {
+                    if ([result isEqualToString:@"failure"] || [result isEqualToString:@"failed"]) {
+                        NSString *message = [object objectForKey:@"message"];
+                        [delegate failedToCallWebService:linkService andError:message];
+                    }else if([result isEqualToString:@"success"])
+                    {
+                        id data = [object objectForKey:@"data"];
+                        if ([data isKindOfClass:[NSDictionary class]]) {
+                            [delegate successfulToCallWebService:linkService withData:data];
+                        }else{
+                            if (data == nil && [object isKindOfClass:[NSDictionary class]]) {
+                                [delegate successfulToCallWebService:linkService withData:object];
+                            }else{
+                                [delegate successfulToCallWebService:linkService withData:data];
+                            }
+                        }
+                    }
+                }else{
+                    
+                }
+            }
+        }
+    }];
+}
+
 // This method is used to receive the data which we get using post method.
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data {
     [receivedData appendData: data];

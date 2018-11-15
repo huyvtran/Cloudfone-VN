@@ -61,7 +61,8 @@ HMLocalization *localization;
 // Get tất cả các section trong của history call của 1 user
 + (NSMutableArray *)getHistoryCallListOfUser: (NSString *)account isMissed: (BOOL)missed {
     NSMutableArray *result = [[NSMutableArray alloc] init];
-    NSString *tSQL = [NSString stringWithFormat:@"SELECT date FROM history WHERE my_sip = '%@' GROUP BY date ORDER BY _id DESC", account];
+    //  NSString *tSQL = [NSString stringWithFormat:@"SELECT date FROM history WHERE my_sip = '%@' GROUP BY date ORDER BY _id DESC", account];
+    NSString *tSQL = [NSString stringWithFormat:@"SELECT date FROM history WHERE my_sip = '%@' GROUP BY date ORDER BY time_int DESC", account];
     FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
     while ([rs next]) {
         NSDictionary *rsDict = [rs resultDictionary];
@@ -125,7 +126,8 @@ HMLocalization *localization;
 // Get danh sách cho từng section call của user
 + (NSMutableArray *)getAllCallOnDate: (NSString *)dateStr ofUser: (NSString *)account {
     NSMutableArray *result = [[NSMutableArray alloc] init];
-    NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND date = '%@' GROUP BY phone_number ORDER BY _id DESC", account, dateStr];
+    //  NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND date = '%@' GROUP BY phone_number ORDER BY _id DESC", account, dateStr];
+    NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND date = '%@' GROUP BY phone_number ORDER BY time_int DESC", account, dateStr];
     FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
     while ([rs next]) {
         NSDictionary *rsDict = [rs resultDictionary];

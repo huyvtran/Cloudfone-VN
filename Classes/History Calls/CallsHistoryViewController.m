@@ -132,8 +132,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_pageViewController setViewControllers:@[allCallsVC]
                                   direction:UIPageViewControllerNavigationDirectionReverse
                                    animated:false completion:nil];
-    
-    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete"] forState:UIControlStateNormal];
+    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Edit"] forState:UIControlStateNormal];
 }
 
 - (IBAction)_iconMissedClicked:(id)sender {
@@ -147,7 +146,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                                   direction: UIPageViewControllerNavigationDirectionReverse
                                    animated: false completion: nil];
     
-    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete"] forState:UIControlStateNormal];
+    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Edit"] forState:UIControlStateNormal];
 }
 
 - (IBAction)_btnEditPressed:(id)sender {
