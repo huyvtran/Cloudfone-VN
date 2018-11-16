@@ -50,5 +50,6 @@
 
 + (NSDictionary *)getCallInfoWithHistoryCallId: (int)callId;
 + (BOOL)removeHistoryCallsOfUser: (NSString *)user onDate: (NSString *)date ofAccount: (NSString *)account;
++ (BOOL)checkMissedCallExistsWithPhoneNumber: (NSString *)phonenumber atTime: (long)time offAccount: (NSString *)account;
 
 @end

@@ -160,8 +160,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)_iconAddNewClicked:(id)sender {
     [[PhoneMainView instance] changeCurrentView:[NewContactViewController compositeViewDescription] push: true];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:addNewContactInContactView
-//                                                        object:nil];
 }
 
 - (IBAction)_iconAllClicked:(id)sender {
@@ -343,7 +341,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     
-    NSString *service = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+    NSString *service = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
     if ([service isKindOfClass:[NSNull class]] || service == nil || [service isEqualToString: @""]) {
         [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"] duration:2.0 position:CSToastPositionCenter];
     }else{

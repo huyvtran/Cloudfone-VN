@@ -42,8 +42,6 @@
 
 - (void)callWebServiceWithLink: (NSString *)linkService withParams: (NSDictionary *)paramsDict inBackgroundMode: (BOOL)isBackgroundMode
 {
-    receivedData = [[NSMutableData alloc] init];
-    
     NSString *strURL = [NSString stringWithFormat:@"%@/%@", link_api, linkService];
     NSURL *URL = [NSURL URLWithString:strURL];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: URL];

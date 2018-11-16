@@ -1673,7 +1673,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         NSLog(@"Van con call ne");
     }
-    
+    if (viewKeypad != nil) {
+        [self hideMiniKeypad];
+    }
     [[PhoneMainView instance] popCurrentView];
 }
 
@@ -1692,7 +1694,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+        NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
         NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, phoneNumber];
         NSString *linkAvatar = [NSString stringWithFormat:@"%@/%@", link_picture_chat_group, avatarName];
         NSData *data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: linkAvatar]];

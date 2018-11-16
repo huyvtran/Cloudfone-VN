@@ -490,7 +490,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)whenTextfieldDidChanged {
-    NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey: PBX_ID];
+    NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey: PBX_SERVER];
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey: key_login];
     NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey: key_password];
     
@@ -619,6 +619,9 @@ static UICompositeViewDescription *compositeDescription = nil;
         NSString *pbxPassword = [data objectAtIndex: 2];
         NSString *pbxPort = [data objectAtIndex: 3];
         
+        [[NSUserDefaults standardUserDefaults] setObject:pbxDomain forKey:PBX_IP];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
         DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: pbxDomain = %@, pbxAccount = %@, pbxPort = %@", __FUNCTION__, pbxDomain, pbxAccount, pbxPort]);
         
         BOOL success = [SipUtils loginSipWithDomain:pbxDomain username:pbxAccount password:pbxPassword port:pbxPort];
@@ -642,7 +645,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         {
             NSLog(@"LinphoneRegistrationOk");
             if (turnOnAcc) {
-                NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+                NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
                 //  Update token after registration okay
                 if (![AppUtils isNullOrEmpty: server] && ![AppUtils isNullOrEmpty: appDelegate._deviceToken]) {
                     [self updateCustomerTokenIOSForPBX:server andUsername: USERNAME withTokenValue:appDelegate._deviceToken];
@@ -702,7 +705,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         case LinphoneRegistrationCleared: {
             DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@", __FUNCTION__, @"LinphoneRegistrationCleared"]);
             if (turnOffAcc) {
-                NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+                NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
                 [self updateCustomerTokenIOSForPBX:server andUsername: USERNAME withTokenValue:@""];
                 return;
             }
@@ -715,7 +718,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             }else{
                 //  Check if clear pbx successfully, update token for user
                 if (clearingAccount) {
-                    NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+                    NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
                     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:key_login];
                     if (![AppUtils isNullOrEmpty: server] && ![AppUtils isNullOrEmpty: username]) {
                         [self updateCustomerTokenIOSForPBX:server andUsername:username withTokenValue:@""];
@@ -759,7 +762,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)whenRegisterPBXSuccessfully {
-    [[NSUserDefaults standardUserDefaults] setObject:serverPBX forKey:PBX_ID];
+    [[NSUserDefaults standardUserDefaults] setObject:serverPBX forKey:PBX_SERVER];
     [[NSUserDefaults standardUserDefaults] setObject:accountPBX forKey:key_login];
     [[NSUserDefaults standardUserDefaults] setObject:passwordPBX forKey:key_password];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -847,7 +850,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnClear.enabled = NO;
     _btnSave.enabled = NO;
     
-    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_ID];
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_IP];
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_SERVER];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:key_login];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:key_password];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -1118,7 +1122,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         if (defaultUsername != nil) {
             _tfAccount.text = defaultUsername;
             _tfPassword.text = [[NSUserDefaults standardUserDefaults] objectForKey: key_password];
-            _tfServerID.text = [[NSUserDefaults standardUserDefaults] objectForKey: PBX_ID];
+            _tfServerID.text = [[NSUserDefaults standardUserDefaults] objectForKey: PBX_SERVER];
             
             _btnSave.enabled = NO;
         }

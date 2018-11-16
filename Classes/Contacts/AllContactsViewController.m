@@ -95,9 +95,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenLoadContactFinish)
                                                  name:finishLoadContacts object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewContact)
-                                                 name:addNewContactInContactView object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchContactWithValue:)
                                                  name:@"searchContactWithValue" object:nil];
     //  ---------
@@ -134,10 +131,6 @@
         [refreshControl setAttributedTitle: tmpStr];
     }
     [refreshControl endRefreshing];
-}
-
-- (void)addNewContact {
-    [[PhoneMainView instance] changeCurrentView:[NewContactViewController compositeViewDescription] push: true];
 }
 
 - (void)autoLayoutForView {

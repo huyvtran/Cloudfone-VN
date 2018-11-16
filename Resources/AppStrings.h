@@ -103,23 +103,19 @@
 #define prefix_CHAT_BURN    @"prefix_CHAT_BURN"
 #define prefix_CHAT_BLOCK   @"prefix_CHAT_BLOCK"
 
+#define DATE_FROM           @"DATE_FROM"
+
 #pragma mark - API
 
 #define link_api                @"https://wssf.cloudfone.vn/api/SoftPhone"
-#define funcLogin               @"Login"
-#define getLoginInfoFunc        @"GetLoginInfo"
-#define createRequestFunc       @"CreateRequest"
-#define confirmRequestFunc      @"ConfirmRequest"
 #define getServerInfoFunc       @"GetServerInfo"
-#define changePasswordFunc      @"ChangeUserPassword"
-#define forgotPassword          @"ChangePassword"
 #define getServerContacts       @"GetServerContacts"
-#define getImagesBackground     @"GetImagesBackground"
 #define ChangeCustomerIOSToken  @"ChangeCustomerIOSToken"
 #define DecryptRSA              @"DecryptRSA"
 #define PushSharp               @"PushSharp"
-#define GetUserInChatRoom       @"GetUserInChatRoom"
 #define GetInfoMissCall         @"GetInfoMissCall"
+#define changePasswordFunc      @"ChangeUserPassword"
+#define forgotPassword          @"ChangePassword"
 
 
 #pragma mark - Keys for app
@@ -159,96 +155,28 @@
 #define key_sound_call          @"key_sound_call"
 
 
-
-
-
-#define text_please_enter_confirm_code  @"text_please_enter_confirm_code"
-
-
-
 #pragma mark - Key for notifications
 
-#define closeViewForgotPassword @"closeViewForgotPassword"
-#define registerWithAccount     @"registerWithAccount"
-#define callnexFriendsRequest   @"callnexFriendsRequest"
-#define k11UpdateNewGroupName   @"k11UpdateNewGroupName"
-#define updateDeliveredChat     @"updateDeliveredChat"
-#define getRowsVisibleViewChat  @"getRowsVisibleViewChat"
-#define k11TouchOnMessage       @"k11TouchOnMessage"
-#define k11SaveConversationChat @"k11SaveConversationChat"
-#define recentEmotionDict       @"recentEmotionDict"
-#define resetPasswordSucces     @"resetPasswordSucces"
-#define closeViewResetPassword  @"closeViewResetPassword"
-
-#define resetPasswordSucces     @"resetPasswordSucces"
 #define networkChanged          @"networkChanged"
 #define updateTokenForXmpp      @"updateTokenForXmpp"
 
 #define k11RegistrationUpdate   @"k11RegistrationUpdate"
 
-#define addNewContactInContactView          @"addNewContactInContactView"
 #define k11ReloadAfterDeleteAllCall         @"k11ReloadAfterDeleteAllCall"
 #define updateNumberHistoryCallRemove       @"updateNumberHistoryCallRemove"
-#define k11SendMailAfterSaveConversation    @"k11SendMailAfterSaveConversation"
-
 #define finishLoadContacts      @"finishLoadContacts"
 #define editHistoryCallView     @"editHistoryCallView"
-#define finishRemoveHistoryCall @"finishRemoveHistoryCall"
 #define reloadHistoryCall       @"reloadHistoryCall"
-
-#define k11ClickOnViewTrunkingPBX       @"k11ClickOnViewTrunkingPBX"
-#define k11EnableWhiteList              @"k11EnableWhiteList"
-#define k11DeclineEnableWhiteList       @"k11DeclineEnableWhiteList"
-#define k11DeclineEnableHideMsg         @"k11DeclineEnableHideMsg"
 #define selectTypeForPhoneNumber        @"selectTypeForPhoneNumber"
-#define saveNewContactFromChatView      @"saveNewContactFromChatView"
-#define k11DismissKeyboardInViewChat    @"k11DismissKeyboardInViewChat"
-#define activeOutgoingFileTransfer      @"activeOutgoingFileTransfer"
-#define reloadCloudFoneContactAfterSync @"reloadCloudFoneContactAfterSync"
-
-#define k11AcceptRequestedSuccessfully  @"k11AcceptRequestedSuccessfully"
-#define updatePreviewImageForVideo      @"updatePreviewImageForVideo"
-
-#define k11RejectFriendRequestSuccessfully  @"k11RejectFriendRequestSuccessfully"
-#define k11ReloadListFriendsRequested       @"k11ReloadListFriendsRequested"
-#define k11DeleteMsgWithRecallID            @"k11DeleteMsgWithRecallID"
-#define k11SubjectOfRoomChanged             @"k11SubjectOfRoomChanged"
-
 #define k11UpdateBarNotifications           @"k11UpdateBarNotifications"
-
-#define afterLeaveFromRoomChat          @"afterLeaveFromRoomChat"
-#define aUserLeaveRoomChat              @"aUserLeaveRoomChat"
-#define whenRoomDestroyed               @"whenRoomDestroyed"
-#define k11CreateGroupChatSuccessfully  @"k11CreateGroupChatSuccessfully"
-
-#define updateListMemberInRoom              @"updateListMemberInRoom"
-#define k11UpdateAllNotisWhenBecomActive    @"k11UpdateAllNotisWhenBecomActive"
-#define k11GetListUserInRoomChat            @"k11GetListUserInRoomChat"
-#define kOTRMessageReceived                 @"MessageReceivedNotification"
-#define k11ShowPopupNewContact              @"k11ShowPopupNewContact"
-#define k11ReceiveMsgOtherRoomChat          @"k11ReceiveMsgOtherRoomChat"
-#define k11ReceivedRoomChatMessage          @"k11ReceivedRoomChatMessage"
-#define updateUnreadMessageForUser          @"updateUnreadMessageForUser"
-#define k11DeleteAllMessageAccept           @"k11DeleteAllMessageAccept"
-#define closeRightChatGroupVC               @"closeRightChatGroupVC"
-#define reloadRightGroupChatVC              @"reloadRightGroupChatVC"
-
-
 
 #define userAvatar          @"userAvatar"
 
 #pragma mark - flags
+#define PBX_IP                  @"PBX_IP"
+#define PBX_SERVER              @"PBX_SERVER"
 
-#define PBX_ID                  @"PBX_ID"
-#define PBX_USERNAME            @"PBX_USERNAME"
-#define PBX_PASSWORD            @"PBX_PASSWORD"
-#define PBX_PORT                @"PBX_PORT"
-#define PBX_IP_ADDRESSS         @"PBX_IP_ADDRESSS"
-#define callnexPBXFlag          @"callnexPBXFlag"
 #define transport_udp           @"UDP"
-
-#define folder_call_records     @"calls_records"
-
 
 #define missed_call             @"Missed"
 #define success_call            @"Success"

@@ -977,6 +977,8 @@
 
 + (NSString *)getDateFromInterval: (double)timeInterval {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    //  [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Bangkok"]];
     [dateFormatter setDateFormat:@"dd-MM-yyyy"];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970: timeInterval];
     NSString *formattedDateString = [dateFormatter stringFromDate:date];
@@ -985,7 +987,8 @@
 
 + (NSString *)getFullTimeStringFromTimeInterval:(double)timeInterval {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Bangkok"]];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    //  [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Bangkok"]];
     [dateFormatter setDateFormat:@"HH:mm:ss"];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970: timeInterval];
     NSString *formattedDateString = [dateFormatter stringFromDate:date];
