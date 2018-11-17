@@ -54,7 +54,7 @@
 #define kMaxRadius 200
 #define kMaxDuration 10
 
-#define MIN_FOR_CONFERENCE 2
+#define MIN_FOR_CONFERENCE 1
 
 void message_received(LinphoneCore *lc, LinphoneChatRoom *room, const LinphoneAddress *from, const char *message) {
     printf(" Message [%s] received from [%s] \n",message,linphone_address_as_string (from));
@@ -90,7 +90,7 @@ const NSInteger MINI_KEYPAD_TAG = 101;
 }
 @synthesize bgCall, lbPhoneNumber, lbMute, lbKeypad, lbSpeaker, icAddCall, lbAddCall, lbPause, lbTransfer;
 @synthesize _lbQuality, _viewCommand, _scrollView;
-@synthesize detailConference, lbConfQuality, lbConfName, lbConfDuration, btnAddCallConf, collectionConference, btnConfMute, btnConfHold, btnConfSpeaker, btnEndConf, tbConf;
+@synthesize detailConference, lbConfQuality, lbConfName, lbConfDuration, btnAddCallConf, avatarConference, collectionConference, btnConfMute, btnConfHold, btnConfSpeaker, btnEndConf, tbConf;
 
 @synthesize durationTimer, phoneNumber;
 
@@ -242,8 +242,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     if(count < MIN_FOR_CONFERENCE ){
         [self btnHideKeypadPressed];
         
-        [self showConferenceView: NO];
-        
+        _callView.hidden = NO;
+        _conferenceView.hidden = YES;
         if (count == 0) {
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Calling"];
             _durationLabel.textColor = UIColor.whiteColor;
@@ -260,7 +260,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             }
         }
     }else{
-        [self setupForConferenceCall];
+        _callView.hidden = YES;
+        _conferenceView.hidden = NO;
     }
 }
 
@@ -362,12 +363,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)callDurationUpdate
 {
-    int size = linphone_core_get_conference_size(LC);
-    NSLog(@"-----size: %d members", size);
-    
-    int numCalls = linphone_core_get_calls_nb(LC);
-    NSLog(@"-----numCalls: %d members", numCalls);
-    
+//    int size = linphone_core_get_conference_size(LC);
+//    NSLog(@"KL-----size: %d", size);
     int duration;
     list = linphone_core_get_calls([LinphoneManager getLc]);
     if (list != NULL) {
@@ -571,6 +568,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)callUpdate:(LinphoneCall *)call state:(LinphoneCallState)state animated:(BOOL)animated message: (NSString *)message
 {
+    NSLog(@"%@ - Call state: %d", SHOW_LOGS, state);
+    
     // Add tất cả các cuộc gọi vào nhóm
     if (linphone_core_get_calls_nb(LC) >= 2) {
         linphone_core_add_all_to_conference([LinphoneManager getLc]);
@@ -586,9 +585,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     if(linphone_core_get_calls_nb([LinphoneManager getLc]) < MIN_FOR_CONFERENCE ){
         [self btnHideKeypadPressed];
         
-        [self showConferenceView: NO];
+        _callView.hidden = NO;
+        _conferenceView.hidden = YES;
     }else{
-        [self showConferenceView: YES];
+        _callView.hidden = YES;
+        _conferenceView.hidden = NO;
     }
 
 	static LinphoneCall *currentCall = NULL;
@@ -601,9 +602,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 	if (call == NULL) {
 		return;
 	}
-    
-    NSString *address = [self getPhoneNumberOfCall: call];
-    NSLog(@"%@ - Call state: %d from address %@", SHOW_LOGS, state, address);
 
 	if (state != LinphoneCallPausedByRemote) {
 		_pausedByRemoteView.hidden = YES;
@@ -622,6 +620,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             isRemoteRinging = NO;
             
             [self getPhoneNumberOfCall];
+            NSLog(@"incomming");
             break;
         }
         case LinphoneCallOutgoingProgress:{
@@ -727,6 +726,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 		}
 		case LinphoneCallPausing:
         case LinphoneCallPaused:{
+            NSLog(@"%@ - %@", SHOW_LOGS, @"Call paused!!!");
             break;
         }
 		case LinphoneCallPausedByRemote:
@@ -1203,46 +1203,64 @@ static UICompositeViewDescription *compositeDescription = nil;
     lbTransfer.text = [appDelegate.localization localizedStringForKey:@"Transfer"];
 }
 
-- (void)setupForConferenceCall {
-    [self showConferenceView: YES];
-    
+/*----- Click vao button conference trong scrollView  -----*/
+-(void)onConference {
     changeConference = YES;
     icAddCall.backgroundColor = UIColor.clearColor;
+    _callView.hidden = YES;
+    _conferenceView.hidden = NO;
     
-    updateTimeConf = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateConferenceView) userInfo:nil repeats:YES];
+    NSDictionary *info = [NSDatabase getProfileInfoOfAccount: USERNAME];
+    if (info != nil) {
+        NSString *strAvatar = [info objectForKey:@"avatar"];
+        if (strAvatar != nil && ![strAvatar isEqualToString: @""]) {
+            NSData *myAvatar = [NSData dataFromBase64String: strAvatar];
+            avatarConference.image = [UIImage imageWithData: myAvatar];
+        }else{
+            avatarConference.image = [UIImage imageNamed:@"no_avatar"];
+        }
+    }else{
+        avatarConference.image = [UIImage imageNamed:@"no_avatar"];
+    }
+    
+    updateTimeConf = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateConference) userInfo:nil repeats:YES];
 }
 
-- (void)updateConferenceView {
-    [tbConf reloadData];
+- (void)updateConference {
+    LinphoneCore *lc = [LinphoneManager getLc];
+    [collectionConference reloadData];
     
     int count = 0;
-    list = linphone_core_get_calls(LC);
+    list = linphone_core_get_calls(lc);
     while (list != NULL) {
         count++;
         list = list->next;
     }
     
-    if (count > MIN_FOR_CONFERENCE) {
+    if (count > 2) {
         changeConference = NO;
     }
-    /*  Close by Khai Le
+    
     if (count == 1 && changeConference == NO) {
-        [self showConferenceView: NO];
+        [self hiddenConference];
+        //Update address
+        [self updateAddress];
+        
         [updateTimeConf invalidate];
         updateTimeConf = nil;
-        
-        [self updateAddress];
-    }   */
+        //  updateTime = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateCall) userInfo:nil repeats:YES];
+    }
     
-    if (count == 0) {
+    if (count < 1) {
         [updateTimeConf invalidate];
         updateTimeConf = nil;
     }
 }
 
-- (void)showConferenceView: (BOOL)show {
-    _callView.hidden = show;
-    _conferenceView.hidden = !show;
+//  Ẩn confernce
+- (void)hiddenConference{
+    [_callView setHidden: NO];
+    [_conferenceView setHidden: YES];
 }
 
 - (void)setupUIForView
@@ -1831,10 +1849,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 65.0;
-}
-
 - (NSString *)getPhoneNumberOfCall: (LinphoneCall *)call {
     NSString *phone = @"";
     const LinphoneAddress* addr = linphone_call_get_remote_address(call);
@@ -1842,15 +1856,9 @@ static UICompositeViewDescription *compositeDescription = nil;
         // contact name
         char* lAddress = linphone_address_as_string_uri_only(addr);
         if(lAddress) {
-            //  sip:14951@125.253.125.196
-            NSString *normalizedSipAddress = [NSString stringWithUTF8String:lAddress];
-            normalizedSipAddress = [normalizedSipAddress stringByReplacingOccurrencesOfString:@"sip:" withString:@""];
-            normalizedSipAddress = [normalizedSipAddress stringByReplacingOccurrencesOfString:@" " withString:@""];
-            NSRange range = [normalizedSipAddress rangeOfString:@"@"];
-            if (range.location != NSNotFound) {
-                phone = [normalizedSipAddress substringToIndex: range.location];
-            }else{
-                phone = normalizedSipAddress;
+            NSString *normalizedSipAddress = [FastAddressBook normalizeSipURI:[NSString stringWithUTF8String:lAddress]];
+            if (normalizedSipAddress.length >= 7) {
+                phone = [normalizedSipAddress substringWithRange:NSMakeRange(4, 10)];
             }
             ms_free(lAddress);
         }

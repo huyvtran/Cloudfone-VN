@@ -18,7 +18,11 @@
  */
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #define LINPHONE_IOS_VERSION "d99c93e6"
 =======
 #define LINPHONE_IOS_VERSION "84879534"
 >>>>>>> parent of b9b2b55b... update
+=======
+#define LINPHONE_IOS_VERSION "22ad8752"
+>>>>>>> parent of b27140b1... Custom switch button

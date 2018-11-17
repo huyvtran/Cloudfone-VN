@@ -81,7 +81,6 @@
 		15857C08216E136500DB5237 /* TypePhonePopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15857C03216E136100DB5237 /* TypePhonePopupView.m */; };
 		15857C09216E136500DB5237 /* TypePhoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15857C04216E136200DB5237 /* TypePhoneCell.m */; };
 		15857C0A216E136500DB5237 /* TypePhoneCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15857C06216E136300DB5237 /* TypePhoneCell.xib */; };
-		1586188C2192EF5E005DDDAC /* CustomSwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1586188B2192EF5E005DDDAC /* CustomSwitchButton.m */; };
 		158A87C5217D83720093A641 /* DeviceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 158A87C4217D83720093A641 /* DeviceUtils.m */; };
 		159002D72168618E00CECB7A /* ic_call_missed.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002CE2168618B00CECB7A /* ic_call_missed.png */; };
 		159002D82168618E00CECB7A /* ic_call_outgoing.png in Resources */ = {isa = PBXBuildFile; fileRef = 159002D52168618C00CECB7A /* ic_call_outgoing.png */; };
@@ -877,8 +876,6 @@
 		15857C05216E136300DB5237 /* TypePhoneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TypePhoneCell.h; path = AppUI/TypePhoneCell.h; sourceTree = "<group>"; };
 		15857C06216E136300DB5237 /* TypePhoneCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TypePhoneCell.xib; path = AppUI/TypePhoneCell.xib; sourceTree = "<group>"; };
 		15857C07216E136400DB5237 /* TypePhonePopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TypePhonePopupView.h; path = AppUI/TypePhonePopupView.h; sourceTree = "<group>"; };
-		1586188A2192EF5E005DDDAC /* CustomSwitchButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CustomSwitchButton.h; path = AppUI/CustomSwitchButton.h; sourceTree = "<group>"; };
-		1586188B2192EF5E005DDDAC /* CustomSwitchButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CustomSwitchButton.m; path = AppUI/CustomSwitchButton.m; sourceTree = "<group>"; };
 		158A87C3217D83720093A641 /* DeviceUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DeviceUtils.h; path = Utils/DeviceUtils.h; sourceTree = "<group>"; };
 		158A87C4217D83720093A641 /* DeviceUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DeviceUtils.m; path = Utils/DeviceUtils.m; sourceTree = "<group>"; };
 		159002CE2168618B00CECB7A /* ic_call_missed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_missed.png; sourceTree = "<group>"; };
@@ -3053,8 +3050,6 @@
 				843ED6741FB66A36005FE1C1 /* SettingCell.xib */,
 				843ED6811FB66BBC005FE1C1 /* CallnexSwitchButton.h */,
 				843ED6821FB66BBC005FE1C1 /* CallnexSwitchButton.m */,
-				1586188A2192EF5E005DDDAC /* CustomSwitchButton.h */,
-				1586188B2192EF5E005DDDAC /* CustomSwitchButton.m */,
 				843ED6621FB65989005FE1C1 /* MenuCell.h */,
 				843ED6631FB65989005FE1C1 /* MenuCell.m */,
 				843ED6641FB65989005FE1C1 /* MenuCell.xib */,
@@ -4396,7 +4391,6 @@
 				F03CA84318C72F1A0008889D /* UITextViewNoDefine.m in Sources */,
 				84C8B24A1FBBBE4D0080D673 /* contactBlackListCell.m in Sources */,
 				840B574420061FD300DCBA7E /* QRCameraSwitchButton.m in Sources */,
-				1586188C2192EF5E005DDDAC /* CustomSwitchButton.m in Sources */,
 				84E286C61FC9E1AC009CBA27 /* UIImageView+HighlightedWebCache.m in Sources */,
 				63B81A0D1B57DA33009604A6 /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				84EFFE0E1FF3E6B60085A9F4 /* DGActivityIndicatorBallPulseSyncAnimation.m in Sources */,
