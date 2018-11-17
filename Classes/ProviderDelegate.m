@@ -66,6 +66,18 @@
 }
 
 - (void)reportIncomingCallwithUUID:(NSUUID *)uuid handle:(NSString *)handle video:(BOOL)video {
+    NSString *content = @"ten ten ten ten";
+    
+    UILocalNotification *messageNotif = [[UILocalNotification alloc] init];
+    messageNotif.fireDate = [NSDate dateWithTimeIntervalSinceNow: 0.1];
+    messageNotif.timeZone = [NSTimeZone defaultTimeZone];
+    messageNotif.timeZone = [NSTimeZone defaultTimeZone];
+    messageNotif.alertBody = content;
+    messageNotif.soundName = UILocalNotificationDefaultSoundName;
+    [[UIApplication sharedApplication] scheduleLocalNotification: messageNotif];
+    
+    
+    
 	// Create update to describe the incoming call and caller
 	CXCallUpdate *update = [[CXCallUpdate alloc] init];
 	update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:handle];

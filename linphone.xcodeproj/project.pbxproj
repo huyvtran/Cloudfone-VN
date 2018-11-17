@@ -5040,8 +5040,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5089,7 +5089,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "eed53176-957f-41a1-9420-f7a555ec04a8";
-				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
+				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5149,7 +5149,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
@@ -5198,7 +5198,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "4938d54b-c5c9-466a-bfb9-8e28d6689b13";
-				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
+				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5258,7 +5258,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
@@ -5307,7 +5307,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "a13a6c11-3805-430d-a672-a92e38342b46";
-				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
+				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5367,7 +5367,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;

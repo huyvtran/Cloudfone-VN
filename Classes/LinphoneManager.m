@@ -651,23 +651,8 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 
 //  Add new by Khai Le on 01/12/2017
 - (NSString *)getNameForCurrentPhoneNumber: (NSString *)callerId {
-    NSString *result = @"";
-    if ([callerId hasPrefix:@"778899"]) {
-        result = callerId;
-    }else{
-        ABRecordRef contact = [self getPBXContactInPhoneBook];
-        if (contact != nil) {
-            result = [AppUtils getNameOfPhoneOfContact:contact andPhoneNumber:callerId];
-            if ([result isEqualToString:@""]) {
-                result = callerId;
-            }else{
-                result = [NSString stringWithFormat:@"%@ - %@", result, callerId];
-            }
-        }else{
-            result = callerId;
-        }
-    }
-    return result;
+    NSString *name = [ContactUtils getContactNameWithNumber: callerId];
+    return [NSString stringWithFormat:@"%@ - %@", name, callerId];
 }
 
 - (ABRecordRef)getPBXContactInPhoneBook

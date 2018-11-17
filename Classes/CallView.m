@@ -54,7 +54,7 @@
 #define kMaxRadius 200
 #define kMaxDuration 10
 
-#define MIN_FOR_CONFERENCE 1
+#define MIN_FOR_CONFERENCE 2
 
 void message_received(LinphoneCore *lc, LinphoneChatRoom *room, const LinphoneAddress *from, const char *message) {
     printf(" Message [%s] received from [%s] \n",message,linphone_address_as_string (from));
