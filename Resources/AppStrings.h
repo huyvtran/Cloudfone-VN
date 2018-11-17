@@ -240,6 +240,7 @@
 #pragma mark - flags
 
 #define PBX_ID                  @"PBX_ID"
+#define PBX_SERVER              @"PBX_SERVER"
 #define PBX_USERNAME            @"PBX_USERNAME"
 #define PBX_PASSWORD            @"PBX_PASSWORD"
 #define PBX_PORT                @"PBX_PORT"

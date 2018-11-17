@@ -343,7 +343,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     
-    NSString *service = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+    NSString *service = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
     if ([service isKindOfClass:[NSNull class]] || service == nil || [service isEqualToString: @""]) {
         [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"] duration:2.0 position:CSToastPositionCenter];
     }else{

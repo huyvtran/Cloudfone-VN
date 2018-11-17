@@ -40,24 +40,7 @@
 + (void)closeDB;
 + (NSString *)filePath;
 
-<<<<<<< HEAD
-+ (NSMutableArray *)getAllListCallOfMe: (NSString *)account withPhoneNumber: (NSString *)phoneNumber;
-=======
-+ (NSArray *)getNameAndAvatarOfContactWithPhoneNumber: (NSString *)phonenumber;
-+ (NSDictionary *)getProfileInfoOfAccount: (NSString *)account;
-+ (NSString *)getAvatarOfAccount: (NSString *)account;
-+ (NSString *)getNameOfContactWithPhoneNumber: (NSString *)phonenumber;
-+ (NSString *)getAvatarOfContactWithPhoneNumber: (NSString *)phonenumber;
-
-// insert last login cho user
-+ (BOOL)insertLastLogoutForUser: (NSString *)account passWord: (NSString *)password andRelogin: (int)relogin;
-+ (NSString *)getUserAccountForLastLogin;
-
-//  kiểm tra cloudfoneId có trong blacklist hay ko?
-+ (BOOL)checkCloudFoneIDInBlackList: (NSString *)cloudfoneID ofAccount: (NSString *)account ;
-
 + (NSMutableArray *)getAllListCallOfMe: (NSString *)mySip withPhoneNumber: (NSString *)phoneNumber;
->>>>>>> parent of b27140b1... Custom switch button
 
 /* Get lịch sử cuộc gọi trong 1 ngày với callDirection */
 + (NSMutableArray *)getAllCallOfMe: (NSString *)mySip withPhone: (NSString *)phoneNumber onDate: (NSString *)dateStr;

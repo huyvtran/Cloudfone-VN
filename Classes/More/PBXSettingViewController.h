@@ -10,11 +10,8 @@
 #import "WebServices.h"
 #import "QRCodeReaderDelegate.h"
 #import "RegisterPBXWithPhoneView.h"
-<<<<<<< HEAD
 #import "CustomSwitchButton.h"
 #import "WebServices.h"
-=======
->>>>>>> parent of b9b2b55b... update
 
 typedef enum{
     normalLogin,

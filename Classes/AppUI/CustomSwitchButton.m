@@ -9,7 +9,7 @@
 
 @implementation CustomSwitchButton
 
-@synthesize lbBackground, btnEnable, btnDisable, btnThumb, curState, lbState, border, wIcon, bgOn, bgOff;
+@synthesize lbBackground, btnEnable, btnDisable, btnThumb, curState, lbState, border, wIcon, bgOn, bgOff, isEnabled, delegate, startPoint, endPoint;
 
 - (id)initWithState: (BOOL)state frame: (CGRect)frame
 {
@@ -104,13 +104,8 @@
     }];
 }
 
-<<<<<<< HEAD
 - (void)setUIForDisableStateWithActionTarget: (BOOL)action
 {
-=======
-//  Set trạng thái của switch khi disable
-- (void)setUIForDisableState{
->>>>>>> parent of b9b2b55b... update
     [UIView animateWithDuration:0.2 animations:^{
         btnThumb.frame = CGRectMake(border, border, wIcon, wIcon);
         lbState.frame = CGRectMake(btnThumb.frame.origin.x+btnThumb.frame.size.width, border, self.frame.size.width-(2*border+wIcon), self.frame.size.height-border);
@@ -119,7 +114,6 @@
         lbBackground.backgroundColor = bgOff;
     } completion:^(BOOL finished) {
         curState = NO;
-<<<<<<< HEAD
         if (action) {
             [delegate switchButtonDisabled];
         }
@@ -128,13 +122,6 @@
 
 - (void)setUIForEnableStateWithActionTarget: (BOOL)action
 {
-=======
-    }];
-}
-
-//  Set trạng thái của switch khi đc enable
-- (void)setUIForEnableState {
->>>>>>> parent of b9b2b55b... update
     [UIView animateWithDuration:0.2 animations:^{
         btnThumb.frame = CGRectMake(self.frame.size.width-border-wIcon, border, wIcon, wIcon);
         lbState.frame = CGRectMake(0, border, self.frame.size.width-(2*border+wIcon), self.frame.size.height-border);
@@ -142,12 +129,9 @@
         lbBackground.backgroundColor = bgOn;
     }completion:^(BOOL finished) {
         curState = YES;
-<<<<<<< HEAD
         if (action) {
             [delegate switchButtonEnabled];
         }
-=======
->>>>>>> parent of b9b2b55b... update
     }];
 }
 
@@ -159,7 +143,6 @@
     }
 }
 
-<<<<<<< HEAD
 - (void)btnThumbMoved:(UIPanGestureRecognizer *)gesture {
     if ([gesture state] == UIGestureRecognizerStateBegan) {
         startPoint = [gesture locationInView: self];
@@ -186,6 +169,4 @@
     }
 }
 
-=======
->>>>>>> parent of b9b2b55b... update
 @end

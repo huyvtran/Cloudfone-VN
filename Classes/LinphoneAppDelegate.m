@@ -1543,7 +1543,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         NSString *sipNumber = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNamePhoneticProperty);
         if (sipNumber != nil && [sipNumber isEqualToString: keySyncPBX])
         {
-            NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+            NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
             ABMultiValueRef phones = ABRecordCopyValue(aPerson, kABPersonPhoneProperty);
             if (ABMultiValueGetCount(phones) > 0)
             {
@@ -1914,12 +1914,15 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 #pragma mark - Web services delegate
 - (void)updateCustomerTokenIOS {
-    if (USERNAME != nil) {
+    NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+    if (USERNAME != nil && ![AppUtils isNullOrEmpty: server]) {
         NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
         [jsonDict setObject:AuthUser forKey:@"AuthUser"];
         [jsonDict setObject:AuthKey forKey:@"AuthKey"];
-        [jsonDict setObject:USERNAME forKey:@"UserName"];
+        [jsonDict setObject:@"" forKey:@"UserName"];
         [jsonDict setObject:_deviceToken forKey:@"IOSToken"];
+        [jsonDict setObject:server forKey:@"PBXID"];
+        [jsonDict setObject:USERNAME forKey:@"PBXExt"];
         
         [webService callWebServiceWithLink:ChangeCustomerIOSToken withParams:jsonDict];
     }

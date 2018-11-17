@@ -1213,7 +1213,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             webService = [[WebServices alloc] init];
             webService.delegate = self;
         }
-        NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+        NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
         server = @"123.111.22.10";
         NSString *dateFrom = @"1542179975";
         NSString *dateTo = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];

@@ -102,6 +102,7 @@
 		15A64DA1216C8BC700D194BD /* InfoForNewContactTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15A64D9F216C8BC700D194BD /* InfoForNewContactTableCell.xib */; };
 		15A64DA4216CACD900D194BD /* ic_delete_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A64DA2216CACD500D194BD /* ic_delete_phone.png */; };
 		15A64DA5216CACD900D194BD /* ic_add_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A64DA3216CACD700D194BD /* ic_add_phone.png */; };
+		15B4462F219FCA0400FB8DCB /* CustomSwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B4462E219FCA0300FB8DCB /* CustomSwitchButton.m */; };
 		15C5A5FD219AAF5600FDD6C5 /* NewHistoryDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15C5A5FB219AAF5600FDD6C5 /* NewHistoryDetailCell.m */; };
 		15C5A5FE219AAF5600FDD6C5 /* NewHistoryDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15C5A5FC219AAF5600FDD6C5 /* NewHistoryDetailCell.xib */; };
 		15C5A600219ACC2000FDD6C5 /* ic_trash.png in Resources */ = {isa = PBXBuildFile; fileRef = 15C5A5FF219ACC1D00FDD6C5 /* ic_trash.png */; };
@@ -902,6 +903,8 @@
 		15A64D9F216C8BC700D194BD /* InfoForNewContactTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = InfoForNewContactTableCell.xib; path = AppUI/InfoForNewContactTableCell.xib; sourceTree = "<group>"; };
 		15A64DA2216CACD500D194BD /* ic_delete_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_delete_phone.png; sourceTree = "<group>"; };
 		15A64DA3216CACD700D194BD /* ic_add_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_add_phone.png; sourceTree = "<group>"; };
+		15B44627219FCA0300FB8DCB /* CustomSwitchButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomSwitchButton.h; path = AppUI/CustomSwitchButton.h; sourceTree = "<group>"; };
+		15B4462E219FCA0300FB8DCB /* CustomSwitchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomSwitchButton.m; path = AppUI/CustomSwitchButton.m; sourceTree = "<group>"; };
 		15C5A5FA219AAF5600FDD6C5 /* NewHistoryDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NewHistoryDetailCell.h; path = AppUI/NewHistoryDetailCell.h; sourceTree = "<group>"; };
 		15C5A5FB219AAF5600FDD6C5 /* NewHistoryDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NewHistoryDetailCell.m; path = AppUI/NewHistoryDetailCell.m; sourceTree = "<group>"; };
 		15C5A5FC219AAF5600FDD6C5 /* NewHistoryDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = NewHistoryDetailCell.xib; path = AppUI/NewHistoryDetailCell.xib; sourceTree = "<group>"; };
@@ -3080,6 +3083,8 @@
 				841B358E2191F1360019BD45 /* ConferenceTableViewCell.h */,
 				841B358F2191F1360019BD45 /* ConferenceTableViewCell.m */,
 				841B35902191F1360019BD45 /* ConferenceTableViewCell.xib */,
+				15B44627219FCA0300FB8DCB /* CustomSwitchButton.h */,
+				15B4462E219FCA0300FB8DCB /* CustomSwitchButton.m */,
 			);
 			name = AppUI;
 			sourceTree = "<group>";
@@ -4391,6 +4396,7 @@
 				F03CA84318C72F1A0008889D /* UITextViewNoDefine.m in Sources */,
 				84C8B24A1FBBBE4D0080D673 /* contactBlackListCell.m in Sources */,
 				840B574420061FD300DCBA7E /* QRCameraSwitchButton.m in Sources */,
+				15B4462F219FCA0400FB8DCB /* CustomSwitchButton.m in Sources */,
 				84E286C61FC9E1AC009CBA27 /* UIImageView+HighlightedWebCache.m in Sources */,
 				63B81A0D1B57DA33009604A6 /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				84EFFE0E1FF3E6B60085A9F4 /* DGActivityIndicatorBallPulseSyncAnimation.m in Sources */,

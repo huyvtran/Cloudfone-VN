@@ -7,8 +7,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol CustomSwitchButtonDelegate
+- (void)switchButtonDisabled;
+- (void)switchButtonEnabled;
+@end
+
 @interface CustomSwitchButton : UIView
 
+@property (nonatomic,strong) id <NSObject, CustomSwitchButtonDelegate> delegate;
 @property (nonatomic, strong) UILabel *lbBackground;
 @property (nonatomic, strong) UIButton *btnEnable;
 @property (nonatomic, strong) UIButton *btnDisable;
@@ -21,16 +27,11 @@
 @property (nonatomic, strong) UIColor *bgOff;
 
 - (id)initWithState: (BOOL)state frame: (CGRect)frame;
-
-<<<<<<< HEAD
 - (void)setUIForDisableStateWithActionTarget: (BOOL)action;
 - (void)setUIForEnableStateWithActionTarget: (BOOL)action;
-=======
-//  Set trạng thái của switch khi đc disable
-- (void)setUIForDisableState;
 
-//  Set trạng thái của switch khi đc enable
-- (void)setUIForEnableState;
->>>>>>> parent of b9b2b55b... update
+@property (nonatomic, assign) BOOL isEnabled;
+@property (nonatomic, assign) CGPoint startPoint;
+@property (nonatomic, assign) CGPoint endPoint;
 
 @end

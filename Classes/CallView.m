@@ -1210,18 +1210,18 @@ static UICompositeViewDescription *compositeDescription = nil;
     _callView.hidden = YES;
     _conferenceView.hidden = NO;
     
-    NSDictionary *info = [NSDatabase getProfileInfoOfAccount: USERNAME];
-    if (info != nil) {
-        NSString *strAvatar = [info objectForKey:@"avatar"];
-        if (strAvatar != nil && ![strAvatar isEqualToString: @""]) {
-            NSData *myAvatar = [NSData dataFromBase64String: strAvatar];
-            avatarConference.image = [UIImage imageWithData: myAvatar];
-        }else{
-            avatarConference.image = [UIImage imageNamed:@"no_avatar"];
-        }
-    }else{
-        avatarConference.image = [UIImage imageNamed:@"no_avatar"];
-    }
+//    NSDictionary *info = [NSDatabase getProfileInfoOfAccount: USERNAME];
+//    if (info != nil) {
+//        NSString *strAvatar = [info objectForKey:@"avatar"];
+//        if (strAvatar != nil && ![strAvatar isEqualToString: @""]) {
+//            NSData *myAvatar = [NSData dataFromBase64String: strAvatar];
+//            avatarConference.image = [UIImage imageWithData: myAvatar];
+//        }else{
+//            avatarConference.image = [UIImage imageNamed:@"no_avatar"];
+//        }
+//    }else{
+//        avatarConference.image = [UIImage imageNamed:@"no_avatar"];
+//    }
     
     updateTimeConf = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateConference) userInfo:nil repeats:YES];
 }
@@ -1710,7 +1710,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+        NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
         NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, phoneNumber];
         NSString *linkAvatar = [NSString stringWithFormat:@"%@/%@", link_picture_chat_group, avatarName];
         NSData *data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: linkAvatar]];
