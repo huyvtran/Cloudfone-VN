@@ -19,7 +19,11 @@
         self.clipsToBounds = YES;
         self.layer.cornerRadius = self.frame.size.height/2;
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(declineEnableWhiteList)
+                                                     name:k11DeclineEnableWhiteList object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(declineEnableHideMsg)
+                                                     name:k11DeclineEnableHideMsg object:nil];
         // Background
         _status = state;
         
@@ -106,6 +110,8 @@
                 break;
             }
             case eSwitchTrukingPBX:{
+                [[NSNotificationCenter defaultCenter] postNotificationName:k11ClickOnViewTrunkingPBX
+                                                                    object:[NSNumber numberWithInt:0]];
                 break;
             }
         }
@@ -128,6 +134,8 @@
                 break;
             }
             case eSwitchTrukingPBX:{
+                [[NSNotificationCenter defaultCenter] postNotificationName:k11ClickOnViewTrunkingPBX
+                                                                    object:[NSNumber numberWithInt: 1]];
                 break;
             }
         }
@@ -161,7 +169,7 @@
 }
 
 - (void)enableWhiteList{
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:k11EnableWhiteList object:nil];
 }
 
 //  Set trạng thái của switch khi disable

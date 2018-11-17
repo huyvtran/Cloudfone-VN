@@ -125,7 +125,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     
-    NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+    NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
     if (![AppUtils isNullOrEmpty: accountID] && ![AppUtils isNullOrEmpty: pbxServer]) {
         if (appDelegate._dataCrop != nil) {
             icWaiting.hidden = NO;
@@ -432,7 +432,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)checkDataExistsOnServer {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+        NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
         NSData * data = nil;
         if (![AppUtils isNullOrEmpty: accountID] && ![AppUtils isNullOrEmpty: pbxServer]) {
             NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, accountID];

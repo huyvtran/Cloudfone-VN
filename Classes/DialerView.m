@@ -159,7 +159,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     isNewSearch = YES;
     
     //
-    //  [self getMissedCallFromServer];
+    [self getMissedCallFromServer];
     
     [self autoLayoutForView];
     
@@ -1213,40 +1213,28 @@ static UICompositeViewDescription *compositeDescription = nil;
             webService = [[WebServices alloc] init];
             webService.delegate = self;
         }
-        NSString *dateFrom = [[NSUserDefaults standardUserDefaults] objectForKey:DATE_FROM];
-        dateFrom = @"1542377000";
-        NSString *pbxIP = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_IP];
-        NSString *user = [SipUtils getAccountIdOfDefaultProxyConfig];
+        NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+        server = @"123.111.22.10";
+        NSString *dateFrom = @"1542179975";
+        NSString *dateTo = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
+        dateTo = @"1542267280";
         
-        int currentDateTime = (int)[[NSDate date] timeIntervalSince1970];
-        NSString *dateTo = [NSString stringWithFormat:@"%d", currentDateTime];
+        NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
+        [jsonDict setObject:AuthUser forKey:@"AuthUser"];
+        [jsonDict setObject:AuthKey forKey:@"AuthKey"];
+        [jsonDict setObject:server forKey:@"IP"];
+        [jsonDict setObject:@"1452" forKey:@"PhoneNumberReceive"];
+        [jsonDict setObject:dateFrom forKey:@"DateFrom"];
+        [jsonDict setObject:dateTo forKey:@"DateTo"];
         
-        if (![AppUtils isNullOrEmpty: dateFrom] && ![AppUtils isNullOrEmpty: pbxIP] && ![AppUtils isNullOrEmpty: user])
-        {
-            //  server = @"123.111.22.10";
-            NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
-            [jsonDict setObject:AuthUser forKey:@"AuthUser"];
-            [jsonDict setObject:AuthKey forKey:@"AuthKey"];
-            [jsonDict setObject:pbxIP forKey:@"IP"];
-            [jsonDict setObject:user forKey:@"PhoneNumberReceive"];
-            [jsonDict setObject:dateFrom forKey:@"DateFrom"];
-            [jsonDict setObject:dateTo forKey:@"DateTo"];
-            
-            [webService callWebServiceWithLink:GetInfoMissCall withParams:jsonDict inBackgroundMode:YES];
-        }
-        [[NSUserDefaults standardUserDefaults] setObject:dateTo forKey:DATE_FROM];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [webService callWebServiceWithLink:GetInfoMissCall withParams:jsonDict inBackgroundMode:YES];
     }
 }
 
 - (void)insertMissedCallToDatabase: (id)data {
     if (data != nil && [data isKindOfClass:[NSArray class]]) {
-        NSSortDescriptor *sortDescriptor;
-        sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createDate"
-                                                     ascending:YES];
-        NSArray *sortedArray = [data sortedArrayUsingDescriptors:@[sortDescriptor]];
-        for (int i=0; i<[(NSArray *)sortedArray count]; i++) {
-            NSDictionary *callInfo = [sortedArray objectAtIndex: i];
+        for (int i=0; i<[(NSArray *)data count]; i++) {
+            NSDictionary *callInfo = [data objectAtIndex: i];
             id createDate = [callInfo objectForKey:@"createDate"];
             NSString *phoneNumberCall = [callInfo objectForKey:@"phoneNumberCall"];
             if (createDate != nil && phoneNumberCall != nil) {
@@ -1254,27 +1242,12 @@ static UICompositeViewDescription *compositeDescription = nil;
                 NSString *date = [AppUtils getDateFromInterval:[createDate doubleValue]];
                 NSString *time = [AppUtils getFullTimeStringFromTimeInterval:[createDate doubleValue]];
                 
-                BOOL exists = [NSDatabase checkMissedCallExistsWithPhoneNumber:phoneNumberCall atTime:[createDate intValue] offAccount:USERNAME];
-                if (!exists) {
-                    [NSDatabase InsertHistory:callId status:missed_call phoneNumber:phoneNumberCall callDirection:incomming_call recordFiles:@"" duration:0 date:date time:time time_int:[createDate doubleValue] rate:0 sipURI:phoneNumberCall MySip:USERNAME kCallId:@"" andFlag:1 andUnread:1];
-                }else{
-                    NSLog(@"Đã tồn tại roài");
-                }
+                [NSDatabase InsertHistory:callId status:missed_call phoneNumber:phoneNumberCall callDirection:incomming_call recordFiles:@"" duration:0 date:date time:time time_int:[createDate doubleValue] rate:0 sipURI:phoneNumberCall MySip:USERNAME kCallId:@"" andFlag:1 andUnread:1];
             }
         }
     }
 }
-/*
-<JKArray 0x15fdfbb40>(
-{
-    createDate = 1542377858;
-    phoneNumberCall = 14951;
-},
-{
-    createDate = 1542378057;
-    phoneNumberCall = 14951;
-}
-*/
+
 #pragma mark - Webservice delegate
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
     DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: API FUNCTION NAME is %@\nError: %@", __FUNCTION__, link, error]);
