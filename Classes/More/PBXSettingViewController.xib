@@ -22,6 +22,7 @@
                 <outlet property="_lbSepa" destination="ydL-44-Kcy" id="lvR-iQ-8KR"/>
                 <outlet property="_lbServerID" destination="bUz-PA-2Kb" id="Ei3-Gd-gT3"/>
                 <outlet property="_lbTitle" destination="lX1-T0-7zL" id="jWY-vV-nGm"/>
+                <outlet property="_swChange" destination="WUP-eh-8cb" id="HRJ-6c-FyW"/>
                 <outlet property="_tfAccount" destination="M9d-3w-uOE" id="tpW-D0-AmC"/>
                 <outlet property="_tfPassword" destination="HKt-vU-3tN" id="iyl-C8-t18"/>
                 <outlet property="_tfServerID" destination="AeR-2A-fwg" id="tha-KO-b9G"/>
@@ -85,6 +86,10 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WUP-eh-8cb">
+                            <rect key="frame" x="265" y="8" width="49" height="31"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </switch>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ydL-44-Kcy">
                             <rect key="frame" x="8" y="59" width="299" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

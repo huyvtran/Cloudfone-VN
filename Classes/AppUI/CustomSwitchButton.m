@@ -9,9 +9,9 @@
 
 @implementation CustomSwitchButton
 
-@synthesize lbBackground, btnEnable, btnDisable, btnThumb, curState, lbState, border, wIcon, bgOn, bgOff, startPoint, isEnabled, endPoint, delegate;
+@synthesize lbBackground, btnEnable, btnDisable, btnThumb, curState, lbState, border, wIcon, bgOn, bgOff;
 
-- (id)initWithState: (BOOL)state frame: (CGRect)frame withEnable: (BOOL)enable
+- (id)initWithState: (BOOL)state frame: (CGRect)frame
 {
     self = [super initWithFrame: frame];
     if (self) {
@@ -30,19 +30,12 @@
         lbBackground = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self addSubview: lbBackground];
         
-        //  button thumbnail
         btnThumb = [UIButton buttonWithType: UIButtonTypeCustom];
         btnThumb.clipsToBounds = YES;
         btnThumb.layer.cornerRadius = wIcon/2;
         btnThumb.backgroundColor = UIColor.whiteColor;
         [self addSubview: btnThumb];
         
-        UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(btnThumbMoved:)];
-        [panGesture setMinimumNumberOfTouches:1];
-        [panGesture setMaximumNumberOfTouches:1];
-        [self addGestureRecognizer: panGesture];
-        
-        //  state label
         lbState = [[UILabel alloc] init];
         lbState.font = [UIFont fontWithName:MYRIADPRO_BOLD size:16.0];
         lbState.textColor = UIColor.whiteColor;
@@ -66,9 +59,21 @@
             lbState.text = [[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"OFF"] uppercaseString];
             lbBackground.backgroundColor = bgOff;
         }
-        isEnabled = enable;
     }
     return self;
+}
+
+//  Chuyển view gồm 2 ảnh thành ảnh
+- (UIImage *)imageFromView:(UIView *) view {
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, [[UIScreen mainScreen] scale]);
+    } else {
+        UIGraphicsBeginImageContext(view.frame.size);
+    }
+    [view.layer renderInContext: UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
 }
 
 - (void)onButtonEnableClicked: (UIButton *)sender
@@ -99,8 +104,13 @@
     }];
 }
 
+<<<<<<< HEAD
 - (void)setUIForDisableStateWithActionTarget: (BOOL)action
 {
+=======
+//  Set trạng thái của switch khi disable
+- (void)setUIForDisableState{
+>>>>>>> parent of b9b2b55b... update
     [UIView animateWithDuration:0.2 animations:^{
         btnThumb.frame = CGRectMake(border, border, wIcon, wIcon);
         lbState.frame = CGRectMake(btnThumb.frame.origin.x+btnThumb.frame.size.width, border, self.frame.size.width-(2*border+wIcon), self.frame.size.height-border);
@@ -109,6 +119,7 @@
         lbBackground.backgroundColor = bgOff;
     } completion:^(BOOL finished) {
         curState = NO;
+<<<<<<< HEAD
         if (action) {
             [delegate switchButtonDisabled];
         }
@@ -117,6 +128,13 @@
 
 - (void)setUIForEnableStateWithActionTarget: (BOOL)action
 {
+=======
+    }];
+}
+
+//  Set trạng thái của switch khi đc enable
+- (void)setUIForEnableState {
+>>>>>>> parent of b9b2b55b... update
     [UIView animateWithDuration:0.2 animations:^{
         btnThumb.frame = CGRectMake(self.frame.size.width-border-wIcon, border, wIcon, wIcon);
         lbState.frame = CGRectMake(0, border, self.frame.size.width-(2*border+wIcon), self.frame.size.height-border);
@@ -124,18 +142,16 @@
         lbBackground.backgroundColor = bgOn;
     }completion:^(BOOL finished) {
         curState = YES;
+<<<<<<< HEAD
         if (action) {
             [delegate switchButtonEnabled];
         }
+=======
+>>>>>>> parent of b9b2b55b... update
     }];
 }
 
 - (void)tapToChangeValue {
-    if (!isEnabled) {
-        NSLog(@"You can not change value when switch button in disable state");
-        return;
-    }
-    
     if (curState) {
         [self setUIForDisableStateWithActionTarget: YES];
     }else{
@@ -143,6 +159,7 @@
     }
 }
 
+<<<<<<< HEAD
 - (void)btnThumbMoved:(UIPanGestureRecognizer *)gesture {
     if ([gesture state] == UIGestureRecognizerStateBegan) {
         startPoint = [gesture locationInView: self];
@@ -169,4 +186,6 @@
     }
 }
 
+=======
+>>>>>>> parent of b9b2b55b... update
 @end
