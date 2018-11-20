@@ -683,6 +683,24 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         case LinphoneRegistrationNone:{
             DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationNone"]);
+            if (clearingAccount) {
+                NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+                NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:key_login];
+                if (![AppUtils isNullOrEmpty: server] && ![AppUtils isNullOrEmpty: username]) {
+                    [self updateCustomerTokenIOSForPBX:server andUsername:username withTokenValue:@""];
+                }else{
+                    [self whenClearPBXSuccessfully];
+                }
+                break;
+            }
+            
+            if (enableProxyConfig != NULL || enableProxyConfig != nil) {
+                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@, enableProxyConfig khác NULL --> register proxy config đã lưu", __FUNCTION__, @"LinphoneRegistrationCleared"]);
+                
+                [self performSelector:@selector(addRegisteredProxyConfig)
+                           withObject:nil afterDelay:2.0];
+            }
+            
             break;
         }
         case LinphoneRegistrationCleared: {
@@ -827,6 +845,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     _tfServerID.text = @"";
     
     typeRegister = normalLogin;
+    clearingAccount = NO;
     _btnClear.enabled = NO;
     _btnSave.enabled = NO;
     

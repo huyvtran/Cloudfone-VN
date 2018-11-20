@@ -283,6 +283,9 @@
 
 + (void)enableProxyConfig: (LinphoneProxyConfig *)proxy withValue: (BOOL)enable withRefresh: (BOOL)refresh {
     //  edit profxy config
+    if (enable) {
+        linphone_core_set_default_proxy_config(LC, proxy);
+    }
     linphone_proxy_config_edit(proxy);
     linphone_proxy_config_enable_register(proxy, enable);
     linphone_proxy_config_refresh_register(proxy);

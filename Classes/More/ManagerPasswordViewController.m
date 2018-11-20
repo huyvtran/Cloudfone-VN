@@ -136,17 +136,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     else if (![_tfPassword.text isEqualToString:PASSWORD]){
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Current password not correct"] duration:2.0 position:CSToastPositionCenter];
     }else{
-        linphone_core_clear_proxy_config(LC);
+        //  clear proxy, after will update password and register again
+        _icWaiting.hidden = NO;
+        [_icWaiting startAnimating];
         
-//        NSString *serverName = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
-//        NSString *UserExt = [SipUtils getAccountIdOfDefaultProxyConfig];
-//
-//        if (![AppUtils isNullOrEmpty: serverName] && ![AppUtils isNullOrEmpty: UserExt]) {
-//            _icWaiting.hidden = NO;
-//            [_icWaiting startAnimating];
-//
-//            [self changePasswordForUser:UserExt server:serverName password:_tfNewPassword.text];
-//        }
+        linphone_core_clear_proxy_config(LC);
     }
 }
 
@@ -326,12 +320,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)registerPBXAfterChangePasswordSuccess {
-    NSString *serverName = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: serverName = %@", __FUNCTION__, serverName]);
-    
-    if (![AppUtils isNullOrEmpty: serverName])
-    {
-        linphone_core_clear_proxy_config(LC);
+    if (![AppUtils isNullOrEmpty: serverPBX]) {
+        [self getInfoForPBXWithServerName: serverPBX];
+    }else{
+        [self updatePasswordSuccesful];
     }
 }
 
@@ -442,23 +434,10 @@ static UICompositeViewDescription *compositeDescription = nil;
         {
             DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> register thành công sau khi clear proxy config", __FUNCTION__, @"LinphoneRegistrationOk"]);
             
-            enableProxyConfig = nil;
+            [SipUtils enableProxyConfig:proxy withValue:YES withRefresh:YES];
             
-            [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your password has been updated successful"] duration:2.0 position:CSToastPositionCenter];
+            [self updatePasswordSuccesful];
             
-//            if (enableProxyConfig == nil) {
-//                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> gọi linphone_core_clear_proxy_config", __FUNCTION__, @"LinphoneRegistrationOk"]);
-//
-//                enableProxyConfig = proxy;
-//                linphone_core_clear_proxy_config(LC);
-//
-//            }else{
-//                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> register thành công sau khi clear proxy config", __FUNCTION__, @"LinphoneRegistrationOk"]);
-//
-//                enableProxyConfig = nil;
-//
-//                [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your password has been updated successful"] duration:2.0 position:CSToastPositionCenter];
-//            }
             break;
         }
         case LinphoneRegistrationNone:{
@@ -468,16 +447,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         case LinphoneRegistrationCleared: {
             DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@", __FUNCTION__, @"LinphoneRegistrationCleared"]);
             if (![AppUtils isNullOrEmpty: serverPBX]) {
-                [self getInfoForPBXWithServerName: serverPBX];
+                [self changePasswordForUser:USERNAME server:serverPBX password:_tfNewPassword.text];
             }
-            
-//            if (enableProxyConfig != NULL || enableProxyConfig != nil) {
-//                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@, enableProxyConfig khác NULL --> register proxy config đã lưu", __FUNCTION__, @"LinphoneRegistrationCleared"]);
-//
-//                [self performSelector:@selector(addRegisteredProxyConfig)
-//                           withObject:nil afterDelay:2.0];
-//            }
-            
             break;
         }
         case LinphoneRegistrationFailed:
@@ -496,18 +467,15 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)addRegisteredProxyConfig {
-    if (enableProxyConfig != NULL) {
-        DDLogInfo(@"%@", [NSString stringWithFormat:@"%s", __FUNCTION__]);
-        
-        linphone_core_add_proxy_config(LC, enableProxyConfig);
-        linphone_core_set_default_proxy_config(LC, enableProxyConfig);
-        linphone_proxy_config_enable_register(enableProxyConfig, YES);
-        linphone_proxy_config_register_enabled(enableProxyConfig);
-        linphone_proxy_config_done(enableProxyConfig);
-        
-        linphone_core_refresh_registers(LC);
-    }
+- (void)updatePasswordSuccesful {
+    _icWaiting.hidden = YES;
+    [_icWaiting stopAnimating];
+    
+    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your password has been updated successful"] duration:2.0 position:CSToastPositionCenter];
+    
+    _tfPassword.text = @"";
+    _tfNewPassword.text = @"";
+    _tfConfirmPassword.text = @"";
 }
 
 @end
