@@ -639,23 +639,11 @@ void onUncaughtException(NSException* exception)
     title = Cloudfone;
     */
     
-    
     NSDictionary *aps = [userInfo objectForKey:@"aps"];
     if (aps != nil)
     {
         NSDictionary *alert = [aps objectForKey:@"alert"];
         [[LinphoneManager instance] refreshRegisters];
-        
-        NSString *str = [[NSUserDefaults standardUserDefaults] objectForKey:@"testkey"];
-        if (![AppUtils isNullOrEmpty: str]) {
-            str = [NSString stringWithFormat:@"%@\n%@", str, @[aps]];
-            [[NSUserDefaults standardUserDefaults] setObject:str forKey:@"testkey"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }else{
-            [[NSUserDefaults standardUserDefaults] setObject:aps forKey:@"testkey"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-        
         
         NSString *loc_key = [aps objectForKey:@"loc-key"];
         NSString *callId = [aps objectForKey:@"call-id"];

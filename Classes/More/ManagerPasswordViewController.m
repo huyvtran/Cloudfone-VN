@@ -12,6 +12,13 @@
 @interface ManagerPasswordViewController (){
     LinphoneAppDelegate *appDelegate;
     WebServices *webService;
+    
+    NSString *serverPBX;
+    NSString *ipPBX;
+    NSString *passwordPBX;
+    NSString *portPBX;
+    
+    LinphoneProxyConfig *enableProxyConfig;
 }
 
 @end
@@ -70,11 +77,21 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
+    serverPBX = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+    
     _icWaiting.hidden = YES;
     [self showContentForView];
-    _tfPassword.text = @"cloudfone@123";
-    _tfNewPassword.text = @"12345678";
-    _tfConfirmPassword.text = @"12345678";
+    _tfPassword.text = @"";
+    _tfNewPassword.text = @"";
+    _tfConfirmPassword.text = @"";
+    
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(registrationUpdateEvent:)
+                                               name:kLinphoneRegistrationUpdate object:nil];
+}
+
+-(void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear: animated];
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -119,10 +136,17 @@ static UICompositeViewDescription *compositeDescription = nil;
     else if (![_tfPassword.text isEqualToString:PASSWORD]){
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Current password not correct"] duration:2.0 position:CSToastPositionCenter];
     }else{
-        _icWaiting.hidden = NO;
-        [_icWaiting startAnimating];
+        linphone_core_clear_proxy_config(LC);
         
-        [self startChangePasswordForUser: _tfNewPassword.text];
+//        NSString *serverName = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+//        NSString *UserExt = [SipUtils getAccountIdOfDefaultProxyConfig];
+//
+//        if (![AppUtils isNullOrEmpty: serverName] && ![AppUtils isNullOrEmpty: UserExt]) {
+//            _icWaiting.hidden = NO;
+//            [_icWaiting startAnimating];
+//
+//            [self changePasswordForUser:UserExt server:serverName password:_tfNewPassword.text];
+//        }
     }
 }
 
@@ -301,23 +325,84 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                    blue:(230/255.0) alpha:1.0].CGColor;
 }
 
-- (void)startChangePasswordForUser: (NSString *)password
-{
-    NSString *requestString = [AppUtils randomStringWithLength: 10];
-    NSString *totalString = [NSString stringWithFormat:@"%@%@%@", PASSWORD, requestString, USERNAME];
+- (void)registerPBXAfterChangePasswordSuccess {
+    NSString *serverName = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: serverName = %@", __FUNCTION__, serverName]);
     
+    if (![AppUtils isNullOrEmpty: serverName])
+    {
+        linphone_core_clear_proxy_config(LC);
+    }
+}
+
+- (void)startLoginPBXWithInfo: (NSDictionary *)info
+{
+    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, @[info]]);
+    
+    NSString *pbxIp = [info objectForKey:@"ipAddress"];
+    NSString *pbxPort = [info objectForKey:@"port"];
+    NSString *serverName = [info objectForKey:@"serverName"];
+    
+    if (pbxIp != nil && ![pbxIp isEqualToString: @""] && pbxPort != nil && ![pbxPort isEqualToString: @""] && serverName != nil)
+    {
+        passwordPBX = _tfNewPassword.text;
+        ipPBX = pbxIp;
+        portPBX = pbxPort;
+        
+        [self registerPBXAccount:USERNAME password:passwordPBX ipAddress:ipPBX port:portPBX];
+    }else{
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your information again!"] duration:2.0 position:CSToastPositionCenter];
+    }
+}
+
+- (void)registerPBXAccount: (NSString *)pbxAccount password: (NSString *)password ipAddress: (NSString *)address port: (NSString *)portID
+{
+    NSArray *data = @[address, pbxAccount, password, portID];
+    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(startRegisterPBX:) userInfo:data repeats:NO];
+}
+
+- (void)startRegisterPBX: (NSTimer *)timer {
+    id data = [timer userInfo];
+    if ([data isKindOfClass:[NSArray class]] && [data count] == 4) {
+        NSString *pbxDomain = [data objectAtIndex: 0];
+        NSString *pbxAccount = [data objectAtIndex: 1];
+        NSString *pbxPassword = [data objectAtIndex: 2];
+        NSString *pbxPort = [data objectAtIndex: 3];
+        
+        DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: pbxDomain = %@, pbxAccount = %@, pbxPort = %@", __FUNCTION__, pbxDomain, pbxAccount, pbxPort]);
+        
+        BOOL success = [SipUtils loginSipWithDomain:pbxDomain username:pbxAccount password:pbxPassword port:pbxPort];
+        if (success) {
+            [SipUtils registerProxyWithUsername:pbxAccount password:pbxPassword domain:pbxDomain port:pbxPort];
+        }
+    }
+}
+
+
+#pragma mark - Webservice Delegate
+
+- (void)getInfoForPBXWithServerName: (NSString *)serverName
+{
     NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
     [jsonDict setObject:AuthUser forKey:@"AuthUser"];
     [jsonDict setObject:AuthKey forKey:@"AuthKey"];
-    [jsonDict setObject:requestString forKey:@"RequestString"];
-    [jsonDict setObject:USERNAME forKey:@"LoginUser"];
-    [jsonDict setObject:[[totalString MD5String] lowercaseString] forKey:@"MD5String"];
-    [jsonDict setObject:password forKey:@"NewPassword"];
+    [jsonDict setObject:serverName forKey:@"ServerName"];
     
-    [webService callWebServiceWithLink:changePasswordFunc withParams:jsonDict];
+    [webService callWebServiceWithLink:getServerInfoFunc withParams:jsonDict];
 }
 
-#pragma mark - Webservice Delegate
+- (void)changePasswordForUser: (NSString *)UserExt server: (NSString *)server password: (NSString *)newPassword
+{
+    NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
+    [jsonDict setObject:AuthUser forKey:@"AuthUser"];
+    [jsonDict setObject:AuthKey forKey:@"AuthKey"];
+    [jsonDict setObject:UserExt forKey:@"UserExt"];
+    [jsonDict setObject:server forKey:@"ServerName"];
+    [jsonDict setObject:PASSWORD forKey:@"PasswordOld"];
+    [jsonDict setObject:newPassword forKey:@"PasswordNew"];
+    
+    [webService callWebServiceWithLink:ChangeExtPass withParams:jsonDict];
+}
 
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
     [_icWaiting stopAnimating];
@@ -326,15 +411,14 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
-    if ([link isEqualToString:changePasswordFunc]) {
-        if ([data isKindOfClass:[NSString class]]) {
-            [[NSUserDefaults standardUserDefaults] setObject:_tfNewPassword.text forKey:key_password];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            [_icWaiting stopAnimating];
-            _icWaiting.hidden = YES;
-            [self.view makeToast:(NSString *)data duration:2.0 position:CSToastPositionCenter];
-        }
+    if ([link isEqualToString:ChangeExtPass]) {
+        [[NSUserDefaults standardUserDefaults] setObject:_tfNewPassword.text forKey:key_password];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [self registerPBXAfterChangePasswordSuccess];
+        
+    }else if ([link isEqualToString:getServerInfoFunc]) {
+        [self startLoginPBXWithInfo: data];
     }
 }
 
@@ -342,5 +426,88 @@ static UICompositeViewDescription *compositeDescription = nil;
     NSLog(@"%d", responeCode);
 }
 
+#pragma mark - Proxy config
+
+- (void)registrationUpdateEvent:(NSNotification *)notif {
+    NSString *message = [notif.userInfo objectForKey:@"message"];
+    [self registrationUpdate:[[notif.userInfo objectForKey:@"state"] intValue]
+                    forProxy:[[notif.userInfo objectForKeyedSubscript:@"cfg"] pointerValue]
+                     message:message];
+}
+
+- (void)registrationUpdate:(LinphoneRegistrationState)state forProxy:(LinphoneProxyConfig *)proxy message:(NSString *)message
+{
+    switch (state) {
+        case LinphoneRegistrationOk:
+        {
+            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> register thành công sau khi clear proxy config", __FUNCTION__, @"LinphoneRegistrationOk"]);
+            
+            enableProxyConfig = nil;
+            
+            [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your password has been updated successful"] duration:2.0 position:CSToastPositionCenter];
+            
+//            if (enableProxyConfig == nil) {
+//                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> gọi linphone_core_clear_proxy_config", __FUNCTION__, @"LinphoneRegistrationOk"]);
+//
+//                enableProxyConfig = proxy;
+//                linphone_core_clear_proxy_config(LC);
+//
+//            }else{
+//                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> register thành công sau khi clear proxy config", __FUNCTION__, @"LinphoneRegistrationOk"]);
+//
+//                enableProxyConfig = nil;
+//
+//                [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your password has been updated successful"] duration:2.0 position:CSToastPositionCenter];
+//            }
+            break;
+        }
+        case LinphoneRegistrationNone:{
+            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationNone"]);
+            break;
+        }
+        case LinphoneRegistrationCleared: {
+            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@", __FUNCTION__, @"LinphoneRegistrationCleared"]);
+            if (![AppUtils isNullOrEmpty: serverPBX]) {
+                [self getInfoForPBXWithServerName: serverPBX];
+            }
+            
+//            if (enableProxyConfig != NULL || enableProxyConfig != nil) {
+//                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@, enableProxyConfig khác NULL --> register proxy config đã lưu", __FUNCTION__, @"LinphoneRegistrationCleared"]);
+//
+//                [self performSelector:@selector(addRegisteredProxyConfig)
+//                           withObject:nil afterDelay:2.0];
+//            }
+            
+            break;
+        }
+        case LinphoneRegistrationFailed:
+        {
+            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@", __FUNCTION__, @"LinphoneRegistrationFailed"]);
+            
+            break;
+        }
+        case LinphoneRegistrationProgress: {
+            NSLog(@"LinphoneRegistrationProgress");
+            // _waitView.hidden = false;
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)addRegisteredProxyConfig {
+    if (enableProxyConfig != NULL) {
+        DDLogInfo(@"%@", [NSString stringWithFormat:@"%s", __FUNCTION__]);
+        
+        linphone_core_add_proxy_config(LC, enableProxyConfig);
+        linphone_core_set_default_proxy_config(LC, enableProxyConfig);
+        linphone_proxy_config_enable_register(enableProxyConfig, YES);
+        linphone_proxy_config_register_enabled(enableProxyConfig);
+        linphone_proxy_config_done(enableProxyConfig);
+        
+        linphone_core_refresh_registers(LC);
+    }
+}
 
 @end

@@ -355,4 +355,17 @@ HMLocalization *localization;
     return result;
 }
 
++ (BOOL)checkMissedCallExistsFromUser: (NSString *)phone withAccount: (NSString *)account atTime: (long)time
+{
+    BOOL result = NO;
+    NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND status = '%@' AND phone_number = '%@' AND time_int = %ld LIMIT 0,1", account, missed_call, phone, time];
+    FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
+    while ([rs next]) {
+        result = YES;
+        break;
+    }
+    [rs close];
+    return result;
+}
+
 @end

@@ -120,6 +120,8 @@
 #define PushSharp               @"PushSharp"
 #define GetUserInChatRoom       @"GetUserInChatRoom"
 #define GetInfoMissCall         @"GetInfoMissCall"
+#define ChangeExtPass           @"ChangeExtPass"
+
 
 
 #pragma mark - Keys for app

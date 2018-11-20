@@ -225,16 +225,17 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     float tmpWidth = 70.0;
     swAccount = [[CustomSwitchButton alloc] initWithState:state frame:CGRectMake(SCREEN_WIDTH-marginX-tmpWidth, (60.0-31.0)/2, tmpWidth, 31.0)];
+    swAccount.delegate = self;
     [_viewContent addSubview: swAccount];
     
     
-    _lbSepa.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
-                                               blue:(235/255.0) alpha:1.0];
+    _lbSepa.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
+                                               blue:(230/255.0) alpha:1.0];
     [_lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbPBX.mas_bottom);
         make.left.equalTo(_lbPBX);
-        make.right.equalTo(_swChange.mas_right);
-        make.height.mas_equalTo(2.0);
+        make.right.equalTo(_viewContent).offset(-marginX);
+        make.height.mas_equalTo(1.0);
     }];
     
     //  server ID
@@ -486,22 +487,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)whenTextfieldDidChanged {
-    NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey: PBX_SERVER];
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey: key_login];
-    NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey: key_password];
-    
     //  check value is empty
     if ([_tfServerID.text isEqualToString: @""] || [_tfAccount.text isEqualToString: @""] || [_tfPassword.text isEqualToString: @""]) {
         _btnSave.enabled = NO;
         return;
     }
-    
-    //  Check with current account
-    if ([_tfServerID.text isEqualToString: server] && [_tfAccount.text isEqualToString: username] && [_tfPassword.text isEqualToString: password]) {
-        _btnSave.enabled = NO;
-        return;
-    }
-    
     _btnSave.enabled = YES;
 }
 

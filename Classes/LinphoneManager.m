@@ -1270,60 +1270,60 @@ static void linphone_iphone_popup_password_request(LinphoneCore *lc, const char 
 												   const char *domainC) {
 	// let the wizard handle its own errors
 	if ([PhoneMainView.instance currentView] != AssistantView.compositeViewDescription) {
-		static UIAlertController *alertView = nil;
-
-		// avoid having multiple popups
-		if ([alertView isBeingPresented]) {
-			[alertView dismissViewControllerAnimated:YES completion:nil];
-		}
-
-		// dont pop up if we are in background, in any case we will refresh registers when entering
-		// the application again
-		if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
-			return;
-		}
-
-		NSString *realm = [NSString stringWithUTF8String:realmC];
-		NSString *username = [NSString stringWithUTF8String:usernameC];
-		NSString *domain = [NSString stringWithUTF8String:domainC];
-		alertView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Authentification needed", nil)
-														message:[NSString stringWithFormat:NSLocalizedString(@"Registration failed because authentication is "
-																											 @"missing or invalid for %@@%@.\nYou can "
-																											 @"provide password again, or check your "
-																											 @"account configuration in the settings.", nil), username, realm]
-												 preferredStyle:UIAlertControllerStyleAlert];
-		
-		UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
-																style:UIAlertActionStyleDefault
-															  handler:^(UIAlertAction * action) {}];
-		
-		[alertView addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-			textField.placeholder = NSLocalizedString(@"Password", nil);
-			textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-			textField.borderStyle = UITextBorderStyleRoundedRect;
-			textField.secureTextEntry = YES;
-		}];
-		
-		UIAlertAction* continueAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm password", nil)
-																 style:UIAlertActionStyleDefault
-															   handler:^(UIAlertAction * action) {
-																   NSString *password = alertView.textFields[0].text;
-																   LinphoneAuthInfo *info =
-																   linphone_auth_info_new(username.UTF8String, NULL, password.UTF8String, NULL,
-																						  realm.UTF8String, domain.UTF8String);
-																   linphone_core_add_auth_info(LC, info);
-																   [LinphoneManager.instance refreshRegisters];
-															   }];
-		
-		UIAlertAction* settingsAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Go to settings", nil)
-																 style:UIAlertActionStyleDefault
-															   handler:^(UIAlertAction * action) {
-																   [PhoneMainView.instance changeCurrentView:SettingsView.compositeViewDescription];
-															   }];
-		
-		[alertView addAction:defaultAction];
-		[alertView addAction:continueAction];
-		[alertView addAction:settingsAction];
+//        static UIAlertController *alertView = nil;
+//
+//        // avoid having multiple popups
+//        if ([alertView isBeingPresented]) {
+//            [alertView dismissViewControllerAnimated:YES completion:nil];
+//        }
+//
+//        // dont pop up if we are in background, in any case we will refresh registers when entering
+//        // the application again
+//        if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
+//            return;
+//        }
+//
+//        NSString *realm = [NSString stringWithUTF8String:realmC];
+//        NSString *username = [NSString stringWithUTF8String:usernameC];
+//        NSString *domain = [NSString stringWithUTF8String:domainC];
+//        alertView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Authentification needed", nil)
+//                                                        message:[NSString stringWithFormat:NSLocalizedString(@"Registration failed because authentication is "
+//                                                                                                             @"missing or invalid for %@@%@.\nYou can "
+//                                                                                                             @"provide password again, or check your "
+//                                                                                                             @"account configuration in the settings.", nil), username, realm]
+//                                                 preferredStyle:UIAlertControllerStyleAlert];
+//
+//        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+//                                                                style:UIAlertActionStyleDefault
+//                                                              handler:^(UIAlertAction * action) {}];
+//
+//        [alertView addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+//            textField.placeholder = NSLocalizedString(@"Password", nil);
+//            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+//            textField.borderStyle = UITextBorderStyleRoundedRect;
+//            textField.secureTextEntry = YES;
+//        }];
+//
+//        UIAlertAction* continueAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm password", nil)
+//                                                                 style:UIAlertActionStyleDefault
+//                                                               handler:^(UIAlertAction * action) {
+//                                                                   NSString *password = alertView.textFields[0].text;
+//                                                                   LinphoneAuthInfo *info =
+//                                                                   linphone_auth_info_new(username.UTF8String, NULL, password.UTF8String, NULL,
+//                                                                                          realm.UTF8String, domain.UTF8String);
+//                                                                   linphone_core_add_auth_info(LC, info);
+//                                                                   [LinphoneManager.instance refreshRegisters];
+//                                                               }];
+//
+//        UIAlertAction* settingsAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Go to settings", nil)
+//                                                                 style:UIAlertActionStyleDefault
+//                                                               handler:^(UIAlertAction * action) {
+//                                                                   [PhoneMainView.instance changeCurrentView:SettingsView.compositeViewDescription];
+//                                                               }];
+//
+//        [alertView addAction:defaultAction];
+//        [alertView addAction:continueAction];
+//        [alertView addAction:settingsAction];
         
         //  Close by Khai Le on 09/11/2017
 		//  [PhoneMainView.instance presentViewController:alertView animated:YES completion:nil];

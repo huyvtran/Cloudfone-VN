@@ -18,7 +18,7 @@ typedef enum{
     qrCodeLogin,
 }typeLoginPBX;
 
-@interface PBXSettingViewController : UIViewController<UICompositeViewDelegate, WebServicesDelegate, QRCodeReaderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RegisterPBXWithPhoneViewDelegate>
+@interface PBXSettingViewController : UIViewController<UICompositeViewDelegate, WebServicesDelegate, QRCodeReaderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RegisterPBXWithPhoneViewDelegate, CustomSwitchButtonDelegate>
 @property (weak, nonatomic) IBOutlet UIView *_viewHeader;
 @property (weak, nonatomic) IBOutlet UIButton *_iconBack;
 @property (weak, nonatomic) IBOutlet UILabel *_lbTitle;

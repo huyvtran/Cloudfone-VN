@@ -90,8 +90,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     UIDevice *device = [UIDevice currentDevice];
     [device setProximityMonitoringEnabled: false];
     
-    
-    
     // invisible icon add contact & icon delete address
     _addContactButton.hidden = YES;
     _addressField.text = @"";
@@ -158,7 +156,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
     isNewSearch = YES;
     
-    //
+    //  get missed callfrom server
     [self getMissedCallFromServer];
     
     [self autoLayoutForView];
@@ -1242,7 +1240,10 @@ static UICompositeViewDescription *compositeDescription = nil;
                 NSString *date = [AppUtils getDateFromInterval:[createDate doubleValue]];
                 NSString *time = [AppUtils getFullTimeStringFromTimeInterval:[createDate doubleValue]];
                 
-                [NSDatabase InsertHistory:callId status:missed_call phoneNumber:phoneNumberCall callDirection:incomming_call recordFiles:@"" duration:0 date:date time:time time_int:[createDate doubleValue] rate:0 sipURI:phoneNumberCall MySip:USERNAME kCallId:@"" andFlag:1 andUnread:1];
+                BOOL exists = [NSDatabase checkMissedCallExistsFromUser: phoneNumberCall withAccount: USERNAME atTime: [time intValue]];
+                if (!exists) {
+                    [NSDatabase InsertHistory:callId status:missed_call phoneNumber:phoneNumberCall callDirection:incomming_call recordFiles:@"" duration:0 date:date time:time time_int:[createDate doubleValue] rate:0 sipURI:phoneNumberCall MySip:USERNAME kCallId:@"" andFlag:1 andUnread:1];
+                }
             }
         }
     }
