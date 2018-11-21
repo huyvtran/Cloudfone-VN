@@ -405,6 +405,9 @@ void onUncaughtException(NSException* exception)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadContactListAfterAddSuccess)
                                                  name:@"reloadContactAfterAdd" object:nil];
     
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(registrationUpdateEvent:)
+                                               name:kLinphoneRegistrationUpdate object:nil];
+    
     internetReachable = [Reachability reachabilityForInternetConnection];
     [internetReachable startNotifier];
     
@@ -1901,6 +1904,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 }
 
 #pragma mark - Web services delegate
+
 - (void)updateCustomerTokenIOS {
     NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
     if (USERNAME != nil && ![AppUtils isNullOrEmpty: server]) {
@@ -1916,15 +1920,88 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     }
 }
 
+-(NSDate *) toLocalTime
+{
+    NSTimeZone *tz = [NSTimeZone defaultTimeZone];
+    NSInteger seconds = [tz secondsFromGMTForDate: [NSDate date]];
+    return [NSDate dateWithTimeInterval: seconds sinceDate: [NSDate date]];
+}
+
+-(NSDate *) toGlobalTime
+{
+    NSTimeZone *tz = [NSTimeZone defaultTimeZone];
+    NSInteger seconds = -[tz secondsFromGMTForDate: [NSDate date]];
+    return [NSDate dateWithTimeInterval: seconds sinceDate: [NSDate date]];
+}
+
+- (void)getMissedCallFromServer {
+    NSString *pbxIp = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
+    NSString *ExtUser = [SipUtils getAccountIdOfDefaultProxyConfig];
+    
+    NSString *dateFrom = [[NSUserDefaults standardUserDefaults] objectForKey:DATE_FROM];
+    
+    NSDate *localDate = [self toLocalTime];
+    NSString *dateTo = [NSString stringWithFormat:@"%ld", (long)[localDate timeIntervalSince1970]];
+    //  NSString *dateTo = [NSString stringWithFormat:@"%ld", (long)[[NSDate date] timeIntervalSince1970]];
+    
+//    NSDate *globalDate = [self toGlobalTime];
+//    NSLog(@"%ld", (long)[localDate timeIntervalSince1970]);
+//    NSLog(@"%ld", (long)[globalDate timeIntervalSince1970]);
+    
+    if (![AppUtils isNullOrEmpty: dateFrom] && ![AppUtils isNullOrEmpty: pbxIp] && ![AppUtils isNullOrEmpty: ExtUser]) {
+        if (webService == nil) {
+            webService = [[WebServices alloc] init];
+            webService.delegate = self;
+        }
+        NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
+        [jsonDict setObject:AuthUser forKey:@"AuthUser"];
+        [jsonDict setObject:AuthKey forKey:@"AuthKey"];
+        [jsonDict setObject:pbxIp forKey:@"IP"];
+        [jsonDict setObject:ExtUser forKey:@"PhoneNumberReceive"];
+        [jsonDict setObject:dateFrom forKey:@"DateFrom"];
+        [jsonDict setObject:dateTo forKey:@"DateTo"];
+        
+        [webService callWebServiceWithLink:GetInfoMissCall withParams:jsonDict inBackgroundMode:YES];
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:dateTo forKey:DATE_FROM];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)insertMissedCallToDatabase: (id)data {
+    if (data != nil && [data isKindOfClass:[NSArray class]]) {
+        for (int i=0; i<[(NSArray *)data count]; i++) {
+            NSDictionary *callInfo = [data objectAtIndex: i];
+            id createDate = [callInfo objectForKey:@"createDate"];
+            NSString *phoneNumberCall = [callInfo objectForKey:@"phoneNumberCall"];
+            if (createDate != nil && phoneNumberCall != nil) {
+                NSString *callId = [AppUtils randomStringWithLength: 10];
+                NSString *date = [AppUtils getDateFromInterval:[createDate doubleValue]];
+                NSString *time = [AppUtils getFullTimeStringFromTimeInterval:[createDate doubleValue]];
+                
+                BOOL exists = [NSDatabase checkMissedCallExistsFromUser: phoneNumberCall withAccount: USERNAME atTime: (int)[createDate intValue]];
+                if (!exists) {
+                    [NSDatabase InsertHistory:callId status:missed_call phoneNumber:phoneNumberCall callDirection:incomming_call recordFiles:@"" duration:0 date:date time:time time_int:[createDate doubleValue] rate:0 sipURI:phoneNumberCall MySip:USERNAME kCallId:@"" andFlag:1 andUnread:1];
+                }
+            }
+        }
+        //  Post to update notification after inserted missed call into database
+        [[NSNotificationCenter defaultCenter] postNotificationName:k11UpdateBarNotifications object:nil];
+    }
+}
+
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
     if ([link isEqualToString:ChangeCustomerIOSToken]) {
         _updateTokenSuccess = false;
+    }else if ([link isEqualToString: GetInfoMissCall]){
+        DDLogInfo(@"%@", [NSString stringWithFormat:@"%s GetInfoMissCall", __FUNCTION__]);
     }
 }
 
 - (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
     if ([link isEqualToString:ChangeCustomerIOSToken]) {
         _updateTokenSuccess = true;
+    }else if ([link isEqualToString: GetInfoMissCall]){
+        [self insertMissedCallToDatabase: data];
     }
 }
 
@@ -1957,5 +2034,40 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     
     [DDLog addLogger:fileLogger];
 }
+
+#pragma mark - Proxy config
+- (void)registrationUpdateEvent:(NSNotification *)notif {
+    NSString *message = [notif.userInfo objectForKey:@"message"];
+    [self registrationUpdate:[[notif.userInfo objectForKey:@"state"] intValue]
+                    forProxy:[[notif.userInfo objectForKeyedSubscript:@"cfg"] pointerValue]
+                     message:message];
+}
+
+- (void)registrationUpdate:(LinphoneRegistrationState)state forProxy:(LinphoneProxyConfig *)proxy message:(NSString *)message {
+    switch (state) {
+        case LinphoneRegistrationOk: {
+            //  get missed callfrom server
+            [self getMissedCallFromServer];
+            
+            break;
+        }
+        case LinphoneRegistrationNone:{
+            break;
+        }
+        case LinphoneRegistrationCleared: {
+            break;
+        }
+        case LinphoneRegistrationFailed: {
+            break;
+        }
+        case LinphoneRegistrationProgress: {
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+
 
 @end

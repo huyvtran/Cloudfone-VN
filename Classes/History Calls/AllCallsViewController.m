@@ -222,6 +222,8 @@
     
     NSString *strTime = [AppUtils getTimeStringFromTimeInterval: aCall.timeInt];
     cell.lbTime.text = strTime;
+    cell.lbTime.text = aCall._callTime;
+    
     if (aCall.duration < 60) {
         cell.lbDuration.text = [NSString stringWithFormat:@"%ld %@", aCall.duration, [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"sec"]];
     }else{

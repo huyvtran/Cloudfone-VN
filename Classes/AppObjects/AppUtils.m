@@ -938,45 +938,9 @@
     return sHistoryEventDate;
 }
 
-+ (void)sendMissedNotificationForOfflineUser: (NSString *)IDRecipient fromSender: (NSString *)Sender withContent: (NSString *)content
-{
-    NSString *strURL = [NSString stringWithFormat:@"%@/%@", link_api, PushSharp];
-    NSURL *URL = [NSURL URLWithString:strURL];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: URL];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
-    [request setTimeoutInterval: 60];
-    
-    NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
-    [jsonDict setObject:AuthUser forKey:@"AuthUser"];
-    [jsonDict setObject:AuthKey forKey:@"AuthKey"];
-    [jsonDict setObject:IDRecipient forKey:@"IDRecipient"];
-    [jsonDict setObject:@"yes" forKey:@"Xmpp"];
-    [jsonDict setObject:Sender forKey:@"Sender"];
-    [jsonDict setObject:@"missed_call" forKey:@"Type"];
-    
-    NSTimeInterval timeInSeconds = [[NSDate date] timeIntervalSince1970];
-    [jsonDict setObject:[NSString stringWithFormat:@"%f", timeInSeconds] forKey:@"Datetime"];
-    [jsonDict setObject:content forKey:@"Content"];
-    
-    NSString *jsonRequest = [jsonDict JSONString];
-    NSData *requestData = [jsonRequest dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    
-    [request setValue:[NSString stringWithFormat:@"%d", (int)[requestData length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody: requestData];
-    
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    if(connection) {
-        NSLog(@"Connection Successful");
-    }
-}
-
 + (NSString *)getDateFromInterval: (double)timeInterval {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     [dateFormatter setDateFormat:@"dd-MM-yyyy"];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970: timeInterval];
     NSString *formattedDateString = [dateFormatter stringFromDate:date];
@@ -985,6 +949,7 @@
 
 + (NSString *)getFullTimeStringFromTimeInterval:(double)timeInterval {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     //    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Bangkok"]];
     [dateFormatter setDateFormat:@"HH:mm:ss"];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970: timeInterval];

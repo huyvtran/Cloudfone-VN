@@ -31,7 +31,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *bgCall;
 
 - (void)setupUIForView;
-- (IBAction)iconEndCallClick:(UIButton *)sender;
 - (IBAction)onDigitPress:(UIDigitButton *)sender;
 
 @end

@@ -183,9 +183,6 @@
                     <rect key="frame" x="130" y="400" width="60" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" backgroundImage="decline_call_def.png"/>
-                    <connections>
-                        <action selector="iconEndCallClick:" destination="lnM-d3-YYv" eventType="touchUpInside" id="qnu-qR-Ams"/>
-                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bmD-dg-RTd">
                     <rect key="frame" x="5" y="5" width="35" height="35"/>

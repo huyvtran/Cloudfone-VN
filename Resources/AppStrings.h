@@ -186,8 +186,6 @@
 #define networkChanged          @"networkChanged"
 #define updateTokenForXmpp      @"updateTokenForXmpp"
 
-#define k11RegistrationUpdate   @"k11RegistrationUpdate"
-
 #define addNewContactInContactView          @"addNewContactInContactView"
 #define k11ReloadAfterDeleteAllCall         @"k11ReloadAfterDeleteAllCall"
 #define updateNumberHistoryCallRemove       @"updateNumberHistoryCallRemove"
@@ -241,14 +239,16 @@
 
 #pragma mark - flags
 
-#define PBX_ID                  @"PBX_ID"
-#define PBX_SERVER              @"PBX_SERVER"
-#define PBX_USERNAME            @"PBX_USERNAME"
-#define PBX_PASSWORD            @"PBX_PASSWORD"
-#define PBX_PORT                @"PBX_PORT"
-#define PBX_IP_ADDRESSS         @"PBX_IP_ADDRESSS"
-#define callnexPBXFlag          @"callnexPBXFlag"
-#define transport_udp           @"UDP"
+#define DATE_FROM       @"DATE_FROM"
+
+#define PBX_ID          @"PBX_ID"
+#define PBX_SERVER      @"PBX_SERVER"
+#define PBX_USERNAME    @"PBX_USERNAME"
+#define PBX_PASSWORD    @"PBX_PASSWORD"
+#define PBX_PORT        @"PBX_PORT"
+#define PBX_IP_ADDRESSS @"PBX_IP_ADDRESSS"
+#define callnexPBXFlag  @"callnexPBXFlag"
+#define transport_udp   @"UDP"
 
 #define folder_call_records     @"calls_records"
 

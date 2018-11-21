@@ -386,7 +386,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         }else{
             cell.viewContent.hidden = NO;
             cell.lbTitle.hidden = YES;
-            cell.lbTime.text = [AppUtils getTimeStringFromTimeInterval: aCall._timeInt];
+            //  cell.lbTime.text = [AppUtils getTimeStringFromTimeInterval: aCall._timeInt];
+            cell.lbTime.text = aCall._time;
             
             if ([aCall._status isEqualToString: success_call])
             {
@@ -462,7 +463,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         
         CallHistoryObject *aCall = [listHistoryCalls objectAtIndex: indexPath.row];
         
-        cell.lbTime.text = [AppUtils getTimeStringFromTimeInterval: aCall._timeInt];
+        //  cell.lbTime.text = [AppUtils getTimeStringFromTimeInterval: aCall._timeInt];
+        cell.lbTime.text = aCall._time;
         
         if (aCall._duration == 0) {
             cell.lbDuration.text = @"";

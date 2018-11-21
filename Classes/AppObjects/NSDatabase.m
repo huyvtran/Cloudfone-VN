@@ -263,9 +263,9 @@ HMLocalization *localization;
     NSString *tSQL = @"";
     // Viết câu truy vấn cho get hotline history
     if ([phoneNumber isEqualToString: hotline]) {
-        tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number = '%@' AND date='%@' ORDER BY _id DESC", mySip, phoneNumber, dateStr];
+        tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number = '%@' AND date='%@' ORDER BY time_int DESC", mySip, phoneNumber, dateStr];
     }else{
-        tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number LIKE '%%%@%%' AND date='%@' ORDER BY _id DESC", mySip, phoneNumber, dateStr];
+        tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number LIKE '%%%@%%' AND date='%@' ORDER BY time_int DESC", mySip, phoneNumber, dateStr];
     }
     
     FMResultSet *rs = [appDelegate._database executeQuery: tSQL];

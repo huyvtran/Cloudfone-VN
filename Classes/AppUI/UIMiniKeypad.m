@@ -157,10 +157,6 @@
     }];
 }
 
-- (IBAction)iconEndCallClick:(UIButton *)sender {
-    linphone_core_terminate_all_calls(LC);
-}
-
 - (IBAction)onDigitPress:(UIDigitButton *)sender {
     NSString *value = [NSString stringWithFormat:@"%c", sender.digit];
     tfNumber.text = [NSString stringWithFormat:@"%@%@", tfNumber.text, value];

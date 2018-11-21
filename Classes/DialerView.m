@@ -51,7 +51,7 @@
 @implementation DialerView
 @synthesize _viewStatus, _imgLogoSmall, _lbAccount, _lbStatus;
 @synthesize _viewNumber;
-@synthesize _btnHotline, _btnAddCall, _btnTransferCall, webService;
+@synthesize _btnHotline, _btnAddCall, _btnTransferCall;
 
 #pragma mark - UICompositeViewDelegate Functions
 
@@ -106,18 +106,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 	// Set observer
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(callUpdateEvent:)
 											   name:kLinphoneCallUpdate object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showPopupWhenCallFailed:)
-                                                 name:@"showPopupWhenCallFail" object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationStateUpdate:)
-                                                 name:k11RegistrationUpdate object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkDown)
                                                  name:@"NetworkDown" object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenNetworkChanged)
                                                  name:networkChanged object:nil];
-    
     
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(registrationUpdateEvent:)
                                                name:kLinphoneRegistrationUpdate object:nil];
@@ -155,9 +149,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
     isNewSearch = YES;
-    
-    //  get missed callfrom server
-    [self getMissedCallFromServer];
     
     [self autoLayoutForView];
     
@@ -545,50 +536,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)registrationStateUpdate: (NSNotification *)notif {
-    id object = [notif object];
-    if ([object isKindOfClass:[NSNumber class]]) {
-        LinphoneRegistrationState state = [object intValue];
-        switch (state) {
-            case LinphoneRegistrationOk:{
-                _lbStatus.textColor = UIColor.greenColor;
-                _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Online"];
-                break;
-            }
-            case LinphoneRegistrationProgress:{
-                _lbStatus.textColor = UIColor.whiteColor;
-                _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Connecting"];
-                break;
-            }
-            case LinphoneRegistrationNone:
-            case LinphoneRegistrationCleared:
-            case LinphoneRegistrationFailed:
-            {
-                _lbStatus.textColor = UIColor.orangeColor;
-                if ([SipUtils getStateOfDefaultProxyConfig] == eAccountOff) {
-                    _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Disabled"];
-                }else{
-                    _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Offline"];
-                }
-                break;
-            }
-            default:
-                break;
-        }
-    }
-}
-
 - (void)enableNAT {
     LinphoneNatPolicy *LNP = linphone_core_get_nat_policy(LC);
     linphone_nat_policy_enable_ice(LNP, FALSE);
-}
-
-// Hiển thị thông báo khi gọi thất bại
-- (void)showPopupWhenCallFailed: (NSNotification *)notif {
-    id object = [notif object];
-    if ([object isKindOfClass:[NSString class]]) {
-        [self.view makeToast:object duration:2.5 position:CSToastPositionCenter];
-    }
 }
 
 - (void)autoLayoutForView {
@@ -927,6 +877,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)registrationUpdate:(LinphoneRegistrationState)state forProxy:(LinphoneProxyConfig *)proxy message:(NSString *)message {
     switch (state) {
         case LinphoneRegistrationOk: {
+            _lbStatus.textColor = UIColor.greenColor;
+            _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Online"];
             break;
         }
         case LinphoneRegistrationNone:{
@@ -938,10 +890,17 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneRegistrationFailed: {
+            _lbStatus.textColor = UIColor.orangeColor;
+            if ([SipUtils getStateOfDefaultProxyConfig] == eAccountOff) {
+                _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Disabled"];
+            }else{
+                _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Offline"];
+            }
             break;
         }
         case LinphoneRegistrationProgress: {
-            NSLog(@"LinphoneRegistrationProgress");
+            _lbStatus.textColor = UIColor.whiteColor;
+            _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Connecting"];
             break;
         }
         default:
@@ -979,6 +938,11 @@ static UICompositeViewDescription *compositeDescription = nil;
         _lbAccount.text = accountID;
         if (curState == eAccountOff) {
             _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Disabled"];
+            _lbStatus.textColor = UIColor.orangeColor;
+        }else{
+            //  account on
+            _lbStatus.textColor = UIColor.greenColor;
+            _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Online"];
         }
     }
 }
@@ -1204,67 +1168,5 @@ static UICompositeViewDescription *compositeDescription = nil;
     _addressField.text = phoneNumber;
     tvSearchResult.hidden = YES;
 }
-
-- (void)getMissedCallFromServer {
-    if ([SipUtils getStateOfDefaultProxyConfig] != eAccountNone) {
-        if (webService == nil) {
-            webService = [[WebServices alloc] init];
-            webService.delegate = self;
-        }
-        NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
-        server = @"123.111.22.10";
-        NSString *dateFrom = @"1542179975";
-        NSString *dateTo = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
-        dateTo = @"1542267280";
-        
-        NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
-        [jsonDict setObject:AuthUser forKey:@"AuthUser"];
-        [jsonDict setObject:AuthKey forKey:@"AuthKey"];
-        [jsonDict setObject:server forKey:@"IP"];
-        [jsonDict setObject:@"1452" forKey:@"PhoneNumberReceive"];
-        [jsonDict setObject:dateFrom forKey:@"DateFrom"];
-        [jsonDict setObject:dateTo forKey:@"DateTo"];
-        
-        [webService callWebServiceWithLink:GetInfoMissCall withParams:jsonDict inBackgroundMode:YES];
-    }
-}
-
-- (void)insertMissedCallToDatabase: (id)data {
-    if (data != nil && [data isKindOfClass:[NSArray class]]) {
-        for (int i=0; i<[(NSArray *)data count]; i++) {
-            NSDictionary *callInfo = [data objectAtIndex: i];
-            id createDate = [callInfo objectForKey:@"createDate"];
-            NSString *phoneNumberCall = [callInfo objectForKey:@"phoneNumberCall"];
-            if (createDate != nil && phoneNumberCall != nil) {
-                NSString *callId = [AppUtils randomStringWithLength: 10];
-                NSString *date = [AppUtils getDateFromInterval:[createDate doubleValue]];
-                NSString *time = [AppUtils getFullTimeStringFromTimeInterval:[createDate doubleValue]];
-                
-                BOOL exists = [NSDatabase checkMissedCallExistsFromUser: phoneNumberCall withAccount: USERNAME atTime: [time intValue]];
-                if (!exists) {
-                    [NSDatabase InsertHistory:callId status:missed_call phoneNumber:phoneNumberCall callDirection:incomming_call recordFiles:@"" duration:0 date:date time:time time_int:[createDate doubleValue] rate:0 sipURI:phoneNumberCall MySip:USERNAME kCallId:@"" andFlag:1 andUnread:1];
-                }
-            }
-        }
-    }
-}
-
-#pragma mark - Webservice delegate
-- (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: API FUNCTION NAME is %@\nError: %@", __FUNCTION__, link, error]);
-}
-
-- (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: response data for function %@: %@", __FUNCTION__, link, @[data]]);
-    
-    if ([link isEqualToString:GetInfoMissCall]) {
-        [self insertMissedCallToDatabase: data];
-    }
-}
-
-- (void)receivedResponeCode:(NSString *)link withCode:(int)responeCode {
-    NSLog(@"%d", responeCode);
-}
-
 
 @end

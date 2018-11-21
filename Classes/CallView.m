@@ -80,7 +80,6 @@ const NSInteger MINI_KEYPAD_TAG = 101;
     
     BOOL needEnableSpeaker;
     LinphoneCallDir callDirection;
-    BOOL isRemoteRinging;
 }
 
 @end
@@ -609,7 +608,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 	switch (state) {
         case LinphoneCallOutgoingRinging:{
-            isRemoteRinging = YES;
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Ringing"];
             _durationLabel.textColor = UIColor.whiteColor;
             
@@ -617,15 +615,11 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallIncomingReceived:{
-            isRemoteRinging = NO;
-            
             [self getPhoneNumberOfCall];
             NSLog(@"incomming");
             break;
         }
         case LinphoneCallOutgoingProgress:{
-            isRemoteRinging = NO;
-            
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Calling"];
             _durationLabel.textColor = UIColor.whiteColor;
             
@@ -651,8 +645,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallConnected:{
-            isRemoteRinging = YES;
-            
             //  Check if in call with hotline
             if (![phoneNumber isEqualToString:hotline]) {
                 icAddCall.enabled = YES;
@@ -840,6 +832,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     [viewKeypad.iconBack addTarget:self
                             action:@selector(hideMiniKeypad)
                   forControlEvents:UIControlEventTouchUpInside];
+    
+    [viewKeypad.iconMiniKeypadEndCall addTarget:self
+                                         action:@selector(endCallInMiniKeypad)
+                               forControlEvents:UIControlEventTouchUpInside];
+    
     [self callQualityUpdate];
 }
 
@@ -857,6 +854,11 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
     }
     _numpadButton.selected = NO;
+}
+
+- (void)endCallInMiniKeypad {
+    [self hideMiniKeypad];
+    linphone_core_terminate_all_calls(LC);
 }
 
 - (void)fadeIn :(UIView*)view{
@@ -1672,11 +1674,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)hideCallView {
-    if (!isRemoteRinging && callDirection == LinphoneCallOutgoing) {
-        [AppUtils sendMissedNotificationForOfflineUser:phoneNumber fromSender:USERNAME withContent:[NSString stringWithFormat:@"You have miss call from %@", USERNAME]];
-        [self.view makeToast:@"Send missed call noti" duration:2.0 position:CSToastPositionCenter];
-    }
-    
     int count = linphone_core_get_calls_nb([LinphoneManager getLc]);
     if (count == 0) {
         if (durationTimer != nil) {

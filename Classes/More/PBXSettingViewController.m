@@ -764,6 +764,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)whenRegisterPBXSuccessfully {
     [[NSUserDefaults standardUserDefaults] setObject:serverPBX forKey:PBX_SERVER];
+    [[NSUserDefaults standardUserDefaults] setObject:ipPBX forKey:PBX_ID];
+    [[NSUserDefaults standardUserDefaults] setObject:portPBX forKey:PBX_PORT];
     [[NSUserDefaults standardUserDefaults] setObject:accountPBX forKey:key_login];
     [[NSUserDefaults standardUserDefaults] setObject:passwordPBX forKey:key_password];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -850,6 +852,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnSave.enabled = NO;
     
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_SERVER];
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_ID];
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_PORT];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:key_login];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:key_password];
     [[NSUserDefaults standardUserDefaults] synchronize];

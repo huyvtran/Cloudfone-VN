@@ -33,7 +33,7 @@
 @end
 
 @implementation MoreViewController
-@synthesize _viewHeader, bgHeader, _imgAvatar, _lbName, lbPBXAccount, icEdit, _tbContent;
+@synthesize _viewHeader, bgHeader, _imgAvatar, _lbName, lbPBXAccount, icEdit, _tbContent, lbNoAccount;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -61,7 +61,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [super viewDidLoad];
     
     [self createDataForMenuView];
-    [self autoLayoutForMainView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -69,6 +68,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     // Tắt màn hình cảm biến
     UIDevice *device = [UIDevice currentDevice];
     [device setProximityMonitoringEnabled: NO];
+    
+    [self autoLayoutForMainView];
     
     [self showContentWithCurrentLanguage];
     
@@ -88,16 +89,14 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)showContentWithCurrentLanguage {
     [self createDataForMenuView];
+    
+    lbNoAccount.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"];
     [_tbContent reloadData];
 }
 
 - (void)updateInformationOfUser
 {
-    if ([SipUtils getStateOfDefaultProxyConfig] == eAccountNone) {
-        _lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"];
-        lbPBXAccount.text = @"-.-";
-        icEdit.hidden = YES;
-    }else{
+    if ([SipUtils getStateOfDefaultProxyConfig] != eAccountNone) {
         NSString *accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
         lbPBXAccount.text = accountID;
         
@@ -117,8 +116,18 @@ static UICompositeViewDescription *compositeDescription = nil;
             _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
             [self downloadMyAvatar: accountID];
         }
-        icEdit.hidden = NO;
+        [self showProfileView: YES];
+    }else{
+        [self showProfileView: NO];
     }
+}
+
+- (void)showProfileView: (BOOL)show {
+    _imgAvatar.hidden = !show;
+    lbPBXAccount.hidden = !show;
+    _lbName.hidden = !show;
+    icEdit.hidden = !show;
+    lbNoAccount.hidden = show;
 }
 
 //  Cập nhật vị trí cho view
@@ -131,13 +140,23 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     self.view.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
                                                  blue:(230/255.0) alpha:1.0];
-    hInfo = [LinphoneAppDelegate sharedInstance]._hRegistrationState + 50;
+    if ([SipUtils getStateOfDefaultProxyConfig] == eAccountNone) {
+        hInfo = [LinphoneAppDelegate sharedInstance]._hRegistrationState + 100;
+    }else{
+        hInfo = [LinphoneAppDelegate sharedInstance]._hRegistrationState + 50;
+    }
     
     //  Header view
     [_viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.mas_equalTo(hInfo);
     }];
+    
+    [lbNoAccount mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(_viewHeader);
+    }];
+    lbNoAccount.textColor = UIColor.whiteColor;
+    lbNoAccount.font = textFont;
     
     [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.equalTo(_viewHeader);

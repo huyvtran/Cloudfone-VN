@@ -221,8 +221,6 @@
 			default:
 				break;
 		}
-        [[NSNotificationCenter defaultCenter] postNotificationName:k11RegistrationUpdate
-                                                            object:[NSNumber numberWithInt:state]];
 	}
     //  Close by Khai Le on 07/11/2017
     /*

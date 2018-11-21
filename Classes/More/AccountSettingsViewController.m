@@ -129,6 +129,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - UITableview Delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if ([SipUtils getStateOfDefaultProxyConfig] == eAccountNone) {
+        return 1;
+    }
     return 2;
 }
 

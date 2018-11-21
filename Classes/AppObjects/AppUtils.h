@@ -114,7 +114,6 @@
 
 + (NSString *)getBuildDate;
 +(NSDateFormatter*) historyEventDate;
-+ (void)sendMissedNotificationForOfflineUser: (NSString *)IDRecipient fromSender: (NSString *)Sender withContent: (NSString *)content;
 + (NSString *)getDateFromInterval: (double)interval;
 + (NSString *)getFullTimeStringFromTimeInterval:(double)timeInterval;
 

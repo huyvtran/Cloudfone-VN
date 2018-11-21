@@ -26,7 +26,7 @@
 
 @class UICallButton;
 @interface DialerView
-	: TPMultiLayoutViewController <UITextFieldDelegate, UICompositeViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UICallButtonDelegate, UIAlertViewDelegate, UITextViewDelegate, SearchContactPopupViewDelegate, WebServicesDelegate> {
+	: TPMultiLayoutViewController <UITextFieldDelegate, UICompositeViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UICallButtonDelegate, UIAlertViewDelegate, UITextViewDelegate, SearchContactPopupViewDelegate> {
 }
 
 
@@ -75,7 +75,5 @@
 
 - (IBAction)_btnNumberPressed:(id)sender;
 - (IBAction)_btnCallPressed:(UIButton *)sender;
-
-@property (nonatomic, strong) WebServices *webService;
 
 @end
