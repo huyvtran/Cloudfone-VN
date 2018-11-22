@@ -217,6 +217,13 @@
         }
     }
     
+    cell.lbTime.text = aCall._callTime;
+    if (aCall.duration < 60) {
+        cell.lbDuration.text = [NSString stringWithFormat:@"%ld %@", aCall.duration, [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"sec"]];
+    }else{
+        cell.lbDuration.text = [NSString stringWithFormat:@"%ld s", aCall.duration];
+    }
+    
     if (isDeleted) {
         cell._cbDelete.hidden = NO;
         cell._btnCall.hidden = YES;
@@ -244,9 +251,6 @@
     [cell._btnCall addTarget:self
                       action:@selector(btnCallOnCellPressed:)
             forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
     
     return cell;
 }
