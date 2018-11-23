@@ -38,13 +38,15 @@
     
     lbMissed.backgroundColor = UIColor.redColor;
     lbMissed.clipsToBounds = YES;
-    lbMissed.layer.cornerRadius = 14.0/2;
+    lbMissed.layer.cornerRadius = 18.0/2;
     [lbMissed mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_imgAvatar.mas_right).offset(-14.0);
+        make.left.equalTo(_imgAvatar.mas_right).offset(-18.0);
         make.top.equalTo(_imgAvatar).offset(0);
-        make.width.height.mas_equalTo(14.0);
+        make.width.height.mas_equalTo(18.0);
     }];
-    
+    lbMissed.font = [UIFont systemFontOfSize: 12.0];
+    lbMissed.textColor = UIColor.whiteColor;
+    lbMissed.textAlignment = NSTextAlignmentCenter;
     
     _imgStatus.clipsToBounds = YES;
     _imgStatus.layer.cornerRadius = 17.0/2;

@@ -258,6 +258,19 @@
                       action:@selector(btnCallOnCellPressed:)
             forControlEvents:UIControlEventTouchUpInside];
     
+    //  get missed call
+    int numMissedCall = [NSDatabase getMissedCallUnreadWithRemote:aCall._phoneNumber onDate:aCall._callDate ofAccount:USERNAME];
+    if (numMissedCall > 0) {
+        NSString *strMissed = [NSString stringWithFormat:@"%d", numMissedCall];
+        if (numMissedCall > 5) {
+            strMissed = @"+5";
+        }
+        cell.lbMissed.hidden = NO;
+        cell.lbMissed.text = strMissed;
+    }else{
+        cell.lbMissed.hidden = YES;
+    }
+    
     return cell;
 }
 

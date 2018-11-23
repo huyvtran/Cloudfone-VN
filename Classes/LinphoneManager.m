@@ -898,8 +898,10 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
                 if (![LinphoneAppDelegate sharedInstance]._meEnded) {
                     callStatus = declined_call;
                 }
+            }else if ([callStatus isEqualToString: missed_call]){
+                //  Keep unread = 1
             }else{
-                if ([[[PhoneMainView instance] currentView] isEqual:[DetailHistoryCNViewController compositeViewDescription]] || [[[PhoneMainView instance] currentView] isEqual:[CallsHistoryViewController compositeViewDescription]]) {
+                if ([[[PhoneMainView instance] currentView] isEqual:[DetailHistoryCNViewController compositeViewDescription]]) {
                     unread = 0;
                 }
             }
