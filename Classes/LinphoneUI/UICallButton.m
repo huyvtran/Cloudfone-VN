@@ -19,9 +19,7 @@
 
 #import "UICallButton.h"
 #import "LinphoneManager.h"
-#import "NSDatabase.h"
 #import "OutgoingCallViewController.h"
-#import "PhoneMainView.h"
 #import <CoreTelephony/CTCallCenter.h>
 
 @implementation UICallButton

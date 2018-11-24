@@ -18,7 +18,6 @@
  */
 
 #import "HistoryListView.h"
-#import "PhoneMainView.h"
 #import "LinphoneUI/UIHistoryCell.h"
 
 @implementation HistoryListView

@@ -6,7 +6,6 @@
 //
 //
 
-#import "PhoneMainView.h"
 #import <UIKit/UIKit.h>
 
 @interface AssistantLinkView : UIViewController <UITextFieldDelegate, UICompositeViewDelegate>

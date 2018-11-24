@@ -7,7 +7,6 @@
 //
 
 #import "UIConfirmationDialog.h"
-#import "PhoneMainView.h"
 
 @implementation UIConfirmationDialog
 + (UIConfirmationDialog *)ShowWithMessage:(NSString *)message

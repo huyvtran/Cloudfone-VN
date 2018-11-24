@@ -18,7 +18,6 @@
  */
 
 #import "ContactDetailsTableView.h"
-#import "PhoneMainView.h"
 #import "UIContactDetailsCell.h"
 #import "Utils.h"
 #import "OrderedDictionary.h"

@@ -27,7 +27,6 @@
 #import "PhoneBookContactCell.h"
 #import "NSData+Base64.h"
 #import <objc/runtime.h>
-#import "NSDatabase.h"
 #import "ContactDetailObj.h"
 #import "UIVIew+Toast.h"
 
@@ -79,6 +78,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+    
+    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@", className] toFilePath:appDelegate.logFilePath];
     
     //  Added by Khai Le on 30/09/2018
     [self checkAccountForApp];
@@ -214,21 +216,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 	}
 }
 
-- (void)testPress{
-    [AppUtils sendMessageForOfflineForUser:@"14951" fromSender:@"14953" withContent:@"ABC DEF" andTypeMessage:@"text" withGroupID:@""];
-    [self.view makeToast:@"Da send message thanh cong" duration:2.0 position:CSToastPositionCenter];
-}
-
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[LinphoneManager.instance shouldPresentLinkPopup];
-    
-    UIButton *test = [[UIButton alloc] initWithFrame: CGRectMake(20, 20, 100, 40)];
-    test.backgroundColor = UIColor.redColor;
-    [test addTarget:self
-             action:@selector(testPress)
-   forControlEvents:UIControlEventTouchUpInside];
-    //  [self.view addSubview: test];
     
     //  Check for first time, after installed app
     //  [self checkForShowFirstSettingAccount];
@@ -488,6 +478,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)searchPhoneBookWithThread {
     //  [Khai le - 01/11/2018]: Just search contact when contact was loaded
     if (!appDelegate.contactLoaded) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"Can not search contact. Because phonebook was getting"] toFilePath:appDelegate.logFilePath];
+        
         return;
     }
     //  ----
@@ -516,7 +508,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     NSArray *filter = [list filteredArrayUsingPredicate: predicate];
     return filter;
 }
-
 
 // Search duoc danh sach
 - (void)afterGetContactPhoneBookSuccessfully
@@ -832,41 +823,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [self searchPhoneBookWithThread];
 }
 
-//  125.253.125.196
-- (void)setDefaultProxyConfigWithAccount: (NSString *)username
-{
-    const MSList *proxies = linphone_core_get_proxy_config_list(LC);
-    while (proxies) {
-        if (proxies != NULL) {
-            const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(proxies->data));
-            if (strcmp(username.UTF8String, proxyUsername) == 0) {
-                linphone_core_set_default_proxy_config(LC, proxies->data);
-                break;
-            }
-        }
-        proxies = proxies->next;
-    }
-}
-
-- (void)removeProxyConfigWithAccount: (NSString *)username
-{
-    const MSList *proxies = linphone_core_get_proxy_config_list(LC);
-    while (proxies) {
-        if (proxies != NULL) {
-            const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(proxies->data));
-            if (strcmp(username.UTF8String, proxyUsername) == 0) {
-                const LinphoneAuthInfo *ai = linphone_proxy_config_find_auth_info(proxies->data);
-                linphone_core_remove_proxy_config(LC, proxies->data);
-                if (ai) {
-                    linphone_core_remove_auth_info(LC, ai);
-                }
-                break;
-            }
-        }
-        proxies = proxies->next;
-    }
-}
-
 - (void)registrationUpdateEvent:(NSNotification *)notif {
     NSString *message = [notif.userInfo objectForKey:@"message"];
     [self registrationUpdate:[[notif.userInfo objectForKey:@"state"] intValue]
@@ -970,31 +926,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-//  Sẽ duyệt trong kết quả search, contact nào có đầy đủ tên và số phone sẽ đc chọn
-- (NSArray *)getValidResultFromSearchResult
-{
-    NSString *name = @"";
-    NSString *phone = @"";
-    NSString *nameForSearch = @"";
-    
-    for (int iCount=0; iCount<listPhoneSearched.count; iCount++) {
-        NSString *value = [listPhoneSearched objectAtIndex: iCount];
-        NSArray *tmpArr = [value componentsSeparatedByString:@"|"];
-        if (tmpArr.count >= 3) {
-            name = [tmpArr firstObject];
-            phone = [tmpArr lastObject];
-            nameForSearch = [tmpArr objectAtIndex: 1];
-            
-            if (![name isEqualToString:@""] && ![phone isEqualToString:@""] && ![nameForSearch isEqualToString:@""]) {
-                return @[name, nameForSearch, phone];
-            }
-        }
-    }
-    return @[@"", @"", @""];
-}
-
 - (void)whenTappedOnStatusAccount
 {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    
     if ([LinphoneManager instance].connectivity == none){
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
@@ -1021,6 +956,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s -> %@", __FUNCTION__, @"refreshRegisters"] toFilePath:appDelegate.logFilePath];
     [LinphoneManager.instance refreshRegisters];
 }
 
@@ -1140,6 +1076,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             linphone_proxy_config_done(defaultConfig);
             
             linphone_core_refresh_registers(LC);
+            
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s -> %@", __FUNCTION__, @"Enable account"] toFilePath:appDelegate.logFilePath];
         }
     }
 }

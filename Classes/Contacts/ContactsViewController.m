@@ -13,7 +13,6 @@
 #import "JSONKit.h"
 #import "StatusBarView.h"
 #import "TabBarView.h"
-#import "NSDatabase.h"
 #import "PBXContact.h"
 
 @interface ContactsViewController (){

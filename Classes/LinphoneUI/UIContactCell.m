@@ -20,7 +20,6 @@
 #import "UIContactCell.h"
 #import "ContactsListTableView.h"
 #import "FastAddressBook.h"
-#import "PhoneMainView.h"
 #import "UILabel+Boldify.h"
 #import "Utils.h"
 

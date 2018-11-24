@@ -7,7 +7,6 @@
 //
 
 #import "PolicyViewController.h"
-#import "PhoneMainView.h"
 
 @implementation PolicyViewController
 @synthesize _viewHeader, bgHeader, _iconBack, _lbHeader;

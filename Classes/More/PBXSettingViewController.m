@@ -84,6 +84,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
+    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@", className] toFilePath:appDelegate.logFilePath];
+    
     clearingAccount = NO;
     
     [self showContentForView];
@@ -420,7 +423,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s", __FUNCTION__]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
     
     [_icWaiting startAnimating];
     _icWaiting.hidden = NO;
@@ -497,7 +501,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)getInfoForPBXWithServerName: (NSString *)serverName
 {
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: serverName = %@", __FUNCTION__, serverName]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: serverName = %@", __FUNCTION__, serverName]
+                         toFilePath:appDelegate.logFilePath];
     
     NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
     [jsonDict setObject:AuthUser forKey:@"AuthUser"];
@@ -523,8 +528,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - Webservice Delegate
 
-- (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: API FUNCTION NAME is %@\nError: %@", __FUNCTION__, link, error]);
+- (void)failedToCallWebService:(NSString *)link andError:(NSString *)error
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s - %@:\n%@", __FUNCTION__, link, error]
+                         toFilePath:appDelegate.logFilePath];
     
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
@@ -538,8 +545,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: response data for function %@: %@", __FUNCTION__, link, @[data]]);
+- (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s - %@:\n%@", __FUNCTION__, link, @[data]]
+                         toFilePath:appDelegate.logFilePath];
     
     [_icWaiting stopAnimating];
     if ([link isEqualToString:getServerInfoFunc]) {
@@ -568,7 +577,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)startLoginPBXWithInfo: (NSDictionary *)info
 {
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, @[info]]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @[info]]
+                         toFilePath:appDelegate.logFilePath];
     
     NSString *pbxIp = [info objectForKey:@"ipAddress"];
     NSString *pbxPort = [info objectForKey:@"port"];
@@ -605,7 +615,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         NSString *pbxPassword = [data objectAtIndex: 2];
         NSString *pbxPort = [data objectAtIndex: 3];
         
-        DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: pbxDomain = %@, pbxAccount = %@, pbxPort = %@", __FUNCTION__, pbxDomain, pbxAccount, pbxPort]);
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: pbxDomain = %@, pbxAccount = %@, pbxPort = %@", __FUNCTION__, pbxDomain, pbxAccount, pbxPort] toFilePath:appDelegate.logFilePath];
         
         BOOL success = [SipUtils loginSipWithDomain:pbxDomain username:pbxAccount password:pbxPassword port:pbxPort];
         if (success) {
@@ -639,13 +649,13 @@ static UICompositeViewDescription *compositeDescription = nil;
                 break;
             }
             if (enableProxyConfig == nil) {
-                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> gọi linphone_core_clear_proxy_config", __FUNCTION__, @"LinphoneRegistrationOk"]);
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@ ---> gọi linphone_core_clear_proxy_config", __FUNCTION__, @"LinphoneRegistrationOk"] toFilePath:appDelegate.logFilePath];
                 
                 enableProxyConfig = proxy;
                 linphone_core_clear_proxy_config(LC);
                 
             }else if (enableProxyConfig == proxy){
-                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> register thành công sau khi clear proxy config", __FUNCTION__, @"LinphoneRegistrationOk"]);
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@ ---> register thành công sau khi clear proxy config", __FUNCTION__, @"LinphoneRegistrationOk"] toFilePath:appDelegate.logFilePath];
                 
                 enableProxyConfig = nil;
                     
@@ -682,7 +692,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneRegistrationNone:{
-            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationNone"]);
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationNone"] toFilePath:appDelegate.logFilePath];
+            
             if (clearingAccount) {
                 NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
                 NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:key_login];
@@ -695,7 +706,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             }
             
             if (enableProxyConfig != NULL || enableProxyConfig != nil) {
-                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@, enableProxyConfig khác NULL --> register proxy config đã lưu", __FUNCTION__, @"LinphoneRegistrationCleared"]);
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@, enableProxyConfig khác NULL --> register proxy config đã lưu", __FUNCTION__, @"LinphoneRegistrationCleared"] toFilePath:appDelegate.logFilePath];
                 
                 [self performSelector:@selector(addRegisteredProxyConfig)
                            withObject:nil afterDelay:2.0];
@@ -704,7 +715,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneRegistrationCleared: {
-            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@", __FUNCTION__, @"LinphoneRegistrationCleared"]);
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@", __FUNCTION__, @"LinphoneRegistrationCleared"] toFilePath:appDelegate.logFilePath];
+            
             if (turnOffAcc) {
                 NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
                 [self updateCustomerTokenIOSForPBX:server andUsername: USERNAME withTokenValue:@""];
@@ -712,7 +724,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             }
             
             if (enableProxyConfig != NULL || enableProxyConfig != nil) {
-                DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@, enableProxyConfig khác NULL --> register proxy config đã lưu", __FUNCTION__, @"LinphoneRegistrationCleared"]);
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@, enableProxyConfig khác NULL --> register proxy config đã lưu", __FUNCTION__, @"LinphoneRegistrationCleared"] toFilePath:appDelegate.logFilePath];
                 
                 [self performSelector:@selector(addRegisteredProxyConfig)
                            withObject:nil afterDelay:2.0];
@@ -738,7 +750,8 @@ static UICompositeViewDescription *compositeDescription = nil;
                 const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(proxy));
                 NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
                 if (defaultUsername != nil) {
-                    DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ for proxyUsername %@", __FUNCTION__, @"LinphoneRegistrationFailed", defaultUsername]);
+                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@ for proxyUsername %@", __FUNCTION__, @"LinphoneRegistrationFailed", defaultUsername] toFilePath:appDelegate.logFilePath];
+                    
                     if ([defaultUsername isEqualToString: accountPBX]) {
                         _icWaiting.hidden = YES;
                         [_icWaiting stopAnimating];
@@ -909,7 +922,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)loginPBXFromStringHashCodeResult: (NSString *)message {
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, message]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, message]
+                         toFilePath:appDelegate.logFilePath];
     
     NSArray *tmpArr = [message componentsSeparatedByString:@"/"];
     if (tmpArr.count == 3)
@@ -950,7 +964,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     [reader stopScanning];
     
     [self dismissViewControllerAnimated:YES completion:^{
-        DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s", __FUNCTION__]);
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s", __FUNCTION__]
+                             toFilePath:appDelegate.logFilePath];
         
         BOOL networkReady = [DeviceUtils checkNetworkAvailable];
         if (!networkReady) {
@@ -969,7 +984,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)getPBXInformationWithHashString: (NSString *)hashString
 {
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: hashString = %@", __FUNCTION__, hashString]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: hashString = %@", __FUNCTION__, hashString]
+                         toFilePath:appDelegate.logFilePath];
     
     NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
     [jsonDict setObject:AuthUser forKey:@"AuthUser"];
@@ -1042,7 +1058,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 {
     if (![AppUtils isNullOrEmpty: ipPBX] && ![AppUtils isNullOrEmpty: portPBX] && ![AppUtils isNullOrEmpty: accountPBX] && ![AppUtils isNullOrEmpty: passwordPBX])
     {
-        DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: accountPBX = %@, ipPBX = %@, portPBX = %@", __FUNCTION__, accountPBX, ipPBX, portPBX]);
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: accountPBX = %@, ipPBX = %@, portPBX = %@", __FUNCTION__, accountPBX, ipPBX, portPBX] toFilePath:appDelegate.logFilePath];
         
         [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:ipPBX port:portPBX];
     }
@@ -1135,7 +1151,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)addRegisteredProxyConfig {
     if (enableProxyConfig != NULL) {
-        DDLogInfo(@"%@", [NSString stringWithFormat:@"%s", __FUNCTION__]);
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__] toFilePath:appDelegate.logFilePath];
         
         linphone_core_add_proxy_config(LC, enableProxyConfig);
         linphone_core_set_default_proxy_config(LC, enableProxyConfig);

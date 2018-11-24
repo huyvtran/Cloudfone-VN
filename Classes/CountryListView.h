@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PhoneMainView.h"
 
 @protocol CountryListViewDelegate <NSObject,UISearchDisplayDelegate,UISearchBarDelegate>
 - (void)didSelectCountry:(NSDictionary *)country;

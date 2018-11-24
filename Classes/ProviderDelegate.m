@@ -8,7 +8,6 @@
 
 #import "ProviderDelegate.h"
 #import "LinphoneManager.h"
-#import "PhoneMainView.h"
 #include "linphone/linphonecore.h"
 #import <AVFoundation/AVAudioSession.h>
 #import <Foundation/Foundation.h>

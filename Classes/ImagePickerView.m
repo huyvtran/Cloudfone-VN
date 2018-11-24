@@ -18,10 +18,7 @@
  */
 
 #import <MobileCoreServices/UTCoreTypes.h>
-
 #import "ImagePickerView.h"
-#import "PhoneMainView.h"
-
 @implementation ImagePickerView
 
 @synthesize imagePickerDelegate;

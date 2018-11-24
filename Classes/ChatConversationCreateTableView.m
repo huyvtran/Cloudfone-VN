@@ -9,7 +9,6 @@
 #import "ChatConversationCreateTableView.h"
 #import "UIChatCreateCell.h"
 #import "LinphoneManager.h"
-#import "PhoneMainView.h"
 
 @interface ChatConversationCreateTableView ()
 

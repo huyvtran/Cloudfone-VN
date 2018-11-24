@@ -8,7 +8,6 @@
 
 #import "KSettingViewController.h"
 #import "LanguageViewController.h"
-#import "NSDatabase.h"
 #import "SettingCell.h"
 
 @interface KSettingViewController (){

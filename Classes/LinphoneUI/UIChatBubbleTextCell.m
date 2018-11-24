@@ -19,7 +19,6 @@
 
 #import "UIChatBubbleTextCell.h"
 #import "LinphoneManager.h"
-#import "PhoneMainView.h"
 
 #import <AssetsLibrary/ALAsset.h>
 #import <AssetsLibrary/ALAssetRepresentation.h>

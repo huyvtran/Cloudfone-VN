@@ -19,7 +19,6 @@
 
 #import "StatusBarView.h"
 #import "LinphoneManager.h"
-#import "PhoneMainView.h"
 #import <UserNotifications/UserNotifications.h>
 
 @implementation StatusBarView {

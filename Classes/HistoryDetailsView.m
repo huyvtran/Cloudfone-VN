@@ -18,7 +18,6 @@
  */
 
 #import "HistoryDetailsView.h"
-#import "PhoneMainView.h"
 #import "FastAddressBook.h"
 
 @implementation HistoryDetailsView

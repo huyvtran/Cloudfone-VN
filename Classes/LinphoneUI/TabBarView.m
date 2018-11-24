@@ -18,8 +18,6 @@
  */
 
 #import "TabBarView.h"
-#import "PhoneMainView.h"
-#import "NSDatabase.h"
 
 @interface TabBarView (){
     
@@ -190,6 +188,15 @@
 
 - (void)updateMainBarNotifications{
     [self update: false];
+    
+    //  Get all missed call number
+    NSString *ExtUser = [SipUtils getAccountIdOfDefaultProxyConfig];
+    if (![AppUtils isNullOrEmpty: ExtUser]) {
+        int numMissedCall = [NSDatabase getAllMissedCallUnreadofAccount: ExtUser];
+        [UIApplication sharedApplication].applicationIconBadgeNumber = numMissedCall;
+    }else{
+        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    }
 }
 
 @end

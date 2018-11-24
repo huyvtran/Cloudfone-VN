@@ -76,6 +76,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
+
+    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@", className] toFilePath:appDelegate.logFilePath];
     
     serverPBX = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
     
@@ -329,7 +332,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)startLoginPBXWithInfo: (NSDictionary *)info
 {
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, @[info]]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @[info]] toFilePath:appDelegate.logFilePath];
     
     NSString *pbxIp = [info objectForKey:@"ipAddress"];
     NSString *pbxPort = [info objectForKey:@"port"];
@@ -361,7 +364,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         NSString *pbxPassword = [data objectAtIndex: 2];
         NSString *pbxPort = [data objectAtIndex: 3];
         
-        DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: pbxDomain = %@, pbxAccount = %@, pbxPort = %@", __FUNCTION__, pbxDomain, pbxAccount, pbxPort]);
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: pbxDomain = %@, pbxAccount = %@, pbxPort = %@", __FUNCTION__, pbxDomain, pbxAccount, pbxPort] toFilePath:appDelegate.logFilePath];
         
         BOOL success = [SipUtils loginSipWithDomain:pbxDomain username:pbxAccount password:pbxPassword port:pbxPort];
         if (success) {
@@ -432,7 +435,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     switch (state) {
         case LinphoneRegistrationOk:
         {
-            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@ ---> register thành công sau khi clear proxy config", __FUNCTION__, @"LinphoneRegistrationOk"]);
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is LinphoneRegistrationOk", __FUNCTION__]
+                                 toFilePath:appDelegate.logFilePath];
             
             [SipUtils enableProxyConfig:proxy withValue:YES withRefresh:YES];
             
@@ -441,11 +445,13 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneRegistrationNone:{
-            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationNone"]);
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is LinphoneRegistrationNone", __FUNCTION__]
+                                 toFilePath:appDelegate.logFilePath];
             break;
         }
         case LinphoneRegistrationCleared: {
-            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@", __FUNCTION__, @"LinphoneRegistrationCleared"]);
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is LinphoneRegistrationCleared", __FUNCTION__]
+                                 toFilePath:appDelegate.logFilePath];
             if (![AppUtils isNullOrEmpty: serverPBX]) {
                 [self changePasswordForUser:USERNAME server:serverPBX password:_tfNewPassword.text];
             }
@@ -453,13 +459,13 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         case LinphoneRegistrationFailed:
         {
-            DDLogInfo(@"%@", [NSString stringWithFormat:@"\n%s: state is %@", __FUNCTION__, @"LinphoneRegistrationFailed"]);
-            
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is LinphoneRegistrationFailed", __FUNCTION__]
+                                 toFilePath:appDelegate.logFilePath];
             break;
         }
         case LinphoneRegistrationProgress: {
-            NSLog(@"LinphoneRegistrationProgress");
-            // _waitView.hidden = false;
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is LinphoneRegistrationProgress", __FUNCTION__]
+                                 toFilePath:appDelegate.logFilePath];
             break;
         }
         default:

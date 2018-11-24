@@ -9,7 +9,6 @@
 #import "NewContactViewController.h"
 #import "NewPhoneCell.h"
 #import "TypePhoneObject.h"
-#import "NSDatabase.h"
 #import "NSData+Base64.h"
 #import "ContactDetailObj.h"
 #import "InfoForNewContactTableCell.h"

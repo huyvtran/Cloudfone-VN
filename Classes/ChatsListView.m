@@ -18,7 +18,6 @@
  */
 
 #import "ChatsListView.h"
-#import "PhoneMainView.h"
 
 #import "ChatConversationCreateView.h"
 @implementation ChatsListView

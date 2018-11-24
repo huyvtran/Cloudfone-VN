@@ -25,7 +25,6 @@
 #import "AssistantView.h"
 #import "CountryListView.h"
 #import "LinphoneManager.h"
-#import "PhoneMainView.h"
 #import "UIAssistantTextField.h"
 #import "UITextField+DoneButton.h"
 

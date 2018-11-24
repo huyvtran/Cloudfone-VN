@@ -30,7 +30,6 @@
 #import "CallView.h"
 #import "CallSideMenuView.h"
 #import "LinphoneManager.h"
-#import "PhoneMainView.h"
 #import "Utils.h"
 
 #include "linphone/linphonecore.h"
@@ -39,8 +38,6 @@
 #import "UIConferenceCell.h"
 #import "ContactDetailObj.h"
 #import "UIMiniKeypad.h"
-
-#import "NSDatabase.h"
 
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES1/gl.h>

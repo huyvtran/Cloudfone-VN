@@ -8,7 +8,6 @@
 
 #import "CallSideMenuView.h"
 #import "LinphoneManager.h"
-#import "PhoneMainView.h"
 
 @implementation CallSideMenuView {
 	NSTimer *updateTimer;

@@ -8,8 +8,6 @@
 
 #import "SideMenuTableView.h"
 #import "Utils.h"
-
-#import "PhoneMainView.h"
 #import "StatusBarView.h"
 #import "ShopView.h"
 #import "LinphoneManager.h"

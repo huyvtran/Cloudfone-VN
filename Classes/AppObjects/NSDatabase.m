@@ -13,8 +13,6 @@
 #import "PBXContact.h"
 #import "NSData+Base64.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import "contactBlackListCell.h"
-#import "FriendRequestedObject.h"
 
 static sqlite3 *db = nil;
 
@@ -164,7 +162,7 @@ HMLocalization *localization;
 
 + (int)getMissedCallUnreadWithRemote: (NSString *)remote onDate: (NSString *)date ofAccount: (NSString *)account {
     int result = 0;
-    NSString *tSQL = [NSString stringWithFormat:@"SELECT COUNT(*) as numMissedCall FROM history WHERE my_sip = '%@' and status = '%@' and unread = %d and date = '%@'", account, @"Missed", 1, date];
+    NSString *tSQL = [NSString stringWithFormat:@"SELECT COUNT(*) as numMissedCall FROM history WHERE my_sip = '%@' and status = '%@' and unread = %d and date = '%@' and phone_number = '%@'", account, @"Missed", 1, date, remote];
     FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
     while ([rs next]) {
         NSDictionary *rsDict = [rs resultDictionary];
@@ -363,6 +361,18 @@ HMLocalization *localization;
     while ([rs next]) {
         result = YES;
         break;
+    }
+    [rs close];
+    return result;
+}
+
++ (int)getAllMissedCallUnreadofAccount: (NSString *)account {
+    int result = 0;
+    NSString *tSQL = [NSString stringWithFormat:@"SELECT COUNT(*) as numMissedCall FROM history WHERE my_sip = '%@' and status = '%@' and unread = %d", account, @"Missed", 1];
+    FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
+    while ([rs next]) {
+        NSDictionary *rsDict = [rs resultDictionary];
+        result = [[rsDict objectForKey:@"numMissedCall"] intValue];
     }
     [rs close];
     return result;

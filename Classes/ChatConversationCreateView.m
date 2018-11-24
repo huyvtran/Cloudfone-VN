@@ -7,7 +7,6 @@
 //
 
 #import "ChatConversationCreateView.h"
-#import "PhoneMainView.h"
 
 @implementation ChatConversationCreateView
 

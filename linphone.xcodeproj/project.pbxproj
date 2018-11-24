@@ -98,6 +98,7 @@
 		159E08842179E9130056E2BB /* ic_not_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 159E08822179E9110056E2BB /* ic_not_check.png */; };
 		159E08852179E9130056E2BB /* ic_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 159E08832179E9120056E2BB /* ic_checked.png */; };
 		15A2596121998DB80089941A /* ic_call_history.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A2596021998DB70089941A /* ic_call_history.png */; };
+		15A4333721A7EE5000055E02 /* WriteLogsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A4333521A7EE4A00055E02 /* WriteLogsUtils.m */; };
 		15A64D92216C5A3D00D194BD /* ic_call_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A64D91216C5A3C00D194BD /* ic_call_contact.png */; };
 		15A64DA0216C8BC700D194BD /* InfoForNewContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A64D9E216C8BC700D194BD /* InfoForNewContactTableCell.m */; };
 		15A64DA1216C8BC700D194BD /* InfoForNewContactTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15A64D9F216C8BC700D194BD /* InfoForNewContactTableCell.xib */; };
@@ -497,7 +498,6 @@
 		84C47D171FB632640015695E /* IncomingCallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C47D151FB632640015695E /* IncomingCallViewController.xib */; };
 		84C8B23F1FBBBDB50080D673 /* UIHistoryDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C8B23D1FBBBDB50080D673 /* UIHistoryDetailCell.m */; };
 		84C8B2401FBBBDB50080D673 /* UIHistoryDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C8B23E1FBBBDB50080D673 /* UIHistoryDetailCell.xib */; };
-		84C8B24A1FBBBE4D0080D673 /* contactBlackListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C8B2491FBBBE4D0080D673 /* contactBlackListCell.m */; };
 		84C8B24D1FBBBE6E0080D673 /* CallHistoryObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C8B24C1FBBBE6E0080D673 /* CallHistoryObject.m */; };
 		84CDD2391FD0E6FE003DB5AD /* UIImage+GKContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CDD2371FD0E6FE003DB5AD /* UIImage+GKContact.m */; };
 		84D0320C1FB51C50002D2524 /* ContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D0320A1FB51C50002D2524 /* ContactCell.m */; };
@@ -599,7 +599,6 @@
 		84EFFE1D1FF3E6B60085A9F4 /* DGActivityIndicatorBallBeatAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EFFDF81FF3E6B40085A9F4 /* DGActivityIndicatorBallBeatAnimation.m */; };
 		84EFFE1E1FF3E6B60085A9F4 /* DGActivityIndicatorBallScaleAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EFFDFB1FF3E6B50085A9F4 /* DGActivityIndicatorBallScaleAnimation.m */; };
 		84EFFE1F1FF3E6B60085A9F4 /* DGActivityIndicatorBallScaleRippleAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EFFDFC1FF3E6B50085A9F4 /* DGActivityIndicatorBallScaleRippleAnimation.m */; };
-		84F742B820163300000F7FFF /* FriendRequestedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F742B720163300000F7FFF /* FriendRequestedObject.m */; };
 		84F742BD20163334000F7FFF /* FriendForAcceptCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F742BB20163334000F7FFF /* FriendForAcceptCell.m */; };
 		84F742BE20163334000F7FFF /* FriendForAcceptCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84F742BC20163334000F7FFF /* FriendForAcceptCell.xib */; };
 		84FE45C520E4D0740067405F /* keepawake.wav in Resources */ = {isa = PBXBuildFile; fileRef = 84FE45BE20E4D0740067405F /* keepawake.wav */; };
@@ -900,6 +899,8 @@
 		159E08822179E9110056E2BB /* ic_not_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_not_check.png; sourceTree = "<group>"; };
 		159E08832179E9120056E2BB /* ic_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_checked.png; sourceTree = "<group>"; };
 		15A2596021998DB70089941A /* ic_call_history.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_history.png; sourceTree = "<group>"; };
+		15A4333521A7EE4A00055E02 /* WriteLogsUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WriteLogsUtils.m; path = Utils/WriteLogsUtils.m; sourceTree = "<group>"; };
+		15A4333621A7EE4D00055E02 /* WriteLogsUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WriteLogsUtils.h; path = Utils/WriteLogsUtils.h; sourceTree = "<group>"; };
 		15A64D91216C5A3C00D194BD /* ic_call_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_call_contact.png; sourceTree = "<group>"; };
 		15A64D9D216C8BC600D194BD /* InfoForNewContactTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = InfoForNewContactTableCell.h; path = AppUI/InfoForNewContactTableCell.h; sourceTree = "<group>"; };
 		15A64D9E216C8BC700D194BD /* InfoForNewContactTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = InfoForNewContactTableCell.m; path = AppUI/InfoForNewContactTableCell.m; sourceTree = "<group>"; };
@@ -1482,8 +1483,6 @@
 		84C8B23C1FBBBDB50080D673 /* UIHistoryDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIHistoryDetailCell.h; path = AppUI/UIHistoryDetailCell.h; sourceTree = "<group>"; };
 		84C8B23D1FBBBDB50080D673 /* UIHistoryDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIHistoryDetailCell.m; path = AppUI/UIHistoryDetailCell.m; sourceTree = "<group>"; };
 		84C8B23E1FBBBDB50080D673 /* UIHistoryDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UIHistoryDetailCell.xib; path = AppUI/UIHistoryDetailCell.xib; sourceTree = "<group>"; };
-		84C8B2481FBBBE4D0080D673 /* contactBlackListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = contactBlackListCell.h; path = AppObjects/contactBlackListCell.h; sourceTree = "<group>"; };
-		84C8B2491FBBBE4D0080D673 /* contactBlackListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = contactBlackListCell.m; path = AppObjects/contactBlackListCell.m; sourceTree = "<group>"; };
 		84C8B24B1FBBBE6E0080D673 /* CallHistoryObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CallHistoryObject.h; path = AppObjects/CallHistoryObject.h; sourceTree = "<group>"; };
 		84C8B24C1FBBBE6E0080D673 /* CallHistoryObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CallHistoryObject.m; path = AppObjects/CallHistoryObject.m; sourceTree = "<group>"; };
 		84CDD2371FD0E6FE003DB5AD /* UIImage+GKContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+GKContact.m"; path = "OutSources/UIImage+GKContact/UIImage+GKContact.m"; sourceTree = "<group>"; };
@@ -1652,8 +1651,6 @@
 		84EFFDFB1FF3E6B50085A9F4 /* DGActivityIndicatorBallScaleAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DGActivityIndicatorBallScaleAnimation.m; path = OutSources/DGActivityIndicatorView/Animations/DGActivityIndicatorBallScaleAnimation.m; sourceTree = "<group>"; };
 		84EFFDFC1FF3E6B50085A9F4 /* DGActivityIndicatorBallScaleRippleAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DGActivityIndicatorBallScaleRippleAnimation.m; path = OutSources/DGActivityIndicatorView/Animations/DGActivityIndicatorBallScaleRippleAnimation.m; sourceTree = "<group>"; };
 		84EFFDFD1FF3E6B60085A9F4 /* DGActivityIndicatorBallClipRotateMultipleAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DGActivityIndicatorBallClipRotateMultipleAnimation.h; path = OutSources/DGActivityIndicatorView/Animations/DGActivityIndicatorBallClipRotateMultipleAnimation.h; sourceTree = "<group>"; };
-		84F742B620163300000F7FFF /* FriendRequestedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendRequestedObject.h; path = Contacts/Objects/FriendRequestedObject.h; sourceTree = "<group>"; };
-		84F742B720163300000F7FFF /* FriendRequestedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendRequestedObject.m; path = Contacts/Objects/FriendRequestedObject.m; sourceTree = "<group>"; };
 		84F742BA20163333000F7FFF /* FriendForAcceptCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendForAcceptCell.h; path = Contacts/Cell/FriendForAcceptCell.h; sourceTree = "<group>"; };
 		84F742BB20163334000F7FFF /* FriendForAcceptCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendForAcceptCell.m; path = Contacts/Cell/FriendForAcceptCell.m; sourceTree = "<group>"; };
 		84F742BC20163334000F7FFF /* FriendForAcceptCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FriendForAcceptCell.xib; path = Contacts/Cell/FriendForAcceptCell.xib; sourceTree = "<group>"; };
@@ -3119,8 +3116,6 @@
 				84EDEE521FB7136200FF665C /* LanguageObject.m */,
 				84C8B24B1FBBBE6E0080D673 /* CallHistoryObject.h */,
 				84C8B24C1FBBBE6E0080D673 /* CallHistoryObject.m */,
-				84C8B2481FBBBE4D0080D673 /* contactBlackListCell.h */,
-				84C8B2491FBBBE4D0080D673 /* contactBlackListCell.m */,
 				84C47D0B1FB62CE00015695E /* KHistoryCallObject.h */,
 				84C47D0C1FB62CE00015695E /* KHistoryCallObject.m */,
 				84C47CDD1FB5EDD60015695E /* ContactDetailObj.h */,
@@ -3431,8 +3426,6 @@
 		84F742B5201632EB000F7FFF /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				84F742B620163300000F7FFF /* FriendRequestedObject.h */,
-				84F742B720163300000F7FFF /* FriendRequestedObject.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -3508,6 +3501,8 @@
 				15935B84218C56CD00072BA5 /* ContactUtils.m */,
 				1596F1DB21A4FBED005152AF /* WebServiceUtils.h */,
 				1596F1DC21A4FBED005152AF /* WebServiceUtils.m */,
+				15A4333621A7EE4D00055E02 /* WriteLogsUtils.h */,
+				15A4333521A7EE4A00055E02 /* WriteLogsUtils.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -4399,7 +4394,6 @@
 				63B81A101B57DA33009604A6 /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				84EFFE001FF3E6B60085A9F4 /* DGActivityIndicatorBallZigZagDeflectAnimation.m in Sources */,
 				F03CA84318C72F1A0008889D /* UITextViewNoDefine.m in Sources */,
-				84C8B24A1FBBBE4D0080D673 /* contactBlackListCell.m in Sources */,
 				840B574420061FD300DCBA7E /* QRCameraSwitchButton.m in Sources */,
 				15B4462F219FCA0400FB8DCB /* CustomSwitchButton.m in Sources */,
 				84E286C61FC9E1AC009CBA27 /* UIImageView+HighlightedWebCache.m in Sources */,
@@ -4492,7 +4486,6 @@
 				D3807FEE15C2894A005BE9BC /* IASKSettingsReader.m in Sources */,
 				1596F1DD21A4FBED005152AF /* WebServiceUtils.m in Sources */,
 				D3807FF015C2894A005BE9BC /* IASKSettingsStore.m in Sources */,
-				84F742B820163300000F7FFF /* FriendRequestedObject.m in Sources */,
 				D3807FF215C2894A005BE9BC /* IASKSettingsStoreFile.m in Sources */,
 				84C1E2861FAEBFC600EED0B9 /* AppUtils.m in Sources */,
 				D3807FF415C2894A005BE9BC /* IASKSettingsStoreUserDefaults.m in Sources */,
@@ -4535,6 +4528,7 @@
 				15A64DA0216C8BC700D194BD /* InfoForNewContactTableCell.m in Sources */,
 				84E286CC1FC9E1AC009CBA27 /* UIImage+WebP.m in Sources */,
 				D37EE162160377D7003608A6 /* DTActionSheet.m in Sources */,
+				15A4333721A7EE5000055E02 /* WriteLogsUtils.m in Sources */,
 				D306459E1611EC2A00BB571E /* UILoadingImageView.m in Sources */,
 				6381DA7D1C1AD5EA00DF3BBD /* UIBouncingView.m in Sources */,
 				D37E3ECD1619C27A0087659A /* CAAnimation+Blocks.m in Sources */,

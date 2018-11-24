@@ -22,7 +22,7 @@
 
 //  get giá trị ngày giờ hiện tại
 + (NSString *)getCurrentDateTime;
-
++ (NSString *)getCurrentDateTimeToStringWithLanguage: (NSString *)lang;
 + (UIFont *)fontRegularWithSize: (float)fontSize;
 
 + (UIFont *)fontBoldWithSize: (float)fontSize;
@@ -90,7 +90,6 @@
 + (NSString *)getCurrentVersionApplicaton;
 + (BOOL)soundForCallIsEnable;
 + (UIColor *)randomColorWithAlpha: (float)alpha;
-+ (void)sendMessageForOfflineForUser: (NSString *)IDRecipient fromSender: (NSString *)Sender withContent: (NSString *)content andTypeMessage: (NSString *)typeMessage withGroupID: (NSString *)GroupID;
 
 //  Added by Khai Le on 04/10/2018
 + (void)addCornerRadiusTopLeftAndBottomLeftForButton: (id)view radius: (float)radius withColor: (UIColor *)borderColor border: (float)borderWidth;

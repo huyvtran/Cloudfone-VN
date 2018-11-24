@@ -130,6 +130,7 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 
 //  [Khai le - 05/11/2018]
 @property (nonatomic, assign) BOOL enableForTest;
+@property (nonatomic, strong) NSString *logFilePath;
 
 @end
 

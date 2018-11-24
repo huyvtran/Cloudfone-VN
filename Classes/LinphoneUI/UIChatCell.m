@@ -18,7 +18,6 @@
  */
 
 #import "UIChatCell.h"
-#import "PhoneMainView.h"
 #import "LinphoneManager.h"
 #import "Utils.h"
 

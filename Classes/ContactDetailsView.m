@@ -18,7 +18,6 @@
 */
 
 #import "ContactDetailsView.h"
-#import "PhoneMainView.h"
 #import "UIContactDetailsCell.h"
 
 @implementation ContactDetailsView

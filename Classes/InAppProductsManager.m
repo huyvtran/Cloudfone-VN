@@ -23,7 +23,6 @@
 // In app purchase are not supported by the Simulator
 #import "XMLRPCHelper.h"
 #import "LinphoneManager.h"
-#import "PhoneMainView.h"
 #import "StoreKit/StoreKit.h"
 
 @interface InAppProductsManager ()

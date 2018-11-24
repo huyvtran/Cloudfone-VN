@@ -8,7 +8,6 @@
 #import "SearchContactPopupView.h"
 #import "ContactCell.h"
 #import "NSData+Base64.h"
-#import "NSDatabase.h"
 
 @implementation SearchContactPopupView
 @synthesize tbContacts, tapGesture, contacts;

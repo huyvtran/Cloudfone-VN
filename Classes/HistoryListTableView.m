@@ -20,7 +20,6 @@
 #import "HistoryListTableView.h"
 #import "UIHistoryCell.h"
 #import "LinphoneManager.h"
-#import "PhoneMainView.h"
 #import "Utils.h"
 
 @implementation HistoryListTableView

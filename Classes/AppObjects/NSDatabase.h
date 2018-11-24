@@ -52,4 +52,6 @@
 + (BOOL)removeHistoryCallsOfUser: (NSString *)user onDate: (NSString *)date ofAccount: (NSString *)account;
 + (BOOL)checkMissedCallExistsFromUser: (NSString *)phone withAccount: (NSString *)account atTime: (long)time;
 
++ (int)getAllMissedCallUnreadofAccount: (NSString *)account;
+
 @end

@@ -8,7 +8,6 @@
 
 #import "PECropViewController.h"
 #import "PECropView.h"
-#import "PhoneMainView.h"
 
 @interface PECropViewController () <UIActionSheetDelegate>{
     

@@ -19,7 +19,6 @@
 
 #import "LinphoneCoreSettingsStore.h"
 #import "Utils.h"
-#import "PhoneMainView.h"
 
 #include "linphone/linphone_tunnel.h"
 #include "linphone/lpconfig.h"

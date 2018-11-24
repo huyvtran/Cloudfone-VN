@@ -9,7 +9,6 @@
 #import "IncomingCallViewController.h"
 #import "StatusBarView.h"
 #import "NSData+Base64.h"
-#import "NSDatabase.h"
 
 @interface IncomingCallViewController ()
 {

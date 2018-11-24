@@ -34,7 +34,6 @@
 
 #import "ContactObject.h"
 #import "ContactDetailObj.h"
-#import "NSDatabase.h"
 #import "JSONKit.h"
 #import "AppUtils.h"
 #import "PBXContact.h"
@@ -76,7 +75,7 @@
 @synthesize fromImagePicker;
 @synthesize _isSyncing;
 @synthesize contactLoaded;
-@synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest;
+@synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, logFilePath;
 
 #pragma mark - Lifecycle Functions
 
@@ -92,12 +91,16 @@
 #pragma mark -
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s", __FUNCTION__]
+                         toFilePath:logFilePath];
+    
 	//  [LinphoneManager.instance enterBackgroundMode];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__]
+                         toFilePath:logFilePath];
+    
 	LinphoneCall *call = linphone_core_get_current_call(LC);
 
 	if (call) {
@@ -117,7 +120,8 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s", __FUNCTION__]
+                         toFilePath:logFilePath];
     
     NSString *goHistoryCall = [[NSUserDefaults standardUserDefaults] objectForKey:@"isGoToHistoryCall"];
     if (goHistoryCall != nil && [goHistoryCall isEqualToString:@"YES"]) {
@@ -361,8 +365,6 @@ void onUncaughtException(NSException* exception)
     
     NSString *messageSend = [NSString stringWithFormat:@"------------------------------\nDevice: %@\nOS Version: %@\nApp version: %@\nApp bundle ID: %@\n------------------------------\nAccount ID: %@\n------------------------------\nReason: %@\n------------------------------\n%@", device, osVersion, appVersion, bundleIdentifier, USERNAME, reason, crashContent];
     
-    DDLogInfo(@"%@", messageSend);
-    
     NSString *totalEmail = [NSString stringWithFormat:@"mailto:%@?subject=%@&body=%@", @"lekhai0212@gmail.com,cfreport@cloudfone.vn", [NSString stringWithFormat:@"Report crash from %@", USERNAME], messageSend];
     NSString *url = [totalEmail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
@@ -370,6 +372,11 @@ void onUncaughtException(NSException* exception)
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSString *subDirectory = [NSString stringWithFormat:@"%@/%@.txt", logsFolderName, [AppUtils getCurrentDate]];
+    logFilePath = [WriteLogsUtils makeFilePathWithFileName: subDirectory];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"-------------------------------------------------\n%s", __FUNCTION__] toFilePath:logFilePath];
+    
     UIApplication *app = [UIApplication sharedApplication];
 	UIApplicationState state = app.applicationState;
     
@@ -381,7 +388,6 @@ void onUncaughtException(NSException* exception)
     
     //  [Khai le - 25/10/2018]: Add write logs for app
     [self setupForWriteLogFileForApp];
-    DDLogInfo(@"\n-------------------------didFinishLaunchingWithOptions-------------------------\n");
     
     //  Khoi tao
     webService = [[WebServices alloc] init];
@@ -394,7 +400,7 @@ void onUncaughtException(NSException* exception)
     
     //  Ghi âm cuộc gọi
     _isSyncing = false;
-    enableForTest = YES;
+    enableForTest = NO;
     
     listInfoPhoneNumber = [[NSMutableArray alloc] init];
     
@@ -1457,27 +1463,25 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     switch (internetStatus)
     {
         case NotReachable: {
-            DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"The internet is down!!!!"]);
-            
-            internetActive = false;
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"The internet is down!!!!"]
+                                 toFilePath:logFilePath];
+            internetActive = NO;
             [[NSNotificationCenter defaultCenter] postNotificationName:networkChanged
                                                                 object:nil];
             break;
         }
-        case ReachableViaWiFi:
-        {
-            DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"The internet is working via WIFI."]);
-            
-            internetActive = true;
+        case ReachableViaWiFi: {
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"The internet is working via WIFI."]
+                                 toFilePath:logFilePath];
+            internetActive = YES;
             [[NSNotificationCenter defaultCenter] postNotificationName:networkChanged
                                                                 object:nil];
             break;
         }
-        case ReachableViaWWAN:
-        {
-            DDLogInfo(@"%@", [NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"The internet is working via WWAN."]);
-            
-            internetActive = true;
+        case ReachableViaWWAN: {
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"The internet is working via WWAN."]
+                                 toFilePath:logFilePath];
+            internetActive = YES;
             [[NSNotificationCenter defaultCenter] postNotificationName:networkChanged
                                                                 object:nil];
             break;
@@ -1489,7 +1493,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 - (void)getContactsListForFirstLoad
 {
-    DDLogInfo(@"%@", [NSString stringWithFormat:@"%s", __FUNCTION__]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__]
+                         toFilePath:logFilePath];
     
     if (listContacts == nil) {
         listContacts = [[NSMutableArray alloc] init];
@@ -1507,7 +1512,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             contactLoaded = YES;
             [[NSNotificationCenter defaultCenter] postNotificationName:finishLoadContacts
                                                                 object:nil];
-            DDLogInfo(@"Finish get contact from addressbook");
+            [WriteLogsUtils writeLogContent:@"Get contact DONE ---> post event finishLoadContacts" toFilePath:logFilePath];
         });
     });
 }
@@ -1917,6 +1922,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         [jsonDict setObject:USERNAME forKey:@"PBXExt"];
         
         [webService callWebServiceWithLink:ChangeCustomerIOSToken withParams:jsonDict];
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @[jsonDict]] toFilePath:logFilePath];
     }
 }
 
@@ -1962,12 +1969,16 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         [jsonDict setObject:dateTo forKey:@"DateTo"];
         
         [webService callWebServiceWithLink:GetInfoMissCall withParams:jsonDict inBackgroundMode:YES];
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @[jsonDict]] toFilePath:logFilePath];
     }
     [[NSUserDefaults standardUserDefaults] setObject:dateTo forKey:DATE_FROM];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)insertMissedCallToDatabase: (id)data {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @[data]] toFilePath:logFilePath];
+    
     if (data != nil && [data isKindOfClass:[NSArray class]]) {
         for (int i=0; i<[(NSArray *)data count]; i++) {
             NSDictionary *callInfo = [data objectAtIndex: i];
@@ -1990,10 +2001,10 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 }
 
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s - %@:\n%@", __FUNCTION__, link, error] toFilePath:logFilePath];
+    
     if ([link isEqualToString:ChangeCustomerIOSToken]) {
         _updateTokenSuccess = false;
-    }else if ([link isEqualToString: GetInfoMissCall]){
-        DDLogInfo(@"%@", [NSString stringWithFormat:@"%s GetInfoMissCall", __FUNCTION__]);
     }
 }
 

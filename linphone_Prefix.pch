@@ -26,6 +26,8 @@
 #import "PhoneObject.h"
 #import "PhoneMainView.h"
 #import "UICompositeView.h"
+#import "NSDatabase.h"
+#import "WriteLogsUtils.h"
 //  Utils
 #import "DeviceUtils.h"
 #import "AppUtils.h"

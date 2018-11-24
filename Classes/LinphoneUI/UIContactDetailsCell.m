@@ -20,7 +20,6 @@
 #import "UIContactDetailsCell.h"
 #import "FastAddressBook.h"
 #import "Contact.h"
-#import "PhoneMainView.h"
 
 @implementation UIContactDetailsCell
 

@@ -20,7 +20,6 @@
 #import "ContactsListTableView.h"
 #import "UIContactCell.h"
 #import "LinphoneManager.h"
-#import "PhoneMainView.h"
 #import "Utils.h"
 
 @implementation ContactsListTableView

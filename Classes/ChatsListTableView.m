@@ -23,7 +23,6 @@
 #import "FileTransferDelegate.h"
 
 #import "linphone/linphonecore.h"
-#import "PhoneMainView.h"
 #import "Utils.h"
 
 @implementation ChatsListTableView {

@@ -8,7 +8,6 @@
 
 #import "SideMenuView.h"
 #import "LinphoneManager.h"
-#import "PhoneMainView.h"
 
 @implementation SideMenuView
 

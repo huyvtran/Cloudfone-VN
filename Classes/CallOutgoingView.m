@@ -18,7 +18,6 @@
  */
 
 #import "CallOutgoingView.h"
-#import "PhoneMainView.h"
 
 @implementation CallOutgoingView
 

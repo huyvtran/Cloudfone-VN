@@ -8,7 +8,6 @@
 
 #import "AllCallsViewController.h"
 #import "DetailHistoryCNViewController.h"
-#import "NSDatabase.h"
 #import "KHistoryCallObject.h"
 #import "HistoryCallCell.h"
 #import "NSData+Base64.h"
@@ -259,10 +258,9 @@
             forControlEvents:UIControlEventTouchUpInside];
     
     //  get missed call
-    int numMissedCall = [NSDatabase getMissedCallUnreadWithRemote:aCall._phoneNumber onDate:aCall._callDate ofAccount:USERNAME];
-    if (numMissedCall > 0) {
-        NSString *strMissed = [NSString stringWithFormat:@"%d", numMissedCall];
-        if (numMissedCall > 5) {
+    if (aCall.newMissedCall > 0) {
+        NSString *strMissed = [NSString stringWithFormat:@"%d", aCall.newMissedCall];
+        if (aCall.newMissedCall > 5) {
             strMissed = @"+5";
         }
         cell.lbMissed.hidden = NO;

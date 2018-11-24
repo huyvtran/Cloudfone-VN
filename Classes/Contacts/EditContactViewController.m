@@ -12,7 +12,6 @@
 #import "InfoForNewContactTableCell.h"
 #import "SettingItem.h"
 #import "ChooseAvatarPopupView.h"
-#import "NSDatabase.h"
 #import "NSData+Base64.h"
 #import "ContactDetailObj.h"
 #import "PECropViewController.h"

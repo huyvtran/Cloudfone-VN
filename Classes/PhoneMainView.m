@@ -572,11 +572,22 @@ static RootViewManager *rootViewManagerInstance = nil;
 }
 
 - (void)updateApplicationBadgeNumber {
+    //  [Khai le - 23/11/2018]
+    NSString *ExtUser = [SipUtils getAccountIdOfDefaultProxyConfig];
+    if (![AppUtils isNullOrEmpty: ExtUser]) {
+        int numMissedCall = [NSDatabase getAllMissedCallUnreadofAccount: ExtUser];
+        [UIApplication sharedApplication].applicationIconBadgeNumber = numMissedCall;
+    }else{
+        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    }
+    
+    /*
 	int count = 0;
 	count += linphone_core_get_missed_calls_count(LC);
 	count += [LinphoneManager unreadMessageCount];
 	count += linphone_core_get_calls_nb(LC);
 	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
+    */
 }
 
 + (CATransition *)getBackwardTransition {

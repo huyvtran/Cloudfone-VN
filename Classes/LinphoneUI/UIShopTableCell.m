@@ -20,7 +20,6 @@
 #import "UIShopTableCell.h"
 #import "Utils.h"
 #import "UILabel+Boldify.h"
-#import "PhoneMainView.h"
 
 @implementation UIShopTableCell
 

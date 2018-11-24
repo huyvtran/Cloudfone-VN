@@ -9,7 +9,6 @@
 #import "UIConferenceCell.h"
 #import "LinphoneManager.h"
 #import "FastAddressBook.h"
-#import "NSDatabase.h"
 #import "NSData+Base64.h"
 
 @interface UIConferenceCell (){

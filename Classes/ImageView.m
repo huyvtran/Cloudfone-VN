@@ -18,7 +18,6 @@
  */
 
 #import "ImageView.h"
-#import "PhoneMainView.h"
 
 @implementation UIImageScrollView
 

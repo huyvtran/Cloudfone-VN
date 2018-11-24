@@ -12,9 +12,7 @@
 #import "UIHistoryDetailCell.h"
 #import "NewHistoryDetailCell.h"
 #import "CallHistoryObject.h"
-#import "NSDatabase.h"
 #import "NSData+Base64.h"
-#import "contactBlackListCell.h"
 
 @interface DetailHistoryCNViewController () {
     LinphoneAppDelegate *appDelegate;

@@ -21,7 +21,6 @@
 #import "ChatConversationTableView.h"
 #import "UIChatBubbleTextCell.h"
 #import "UIChatBubblePhotoCell.h"
-#import "PhoneMainView.h"
 
 @implementation ChatConversationTableView
 

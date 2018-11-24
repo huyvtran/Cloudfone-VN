@@ -7,7 +7,6 @@
 //
 
 #import "CallnexSwitchButton.h"
-#import "NSDatabase.h"
 
 @implementation CallnexSwitchButton
 @synthesize _lbBackground, _btnEnable, _btnDisable, _btnThumb, _status, _typeSwitch;

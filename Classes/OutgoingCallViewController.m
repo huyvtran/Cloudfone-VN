@@ -7,7 +7,6 @@
 
 #import "OutgoingCallViewController.h"
 #import "StatusBarView.h"
-#import "NSDatabase.h"
 #import "NSData+Base64.h"
 
 #define kMaxRadius 200

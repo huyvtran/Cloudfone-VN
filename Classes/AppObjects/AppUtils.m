@@ -7,7 +7,6 @@
 //
 
 #import "AppUtils.h"
-#import "NSDatabase.h"
 #import "NSData+Base64.h"
 #import <sys/utsname.h>
 #import "JSONKit.h"
@@ -44,6 +43,19 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     // or @"yyyy-MM-dd hh:mm:ss a" if you prefer the time with AM/PM
+    return [dateFormatter stringFromDate:[NSDate date]];
+}
+
++ (NSString *)getCurrentDateTimeToStringWithLanguage: (NSString *)lang {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    if ([lang isEqualToString: key_vi]) {
+        [dateFormatter setDateFormat:@"dd-MM-yyyy HH:mm:ss"];
+    }else{
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    }
+    
+    // or @"yyyy-MM-dd hh:mm:ss a" if you prefer the time with AM/PM
+    
     return [dateFormatter stringFromDate:[NSDate date]];
 }
 
@@ -715,40 +727,6 @@
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
-+ (void)sendMessageForOfflineForUser: (NSString *)IDRecipient fromSender: (NSString *)Sender withContent: (NSString *)content andTypeMessage: (NSString *)typeMessage withGroupID: (NSString *)GroupID
-{
-    NSString *strURL = [NSString stringWithFormat:@"%@/%@", link_api, PushSharp];
-    NSURL *URL = [NSURL URLWithString:strURL];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: URL];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
-    [request setTimeoutInterval: 60];
-    
-    NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
-    [jsonDict setObject:AuthUser forKey:@"AuthUser"];
-    [jsonDict setObject:AuthKey forKey:@"AuthKey"];
-    [jsonDict setObject:IDRecipient forKey:@"IDRecipient"];
-    [jsonDict setObject:@"yes" forKey:@"Xmpp"];
-    [jsonDict setObject:Sender forKey:@"Sender"];
-    [jsonDict setObject:typeMessage forKey:@"Type"];
-    [jsonDict setObject:content forKey:@"Content"];
-    [jsonDict setObject:GroupID forKey:@"GroupID"];
-    
-    NSString *jsonRequest = [jsonDict JSONString];
-    NSData *requestData = [jsonRequest dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    
-    [request setValue:[NSString stringWithFormat:@"%d", (int)[requestData length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody: requestData];
-    
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    if(connection) {
-        NSLog(@"Connection Successful");
-    }
-}
 //  Added by Khai Le on 04/10/2018
 + (void)addCornerRadiusTopLeftAndBottomLeftForButton: (id)view radius: (float)radius withColor: (UIColor *)borderColor border: (float)borderWidth{
     if ([view isKindOfClass:[UIView class]]) {
