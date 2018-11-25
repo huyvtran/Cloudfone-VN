@@ -26,6 +26,8 @@ HMLocalization *localization;
     localization = [HMLocalization sharedInstance];
     
     if (appDelegate._databasePath.length > 0) {
+        appDelegate.dbQueue = [[FMDatabaseQueue alloc] initWithPath: appDelegate._databasePath];
+        
         appDelegate._database = [[FMDatabase alloc] initWithPath: appDelegate._databasePath];
         if ([appDelegate._database open]) {
             return YES;
@@ -37,7 +39,21 @@ HMLocalization *localization;
     }
 }
 
-+ (int)getUnreadMissedCallHisotryWithAccount: (NSString *)account {
++ (int)getUnreadMissedCallHisotryWithAccount: (NSString *)account
+{
+    __block int result = 0;
+    [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db) {
+        NSString *tSQL = [NSString stringWithFormat:@"SELECT COUNT(*) as numMissedCall FROM history WHERE my_sip = '%@' and status = '%@' and unread = %d", account, @"Missed", 1];
+        FMResultSet *rs = [db executeQuery: tSQL];
+        while ([rs next]) {
+            NSDictionary *rsDict = [rs resultDictionary];
+            result = [[rsDict objectForKey:@"numMissedCall"] intValue];
+        }
+        [rs close];
+    }];
+    return result;
+    
+    /*  25/11/2018
     int result = 0;
     NSString *tSQL = [NSString stringWithFormat:@"SELECT COUNT(*) as numMissedCall FROM history WHERE my_sip = '%@' and status = '%@' and unread = %d", account, @"Missed", 1];
     FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
@@ -46,7 +62,7 @@ HMLocalization *localization;
         result = [[rsDict objectForKey:@"numMissedCall"] intValue];
     }
     [rs close];
-    return result;
+    return result;  */
 }
 
 //  reset missed call with remote on date
@@ -57,7 +73,44 @@ HMLocalization *localization;
 }
 
 // Get tất cả các section trong của history call của 1 user
-+ (NSMutableArray *)getHistoryCallListOfUser: (NSString *)account isMissed: (BOOL)missed {
++ (NSMutableArray *)getHistoryCallListOfUser: (NSString *)account isMissed: (BOOL)missed
+{
+    __block NSMutableArray *listDate = [[NSMutableArray alloc] init];
+    __block NSMutableArray *result = [[NSMutableArray alloc] init];
+    
+    [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db) {
+        NSString *tSQL = [NSString stringWithFormat:@"SELECT date FROM history WHERE my_sip = '%@' GROUP BY date ORDER BY time_int DESC", account];
+        FMResultSet *rs = [db executeQuery: tSQL];
+        while ([rs next]) {
+            NSDictionary *rsDict = [rs resultDictionary];
+            NSString *dateStr = [rsDict objectForKey:@"date"];
+            [listDate addObject: dateStr];
+        }
+        [rs close];
+    }];
+    
+    for (int i=0; i<listDate.count; i++) {
+        NSString *dateStr = [listDate objectAtIndex: i];
+        
+        NSMutableDictionary *oneDateDict = [[NSMutableDictionary alloc] init];
+        [oneDateDict setObject:dateStr forKey:@"title"];
+        if (missed) {
+            NSMutableArray *missedArr = [self getMissedCallListOnDate:dateStr ofUser:account];
+            if (missedArr.count > 0) {
+                [oneDateDict setObject:missedArr forKey:@"rows"];
+                [result addObject: oneDateDict];
+            }
+        }else{
+            NSMutableArray *callArray = [self getAllCallOnDate:dateStr ofUser:account];
+            if (callArray.count > 0) {
+                [oneDateDict setObject:callArray forKey:@"rows"];
+                [result addObject: oneDateDict];
+            }
+        }
+    }
+    
+    return result;
+    /*  25/11/2018
     NSMutableArray *result = [[NSMutableArray alloc] init];
     //  NSString *tSQL = [NSString stringWithFormat:@"SELECT date FROM history WHERE my_sip = '%@' GROUP BY date ORDER BY _id DESC", account];
     NSString *tSQL = [NSString stringWithFormat:@"SELECT date FROM history WHERE my_sip = '%@' GROUP BY date ORDER BY time_int DESC", account];
@@ -84,11 +137,51 @@ HMLocalization *localization;
         }
     }
     [rs close];
-    return result;
+    return result;  */
 }
 
 // Get danh sách các cuộc gọi nhỡ
-+ (NSMutableArray *)getMissedCallListOnDate: (NSString *)dateStr ofUser: (NSString *)account {
++ (NSMutableArray *)getMissedCallListOnDate: (NSString *)dateStr ofUser: (NSString *)account
+{
+    __block NSMutableArray *result = [[NSMutableArray alloc] init];
+    
+    [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db)
+    {
+        NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND call_direction = 'Incomming' AND status = 'Missed' AND date = '%@' GROUP BY phone_number ORDER BY _id DESC", account, dateStr];
+        FMResultSet *rs = [db executeQuery: tSQL];
+        while ([rs next]) {
+            NSDictionary *rsDict = [rs resultDictionary];
+            KHistoryCallObject *aCall = [[KHistoryCallObject alloc] init];
+            int callId        = [[rsDict objectForKey:@"_id"] intValue];
+            NSString *status        = [rsDict objectForKey:@"status"];
+            NSString *phoneNumber = [rsDict objectForKey:@"phone_number"];
+            
+            NSString *callDirection = [rsDict objectForKey:@"call_direction"];
+            NSString *callTime      = [rsDict objectForKey:@"time"];
+            NSString *callDate      = [rsDict objectForKey:@"date"];
+            
+            PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
+            
+            aCall._callId = callId;
+            aCall._status = status;
+            aCall._prefixPhone = @"";
+            aCall._phoneNumber = phoneNumber;
+            aCall._callDirection = callDirection;
+            aCall._callTime = callTime;
+            aCall._callDate = callDate;
+            aCall._phoneName = contact.name;
+            aCall._phoneAvatar = contact.avatar;
+            aCall.newMissedCall = [self getMissedCallUnreadWithRemote:phoneNumber onDate:dateStr ofAccount:account];
+            
+            [result addObject: aCall];
+        }
+        [rs close];
+    }];
+    return result;
+    
+    
+    
+    /*  25/11/2018
     NSMutableArray *result = [[NSMutableArray alloc] init];
     NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND call_direction = 'Incomming' AND status = 'Missed' AND date = '%@' GROUP BY phone_number ORDER BY _id DESC", account, dateStr];
     FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
@@ -118,13 +211,55 @@ HMLocalization *localization;
         
         [result addObject: aCall];
     }
-    return result;
+    [rs close];
+    return result;  */
 }
 
 // Get danh sách cho từng section call của user
-+ (NSMutableArray *)getAllCallOnDate: (NSString *)dateStr ofUser: (NSString *)account {
++ (NSMutableArray *)getAllCallOnDate: (NSString *)dateStr ofUser: (NSString *)account
+{
+    __block NSMutableArray *result = [[NSMutableArray alloc] init];
+    
+    [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db)
+     {
+         NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND date = '%@' GROUP BY phone_number ORDER BY time_int DESC", account, dateStr];
+         FMResultSet *rs = [db executeQuery: tSQL];
+         while ([rs next]) {
+             NSDictionary *rsDict = [rs resultDictionary];
+             KHistoryCallObject *aCall = [[KHistoryCallObject alloc] init];
+             int callId        = [[rsDict objectForKey:@"_id"] intValue];
+             NSString *status        = [rsDict objectForKey:@"status"];
+             NSString *callDirection = [rsDict objectForKey:@"call_direction"];
+             NSString *callTime      = [rsDict objectForKey:@"time"];
+             NSString *callDate      = [rsDict objectForKey:@"date"];
+             NSString *phoneNumber   = [rsDict objectForKey:@"phone_number"];
+             long timeInt   = [[rsDict objectForKey:@"time_int"] longValue];
+             
+             aCall._prefixPhone = @"";
+             aCall._phoneNumber = phoneNumber;
+             
+             //  [Khai le - 03/11/2018]
+             PhoneObject *aPhone = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
+             aCall._callId = callId;
+             aCall._status = status;
+             aCall._callDirection = callDirection;
+             aCall._callTime = callTime;
+             aCall._callDate = callDate;
+             aCall._phoneName = aPhone.name;
+             aCall._phoneAvatar = aPhone.avatar;
+             aCall.duration = [[rsDict objectForKey:@"duration"] intValue];
+             aCall.timeInt = timeInt;
+             aCall.newMissedCall = [self getMissedCallUnreadWithRemote:phoneNumber onDate:dateStr ofAccount:account];
+             
+             [result addObject: aCall];
+         }
+         [rs close];
+     }];
+    return result;
+    
+    
+    /*  25/11/2018
     NSMutableArray *result = [[NSMutableArray alloc] init];
-    //  NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND date = '%@' GROUP BY phone_number ORDER BY _id DESC", account, dateStr];
     NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND date = '%@' GROUP BY phone_number ORDER BY time_int DESC", account, dateStr];
     FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
     while ([rs next]) {
@@ -157,10 +292,11 @@ HMLocalization *localization;
         [result addObject: aCall];
     }
     [rs close];
-    return result;
+    return result;  */
 }
 
-+ (int)getMissedCallUnreadWithRemote: (NSString *)remote onDate: (NSString *)date ofAccount: (NSString *)account {
++ (int)getMissedCallUnreadWithRemote: (NSString *)remote onDate: (NSString *)date ofAccount: (NSString *)account
+{
     int result = 0;
     NSString *tSQL = [NSString stringWithFormat:@"SELECT COUNT(*) as numMissedCall FROM history WHERE my_sip = '%@' and status = '%@' and unread = %d and date = '%@' and phone_number = '%@'", account, @"Missed", 1, date, remote];
     FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
@@ -255,7 +391,44 @@ HMLocalization *localization;
     return result;
 }
 
-+ (NSMutableArray *)getAllCallOfMe: (NSString *)mySip withPhone: (NSString *)phoneNumber onDate: (NSString *)dateStr{
++ (NSMutableArray *)getAllCallOfMe: (NSString *)mySip withPhone: (NSString *)phoneNumber onDate: (NSString *)dateStr
+{
+    __block NSMutableArray *resultArr = [[NSMutableArray alloc] init];
+    [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db) {
+        NSString *tSQL = @"";
+        if ([phoneNumber isEqualToString: hotline]) {
+            tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number = '%@' AND date='%@' ORDER BY time_int DESC", mySip, phoneNumber, dateStr];
+        }else{
+            tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number LIKE '%%%@%%' AND date='%@' ORDER BY time_int DESC", mySip, phoneNumber, dateStr];
+        }
+        
+        FMResultSet *rs = [db executeQuery: tSQL];
+        while ([rs next]) {
+            NSDictionary *rsDict = [rs resultDictionary];
+            
+            NSString *time = [rsDict objectForKey:@"time"];
+            NSString *status = [rsDict objectForKey:@"status"];
+            int duration = [[rsDict objectForKey:@"duration"] intValue];
+            float rate = [[rsDict objectForKey:@"rate"] floatValue];
+            NSString *call_direction = [rsDict objectForKey:@"call_direction"];
+            long timeInt = [[rsDict objectForKey:@"time_int"] longValue];
+            
+            CallHistoryObject *aCall = [[CallHistoryObject alloc] init];
+            aCall._time = time;
+            aCall._status= status;
+            aCall._duration = duration;
+            aCall._rate = rate;
+            aCall._date = @"date";
+            aCall._callDirection = call_direction;
+            aCall._timeInt = timeInt;
+            
+            [resultArr addObject: aCall];
+        }
+        [rs close];
+    }];
+    return resultArr;
+    
+    /*
     NSMutableArray *resultArr = [[NSMutableArray alloc] init];
     
     NSString *tSQL = @"";
@@ -289,7 +462,7 @@ HMLocalization *localization;
         [resultArr addObject: aCall];
     }
     [rs close];
-    return resultArr;
+    return resultArr;   */
 }
 
 // Lấy số phone cuối cùng gọi đi
@@ -366,7 +539,21 @@ HMLocalization *localization;
     return result;
 }
 
-+ (int)getAllMissedCallUnreadofAccount: (NSString *)account {
++ (int)getAllMissedCallUnreadofAccount: (NSString *)account
+{
+    __block int result = 0;
+    [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db) {
+        NSString *tSQL = [NSString stringWithFormat:@"SELECT COUNT(*) as numMissedCall FROM history WHERE my_sip = '%@' and status = '%@' and unread = %d", account, @"Missed", 1];
+        FMResultSet *rs = [db executeQuery: tSQL];
+        while ([rs next]) {
+            NSDictionary *rsDict = [rs resultDictionary];
+            result = [[rsDict objectForKey:@"numMissedCall"] intValue];
+        }
+        [rs close];
+    }];
+    return result;
+    
+    /*  25/11/2018
     int result = 0;
     NSString *tSQL = [NSString stringWithFormat:@"SELECT COUNT(*) as numMissedCall FROM history WHERE my_sip = '%@' and status = '%@' and unread = %d", account, @"Missed", 1];
     FMResultSet *rs = [appDelegate._database executeQuery: tSQL];
@@ -375,7 +562,7 @@ HMLocalization *localization;
         result = [[rsDict objectForKey:@"numMissedCall"] intValue];
     }
     [rs close];
-    return result;
+    return result;  */
 }
 
 @end

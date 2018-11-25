@@ -528,6 +528,18 @@ static UICompositeViewDescription *compositeDescription = nil;
             cell.imgStatus.image = [UIImage imageNamed:@"ic_call_outgoing.png"];
         }
         
+        NSString *dateStr = [AppUtils checkTodayForHistoryCall: onDate];
+        
+        if (![dateStr isEqualToString:@"Today"]) {
+            dateStr = [AppUtils checkYesterdayForHistoryCall: aCall._date];
+            if ([dateStr isEqualToString:@"Yesterday"]) {
+                dateStr = [appDelegate.localization localizedStringForKey:@"Yesterday"];
+            }
+        }else{
+            dateStr = [appDelegate.localization localizedStringForKey:@"Today"];
+        }
+        cell.lbDate.text = dateStr;
+        
         return cell;
     }
 }

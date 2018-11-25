@@ -559,6 +559,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     //  status label
     _lbStatus.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
+    _lbStatus.numberOfLines = 0;
     [_lbStatus mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_viewStatus.mas_centerX);
         make.top.bottom.equalTo(_lbAccount);
@@ -884,6 +885,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 //  Added by Khai Le on 30/09/2018
 - (void)checkAccountForApp {
+    
     AccountState curState = [SipUtils getStateOfDefaultProxyConfig];
     if (curState == eAccountNone) {
         _lbAccount.text = @"";
@@ -896,9 +898,15 @@ static UICompositeViewDescription *compositeDescription = nil;
             _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Disabled"];
             _lbStatus.textColor = UIColor.orangeColor;
         }else{
-            //  account on
-            _lbStatus.textColor = UIColor.greenColor;
-            _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Online"];
+            LinphoneRegistrationState state = [SipUtils getRegistrationStateOfDefaultProxyConfig];
+            if (state == LinphoneRegistrationOk) {
+                //  account on
+                _lbStatus.textColor = UIColor.greenColor;
+                _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Online"];
+            }else{
+                _lbStatus.textColor = UIColor.orangeColor;
+                _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Offline"];
+            }
         }
     }
 }

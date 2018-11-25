@@ -22,10 +22,6 @@
     
     NSMutableArray *listDelete;
     BOOL isDeleted;
-    
-    UIFont *textFont;
-    
-    YBHud *waitingHud;
 }
 
 @end
@@ -39,14 +35,13 @@
     if (SCREEN_WIDTH > 320) {
         hCell = 70.0;
         hSection = 35.0;
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
+        _lbNoCalls.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
     }else{
         hCell = 60.0;
         hSection = 35.0;
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
+        _lbNoCalls.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:17.0];
     }
     
-    _lbNoCalls.font = textFont;
     _lbNoCalls.textColor = UIColor.grayColor;
     _lbNoCalls.textAlignment = NSTextAlignmentCenter;
     [_lbNoCalls mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -68,13 +63,6 @@
     [self showContentWithCurrentLanguage];
     [self getHistoryCallForUser];
     
-    if (waitingHud == nil) {
-        //  add waiting view
-        waitingHud = [[YBHud alloc] initWithHudType:DGActivityIndicatorAnimationTypeLineScale andText:@""];
-        waitingHud.tintColor = [UIColor whiteColor];
-        waitingHud.dimAmount = 0.5;
-    }
-    [waitingHud showInView:[LinphoneAppDelegate sharedInstance].window animated:YES];
     _tbListCalls.hidden = YES;
     isDeleted = false;
     
@@ -116,7 +104,6 @@
         [listCalls addObjectsFromArray: tmpArr];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [waitingHud dismissAnimated:YES];
             if (listCalls.count == 0) {
                 _tbListCalls.hidden = YES;
                 _lbNoCalls.hidden = NO;

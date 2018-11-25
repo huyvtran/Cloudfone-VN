@@ -186,3 +186,5 @@
 "Failed"               =   "Thất bại!"
 "Delete" = "Xóa"
 "Edit" = "Sửa"
+
+"No network" = "Không internet"

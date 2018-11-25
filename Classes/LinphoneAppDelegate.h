@@ -31,6 +31,7 @@
 #import "HMLocalization.h"
 #import "ContactObject.h"
 #import "FMDatabase.h"
+#import "FMDatabaseQueue.h"
 #import "CallsHistoryViewController.h"
 #import "UIView+Toast.h"
 #import "WebServices.h"
@@ -97,6 +98,7 @@ typedef NS_ENUM(NSUInteger, AuthorType) {
 @property (nonatomic, assign) int idContact;
 
 //  Biến kết nối cơ sỏ dữ liệu
+@property (nonatomic, strong) FMDatabaseQueue *dbQueue;
 @property (nonatomic, strong) FMDatabase *_database;
 @property (nonatomic, strong) NSString *_databasePath;
 

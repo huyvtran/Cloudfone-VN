@@ -75,7 +75,7 @@
 @synthesize fromImagePicker;
 @synthesize _isSyncing;
 @synthesize contactLoaded;
-@synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, logFilePath;
+@synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, logFilePath, dbQueue;
 
 #pragma mark - Lifecycle Functions
 

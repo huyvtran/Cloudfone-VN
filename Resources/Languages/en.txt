@@ -186,3 +186,5 @@
 Failed"               =   "Failed!"
 "Delete" = "Delete"
 "Edit" = "Edit"
+
+"No network" = "No network"

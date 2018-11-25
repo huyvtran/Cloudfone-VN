@@ -281,6 +281,17 @@
     return @"";
 }
 
++ (LinphoneRegistrationState)getRegistrationStateOfDefaultProxyConfig {
+    LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+    if (defaultConfig != NULL) {
+        return linphone_proxy_config_get_state(defaultConfig);
+    }else{
+        return LinphoneRegistrationNone;
+    }
+}
+
+
+
 + (void)enableProxyConfig: (LinphoneProxyConfig *)proxy withValue: (BOOL)enable withRefresh: (BOOL)refresh {
     //  edit profxy config
     if (enable) {

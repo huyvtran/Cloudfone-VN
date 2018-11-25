@@ -100,7 +100,8 @@
     [self updateMissedCall:0 appear:appear];
 }
 
-- (void)updateMissedCall:(int)missedCall appear:(BOOL)appear {
+- (void)updateMissedCall:(int)missedCall appear:(BOOL)appear
+{
     _historyNotificationLabel.text = @"";
     [_historyNotificationView stopAnimating:YES];
     
@@ -186,7 +187,8 @@
 
 #pragma mark - Khai Le functions
 
-- (void)updateMainBarNotifications{
+- (void)updateMainBarNotifications
+{
     [self update: false];
     
     //  Get all missed call number

@@ -854,7 +854,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)endCallInMiniKeypad {
-    [self hideMiniKeypad];
     linphone_core_terminate_all_calls(LC);
 }
 
@@ -1671,6 +1670,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)hideCallView {
+    [self hideMiniKeypad];
+    
     int count = linphone_core_get_calls_nb([LinphoneManager getLc]);
     if (count == 0) {
         if (durationTimer != nil) {
