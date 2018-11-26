@@ -180,6 +180,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_iconSyncPBXContactClicked:(UIButton *)sender {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     [self startSyncPBXContactsForAccount];
 }
 
@@ -363,6 +365,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - WebServices delegate
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s link = %@\nError = %@", __FUNCTION__, link, error] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     [icWaiting stopAnimating];
     icWaiting.hidden = YES;
     
@@ -372,6 +376,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s response data = %@", __FUNCTION__, @[data]] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     if ([link isEqualToString:getServerContacts]) {
         if (data != nil && [data isKindOfClass:[NSArray class]]) {
             [self whenStartSyncPBXContacts: (NSArray *)data];
@@ -386,6 +392,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 //  Xử lý pbx contacts trả về
 - (void)whenStartSyncPBXContacts: (NSArray *)data
 {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self savePBXContactInPhoneBook: data];
         [self getListPhoneWithCurrentContactPBX];
@@ -413,6 +421,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     [jsonDict setObject:AuthKey forKey:@"AuthKey"];
     [jsonDict setObject:serverName forKey:@"ServerName"];
     [webService callWebServiceWithLink:getServerContacts withParams:jsonDict];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s pramas = %@", __FUNCTION__, @[jsonDict]] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
 }
 
 - (void)savePBXContactInPhoneBook: (NSArray *)pbxData
@@ -615,6 +625,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 //  Thông báo kết thúc sync contacts
 - (void)syncContactsSuccessfully
 {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     [icWaiting stopAnimating];
     icWaiting.hidden = YES;
     

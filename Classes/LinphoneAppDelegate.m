@@ -387,7 +387,8 @@ void onUncaughtException(NSException* exception)
     [NgnFileUtils createDirectory:@"avatars"];
     
     //  [Khai le - 25/10/2018]: Add write logs for app
-    [self setupForWriteLogFileForApp];
+    //  [self setupForWriteLogFileForApp];
+    [WriteLogsUtils clearLogFilesAfterExpireTime: 432000];
     
     //  Khoi tao
     webService = [[WebServices alloc] init];
@@ -647,6 +648,9 @@ void onUncaughtException(NSException* exception)
     sound = default;
     title = Cloudfone;
     */
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s userInfo = %@", __FUNCTION__, @[userInfo]]
+                         toFilePath:logFilePath];
     
     NSDictionary *aps = [userInfo objectForKey:@"aps"];
     if (aps != nil)
@@ -2009,6 +2013,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 }
 
 - (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s - %@:\n%@", __FUNCTION__, link, @[data]] toFilePath:logFilePath];
+    
     if ([link isEqualToString:ChangeCustomerIOSToken]) {
         _updateTokenSuccess = true;
     }else if ([link isEqualToString: GetInfoMissCall]){

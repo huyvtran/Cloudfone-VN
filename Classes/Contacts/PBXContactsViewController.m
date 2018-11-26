@@ -53,6 +53,9 @@
 {
     [super viewWillAppear: animated];
     
+    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@", className] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     [self showContentWithCurrentLanguage];
     isSearching = NO;
     
@@ -62,6 +65,8 @@
     [listSearch removeAllObjects];
     
     if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
+        [WriteLogsUtils writeLogContent:@"Contact have not loaded yet" toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
         if (waitingHud == nil) {
             //  add waiting view
             waitingHud = [[YBHud alloc] initWithHudType:DGActivityIndicatorAnimationTypeLineScale andText:@""];
@@ -293,9 +298,12 @@
 
 //  Added by Khai Le on 04/10/2018
 - (void)searchContactWithValue: (NSNotification *)notif {
+    
     id object = [notif object];
     if ([object isKindOfClass:[NSString class]])
     {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s search value = %@", __FUNCTION__, object] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
         if ([object isEqualToString:@""]) {
             if ([LinphoneAppDelegate sharedInstance].pbxContacts.count > 0) {
                 _lbContacts.hidden = YES;
@@ -313,6 +321,8 @@
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                 [self startSearchPBXContactsWithContent: object];
                 dispatch_async(dispatch_get_main_queue(), ^(void){
+                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s Finished search contact with value = %@", __FUNCTION__, object] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+                    
                     if (listSearch.count > 0) {
                         _lbContacts.hidden = YES;
                         _tbContacts.hidden = NO;
@@ -382,10 +392,12 @@
 }
 
 - (void)onIconCallClicked: (UIButton *)sender {
-    if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
-        NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
-        if (![phoneNumber isEqualToString:@""]) {
-            [SipUtils makeCallWithPhoneNumber: phoneNumber];
+    if (![AppUtils isNullOrEmpty: sender.currentTitle]) {
+        NSString *number = [AppUtils removeAllSpecialInString: sender.currentTitle];
+        if (![AppUtils isNullOrEmpty: number]) {
+            [SipUtils makeCallWithPhoneNumber: number];
+            
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@ make call to %@", __FUNCTION__, USERNAME, number] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         }
     }
 }

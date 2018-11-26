@@ -88,6 +88,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@", className] toFilePath:appDelegate.logFilePath];
+    
     _lbTitle.text = [appDelegate.localization localizedStringForKey:@"Contact info"];
     
     // Tắt màn hình cảm biến
@@ -359,6 +362,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - Alertview Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: Click to delete contact", __FUNCTION__]
+                             toFilePath:appDelegate.logFilePath];
+        
         [waitingHud showInView:self.view animated:YES];
         
         // Remove khỏi addressbook
@@ -446,11 +452,14 @@ static UICompositeViewDescription *compositeDescription = nil;
     [alertView show];
 }
 
-- (void)onIconCallClicked: (UIButton *)sender {
-    if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
-        NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
-        if (![phoneNumber isEqualToString:@""]) {
-            [SipUtils makeCallWithPhoneNumber: phoneNumber];
+- (void)onIconCallClicked: (UIButton *)sender
+{
+    if (![AppUtils isNullOrEmpty: sender.currentTitle]) {
+        NSString *number = [AppUtils removeAllSpecialInString: sender.currentTitle];
+        if (![AppUtils isNullOrEmpty: number]) {
+            [SipUtils makeCallWithPhoneNumber: number];
+            
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@ make call to %@", __FUNCTION__, USERNAME, number] toFilePath:appDelegate.logFilePath];
         }
     }else{
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"The phone number can not empty"]

@@ -417,6 +417,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnTransferPressed:(UIButton *)sender {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: Transfer call with phone number %@", __FUNCTION__, _addressField.text] toFilePath:appDelegate.logFilePath];
+    
     if (![_addressField.text isEqualToString:@""]) {
         LinphoneManager.instance.nextCallIsTransfer = YES;
         LinphoneAddress *addr = linphone_core_interpret_url(LC, _addressField.text.UTF8String);

@@ -20,23 +20,15 @@
 
 @interface AllContactsViewController (){
     BOOL isSearching;
-    NSString *stringForCall;
     BOOL isFound;
     BOOL found;
     float hSection;
     
-    NSTimer *searchTimer;
-    
-    BOOL transfer_popup;
-    
-    UIRefreshControl *refreshControl;
     NSArray *listCharacter;
     
-    NSMutableArray *filterContactList;
     UIFont *textFont;
     
     YBHud *waitingHud;
-    int pbxContactID;
 }
 
 @end
@@ -57,16 +49,6 @@
     
     [self autoLayoutForView];
     
-    //  Pull to refresh contact list
-    refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl setTintColor:[UIColor magentaColor]];
-    [refreshControl setBackgroundColor:[UIColor whiteColor]];
-    
-    [refreshControl addTarget:self
-                       action:@selector(refreshContactList)
-             forControlEvents:UIControlEventValueChanged];
-    [_tbContacts addSubview: refreshControl];
-    
     //  add waiting view
     waitingHud = [[YBHud alloc] initWithHudType:DGActivityIndicatorAnimationTypeLineScale andText:@""];
     waitingHud.tintColor = [UIColor whiteColor];
@@ -76,7 +58,12 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@", className] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
+        [WriteLogsUtils writeLogContent:@"Contact have not loaded yet" toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
         [waitingHud showInView:[LinphoneAppDelegate sharedInstance].window animated:YES];
         
         _tbContacts.hidden = YES;
@@ -116,24 +103,12 @@
 #pragma mark - My Functions
 
 - (void)whenLoadContactFinish {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     [waitingHud dismissAnimated:YES];
     _tbContacts.hidden = NO;
     [_tbContacts reloadData];
-}
-
-//  Kéo xuống để refresh lại danh sách
-- (void)refreshContactList {
-    [_tbContacts reloadData];
-    
-    // iOs 7 tro len thi set
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
-        NSMutableAttributedString *tmpStr = [[NSMutableAttributedString alloc] initWithString: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Pull to refresh"]];
-        [tmpStr addAttribute:NSFontAttributeName
-                       value:textFont
-                       range:NSMakeRange(0, tmpStr.length)];
-        [refreshControl setAttributedTitle: tmpStr];
-    }
-    [refreshControl endRefreshing];
 }
 
 - (void)addNewContact {

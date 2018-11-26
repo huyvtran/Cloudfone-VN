@@ -106,19 +106,12 @@
 #pragma mark - API
 
 #define link_api                @"https://wssf.cloudfone.vn/api/SoftPhone"
-#define funcLogin               @"Login"
-#define getLoginInfoFunc        @"GetLoginInfo"
-#define createRequestFunc       @"CreateRequest"
-#define confirmRequestFunc      @"ConfirmRequest"
+
 #define getServerInfoFunc       @"GetServerInfo"
-#define changePasswordFunc      @"ChangeUserPassword"
-#define forgotPassword          @"ChangePassword"
 #define getServerContacts       @"GetServerContacts"
-#define getImagesBackground     @"GetImagesBackground"
 #define ChangeCustomerIOSToken  @"ChangeCustomerIOSToken"
 #define DecryptRSA              @"DecryptRSA"
 #define PushSharp               @"PushSharp"
-#define GetUserInChatRoom       @"GetUserInChatRoom"
 #define GetInfoMissCall         @"GetInfoMissCall"
 #define ChangeExtPass           @"ChangeExtPass"
 

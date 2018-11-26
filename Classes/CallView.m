@@ -192,6 +192,9 @@ static UICompositeViewDescription *compositeDescription = nil;
         phoneNumber = [self getPhoneNumberOfCall];
     }
     
+    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@ with current number count = %d", className, count] toFilePath:appDelegate.logFilePath];
+    
     //  [Khai le - 03/11/2018]
     PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
     if (![AppUtils isNullOrEmpty: contact.avatar]) {
@@ -909,7 +912,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 	}
 }
 
-- (IBAction)onOptionsTransferClick:(id)sender {
+- (IBAction)onOptionsTransferClick:(id)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    
 	[self hideOptions:TRUE animated:TRUE];
 	DialerView *view = VIEW(DialerView);
 	[view setAddress:@""];

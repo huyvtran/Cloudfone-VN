@@ -61,7 +61,6 @@
 - (void)touchUp:(id)sender {
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
     if (!networkReady) {
-        
         [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
@@ -98,6 +97,8 @@
     }
     
 	if ([address length] > 0) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s -> %@ make call to %@", __FUNCTION__, USERNAME, address] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
 		LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:address];
 		[LinphoneManager.instance call:addr];
 		if (addr)

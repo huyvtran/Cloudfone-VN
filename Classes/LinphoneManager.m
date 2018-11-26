@@ -2894,18 +2894,24 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
 	}
 
 	LinphoneCall *call;
-	if (LinphoneManager.instance.nextCallIsTransfer) {
+	if (LinphoneManager.instance.nextCallIsTransfer)
+    {
 		char *caddr = linphone_address_as_string(addr);
 		call = linphone_core_get_current_call(theLinphoneCore);
 		linphone_core_transfer_call(theLinphoneCore, call, caddr);
 		LinphoneManager.instance.nextCallIsTransfer = NO;
+        
+        NSString *number = [NSString stringWithUTF8String:linphone_address_get_username(iaddr)];
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: nextCallIsTransfer = YES, transfer current call to address: %@", __FUNCTION__, number] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
 		ms_free(caddr);
 	} else {
         //  27/12/2017
         NSString *phoneNumber = [NSString stringWithUTF8String:linphone_address_get_username(iaddr)];
         
-        if (![[LinphoneAppDelegate sharedInstance].phoneNumberEnd isEqualToString:@""] && [[LinphoneAppDelegate sharedInstance].phoneNumberEnd isEqualToString: phoneNumber]) {
-            NSLog(@"Nguoi dung vua bam cancel cuoc goi nay");
+        if (![[LinphoneAppDelegate sharedInstance].phoneNumberEnd isEqualToString:@""] && [[LinphoneAppDelegate sharedInstance].phoneNumberEnd isEqualToString: phoneNumber])
+        {
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: User just ended call with phone number %@", __FUNCTION__, phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
             [LinphoneAppDelegate sharedInstance].phoneNumberEnd = @"";
         }else{
             call = linphone_core_invite_address_with_params(theLinphoneCore, addr, lcallParams);
@@ -2921,6 +2927,8 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
                 } else {
                     data->videoRequested = linphone_call_params_video_enabled(lcallParams);
                 }
+                
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: Created call with %@", __FUNCTION__, phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
             }
         }
 	}

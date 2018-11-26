@@ -43,23 +43,10 @@ typedef enum AccountState{
     eAccountOn,
 }AccountState;
 
-//  [Khai le - 02/11/2018]
 typedef enum typePhoneNumber{
     ePBXPhone,
     eNormalPhone,
 }typePhoneNumber;
-//  -----
-
-enum messageState {
-    eMessageError,
-    eMessageSend,
-    eMessageReceive,
-};
-
-typedef NS_ENUM(NSUInteger, AuthorType) {
-    iMessageBubbleTableViewCellAuthorTypeSender = 0,
-    iMessageBubbleTableViewCellAuthorTypeReceiver
-};
 
 @interface LinphoneAppDelegate : NSObject <UIApplicationDelegate, PKPushRegistryDelegate, UNUserNotificationCenterDelegate, WebServicesDelegate> {
     @private
