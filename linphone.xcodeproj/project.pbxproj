@@ -65,6 +65,11 @@
 		157527912166028B007D789A /* ic_sync.png in Resources */ = {isa = PBXBuildFile; fileRef = 1575278A2166028A007D789A /* ic_sync.png */; };
 		1575279821661D1A007D789A /* ic_search.png in Resources */ = {isa = PBXBuildFile; fileRef = 1575279721661D1A007D789A /* ic_search.png */; };
 		1575279A21661D44007D789A /* tf_close_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 1575279921661D43007D789A /* tf_close_bg.png */; };
+		1578D06121ACE87000E8BA5F /* ic_send_logs.png in Resources */ = {isa = PBXBuildFile; fileRef = 1578D05A21ACE86F00E8BA5F /* ic_send_logs.png */; };
+		1578D06C21ACEB6100E8BA5F /* SendLogsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1578D06A21ACEB6000E8BA5F /* SendLogsViewController.m */; };
+		1578D06D21ACEB6100E8BA5F /* SendLogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1578D06B21ACEB6000E8BA5F /* SendLogsViewController.xib */; };
+		1578D07121AD3DDF00E8BA5F /* SendLogFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1578D06F21AD3DDE00E8BA5F /* SendLogFileCell.m */; };
+		1578D07221AD3DDF00E8BA5F /* SendLogFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1578D07021AD3DDE00E8BA5F /* SendLogFileCell.xib */; };
 		1579B71F21674989002BECE3 /* ic_edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1579B71221674984002BECE3 /* ic_edit@2x.png */; };
 		1579B72021674989002BECE3 /* ic_add_contact@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1579B71921674985002BECE3 /* ic_add_contact@2x.png */; };
 		1579B72121674989002BECE3 /* ic_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 1579B71A21674986002BECE3 /* ic_edit.png */; };
@@ -858,6 +863,13 @@
 		1575278A2166028A007D789A /* ic_sync.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_sync.png; sourceTree = "<group>"; };
 		1575279721661D1A007D789A /* ic_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_search.png; sourceTree = "<group>"; };
 		1575279921661D43007D789A /* tf_close_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tf_close_bg.png; sourceTree = "<group>"; };
+		1578D05A21ACE86F00E8BA5F /* ic_send_logs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_send_logs.png; sourceTree = "<group>"; };
+		1578D06921ACEB6000E8BA5F /* SendLogsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SendLogsViewController.h; path = More/SendLogsViewController.h; sourceTree = "<group>"; };
+		1578D06A21ACEB6000E8BA5F /* SendLogsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SendLogsViewController.m; path = More/SendLogsViewController.m; sourceTree = "<group>"; };
+		1578D06B21ACEB6000E8BA5F /* SendLogsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SendLogsViewController.xib; path = More/SendLogsViewController.xib; sourceTree = "<group>"; };
+		1578D06E21AD3DDE00E8BA5F /* SendLogFileCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SendLogFileCell.h; path = AppUI/SendLogFileCell.h; sourceTree = "<group>"; };
+		1578D06F21AD3DDE00E8BA5F /* SendLogFileCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SendLogFileCell.m; path = AppUI/SendLogFileCell.m; sourceTree = "<group>"; };
+		1578D07021AD3DDE00E8BA5F /* SendLogFileCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SendLogFileCell.xib; path = AppUI/SendLogFileCell.xib; sourceTree = "<group>"; };
 		1579B71221674984002BECE3 /* ic_edit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_edit@2x.png"; sourceTree = "<group>"; };
 		1579B71921674985002BECE3 /* ic_add_contact@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_add_contact@2x.png"; sourceTree = "<group>"; };
 		1579B71A21674986002BECE3 /* ic_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_edit.png; sourceTree = "<group>"; };
@@ -2656,6 +2668,7 @@
 				15F2E5FF216B66830076CB1F /* ic_about.png */,
 				15F2E5F1216B56E30076CB1F /* ic_setting.png */,
 				15F2E5F3216B56E60076CB1F /* ic_setup.png */,
+				1578D05A21ACE86F00E8BA5F /* ic_send_logs.png */,
 				150F399C21840644000A8F37 /* ic_info.png */,
 				15F2E5F4216B56F20076CB1F /* ic_support.png */,
 				15F2E5F2216B56E50076CB1F /* ic_term.png */,
@@ -2819,6 +2832,9 @@
 				15E01DB82182BC3700C0A40F /* AboutViewController.h */,
 				15E01DB92182BC3700C0A40F /* AboutViewController.m */,
 				15E01DBA2182BC3700C0A40F /* AboutViewController.xib */,
+				1578D06921ACEB6000E8BA5F /* SendLogsViewController.h */,
+				1578D06A21ACEB6000E8BA5F /* SendLogsViewController.m */,
+				1578D06B21ACEB6000E8BA5F /* SendLogsViewController.xib */,
 			);
 			name = More;
 			sourceTree = "<group>";
@@ -3016,6 +3032,9 @@
 				15857C05216E136300DB5237 /* TypePhoneCell.h */,
 				15857C04216E136200DB5237 /* TypePhoneCell.m */,
 				15857C06216E136300DB5237 /* TypePhoneCell.xib */,
+				1578D06E21AD3DDE00E8BA5F /* SendLogFileCell.h */,
+				1578D06F21AD3DDE00E8BA5F /* SendLogFileCell.m */,
+				1578D07021AD3DDE00E8BA5F /* SendLogFileCell.xib */,
 				15857C07216E136400DB5237 /* TypePhonePopupView.h */,
 				15857C03216E136100DB5237 /* TypePhonePopupView.m */,
 				15932B692186AF8700F53B90 /* SearchContactPopupView.h */,
@@ -3918,6 +3937,8 @@
 				63130FB21C1ED06900371918 /* SideMenuView~ipad.xib in Resources */,
 				63CDC4661C3BDE370085F529 /* shortring.caf in Resources */,
 				1579B72721674A6B002BECE3 /* call_disable.png in Resources */,
+				1578D06121ACE87000E8BA5F /* ic_send_logs.png in Resources */,
+				1578D06D21ACEB6100E8BA5F /* SendLogsViewController.xib in Resources */,
 				1579B72221674989002BECE3 /* ic_back@2x.png in Resources */,
 				639CEB001A1DF4E4004DE38F /* UIHistoryCell.xib in Resources */,
 				84ECF9BF216679A70067B4B6 /* ic_speaker_dis.png in Resources */,
@@ -3991,6 +4012,7 @@
 				153D00322164D537007B69B3 /* menu_more_en_def.png in Resources */,
 				15F2E5F5216B56F60076CB1F /* ic_setting.png in Resources */,
 				153D000F2164A67E007B69B3 /* numpad_six_default.png in Resources */,
+				1578D07221AD3DDF00E8BA5F /* SendLogFileCell.xib in Resources */,
 				153D004C2164D9D3007B69B3 /* numpad_two_hover.png in Resources */,
 				841B359E2191F26D0019BD45 /* button-endcall.png in Resources */,
 				153D00592164D9D3007B69B3 /* hotline_hover.png in Resources */,
@@ -4412,6 +4434,7 @@
 				84C47D091FB62CC10015695E /* HistoryCallCell.m in Sources */,
 				63F1DF441BCE618E00EDED90 /* UIAddressTextField.m in Sources */,
 				842DEC431FC478F300E7F74D /* UIMiniKeypad.m in Sources */,
+				1578D07121AD3DDF00E8BA5F /* SendLogFileCell.m in Sources */,
 				D3EA540D1598528B0037DC6B /* ChatsListTableView.m in Sources */,
 				D3EA5411159853750037DC6B /* UIChatCell.m in Sources */,
 				D3F26BF115986B73005F9CAB /* CallIncomingView.m in Sources */,
@@ -4482,6 +4505,7 @@
 				846B716920E240410019AD41 /* SipUtils.m in Sources */,
 				D3807FE815C2894A005BE9BC /* IASKAppSettingsViewController.m in Sources */,
 				D3807FEA15C2894A005BE9BC /* IASKAppSettingsWebViewController.m in Sources */,
+				1578D06C21ACEB6100E8BA5F /* SendLogsViewController.m in Sources */,
 				D3807FEC15C2894A005BE9BC /* IASKSpecifierValuesViewController.m in Sources */,
 				D3807FEE15C2894A005BE9BC /* IASKSettingsReader.m in Sources */,
 				1596F1DD21A4FBED005152AF /* WebServiceUtils.m in Sources */,

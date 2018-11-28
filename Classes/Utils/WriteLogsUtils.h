@@ -16,5 +16,7 @@
 + (void)writeLogContent: (NSString *)logContent toFilePath: (NSString *)pathFile;
 + (void)clearLogFilesAfterExpireTime: (long)expireTime;
 + (void)removeFileWithPath: (NSString *)path;
++ (NSArray *)getAllFilesInDirectory: (NSString *)subPath;
+
 
 @end

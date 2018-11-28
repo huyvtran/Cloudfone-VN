@@ -567,7 +567,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)callUpdate:(LinphoneCall *)call state:(LinphoneCallState)state animated:(BOOL)animated message: (NSString *)message
 {
-    NSLog(@"%@ - Call state: %d", SHOW_LOGS, state);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s", __FUNCTION__] toFilePath:appDelegate.logFilePath];
     
     // Add tất cả các cuộc gọi vào nhóm
     if (linphone_core_get_calls_nb(LC) >= 2) {
@@ -608,6 +608,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 	switch (state) {
         case LinphoneCallOutgoingRinging:{
+            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallOutgoingRinging"
+                                 toFilePath:appDelegate.logFilePath];
+            
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Ringing"];
             _durationLabel.textColor = UIColor.whiteColor;
             
@@ -615,17 +618,26 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallIncomingReceived:{
+            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallIncomingReceived"
+                                 toFilePath:appDelegate.logFilePath];
+            
             [self getPhoneNumberOfCall];
             NSLog(@"incomming");
             break;
         }
         case LinphoneCallOutgoingProgress:{
+            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallOutgoingProgress"
+                                 toFilePath:appDelegate.logFilePath];
+            
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Calling"];
             _durationLabel.textColor = UIColor.whiteColor;
             
             break;
         }
         case LinphoneCallOutgoingInit:{
+            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallOutgoingInit"
+                                 toFilePath:appDelegate.logFilePath];
+            
             //  Added by Khai Le on 21/10/2018
             if (self.halo == nil) {
                 [self addAnimationForOutgoingCall];
@@ -645,6 +657,9 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallConnected:{
+            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallConnected"
+                                 toFilePath:appDelegate.logFilePath];
+            
             //  Check if in call with hotline
             if (![phoneNumber isEqualToString:hotline]) {
                 icAddCall.enabled = YES;
@@ -677,6 +692,9 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
 		case LinphoneCallStreamsRunning: {
+            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallStreamsRunning"
+                                 toFilePath:appDelegate.logFilePath];
+            
             // check video
 			if (!linphone_call_params_video_enabled(linphone_call_get_current_params(call))) {
 				const LinphoneCallParams *param = linphone_call_get_current_params(call);
@@ -718,7 +736,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 		}
 		case LinphoneCallPausing:
         case LinphoneCallPaused:{
-            NSLog(@"%@ - %@", SHOW_LOGS, @"Call paused!!!");
+            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallPaused"
+                                 toFilePath:appDelegate.logFilePath];
+            
             break;
         }
 		case LinphoneCallPausedByRemote:
@@ -727,6 +747,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 			}
 			break;
         case LinphoneCallEnd:{
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Call state is LinphoneCallEnd, with message: %@", message] toFilePath:appDelegate.logFilePath];
+            
             if (durationTimer != nil) {
                 [durationTimer invalidate];
                 durationTimer = nil;
@@ -745,6 +767,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallError:{
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Call state is LinphoneCallError, with message: %@", message] toFilePath:appDelegate.logFilePath];
+            
             if (durationTimer != nil) {
                 [durationTimer invalidate];
                 durationTimer = nil;
@@ -758,6 +782,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallReleased:{
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Call state is LinphoneCallReleased, with message: %@", message] toFilePath:appDelegate.logFilePath];
+            
             if (durationTimer != nil) {
                 [durationTimer invalidate];
                 durationTimer = nil;
@@ -1676,6 +1702,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)hideCallView {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    
     [self hideMiniKeypad];
     
     int count = linphone_core_get_calls_nb([LinphoneManager getLc]);

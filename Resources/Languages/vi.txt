@@ -26,7 +26,7 @@
 "Feedback" = "Phản hồi"
 "Privacy Policy" = "Chính sách bảo mật"
 "Introduction" = "Giới thiệu"
-"Send logs" = "Gửi logs"
+"Send logs" = "Gửi nhật ký"
 "About" = "Thông tin"
 
 "PBX account" = "Tài khoản PBX"

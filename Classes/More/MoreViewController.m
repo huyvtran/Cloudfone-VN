@@ -13,6 +13,7 @@
 #import "KSettingViewController.h"
 #import "PolicyViewController.h"
 #import "IntroduceViewController.h"
+#import "SendLogsViewController.h"
 #import "AboutViewController.h"
 #import "TabBarView.h"
 #import "StatusBarView.h"
@@ -214,7 +215,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)createDataForMenuView {
     listTitle = [[NSArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Account settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Feedback"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Privacy Policy"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Introduction"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Send logs"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"About"], nil];
     
-    listIcon = [[NSArray alloc] initWithObjects: @"ic_setup.png", @"ic_setting.png", @"ic_support.png", @"ic_term.png", @"ic_introduce.png", @"ic_introduce.png", @"ic_info.png", nil];
+    listIcon = [[NSArray alloc] initWithObjects: @"ic_setup.png", @"ic_setting.png", @"ic_support.png", @"ic_term.png", @"ic_introduce.png", @"ic_send_logs.png", @"ic_info.png", nil];
 }
 
 #pragma mark - uitableview delegate
@@ -270,7 +271,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case eSendLogs:{
-            [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"We have not supported this feature yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
+            [[PhoneMainView instance] changeCurrentView:[SendLogsViewController compositeViewDescription]
+                                                   push:true];
             break;
         }
         case eAbout:{

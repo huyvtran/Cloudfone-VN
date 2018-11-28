@@ -388,7 +388,7 @@ void onUncaughtException(NSException* exception)
     
     //  [Khai le - 25/10/2018]: Add write logs for app
     //  [self setupForWriteLogFileForApp];
-    [WriteLogsUtils clearLogFilesAfterExpireTime: 432000];
+    [WriteLogsUtils clearLogFilesAfterExpireTime: DAY_FOR_LOGS*24*3600];
     
     //  Khoi tao
     webService = [[WebServices alloc] init];

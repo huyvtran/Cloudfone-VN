@@ -103,6 +103,11 @@
     }
 }
 
-
++ (NSArray *)getAllFilesInDirectory: (NSString *)subPath {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent: subPath];
+    NSArray *directoryContent = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:NULL];
+    return directoryContent;
+}
 
 @end
