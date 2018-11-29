@@ -86,6 +86,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
+    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@", className] toFilePath:appDelegate.logFilePath];
+    
     [self showContentWithCurrentLanguage];
     
     //  Get contact information
@@ -339,14 +342,6 @@ static UICompositeViewDescription *compositeDescription = nil;
              forState:UIControlStateNormal];
 }
 
-- (BOOL)checkExistsValue: (NSString *)string {
-    if (![string isEqualToString:@""] && string != nil && ![string isEqualToString:@"null"] && ![string isEqualToString:@"(null)"] && ![string isEqualToString:@"<null>"]) {
-        return true;
-    }else{
-        return false;
-    }
-}
-
 //  Hiển thị thông tin của contact
 - (void)showContactInformation
 {
@@ -358,7 +353,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (appDelegate._dataCrop != nil) {
         _imgAvatar.image = [UIImage imageWithData: appDelegate._dataCrop];
     }else{
-        if ([self checkExistsValue: detailsContact._avatar]) {
+        if (![AppUtils isNullOrEmpty: detailsContact._avatar]) {
             _imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: detailsContact._avatar]];
         }else{
             _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];

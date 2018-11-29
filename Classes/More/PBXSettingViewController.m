@@ -373,6 +373,11 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.right.equalTo(self.view).offset(-30);
         make.height.mas_equalTo(hButton);
     }];
+    if (appDelegate.supportLoginWithPhoneNumber) {
+        btnLoginWithPhone.hidden = NO;
+    }else{
+        btnLoginWithPhone.hidden = YES;
+    }
 }
 
 - (IBAction)_iconBackClicked:(UIButton *)sender {
@@ -416,15 +421,16 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (IBAction)_btnClearPressed:(UIButton *)sender {
+- (IBAction)_btnClearPressed:(UIButton *)sender
+{
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] with networkReady = %d", __FUNCTION__, networkReady]
+                         toFilePath:appDelegate.logFilePath];
+    
     if (!networkReady) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
-    
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s", __FUNCTION__]
-                         toFilePath:appDelegate.logFilePath];
     
     [_icWaiting startAnimating];
     _icWaiting.hidden = NO;
@@ -433,7 +439,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  [[LinphoneManager instance] removeAllAccounts];
 }
 
-- (IBAction)_btnSavePressed:(UIButton *)sender {
+- (IBAction)_btnSavePressed:(UIButton *)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     [self.view endEditing: YES];
     
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
@@ -501,15 +511,15 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)getInfoForPBXWithServerName: (NSString *)serverName
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: serverName = %@", __FUNCTION__, serverName]
-                         toFilePath:appDelegate.logFilePath];
-    
     NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
     [jsonDict setObject:AuthUser forKey:@"AuthUser"];
     [jsonDict setObject:AuthKey forKey:@"AuthKey"];
     [jsonDict setObject:serverName forKey:@"ServerName"];
     
     [webService callWebServiceWithLink:getServerInfoFunc withParams:jsonDict];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] jsonDict = %@", __FUNCTION__, @[jsonDict]]
+                         toFilePath:appDelegate.logFilePath];
 }
 
 - (void)updateCustomerTokenIOSForPBX: (NSString *)pbxService andUsername: (NSString *)pbxUsername withTokenValue: (NSString *)tokenValue
@@ -523,6 +533,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     [jsonDict setObject:pbxUsername forKey:@"PBXExt"];
     
     [webService callWebServiceWithLink:ChangeCustomerIOSToken withParams:jsonDict];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] jsonDict = %@", __FUNCTION__, @[jsonDict]]
+                         toFilePath:appDelegate.logFilePath];
 }
 
 
@@ -530,7 +543,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s - %@:\n%@", __FUNCTION__, link, error]
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] %@:\n%@", __FUNCTION__, link, error]
                          toFilePath:appDelegate.logFilePath];
     
     [_icWaiting stopAnimating];
@@ -547,8 +560,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s - %@:\n%@", __FUNCTION__, link, @[data]]
-                         toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] %@ - Response data:\n %@", __FUNCTION__, link, @[data]] toFilePath:appDelegate.logFilePath];
     
     [_icWaiting stopAnimating];
     if ([link isEqualToString:getServerInfoFunc]) {
@@ -615,7 +627,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         NSString *pbxPassword = [data objectAtIndex: 2];
         NSString *pbxPort = [data objectAtIndex: 3];
         
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: pbxDomain = %@, pbxAccount = %@, pbxPort = %@", __FUNCTION__, pbxDomain, pbxAccount, pbxPort] toFilePath:appDelegate.logFilePath];
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] pbxDomain = %@, pbxAccount = %@, pbxPort = %@", __FUNCTION__, pbxDomain, pbxAccount, pbxPort] toFilePath:appDelegate.logFilePath];
         
         BOOL success = [SipUtils loginSipWithDomain:pbxDomain username:pbxAccount password:pbxPassword port:pbxPort];
         if (success) {
@@ -638,6 +650,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         {
             NSLog(@"LinphoneRegistrationOk");
             if (turnOnAcc) {
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationOk, turnOnAcc = YES", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+                
                 NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
                 //  Update token after registration okay
                 if (![AppUtils isNullOrEmpty: server] && ![AppUtils isNullOrEmpty: appDelegate._deviceToken]) {
@@ -649,13 +663,14 @@ static UICompositeViewDescription *compositeDescription = nil;
                 break;
             }
             if (enableProxyConfig == nil) {
-                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@ ---> gọi linphone_core_clear_proxy_config", __FUNCTION__, @"LinphoneRegistrationOk"] toFilePath:appDelegate.logFilePath];
+                //  Nếu registration thành công, backup profxy config hiện tại, sẽ remove hết các acc cũ và register lại account mới
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationOk --> enableProxyConfig = proxy --> call function \"linphone_core_clear_proxy_config\" to clear all proxy cofig", __FUNCTION__] toFilePath:appDelegate.logFilePath];
                 
                 enableProxyConfig = proxy;
                 linphone_core_clear_proxy_config(LC);
                 
             }else if (enableProxyConfig == proxy){
-                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@ ---> register thành công sau khi clear proxy config", __FUNCTION__, @"LinphoneRegistrationOk"] toFilePath:appDelegate.logFilePath];
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationOk, set enableProxyConfig = nil", __FUNCTION__] toFilePath:appDelegate.logFilePath];
                 
                 enableProxyConfig = nil;
                     
@@ -692,21 +707,23 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneRegistrationNone:{
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@,", __FUNCTION__, @"LinphoneRegistrationNone"] toFilePath:appDelegate.logFilePath];
-            
             if (clearingAccount) {
                 NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
                 NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:key_login];
                 if (![AppUtils isNullOrEmpty: server] && ![AppUtils isNullOrEmpty: username]) {
+                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationNone with clearingAccount = YES, clear token for %@", __FUNCTION__, username] toFilePath:appDelegate.logFilePath];
+                    
                     [self updateCustomerTokenIOSForPBX:server andUsername:username withTokenValue:@""];
                 }else{
                     [self whenClearPBXSuccessfully];
+                    
+                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationNone with clearingAccount = YES, call function whenClearPBXSuccessfully", __FUNCTION__] toFilePath:appDelegate.logFilePath];
                 }
                 break;
             }
             
             if (enableProxyConfig != NULL || enableProxyConfig != nil) {
-                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@, enableProxyConfig khác NULL --> register proxy config đã lưu", __FUNCTION__, @"LinphoneRegistrationCleared"] toFilePath:appDelegate.logFilePath];
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationNone with enableProxyConfig != NULL. So, register with enableProxyConfig", __FUNCTION__] toFilePath:appDelegate.logFilePath];
                 
                 [self performSelector:@selector(addRegisteredProxyConfig)
                            withObject:nil afterDelay:2.0];
@@ -715,22 +732,24 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneRegistrationCleared: {
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@", __FUNCTION__, @"LinphoneRegistrationCleared"] toFilePath:appDelegate.logFilePath];
-            
             if (turnOffAcc) {
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state LinphoneRegistrationCleared, with turnOffAcc = YES, clear token pbx for account", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+                
                 NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
                 [self updateCustomerTokenIOSForPBX:server andUsername: USERNAME withTokenValue:@""];
                 return;
             }
             
             if (enableProxyConfig != NULL || enableProxyConfig != nil) {
-                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@, enableProxyConfig khác NULL --> register proxy config đã lưu", __FUNCTION__, @"LinphoneRegistrationCleared"] toFilePath:appDelegate.logFilePath];
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationCleared with enableProxyConfig != NULL. So, register with enableProxyConfig", __FUNCTION__] toFilePath:appDelegate.logFilePath];
                 
                 [self performSelector:@selector(addRegisteredProxyConfig)
                            withObject:nil afterDelay:2.0];
             }else{
                 //  Check if clear pbx successfully, update token for user
                 if (clearingAccount) {
+                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationCleared with clearingAccount = YES", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+                    
                     NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
                     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:key_login];
                     if (![AppUtils isNullOrEmpty: server] && ![AppUtils isNullOrEmpty: username]) {
@@ -740,7 +759,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                     }
                 }
             }
-            
             // _waitView.hidden = true;
             break;
         }
@@ -749,7 +767,10 @@ static UICompositeViewDescription *compositeDescription = nil;
             if (proxy != NULL) {
                 const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(proxy));
                 NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
-                if (defaultUsername != nil) {
+                if (defaultUsername != nil)
+                {
+                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationCleared with clearingAccount = YES", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+                    
                     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@ for proxyUsername %@", __FUNCTION__, @"LinphoneRegistrationFailed", defaultUsername] toFilePath:appDelegate.logFilePath];
                     
                     if ([defaultUsername isEqualToString: accountPBX]) {
@@ -806,6 +827,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)whenTurnOnPBXSuccessfully {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     turnOnAcc = NO;
     
     [_icWaiting stopAnimating];
@@ -821,6 +845,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)whenTurnOffPBXSuccessfully {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     turnOffAcc = NO;
     
     [_icWaiting stopAnimating];
@@ -836,6 +863,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)registerPBXTimeOut {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
     
@@ -846,6 +876,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)whenClearPBXSuccessfully {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
     
@@ -883,6 +916,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)btnScanFromPhotoPressed {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     btnScanFromPhoto.backgroundColor = [UIColor whiteColor];
     [btnScanFromPhoto setTitleColor:[UIColor colorWithRed:(2/255.0) green:(164/255.0)
                                                      blue:(247/255.0) alpha:1.0]
@@ -891,6 +927,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)choosePictureForScanQRCode {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     btnScanFromPhoto.backgroundColor = [UIColor colorWithRed:(2/255.0) green:(164/255.0)
                                                         blue:(247/255.0) alpha:1.0];
     [btnScanFromPhoto setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -922,7 +961,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)loginPBXFromStringHashCodeResult: (NSString *)message {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, message]
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] %@", __FUNCTION__, message]
                          toFilePath:appDelegate.logFilePath];
     
     NSArray *tmpArr = [message componentsSeparatedByString:@"/"];
@@ -964,7 +1003,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [reader stopScanning];
     
     [self dismissViewControllerAnimated:YES completion:^{
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s", __FUNCTION__]
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s] result = %@", __FUNCTION__, result]
                              toFilePath:appDelegate.logFilePath];
         
         BOOL networkReady = [DeviceUtils checkNetworkAvailable];
@@ -984,15 +1023,15 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)getPBXInformationWithHashString: (NSString *)hashString
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: hashString = %@", __FUNCTION__, hashString]
-                         toFilePath:appDelegate.logFilePath];
-    
     NSMutableDictionary *jsonDict = [[NSMutableDictionary alloc] init];
     [jsonDict setObject:AuthUser forKey:@"AuthUser"];
     [jsonDict setObject:AuthKey forKey:@"AuthKey"];
     [jsonDict setObject:hashString forKey:@"HashString"];
     
     [webService callWebServiceWithLink:DecryptRSA withParams:jsonDict];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s] jsonDict = %@", __FUNCTION__, @[jsonDict]]
+                         toFilePath:appDelegate.logFilePath];
 }
 
 #pragma mark - Image picker delegate
@@ -1053,17 +1092,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         return features;
     }
 }
-
-- (void)loginPBXWithNewAccountIfNeed
-{
-    if (![AppUtils isNullOrEmpty: ipPBX] && ![AppUtils isNullOrEmpty: portPBX] && ![AppUtils isNullOrEmpty: accountPBX] && ![AppUtils isNullOrEmpty: passwordPBX])
-    {
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: accountPBX = %@, ipPBX = %@, portPBX = %@", __FUNCTION__, accountPBX, ipPBX, portPBX] toFilePath:appDelegate.logFilePath];
-        
-        [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:ipPBX port:portPBX];
-    }
-}
-
 
 - (IBAction)btnLoginWithPhonePress:(UIButton *)sender {
     [self.view makeToast:[appDelegate.localization localizedStringForKey:@"This feature have not supported yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
@@ -1150,6 +1178,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)addRegisteredProxyConfig {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    
     if (enableProxyConfig != NULL) {
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__] toFilePath:appDelegate.logFilePath];
         

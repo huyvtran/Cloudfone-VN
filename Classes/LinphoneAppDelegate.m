@@ -75,7 +75,7 @@
 @synthesize fromImagePicker;
 @synthesize _isSyncing;
 @synthesize contactLoaded;
-@synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, logFilePath, dbQueue;
+@synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, supportLoginWithPhoneNumber, logFilePath, dbQueue;
 
 #pragma mark - Lifecycle Functions
 
@@ -402,6 +402,7 @@ void onUncaughtException(NSException* exception)
     //  Ghi âm cuộc gọi
     _isSyncing = false;
     enableForTest = NO;
+    supportLoginWithPhoneNumber = NO;
     
     listInfoPhoneNumber = [[NSMutableArray alloc] init];
     

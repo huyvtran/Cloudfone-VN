@@ -41,7 +41,6 @@
     UITapGestureRecognizer *tapOnScreen;
     NSTimer *pressTimer;
     
-    BOOL isNewSearch;
     UITextView *tvSearchResult;
     SearchContactPopupView *popupSearchContacts;
 }
@@ -96,8 +95,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     _addContactButton.hidden = YES;
     _addressField.text = @"";
     
-    //  Cập nhật token push
-    if (![LinphoneAppDelegate sharedInstance]._updateTokenSuccess && [LinphoneAppDelegate sharedInstance]._deviceToken != nil && ![[LinphoneAppDelegate sharedInstance]._deviceToken isEqualToString: @""]) {
+    //  update token of device if not yet
+    if (![LinphoneAppDelegate sharedInstance]._updateTokenSuccess && ![AppUtils isNullOrEmpty: [LinphoneAppDelegate sharedInstance]._deviceToken])
+    {
+        [WriteLogsUtils writeLogContent:@"You haven't updated token device. Posted event updateTokenForXmpp" toFilePath:appDelegate.logFilePath];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:updateTokenForXmpp
                                                             object:nil];
     }
@@ -134,24 +136,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
-// Hàm trả về đường dẫn đến file record
-- (NSURL *)getUrlOfRecordFile: (NSString *)fileName{
-    NSString *appFolderPath = [[NSBundle mainBundle] resourcePath];
-    NSString *path = [NSString stringWithFormat:@"%@/%@", appFolderPath, fileName];
-    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath: path];
-    if (!fileExists) {
-        return nil;
-    }else{
-        return [[NSURL alloc] initFileURLWithPath: path];
-    }
-}
-
 - (void)viewDidLoad {
 	[super viewDidLoad];
     
     appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
-    isNewSearch = YES;
-    
     [self autoLayoutForView];
     
     //  my code here
@@ -320,7 +308,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     [popupAddContact showInView:self.view];
 }
 
-- (IBAction)onBackClick:(id)event {
+- (IBAction)onBackClick:(id)event
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
 	[PhoneMainView.instance popToView:CallView.compositeViewDescription];
 }
 
@@ -379,7 +371,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[self.addressField resignFirstResponder];
 }
 
-- (IBAction)_btnAddCallPressed:(UIButton *)sender {
+- (IBAction)_btnAddCallPressed:(UIButton *)sender
+{
     LinphoneManager.instance.nextCallIsTransfer = NO;
     
     NSString *address = _addressField.text;
@@ -408,6 +401,9 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
     }
     
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] With address = %@", __FUNCTION__, address]
+                         toFilePath:appDelegate.logFilePath];
+    
     if ([address length] > 0) {
         LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:address];
         [LinphoneManager.instance call:addr];
@@ -417,7 +413,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnTransferPressed:(UIButton *)sender {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: Transfer call with phone number %@", __FUNCTION__, _addressField.text] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Transfer call with phone number %@", __FUNCTION__, _addressField.text] toFilePath:appDelegate.logFilePath];
     
     if (![_addressField.text isEqualToString:@""]) {
         LinphoneManager.instance.nextCallIsTransfer = YES;
@@ -428,12 +424,15 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (IBAction)_btnHotlinePressed:(UIButton *)sender {
+- (IBAction)_btnHotlinePressed:(UIButton *)sender
+{
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
     if (!networkReady) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
+ 
+    [WriteLogsUtils writeLogContent:@"You called to hotline %@" toFilePath:appDelegate.logFilePath];
     
     BOOL success = [SipUtils makeCallWithPhoneNumber: hotline];
     if (!success) {
@@ -938,7 +937,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)whenTappedOnStatusAccount
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s]", __FUNCTION__] toFilePath:appDelegate.logFilePath];
     
     if ([LinphoneManager instance].connectivity == none){
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
@@ -966,7 +965,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s -> %@", __FUNCTION__, @"refreshRegisters"] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s] Call function %@", __FUNCTION__, @"refreshRegisters"] toFilePath:appDelegate.logFilePath];
     [LinphoneManager.instance refreshRegisters];
 }
 
@@ -1075,6 +1074,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (alertView.tag == 1)
     {
         if (buttonIndex == 1){
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s] Go to view controller %@", __FUNCTION__, @"PBXSettingViewController"] toFilePath:appDelegate.logFilePath];
+            
             [[PhoneMainView instance] changeCurrentView:[PBXSettingViewController compositeViewDescription] push:YES];
         }
     }
@@ -1087,7 +1088,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             
             linphone_core_refresh_registers(LC);
             
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s -> %@", __FUNCTION__, @"Enable account"] toFilePath:appDelegate.logFilePath];
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s] %@", __FUNCTION__, @"Enable account"] toFilePath:appDelegate.logFilePath];
         }
     }
 }
@@ -1112,7 +1113,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     return NO;
 }
 
-- (void)selectContactFromSearchPopup:(NSString *)phoneNumber {
+- (void)selectContactFromSearchPopup:(NSString *)phoneNumber
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s] phoneNumber = %@", __FUNCTION__, phoneNumber] toFilePath:appDelegate.logFilePath];
+    
     _addressField.text = phoneNumber;
     tvSearchResult.hidden = YES;
 }

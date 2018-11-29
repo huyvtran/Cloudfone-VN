@@ -87,6 +87,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
+    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@", className] toFilePath:appDelegate.logFilePath];
+    
     [self showContentWithCurrentLanguage];
     
     if (appDelegate._newContact == nil) {
@@ -320,18 +323,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
     }
     return avatar;
-}
-
-- (NSString *)getSipIdOfContact: (ABRecordRef)aPerson {
-    if (aPerson != nil) {
-        NSString *sipNumber = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNamePhoneticProperty);
-        if (sipNumber == nil) {
-            sipNumber = @"";
-        }
-        [sipNumber stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
-        return sipNumber;
-    }
-    return @"";
 }
 
 - (void)afterAddAndReloadContactDone {

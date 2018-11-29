@@ -116,6 +116,6 @@
 + (NSString *)getDateFromInterval: (double)interval;
 + (NSString *)getFullTimeStringFromTimeInterval:(double)timeInterval;
 
-+ (NSString *)convertDurtationToString: (int)duration;
++ (NSString *)convertDurtationToString: (long)duration;
 
 @end

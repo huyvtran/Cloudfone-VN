@@ -22,7 +22,6 @@
     float hCell;
     
     YBHud *waitingHud;
-    UIFont *textFont;
     BOOL isPBXContact;
     
     UIButton *btnDelete;
@@ -167,11 +166,9 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                  blue:(230/255.0) alpha:1.0];
     if (SCREEN_WIDTH > 320) {
         hCell = 55.0;
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
         _lbTitle.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
     }else{
         hCell = 45.0;
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
         _lbTitle.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     }
     

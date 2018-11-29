@@ -63,9 +63,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [tbLogs reloadData];
     
     icSend.hidden = YES;
-    
-    
-    NSLog(@"%lu files", (unsigned long)listFiles.count);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -121,6 +118,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.height.mas_equalTo(HEADER_ICON_WIDTH);
     }];
     
+    tbLogs.backgroundColor = UIColor.redColor;
     [tbLogs mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewHeader.mas_bottom);
         make.bottom.left.right.equalTo(viewHeader);
@@ -147,6 +145,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         cell = topLevelObjects[0];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    NSString *fileName = [listFiles objectAtIndex: indexPath.row];
+    cell.lbName.text = fileName;
     
     if (![listSelect containsObject: indexPath]) {
         cell.imgSelect.image = [UIImage imageNamed:@"ic_not_check.png"];

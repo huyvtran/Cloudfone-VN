@@ -17,7 +17,6 @@
     BOOL isSearching;
     
     float hCell;
-    NSTimer *searchTimer;
     
     YBHud *waitingHud;
     UIFont *textFont;

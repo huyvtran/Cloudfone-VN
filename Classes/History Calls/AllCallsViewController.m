@@ -210,11 +210,7 @@
     cell.lbTime.text = strTime;
     cell.lbTime.text = aCall._callTime;
     
-    if (aCall.duration < 60) {
-        cell.lbDuration.text = [NSString stringWithFormat:@"%ld %@", aCall.duration, [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"sec"]];
-    }else{
-        cell.lbDuration.text = [NSString stringWithFormat:@"%ld s", aCall.duration];
-    }
+    cell.lbDuration.text = [AppUtils convertDurtationToString: aCall.duration];
     
     if (isDeleted) {
         cell._cbDelete.hidden = NO;
