@@ -11,5 +11,6 @@
 
 + (void) createDirectoryAndSubDirectory:(NSString *)directory;
 + (void) createDirectory:(NSString*)directory;
++ (NSString *)getPathOfFileWithSubDir: (NSString *)subDir;
 
 @end

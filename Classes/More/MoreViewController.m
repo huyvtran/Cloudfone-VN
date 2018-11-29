@@ -66,6 +66,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO MoreViewController"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     // Tắt màn hình cảm biến
     UIDevice *device = [UIDevice currentDevice];
     [device setProximityMonitoringEnabled: NO];

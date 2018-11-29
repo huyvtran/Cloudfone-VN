@@ -192,8 +192,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         phoneNumber = [self getPhoneNumberOfCall];
     }
     
-    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@ with current number count = %d", className, count] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO CallView"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
     //  [Khai le - 03/11/2018]
     PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];

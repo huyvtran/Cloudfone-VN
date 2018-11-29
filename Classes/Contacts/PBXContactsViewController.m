@@ -52,8 +52,7 @@
 {
     [super viewWillAppear: animated];
     
-    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@", className] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO PBXContactsViewController"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
     [self showContentWithCurrentLanguage];
     isSearching = NO;

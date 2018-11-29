@@ -43,4 +43,10 @@
     }
 }
 
++ (NSString *)getPathOfFileWithSubDir: (NSString *)subDir {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *result = [[paths objectAtIndex:0] stringByAppendingPathComponent: subDir];
+    return result;
+}
+
 @end

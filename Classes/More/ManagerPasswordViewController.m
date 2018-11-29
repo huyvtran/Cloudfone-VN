@@ -77,8 +77,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
 
-    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@", className] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO ManagerPasswordViewController"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
     serverPBX = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
     

@@ -77,8 +77,9 @@
     lbDuration.textColor = _lbPhone.textColor;
     [lbDuration mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_lbTime.mas_bottom);
-        make.left.right.equalTo(_lbTime);
+        make.right.equalTo(_lbTime);
         make.bottom.equalTo(_imgAvatar.mas_bottom);
+        make.width.mas_equalTo(150.0);
     }];
     
     [_lbName mas_makeConstraints:^(MASConstraintMaker *make) {

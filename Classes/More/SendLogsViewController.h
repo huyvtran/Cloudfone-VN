@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SendLogsViewController : UIViewController<UICompositeViewDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface SendLogsViewController : UIViewController<UICompositeViewDelegate, UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewHeader;
 @property (weak, nonatomic) IBOutlet UIImageView *bgHeader;

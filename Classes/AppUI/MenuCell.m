@@ -19,6 +19,7 @@
     
     _lbTitle.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     _lbTitle.textColor = UIColor.darkGrayColor;
+    _lbTitle.numberOfLines = 10;
     [_iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(20);
         make.centerY.equalTo(self.mas_centerY);

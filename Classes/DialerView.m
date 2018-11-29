@@ -78,8 +78,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
     
-    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@", className] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO DialerView"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
     //  Added by Khai Le on 30/09/2018
     [self checkAccountForApp];

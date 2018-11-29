@@ -375,7 +375,7 @@ void onUncaughtException(NSException* exception)
     NSString *subDirectory = [NSString stringWithFormat:@"%@/%@.txt", logsFolderName, [AppUtils getCurrentDate]];
     logFilePath = [WriteLogsUtils makeFilePathWithFileName: subDirectory];
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"-------------------------------------------------\n%s", __FUNCTION__] toFilePath:logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n=========================START APPLICATION=========================\n"] toFilePath:logFilePath];
     
     UIApplication *app = [UIApplication sharedApplication];
 	UIApplicationState state = app.applicationState;
@@ -387,8 +387,7 @@ void onUncaughtException(NSException* exception)
     [NgnFileUtils createDirectory:@"avatars"];
     
     //  [Khai le - 25/10/2018]: Add write logs for app
-    //  [self setupForWriteLogFileForApp];
-    [WriteLogsUtils clearLogFilesAfterExpireTime: DAY_FOR_LOGS*24*3600];
+    [self setupForWriteLogFileForApp];
     
     //  Khoi tao
     webService = [[WebServices alloc] init];
@@ -2030,11 +2029,14 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 //  [Khai le - 25/10/2018]: Add write logs for app
 - (void)setupForWriteLogFileForApp
 {
-    [DDLog addLogger:[DDASLLogger sharedInstance]];
-    [DDLog addLogger:[DDTTYLogger sharedInstance]];
-    
     //  create folder to contain log files
     [NgnFileUtils createDirectoryAndSubDirectory: logsFolderName];
+    
+    [WriteLogsUtils clearLogFilesAfterExpireTime: DAY_FOR_LOGS*24*3600];
+    
+    return;
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
     
     //  set logs file path
     NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

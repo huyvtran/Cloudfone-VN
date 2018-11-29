@@ -61,8 +61,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [listFiles removeAllObjects];
     [listFiles addObjectsFromArray:[WriteLogsUtils getAllFilesInDirectory:logsFolderName]];
     [tbLogs reloadData];
-    
-    icSend.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -75,6 +73,32 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)icSendClicked:(UIButton *)sender {
+    /*
+    NSString *totalEmail = [NSString stringWithFormat:@"mailto:%@?subject=%@&body=%@", @"lekhai0212@gmail.com", @"Send logs file", messageSend];
+    NSString *url = [totalEmail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
+    */
+    
+    MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
+    
+    NSString *emailTitle =  @"Send logs files";
+    NSString *messageBody = @"";
+    NSArray *toRecipents = [NSArray arrayWithObject:@"lekhai0212@gmail.com"];
+    
+    for (int i=0; i<listSelect.count; i++)
+    {
+        NSIndexPath *curIndex = [listSelect objectAtIndex: i];
+        NSString *fileName = [listFiles objectAtIndex: curIndex.row];
+        NSString *path = [NgnFileUtils getPathOfFileWithSubDir:[NSString stringWithFormat:@"%@/%@", logsFolderName, fileName]];
+        NSData *logFileData = [NSData dataWithContentsOfFile: path];
+        [mc addAttachmentData:logFileData mimeType:@"text/plain" fileName:fileName];
+    }
+    mc.mailComposeDelegate = self;
+    [mc setSubject:emailTitle];
+    [mc setMessageBody:messageBody isHTML:NO];
+    [mc setToRecipients:toRecipents];
+    
+    [self presentViewController:mc animated:YES completion:NULL];
 }
 
 //  setup ui trong view
@@ -118,10 +142,10 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.height.mas_equalTo(HEADER_ICON_WIDTH);
     }];
     
-    tbLogs.backgroundColor = UIColor.redColor;
+    tbLogs.backgroundColor = UIColor.clearColor;
     [tbLogs mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewHeader.mas_bottom);
-        make.bottom.left.right.equalTo(viewHeader);
+        make.bottom.left.right.equalTo(self.view);
     }];
     tbLogs.delegate = self;
     tbLogs.dataSource = self;
@@ -146,7 +170,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     NSString *fileName = [listFiles objectAtIndex: indexPath.row];
-    cell.lbName.text = fileName;
+    cell.lbName.text = [NSString stringWithFormat:@"log_file_%@", fileName];
     
     if (![listSelect containsObject: indexPath]) {
         cell.imgSelect.image = [UIImage imageNamed:@"ic_not_check.png"];
@@ -173,6 +197,21 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 60.0;
+}
+
+#pragma mark - Email
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    if (error) {
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed to send email. Please check again!"] duration:2.0 position:CSToastPositionCenter];
+    }else{
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your email was sent. Thank you!"] duration:2.0 position:CSToastPositionCenter];
+    }
+    [self performSelector:@selector(goBack) withObject:nil afterDelay:2.0];
+}
+
+- (void)goBack {
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 @end

@@ -58,8 +58,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    NSString *className = NSStringFromClass([[PhoneMainView instance].currentView class]);
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n----->Go to %@", className] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO AllContactsViewController"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
     if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
         [WriteLogsUtils writeLogContent:@"Contact have not loaded yet" toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
