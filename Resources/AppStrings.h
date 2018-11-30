@@ -12,6 +12,7 @@
 #define SHOW_LOGS @"[Show logs]"
 #define HEADER_ICON_WIDTH 35.0
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"
+#define AES_KEY         @"OdsCloudfone@123"
 
 #define simulator       @"x86_64"
 #define Iphone5_1       @"iPhone5,1"

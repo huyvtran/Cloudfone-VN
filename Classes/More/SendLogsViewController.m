@@ -100,10 +100,11 @@ static UICompositeViewDescription *compositeDescription = nil;
         NSString* content = [NSString stringWithContentsOfFile:path
                                                       encoding:NSUTF8StringEncoding
                                                          error:NULL];
-        NSString *encryptStr = [AESCrypt encrypt:content password:@"khaile76"];
+        NSString *encryptStr = [AESCrypt encrypt:content password:AES_KEY];
         NSData *logFileData = [encryptStr dataUsingEncoding:NSUTF8StringEncoding];
         
-        [mc addAttachmentData:logFileData mimeType:@"text/plain" fileName:fileName];
+        NSString *nameForSend = [self convertFileName: fileName];
+        [mc addAttachmentData:logFileData mimeType:@"text/plain" fileName:nameForSend];
     }
     mc.mailComposeDelegate = self;
     [mc setSubject:emailTitle];
@@ -182,7 +183,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     NSString *fileName = [listFiles objectAtIndex: indexPath.row];
-    cell.lbName.text = [NSString stringWithFormat:@"log_file_%@", fileName];
+    fileName = [self convertFileName: fileName];
+    cell.lbName.text = fileName;
     
     if (![listSelect containsObject: indexPath]) {
         cell.imgSelect.image = [UIImage imageNamed:@"ic_not_check.png"];
@@ -236,6 +238,20 @@ static UICompositeViewDescription *compositeDescription = nil;
             [WriteLogsUtils removeFileWithPath: path];
         }
     }
+}
+
+- (NSString *)convertFileName: (NSString *)fileName {
+    if ([fileName hasPrefix:@"."]) {
+        fileName = [fileName substringFromIndex: 1];
+    }
+    
+    if ([fileName hasSuffix:@".txt"]) {
+        fileName = [fileName substringToIndex:(fileName.length - 4)];
+    }
+    
+    fileName = [fileName stringByReplacingOccurrencesOfString:@"-" withString:@"/"];
+    
+    return [NSString stringWithFormat:@"Log_file_%@", fileName];
 }
 
 @end

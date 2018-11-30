@@ -372,7 +372,7 @@ void onUncaughtException(NSException* exception)
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSString *subDirectory = [NSString stringWithFormat:@"%@/%@.txt", logsFolderName, [AppUtils getCurrentDate]];
+    NSString *subDirectory = [NSString stringWithFormat:@"%@/.%@.txt", logsFolderName, [AppUtils getCurrentDate]];
     logFilePath = [WriteLogsUtils makeFilePathWithFileName: subDirectory];
     
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"==================================================\n==               START APPLICATION              ==\n=================================================="] toFilePath:logFilePath];

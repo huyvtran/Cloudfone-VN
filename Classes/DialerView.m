@@ -87,7 +87,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 //    NSString* content = [NSString stringWithContentsOfFile:path
 //                                                  encoding:NSUTF8StringEncoding
 //                                                     error:NULL];
-//    NSString *decrypt = [AESCrypt decrypt:content password:@"khaile76"];
+//    NSString *decrypt = [AESCrypt decrypt:content password:AES_KEY];
 //    NSLog(@"%@", decrypt);
     
     //  Added by Khai Le on 30/09/2018
