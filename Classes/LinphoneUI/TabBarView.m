@@ -102,8 +102,8 @@
 
 - (void)updateMissedCall:(int)missedCall appear:(BOOL)appear
 {
+    _historyNotificationLabel.backgroundColor = UIColor.greenColor;
     _historyNotificationLabel.text = @"";
-    [_historyNotificationView stopAnimating:YES];
     
     if ([SipUtils getStateOfDefaultProxyConfig] == eAccountNone) {
         [_historyNotificationView stopAnimating:appear];
@@ -114,11 +114,11 @@
     
 	if (missedCall > 0) {
         _historyNotificationView.hidden = NO;
-        //  _historyNotificationLabel.text = [NSString stringWithFormat:@"%i", missedCall];
-		//  [_historyNotificationView startAnimating:appear];
+        _historyNotificationLabel.text = [NSString stringWithFormat:@"%i", missedCall];
+		[_historyNotificationView startAnimating:appear];
 	} else {
         _historyNotificationView.hidden = YES;
-		//  [_historyNotificationView stopAnimating:appear];
+		[_historyNotificationView stopAnimating:appear];
 	}
 }
 

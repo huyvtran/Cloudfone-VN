@@ -7,6 +7,7 @@
 
 #import "SendLogsViewController.h"
 #import "SendLogFileCell.h"
+#import "AESCrypt.h"
 
 @interface SendLogsViewController (){
     NSMutableArray *listFiles;
@@ -96,6 +97,12 @@ static UICompositeViewDescription *compositeDescription = nil;
         NSString *fileName = [listFiles objectAtIndex: curIndex.row];
         NSString *path = [NgnFileUtils getPathOfFileWithSubDir:[NSString stringWithFormat:@"%@/%@", logsFolderName, fileName]];
         NSData *logFileData = [NSData dataWithContentsOfFile: path];
+//        NSString* content = [NSString stringWithContentsOfFile:path
+//                                                      encoding:NSUTF8StringEncoding
+//                                                         error:NULL];
+//        NSString *encryptStr = [AESCrypt encrypt:content password:@"khaile76"];
+//        NSData *logFileData = [encryptStr dataUsingEncoding:NSUTF8StringEncoding];
+        
         [mc addAttachmentData:logFileData mimeType:@"text/plain" fileName:fileName];
     }
     mc.mailComposeDelegate = self;
@@ -208,9 +215,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     if (error) {
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed to send email. Please check again!"] duration:2.0 position:CSToastPositionCenter];
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed to send email. Please check again!"] duration:4.0 position:CSToastPositionCenter];
     }else{
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your email was sent. Thank you!"] duration:2.0 position:CSToastPositionCenter];
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your email was sent. Thank you!"] duration:4.0 position:CSToastPositionCenter];
     }
     [self performSelector:@selector(goBack) withObject:nil afterDelay:2.0];
 }

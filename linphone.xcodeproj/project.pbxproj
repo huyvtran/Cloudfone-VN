@@ -98,6 +98,10 @@
 		15932B6B2186AF8700F53B90 /* SearchContactPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15932B6A2186AF8700F53B90 /* SearchContactPopupView.m */; };
 		15935B85218C56CD00072BA5 /* ContactUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 15935B84218C56CD00072BA5 /* ContactUtils.m */; };
 		1596F1DD21A4FBED005152AF /* WebServiceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1596F1DC21A4FBED005152AF /* WebServiceUtils.m */; };
+		1599BB1621B14E9600A7903D /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 1599BB0F21B14E8E00A7903D /* NSString+Base64.m */; };
+		1599BB1721B14E9600A7903D /* AESCrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = 1599BB1021B14E8F00A7903D /* AESCrypt.m */; };
+		1599BB1821B14E9600A7903D /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 1599BB1121B14E9000A7903D /* NSData+Base64.m */; };
+		1599BB1921B14E9600A7903D /* NSData+CommonCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 1599BB1321B14E9200A7903D /* NSData+CommonCrypto.m */; };
 		159E0871217984BD0056E2BB /* RegisterPBXWithPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */; };
 		159E0879217984F00056E2BB /* RegisterPBXWithPhoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */; };
 		159E08842179E9130056E2BB /* ic_not_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 159E08822179E9110056E2BB /* ic_not_check.png */; };
@@ -905,6 +909,14 @@
 		15935B84218C56CD00072BA5 /* ContactUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ContactUtils.m; path = Utils/ContactUtils.m; sourceTree = "<group>"; };
 		1596F1DB21A4FBED005152AF /* WebServiceUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WebServiceUtils.h; path = Utils/WebServiceUtils.h; sourceTree = "<group>"; };
 		1596F1DC21A4FBED005152AF /* WebServiceUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = WebServiceUtils.m; path = Utils/WebServiceUtils.m; sourceTree = "<group>"; };
+		1599BB0E21B14E8D00A7903D /* NSData+CommonCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+CommonCrypto.h"; path = "Classes/Utils/AESCrypt/NSData+CommonCrypto.h"; sourceTree = SOURCE_ROOT; };
+		1599BB0F21B14E8E00A7903D /* NSString+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Base64.m"; path = "Classes/Utils/AESCrypt/NSString+Base64.m"; sourceTree = SOURCE_ROOT; };
+		1599BB1021B14E8F00A7903D /* AESCrypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AESCrypt.m; path = Classes/Utils/AESCrypt/AESCrypt.m; sourceTree = SOURCE_ROOT; };
+		1599BB1121B14E9000A7903D /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "Classes/Utils/AESCrypt/NSData+Base64.m"; sourceTree = SOURCE_ROOT; };
+		1599BB1221B14E9100A7903D /* AESCrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AESCrypt.h; path = Classes/Utils/AESCrypt/AESCrypt.h; sourceTree = SOURCE_ROOT; };
+		1599BB1321B14E9200A7903D /* NSData+CommonCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+CommonCrypto.m"; path = "Classes/Utils/AESCrypt/NSData+CommonCrypto.m"; sourceTree = SOURCE_ROOT; };
+		1599BB1421B14E9400A7903D /* NSString+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Base64.h"; path = "Classes/Utils/AESCrypt/NSString+Base64.h"; sourceTree = SOURCE_ROOT; };
+		1599BB1521B14E9500A7903D /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "Classes/Utils/AESCrypt/NSData+Base64.h"; sourceTree = SOURCE_ROOT; };
 		159E086F217984BD0056E2BB /* RegisterPBXWithPhoneView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RegisterPBXWithPhoneView.h; path = AppUI/RegisterPBXWithPhoneView.h; sourceTree = "<group>"; };
 		159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RegisterPBXWithPhoneView.m; path = AppUI/RegisterPBXWithPhoneView.m; sourceTree = "<group>"; };
 		159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RegisterPBXWithPhoneView.xib; path = AppUI/RegisterPBXWithPhoneView.xib; sourceTree = "<group>"; };
@@ -2304,6 +2316,21 @@
 			path = "New Group";
 			sourceTree = "<group>";
 		};
+		1599BB0D21B14E5A00A7903D /* AESCrypt */ = {
+			isa = PBXGroup;
+			children = (
+				1599BB1221B14E9100A7903D /* AESCrypt.h */,
+				1599BB1021B14E8F00A7903D /* AESCrypt.m */,
+				1599BB1521B14E9500A7903D /* NSData+Base64.h */,
+				1599BB1121B14E9000A7903D /* NSData+Base64.m */,
+				1599BB0E21B14E8D00A7903D /* NSData+CommonCrypto.h */,
+				1599BB1321B14E9200A7903D /* NSData+CommonCrypto.m */,
+				1599BB1421B14E9400A7903D /* NSString+Base64.h */,
+				1599BB0F21B14E8E00A7903D /* NSString+Base64.m */,
+			);
+			path = AESCrypt;
+			sourceTree = "<group>";
+		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -3522,6 +3549,7 @@
 				1596F1DC21A4FBED005152AF /* WebServiceUtils.m */,
 				15A4333621A7EE4D00055E02 /* WriteLogsUtils.h */,
 				15A4333521A7EE4A00055E02 /* WriteLogsUtils.m */,
+				1599BB0D21B14E5A00A7903D /* AESCrypt */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -4392,6 +4420,7 @@
 				84BCC9E91FC1E162001F26FE /* UIImage+PECrop.m in Sources */,
 				84C1E2211FAEB7F800EED0B9 /* MBProgressHUD.m in Sources */,
 				D3A55FBC15877E5E003FD403 /* UIContactCell.m in Sources */,
+				1599BB1921B14E9600A7903D /* NSData+CommonCrypto.m in Sources */,
 				84E286C21FC9E1AC009CBA27 /* SDWebImageManager.m in Sources */,
 				6341807C1BBC103100F71761 /* ChatConversationCreateTableView.m in Sources */,
 				63BE7A781D75BDF6000990EF /* ShopTableView.m in Sources */,
@@ -4408,6 +4437,7 @@
 				84EFFE0C1FF3E6B60085A9F4 /* DGActivityIndicatorLineScaleAnimation.m in Sources */,
 				84E87DDA1FC1DE3B0074A54C /* NewContactViewController.m in Sources */,
 				D31C9C98158A1CDF00756B45 /* UIHistoryCell.m in Sources */,
+				1599BB1821B14E9600A7903D /* NSData+Base64.m in Sources */,
 				D35E7597159460580066B1C1 /* ChatsListView.m in Sources */,
 				84EFFE1B1FF3E6B60085A9F4 /* DGActivityIndicatorBallClipRotateMultipleAnimation.m in Sources */,
 				84EDEE4D1FB712F200FF665C /* LanguageViewController.m in Sources */,
@@ -4526,6 +4556,7 @@
 				84EDEE421FB7121C00FF665C /* KSettingViewController.m in Sources */,
 				84BCC9E51FC1E162001F26FE /* PECropRectView.m in Sources */,
 				84EFFE111FF3E6B60085A9F4 /* DGActivityIndicatorNineDotsAnimation.m in Sources */,
+				1599BB1721B14E9600A7903D /* AESCrypt.m in Sources */,
 				84C47CDC1FB5ECC30015695E /* TypePhoneContact.m in Sources */,
 				84EFFE151FF3E6B60085A9F4 /* DGActivityIndicatorLineScalePulseOutAnimation.m in Sources */,
 				D3807FFC15C2894A005BE9BC /* IASKPSTitleValueSpecifierViewCell.m in Sources */,
@@ -4541,6 +4572,7 @@
 				633FEF581D3CD5E00014B822 /* UIAvatarPresence.m in Sources */,
 				637157A11B283FE200C91677 /* FileTransferDelegate.m in Sources */,
 				D378AB2A15DCDB4A0098505D /* ImagePickerView.m in Sources */,
+				1599BB1621B14E9600A7903D /* NSString+Base64.m in Sources */,
 				84E286C41FC9E1AC009CBA27 /* SDWebImageCompat.m in Sources */,
 				22405F001601C19200B92522 /* ImageView.m in Sources */,
 				84EFFE1E1FF3E6B60085A9F4 /* DGActivityIndicatorBallScaleAnimation.m in Sources */,
@@ -5064,8 +5096,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5113,7 +5145,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
+				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5173,8 +5205,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5222,7 +5254,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
+				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5282,8 +5314,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5331,7 +5363,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
+				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5391,8 +5423,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5440,7 +5472,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
+				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
