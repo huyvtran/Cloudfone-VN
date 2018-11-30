@@ -131,6 +131,8 @@
             
             if ([result isEqualToString:@"failure"] || [result isEqualToString:@"failed"]) {
                 NSString *message = [object objectForKey:@"message"];
+                message = [NSString stringWithUTF8String: [message UTF8String]];
+                
                 [delegate failedToCallWebService:function andError:message];
             }else if([result isEqualToString:@"success"])
             {

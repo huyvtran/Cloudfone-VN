@@ -96,12 +96,12 @@ static UICompositeViewDescription *compositeDescription = nil;
         NSIndexPath *curIndex = [listSelect objectAtIndex: i];
         NSString *fileName = [listFiles objectAtIndex: curIndex.row];
         NSString *path = [NgnFileUtils getPathOfFileWithSubDir:[NSString stringWithFormat:@"%@/%@", logsFolderName, fileName]];
-        NSData *logFileData = [NSData dataWithContentsOfFile: path];
-//        NSString* content = [NSString stringWithContentsOfFile:path
-//                                                      encoding:NSUTF8StringEncoding
-//                                                         error:NULL];
-//        NSString *encryptStr = [AESCrypt encrypt:content password:@"khaile76"];
-//        NSData *logFileData = [encryptStr dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString* content = [NSString stringWithContentsOfFile:path
+                                                      encoding:NSUTF8StringEncoding
+                                                         error:NULL];
+        NSString *encryptStr = [AESCrypt encrypt:content password:@"khaile76"];
+        NSData *logFileData = [encryptStr dataUsingEncoding:NSUTF8StringEncoding];
         
         [mc addAttachmentData:logFileData mimeType:@"text/plain" fileName:fileName];
     }

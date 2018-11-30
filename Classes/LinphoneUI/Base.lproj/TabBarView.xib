@@ -47,7 +47,7 @@
                     </connections>
                 </button>
                 <view hidden="YES" autoresizesSubviews="NO" userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" misplaced="YES" id="32" userLabel="historyNotificationView" customClass="UIBouncingView">
-                    <rect key="frame" x="52" y="0.0" width="21" height="21"/>
+                    <rect key="frame" x="52" y="0.0" width="19" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView hidden="YES" userInteractionEnabled="NO" tag="11" contentMode="scaleAspectFit" id="33" userLabel="historyNotificationImage">
@@ -57,7 +57,7 @@
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="12" contentMode="left" text="99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" id="34" userLabel="historyNotificationLabel">
                             <rect key="frame" x="0.0" y="0.0" width="21" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <accessibility key="accessibilityConfiguration" label="Missed call(s)">
                                 <accessibilityTraits key="traits" none="YES"/>
                             </accessibility>
@@ -104,7 +104,7 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-88" y="-198"/>
+            <point key="canvasLocation" x="98" y="-200"/>
         </view>
         <view contentMode="scaleToFill" id="ni3-kk-RmM">
             <rect key="frame" x="0.0" y="0.0" width="90" height="333"/>

@@ -459,6 +459,7 @@
 		84BCC9E81FC1E162001F26FE /* PEResizeControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BCC9E21FC1E162001F26FE /* PEResizeControl.m */; };
 		84BCC9E91FC1E162001F26FE /* UIImage+PECrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BCC9E41FC1E162001F26FE /* UIImage+PECrop.m */; };
 		84BE100221651F5B00831E36 /* background_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BE0FFB21651F5A00831E36 /* background_header.png */; };
+		84C0018521B1781200105B00 /* file_encrypt.txt in Resources */ = {isa = PBXBuildFile; fileRef = 84C0017E21B1781200105B00 /* file_encrypt.txt */; };
 		84C1E20B1FAEB3EB00EED0B9 /* HMLocalization.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E20A1FAEB3EB00EED0B9 /* HMLocalization.m */; };
 		84C1E2211FAEB7F800EED0B9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E2201FAEB7F800EED0B9 /* MBProgressHUD.m */; };
 		84C1E2291FAEB94500EED0B9 /* en.txt in Resources */ = {isa = PBXBuildFile; fileRef = 84C1E2271FAEB94500EED0B9 /* en.txt */; };
@@ -1423,6 +1424,7 @@
 		84BCC9E31FC1E162001F26FE /* UIImage+PECrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+PECrop.h"; path = "OutSources/PEPhotoCropEditor/Lib/UIImage+PECrop.h"; sourceTree = "<group>"; };
 		84BCC9E41FC1E162001F26FE /* UIImage+PECrop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+PECrop.m"; path = "OutSources/PEPhotoCropEditor/Lib/UIImage+PECrop.m"; sourceTree = "<group>"; };
 		84BE0FFB21651F5A00831E36 /* background_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_header.png; sourceTree = "<group>"; };
+		84C0017E21B1781200105B00 /* file_encrypt.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = file_encrypt.txt; sourceTree = "<group>"; };
 		84C1E2091FAEB3EB00EED0B9 /* HMLocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HMLocalization.h; path = OutSources/HMLocalization/HMLocalization.h; sourceTree = "<group>"; };
 		84C1E20A1FAEB3EB00EED0B9 /* HMLocalization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HMLocalization.m; path = OutSources/HMLocalization/HMLocalization.m; sourceTree = "<group>"; };
 		84C1E2181FAEB48500EED0B9 /* AppStrings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppStrings.h; sourceTree = "<group>"; };
@@ -2735,6 +2737,7 @@
 		63AADBC31B6A0FF200AA16FD /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				84C0017E21B1781200105B00 /* file_encrypt.txt */,
 				8442A3611FB1320F00F08F11 /* Fonts */,
 				84C1E2261FAEB93400EED0B9 /* Languages */,
 				63AADBE31B6A0FF200AA16FD /* assistant_external_sip.rc */,
@@ -3903,6 +3906,7 @@
 				84ECF9C7216679A70067B4B6 /* ic_keypad_dis.png in Resources */,
 				8440F188216BA82000BB559C /* mini_key_sharp_hover.png in Resources */,
 				84E07EF72025DD8A0000CD12 /* callnex_ring.wav in Resources */,
+				84C0018521B1781200105B00 /* file_encrypt.txt in Resources */,
 				841B35922191F1360019BD45 /* ConferenceTableViewCell.xib in Resources */,
 				153D00152164A67E007B69B3 /* numpad_clear.png in Resources */,
 				843ED6761FB66A36005FE1C1 /* SettingCell.xib in Resources */,
@@ -5096,8 +5100,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5145,7 +5149,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
+				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5205,8 +5209,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5254,7 +5258,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
+				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5314,8 +5318,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5363,7 +5367,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
+				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5423,8 +5427,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5472,7 +5476,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
+				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";

@@ -102,7 +102,9 @@
 
 - (void)updateMissedCall:(int)missedCall appear:(BOOL)appear
 {
-    _historyNotificationLabel.backgroundColor = UIColor.greenColor;
+    
+    //  _historyNotificationView.backgroundColor = UIColor.blueColor;
+    //  _historyNotificationLabel.backgroundColor = UIColor.greenColor;
     _historyNotificationLabel.text = @"";
     
     if ([SipUtils getStateOfDefaultProxyConfig] == eAccountNone) {

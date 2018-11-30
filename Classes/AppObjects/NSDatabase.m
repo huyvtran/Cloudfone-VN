@@ -68,7 +68,7 @@ HMLocalization *localization;
 //  reset missed call with remote on date
 + (BOOL)resetMissedCallOfRemote: (NSString *)remote onDate: (NSString *)date ofAccount: (NSString *)account
 {
-    NSString *tSQL = [NSString stringWithFormat:@"UPDATE history SET unread = %d WHERE my_sip = '%@' AND date = '%@'", 0, account, date];
+    NSString *tSQL = [NSString stringWithFormat:@"UPDATE history SET unread = %d WHERE my_sip = '%@' AND date = '%@' AND phone_number = '%@'", 0, account, date, remote];
     return [appDelegate._database executeUpdate: tSQL];
 }
 

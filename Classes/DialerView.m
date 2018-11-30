@@ -33,6 +33,7 @@
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
 #import "PBXContact.h"
+#import "AESCrypt.h"
 
 @interface DialerView (){
     LinphoneAppDelegate *appDelegate;
@@ -79,6 +80,15 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[super viewWillAppear:animated];
     
     [WriteLogsUtils writeForGoToScreen: @"DialerView"];
+    
+//    NSString* path = [[NSBundle mainBundle] pathForResource:@"file_encrypt"
+//                                                     ofType:@"txt"];
+//
+//    NSString* content = [NSString stringWithContentsOfFile:path
+//                                                  encoding:NSUTF8StringEncoding
+//                                                     error:NULL];
+//    NSString *decrypt = [AESCrypt decrypt:content password:@"khaile76"];
+//    NSLog(@"%@", decrypt);
     
     //  Added by Khai Le on 30/09/2018
     [self checkAccountForApp];
