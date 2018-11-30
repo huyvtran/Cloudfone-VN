@@ -47,6 +47,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [WriteLogsUtils writeForGoToScreen:@"AboutViewController"];
+    
     linkToAppStore = @"";
     lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"About"];
     [btnCheckForUpdate setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Check for update"] forState:UIControlStateNormal];

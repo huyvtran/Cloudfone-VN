@@ -62,6 +62,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [WriteLogsUtils writeForGoToScreen:@"MissedCallViewController"];
+    
     [self showContentWithCurrentMessage];
     
     isDeleted = false;
@@ -91,7 +93,11 @@
 
 #pragma mark - My functions
 
-- (void)getMissedHistoryCallForUser {
+- (void)getMissedHistoryCallForUser
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         if (listCalls == nil) {
             listCalls = [[NSMutableArray alloc] init];
@@ -138,7 +144,11 @@
 }
 
 //  Get lại danh sách các cuộc gọi sau khi xoá
-- (void)reGetListCallsForHistory {
+- (void)reGetListCallsForHistory
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     [listCalls removeAllObjects];
     [listCalls addObjectsFromArray:[NSDatabase getHistoryCallListOfUser: USERNAME isMissed: true]];
 }
@@ -348,7 +358,11 @@
     return hCell;
 }
 
-- (void)btnCallOnCellPressed: (UIButton *)sender {
+- (void)btnCallOnCellPressed: (UIButton *)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] phone number = %@", __FUNCTION__, sender.currentTitle]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
         NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
         if (![phoneNumber isEqualToString:@""]) {
@@ -360,7 +374,11 @@
                 duration:2.0 position:CSToastPositionCenter];
 }
 
-- (void)deleteHistoryCallsChoosed {
+- (void)deleteHistoryCallsChoosed
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] ", __FUNCTION__]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     isDeleted = false;
     if (listDelete != nil && listDelete.count > 0) {
         for (int iCount=0; iCount<listDelete.count; iCount++) {

@@ -375,16 +375,12 @@ void onUncaughtException(NSException* exception)
     NSString *subDirectory = [NSString stringWithFormat:@"%@/%@.txt", logsFolderName, [AppUtils getCurrentDate]];
     logFilePath = [WriteLogsUtils makeFilePathWithFileName: subDirectory];
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n=========================START APPLICATION=========================\n"] toFilePath:logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"==================================================\n==               START APPLICATION              ==\n=================================================="] toFilePath:logFilePath];
     
     UIApplication *app = [UIApplication sharedApplication];
 	UIApplicationState state = app.applicationState;
     
     NSSetUncaughtExceptionHandler(&onUncaughtException);
-    
-    //  [Khai le - 25/10/2018]: add log files folder
-    [NgnFileUtils createDirectoryAndSubDirectory:@"chats/records"];
-    [NgnFileUtils createDirectory:@"avatars"];
     
     //  [Khai le - 25/10/2018]: Add write logs for app
     [self setupForWriteLogFileForApp];
@@ -551,6 +547,8 @@ void onUncaughtException(NSException* exception)
 }
 
 - (void)reloadContactListAfterAddSuccess {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:logFilePath];
+    
     [self getContactsListForFirstLoad];
 }
 
@@ -649,8 +647,7 @@ void onUncaughtException(NSException* exception)
     title = Cloudfone;
     */
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s userInfo = %@", __FUNCTION__, @[userInfo]]
-                         toFilePath:logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] userInfo = %@", __FUNCTION__, @[userInfo]] toFilePath:logFilePath];
     
     NSDictionary *aps = [userInfo objectForKey:@"aps"];
     if (aps != nil)
@@ -949,7 +946,9 @@ void onUncaughtException(NSException* exception)
         _deviceToken = [_deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
         _deviceToken = [_deviceToken stringByReplacingOccurrencesOfString:@"<" withString:@""];
         _deviceToken = [_deviceToken stringByReplacingOccurrencesOfString:@">" withString:@""];
-        NSLog(@"%@", _deviceToken);
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] _deviceToken = %@", __FUNCTION__, _deviceToken] toFilePath:logFilePath];
+        
         //  Cap nhat token cho phan chat
         if (USERNAME != nil && ![USERNAME isEqualToString: @""]) {
             [self updateCustomerTokenIOS];
@@ -981,6 +980,8 @@ void onUncaughtException(NSException* exception)
             data->timer = nil;
         }
     }
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] response.actionIdentifier = %@.\nresponse user info = %@", __FUNCTION__, response.actionIdentifier, response.notification.request.content.userInfo] toFilePath:logFilePath];
     
     if ([response.actionIdentifier isEqual:@"Answer"]) {
         // use the standard handler
@@ -1497,7 +1498,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 - (void)getContactsListForFirstLoad
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__]
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
                          toFilePath:logFilePath];
     
     if (listContacts == nil) {
@@ -1516,7 +1517,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             contactLoaded = YES;
             [[NSNotificationCenter defaultCenter] postNotificationName:finishLoadContacts
                                                                 object:nil];
-            [WriteLogsUtils writeLogContent:@"Get contact DONE ---> post event finishLoadContacts" toFilePath:logFilePath];
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] GET PHONE'S CONTACT FINISH. POST EVENT finishLoadContacts", __FUNCTION__] toFilePath:logFilePath];
         });
     });
 }
@@ -1837,18 +1838,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     return avatar;
 }
 
-- (NSString *)getSipIdOfContact: (ABRecordRef)aPerson {
-    if (aPerson != nil) {
-        NSString *sipNumber = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNamePhoneticProperty);
-        if (sipNumber == nil) {
-            sipNumber = @"";
-        }
-        [sipNumber stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
-        return sipNumber;
-    }
-    return @"";
-}
-
 // copy database
 - (void)copyFileDataToDocument : (NSString *)filename {
     NSArray *arrPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -1927,7 +1916,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         
         [webService callWebServiceWithLink:ChangeCustomerIOSToken withParams:jsonDict];
         
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @[jsonDict]] toFilePath:logFilePath];
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] jsonDict = %@", __FUNCTION__, @[jsonDict]] toFilePath:logFilePath];
     }
 }
 
@@ -1945,7 +1934,10 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     return [NSDate dateWithTimeInterval: seconds sinceDate: [NSDate date]];
 }
 
-- (void)getMissedCallFromServer {
+- (void)getMissedCallFromServer
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:logFilePath];
+    
     NSString *pbxIp = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID];
     NSString *ExtUser = [SipUtils getAccountIdOfDefaultProxyConfig];
     
@@ -1973,8 +1965,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         [jsonDict setObject:dateTo forKey:@"DateTo"];
         
         [webService callWebServiceWithLink:GetInfoMissCall withParams:jsonDict inBackgroundMode:YES];
-        
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @[jsonDict]] toFilePath:logFilePath];
+    }else{
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Can not get dateFrom for first install", __FUNCTION__] toFilePath:logFilePath];
     }
     [[NSUserDefaults standardUserDefaults] setObject:dateTo forKey:DATE_FROM];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -2004,8 +1996,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     }
 }
 
-- (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s - %@:\n%@", __FUNCTION__, link, error] toFilePath:logFilePath];
+- (void)failedToCallWebService:(NSString *)link andError:(NSString *)error
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Result for %@:\nResponse data: %@\n", __FUNCTION__, link, error] toFilePath:logFilePath];
     
     if ([link isEqualToString:ChangeCustomerIOSToken]) {
         _updateTokenSuccess = false;
@@ -2013,7 +2006,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 }
 
 - (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s - %@:\n%@", __FUNCTION__, link, @[data]] toFilePath:logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Result for %@:\nResponse data: %@\n", __FUNCTION__, link, @[data]] toFilePath:logFilePath];
     
     if ([link isEqualToString:ChangeCustomerIOSToken]) {
         _updateTokenSuccess = true;
@@ -2029,12 +2022,14 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 //  [Khai le - 25/10/2018]: Add write logs for app
 - (void)setupForWriteLogFileForApp
 {
+    [NgnFileUtils createDirectoryAndSubDirectory:@"chats/records"];
+    [NgnFileUtils createDirectory:@"avatars"];
+    
     //  create folder to contain log files
     [NgnFileUtils createDirectoryAndSubDirectory: logsFolderName];
     
-    [WriteLogsUtils clearLogFilesAfterExpireTime: DAY_FOR_LOGS*24*3600];
-    
     return;
+    
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
     

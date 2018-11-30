@@ -66,7 +66,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO MoreViewController"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [super viewWillAppear: animated];
+    
+    [WriteLogsUtils writeForGoToScreen: @"MoreViewController"];
     
     // Tắt màn hình cảm biến
     UIDevice *device = [UIDevice currentDevice];
@@ -257,6 +259,8 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case eFeedback:{
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to feedback on App Store", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+            
             NSURL *linkCloudfoneOnAppStore = [NSURL URLWithString:@"https://itunes.apple.com/vn/app/cloudfone/id1275900068?mt=8"];
             [[UIApplication sharedApplication] openURL: linkCloudfoneOnAppStore];
             

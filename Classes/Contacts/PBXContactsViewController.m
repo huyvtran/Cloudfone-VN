@@ -52,7 +52,7 @@
 {
     [super viewWillAppear: animated];
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO PBXContactsViewController"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeForGoToScreen: @"PBXContactsViewController"];
     
     [self showContentWithCurrentLanguage];
     isSearching = NO;
@@ -119,7 +119,7 @@
 #pragma mark - my functions
 
 - (void)showContentWithCurrentLanguage {
-    [_lbContacts setText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No contacts"]];
+    _lbContacts.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No contacts"];
 }
 
 //  setup thông tin cho tableview
@@ -389,7 +389,11 @@
     }
 }
 
-- (void)onIconCallClicked: (UIButton *)sender {
+- (void)onIconCallClicked: (UIButton *)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] phone number = %@", __FUNCTION__, sender.currentTitle]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     if (![AppUtils isNullOrEmpty: sender.currentTitle]) {
         NSString *number = [AppUtils removeAllSpecialInString: sender.currentTitle];
         if (![AppUtils isNullOrEmpty: number]) {

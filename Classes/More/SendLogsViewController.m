@@ -46,8 +46,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     [self setupUIForView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear: animated];
+    //  remove other files if it is not log file
+    [self cleanLogFolder];
+    [WriteLogsUtils clearLogFilesAfterExpireTime: DAY_FOR_LOGS*24*3600];
+    
     icSend.enabled = NO;
     
     if (listSelect == nil) {
@@ -212,6 +217,18 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)goBack {
     [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)cleanLogFolder {
+    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    NSArray *arr = [WriteLogsUtils getAllFilesInDirectory: logsFolderName];
+    for (int i=0; i<arr.count; i++) {
+        NSString *fileName = [arr objectAtIndex: i];
+        if ([fileName hasPrefix: bundleIdentifier]) {
+            NSString *path = [NgnFileUtils getPathOfFileWithSubDir:[NSString stringWithFormat:@"%@/%@", logsFolderName, fileName]];
+            [WriteLogsUtils removeFileWithPath: path];
+        }
+    }
 }
 
 @end

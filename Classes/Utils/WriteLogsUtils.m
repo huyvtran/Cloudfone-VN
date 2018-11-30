@@ -110,4 +110,8 @@
     return directoryContent;
 }
 
++ (void)writeForGoToScreen: (NSString *)screen {
+    [self writeLogContent:[NSString stringWithFormat:@"-------------> Go to %@ screen.\n", screen] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+}
+
 @end

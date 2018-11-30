@@ -53,13 +53,19 @@ INIT_WITH_COMMON_CF {
 
 - (void)onOn {
 	[LinphoneManager.instance setSpeakerEnabled:TRUE];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
 }
 
 - (void)onOff {
 	[LinphoneManager.instance setSpeakerEnabled:FALSE];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
 }
 
 - (bool)onUpdate {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     dispatch_async(dispatch_get_main_queue(), ^(void){
         self.enabled = [LinphoneManager.instance allowSpeaker];
     });

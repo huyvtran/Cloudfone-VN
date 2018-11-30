@@ -53,6 +53,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
+    [WriteLogsUtils writeForGoToScreen:@"AccountSettingsViewController"];
+    
     _lbHeader.text = [appDelegate.localization localizedStringForKey:@"Account settings"];
     stateAccount = [SipUtils getStateOfDefaultProxyConfig];
     [_tbContent reloadData];
@@ -186,7 +188,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] indexPath row = %d", __FUNCTION__, (int)indexPath.row] toFilePath:appDelegate.logFilePath];
+    
     if (indexPath.section == 0) {
         [[PhoneMainView instance] changeCurrentView:[PBXSettingViewController compositeViewDescription] push:YES];
     }else if (indexPath.section == 1){

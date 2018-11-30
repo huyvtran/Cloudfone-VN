@@ -84,7 +84,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO PBXSettingViewController"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeForGoToScreen: @"PBXSettingViewController"];
     
     clearingAccount = NO;
     
@@ -384,7 +384,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[PhoneMainView instance] popCurrentView];
 }
 
-- (IBAction)_iconQRCodeClicked:(UIButton *)sender {
+- (IBAction)_iconQRCodeClicked:(UIButton *)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     if ([QRCodeReader supportsMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]]) {
         QRCodeReader *reader = [QRCodeReader readerWithMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]];
         scanQRCodeVC = [QRCodeReaderViewController readerWithCancelButtonTitle:@"Cancel" codeReader:reader startScanningAtLoad:YES showSwitchCameraButton:YES showTorchButton:YES];
@@ -423,8 +427,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (IBAction)_btnClearPressed:(UIButton *)sender
 {
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] with networkReady = %d", __FUNCTION__, networkReady]
-                         toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Clear proxy config with networkReady = %d", __FUNCTION__, networkReady] toFilePath:appDelegate.logFilePath];
     
     if (!networkReady) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
@@ -440,12 +443,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)_btnSavePressed:(UIButton *)sender
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
-                         toFilePath:appDelegate.logFilePath];
-    
     [self.view endEditing: YES];
     
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Save proxy config with networkReady = %d", __FUNCTION__, networkReady] toFilePath:appDelegate.logFilePath];
+    
     if (!networkReady) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
@@ -542,8 +545,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] %@:\n%@", __FUNCTION__, link, error]
-                         toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] link: %@\nResponse data: %@", __FUNCTION__, link, error] toFilePath:appDelegate.logFilePath];
     
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
@@ -559,7 +561,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] %@ - Response data:\n %@", __FUNCTION__, link, @[data]] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] link: %@\nResponse data: %@", __FUNCTION__, link, @[data]] toFilePath:appDelegate.logFilePath];
     
     [_icWaiting stopAnimating];
     if ([link isEqualToString:getServerInfoFunc]) {
@@ -588,7 +590,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)startLoginPBXWithInfo: (NSDictionary *)info
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @[info]]
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] %@", __FUNCTION__, @[info]]
                          toFilePath:appDelegate.logFilePath];
     
     NSString *pbxIp = [info objectForKey:@"ipAddress"];
@@ -626,7 +628,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         NSString *pbxPassword = [data objectAtIndex: 2];
         NSString *pbxPort = [data objectAtIndex: 3];
         
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] pbxDomain = %@, pbxAccount = %@, pbxPort = %@", __FUNCTION__, pbxDomain, pbxAccount, pbxPort] toFilePath:appDelegate.logFilePath];
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] with info %@", __FUNCTION__, @[data]]
+                             toFilePath:appDelegate.logFilePath];
         
         BOOL success = [SipUtils loginSipWithDomain:pbxDomain username:pbxAccount password:pbxPassword port:pbxPort];
         if (success) {
@@ -647,7 +650,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     switch (state) {
         case LinphoneRegistrationOk:
         {
-            NSLog(@"LinphoneRegistrationOk");
             if (turnOnAcc) {
                 [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationOk, turnOnAcc = YES", __FUNCTION__] toFilePath:appDelegate.logFilePath];
                 
@@ -669,7 +671,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                 linphone_core_clear_proxy_config(LC);
                 
             }else if (enableProxyConfig == proxy){
-                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationOk, set enableProxyConfig = nil", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationOk with typeRegister = %d, set enableProxyConfig = nil", __FUNCTION__, typeRegister] toFilePath:appDelegate.logFilePath];
                 
                 enableProxyConfig = nil;
                     
@@ -795,7 +797,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)whenRegisterPBXSuccessfully {
+- (void)whenRegisterPBXSuccessfully
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     [[NSUserDefaults standardUserDefaults] setObject:serverPBX forKey:PBX_SERVER];
     [[NSUserDefaults standardUserDefaults] setObject:ipPBX forKey:PBX_ID];
     [[NSUserDefaults standardUserDefaults] setObject:portPBX forKey:PBX_PORT];
@@ -1002,7 +1008,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [reader stopScanning];
     
     [self dismissViewControllerAnimated:YES completion:^{
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s] result = %@", __FUNCTION__, result]
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] result = %@", __FUNCTION__, result]
                              toFilePath:appDelegate.logFilePath];
         
         BOOL networkReady = [DeviceUtils checkNetworkAvailable];
@@ -1029,7 +1035,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [webService callWebServiceWithLink:DecryptRSA withParams:jsonDict];
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s] jsonDict = %@", __FUNCTION__, @[jsonDict]]
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] jsonDict = %@", __FUNCTION__, @[jsonDict]]
                          toFilePath:appDelegate.logFilePath];
 }
 
@@ -1177,9 +1183,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)addRegisteredProxyConfig {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:appDelegate.logFilePath];
-    
-    if (enableProxyConfig != NULL) {
+    if (enableProxyConfig != NULL && enableProxyConfig != nil) {
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__] toFilePath:appDelegate.logFilePath];
         
         linphone_core_add_proxy_config(LC, enableProxyConfig);
@@ -1189,12 +1193,18 @@ static UICompositeViewDescription *compositeDescription = nil;
         linphone_proxy_config_done(enableProxyConfig);
         
         linphone_core_refresh_registers(LC);
+    }else{
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] But enableProxyConfig == NULL", __FUNCTION__] toFilePath:appDelegate.logFilePath];
     }
 }
 
 #pragma mark - Switch Custom Delegate
-- (void)switchButtonEnabled {
+- (void)switchButtonEnabled
+{
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] with networkReady = %d", __FUNCTION__, networkReady] toFilePath:appDelegate.logFilePath];
+    
     if (!networkReady) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
@@ -1209,11 +1219,16 @@ static UICompositeViewDescription *compositeDescription = nil;
         _icWaiting.hidden = NO;
         
         [SipUtils enableProxyConfig:defaultConfig withValue:YES withRefresh:YES];
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Enable proxy config with accountId = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath:appDelegate.logFilePath];
     }
 }
 
 - (void)switchButtonDisabled {
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] with networkReady = %d", __FUNCTION__, networkReady] toFilePath:appDelegate.logFilePath];
+    
     if (!networkReady) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
@@ -1228,6 +1243,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         _icWaiting.hidden = NO;
         
         [SipUtils enableProxyConfig:defaultConfig withValue:NO withRefresh:YES];
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Disable proxy config with accountId = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath:appDelegate.logFilePath];
     }
 }
 

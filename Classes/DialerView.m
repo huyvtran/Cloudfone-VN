@@ -78,7 +78,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO DialerView"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeForGoToScreen: @"DialerView"];
     
     //  Added by Khai Le on 30/09/2018
     [self checkAccountForApp];
@@ -372,6 +372,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)_btnAddCallPressed:(UIButton *)sender
 {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] With address = %@", __FUNCTION__, _addressField.text]
+                         toFilePath:appDelegate.logFilePath];
+    
     LinphoneManager.instance.nextCallIsTransfer = NO;
     
     NSString *address = _addressField.text;
@@ -400,9 +403,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
     }
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] With address = %@", __FUNCTION__, address]
-                         toFilePath:appDelegate.logFilePath];
-    
     if ([address length] > 0) {
         LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:address];
         [LinphoneManager.instance call:addr];
@@ -412,7 +412,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_btnTransferPressed:(UIButton *)sender {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Transfer call with phone number %@", __FUNCTION__, _addressField.text] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Transfer call to %@", __FUNCTION__, _addressField.text] toFilePath:appDelegate.logFilePath];
     
     if (![_addressField.text isEqualToString:@""]) {
         LinphoneManager.instance.nextCallIsTransfer = YES;
@@ -425,14 +425,14 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)_btnHotlinePressed:(UIButton *)sender
 {
+    [WriteLogsUtils writeLogContent:@"Call to hotline" toFilePath:appDelegate.logFilePath];
+    
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
     if (!networkReady) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
  
-    [WriteLogsUtils writeLogContent:@"You called to hotline %@" toFilePath:appDelegate.logFilePath];
-    
     BOOL success = [SipUtils makeCallWithPhoneNumber: hotline];
     if (!success) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Can not make call. Perhaps you have not signned your account yet"] duration:3.0 position:CSToastPositionCenter];
@@ -470,7 +470,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - Khai Le Functions
 
-- (void)networkDown {
+- (void)networkDown
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] OH SHITTTTTTTTT!", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    
     _lbStatus.text = [appDelegate.localization localizedStringForKey:@"No network"];
     _lbStatus.textColor = UIColor.orangeColor;
 }
@@ -478,7 +481,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)searchPhoneBookWithThread {
     //  [Khai le - 01/11/2018]: Just search contact when contact was loaded
     if (!appDelegate.contactLoaded) {
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @"Can not search contact. Because phonebook was getting"] toFilePath:appDelegate.logFilePath];
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Contacts list have not loaded successful. Please wait for a momment", __FUNCTION__] toFilePath:appDelegate.logFilePath];
         
         return;
     }
@@ -498,7 +501,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         
         dispatch_async(dispatch_get_main_queue(), ^(void){
-            [self afterGetContactPhoneBookSuccessfully];
+            [self searchContactDone];
         });
     });
 }
@@ -510,7 +513,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 // Search duoc danh sach
-- (void)afterGetContactPhoneBookSuccessfully
+- (void)searchContactDone
 {
     if (_addressField.text.length == 0) {
         _addContactButton.hidden = YES;
@@ -527,7 +530,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)enableNAT {
+- (void)enableNAT
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    
     LinphoneNatPolicy *LNP = linphone_core_get_nat_policy(LC);
     linphone_nat_policy_enable_ice(LNP, FALSE);
 }
@@ -831,7 +837,10 @@ static UICompositeViewDescription *compositeDescription = nil;
                      message:message];
 }
 
-- (void)registrationUpdate:(LinphoneRegistrationState)state forProxy:(LinphoneProxyConfig *)proxy message:(NSString *)message {
+- (void)registrationUpdate:(LinphoneRegistrationState)state forProxy:(LinphoneProxyConfig *)proxy message:(NSString *)message
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"-------------------------\n[%s] Received registration state = %d, message = %@\n-------------------------\n", __FUNCTION__, state, message] toFilePath:appDelegate.logFilePath];
+    
     switch (state) {
         case LinphoneRegistrationOk: {
             _lbStatus.textColor = UIColor.greenColor;
@@ -884,19 +893,23 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 //  Added by Khai Le on 30/09/2018
-- (void)checkAccountForApp {
-    
+- (void)checkAccountForApp
+{
     AccountState curState = [SipUtils getStateOfDefaultProxyConfig];
     if (curState == eAccountNone) {
         _lbAccount.text = @"";
         _lbStatus.text = [appDelegate.localization localizedStringForKey:@"No account"];
         _lbStatus.textColor = UIColor.orangeColor;
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] NONE ACCOUNT", __FUNCTION__] toFilePath:appDelegate.logFilePath];
     }else {
         NSString *accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
         _lbAccount.text = accountID;
         if (curState == eAccountOff) {
             _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Disabled"];
             _lbStatus.textColor = UIColor.orangeColor;
+            
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] AccountId = %@, state is OFF", __FUNCTION__, accountID] toFilePath:appDelegate.logFilePath];
         }else{
             LinphoneRegistrationState state = [SipUtils getRegistrationStateOfDefaultProxyConfig];
             if (state == LinphoneRegistrationOk) {
@@ -907,6 +920,8 @@ static UICompositeViewDescription *compositeDescription = nil;
                 _lbStatus.textColor = UIColor.orangeColor;
                 _lbStatus.text = [appDelegate.localization localizedStringForKey:@"Offline"];
             }
+            
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] AccountId = %@, state is ON", __FUNCTION__, accountID] toFilePath:appDelegate.logFilePath];
         }
     }
 }
@@ -936,7 +951,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)whenTappedOnStatusAccount
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s]", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:appDelegate.logFilePath];
     
     if ([LinphoneManager instance].connectivity == none){
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
@@ -964,7 +979,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s] Call function %@", __FUNCTION__, @"refreshRegisters"] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Call function %@", __FUNCTION__, @"refreshRegisters"] toFilePath:appDelegate.logFilePath];
     [LinphoneManager.instance refreshRegisters];
 }
 
@@ -1073,8 +1088,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (alertView.tag == 1)
     {
         if (buttonIndex == 1){
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s] Go to view controller %@", __FUNCTION__, @"PBXSettingViewController"] toFilePath:appDelegate.logFilePath];
-            
             [[PhoneMainView instance] changeCurrentView:[PBXSettingViewController compositeViewDescription] push:YES];
         }
     }
@@ -1087,7 +1100,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             
             linphone_core_refresh_registers(LC);
             
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s] %@", __FUNCTION__, @"Enable account"] toFilePath:appDelegate.logFilePath];
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] You turned on account with Id = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath:appDelegate.logFilePath];
         }
     }
 }
@@ -1112,10 +1125,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     return NO;
 }
 
-- (void)selectContactFromSearchPopup:(NSString *)phoneNumber
-{
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n[%s] phoneNumber = %@", __FUNCTION__, phoneNumber] toFilePath:appDelegate.logFilePath];
-    
+- (void)selectContactFromSearchPopup:(NSString *)phoneNumber {
     _addressField.text = phoneNumber;
     tvSearchResult.hidden = YES;
 }

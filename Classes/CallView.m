@@ -192,7 +192,9 @@ static UICompositeViewDescription *compositeDescription = nil;
         phoneNumber = [self getPhoneNumberOfCall];
     }
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO CallView"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeForGoToScreen: @"CallView"];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"------------> phone number is %@", phoneNumber] toFilePath:appDelegate.logFilePath];
     
     //  [Khai le - 03/11/2018]
     PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
@@ -566,10 +568,13 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)callUpdate:(LinphoneCall *)call state:(LinphoneCallState)state animated:(BOOL)animated message: (NSString *)message
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] The current call state is %d, with message = %@", __FUNCTION__, state, message] toFilePath:appDelegate.logFilePath];
     
     // Add tất cả các cuộc gọi vào nhóm
-    if (linphone_core_get_calls_nb(LC) >= 2) {
+    int numOfCalls = linphone_core_get_calls_nb(LC);
+    if (numOfCalls >= 2) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Number call is %d. Add all call to conference", __FUNCTION__, numOfCalls] toFilePath:appDelegate.logFilePath];
+        
         linphone_core_add_all_to_conference([LinphoneManager getLc]);
     }
     
@@ -607,9 +612,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 	switch (state) {
         case LinphoneCallOutgoingRinging:{
-            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallOutgoingRinging"
-                                 toFilePath:appDelegate.logFilePath];
-            
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Ringing"];
             _durationLabel.textColor = UIColor.whiteColor;
             
@@ -617,27 +619,17 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallIncomingReceived:{
-            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallIncomingReceived"
-                                 toFilePath:appDelegate.logFilePath];
-            
             [self getPhoneNumberOfCall];
             NSLog(@"incomming");
             break;
         }
         case LinphoneCallOutgoingProgress:{
-            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallOutgoingProgress"
-                                 toFilePath:appDelegate.logFilePath];
-            
             _durationLabel.text = [appDelegate.localization localizedStringForKey:@"Calling"];
             _durationLabel.textColor = UIColor.whiteColor;
             
             break;
         }
         case LinphoneCallOutgoingInit:{
-            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallOutgoingInit"
-                                 toFilePath:appDelegate.logFilePath];
-            
-            //  Added by Khai Le on 21/10/2018
             if (self.halo == nil) {
                 [self addAnimationForOutgoingCall];
             }
@@ -656,9 +648,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallConnected:{
-            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallConnected"
-                                 toFilePath:appDelegate.logFilePath];
-            
             //  Check if in call with hotline
             if (![phoneNumber isEqualToString:hotline]) {
                 icAddCall.enabled = YES;
@@ -691,9 +680,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
 		case LinphoneCallStreamsRunning: {
-            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallStreamsRunning"
-                                 toFilePath:appDelegate.logFilePath];
-            
             // check video
 			if (!linphone_call_params_video_enabled(linphone_call_get_current_params(call))) {
 				const LinphoneCallParams *param = linphone_call_get_current_params(call);
@@ -735,9 +721,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 		}
 		case LinphoneCallPausing:
         case LinphoneCallPaused:{
-            [WriteLogsUtils writeLogContent:@"Call state is LinphoneCallPaused"
-                                 toFilePath:appDelegate.logFilePath];
-            
             break;
         }
 		case LinphoneCallPausedByRemote:
@@ -746,8 +729,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 			}
 			break;
         case LinphoneCallEnd:{
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Call state is LinphoneCallEnd, with message: %@", message] toFilePath:appDelegate.logFilePath];
-            
             if (durationTimer != nil) {
                 [durationTimer invalidate];
                 durationTimer = nil;
@@ -766,8 +747,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallError:{
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Call state is LinphoneCallError, with message: %@", message] toFilePath:appDelegate.logFilePath];
-            
             if (durationTimer != nil) {
                 [durationTimer invalidate];
                 durationTimer = nil;
@@ -781,8 +760,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallReleased:{
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Call state is LinphoneCallReleased, with message: %@", message] toFilePath:appDelegate.logFilePath];
-            
             if (durationTimer != nil) {
                 [durationTimer invalidate];
                 durationTimer = nil;
@@ -808,7 +785,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - Action Functions
 
-- (IBAction)onNumpadClick:(id)sender {
+- (IBAction)onNumpadClick:(id)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Show mini keyboard", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    
     NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"UIMiniKeypad" owner:nil options:nil];
     
     for(id currentObject in toplevelObject){
@@ -865,7 +845,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     [self callQualityUpdate];
 }
 
-- (void)hideMiniKeypad {
+- (void)hideMiniKeypad
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     for (UIView *subView in _callView.subviews) {
         if (subView.tag == MINI_KEYPAD_TAG) {
             [UIView animateWithDuration:.35 animations:^{
@@ -882,6 +866,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)endCallInMiniKeypad {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     linphone_core_terminate_all_calls(LC);
 }
 
@@ -902,22 +889,31 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[self hideRoutes:TRUE animated:TRUE];
 	[LinphoneManager.instance setSpeakerEnabled:FALSE];
 	[LinphoneManager.instance setBluetoothEnabled:TRUE];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]:\n-------------> setSpeakerEnabled = FALSE and setBluetoothEnabled = TRUE \n", __FUNCTION__] toFilePath:appDelegate.logFilePath];
 }
 
 - (IBAction)onRoutesEarpieceClick:(id)sender {
 	[self hideRoutes:TRUE animated:TRUE];
 	[LinphoneManager.instance setSpeakerEnabled:FALSE];
 	[LinphoneManager.instance setBluetoothEnabled:FALSE];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]:\n-------------> setSpeakerEnabled = FALSE and setBluetoothEnabled = FALSE \n", __FUNCTION__] toFilePath:appDelegate.logFilePath];
 }
 
-- (IBAction)onRoutesSpeakerClick:(id)sender {
-    //  [self hideRoutes:TRUE animated:TRUE];
+- (IBAction)onRoutesSpeakerClick:(id)sender
+{
     if (![(UIButton *)sender isSelected]) {
         [LinphoneManager.instance setBluetoothEnabled:TRUE];
         [LinphoneManager.instance setSpeakerEnabled:FALSE];
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]:\n-------------> setBluetoothEnabled = TRUE and setSpeakerEnabled = FALSE \n", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+        
     }else{
         [LinphoneManager.instance setBluetoothEnabled:FALSE];
         [LinphoneManager.instance setSpeakerEnabled:TRUE];
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]:\n-------------> setBluetoothEnabled = FALSE and setSpeakerEnabled = TRUE \n", __FUNCTION__] toFilePath:appDelegate.logFilePath];
     }
 }
 
@@ -939,7 +935,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)onOptionsTransferClick:(id)sender
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n------------->[%s]\n", __FUNCTION__] toFilePath:appDelegate.logFilePath];
     
 	[self hideOptions:TRUE animated:TRUE];
 	DialerView *view = VIEW(DialerView);
@@ -948,7 +944,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[PhoneMainView.instance changeCurrentView:view.compositeViewDescription];
 }
 
-- (IBAction)onOptionsAddClick:(id)sender {
+- (IBAction)onOptionsAddClick:(id)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n------------->[%s]\n", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    
 	[self hideOptions:TRUE animated:TRUE];
 	DialerView *view = VIEW(DialerView);
 	[view setAddress:@""];
@@ -956,7 +955,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[PhoneMainView.instance changeCurrentView:view.compositeViewDescription];
 }
 
-- (IBAction)onOptionsConferenceClick:(id)sender {
+- (IBAction)onOptionsConferenceClick:(id)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n------------->[%s]\n", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    
 	[self hideOptions:TRUE animated:TRUE];
 	linphone_core_add_all_to_conference(LC);
 }
@@ -1019,7 +1021,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - My Functions
 
 //  Hide keypad mini
-- (void)btnHideKeypadPressed{
+- (void)btnHideKeypadPressed
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     _viewCommand.hidden = NO;
     
     for (UIView *subView in _callView.subviews) {
@@ -1642,6 +1648,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             }
         }
     }
+    
     return @"";
 }
 
@@ -1734,6 +1741,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)checkToDownloadAvatarOfUser: (NSString *)phone
 {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] phone number = %@", __FUNCTION__, phone] toFilePath:appDelegate.logFilePath];
+    
     if (phone.length > 9 || [phone isEqualToString:hotline]) {
         return;
     }
@@ -1774,14 +1783,16 @@ static UICompositeViewDescription *compositeDescription = nil;
                 [_speakerButton setOff];
                 _speakerButton.selected = NO;
             }
-            NSLog(@"%@ - %@", SHOW_LOGS, @"Tai nghe da duoc rut ra");
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] routeChangeReason == kAudioSessionRouteChangeReason_OldDeviceUnavailable", __FUNCTION__]
+                                 toFilePath:appDelegate.logFilePath];
         }
         if (routeChangeReason == kAudioSessionRouteChangeReason_NewDeviceAvailable) {
             needEnableSpeaker = _speakerButton.isEnabled;
             [_speakerButton setOff];
             _speakerButton.selected = NO;
             
-            NSLog(@"%@ - %@", SHOW_LOGS, @"Tai nghe da duoc cam vao");
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] routeChangeReason == kAudioSessionRouteChangeReason_NewDeviceAvailable", __FUNCTION__]
+                                 toFilePath:appDelegate.logFilePath];
         }
     }
 }
@@ -1808,7 +1819,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     [self.halo setBackgroundColor:color.CGColor];
 }
 
-- (void)onAddCallClick: (UIButton *)sender {
+- (void)onAddCallClick: (UIButton *)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     if (!appDelegate.enableForTest) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"This feature have not supported yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
         return;
@@ -1889,10 +1904,18 @@ static UICompositeViewDescription *compositeDescription = nil;
             ms_free(lAddress);
         }
     }
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] result is %@", __FUNCTION__, phone]
+                         toFilePath:appDelegate.logFilePath];
+    
     return phone;
 }
 
-- (void)requestAccessToMicroIfNot {
+- (void)requestAccessToMicroIfNot
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     //show warning Microphone
     if (IS_IOS7) {
         [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio completionHandler:^(BOOL granted){
@@ -1900,7 +1923,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                 NSLog(@"granted");
             } else {
                 NSLog(@"denied");
-                //  [[iMomeetAppDelegate sharedInstance] performSelectorOnMainThread:@selector(warningNoMicrophoneAccess) withObject:nil waitUntilDone:NO];
             }
         }];
         [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted){
@@ -1908,7 +1930,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                 NSLog(@"granted");
             } else {
                 NSLog(@"denied");
-                //  [[iMomeetAppDelegate sharedInstance] performSelectorOnMainThread:@selector(warningNoCameraAccess) withObject:nil waitUntilDone:NO];
             }
         }];
     }

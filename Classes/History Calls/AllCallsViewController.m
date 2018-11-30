@@ -60,6 +60,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [WriteLogsUtils writeForGoToScreen:@"AllCallsViewController"];
+    
     [self showContentWithCurrentLanguage];
     [self getHistoryCallForUser];
     
@@ -93,7 +95,11 @@
 
 #pragma mark - My functions
 
-- (void)getHistoryCallForUser {
+- (void)getHistoryCallForUser
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         if (listCalls == nil) {
             listCalls = [[NSMutableArray alloc] init];
@@ -128,6 +134,9 @@
 
 //  Get lại danh sách các cuộc gọi sau khi xoá
 - (void)reGetListCallsForHistory {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     [listCalls removeAllObjects];
     [listCalls addObjectsFromArray:[NSDatabase getHistoryCallListOfUser:USERNAME isMissed:false]];
 }
@@ -349,6 +358,9 @@
 }
 
 - (void)deleteHistoryCallsChoosed {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     isDeleted = false;
     if (listDelete != nil && listDelete.count > 0) {
         for (int iCount=0; iCount<listDelete.count; iCount++) {

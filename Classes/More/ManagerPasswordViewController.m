@@ -77,7 +77,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
 
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO ManagerPasswordViewController"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeForGoToScreen: @"ManagerPasswordViewController"];
     
     serverPBX = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
     
@@ -119,7 +119,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     _tfConfirmPassword.text = @"";
 }
 
-- (IBAction)_btnSavePressed:(UIButton *)sender {
+- (IBAction)_btnSavePressed:(UIButton *)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     [self.view endEditing: YES];
     if ([_tfPassword.text isEqualToString:@""]) {
         _tfPassword.layer.borderColor = [UIColor colorWithRed:(248/255.0) green:(83/255.0)
@@ -137,7 +141,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     else if (![_tfPassword.text isEqualToString:PASSWORD]){
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Current password not correct"] duration:2.0 position:CSToastPositionCenter];
-    }else{
+    }else {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] linphone_core_clear_proxy_config", __FUNCTION__]
+                             toFilePath:appDelegate.logFilePath];
+        
         //  clear proxy, after will update password and register again
         _icWaiting.hidden = NO;
         [_icWaiting startAnimating];
@@ -321,7 +328,11 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                    blue:(230/255.0) alpha:1.0].CGColor;
 }
 
-- (void)registerPBXAfterChangePasswordSuccess {
+- (void)registerPBXAfterChangePasswordSuccess
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     if (![AppUtils isNullOrEmpty: serverPBX]) {
         [self getInfoForPBXWithServerName: serverPBX];
     }else{
@@ -331,7 +342,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)startLoginPBXWithInfo: (NSDictionary *)info
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@", __FUNCTION__, @[info]] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] info = %@", __FUNCTION__, @[info]] toFilePath:appDelegate.logFilePath];
     
     NSString *pbxIp = [info objectForKey:@"ipAddress"];
     NSString *pbxPort = [info objectForKey:@"port"];
@@ -357,13 +368,14 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)startRegisterPBX: (NSTimer *)timer {
     id data = [timer userInfo];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] data = %@", __FUNCTION__, @[data]] toFilePath:appDelegate.logFilePath];
+    
     if ([data isKindOfClass:[NSArray class]] && [data count] == 4) {
         NSString *pbxDomain = [data objectAtIndex: 0];
         NSString *pbxAccount = [data objectAtIndex: 1];
         NSString *pbxPassword = [data objectAtIndex: 2];
         NSString *pbxPort = [data objectAtIndex: 3];
-        
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: pbxDomain = %@, pbxAccount = %@, pbxPort = %@", __FUNCTION__, pbxDomain, pbxAccount, pbxPort] toFilePath:appDelegate.logFilePath];
         
         BOOL success = [SipUtils loginSipWithDomain:pbxDomain username:pbxAccount password:pbxPassword port:pbxPort];
         if (success) {
@@ -383,6 +395,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     [jsonDict setObject:serverName forKey:@"ServerName"];
     
     [webService callWebServiceWithLink:getServerInfoFunc withParams:jsonDict];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] jSonDict = %@", __FUNCTION__, @[jsonDict]] toFilePath:appDelegate.logFilePath];
 }
 
 - (void)changePasswordForUser: (NSString *)UserExt server: (NSString *)server password: (NSString *)newPassword
@@ -396,15 +410,21 @@ static UICompositeViewDescription *compositeDescription = nil;
     [jsonDict setObject:newPassword forKey:@"PasswordNew"];
     
     [webService callWebServiceWithLink:ChangeExtPass withParams:jsonDict];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] jSonDict = %@", __FUNCTION__, @[jsonDict]] toFilePath:appDelegate.logFilePath];
 }
 
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] link: %@.\n Response data: %@", __FUNCTION__, link, error] toFilePath:appDelegate.logFilePath];
+    
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
     [self.view makeToast:error duration:2.0 position:CSToastPositionCenter];
 }
 
 - (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] link: %@.\n Response data: %@", __FUNCTION__, link, @[data]] toFilePath:appDelegate.logFilePath];
+    
     if ([link isEqualToString:ChangeExtPass]) {
         [[NSUserDefaults standardUserDefaults] setObject:_tfNewPassword.text forKey:key_password];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -434,8 +454,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     switch (state) {
         case LinphoneRegistrationOk:
         {
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is LinphoneRegistrationOk", __FUNCTION__]
-                                 toFilePath:appDelegate.logFilePath];
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] registration state is LinphoneRegistrationOk", __FUNCTION__] toFilePath:appDelegate.logFilePath];
             
             [SipUtils enableProxyConfig:proxy withValue:YES withRefresh:YES];
             
@@ -444,27 +463,26 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneRegistrationNone:{
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is LinphoneRegistrationNone", __FUNCTION__]
-                                 toFilePath:appDelegate.logFilePath];
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] registration state is LinphoneRegistrationNone", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+            
             break;
         }
         case LinphoneRegistrationCleared: {
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is LinphoneRegistrationCleared", __FUNCTION__]
-                                 toFilePath:appDelegate.logFilePath];
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] registration state is LinphoneRegistrationCleared", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+            
             if (![AppUtils isNullOrEmpty: serverPBX]) {
                 [self changePasswordForUser:USERNAME server:serverPBX password:_tfNewPassword.text];
             }
             break;
         }
-        case LinphoneRegistrationFailed:
-        {
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is LinphoneRegistrationFailed", __FUNCTION__]
-                                 toFilePath:appDelegate.logFilePath];
+        case LinphoneRegistrationFailed: {
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] registration state is LinphoneRegistrationFailed", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+            
             break;
         }
         case LinphoneRegistrationProgress: {
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is LinphoneRegistrationProgress", __FUNCTION__]
-                                 toFilePath:appDelegate.logFilePath];
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] registration state is LinphoneRegistrationProgress", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+            
             break;
         }
         default:
@@ -472,7 +490,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)updatePasswordSuccesful {
+- (void)updatePasswordSuccesful
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     _icWaiting.hidden = YES;
     [_icWaiting stopAnimating];
     

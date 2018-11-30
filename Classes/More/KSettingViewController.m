@@ -48,6 +48,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
     // Tắt màn hình cảm biến
+    
+    [WriteLogsUtils writeForGoToScreen:@"KSettingViewController"];
+    
     UIDevice *device = [UIDevice currentDevice];
     [device setProximityMonitoringEnabled: NO];
     

@@ -54,8 +54,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO EditProfileViewController"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
-    
+    [WriteLogsUtils writeForGoToScreen: @"EditProfileViewController"];
     
     accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
     

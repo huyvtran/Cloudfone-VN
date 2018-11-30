@@ -52,6 +52,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
+    [WriteLogsUtils writeForGoToScreen:@"LanguageViewController"];
+    
     [self showContentOfCurrentLanguage];
     
     curLanguage = [[NSUserDefaults standardUserDefaults] objectForKey:language_key];
@@ -181,6 +183,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     curLanguage = lang._code;
     [[LinphoneAppDelegate sharedInstance].localization setLanguage: lang._code];
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Choosed %@ to set language", __FUNCTION__, curLanguage] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
     [self showContentOfCurrentLanguage];
 }

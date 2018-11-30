@@ -87,7 +87,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO KContactDetailViewController"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeForGoToScreen: @"KContactDetailViewController"];
     
     _lbTitle.text = [appDelegate.localization localizedStringForKey:@"Contact info"];
     
@@ -95,8 +95,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     UIDevice *device = [UIDevice currentDevice];
     [device setProximityMonitoringEnabled: NO];
     
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Get contact info with id: %d", appDelegate.idContact]
+                         toFilePath:appDelegate.logFilePath];
+    
     detailsContact = [AppUtils getContactWithId: appDelegate.idContact];
-    if (detailsContact._sipPhone != nil && ![detailsContact._sipPhone isEqualToString:@""]) {
+    if (![AppUtils isNullOrEmpty:detailsContact._sipPhone]) {
         isPBXContact = YES;
     }else{
         isPBXContact = NO;
@@ -146,6 +149,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)_iconEditClicked:(id)sender
 {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     EditContactViewController *controller = VIEW(EditContactViewController);
     if (controller != nil) {
         controller.idContact = detailsContact._id_contact;
@@ -358,8 +364,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - Alertview Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: Click to delete contact", __FUNCTION__]
-                             toFilePath:appDelegate.logFilePath];
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Confirm delete this contact", __FUNCTION__] toFilePath:appDelegate.logFilePath];
         
         [waitingHud showInView:self.view animated:YES];
         
@@ -442,7 +447,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)btnDeleteContactPressed: (UIButton *)sender {
+- (void)btnDeleteContactPressed: (UIButton *)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Delete contact"] message:[appDelegate.localization localizedStringForKey:@"Are you sure, you want to delete this contact?"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] otherButtonTitles:[appDelegate.localization localizedStringForKey:@"Accept"], nil];
     alertView.delegate = self;
     [alertView show];
@@ -450,12 +459,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)onIconCallClicked: (UIButton *)sender
 {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Call from %@ to %@", __FUNCTION__, USERNAME, sender.currentTitle] toFilePath:appDelegate.logFilePath];
+    
     if (![AppUtils isNullOrEmpty: sender.currentTitle]) {
         NSString *number = [AppUtils removeAllSpecialInString: sender.currentTitle];
         if (![AppUtils isNullOrEmpty: number]) {
             [SipUtils makeCallWithPhoneNumber: number];
-            
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@ make call to %@", __FUNCTION__, USERNAME, number] toFilePath:appDelegate.logFilePath];
         }
     }else{
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"The phone number can not empty"]

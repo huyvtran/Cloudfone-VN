@@ -58,7 +58,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n\n---------->GO TO AllContactsViewController"] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeForGoToScreen: @"AllContactsViewController"];
     
     if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
         [WriteLogsUtils writeLogContent:@"Contact have not loaded yet" toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
@@ -395,7 +395,11 @@
     }
 }
 
-- (void)onIconCallClicked: (UIButton *)sender {
+- (void)onIconCallClicked: (UIButton *)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] phone number = %@", __FUNCTION__, sender.currentTitle]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
         NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
         if (![phoneNumber isEqualToString:@""]) {

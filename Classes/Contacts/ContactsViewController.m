@@ -158,9 +158,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_iconAddNewClicked:(id)sender {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     [[PhoneMainView instance] changeCurrentView:[NewContactViewController compositeViewDescription] push: true];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:addNewContactInContactView
-//                                                        object:nil];
 }
 
 - (IBAction)_iconAllClicked:(id)sender {
@@ -180,7 +181,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)_iconSyncPBXContactClicked:(UIButton *)sender {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Start sync contact with account %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
     [self startSyncPBXContactsForAccount];
 }
@@ -337,35 +338,44 @@ static UICompositeViewDescription *compositeDescription = nil;
     [self.view endEditing: YES];
 }
 
-- (void)startSyncPBXContactsForAccount {
+- (void)startSyncPBXContactsForAccount
+{
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+    
     if (!networkReady) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Error: Device can not access to network", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
         [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
     
-    NSString *service = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
-    if ([service isKindOfClass:[NSNull class]] || service == nil || [service isEqualToString: @""]) {
-        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"] duration:2.0 position:CSToastPositionCenter];
-    }else{
+    if ([LinphoneAppDelegate sharedInstance]._isSyncing) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] PBX contacts is being synchronized!", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
-        if (![LinphoneAppDelegate sharedInstance]._isSyncing) {
-            icWaiting.hidden = NO;
-            [icWaiting startAnimating];
-            
-            [LinphoneAppDelegate sharedInstance]._isSyncing = YES;
-            [self startAnimationForSyncButton: _iconSyncPBXContact];
-            
-            [self getPBXContactsWithServerName: service];
-        }else{
-            [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"PBX contacts is being synchronized!"] duration:2.0 position:CSToastPositionCenter];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"PBX contacts is being synchronized!"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }else{
+        NSString *service = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] service = %@", __FUNCTION__, service] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
+        if ([service isKindOfClass:[NSNull class]] || service == nil || [service isEqualToString: @""]) {
+            [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"] duration:2.0 position:CSToastPositionCenter];
+            return;
         }
+        
+        icWaiting.hidden = NO;
+        [icWaiting startAnimating];
+        
+        [LinphoneAppDelegate sharedInstance]._isSyncing = YES;
+        [self startAnimationForSyncButton: _iconSyncPBXContact];
+        
+        [self getPBXContactsWithServerName: service];
     }
 }
 
 #pragma mark - WebServices delegate
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s link = %@\nError = %@", __FUNCTION__, link, error] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] link: %@.\nResponse data: %@", __FUNCTION__, link, error] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
     [icWaiting stopAnimating];
     icWaiting.hidden = YES;
@@ -375,8 +385,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s response data = %@", __FUNCTION__, @[data]] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+- (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] link: %@.\nResponse data: %@", __FUNCTION__, link, @[data]] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
     if ([link isEqualToString:getServerContacts]) {
         if (data != nil && [data isKindOfClass:[NSArray class]]) {
@@ -392,7 +403,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 //  Xử lý pbx contacts trả về
 - (void)whenStartSyncPBXContacts: (NSArray *)data
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self savePBXContactInPhoneBook: data];
@@ -422,11 +433,14 @@ static UICompositeViewDescription *compositeDescription = nil;
     [jsonDict setObject:serverName forKey:@"ServerName"];
     [webService callWebServiceWithLink:getServerContacts withParams:jsonDict];
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s pramas = %@", __FUNCTION__, @[jsonDict]] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] jsonDict = %@", __FUNCTION__, @[jsonDict]] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
 }
 
 - (void)savePBXContactInPhoneBook: (NSArray *)pbxData
 {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     NSString *pbxContactName = @"";
     
     ABAddressBookRef addressListBook = ABAddressBookCreateWithOptions(NULL, NULL);
@@ -625,7 +639,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 //  Thông báo kết thúc sync contacts
 - (void)syncContactsSuccessfully
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
     [icWaiting stopAnimating];
     icWaiting.hidden = YES;

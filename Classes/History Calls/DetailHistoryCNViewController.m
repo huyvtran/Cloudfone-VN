@@ -92,6 +92,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [WriteLogsUtils writeForGoToScreen:@"DetailHistoryCNViewController"];
+    
     [self showContentWithCurrentLanguage];
     
     // Tắt màn hình cảm biến
@@ -190,8 +192,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     // Check section
     [listHistoryCalls removeAllObjects];
     if ([AppUtils isNullOrEmpty: onDate]) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Get all list call with phone number %@", __FUNCTION__, phoneNumber] toFilePath:appDelegate.logFilePath];
+        
         [listHistoryCalls addObjectsFromArray: [NSDatabase getAllListCallOfMe:USERNAME withPhoneNumber:phoneNumber]];
     }else{
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Get all list call with phone number %@, on date %@", __FUNCTION__, phoneNumber, onDate] toFilePath:appDelegate.logFilePath];
+        
         [listHistoryCalls addObjectsFromArray: [NSDatabase getAllCallOfMe:USERNAME withPhone:phoneNumber onDate:onDate]];
     }
     [_tbHistory reloadData];
@@ -558,7 +564,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     [popupAddContact showInView:self.view];
 }
 
-- (IBAction)icDeleteClick:(UIButton *)sender {
+- (IBAction)icDeleteClick:(UIButton *)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
+    
     [NSDatabase deleteCallHistoryOfRemote:phoneNumber onDate:onDate ofAccount:USERNAME];
     
     appDelegate._newContact = nil;
