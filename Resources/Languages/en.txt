@@ -188,3 +188,4 @@ Failed"               =   "Failed!"
 "Edit" = "Edit"
 
 "No network" = "No network"
+"Can not send email. Please check your email account again!" = "Can not send email. Please check your email account again!"

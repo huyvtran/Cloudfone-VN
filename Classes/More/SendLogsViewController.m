@@ -85,33 +85,44 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
     */
     
-    MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
-    
-    NSString *emailTitle =  @"Send logs files";
-    NSString *messageBody = @"";
-    NSArray *toRecipents = [NSArray arrayWithObject:@"lekhai0212@gmail.com"];
-    
-    for (int i=0; i<listSelect.count; i++)
-    {
-        NSIndexPath *curIndex = [listSelect objectAtIndex: i];
-        NSString *fileName = [listFiles objectAtIndex: curIndex.row];
-        NSString *path = [NgnFileUtils getPathOfFileWithSubDir:[NSString stringWithFormat:@"%@/%@", logsFolderName, fileName]];
+    if ([MFMailComposeViewController canSendMail]) {
+        BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+        if (!networkReady) {
+            [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+            return;
+        }
         
-        NSString* content = [NSString stringWithContentsOfFile:path
-                                                      encoding:NSUTF8StringEncoding
-                                                         error:NULL];
-        NSString *encryptStr = [AESCrypt encrypt:content password:AES_KEY];
-        NSData *logFileData = [encryptStr dataUsingEncoding:NSUTF8StringEncoding];
+        MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
         
-        NSString *nameForSend = [self convertFileName: fileName];
-        [mc addAttachmentData:logFileData mimeType:@"text/plain" fileName:nameForSend];
+        NSString *emailTitle =  @"Send logs files";
+        NSString *messageBody = @"";
+        NSArray *toRecipents = [NSArray arrayWithObject:@"lekhai0212@gmail.com"];
+        
+        for (int i=0; i<listSelect.count; i++)
+        {
+            NSIndexPath *curIndex = [listSelect objectAtIndex: i];
+            NSString *fileName = [listFiles objectAtIndex: curIndex.row];
+            NSString *path = [NgnFileUtils getPathOfFileWithSubDir:[NSString stringWithFormat:@"%@/%@", logsFolderName, fileName]];
+            
+            NSString* content = [NSString stringWithContentsOfFile:path
+                                                          encoding:NSUTF8StringEncoding
+                                                             error:NULL];
+            NSString *encryptStr = [AESCrypt encrypt:content password:AES_KEY];
+            NSData *logFileData = [encryptStr dataUsingEncoding:NSUTF8StringEncoding];
+            
+            NSString *nameForSend = [self convertFileName: fileName];
+            [mc addAttachmentData:logFileData mimeType:@"text/plain" fileName:nameForSend];
+        }
+        mc.mailComposeDelegate = self;
+        [mc setSubject:emailTitle];
+        [mc setMessageBody:messageBody isHTML:NO];
+        [mc setToRecipients:toRecipents];
+        
+        [self presentViewController:mc animated:YES completion:NULL];
+    }else{
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Can not send email. Please check your email account again!"]
+                    duration:3.0 position:CSToastPositionCenter];
     }
-    mc.mailComposeDelegate = self;
-    [mc setSubject:emailTitle];
-    [mc setMessageBody:messageBody isHTML:NO];
-    [mc setToRecipients:toRecipents];
-    
-    [self presentViewController:mc animated:YES completion:NULL];
 }
 
 //  setup ui trong view

@@ -188,3 +188,4 @@
 "Edit" = "Sửa"
 
 "No network" = "Không internet"
+"Can not send email. Please check your email account again!" = "Không thể gửi email. Vui lòng kiểm tra lại tài khoản email của bạn!"

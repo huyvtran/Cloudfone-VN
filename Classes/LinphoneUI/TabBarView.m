@@ -105,6 +105,7 @@
     
     //  _historyNotificationView.backgroundColor = UIColor.blueColor;
     //  _historyNotificationLabel.backgroundColor = UIColor.greenColor;
+    _historyNotificationLabel.frame = CGRectMake(0, 0, _historyNotificationView.frame.size.width, _historyNotificationView.frame.size.height);
     _historyNotificationLabel.text = @"";
     
     if ([SipUtils getStateOfDefaultProxyConfig] == eAccountNone) {
