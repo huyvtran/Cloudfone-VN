@@ -132,7 +132,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_pageViewController setViewControllers:@[allCallsVC]
                                   direction:UIPageViewControllerNavigationDirectionReverse
                                    animated:false completion:nil];
-    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Edit"] forState:UIControlStateNormal];
+    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete"] forState:UIControlStateNormal];
 }
 
 - (IBAction)_iconMissedClicked:(id)sender {
@@ -146,18 +146,12 @@ static UICompositeViewDescription *compositeDescription = nil;
                                   direction: UIPageViewControllerNavigationDirectionReverse
                                    animated: false completion: nil];
     
-    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Edit"] forState:UIControlStateNormal];
+    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete"] forState:UIControlStateNormal];
 }
 
 - (IBAction)_btnEditPressed:(id)sender {
-    NSString *title = [(UIButton *)sender currentTitle];
-    if ([title isEqualToString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Done"]]) {
-        [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete"] forState:UIControlStateNormal];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"deleteHistoryCallsChoosed" object:nil];
-    }else{
-        [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Done"] forState:UIControlStateNormal];
-        [[NSNotificationCenter defaultCenter] postNotificationName:editHistoryCallView object:nil];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:deleteHistoryCallsChoosed
+                                                        object:[(UIButton *)sender currentTitle]];
 }
 
 #pragma mark – UIPageViewControllerDelegate Method

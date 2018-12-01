@@ -113,6 +113,7 @@ typedef enum typePhoneNumber{
 @property (nonatomic, strong) NSArray *listNumber;
 
 - (ContactObject *)getContactInPhoneBookWithIdRecord: (int)idRecord;
+- (NSMutableArray *)getPBXContactPhone: (int)pbxContactId;
 
 //  [Khai le - 02/11/2018]
 @property (nonatomic, strong) NSMutableArray *listInfoPhoneNumber;

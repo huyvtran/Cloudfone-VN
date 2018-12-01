@@ -72,8 +72,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beginEditHistoryView)
                                                  name:editHistoryCallView object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteHistoryCallsChoosed)
-                                                 name:@"deleteHistoryCallsChoosed" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteHistoryCallsPressed:)
+                                                 name:deleteHistoryCallsChoosed object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getHistoryCallForUser)
                                                  name:reloadHistoryCall object:nil];
@@ -357,9 +357,24 @@
     [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"] duration:2.0 position:CSToastPositionCenter];
 }
 
-- (void)deleteHistoryCallsChoosed {
+- (void)deleteHistoryCallsPressed: (NSNotification *)notif {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
                          toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
+    NSString *title = [notif object];
+    if ([title isKindOfClass:[NSString class]])
+    {
+        if ([title isEqualToString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete"]]) {
+            
+        }
+    }
+    
+    
+    if (isDeleted) {
+        
+    }else{
+        
+    }
     
     isDeleted = false;
     if (listDelete != nil && listDelete.count > 0) {

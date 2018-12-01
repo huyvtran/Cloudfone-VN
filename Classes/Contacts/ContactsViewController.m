@@ -629,7 +629,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                     }
                 }
                 [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:idContact]
-                                                          forKey:@"PBX_ID_CONTACT"];
+                                                          forKey:PBX_ID_CONTACT];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
         }

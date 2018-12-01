@@ -42,8 +42,9 @@
 #define IphoneXS_Max2   @"iPhone11,4"
 
 //  [Khai le - 25/10/2018]
-#define logsFolderName @"LogFiles"
-#define DAY_FOR_LOGS        7
+#define logsFolderName  @"LogFiles"
+#define DAY_FOR_LOGS    7
+#define PBX_ID_CONTACT   @"PBX_ID_CONTACT"
 
 #define USERNAME ([[NSUserDefaults standardUserDefaults] objectForKey:key_login])
 #define PASSWORD ([[NSUserDefaults standardUserDefaults] objectForKey:key_password])
@@ -181,6 +182,9 @@
 #define networkChanged          @"networkChanged"
 #define updateTokenForXmpp      @"updateTokenForXmpp"
 
+#define finishGetPBXContacts    @"finishGetPBXContacts"
+#define deleteHistoryCallsChoosed           @"deleteHistoryCallsChoosed"
+
 #define addNewContactInContactView          @"addNewContactInContactView"
 #define k11ReloadAfterDeleteAllCall         @"k11ReloadAfterDeleteAllCall"
 #define updateNumberHistoryCallRemove       @"updateNumberHistoryCallRemove"
@@ -227,7 +231,6 @@
 #define k11DeleteAllMessageAccept           @"k11DeleteAllMessageAccept"
 #define closeRightChatGroupVC               @"closeRightChatGroupVC"
 #define reloadRightGroupChatVC              @"reloadRightGroupChatVC"
-
 
 
 #define userAvatar          @"userAvatar"

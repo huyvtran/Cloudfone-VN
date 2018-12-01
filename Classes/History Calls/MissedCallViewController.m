@@ -74,8 +74,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beginEditHistoryView)
                                                  name:editHistoryCallView object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteHistoryCallsChoosed)
-                                                 name:@"deleteHistoryCallsChoosed" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteHistoryCallsPressed:)
+                                                 name:deleteHistoryCallsChoosed object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getMissedHistoryCallForUser)
                                                  name:reloadHistoryCall object:nil];
@@ -374,7 +374,7 @@
                 duration:2.0 position:CSToastPositionCenter];
 }
 
-- (void)deleteHistoryCallsChoosed
+- (void)deleteHistoryCallsPressed
 {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] ", __FUNCTION__]
                          toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];

@@ -1525,12 +1525,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 //  Lấy tất cả contact trong phonebook
 - (void)getAllIDContactInPhoneBook
 {
-    //  Reset PBX contact id đã lưu khi mới vào app
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:0]
-                                              forKey:@"PBX_ID_CONTACT"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    //  -------
-    
     addressListBook = ABAddressBookCreate();
     NSArray *arrayOfAllPeople = (__bridge  NSArray *) ABAddressBookCopyArrayOfAllPeople(addressListBook);
     NSUInteger peopleCounter = 0;
@@ -1599,8 +1593,12 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             }
             
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:contactId]
-                                                      forKey:@"PBX_ID_CONTACT"];
+                                                      forKey:PBX_ID_CONTACT];
             [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            //  Post event to PBXContactViewController to reload pbx contacts list
+            [[NSNotificationCenter defaultCenter] postNotificationName:finishGetPBXContacts
+                                                                object:[NSNumber numberWithInt:contactId]];
             continue;
         }
         //  [Khai le - 29/10/2018]: Check if contact has phone numbers
@@ -1729,6 +1727,58 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         aContact._sipPhone = anItem._valueStr;
     }
     return aContact;
+}
+
+- (NSMutableArray *)getPBXContactPhone: (int)pbxContactId
+{
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    
+    addressListBook = ABAddressBookCreate();
+    ABRecordRef aPerson = ABAddressBookGetPersonWithRecordID(addressListBook, pbxContactId);
+    
+    NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+    ABMultiValueRef phones = ABRecordCopyValue(aPerson, kABPersonPhoneProperty);
+    if (ABMultiValueGetCount(phones) > 0)
+    {
+        for(CFIndex j = 0; j < ABMultiValueGetCount(phones); j++)
+        {
+            CFStringRef phoneNumberRef = ABMultiValueCopyValueAtIndex(phones, j);
+            CFStringRef locLabel = ABMultiValueCopyLabelAtIndex(phones, j);
+            
+            NSString *phoneStr = (__bridge NSString *)phoneNumberRef;
+            phoneStr = [[phoneStr componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+            
+            NSString *nameStr = (__bridge NSString *)locLabel;
+            
+            if (phoneStr != nil && nameStr != nil) {
+                PBXContact *pbxContact = [[PBXContact alloc] init];
+                pbxContact._name = nameStr;
+                pbxContact._number = phoneStr;
+                
+                NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: nameStr];
+                NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
+                pbxContact._nameForSearch = nameForSearch;
+                
+                NSString *avatarStr = @"";
+                if (![AppUtils isNullOrEmpty: pbxServer]) {
+                    NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, phoneStr];
+                    NSString *localFile = [NSString stringWithFormat:@"/avatars/%@", avatarName];
+                    NSData *avatarData = [AppUtils getFileDataFromDirectoryWithFileName:localFile];
+                    if (avatarData != nil) {
+                        
+                        if ([avatarData respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
+                            avatarStr = [avatarData base64EncodedStringWithOptions: 0];
+                        } else {
+                            avatarStr = [avatarData base64Encoding];
+                        }
+                        pbxContact._avatar = avatarStr;
+                    }
+                }
+                [result addObject: pbxContact];
+            }
+        }
+    }
+    return result;
 }
 
 - (NSMutableArray *)getListPhoneOfContactPerson: (ABRecordRef)aPerson withName: (NSString *)contactName

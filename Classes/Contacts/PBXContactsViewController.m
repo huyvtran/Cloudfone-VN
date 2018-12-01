@@ -28,6 +28,7 @@
     BOOL found;
     
     float hSection;
+    NSMutableArray *pbxList;
 }
 
 @end
@@ -51,6 +52,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
+    //  create temp pbx contacts list
+    if (pbxList == nil) {
+        pbxList = [[NSMutableArray alloc] init];
+    }
+    [pbxList removeAllObjects];
+    //  -----
     
     [WriteLogsUtils writeForGoToScreen: @"PBXContactsViewController"];
     
@@ -62,23 +69,38 @@
     }
     [listSearch removeAllObjects];
     
-    if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
+    if (![LinphoneAppDelegate sharedInstance].contactLoaded)
+    {
         [WriteLogsUtils writeLogContent:@"Contact have not loaded yet" toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
-        if (waitingHud == nil) {
-            //  add waiting view
-            waitingHud = [[YBHud alloc] initWithHudType:DGActivityIndicatorAnimationTypeLineScale andText:@""];
-            waitingHud.tintColor = [UIColor whiteColor];
-            waitingHud.dimAmount = 0.5;
+        NSNumber *pbxId = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_ID_CONTACT];
+        if (pbxId != nil) {
+            NSArray *contacts = [[LinphoneAppDelegate sharedInstance] getPBXContactPhone:[pbxId intValue]];
+            [pbxList addObjectsFromArray: contacts];
+            
+            _lbContacts.hidden = YES;
+            _tbContacts.hidden = NO;
+            [_tbContacts reloadData];
+        }else{
+            _tbContacts.hidden = YES;
+            _lbContacts.hidden = NO;
+            _lbContacts.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"You have not synced pbx contacts"];
         }
-        [waitingHud showInView:self.view animated:YES];
+        
+//        if (waitingHud == nil) {
+//            //  add waiting view
+//            waitingHud = [[YBHud alloc] initWithHudType:DGActivityIndicatorAnimationTypeLineScale andText:@""];
+//            waitingHud.tintColor = [UIColor whiteColor];
+//            waitingHud.dimAmount = 0.5;
+//        }
+//        [waitingHud showInView:self.view animated:YES];
         
         _tbContacts.hidden = YES;
         _lbContacts.hidden = YES;
     }else{
-        [waitingHud dismissAnimated:YES];
+        [pbxList addObjectsFromArray: [LinphoneAppDelegate sharedInstance].pbxContacts];
         
-        if ([LinphoneAppDelegate sharedInstance].pbxContacts.count > 0) {
+        if (pbxList.count > 0) {
             _tbContacts.hidden = NO;
             _lbContacts.hidden = YES;
             [_tbContacts reloadData];
@@ -90,6 +112,9 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchContactWithValue:)
                                                  name:@"searchContactWithValue" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(afterFinishGetPBXContactsList:)
+                                                 name:finishGetPBXContacts object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -106,7 +131,7 @@
     [self.view endEditing: true];
     isSearching = NO;
     
-    if ([LinphoneAppDelegate sharedInstance].pbxContacts.count > 0) {
+    if (pbxList.count > 0) {
         [_lbContacts setHidden: true];
         [_tbContacts setHidden: false];
         [_tbContacts reloadData];
@@ -157,7 +182,7 @@
     if (isSearching) {
         [self getSectionsForContactsList: listSearch];
     }else{
-        [self getSectionsForContactsList: [LinphoneAppDelegate sharedInstance].pbxContacts];
+        [self getSectionsForContactsList: pbxList];
     }
     return [[contactSections allKeys] count];
 }
@@ -303,7 +328,7 @@
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s search value = %@", __FUNCTION__, object] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
         if ([object isEqualToString:@""]) {
-            if ([LinphoneAppDelegate sharedInstance].pbxContacts.count > 0) {
+            if (pbxList.count > 0) {
                 _lbContacts.hidden = YES;
                 _tbContacts.hidden = NO;
             }else{
@@ -338,7 +363,7 @@
 - (void)startSearchPBXContactsWithContent: (NSString *)content {
     [listSearch removeAllObjects];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_name CONTAINS[cd] %@ OR _number CONTAINS[cd] %@", content, content];
-    NSArray *filter = [[LinphoneAppDelegate sharedInstance].pbxContacts filteredArrayUsingPredicate: predicate];
+    NSArray *filter = [pbxList filteredArrayUsingPredicate: predicate];
     if (filter.count > 0) {
         [listSearch addObjectsFromArray: filter];
     }
@@ -400,6 +425,28 @@
             [SipUtils makeCallWithPhoneNumber: number];
             
             [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: %@ make call to %@", __FUNCTION__, USERNAME, number] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        }
+    }
+}
+
+- (void)afterFinishGetPBXContactsList: (NSNotification *)notif
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
+    id object = [notif object];
+    if ([object isKindOfClass:[NSNumber class]]) {
+        if (pbxList != nil) {
+            [pbxList removeAllObjects];
+            [pbxList addObjectsFromArray:[LinphoneAppDelegate sharedInstance].pbxContacts];
+            
+            if (pbxList.count > 0) {
+                _lbContacts.hidden = YES;
+                _tbContacts.hidden = NO;
+            }else{
+                _lbContacts.hidden = NO;
+                _tbContacts.hidden = YES;
+            }
         }
     }
 }
