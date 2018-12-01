@@ -1727,7 +1727,11 @@ static UICompositeViewDescription *compositeDescription = nil;
         NSLog(@"Van con call ne");
     }
     
-    [[PhoneMainView instance] popCurrentView];
+    if ([PhoneMainView instance].currentView == CallView.compositeViewDescription) {
+        [[PhoneMainView instance] popCurrentView];
+    }else{
+        NSLog(@"Not popCurrentView");
+    }
 }
 
 - (void)updateQualityForCall {

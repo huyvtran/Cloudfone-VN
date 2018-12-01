@@ -15,10 +15,8 @@
 
 @interface PBXContactsViewController (){
     BOOL isSearching;
-    
     float hCell;
     
-    YBHud *waitingHud;
     UIFont *textFont;
     
     NSMutableArray *listSearch;
@@ -78,25 +76,21 @@
             NSArray *contacts = [[LinphoneAppDelegate sharedInstance] getPBXContactPhone:[pbxId intValue]];
             [pbxList addObjectsFromArray: contacts];
             
-            _lbContacts.hidden = YES;
-            _tbContacts.hidden = NO;
-            [_tbContacts reloadData];
+            if (pbxList.count > 0) {
+                _tbContacts.hidden = NO;
+                _lbContacts.hidden = YES;
+                [_tbContacts reloadData];
+            }else{
+                _tbContacts.hidden = YES;
+                _lbContacts.hidden = NO;
+                
+                _lbContacts.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No contacts"];
+            }
         }else{
             _tbContacts.hidden = YES;
             _lbContacts.hidden = NO;
             _lbContacts.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"You have not synced pbx contacts"];
         }
-        
-//        if (waitingHud == nil) {
-//            //  add waiting view
-//            waitingHud = [[YBHud alloc] initWithHudType:DGActivityIndicatorAnimationTypeLineScale andText:@""];
-//            waitingHud.tintColor = [UIColor whiteColor];
-//            waitingHud.dimAmount = 0.5;
-//        }
-//        [waitingHud showInView:self.view animated:YES];
-        
-        _tbContacts.hidden = YES;
-        _lbContacts.hidden = YES;
     }else{
         [pbxList addObjectsFromArray: [LinphoneAppDelegate sharedInstance].pbxContacts];
         
@@ -107,6 +101,8 @@
         }else{
             _tbContacts.hidden = YES;
             _lbContacts.hidden = NO;
+            
+            _lbContacts.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No contacts"];
         }
     }
     
@@ -115,6 +111,9 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(afterFinishGetPBXContactsList:)
                                                  name:finishGetPBXContacts object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenSyncPBXContactsFinish)
+                                                 name:syncPBXContactsFinish object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -449,6 +448,11 @@
             }
         }
     }
+}
+
+- (void)whenSyncPBXContactsFinish {
+    [pbxList removeAllObjects];
+    [pbxList addObjectsFromArray:[LinphoneAppDelegate sharedInstance].pbxContacts];
 }
 
 @end

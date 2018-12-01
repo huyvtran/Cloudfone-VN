@@ -94,6 +94,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    _btnEdit.tag = 0;
+    [_btnEdit setBackgroundImage:[UIImage imageNamed:@"ic_trash"]
+                        forState:UIControlStateNormal];
+    
     [self showContentWithCurrentLanguage];
     
     // Tắt màn hình cảm biến
@@ -132,7 +136,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_pageViewController setViewControllers:@[allCallsVC]
                                   direction:UIPageViewControllerNavigationDirectionReverse
                                    animated:false completion:nil];
-    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete"] forState:UIControlStateNormal];
 }
 
 - (IBAction)_iconMissedClicked:(id)sender {
@@ -145,13 +148,20 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_pageViewController setViewControllers: @[missedCallsVC]
                                   direction: UIPageViewControllerNavigationDirectionReverse
                                    animated: false completion: nil];
-    
-    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete"] forState:UIControlStateNormal];
 }
 
 - (IBAction)_btnEditPressed:(id)sender {
+    if (_btnEdit.tag == 0) {
+        _btnEdit.tag = 1;
+        [_btnEdit setBackgroundImage:[UIImage imageNamed:@"ic_tick"]
+                            forState:UIControlStateNormal];
+    }else{
+        _btnEdit.tag = 0;
+        [_btnEdit setBackgroundImage:[UIImage imageNamed:@"ic_trash"]
+                            forState:UIControlStateNormal];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:deleteHistoryCallsChoosed
-                                                        object:[(UIButton *)sender currentTitle]];
+                                                        object:[NSNumber numberWithInt:(int)_btnEdit.tag]];
 }
 
 #pragma mark – UIPageViewControllerDelegate Method
@@ -183,7 +193,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - My functions
 
 - (void)showContentWithCurrentLanguage {
-    [_btnEdit setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Edit"] forState:UIControlStateNormal];
     [_iconAll setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"All"] forState:UIControlStateNormal];
     [_iconMissed setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Missed"] forState:UIControlStateNormal];
 }
@@ -257,10 +266,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_btnEdit mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(_viewHeader.mas_right).offset(-10);
         make.centerY.equalTo(_iconAll.mas_centerY);
-        make.height.equalTo(_iconAll.mas_height);
-        make.width.mas_lessThanOrEqualTo(100);
+        make.width.height.equalTo(_iconAll.mas_height);
     }];
-    _btnEdit.titleLabel.font = textFont;
 }
 
 @end

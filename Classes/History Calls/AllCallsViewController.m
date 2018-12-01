@@ -361,36 +361,29 @@
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
                          toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
-    NSString *title = [notif object];
-    if ([title isKindOfClass:[NSString class]])
-    {
-        if ([title isEqualToString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete"]]) {
+    NSNumber *object = [notif object];
+    if ([object isKindOfClass:[NSNumber class]]) {
+        if ([object intValue] == 0) {
+            isDeleted = NO;
             
-        }
-    }
-    
-    
-    if (isDeleted) {
-        
-    }else{
-        
-    }
-    
-    isDeleted = false;
-    if (listDelete != nil && listDelete.count > 0) {
-        for (int iCount=0; iCount<listDelete.count; iCount++) {
-            int idHisCall = [[listDelete objectAtIndex: iCount] intValue];
-            NSDictionary *callInfo = [NSDatabase getCallInfoWithHistoryCallId: idHisCall];
-            if (callInfo != nil) {
-                NSString *phoneNumber = [callInfo objectForKey:@"phone_number"];
-                if (phoneNumber != nil && ![phoneNumber isEqualToString:@""]) {
-                    NSString *date = [callInfo objectForKey:@"date"];
-                    [NSDatabase removeHistoryCallsOfUser:phoneNumber onDate:date ofAccount:USERNAME];
+            if (listDelete != nil && listDelete.count > 0) {
+                for (int iCount=0; iCount<listDelete.count; iCount++) {
+                    int idHisCall = [[listDelete objectAtIndex: iCount] intValue];
+                    NSDictionary *callInfo = [NSDatabase getCallInfoWithHistoryCallId: idHisCall];
+                    if (callInfo != nil) {
+                        NSString *phoneNumber = [callInfo objectForKey:@"phone_number"];
+                        if (phoneNumber != nil && ![phoneNumber isEqualToString:@""]) {
+                            NSString *date = [callInfo objectForKey:@"date"];
+                            [NSDatabase removeHistoryCallsOfUser:phoneNumber onDate:date ofAccount:USERNAME];
+                        }
+                    }
                 }
             }
+            [self reGetListCallsForHistory];
+        }else{
+            isDeleted = YES;
         }
     }
-    [self reGetListCallsForHistory];
     [_tbListCalls reloadData];
 }
 

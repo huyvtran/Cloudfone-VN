@@ -359,6 +359,7 @@
 		840B574220061FD300DCBA7E /* QRCodeReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573920061FD100DCBA7E /* QRCodeReader.m */; };
 		840B574320061FD300DCBA7E /* QRCodeReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573A20061FD200DCBA7E /* QRCodeReaderViewController.m */; };
 		840B574420061FD300DCBA7E /* QRCameraSwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573E20061FD300DCBA7E /* QRCameraSwitchButton.m */; };
+		840F687D21B2645D00681F7F /* ic_tick.png in Resources */ = {isa = PBXBuildFile; fileRef = 840F687C21B2645C00681F7F /* ic_tick.png */; };
 		8419017620EAA01B003F524C /* PulsingHaloLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8419016E20EAA01B003F524C /* PulsingHaloLayer.m */; };
 		841B35912191F1360019BD45 /* ConferenceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 841B358F2191F1360019BD45 /* ConferenceTableViewCell.m */; };
 		841B35922191F1360019BD45 /* ConferenceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 841B35902191F1360019BD45 /* ConferenceTableViewCell.xib */; };
@@ -1260,6 +1261,7 @@
 		840B573D20061FD200DCBA7E /* QRCodeReaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRCodeReaderView.h; path = OutSources/QRCodeReader/QRCodeReaderView.h; sourceTree = "<group>"; };
 		840B573E20061FD300DCBA7E /* QRCameraSwitchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QRCameraSwitchButton.m; path = OutSources/QRCodeReader/QRCameraSwitchButton.m; sourceTree = "<group>"; };
 		840B573F20061FD300DCBA7E /* QRCodeReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRCodeReader.h; path = OutSources/QRCodeReader/QRCodeReader.h; sourceTree = "<group>"; };
+		840F687C21B2645C00681F7F /* ic_tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_tick.png; sourceTree = "<group>"; };
 		8419016B20EAA01B003F524C /* PulsingHaloLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulsingHaloLayer.h; sourceTree = "<group>"; };
 		8419016D20EAA01B003F524C /* PulsingHalo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulsingHalo.h; sourceTree = "<group>"; };
 		8419016E20EAA01B003F524C /* PulsingHaloLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PulsingHaloLayer.m; sourceTree = "<group>"; };
@@ -2706,6 +2708,7 @@
 				159002D52168618C00CECB7A /* ic_call_outgoing.png */,
 				1579B71D21674988002BECE3 /* ic_add_contact.png */,
 				15C5A5FF219ACC1D00FDD6C5 /* ic_trash.png */,
+				840F687C21B2645C00681F7F /* ic_tick.png */,
 				1579B71921674985002BECE3 /* ic_add_contact@2x.png */,
 				1579B71E21674988002BECE3 /* ic_back.png */,
 				1579B71B21674986002BECE3 /* ic_back@2x.png */,
@@ -3941,6 +3944,7 @@
 				153D004F2164D9D3007B69B3 /* call_hover.png in Resources */,
 				84E286EB1FC9FC52009CBA27 /* PhoneCell.xib in Resources */,
 				63DFE04B1C40161700DA5E87 /* notes_of_the_optimistic.caf in Resources */,
+				840F687D21B2645D00681F7F /* ic_tick.png in Resources */,
 				639E9C931C0DB7BE00019A75 /* FirstLoginView.xib in Resources */,
 				84C47D0A1FB62CC10015695E /* HistoryCallCell.xib in Resources */,
 				1579B72021674989002BECE3 /* ic_add_contact@2x.png in Resources */,

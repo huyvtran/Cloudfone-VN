@@ -27,8 +27,7 @@
     NSArray *listCharacter;
     
     UIFont *textFont;
-    
-    YBHud *waitingHud;
+    NSTimer *refreshTimer;
 }
 
 @end
@@ -48,11 +47,6 @@
     _contactSections = [[NSMutableDictionary alloc] init];
     
     [self autoLayoutForView];
-    
-    //  add waiting view
-    waitingHud = [[YBHud alloc] initWithHudType:DGActivityIndicatorAnimationTypeLineScale andText:@""];
-    waitingHud.tintColor = [UIColor whiteColor];
-    waitingHud.dimAmount = 0.5;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -60,16 +54,18 @@
     
     [WriteLogsUtils writeForGoToScreen: @"AllContactsViewController"];
     
-    if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
+    if (![LinphoneAppDelegate sharedInstance].contactLoaded)
+    {
         [WriteLogsUtils writeLogContent:@"Contact have not loaded yet" toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
-        
-        [waitingHud showInView:[LinphoneAppDelegate sharedInstance].window animated:YES];
-        
-        _tbContacts.hidden = YES;
         _lbNoContacts.hidden = YES;
+        
+        if (refreshTimer) {
+            [refreshTimer invalidate];
+            refreshTimer = nil;
+        }
+        refreshTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(showAndReloadContactList) userInfo:nil repeats:YES];
     }else{
-        [waitingHud dismissAnimated:YES];
-        _tbContacts.hidden = NO;
+        [self showAndReloadContactList];
     }
     
     if ([LinphoneAppDelegate sharedInstance].needToReloadContactList) {
@@ -91,6 +87,12 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear: animated];
+    
+    if (refreshTimer) {
+        [refreshTimer invalidate];
+        refreshTimer = nil;
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
@@ -101,13 +103,16 @@
 
 #pragma mark - My Functions
 
-- (void)whenLoadContactFinish {
+- (void)whenLoadContactFinish
+{
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
                          toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
-    
-    [waitingHud dismissAnimated:YES];
-    _tbContacts.hidden = NO;
-    [_tbContacts reloadData];
+    //  clear timer
+    if (refreshTimer) {
+        [refreshTimer invalidate];
+        refreshTimer = nil;
+    }
+    [self showAndReloadContactList];
 }
 
 - (void)addNewContact {
@@ -203,10 +208,6 @@
 #pragma mark - TableView Delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
-        return 0;
-    }
-    
     if (isSearching) {
         [self getSectionsForContactsList: _searchResults];
     }else{
@@ -217,10 +218,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
-        return 0;
-    }
-    
     NSString *str = [[[_contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section];
     return [[_contactSections objectForKey:str] count];
 }
@@ -405,6 +402,17 @@
         if (![phoneNumber isEqualToString:@""]) {
             [SipUtils makeCallWithPhoneNumber: phoneNumber];
         }
+    }
+}
+
+- (void)showAndReloadContactList {
+    if ([LinphoneAppDelegate sharedInstance].listContacts.count > 0) {
+        _tbContacts.hidden = NO;
+        _lbNoContacts.hidden = YES;
+        [_tbContacts reloadData];
+    }else{
+        _tbContacts.hidden = YES;
+        _lbNoContacts.hidden = NO;
     }
 }
 

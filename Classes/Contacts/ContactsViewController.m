@@ -641,6 +641,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:syncPBXContactsFinish object:nil];
+    
     [icWaiting stopAnimating];
     icWaiting.hidden = YES;
     

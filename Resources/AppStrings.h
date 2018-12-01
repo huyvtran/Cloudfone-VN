@@ -194,6 +194,7 @@
 #define editHistoryCallView     @"editHistoryCallView"
 #define finishRemoveHistoryCall @"finishRemoveHistoryCall"
 #define reloadHistoryCall       @"reloadHistoryCall"
+#define syncPBXContactsFinish   @"syncPBXContactsFinish"
 
 #define k11ClickOnViewTrunkingPBX       @"k11ClickOnViewTrunkingPBX"
 #define k11EnableWhiteList              @"k11EnableWhiteList"
