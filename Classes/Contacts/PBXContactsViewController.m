@@ -106,8 +106,8 @@
         }
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchContactWithValue:)
-                                                 name:@"searchContactWithValue" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startSearchContactWithValue:)
+                                                 name:searchContactWithValue object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(afterFinishGetPBXContactsList:)
                                                  name:finishGetPBXContacts object:nil];
@@ -319,7 +319,7 @@
 }
 
 //  Added by Khai Le on 04/10/2018
-- (void)searchContactWithValue: (NSNotification *)notif {
+- (void)startSearchContactWithValue: (NSNotification *)notif {
     
     id object = [notif object];
     if ([object isKindOfClass:[NSString class]])

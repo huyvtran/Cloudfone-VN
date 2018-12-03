@@ -884,9 +884,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
                          toFilePath:appDelegate.logFilePath];
     
-    [_icWaiting stopAnimating];
-    _icWaiting.hidden = YES;
-    
     serverPBX = @"";
     accountPBX = @"";
     passwordPBX = @"";
@@ -913,10 +910,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was removed"]
                 duration:2.0 position:CSToastPositionCenter];
-    //  [self performSelector:@selector(popCurrentView) withObject:nil afterDelay:2.0];
+    [self performSelector:@selector(popCurrentView) withObject:nil afterDelay:2.0];
 }
 
 - (void)popCurrentView {
+    [_icWaiting stopAnimating];
+    _icWaiting.hidden = YES;
     [[PhoneMainView instance] popCurrentView];
 }
 

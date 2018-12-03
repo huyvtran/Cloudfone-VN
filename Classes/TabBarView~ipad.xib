@@ -11,16 +11,53 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TabBarView_ipad">
             <connections>
+                <outlet property="contactsButton" destination="pfJ-td-zuz" id="U4p-E5-Pp8"/>
+                <outlet property="dialerButton" destination="RW5-8T-MPM" id="ZDh-9A-vGc"/>
+                <outlet property="historyButton" destination="Q7N-Q0-qSh" id="Bor-CN-cPk"/>
+                <outlet property="moreButton" destination="ORB-pa-8Dc" id="N3n-ms-Rbu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="42"/>
+            <rect key="frame" x="0.0" y="0.0" width="400" height="60"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pfJ-td-zuz">
+                    <rect key="frame" x="100" y="0.0" width="100" height="60"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Contacts"/>
+                    <connections>
+                        <action selector="contactsButtonPress:" destination="-1" eventType="touchUpInside" id="SxJ-RA-L4L"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RW5-8T-MPM">
+                    <rect key="frame" x="200" y="0.0" width="100" height="60"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Dialer"/>
+                    <connections>
+                        <action selector="dialerButtonPress:" destination="-1" eventType="touchUpInside" id="ZUg-fl-167"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ORB-pa-8Dc">
+                    <rect key="frame" x="300" y="0.0" width="100" height="60"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="More"/>
+                    <connections>
+                        <action selector="moreButtonPress:" destination="-1" eventType="touchUpInside" id="CUO-Ed-cMS"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q7N-Q0-qSh">
+                    <rect key="frame" x="0.0" y="0.0" width="100" height="60"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Call history"/>
+                    <connections>
+                        <action selector="historyButtonPress:" destination="-1" eventType="touchUpInside" id="8Ov-Ta-Vxz"/>
+                    </connections>
+                </button>
+            </subviews>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-115" y="14"/>
+            <point key="canvasLocation" x="-156" y="11"/>
         </view>
     </objects>
 </document>

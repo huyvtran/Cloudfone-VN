@@ -33,4 +33,15 @@
 }
 */
 
+- (IBAction)historyButtonPress:(UIButton *)sender {
+}
+
+- (IBAction)contactsButtonPress:(UIButton *)sender {
+}
+
+- (IBAction)dialerButtonPress:(UIButton *)sender {
+}
+
+- (IBAction)moreButtonPress:(UIButton *)sender {
+}
 @end

@@ -374,6 +374,14 @@
 		841F97E71FB4B2DC00A9A8CD /* UIConferenceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 841F97E51FB4B2DC00A9A8CD /* UIConferenceCell.xib */; };
 		842529C9201F0F9A00BF4385 /* AllContactListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842529C7201F0F9A00BF4385 /* AllContactListViewController.m */; };
 		842529CA201F0F9A00BF4385 /* AllContactListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 842529C8201F0F9A00BF4385 /* AllContactListViewController.xib */; };
+		8429870B21B29D4000150EB0 /* ic_history_bottom_bar_act.png in Resources */ = {isa = PBXBuildFile; fileRef = 842986FD21B29D3C00150EB0 /* ic_history_bottom_bar_act.png */; };
+		8429870C21B29D4000150EB0 /* ic_phonebook_bottom_bar_def.png in Resources */ = {isa = PBXBuildFile; fileRef = 8429870421B29D3D00150EB0 /* ic_phonebook_bottom_bar_def.png */; };
+		8429870D21B29D4000150EB0 /* ic_call_bottom_bar_def.png in Resources */ = {isa = PBXBuildFile; fileRef = 8429870521B29D3D00150EB0 /* ic_call_bottom_bar_def.png */; };
+		8429870E21B29D4000150EB0 /* ic_phonebook_bottom_bar_act.png in Resources */ = {isa = PBXBuildFile; fileRef = 8429870621B29D3D00150EB0 /* ic_phonebook_bottom_bar_act.png */; };
+		8429870F21B29D4000150EB0 /* ic_history_bottom_bar_def.png in Resources */ = {isa = PBXBuildFile; fileRef = 8429870721B29D3E00150EB0 /* ic_history_bottom_bar_def.png */; };
+		8429871021B29D4000150EB0 /* ic_call_bottom_bar_act.png in Resources */ = {isa = PBXBuildFile; fileRef = 8429870821B29D3E00150EB0 /* ic_call_bottom_bar_act.png */; };
+		8429871121B29D4000150EB0 /* ic_more_bottom_bar_def.png in Resources */ = {isa = PBXBuildFile; fileRef = 8429870921B29D3F00150EB0 /* ic_more_bottom_bar_def.png */; };
+		8429871221B29D4000150EB0 /* ic_more_bottom_bar_act.png in Resources */ = {isa = PBXBuildFile; fileRef = 8429870A21B29D3F00150EB0 /* ic_more_bottom_bar_act.png */; };
 		842C73052027744D009C4F9C /* YBHud.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C73042027744C009C4F9C /* YBHud.m */; };
 		842DEC431FC478F300E7F74D /* UIMiniKeypad.m in Sources */ = {isa = PBXBuildFile; fileRef = 842DEC411FC478F300E7F74D /* UIMiniKeypad.m */; };
 		842DEC441FC478F300E7F74D /* UIMiniKeypad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 842DEC421FC478F300E7F74D /* UIMiniKeypad.xib */; };
@@ -1282,6 +1290,14 @@
 		842529C6201F0F9A00BF4385 /* AllContactListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AllContactListViewController.h; path = Contacts/AllContactListViewController.h; sourceTree = "<group>"; };
 		842529C7201F0F9A00BF4385 /* AllContactListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AllContactListViewController.m; path = Contacts/AllContactListViewController.m; sourceTree = "<group>"; };
 		842529C8201F0F9A00BF4385 /* AllContactListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AllContactListViewController.xib; path = Contacts/AllContactListViewController.xib; sourceTree = "<group>"; };
+		842986FD21B29D3C00150EB0 /* ic_history_bottom_bar_act.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_history_bottom_bar_act.png; path = Resources/images/keypad/ic_history_bottom_bar_act.png; sourceTree = SOURCE_ROOT; };
+		8429870421B29D3D00150EB0 /* ic_phonebook_bottom_bar_def.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_phonebook_bottom_bar_def.png; path = Resources/images/keypad/ic_phonebook_bottom_bar_def.png; sourceTree = SOURCE_ROOT; };
+		8429870521B29D3D00150EB0 /* ic_call_bottom_bar_def.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_call_bottom_bar_def.png; path = Resources/images/keypad/ic_call_bottom_bar_def.png; sourceTree = SOURCE_ROOT; };
+		8429870621B29D3D00150EB0 /* ic_phonebook_bottom_bar_act.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_phonebook_bottom_bar_act.png; path = Resources/images/keypad/ic_phonebook_bottom_bar_act.png; sourceTree = SOURCE_ROOT; };
+		8429870721B29D3E00150EB0 /* ic_history_bottom_bar_def.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_history_bottom_bar_def.png; path = Resources/images/keypad/ic_history_bottom_bar_def.png; sourceTree = SOURCE_ROOT; };
+		8429870821B29D3E00150EB0 /* ic_call_bottom_bar_act.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_call_bottom_bar_act.png; path = Resources/images/keypad/ic_call_bottom_bar_act.png; sourceTree = SOURCE_ROOT; };
+		8429870921B29D3F00150EB0 /* ic_more_bottom_bar_def.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_more_bottom_bar_def.png; path = Resources/images/keypad/ic_more_bottom_bar_def.png; sourceTree = SOURCE_ROOT; };
+		8429870A21B29D3F00150EB0 /* ic_more_bottom_bar_act.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_more_bottom_bar_act.png; path = Resources/images/keypad/ic_more_bottom_bar_act.png; sourceTree = SOURCE_ROOT; };
 		842C73032027744A009C4F9C /* YBHud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBHud.h; sourceTree = "<group>"; };
 		842C73042027744C009C4F9C /* YBHud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBHud.m; sourceTree = "<group>"; };
 		842DEC401FC478F300E7F74D /* UIMiniKeypad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIMiniKeypad.h; path = AppUI/UIMiniKeypad.h; sourceTree = "<group>"; };
@@ -2315,6 +2331,14 @@
 				153D00452164D9CB007B69B3 /* numpad_three_hover.png */,
 				153D003D2164D9C2007B69B3 /* numpad_two_hover.png */,
 				153D00492164D9D2007B69B3 /* numpad_zero_hover.png */,
+				8429870821B29D3E00150EB0 /* ic_call_bottom_bar_act.png */,
+				8429870521B29D3D00150EB0 /* ic_call_bottom_bar_def.png */,
+				842986FD21B29D3C00150EB0 /* ic_history_bottom_bar_act.png */,
+				8429870721B29D3E00150EB0 /* ic_history_bottom_bar_def.png */,
+				8429870A21B29D3F00150EB0 /* ic_more_bottom_bar_act.png */,
+				8429870921B29D3F00150EB0 /* ic_more_bottom_bar_def.png */,
+				8429870621B29D3D00150EB0 /* ic_phonebook_bottom_bar_act.png */,
+				8429870421B29D3D00150EB0 /* ic_phonebook_bottom_bar_def.png */,
 			);
 			name = keypad;
 			path = "New Group";
@@ -3892,10 +3916,12 @@
 				1579B72421674989002BECE3 /* ic_add_contact.png in Resources */,
 				84C1E2291FAEB94500EED0B9 /* en.txt in Resources */,
 				8440F193216BA82000BB559C /* mini_key_5.png in Resources */,
+				8429871021B29D4000150EB0 /* ic_call_bottom_bar_act.png in Resources */,
 				15F2E600216B66830076CB1F /* ic_about.png in Resources */,
 				153D00552164D9D3007B69B3 /* numpad_five_hover.png in Resources */,
 				63E802DB1C625AEF000D5509 /* (null) in Resources */,
 				84C443901FBE105F0015854C /* NewPhoneCell.xib in Resources */,
+				8429870E21B29D4000150EB0 /* ic_phonebook_bottom_bar_act.png in Resources */,
 				84767D6321664C2900561A85 /* ic_call_back.png in Resources */,
 				159002D92168618E00CECB7A /* ic_call_incoming.png in Resources */,
 				84ECF9C8216679A70067B4B6 /* ic_mute_dis.png in Resources */,
@@ -3980,8 +4006,10 @@
 				84ECF9BF216679A70067B4B6 /* ic_speaker_dis.png in Resources */,
 				639E9CA31C0DB7EA00019A75 /* UIChatBubbleTextCell.xib in Resources */,
 				15F2E5F6216B56F60076CB1F /* ic_term.png in Resources */,
+				8429871221B29D4000150EB0 /* ic_more_bottom_bar_act.png in Resources */,
 				633FEE931D3CD55A0014B822 /* menu@2x.png in Resources */,
 				84C8B2401FBBBDB50080D673 /* UIHistoryDetailCell.xib in Resources */,
+				8429871121B29D4000150EB0 /* ic_more_bottom_bar_def.png in Resources */,
 				D38187B115FE340500C3EDCA /* ChatsListView.xib in Resources */,
 				8440F198216BA82000BB559C /* mini_key_6_hover.png in Resources */,
 				153D00512164D9D3007B69B3 /* numpad_six_hover.png in Resources */,
@@ -3993,6 +4021,7 @@
 				15906E39217AEA1E000877A9 /* button_back_dialer.png in Resources */,
 				84ECF9CA216679A70067B4B6 /* ic_addcall_act.png in Resources */,
 				15906E38217AEA1E000877A9 /* button_back_dialer_hover.png in Resources */,
+				8429870D21B29D4000150EB0 /* ic_call_bottom_bar_def.png in Resources */,
 				84C47D171FB632640015695E /* IncomingCallViewController.xib in Resources */,
 				638F1A911C21993D004B8E02 /* UICompositeView~ipad.xib in Resources */,
 				153D00302164D537007B69B3 /* menu_more_en_act.png in Resources */,
@@ -4059,6 +4088,7 @@
 				15F2E5FC216B575D0076CB1F /* background_more.png in Resources */,
 				153D00382164D537007B69B3 /* menu_keypad_act.png in Resources */,
 				159E08842179E9130056E2BB /* ic_not_check.png in Resources */,
+				8429870C21B29D4000150EB0 /* ic_phonebook_bottom_bar_def.png in Resources */,
 				8489DED42160B5FA00A7A1DD /* right-arrow.png in Resources */,
 				1556A8E22181C347002E8D26 /* launch_bg.png in Resources */,
 				D38187AD15FE340100C3EDCA /* ChatConversationView.xib in Resources */,
@@ -4083,6 +4113,7 @@
 				153D00582164D9D3007B69B3 /* numpad_zero_hover.png in Resources */,
 				15857BFE216DEC0000DB5237 /* UIContactPhoneCell.xib in Resources */,
 				15906E33217AE4A1000877A9 /* add_call_hover.png in Resources */,
+				8429870F21B29D4000150EB0 /* ic_history_bottom_bar_def.png in Resources */,
 				153D004D2164D9D3007B69B3 /* numpad_sharp_hover.png in Resources */,
 				63EC8D391D7438660066547B /* AssistantLinkView.xib in Resources */,
 				D38187CD15FE346700C3EDCA /* HistoryDetailsView.xib in Resources */,
@@ -4115,6 +4146,7 @@
 				8442A36B1FB13C0F00F08F11 /* ContactsViewController.xib in Resources */,
 				8440F18D216BA82000BB559C /* mini_key_7_hover.png in Resources */,
 				8439F74D216EC06A00110D26 /* hotline_avatar.png in Resources */,
+				8429870B21B29D4000150EB0 /* ic_history_bottom_bar_act.png in Resources */,
 				63AADBE81B6A0FF200AA16FD /* Localizable.strings in Resources */,
 				84BCC9D41FC1E14B001F26FE /* PEPhotoCropEditor.bundle in Resources */,
 				153D002D2164D537007B69B3 /* menu_keypad_en_act.png in Resources */,
@@ -5104,8 +5136,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5153,7 +5185,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
+				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5213,8 +5245,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5262,7 +5294,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
+				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5322,8 +5354,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5371,7 +5403,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
+				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5431,8 +5463,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5480,7 +5512,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "AddHoc New CloudFone 08/09/17";
+				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";

@@ -110,6 +110,12 @@ static UICompositeViewDescription *compositeDescription = nil;
         _icClearSearch.hidden = YES;
     }
     
+    //  check to show icon sync
+    if ([SipUtils getStateOfDefaultProxyConfig] == eAccountNone) {
+        _iconSyncPBXContact.hidden = YES;
+    }else{
+        _iconSyncPBXContact.hidden = NO;
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeKeyboard)
                                                  name:@"closeKeyboard" object:nil];
 }
@@ -170,6 +176,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_pageViewController setViewControllers: @[allContactsVC]
                                   direction: UIPageViewControllerNavigationDirectionReverse
                                    animated: false completion: nil];
+    
+    _tfSearch.text = @"";
+    _icClearSearch.hidden = YES;
+    [[NSNotificationCenter defaultCenter] postNotificationName:searchContactWithValue
+                                                        object:_tfSearch.text];
 }
 
 - (IBAction)_iconPBXClicked:(UIButton *)sender {
@@ -178,6 +189,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_pageViewController setViewControllers: @[pbxContactsVC]
                                   direction: UIPageViewControllerNavigationDirectionForward
                                    animated: false completion: nil];
+    
+    _tfSearch.text = @"";
 }
 
 - (IBAction)_iconSyncPBXContactClicked:(UIButton *)sender {
@@ -188,7 +201,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)_icClearSearchClicked:(UIButton *)sender {
     _tfSearch.text = @"";
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"searchContactWithValue" object:_tfSearch.text];
+    [[NSNotificationCenter defaultCenter] postNotificationName:searchContactWithValue
+                                                        object:_tfSearch.text];
 }
 
 //  setup trạng thái cho các button
@@ -331,7 +345,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)startSearchPhoneBook {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"searchContactWithValue" object:_tfSearch.text];
+    [[NSNotificationCenter defaultCenter] postNotificationName:searchContactWithValue
+                                                        object:_tfSearch.text];
 }
 
 - (void)closeKeyboard {
@@ -651,7 +666,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Successful"] duration:2.0 position:CSToastPositionCenter];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"searchContactWithValue" object:_tfSearch.text];
+    [[NSNotificationCenter defaultCenter] postNotificationName:searchContactWithValue
+                                                        object:_tfSearch.text];
 }
 
 @end
