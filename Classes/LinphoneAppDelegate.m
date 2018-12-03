@@ -1597,6 +1597,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             [[NSUserDefaults standardUserDefaults] synchronize];
             
             //  Post event to PBXContactViewController to reload pbx contacts list
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Found PBX contact with id = %d. Post event to show pbxContacts", __FUNCTION__, contactId] toFilePath:logFilePath];
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:finishGetPBXContacts
                                                                 object:[NSNumber numberWithInt:contactId]];
             continue;

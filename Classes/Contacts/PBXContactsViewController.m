@@ -76,6 +76,8 @@
             NSArray *contacts = [[LinphoneAppDelegate sharedInstance] getPBXContactPhone:[pbxId intValue]];
             [pbxList addObjectsFromArray: contacts];
             
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Get PBX contacts with id = %d with list = %lu items", [pbxId intValue], (unsigned long)pbxList.count] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+            
             if (pbxList.count > 0) {
                 _tbContacts.hidden = NO;
                 _lbContacts.hidden = YES;
@@ -435,22 +437,29 @@
     
     id object = [notif object];
     if ([object isKindOfClass:[NSNumber class]]) {
-        if (pbxList != nil) {
-            [pbxList removeAllObjects];
-            [pbxList addObjectsFromArray:[LinphoneAppDelegate sharedInstance].pbxContacts];
-            
-            if (pbxList.count > 0) {
-                _lbContacts.hidden = YES;
-                _tbContacts.hidden = NO;
-            }else{
-                _lbContacts.hidden = NO;
-                _tbContacts.hidden = YES;
-            }
+        if (pbxList == nil) {
+            pbxList = [[NSMutableArray alloc] init];
+        }
+        [pbxList removeAllObjects];
+        [pbxList addObjectsFromArray:[LinphoneAppDelegate sharedInstance].pbxContacts];
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] pbxContacts count = %lu contacts", __FUNCTION__, (unsigned long)pbxList.count] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
+        if (pbxList.count > 0) {
+            _lbContacts.hidden = YES;
+            _tbContacts.hidden = NO;
+            [_tbContacts reloadData];
+        }else{
+            _lbContacts.hidden = NO;
+            _tbContacts.hidden = YES;
         }
     }
 }
 
 - (void)whenSyncPBXContactsFinish {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     [pbxList removeAllObjects];
     [pbxList addObjectsFromArray:[LinphoneAppDelegate sharedInstance].pbxContacts];
 }

@@ -189,3 +189,5 @@ Failed"               =   "Failed!"
 
 "No network" = "No network"
 "Can not send email. Please check your email account again!" = "Can not send email. Please check your email account again!"
+
+"This account is being registered" = "This account is being registered"

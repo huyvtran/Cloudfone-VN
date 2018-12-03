@@ -28,6 +28,8 @@
     
     UIFont *textFont;
     NSTimer *refreshTimer;
+    
+    NSMutableArray *tbDatas;
 }
 
 @end
@@ -53,6 +55,11 @@
     [super viewWillAppear:animated];
     
     [WriteLogsUtils writeForGoToScreen: @"AllContactsViewController"];
+    
+    if (tbDatas == nil) {
+        tbDatas = [[NSMutableArray alloc] init];
+    }
+    [tbDatas removeAllObjects];
     
     if (![LinphoneAppDelegate sharedInstance].contactLoaded)
     {
@@ -211,7 +218,7 @@
     if (isSearching) {
         [self getSectionsForContactsList: _searchResults];
     }else{
-        [self getSectionsForContactsList: [LinphoneAppDelegate sharedInstance].listContacts];
+        [self getSectionsForContactsList: tbDatas];
     }
     return [[_contactSections allKeys] count];
 }
@@ -371,7 +378,7 @@
         _searchResults = [[NSMutableArray alloc] init];
     }
     
-    NSMutableArray *tmpList = [[NSMutableArray alloc] initWithArray: [LinphoneAppDelegate sharedInstance].listContacts];
+    NSMutableArray *tmpList = [[NSMutableArray alloc] initWithArray: tbDatas];
     
     //  search theo ten va sipPhone
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_fullName contains[cd] %@ OR _sipPhone contains[cd] %@", strSearch, strSearch];
@@ -406,7 +413,10 @@
 }
 
 - (void)showAndReloadContactList {
-    if ([LinphoneAppDelegate sharedInstance].listContacts.count > 0) {
+    [tbDatas removeAllObjects];
+    [tbDatas addObjectsFromArray:[[LinphoneAppDelegate sharedInstance].listContacts copy]];
+    
+    if (tbDatas.count > 0) {
         _tbContacts.hidden = NO;
         _lbNoContacts.hidden = YES;
         [_tbContacts reloadData];

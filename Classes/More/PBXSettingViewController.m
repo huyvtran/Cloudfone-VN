@@ -158,6 +158,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     _icWaiting.backgroundColor = UIColor.whiteColor;
     _icWaiting.alpha = 0.5;
+    _icWaiting.hidden = YES;
     [_icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.bottom.equalTo(self.view);
     }];
@@ -469,12 +470,19 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     
-    typeRegister = normalLogin;
-    
-    _icWaiting.hidden = NO;
-    [_icWaiting startAnimating];
-    
-    [self getInfoForPBXWithServerName: _tfServerID.text];
+    //  check if this account is default and registration state is okay
+    BOOL same = [self checkAccount: _tfAccount.text withServer: _tfServerID.text];
+    if (!same) {
+        typeRegister = normalLogin;
+        
+        _icWaiting.hidden = NO;
+        [_icWaiting startAnimating];
+        
+        [self getInfoForPBXWithServerName: _tfServerID.text];
+        
+    }else{
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"This account is being registered"] duration:2.0 position:CSToastPositionCenter];
+    }
 }
 
 - (void)closeKeyboard {
@@ -493,13 +501,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                forState:UIControlStateNormal];
     [_btnSave setTitle:[appDelegate.localization localizedStringForKey:@"Save"]
               forState:UIControlStateNormal];
-    
-//    _tfServerID.text = @"CF-BS-3165";
-//    _tfAccount.text = @"14951";
-//    _tfPassword.text = @"cloudfone@123";
-    
-    [_icWaiting stopAnimating];
-    _icWaiting.hidden = YES;
 }
 
 - (void)whenTextfieldDidChanged {
@@ -563,7 +564,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] link: %@\nResponse data: %@", __FUNCTION__, link, @[data]] toFilePath:appDelegate.logFilePath];
     
-    [_icWaiting stopAnimating];
     if ([link isEqualToString:getServerInfoFunc]) {
         [self startLoginPBXWithInfo: data];
     }else if ([link isEqualToString: ChangeCustomerIOSToken]){
@@ -770,8 +770,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                 NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
                 if (defaultUsername != nil)
                 {
-                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationCleared with clearingAccount = YES", __FUNCTION__] toFilePath:appDelegate.logFilePath];
-                    
                     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@ for proxyUsername %@", __FUNCTION__, @"LinphoneRegistrationFailed", defaultUsername] toFilePath:appDelegate.logFilePath];
                     
                     if ([defaultUsername isEqualToString: accountPBX]) {
@@ -883,6 +881,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)whenClearPBXSuccessfully {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
                          toFilePath:appDelegate.logFilePath];
+    
+    [_icWaiting stopAnimating];
+    _icWaiting.hidden = YES;
     
     serverPBX = @"";
     accountPBX = @"";
@@ -1220,6 +1221,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         [SipUtils enableProxyConfig:defaultConfig withValue:YES withRefresh:YES];
         
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Enable proxy config with accountId = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath:appDelegate.logFilePath];
+    }else{
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Can not enable with defaultConfig = NULL", __FUNCTION__] toFilePath:appDelegate.logFilePath];
     }
 }
 
@@ -1245,6 +1248,18 @@ static UICompositeViewDescription *compositeDescription = nil;
         
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Disable proxy config with accountId = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath:appDelegate.logFilePath];
     }
+}
+
+- (BOOL)checkAccount: (NSString *)account withServer: (NSString *)server {
+    NSString *curServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+    NSString *curAccount = [SipUtils getAccountIdOfDefaultProxyConfig];
+    
+    if (![AppUtils isNullOrEmpty: curServer] && ![AppUtils isNullOrEmpty: curAccount]) {
+        if ([curServer isEqualToString: server] && [curAccount isEqualToString: account]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 @end
