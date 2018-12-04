@@ -95,6 +95,8 @@
         }
     }else{
         [pbxList addObjectsFromArray: [LinphoneAppDelegate sharedInstance].pbxContacts];
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"List pbx contact: %@", pbxList]
+                             toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
         if (pbxList.count > 0) {
             _tbContacts.hidden = NO;
@@ -189,10 +191,6 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
-        return 0;
-    }
-    
     NSString *str = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section];
     return [[contactSections objectForKey:str] count];
 }
@@ -362,6 +360,8 @@
 }
 
 - (void)startSearchPBXContactsWithContent: (NSString *)content {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] search contact = %@", __FUNCTION__, content] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     [listSearch removeAllObjects];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_name CONTAINS[cd] %@ OR _number CONTAINS[cd] %@", content, content];
     NSArray *filter = [pbxList filteredArrayUsingPredicate: predicate];
