@@ -94,8 +94,11 @@
             _lbContacts.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"You have not synced pbx contacts"];
         }
     }else{
-        [pbxList addObjectsFromArray: [LinphoneAppDelegate sharedInstance].pbxContacts];
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"List pbx contact: %@", pbxList]
+        if ([LinphoneAppDelegate sharedInstance].pbxContacts != nil) {
+            [pbxList addObjectsFromArray: [[LinphoneAppDelegate sharedInstance].pbxContacts copy]];
+        }
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"List pbx contact count: %lu", (unsigned long)pbxList.count]
                              toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
         if (pbxList.count > 0) {
@@ -406,8 +409,9 @@
         if (![listCharacter containsObject:c]) {
             c = @"z#";
         }
-        
-        [[contactSections objectForKey: c] addObject:contactItem];
+        if (contactItem != nil) {
+            [[contactSections objectForKey: c] addObject:contactItem];
+        }
     }
     // Sort each section array
     for (NSString *key in [contactSections allKeys]){
@@ -441,7 +445,9 @@
             pbxList = [[NSMutableArray alloc] init];
         }
         [pbxList removeAllObjects];
-        [pbxList addObjectsFromArray:[LinphoneAppDelegate sharedInstance].pbxContacts];
+        if ([LinphoneAppDelegate sharedInstance].pbxContacts != nil) {
+            [pbxList addObjectsFromArray:[[LinphoneAppDelegate sharedInstance].pbxContacts copy]];
+        }
         
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] pbxContacts count = %lu contacts", __FUNCTION__, (unsigned long)pbxList.count] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
@@ -461,7 +467,9 @@
                          toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
     [pbxList removeAllObjects];
-    [pbxList addObjectsFromArray:[LinphoneAppDelegate sharedInstance].pbxContacts];
+    if ([LinphoneAppDelegate sharedInstance].pbxContacts != nil) {
+        [pbxList addObjectsFromArray:[[LinphoneAppDelegate sharedInstance].pbxContacts copy]];
+    }
 }
 
 @end

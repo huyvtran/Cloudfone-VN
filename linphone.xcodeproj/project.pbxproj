@@ -5182,10 +5182,10 @@
 					"-ObjC",
 					"-lxml2",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfonevn;
 				PRODUCT_NAME = linphone;
-				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
+				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
+				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5291,10 +5291,10 @@
 					"-ObjC",
 					"-lxml2",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfonevn;
 				PRODUCT_NAME = linphone;
-				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
+				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
+				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5400,10 +5400,10 @@
 					"-ObjC",
 					"-lxml2",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfonevn;
 				PRODUCT_NAME = linphone;
-				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
+				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
+				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5509,10 +5509,10 @@
 					"-ObjC",
 					"-lxml2",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfoneapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfonevn;
 				PRODUCT_NAME = linphone;
-				PROVISIONING_PROFILE = "a8dbd44f-d0ee-4963-8d78-1dfaf5918d68";
-				PROVISIONING_PROFILE_SPECIFIER = "New CloudFone Development";
+				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
+				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
