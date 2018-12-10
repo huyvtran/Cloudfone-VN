@@ -446,8 +446,8 @@
         
         // Lưu tên contact cho search phonebook
         NSString *fullname = @"";
-        if (![AppUtils isNullOrEmpty: firstName]) {
-            fullname = firstName;
+        if (![AppUtils isNullOrEmpty: lastName]) {
+            fullname = lastName;
         }
         
         if (![AppUtils isNullOrEmpty: middleName]) {
@@ -458,11 +458,11 @@
             }
         }
         
-        if (![AppUtils isNullOrEmpty: lastName]) {
-            if ([fullname isEqualToString:@""]) {
-                fullname = lastName;
+        if (![AppUtils isNullOrEmpty: firstName]) {
+            if ([firstName isEqualToString:@""]) {
+                fullname = firstName;
             }else{
-                fullname = [NSString stringWithFormat:@"%@ %@", fullname, lastName];
+                fullname = [NSString stringWithFormat:@"%@ %@", fullname, firstName];
             }
         }
         return fullname;

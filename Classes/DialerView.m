@@ -82,14 +82,14 @@ static UICompositeViewDescription *compositeDescription = nil;
     [WriteLogsUtils writeForGoToScreen: @"DialerView"];
     
     
-    NSString* path = [[NSBundle mainBundle] pathForResource:@"file_encrypt"
-                                                     ofType:@"txt"];
-
-    NSString* content = [NSString stringWithContentsOfFile:path
-                                                  encoding:NSUTF8StringEncoding
-                                                     error:NULL];
-    NSString *decrypt = [AESCrypt decrypt:content password:AES_KEY];
-    NSLog(@"%@", decrypt);
+//    NSString* path = [[NSBundle mainBundle] pathForResource:@"file_encrypt"
+//                                                     ofType:@"txt"];
+//
+//    NSString* content = [NSString stringWithContentsOfFile:path
+//                                                  encoding:NSUTF8StringEncoding
+//                                                     error:NULL];
+//    NSString *decrypt = [AESCrypt decrypt:content password:AES_KEY];
+//    NSLog(@"%@", decrypt);
     
     //  Added by Khai Le on 30/09/2018
     [self checkAccountForApp];
