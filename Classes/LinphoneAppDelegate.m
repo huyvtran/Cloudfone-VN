@@ -43,6 +43,7 @@
 #import <Crashlytics/Crashlytics.h>
 #import "NSData+Base64.h"
 #import "PhoneObject.h"
+#import <Intents/Intents.h>
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -1924,13 +1925,14 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 //    [[NSUserDefaults standardUserDefaults] synchronize];
 
     //  Di chuyen den view history neu nguoi dung click vao history tu dien thoai de mo app
-    [PhoneMainView.instance changeCurrentView:CallsHistoryViewController.compositeViewDescription];
+    //  [PhoneMainView.instance changeCurrentView:CallsHistoryViewController.compositeViewDescription];
 
-    NSLog(@"%@", userActivity.activityType);
-    NSLog(@"%@", userActivity.title);
-    NSDictionary *info = userActivity.userInfo;
-    NSLog(@"%@", info);
-
+    INInteraction *interaction = userActivity.interaction;
+    INStartAudioCallIntent *startAudioCallIntent = (INStartAudioCallIntent *)interaction.intent;
+    INPerson *contact = startAudioCallIntent.contacts[0];
+    INPersonHandle *personHandle = contact.personHandle;
+    NSString *phoneNumber = personHandle.value;
+    NSLog(@"%@", phoneNumber);
     return YES;
 }
 
@@ -2133,6 +2135,15 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         default:
             break;
     }
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Title" message:[options description]
+                                                   delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil];
+    [alert show];
+    
+    return YES;
 }
 
 

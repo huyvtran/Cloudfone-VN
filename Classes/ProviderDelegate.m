@@ -45,8 +45,9 @@
     }
 	config.supportsVideo = FALSE;
 	config.iconTemplateImageData = UIImagePNGRepresentation([UIImage imageNamed:@"callkit_logo"]);
+    //  config.supportedHandleTypes = [NSSet setWithObjects:@(CXHandleTypePhoneNumber), nil];
     
-	NSArray *ar = @[ [NSNumber numberWithInt:(int)CXHandleTypeGeneric] ];
+	NSArray *ar = @[ [NSNumber numberWithInt:(int)CXHandleTypeGeneric], [NSNumber numberWithInt:(int)CXHandleTypePhoneNumber]];
 	NSSet *handleTypes = [[NSSet alloc] initWithArray:ar];
 	[config setSupportedHandleTypes:handleTypes];
 	[config setMaximumCallGroups:2];
