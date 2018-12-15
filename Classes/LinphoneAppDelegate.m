@@ -76,7 +76,7 @@
 @synthesize fromImagePicker;
 @synthesize _isSyncing;
 @synthesize contactLoaded;
-@synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, supportLoginWithPhoneNumber, logFilePath, dbQueue;
+@synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, supportLoginWithPhoneNumber, logFilePath, dbQueue, splashScreen;
 
 #pragma mark - Lifecycle Functions
 
@@ -123,18 +123,6 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s", __FUNCTION__]
                          toFilePath:logFilePath];
-    
-    NSString *goHistoryCall = [[NSUserDefaults standardUserDefaults] objectForKey:@"isGoToHistoryCall"];
-    if (goHistoryCall != nil && [goHistoryCall isEqualToString:@"YES"]) {
-        //  reset value
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"isGoToHistoryCall"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        if (![PhoneMainView.instance.currentView isEqual: CallsHistoryViewController.compositeViewDescription]) {
-            //  Di chuyen den view history neu nguoi dung click vao history tu dien thoai de mo app
-            [PhoneMainView.instance changeCurrentView:CallsHistoryViewController.compositeViewDescription];
-        }
-    }
     
 	if (startedInBackground) {
 		startedInBackground = FALSE;
@@ -188,8 +176,66 @@
 			// To stop it we have to do the iOS7 ring fix...
 			[self fixRing];
 		}
-	}
+    }else{
+        NSString *phoneNumber = [[NSUserDefaults standardUserDefaults] objectForKey:UserActivity];
+        if (![AppUtils isNullOrEmpty: phoneNumber])
+        {
+            AccountState accState = [SipUtils getStateOfDefaultProxyConfig];
+            switch (accState) {
+                case eAccountNone:
+                {
+                    //  reset value
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:UserActivity];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                    [self.window makeToast:[localization localizedStringForKey:@"You have not signed your account yet"] duration:3.0 position:CSToastPositionCenter];
+                    [self performSelector:@selector(hideSplashScreen) withObject:nil afterDelay:3.0];
+                    
+                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Call with UserActivity phone number = %@, but have not signed with any account", phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+                    
+                    break;
+                }
+                case eAccountOff:
+                {
+                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Call with UserActivity phone number = %@, but current account was off", phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+                    
+                    UIAlertView *alertAcc = [[UIAlertView alloc] initWithTitle:nil message:[localization localizedStringForKey:@"Your account was turned off. Do you want to enable and call?"] delegate:self cancelButtonTitle:[localization localizedStringForKey:@"No"] otherButtonTitles: [localization localizedStringForKey:@"Yes"], nil];
+                    alertAcc.delegate = self;
+                    alertAcc.tag = 100;
+                    [alertAcc show];
+                    
+                    break;
+                }
+                default:
+                    break;
+            }
+            if (accState == eAccountNone) {
+                
+            }else if (accState == eAccountOff){
+                
+            }else{
+                //  Check registration state
+                LinphoneRegistrationState state = [SipUtils getRegistrationStateOfDefaultProxyConfig];
+                if (state == LinphoneRegistrationOk) {
+                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Call with UserActivity phone number = %@", phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+                    
+                    splashScreen.hidden = YES;
+                    [SipUtils makeCallWithPhoneNumber: phoneNumber];
+                    
+                    //  reset value
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:UserActivity];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }else {
+                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Call with UserActivity phone number = %@, but waiting for register to SIP", phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+                }
+            }
+        }
+    }
 	[LinphoneManager.instance.iapManager check];
+}
+
+- (void)hideSplashScreen {
+    splashScreen.hidden = YES;
 }
 
 #pragma deploymate push "ignored-api-availability"
@@ -508,8 +554,13 @@ void onUncaughtException(NSException* exception)
 	[self.window makeKeyAndVisible];
 	[RootViewManager setupWithPortrait:(PhoneMainView *)self.window.rootViewController];
 	//  [PhoneMainView.instance startUp];
-    [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
     
+    NSDictionary *userActivityDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsUserActivityDictionaryKey];
+    if (userActivityDictionary != nil) {
+        [self showSplashScreenOnView: YES];
+    }
+    
+    [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
 	[PhoneMainView.instance updateStatusBar:nil];
     
     
@@ -1918,22 +1969,40 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
 {
-//    [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"isGoToHistoryCall"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
-//
-//    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"isGoToHistoryCall"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
-
-    //  Di chuyen den view history neu nguoi dung click vao history tu dien thoai de mo app
-    //  [PhoneMainView.instance changeCurrentView:CallsHistoryViewController.compositeViewDescription];
-
     INInteraction *interaction = userActivity.interaction;
-    INStartAudioCallIntent *startAudioCallIntent = (INStartAudioCallIntent *)interaction.intent;
-    INPerson *contact = startAudioCallIntent.contacts[0];
-    INPersonHandle *personHandle = contact.personHandle;
-    NSString *phoneNumber = personHandle.value;
-    NSLog(@"%@", phoneNumber);
+    if (interaction != nil) {
+        INStartAudioCallIntent *startAudioCallIntent = (INStartAudioCallIntent *)interaction.intent;
+        if (startAudioCallIntent != nil && startAudioCallIntent.contacts.count > 0) {
+            INPerson *contact = startAudioCallIntent.contacts[0];
+            if (contact != nil) {
+                INPersonHandle *personHandle = contact.personHandle;
+                NSString *phoneNumber = personHandle.value;
+                if (![AppUtils isNullOrEmpty: phoneNumber])
+                {
+                    phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+                    if ([AppUtils isNullOrEmpty: phoneNumber]) {
+                        [self showSplashScreenOnView: NO];
+                    }else{
+                        [self showSplashScreenOnView: YES];
+                        
+                        [[NSUserDefaults standardUserDefaults] setObject:phoneNumber forKey:UserActivity];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
+                }
+            }
+        }
+    }
     return YES;
+}
+
+- (void)showSplashScreenOnView: (BOOL)show {
+    if (splashScreen == nil) {
+        UINib *nib = [UINib nibWithNibName:@"LaunchScreen" bundle:nil];
+        splashScreen = [[nib instantiateWithOwner:self options:nil] objectAtIndex:0];
+        [self.window addSubview:splashScreen];
+    }
+    splashScreen.frame = [UIScreen mainScreen].bounds;
+    splashScreen.hidden = !show;
 }
 
 //-(BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler {
@@ -2118,6 +2187,22 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             //  get missed callfrom server
             [self getMissedCallFromServer];
             
+            //  [Khai Le - 15/12/2018]
+            if (!splashScreen.hidden) {
+                NSString *phoneNumber = [[NSUserDefaults standardUserDefaults] objectForKey: UserActivity];
+                if (![AppUtils isNullOrEmpty: phoneNumber]) {
+                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Register to SIP okay. Call with UserActivity phone number = %@", phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+                    
+                    splashScreen.hidden = YES;
+                    [SipUtils makeCallWithPhoneNumber: phoneNumber];
+                    //  reset value
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:UserActivity];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                }else{
+                    splashScreen.hidden = YES;
+                }
+            }
             break;
         }
         case LinphoneRegistrationNone:{
@@ -2139,12 +2224,33 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Title" message:[options description]
-                                                   delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil];
-    [alert show];
     
     return YES;
 }
+
+#pragma mark - UIAlertview delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 100) {
+        if (buttonIndex == 0) {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:UserActivity];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            splashScreen.hidden = YES;
+        }else if (buttonIndex == 1) {
+            LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+            if (defaultConfig != NULL) {
+                linphone_proxy_config_enable_register(defaultConfig, YES);
+                linphone_proxy_config_refresh_register(defaultConfig);
+                linphone_proxy_config_done(defaultConfig);
+                
+                linphone_core_refresh_registers(LC);
+                
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] You turned on account with Id = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath: logFilePath];
+            }
+        }
+    }
+}
+
 
 
 

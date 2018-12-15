@@ -978,9 +978,15 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 					NSUUID *callKit_uuid = [NSUUID UUID];
 					[LinphoneManager.instance.providerDelegate.uuids setObject:callKit_uuid forKey:callKit_callId];
 					[LinphoneManager.instance.providerDelegate.calls setObject:callKit_callId forKey:callKit_uuid];
-					NSString *address =
-						[FastAddressBook displayNameForAddress:linphone_call_get_remote_address(callKit_call)];
-					CXHandle *handle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:address];
+					
+                    //  [Khai Le - 16/12/2018]
+                    //  NSString *address = [FastAddressBook displayNameForAddress:linphone_call_get_remote_address(callKit_call)];
+                    //  CXHandle *handle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:address];
+                    
+                    NSString *phoneNumber = [SipUtils getPhoneNumberOfCall: callKit_call orLinphoneAddress: nil];
+					CXHandle *handle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:phoneNumber];
+                    
+                    
 					CXStartCallAction *act = [[CXStartCallAction alloc] initWithCallUUID:callKit_uuid handle:handle];
 					CXTransaction *tr = [[CXTransaction alloc] initWithAction:act];
 					[LinphoneManager.instance.providerDelegate.controller requestTransaction:tr
@@ -2857,8 +2863,13 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
 		NSUUID *uuid = [NSUUID UUID];
 		[LinphoneManager.instance.providerDelegate.uuids setObject:uuid forKey:@""];
 		LinphoneManager.instance.providerDelegate.pendingAddr = linphone_address_clone(iaddr);
-		NSString *address = [FastAddressBook displayNameForAddress:iaddr];
-		CXHandle *handle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:address];
+        //  [Khai LE - 16/12/2019]
+		//  NSString *address = [FastAddressBook displayNameForAddress:iaddr];
+		//  CXHandle *handle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:address];
+        NSString *phoneNumber = [SipUtils getPhoneNumberOfCall:nil orLinphoneAddress: (LinphoneAddress *)iaddr];
+        CXHandle *handle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:phoneNumber];
+        
+        
 		CXStartCallAction *act = [[CXStartCallAction alloc] initWithCallUUID:uuid handle:handle];
 		CXTransaction *tr = [[CXTransaction alloc] initWithAction:act];
 		[LinphoneManager.instance.providerDelegate.controller requestTransaction:tr

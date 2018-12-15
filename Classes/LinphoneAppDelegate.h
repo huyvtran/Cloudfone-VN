@@ -48,7 +48,7 @@ typedef enum typePhoneNumber{
     eNormalPhone,
 }typePhoneNumber;
 
-@interface LinphoneAppDelegate : NSObject <UIApplicationDelegate, PKPushRegistryDelegate, UNUserNotificationCenterDelegate, WebServicesDelegate> {
+@interface LinphoneAppDelegate : NSObject <UIApplicationDelegate, PKPushRegistryDelegate, UNUserNotificationCenterDelegate, WebServicesDelegate, UIAlertViewDelegate> {
     @private
 	UIBackgroundTaskIdentifier bgStartId;
     BOOL startedInBackground;
@@ -122,6 +122,9 @@ typedef enum typePhoneNumber{
 @property (nonatomic, assign) BOOL enableForTest;
 @property (nonatomic, strong) NSString *logFilePath;
 @property (nonatomic, assign) BOOL supportLoginWithPhoneNumber;
+
+//  [Khai le - 15/12/2018]
+@property (nonatomic, strong) UIView *splashScreen;
 
 @end
 

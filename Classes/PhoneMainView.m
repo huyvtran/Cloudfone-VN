@@ -395,9 +395,13 @@ static RootViewManager *rootViewManagerInstance = nil;
 				if (uuid) {
 					[LinphoneManager.instance.providerDelegate.provider reportOutgoingCallWithUUID:uuid
 																				   connectedAtDate:nil];
-					NSString *address = [FastAddressBook displayNameForAddress:linphone_call_get_remote_address(call)];
+					
 					CXCallUpdate *update = [[CXCallUpdate alloc] init];
-					update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:address];
+                    //  [Khai Le - 16/12/2018]
+                    //  NSString *address = [FastAddressBook displayNameForAddress:linphone_call_get_remote_address(call)];
+					//  update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:address];
+                    NSString *phoneNumber = [SipUtils getPhoneNumberOfCall:call orLinphoneAddress:nil];
+                    update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:phoneNumber];
 					update.supportsGrouping = TRUE;
 					update.supportsDTMF = TRUE;
 					update.supportsHolding = TRUE;

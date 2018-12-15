@@ -47,7 +47,7 @@
 	config.iconTemplateImageData = UIImagePNGRepresentation([UIImage imageNamed:@"callkit_logo"]);
     //  config.supportedHandleTypes = [NSSet setWithObjects:@(CXHandleTypePhoneNumber), nil];
     
-	NSArray *ar = @[ [NSNumber numberWithInt:(int)CXHandleTypeGeneric], [NSNumber numberWithInt:(int)CXHandleTypePhoneNumber]];
+	NSArray *ar = @[ [NSNumber numberWithInt:(int)CXHandleTypeGeneric], [NSNumber numberWithInt:(int)CXHandleTypePhoneNumber], [NSNumber numberWithInt:(int)CXHandleTypeEmailAddress]];
 	NSSet *handleTypes = [[NSSet alloc] initWithArray:ar];
 	[config setSupportedHandleTypes:handleTypes];
 	[config setMaximumCallGroups:2];
@@ -68,7 +68,10 @@
 - (void)reportIncomingCallwithUUID:(NSUUID *)uuid handle:(NSString *)handle video:(BOOL)video {
 	// Create update to describe the incoming call and caller
 	CXCallUpdate *update = [[CXCallUpdate alloc] init];
-	update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:handle];
+    //  [Khai Le - 16/12/2018]
+	//  update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:handle];
+    update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:handle];
+    
     update.localizedCallerName = handle;
 	update.supportsDTMF = TRUE;
 	update.supportsHolding = TRUE;

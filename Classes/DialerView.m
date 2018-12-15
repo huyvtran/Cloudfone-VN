@@ -446,7 +446,7 @@ static UICompositeViewDescription *compositeDescription = nil;
  
     BOOL success = [SipUtils makeCallWithPhoneNumber: hotline];
     if (!success) {
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Can not make call. Perhaps you have not signned your account yet"] duration:3.0 position:CSToastPositionCenter];
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Can not make call now. Perhaps you have not signed your account yet!"] duration:3.0 position:CSToastPositionCenter];
     }
 }
 
@@ -1103,15 +1103,19 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
     }
     else if (alertView.tag == 2){
-        LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-        if (defaultConfig != NULL) {
-            linphone_proxy_config_enable_register(defaultConfig, YES);
-            linphone_proxy_config_refresh_register(defaultConfig);
-            linphone_proxy_config_done(defaultConfig);
-            
-            linphone_core_refresh_registers(LC);
-            
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] You turned on account with Id = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath:appDelegate.logFilePath];
+        if (buttonIndex == 0) {
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] You don't want to enable this account with Id = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath:appDelegate.logFilePath];
+        }else if (buttonIndex == 1){
+            LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
+            if (defaultConfig != NULL) {
+                linphone_proxy_config_enable_register(defaultConfig, YES);
+                linphone_proxy_config_refresh_register(defaultConfig);
+                linphone_proxy_config_done(defaultConfig);
+                
+                linphone_core_refresh_registers(LC);
+                
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] You turned on account with Id = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath:appDelegate.logFilePath];
+            }
         }
     }
 }

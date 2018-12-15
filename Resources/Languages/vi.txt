@@ -153,6 +153,8 @@
 "The user is busy" = "Người dùng đang bận"
 
 "Do you want to enable this account?" = "Bạn có muốn kích hoạt lại tài khoản này?"
+"Your account was turned off. Do you want to enable and call?" = "Tài khoản của bạn đã bị tắt. Bạn có muốn mở lại và gọi?"
+
 "Your account was enabled successful" = "Tài khoản của bạn đã được bật thành công"
 "Your account was disabled successful" = "Tài khoản của bạn đã được tắt thành công"
 
@@ -191,3 +193,7 @@
 "Can not send email. Please check your email account again!" = "Không thể gửi email. Vui lòng kiểm tra lại tài khoản email của bạn!"
 
 "This account is being registered" = "Tài khoản này đang được đăng nhập"
+
+"Can not make call now. Perhaps you have not signed your account yet!" = "Không thể gọi lúc này. Có lẽ bạn chưa đăng nhập tài khoản!"
+"Can not make call with yourself!" = "Không thể gọi cho chính bạn!"
+"You have not signed your account yet" = "Bạn chưa đăng nhập tài khoản"

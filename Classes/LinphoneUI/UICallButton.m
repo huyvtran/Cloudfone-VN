@@ -92,7 +92,7 @@
     
     BOOL success = [SipUtils makeCallWithPhoneNumber: address];
     if (!success) {
-        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Can not make call. Perhaps you have not signned your account yet!"] duration:3.0 position:CSToastPositionCenter];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Can not make call now. Perhaps you have not signed your account yet!"] duration:3.0 position:CSToastPositionCenter];
         return;
     }
     

@@ -249,6 +249,7 @@
         if (controller != nil) {
             controller.phoneNumber = phoneNumber;
         }
+        
         [[PhoneMainView instance] changeCurrentView:[CallView compositeViewDescription] push:TRUE];
         return YES;
     }
@@ -290,8 +291,6 @@
     }
 }
 
-
-
 + (void)enableProxyConfig: (LinphoneProxyConfig *)proxy withValue: (BOOL)enable withRefresh: (BOOL)refresh {
     //  edit profxy config
     if (enable) {
@@ -305,6 +304,32 @@
     if (refresh) {
         linphone_core_refresh_registers(LC);
     }
+}
+
++ (NSString *)getPhoneNumberOfCall: (LinphoneCall *)call orLinphoneAddress: (LinphoneAddress *)address
+{
+    NSString *phone = @"";
+    const LinphoneAddress* addr;
+    if (address != nil) {
+        addr = address;
+    }else{
+        addr = linphone_call_get_remote_address(call);
+    }
+    
+    if (addr != NULL) {
+        char* lAddress = linphone_address_as_string_uri_only(addr);
+        if(lAddress) {
+            NSString *normalizedSipAddress = [FastAddressBook normalizeSipURI:[NSString stringWithUTF8String:lAddress]];
+            NSRange range = NSMakeRange(3, [normalizedSipAddress rangeOfString:@"@"].location - 3);
+            NSString *tmp = [normalizedSipAddress substringWithRange:range];
+            if (tmp.length > 2) {
+                NSString *phoneStr = [tmp substringFromIndex: 1];
+                phone = [[NSString alloc] initWithString: phoneStr];
+            }
+            ms_free(lAddress);
+        }
+    }
+    return phone;
 }
 
 @end

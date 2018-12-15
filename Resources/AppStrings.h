@@ -249,6 +249,7 @@
 #define PBX_IP_ADDRESSS @"PBX_IP_ADDRESSS"
 #define callnexPBXFlag  @"callnexPBXFlag"
 #define transport_udp   @"UDP"
+#define UserActivity    @"UserActivity"
 
 #define folder_call_records     @"calls_records"
 

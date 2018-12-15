@@ -151,6 +151,7 @@
 "The user is busy" = "The user is busy"
 
 "Do you want to enable this account?" = "Do you want to enable this account?"
+"Your account was turned off. Do you want to enable and call?" = "Your account was turned off. Do you want to enable and call?"
 
 "Your account was enabled successful" = "Your account was enabled successful"
 "Your account was disabled successful" = "Your account was disabled successful"
@@ -191,3 +192,7 @@ Failed"               =   "Failed!"
 "Can not send email. Please check your email account again!" = "Can not send email. Please check your email account again!"
 
 "This account is being registered" = "This account is being registered"
+
+"Can not make call now. Perhaps you have not signed your account yet!" = "Can not make call now. Perhaps you have not signed your account yet!"
+"Can not make call with yourself!" = "Can not make call with yourself!"
+"You have not signed your account yet" = "You have not signed your account yet"
