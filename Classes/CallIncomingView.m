@@ -19,7 +19,6 @@
 
 #import "CallIncomingView.h"
 #import "LinphoneManager.h"
-#import "FastAddressBook.h"
 #import "Utils.h"
 
 @implementation CallIncomingView
@@ -98,7 +97,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 	char *uri = linphone_address_as_string_uri_only(addr);
 	_addressLabel.text = [NSString stringWithUTF8String:uri];
 	ms_free(uri);
-	[_avatarImage setImage:[FastAddressBook imageForAddress:addr thumbnail:NO] bordered:YES withRoundedRadius:YES];
 
 	_tabBar.hidden = linphone_call_params_video_enabled(linphone_call_get_remote_params(_call));
 	_tabVideoBar.hidden = !_tabBar.hidden;

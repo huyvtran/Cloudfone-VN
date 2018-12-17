@@ -988,7 +988,21 @@ static UICompositeViewDescription *compositeDescription = nil;
             _tfServerID.text = serverPBX;
             _tfPassword.text = passwordPBX;
             
-            [self getInfoForPBXWithServerName: pbxDomain];
+            BOOL same = [self checkAccount: _tfAccount.text withServer: _tfServerID.text];
+            if (!same) {
+                typeRegister = normalLogin;
+                
+                _icWaiting.hidden = NO;
+                [_icWaiting startAnimating];
+                
+                [self getInfoForPBXWithServerName: _tfServerID.text];
+                
+            }else{
+                _icWaiting.hidden = YES;
+                [_icWaiting stopAnimating];
+                
+                [self.view makeToast:[appDelegate.localization localizedStringForKey:@"This account is being registered"] duration:2.0 position:CSToastPositionCenter];
+            }
         }
     }else{
         [_icWaiting stopAnimating];

@@ -1984,7 +1984,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                         [self showSplashScreenOnView: NO];
                     }else{
                         [self showSplashScreenOnView: YES];
-                        
+
                         [[NSUserDefaults standardUserDefaults] setObject:phoneNumber forKey:UserActivity];
                         [[NSUserDefaults standardUserDefaults] synchronize];
                     }
@@ -2005,15 +2005,31 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     splashScreen.hidden = !show;
 }
 
-//-(BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler {
-//    //  Di chuyen den view history neu nguoi dung click vao history tu dien thoai de mo app
-//    [PhoneMainView.instance changeCurrentView:CallsHistoryViewController.compositeViewDescription];
+//-(BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+//{
+//    INInteraction *interaction = userActivity.interaction;
+//    if (interaction != nil) {
+//        INStartAudioCallIntent *startAudioCallIntent = (INStartAudioCallIntent *)interaction.intent;
+//        if (startAudioCallIntent != nil && startAudioCallIntent.contacts.count > 0) {
+//            INPerson *contact = startAudioCallIntent.contacts[0];
+//            if (contact != nil) {
+//                INPersonHandle *personHandle = contact.personHandle;
+//                NSString *phoneNumber = personHandle.value;
+//                if (![AppUtils isNullOrEmpty: phoneNumber])
+//                {
+//                    phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+//                    if ([AppUtils isNullOrEmpty: phoneNumber]) {
+//                        [self showSplashScreenOnView: NO];
+//                    }else{
+//                        [self showSplashScreenOnView: YES];
 //
-//    NSLog(@"%@", userActivity.activityType);
-//    NSLog(@"%@", userActivity.title);
-//    NSDictionary *info = userActivity.userInfo;
-//    NSLog(@"%@", info);
-//
+//                        [[NSUserDefaults standardUserDefaults] setObject:phoneNumber forKey:UserActivity];
+//                        [[NSUserDefaults standardUserDefaults] synchronize];
+//                    }
+//                }
+//            }
+//        }
+//    }
 //    return YES;
 //}
 

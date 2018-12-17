@@ -297,7 +297,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 		linphone_core_set_default_proxy_config(LC, new_config);
 		// reload address book to prepend proxy config domain to contacts' phone number
 		// todo: STOP doing that!
-		[[LinphoneManager.instance fastAddressBook] reload];
 	} else {
 		UIAlertController *errView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Assistant error", nil)
 																		 message:NSLocalizedString(@"Could not configure your account, please check parameters or try again later",
@@ -1181,8 +1180,6 @@ void assistant_is_account_linked(LinphoneAccountCreator *creator, LinphoneAccoun
                 linphone_core_set_default_proxy_config(LC, config);
                 // reload address book to prepend proxy config domain to contacts' phone number
                 // todo: STOP doing that!
-                [[LinphoneManager.instance fastAddressBook] reload];
-                
                 [PhoneMainView.instance changeCurrentView:DialerView.compositeViewDescription];
             } else {
                 //[self displayAssistantConfigurationError];
