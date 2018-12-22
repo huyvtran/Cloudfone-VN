@@ -126,5 +126,7 @@ typedef enum typePhoneNumber{
 //  [Khai le - 15/12/2018]
 @property (nonatomic, strong) UIView *splashScreen;
 
+@property (nonatomic, assign) BOOL supportVoice;
+
 @end
 

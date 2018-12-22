@@ -77,6 +77,7 @@
 @synthesize _isSyncing;
 @synthesize contactLoaded;
 @synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, supportLoginWithPhoneNumber, logFilePath, dbQueue, splashScreen;
+@synthesize supportVoice;
 
 #pragma mark - Lifecycle Functions
 
@@ -445,6 +446,7 @@ void onUncaughtException(NSException* exception)
     _isSyncing = false;
     enableForTest = NO;
     supportLoginWithPhoneNumber = NO;
+    supportVoice = YES;
     
     listInfoPhoneNumber = [[NSMutableArray alloc] init];
     

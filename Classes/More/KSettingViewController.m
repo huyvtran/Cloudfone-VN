@@ -9,9 +9,12 @@
 #import "KSettingViewController.h"
 #import "LanguageViewController.h"
 #import "SettingCell.h"
+#import "CustomSwitchButton.h"
 
 @interface KSettingViewController (){
     NSMutableArray *listTitle;
+    CustomSwitchButton *swVoiceControl;
+    float hCell;
 }
 @end
 
@@ -71,10 +74,15 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)showContentWithCurrentLanguage {
     _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Settings"];
     
-    if ([LinphoneAppDelegate sharedInstance].enableForTest) {
-        listTitle = [[NSMutableArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Change language"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Call settings"], nil];
-    }else{
-        listTitle = [[NSMutableArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Change language"], nil];
+    listTitle = [[NSMutableArray alloc] init];
+    [listTitle addObject:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Change language"]];
+    
+    if (([LinphoneAppDelegate sharedInstance].enableForTest)) {
+        [listTitle addObject:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Call settings"]];
+    }
+    
+    if (([LinphoneAppDelegate sharedInstance].supportVoice)) {
+        [listTitle addObject:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Voice control"]];
     }
     
     [_tbSettings reloadData];
@@ -82,6 +90,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)setupUIForView
 {
+    hCell = 68.0;
     if (SCREEN_WIDTH > 320) {
         _lbHeader.font = [UIFont fontWithName:HelveticaNeue size:20.0];
     }else{
@@ -144,7 +153,23 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    cell._lbTitle.text = [listTitle objectAtIndex: indexPath.row];
+    NSString *content = [listTitle objectAtIndex: indexPath.row];
+    cell._lbTitle.text = content;
+    if ([content isEqualToString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Voice control"]]) {
+        cell._iconArrow.hidden = YES;
+        
+        BOOL state = NO;
+        NSNumber *hasVoiceControl = [[NSUserDefaults standardUserDefaults] objectForKey:VOICE_CONTROL];
+        if (hasVoiceControl != nil) {
+            state = [hasVoiceControl intValue];
+        }
+        swVoiceControl = [[CustomSwitchButton alloc] initWithState:state frame:CGRectMake(SCREEN_WIDTH-70.0-20, (hCell-31.0)/2, 70.0, 31.0)];
+        
+        //  swAccount.delegate = self;
+        [cell addSubview: swVoiceControl];
+    }else{
+        cell._iconArrow.hidden = NO;
+    }
     
     return cell;
 }
@@ -157,8 +182,14 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case 1:{
-            [[PhoneMainView instance] changeCurrentView:[SettingsView compositeViewDescription]
-                                                   push:true];
+            if ([LinphoneAppDelegate sharedInstance].enableForTest) {
+                [[PhoneMainView instance] changeCurrentView:[SettingsView compositeViewDescription]
+                                                       push:true];
+            }
+            break;
+        }
+        case 2:{
+            
             break;
         }
         default:
@@ -167,7 +198,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 68.0;
+    return hCell;
 }
 
 @end

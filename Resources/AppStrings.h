@@ -44,7 +44,8 @@
 //  [Khai le - 25/10/2018]
 #define logsFolderName  @"LogFiles"
 #define DAY_FOR_LOGS    7
-#define PBX_ID_CONTACT   @"PBX_ID_CONTACT"
+#define PBX_ID_CONTACT  @"PBX_ID_CONTACT"
+#define VOICE_CONTROL   @"VOICE_CONTROL"
 
 #define USERNAME ([[NSUserDefaults standardUserDefaults] objectForKey:key_login])
 #define PASSWORD ([[NSUserDefaults standardUserDefaults] objectForKey:key_password])
