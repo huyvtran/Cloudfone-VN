@@ -20,5 +20,7 @@
 + (void)enableProxyConfig: (LinphoneProxyConfig *)proxy withValue: (BOOL)enable withRefresh: (BOOL)refresh;
 + (LinphoneRegistrationState)getRegistrationStateOfDefaultProxyConfig;
 + (NSString *)getPhoneNumberOfCall: (LinphoneCall *)call orLinphoneAddress: (LinphoneAddress *)address;
+//  [Khai Le - 27/12/2018]
++ (NSString *)makeValidPhoneNumber: (NSString *)phoneNumber;
 
 @end

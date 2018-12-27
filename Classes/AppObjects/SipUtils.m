@@ -223,6 +223,9 @@
 }
 
 + (BOOL)makeCallWithPhoneNumber: (NSString *)phoneNumber {
+    //  [Khai Le - 27/12/2018]
+    phoneNumber = [self makeValidPhoneNumber: phoneNumber];
+    
     if (phoneNumber != nil && phoneNumber.length > 0)
     {
         BOOL networkReady = [DeviceUtils checkNetworkAvailable];
@@ -330,6 +333,20 @@
         }
     }
     return phone;
+}
+
+//  [Khai Le - 27/12/2018]
++ (NSString *)makeValidPhoneNumber: (NSString *)phoneNumber {
+    if ([phoneNumber hasPrefix:@"+84"]) {
+        phoneNumber = [phoneNumber stringByReplacingOccurrencesOfString:@"+84" withString:@"0"];
+    }
+    
+    if ([phoneNumber hasPrefix:@"84"]) {
+        phoneNumber = [phoneNumber substringFromIndex:2];
+        phoneNumber = [NSString stringWithFormat:@"0%@", phoneNumber];
+    }
+    phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+    return phoneNumber;
 }
 
 @end
