@@ -15,6 +15,7 @@
 #define AES_KEY         @"OdsCloudfone@123"
 
 #define simulator       @"x86_64"
+#define Iphone4s        @"iPhone4,1"
 #define Iphone5_1       @"iPhone5,1"
 #define Iphone5_2       @"iPhone5,2"
 #define Iphone5c_1      @"iPhone5,3"
