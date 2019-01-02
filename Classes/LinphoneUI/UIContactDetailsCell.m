@@ -18,7 +18,6 @@
  */
 
 #import "UIContactDetailsCell.h"
-#import "FastAddressBook.h"
 #import "Contact.h"
 
 @implementation UIContactDetailsCell
@@ -55,17 +54,11 @@
 		[NSString stringWithFormat:NSLocalizedString(@"Chat with %@", nil), _addressLabel.text];
 	_callButton.accessibilityLabel = [NSString stringWithFormat:NSLocalizedString(@"Call %@", nil), _addressLabel.text];
 	// Test presence
-	Contact* contact = [FastAddressBook getContactWithAddress:(addr)];
+	Contact* contact = nil;
 
 	_linphoneImage.hidden = TRUE;
 	if (contact) {
-		self.linphoneImage.hidden =
-			!((contact.friend &&
-			   linphone_presence_model_get_basic_status(linphone_friend_get_presence_model_for_uri_or_tel(
-				   contact.friend, _addressLabel.text.UTF8String)) == LinphonePresenceBasicStatusOpen) ||
-			  (!linphone_proxy_config_is_phone_number(linphone_core_get_default_proxy_config(LC),
-													  _addressLabel.text.UTF8String) &&
-			   [FastAddressBook isSipURIValid:_addressLabel.text]));
+		self.linphoneImage.hidden = YES;
 	}
 
 	if (addr) {
@@ -87,10 +80,10 @@
 	LinphoneAddress *addr = linphone_core_interpret_url(LC, normAddr);
 
 	// Test presence
-	Contact *contact = [FastAddressBook getContactWithAddress:(addr)];
+	Contact *contact = nil;
 
 	if (contact) {
-		self.linphoneImage.hidden = ! ((contact.friend && linphone_presence_model_get_basic_status(linphone_friend_get_presence_model_for_uri_or_tel(contact.friend, _addressLabel.text.UTF8String)) == LinphonePresenceBasicStatusOpen) || (!linphone_proxy_config_is_phone_number(linphone_core_get_default_proxy_config(LC), _addressLabel.text.UTF8String) && [FastAddressBook isSipURIValid:_addressLabel.text]));
+		self.linphoneImage.hidden = YES;
 	}
 	
 	if (addr) {
@@ -125,21 +118,11 @@
 }
 
 - (IBAction)onCallClick:(id)event {
-	LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:_addressLabel.text];
-	[LinphoneManager.instance call:addr];
-	if (addr)
-		linphone_address_destroy(addr);
+	
 }
 
 - (IBAction)onChatClick:(id)event {
-	LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:_addressLabel.text];
-	if (addr == NULL)
-		return;
-	ChatConversationView *view = VIEW(ChatConversationView);
-	LinphoneChatRoom *room = linphone_core_get_chat_room(LC, addr);
-	[view setChatRoom:room];
-	[PhoneMainView.instance changeCurrentView:view.compositeViewDescription];
-	linphone_address_destroy(addr);
+	
 }
 
 - (IBAction)onDeleteClick:(id)sender {

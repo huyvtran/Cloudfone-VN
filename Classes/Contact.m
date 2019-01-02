@@ -112,15 +112,12 @@
 	}
 
 	if (_person != nil) {
-		NSString *lFirstName = CFBridgingRelease(ABRecordCopyValue(_person, kABPersonFirstNameProperty));
-		NSString *lLocalizedFirstName = [FastAddressBook localizedLabel:lFirstName];
+		NSString *lLocalizedFirstName = @"";
 		NSString *compositeName = CFBridgingRelease(ABRecordCopyCompositeName(_person));
 
-		NSString *lLastName = CFBridgingRelease(ABRecordCopyValue(_person, kABPersonLastNameProperty));
-		NSString *lLocalizedLastName = [FastAddressBook localizedLabel:lLastName];
+		NSString *lLocalizedLastName = @"";
 
-		NSString *lOrganization = CFBridgingRelease(ABRecordCopyValue(_person, kABPersonOrganizationProperty));
-		NSString *lLocalizedOrganization = [FastAddressBook localizedLabel:lOrganization];
+		NSString *lLocalizedOrganization = @"";
 
 		if (compositeName) {
 			return compositeName;
@@ -376,10 +373,9 @@
 
 		if ([lDict objectForKey:(__bridge NSString *)kABPersonInstantMessageServiceKey] == nil) {
 			/*too bad probably a gtalk number, storing uri*/
-			ret = [FastAddressBook normalizeSipURI:value];
+			
 		} else if (!_added) {
 			_added = TRUE;
-			[LinphoneManager.instance.fastAddressBook saveContact:self];
 		}
 		CFRelease(lMap);
 	}
@@ -484,41 +480,6 @@
 			CFRelease(lMap);
 		}
 	}
-
-	// SIP
-	/*{
-		_sipAddresses = [[NSMutableArray alloc] init];
-		ABMultiValueRef lMap = ABRecordCopyValue(_person, kABPersonInstantMessageProperty);
-		if (lMap) {
-			for (int i = 0; i < ABMultiValueGetCount(lMap); ++i) {
-				CFDictionaryRef lDict = ABMultiValueCopyValueAtIndex(lMap, i);
-				BOOL add = false;
-				if (CFDictionaryContainsKey(lDict, kABPersonInstantMessageServiceKey)) {
-					if (CFStringCompare((CFStringRef)LinphoneManager.instance.contactSipField,
-										CFDictionaryGetValue(lDict, kABPersonInstantMessageServiceKey),
-										kCFCompareCaseInsensitive) == 0) {
-						add = true;
-					}
-				} else {
-					add = true;
-				}
-				if (add) {
-					NSString *lValue =
-					(__bridge NSString *)CFDictionaryGetValue(lDict, kABPersonInstantMessageUsernameKey);
-					if(lValue) {
-						NSString *lNormalizedKey = [FastAddressBook normalizeSipURI:lValue];
-						if (lNormalizedKey != NULL) {
-							[_sipAddresses addObject:lNormalizedKey];
-						} else {
-							[_sipAddresses addObject:lValue];
-						}
-					}
-				}
-				CFRelease(lDict);
-			}
-			CFRelease(lMap);
-		}
-	}*/
 
 	// Email
 	{

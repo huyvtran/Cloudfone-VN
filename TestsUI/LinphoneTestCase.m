@@ -150,9 +150,6 @@
 
 		linphone_core_set_file_transfer_server(lc, "");
 
-		// reload address book to prepend proxy config domain to contacts' phone number
-		[[[LinphoneManager instance] fastAddressBook] reload];
-
 		[self waitForRegistration];
 		[[LinphoneManager instance] lpConfigSetInt:NO forKey:@"animations_preference"];
 	}

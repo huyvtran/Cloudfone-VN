@@ -639,8 +639,6 @@
 			[PhoneMainView.instance presentViewController:errView animated:YES completion:nil];
 		}
 	}
-	// reload address book to prepend proxy config domain to contacts' phone number
-	[[LinphoneManager.instance fastAddressBook] reload];
 }
 
 - (void)synchronizeCodecs:(const MSList *)codecs {

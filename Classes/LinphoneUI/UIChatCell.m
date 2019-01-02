@@ -64,7 +64,7 @@
 	}
 	const LinphoneAddress *addr = linphone_chat_room_get_peer_address(chatRoom);
 	[ContactDisplay setDisplayNameLabel:_addressLabel forAddress:addr];
-	[_avatarImage setImage:[FastAddressBook imageForAddress:addr thumbnail:YES] bordered:NO withRoundedRadius:YES];
+	[_avatarImage setImage:[UIImage imageNamed:@"no_avatar"] bordered:NO withRoundedRadius:YES];
 
 	LinphoneChatMessage *last_message = linphone_chat_room_get_user_data(chatRoom);
 	if (last_message) {

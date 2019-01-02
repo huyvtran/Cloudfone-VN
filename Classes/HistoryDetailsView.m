@@ -18,7 +18,6 @@
  */
 
 #import "HistoryDetailsView.h"
-#import "FastAddressBook.h"
 
 @implementation HistoryDetailsView
 
@@ -132,9 +131,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 	_emptyLabel.hidden = YES;
 
 	LinphoneAddress *addr = linphone_call_log_get_remote_address(callLog);
-	_addContactButton.hidden = ([FastAddressBook getContactWithAddress:addr] != nil);
+	_addContactButton.hidden = YES;
 	[ContactDisplay setDisplayNameLabel:_contactLabel forAddress:addr];
-	[_avatarImage setImage:[FastAddressBook imageForAddress:addr thumbnail:NO] bordered:NO withRoundedRadius:YES];
+	[_avatarImage setImage:[UIImage imageNamed:@"no_avatar"] bordered:NO withRoundedRadius:YES];
 	char *addrURI = linphone_address_as_string_uri_only(addr);
 	_addressLabel.text = [NSString stringWithUTF8String:addrURI];
 	ms_free(addrURI);
@@ -150,14 +149,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)onContactClick:(id)event {
-	LinphoneAddress *addr = linphone_call_log_get_remote_address(callLog);
-	Contact *contact = [FastAddressBook getContactWithAddress:addr];
-	if (contact) {
-		ContactDetailsView *view = VIEW(ContactDetailsView);
-		[PhoneMainView.instance changeCurrentView:view.compositeViewDescription];
-		[ContactSelection setSelectionMode:ContactSelectionModeNone];
-		[view setContact:contact];
-	}
+	
 }
 
 - (IBAction)onAddContactClick:(id)event {

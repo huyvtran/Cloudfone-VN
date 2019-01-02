@@ -689,8 +689,6 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 #pragma deploymate pop
 
 	const LinphoneAddress *addr = linphone_call_get_remote_address(call);
-    //  Close by Khải Lê on 01/12/2017
-	//  NSString *address = [FastAddressBook displayNameForAddress:addr];
     
     const char *username = linphone_address_get_username(addr);
     NSString *callerId = [NSString stringWithUTF8String:username];
@@ -979,10 +977,6 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 					[LinphoneManager.instance.providerDelegate.uuids setObject:callKit_uuid forKey:callKit_callId];
 					[LinphoneManager.instance.providerDelegate.calls setObject:callKit_callId forKey:callKit_uuid];
 					
-                    //  [Khai Le - 16/12/2018]
-                    //  NSString *address = [FastAddressBook displayNameForAddress:linphone_call_get_remote_address(callKit_call)];
-                    //  CXHandle *handle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:address];
-                    
                     NSString *phoneNumber = [SipUtils getPhoneNumberOfCall: callKit_call orLinphoneAddress: nil];
 					CXHandle *handle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:phoneNumber];
                     
@@ -1345,7 +1339,7 @@ static void linphone_iphone_popup_password_request(LinphoneCore *lc, const char 
 #pragma deploymate pop
 	NSString *callID = [NSString stringWithUTF8String:linphone_chat_message_get_custom_header(msg, "Call-ID")];
 	const LinphoneAddress *remoteAddress = linphone_chat_message_get_from_address(msg);
-	NSString *from = [FastAddressBook displayNameForAddress:remoteAddress];
+	NSString *from = @"";
 
 	char *c_address = linphone_address_as_string_uri_only(remoteAddress);
 	NSString *remote_uri = [NSString stringWithUTF8String:c_address];
@@ -1533,7 +1527,7 @@ static void linphone_iphone_message_received_unable_decrypt(LinphoneCore *lc, Li
 		theLinphoneManager->pushBgTask = 0;
 	}
 	const LinphoneAddress *address = linphone_chat_message_get_peer_address(message);
-	NSString *strAddr = [FastAddressBook displayNameForAddress:address];
+	NSString *strAddr = @"";
 	NSString *title = NSLocalizedString(@"LIME warning", nil);
 	NSString *body = [NSString
 		stringWithFormat:NSLocalizedString(@"You have received an encrypted message you are unable to decrypt from "
@@ -2025,10 +2019,6 @@ static LinphoneCoreVTable linphonec_vtable = {
 
 	_contactSipField = [self lpConfigStringForKey:@"contact_im_type_value" withDefault:@"SIP"];
 
-	if (_fastAddressBook == nil) {
-		_fastAddressBook = [[FastAddressBook alloc] init];
-	}
-
 	linphone_core_set_zrtp_secrets_file(theLinphoneCore, [zrtpSecretsFileName UTF8String]);
 	linphone_core_set_chat_database_path(theLinphoneCore, [chatDBFileName UTF8String]);
 	linphone_core_set_call_logs_database_path(theLinphoneCore, [chatDBFileName UTF8String]);
@@ -2313,9 +2303,7 @@ void popup_link_account_cb(LinphoneAccountCreator *creator, LinphoneAccountCreat
 - (void)resetLinphoneCore {
 	[self destroyLinphoneCore];
 	[self createLinphoneCore];
-	// reload friends
-	[self.fastAddressBook reload];
-
+	
 	// reset network state to trigger a new network connectivity assessment
 	linphone_core_set_network_reachable(theLinphoneCore, FALSE);
 }
@@ -2863,9 +2851,7 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
 		NSUUID *uuid = [NSUUID UUID];
 		[LinphoneManager.instance.providerDelegate.uuids setObject:uuid forKey:@""];
 		LinphoneManager.instance.providerDelegate.pendingAddr = linphone_address_clone(iaddr);
-        //  [Khai LE - 16/12/2019]
-		//  NSString *address = [FastAddressBook displayNameForAddress:iaddr];
-		//  CXHandle *handle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:address];
+        
         NSString *phoneNumber = [SipUtils getPhoneNumberOfCall:nil orLinphoneAddress: (LinphoneAddress *)iaddr];
         CXHandle *handle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:phoneNumber];
         
@@ -2883,10 +2869,6 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
 - (BOOL)doCall:(const LinphoneAddress *)iaddr {
 	LinphoneAddress *addr = linphone_address_clone(iaddr);
 	NSString *displayName = [FastAddressBook displayNameForAddress:addr];
-    
-    
-    //  NSString *strAddress = @"sip:7788990005@103.237.148.99:51000";
-    //  addr = linphone_address_new(strAddress.UTF8String);
     
 	// Finally we can make the call
 	LinphoneCallParams *lcallParams = linphone_core_create_call_params(theLinphoneCore, NULL);

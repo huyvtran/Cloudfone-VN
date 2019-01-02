@@ -8,7 +8,6 @@
 
 #import "UIConferenceCell.h"
 #import "LinphoneManager.h"
-#import "FastAddressBook.h"
 #import "NSData+Base64.h"
 
 @interface UIConferenceCell (){
@@ -65,7 +64,7 @@
         // contact name
         char* lAddress = linphone_address_as_string_uri_only(addr);
         if(lAddress) {
-            NSString *normalizedSipAddress = [FastAddressBook normalizeSipURI:[NSString stringWithUTF8String:lAddress]];
+            NSString *normalizedSipAddress = @"";
             if (normalizedSipAddress.length >= 7) {
                 phoneNumber = [normalizedSipAddress substringWithRange:NSMakeRange(4, 10)];
             }

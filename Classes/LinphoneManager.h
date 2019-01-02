@@ -198,7 +198,6 @@ typedef struct _LinphoneManagerSounds {
 @property (nonatomic, strong) ProviderDelegate *providerDelegate;
 
 @property (readonly) BOOL isTesting;
-@property(readonly, strong) FastAddressBook *fastAddressBook;
 @property Connectivity connectivity;
 @property (readonly) NetworkType network;
 @property (readonly) const char*  frontCamId;

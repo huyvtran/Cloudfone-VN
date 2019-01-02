@@ -458,16 +458,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)onCurrentCallChange {
 	LinphoneCall *call = linphone_core_get_current_call(LC);
 
-	//  _callView.hidden = !call;
-	//  _conferenceView.hidden = !linphone_core_is_in_conference(LC);
-	//  _callPauseButton.hidden = !call && !linphone_core_is_in_conference(LC);
-
-	//  [_callPauseButton setType:UIPauseButtonType_CurrentCall call:call];
-	//  [_conferencePauseButton setType:UIPauseButtonType_Conference call:call];
-
-    //  Leo Kelvin
-    //  _callView.hidden = !call;
-    
     BOOL check = !call && !linphone_core_is_in_conference(LC);
     if (check) {
         _callPauseButton.selected = YES;
@@ -479,15 +469,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     _conferenceView.hidden = !linphone_core_is_in_conference(LC);
     [_conferencePauseButton setType:UIPauseButtonType_Conference call:call];    */
     
-	if (!_callView.hidden) {
-        /*  Leo Kelvin
-		const LinphoneAddress *addr = linphone_call_get_remote_address(call);
-		[ContactDisplay setDisplayNameLabel:_nameLabel forAddress:addr];
-		char *uri = linphone_address_as_string_uri_only(addr);
-		ms_free(uri);
-		[_avatarImage setImage:[FastAddressBook imageForAddress:addr thumbnail:NO] bordered:YES withRoundedRadius:YES];
-        */
-	}
 }
 
 - (void)hidePad:(BOOL)hidden animated:(BOOL)animated {

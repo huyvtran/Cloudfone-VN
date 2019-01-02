@@ -56,7 +56,7 @@
 	}
 
 	LOGI(@"Reset data to contact %p", _contact);
-	[_avatarImage setImage:[FastAddressBook imageForContact:_contact thumbnail:NO] bordered:NO withRoundedRadius:YES];
+	[_avatarImage setImage:[UIImage imageNamed:@"no_avatar"] bordered:NO withRoundedRadius:YES];
 	[_tableController setContact:_contact];
 	_emptyLabel.hidden = YES;
 	_avatarImage.hidden = !_emptyLabel.hidden;
@@ -66,7 +66,6 @@
 
 - (void)removeContact {
 	inhibUpdate = TRUE;
-	[[LinphoneManager.instance fastAddressBook] removeContact:_contact];
 	inhibUpdate = FALSE;
 	[PhoneMainView.instance popCurrentView];
 }
@@ -76,9 +75,6 @@
 		[PhoneMainView.instance popCurrentView];
 		return;
 	}
-
-	// Add contact to book
-	[LinphoneManager.instance.fastAddressBook saveContact:_contact];
 }
 
 - (void)selectContact:(Contact *)acontact andReload:(BOOL)reload {
@@ -92,7 +88,7 @@
 	_deleteButton.hidden = !_emptyLabel.hidden;
 	_editButton.hidden = !_emptyLabel.hidden;
 
-	[_avatarImage setImage:[FastAddressBook imageForContact:_contact thumbnail:NO] bordered:NO withRoundedRadius:YES];
+	[_avatarImage setImage:[UIImage imageNamed:@"no_avatar"] bordered:NO withRoundedRadius:YES];
 	[ContactDisplay setDisplayNameLabel:_nameLabel forContact:_contact];
 	[_tableController setContact:_contact];
 
@@ -275,7 +271,7 @@
 		}
 	}
 	if (rm) {
-		[LinphoneManager.instance.fastAddressBook removeContact:_contact];
+		
 	}
 }
 
@@ -418,7 +414,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 			}
 		}
 		if (rm) {
-			[LinphoneManager.instance.fastAddressBook removeContact:_contact];
+			
 		}
 	}
 	
@@ -524,7 +520,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 	[_contact setAvatar:image];
 
-	[_avatarImage setImage:[FastAddressBook imageForContact:_contact thumbnail:NO] bordered:NO withRoundedRadius:YES];
+	[_avatarImage setImage:[UIImage imageNamed:@"no_avatar"] bordered:NO withRoundedRadius:YES];
 }
 
 

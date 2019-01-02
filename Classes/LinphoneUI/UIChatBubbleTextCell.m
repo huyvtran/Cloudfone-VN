@@ -82,13 +82,8 @@
 }
 
 + (NSString *)ContactDateForChat:(LinphoneChatMessage *)message {
-	const LinphoneAddress *address =
-		linphone_chat_message_get_from_address(message)
-			? linphone_chat_message_get_from_address(message)
-			: linphone_chat_room_get_peer_address(linphone_chat_message_get_chat_room(message));
 	return [NSString stringWithFormat:@"%@ - %@", [LinphoneUtils timeToString:linphone_chat_message_get_time(message)
-																   withFormat:LinphoneDateChatBubble],
-									  [FastAddressBook displayNameForAddress:address]];
+																   withFormat:LinphoneDateChatBubble],@""];
 }
 
 - (NSString *)textMessage {
@@ -123,10 +118,7 @@
 	if (outgoing) {
 		_avatarImage.image = [LinphoneUtils selfAvatar];
 	} else {
-		[_avatarImage setImage:[FastAddressBook imageForAddress:linphone_chat_message_get_peer_address(_message)
-													  thumbnail:YES]
-					  bordered:NO
-			 withRoundedRadius:YES];
+		[_avatarImage setImage:[UIImage imageNamed:@"no_avatar"] bordered:NO withRoundedRadius:YES];
 	}
 	_contactDateLabel.text = [self.class ContactDateForChat:_message];
 

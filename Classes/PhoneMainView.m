@@ -352,10 +352,6 @@ static RootViewManager *rootViewManagerInstance = nil;
 			break;
 		}
 		case LinphoneCallOutgoingInit: {
-            //  Trước đó đã di chuyển tới màn hình Outgoing
-            //  [self changeCurrentView:[OutgoingCallViewController compositeViewDescription] push:YES];
-            //  Edit by Khai Le on 05/07/2018
-            //  NSString *address = [FastAddressBook displayNameForAddress:linphone_call_get_remote_address(call)];
             //  Nếu đang có cuộc gọi thì nghĩa là đang gọi conference, nên quay về lại màn hình call
             int count = linphone_core_get_calls_nb([LinphoneManager getLc]);
             if (count > 1) {
@@ -397,9 +393,6 @@ static RootViewManager *rootViewManagerInstance = nil;
 																				   connectedAtDate:nil];
 					
 					CXCallUpdate *update = [[CXCallUpdate alloc] init];
-                    //  [Khai Le - 16/12/2018]
-                    //  NSString *address = [FastAddressBook displayNameForAddress:linphone_call_get_remote_address(call)];
-					//  update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:address];
                     NSString *phoneNumber = [SipUtils getPhoneNumberOfCall:call orLinphoneAddress:nil];
                     update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:phoneNumber];
 					update.supportsGrouping = TRUE;

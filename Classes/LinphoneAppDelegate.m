@@ -133,20 +133,6 @@
 	LinphoneManager *instance = LinphoneManager.instance;
 	[instance becomeActive];
 	
-	if (instance.fastAddressBook.needToUpdate) {
-		//Update address book for external changes
-		if (PhoneMainView.instance.currentView == ContactsListView.compositeViewDescription || PhoneMainView.instance.currentView == ContactDetailsView.compositeViewDescription) {
-			[PhoneMainView.instance changeCurrentView:DialerView.compositeViewDescription];
-		}
-		[instance.fastAddressBook reload];
-		instance.fastAddressBook.needToUpdate = FALSE;
-		const MSList *lists = linphone_core_get_friends_lists(LC);
-		while (lists) {
-			linphone_friend_list_update_subscriptions(lists->data);
-			lists = lists->next;
-		}
-	}
-
 	LinphoneCall *call = linphone_core_get_current_call(LC);
 
 	if (call) {
@@ -1496,7 +1482,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 	linphone_core_set_provisioning_uri(LC, [configURL UTF8String]);
 	[LinphoneManager.instance destroyLinphoneCore];
 	[LinphoneManager.instance startLinphoneCore];
-	[LinphoneManager.instance.fastAddressBook reload];
 }
 
 #pragma mark - Prevent ImagePickerView from rotating

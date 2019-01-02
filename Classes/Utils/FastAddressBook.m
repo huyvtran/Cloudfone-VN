@@ -32,16 +32,7 @@
 static void sync_address_book(ABAddressBookRef addressBook, CFDictionaryRef info, void *context);
 
 + (UIImage *)imageForContact:(Contact *)contact thumbnail:(BOOL)thumbnail {
-	@synchronized(LinphoneManager.instance.fastAddressBook.addressBookMap) {
-		UIImage *retImage = [contact avatar:thumbnail];
-		if (retImage == nil) {
-			retImage = [UIImage imageNamed:@"avatar.png"];
-		}
-		if (retImage.size.width != retImage.size.height) {
-			retImage = [retImage squareCrop];
-		}
-		return retImage;
-	}
+    return [UIImage imageNamed:@"avatar.png"];
 }
 
 + (UIImage *)imageForAddress:(const LinphoneAddress *)addr thumbnail:(BOOL)thumbnail {
@@ -52,11 +43,6 @@ static void sync_address_book(ABAddressBookRef addressBook, CFDictionaryRef info
 }
 
 + (Contact *)getContact:(NSString *)address {
-	if (LinphoneManager.instance.fastAddressBook != nil) {
-		@synchronized(LinphoneManager.instance.fastAddressBook.addressBookMap) {
-			return [LinphoneManager.instance.fastAddressBook.addressBookMap objectForKey:address];
-		}
-	}
 	return nil;
 }
 

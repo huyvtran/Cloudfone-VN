@@ -104,7 +104,7 @@
 			[displayNameLabel.text stringByAppendingString:[NSString stringWithFormat:@" (%lu)", count]];
 	}
 
-	[_avatarImage setImage:[FastAddressBook imageForAddress:addr thumbnail:YES] bordered:NO withRoundedRadius:YES];
+	[_avatarImage setImage:[UIImage imageNamed:@"no_avatar"] bordered:NO withRoundedRadius:YES];
 }
 
 - (void)setEditing:(BOOL)editing {
