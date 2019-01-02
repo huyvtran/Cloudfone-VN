@@ -22,5 +22,7 @@
 + (NSString *)getPhoneNumberOfCall: (LinphoneCall *)call orLinphoneAddress: (LinphoneAddress *)address;
 //  [Khai Le - 27/12/2018]
 + (NSString *)makeValidPhoneNumber: (NSString *)phoneNumber;
++ (NSString *)normalizeSipURI:(NSString *)address;
++ (NSString *)displayNameForAddress:(const LinphoneAddress *)addr;
 
 @end

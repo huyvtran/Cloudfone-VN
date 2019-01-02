@@ -641,7 +641,6 @@
 		D326483815887D5200930C67 /* OrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = D326483715887D5200930C67 /* OrderedDictionary.m */; };
 		D32648441588F6FC00930C67 /* UIToggleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D32648431588F6FB00930C67 /* UIToggleButton.m */; };
 		D32B6E2915A5BC440033019F /* ChatConversationTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D32B6E2815A5BC430033019F /* ChatConversationTableView.m */; };
-		D32B9DFC15A2F131000B6DEC /* FastAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = D32B9DFB15A2F131000B6DEC /* FastAddressBook.m */; };
 		D34F6F9E1594D3FB0095705B /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D34F6F9D1594D3FB0095705B /* InAppSettings.bundle */; };
 		D350F20E15A43BB100149E54 /* AssistantView.m in Sources */ = {isa = PBXBuildFile; fileRef = D350F20C15A43BB100149E54 /* AssistantView.m */; };
 		D35497FE15875372000081D8 /* ContactsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = D35497FC15875372000081D8 /* ContactsListView.m */; };
@@ -1784,8 +1783,6 @@
 		D32B6E2715A5BC430033019F /* ChatConversationTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatConversationTableView.h; sourceTree = "<group>"; };
 		D32B6E2815A5BC430033019F /* ChatConversationTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatConversationTableView.m; sourceTree = "<group>"; };
 		D32B6E2E15A5C0AC0033019F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		D32B9DFA15A2F131000B6DEC /* FastAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FastAddressBook.h; path = Utils/FastAddressBook.h; sourceTree = "<group>"; };
-		D32B9DFB15A2F131000B6DEC /* FastAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FastAddressBook.m; path = Utils/FastAddressBook.m; sourceTree = "<group>"; };
 		D34F6F9D1594D3FB0095705B /* InAppSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = InAppSettings.bundle; sourceTree = "<group>"; };
 		D350F20B15A43BB100149E54 /* AssistantView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssistantView.h; sourceTree = "<group>"; };
 		D350F20C15A43BB100149E54 /* AssistantView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssistantView.m; sourceTree = "<group>"; };
@@ -3552,8 +3549,6 @@
 				D380801115C29984005BE9BC /* ColorSpaceUtilities.h */,
 				D3807FB615C28940005BE9BC /* DCRoundSwitch */,
 				D37EE15F160377D7003608A6 /* DTFoundation */,
-				D32B9DFA15A2F131000B6DEC /* FastAddressBook.h */,
-				D32B9DFB15A2F131000B6DEC /* FastAddressBook.m */,
 				6371579F1B283FE200C91677 /* FileTransferDelegate.h */,
 				637157A01B283FE200C91677 /* FileTransferDelegate.m */,
 				633888401BFB2C49001D5E7B /* HPGrowingTextView */,
@@ -4526,7 +4521,6 @@
 				84C1E2631FAEBE4C00EED0B9 /* FMResultSet.m in Sources */,
 				84C443961FBE10BE0015854C /* ChooseAvatarPopupView.m in Sources */,
 				631098491D4660580041F2B3 /* CountryListView.m in Sources */,
-				D32B9DFC15A2F131000B6DEC /* FastAddressBook.m in Sources */,
 				84C47D0D1FB62CE00015695E /* KHistoryCallObject.m in Sources */,
 				84EFFDB91FF3E6980085A9F4 /* DGActivityIndicatorView.m in Sources */,
 				84E286C91FC9E1AC009CBA27 /* NSData+ImageContentType.m in Sources */,

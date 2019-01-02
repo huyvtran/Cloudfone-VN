@@ -28,7 +28,6 @@
 #import "IASKSettingsReader.h"
 #import "IASKSettingsStore.h"
 #import "IASKAppSettingsViewController.h"
-#import "FastAddressBook.h"
 #import "InAppProductsManager.h"
 
 #include "linphone/linphonecore.h"

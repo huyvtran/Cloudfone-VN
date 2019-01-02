@@ -2868,7 +2868,7 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
 
 - (BOOL)doCall:(const LinphoneAddress *)iaddr {
 	LinphoneAddress *addr = linphone_address_clone(iaddr);
-	NSString *displayName = [FastAddressBook displayNameForAddress:addr];
+	NSString *displayName = [SipUtils displayNameForAddress: addr];
     
 	// Finally we can make the call
 	LinphoneCallParams *lcallParams = linphone_core_create_call_params(theLinphoneCore, NULL);

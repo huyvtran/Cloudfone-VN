@@ -322,7 +322,7 @@ static RootViewManager *rootViewManagerInstance = nil;
         // contact name
         char* lAddress = linphone_address_as_string_uri_only(addr);
         if(lAddress) {
-            NSString *normalizedSipAddress = [FastAddressBook normalizeSipURI:[NSString stringWithUTF8String:lAddress]];
+            NSString *normalizedSipAddress = [SipUtils normalizeSipURI:[NSString stringWithUTF8String:lAddress]];
             NSRange range = NSMakeRange(3, [normalizedSipAddress rangeOfString:@"@"].location - 3);
             NSString *tmp = [normalizedSipAddress substringWithRange:range];
             // tmp: -> :8889998007

@@ -322,7 +322,7 @@
     if (addr != NULL) {
         char* lAddress = linphone_address_as_string_uri_only(addr);
         if(lAddress) {
-            NSString *normalizedSipAddress = [FastAddressBook normalizeSipURI:[NSString stringWithUTF8String:lAddress]];
+            NSString *normalizedSipAddress = [self normalizeSipURI:[NSString stringWithUTF8String:lAddress]];
             NSRange range = NSMakeRange(3, [normalizedSipAddress rangeOfString:@"@"].location - 3);
             NSString *tmp = [normalizedSipAddress substringWithRange:range];
             if (tmp.length > 2) {
@@ -347,6 +347,33 @@
     }
     phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
     return phoneNumber;
+}
+
++ (NSString *)normalizeSipURI:(NSString *)address {
+    // replace all whitespaces (non-breakable, utf8 nbsp etc.) by the "classical" whitespace
+    NSString *normalizedSipAddress = [[address
+                                       componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] componentsJoinedByString:@" "];
+    LinphoneAddress *addr = linphone_core_interpret_url(LC, [address UTF8String]);
+    if (addr != NULL) {
+        linphone_address_clean(addr);
+        char *tmp = linphone_address_as_string(addr);
+        normalizedSipAddress = [NSString stringWithUTF8String:tmp];
+        ms_free(tmp);
+        linphone_address_destroy(addr);
+    }
+    return normalizedSipAddress;
+}
+
++ (NSString *)displayNameForAddress:(const LinphoneAddress *)addr {
+    NSString *ret = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+    const char *lDisplayName = linphone_address_get_display_name(addr);
+    const char *lUserName = linphone_address_get_username(addr);
+    if (lDisplayName) {
+        ret = [NSString stringWithUTF8String:lDisplayName];
+    } else if (lUserName) {
+        ret = [NSString stringWithUTF8String:lUserName];
+    }
+    return ret;
 }
 
 @end

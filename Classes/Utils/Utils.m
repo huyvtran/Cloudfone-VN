@@ -25,7 +25,6 @@
 #import "Utils.h"
 #import "linphone/linphonecore.h"
 #import "UILabel+Boldify.h"
-#import "FastAddressBook.h"
 #import "ColorSpaceUtilities.h"
 
 @implementation LinphoneUtils
@@ -466,22 +465,6 @@
 	}
 	LinphoneAddress *addr = linphone_proxy_config_normalize_sip_uri(cfg, normvalue);
 	
-	// first try to find a friend with the given address
-	Contact *c = [FastAddressBook getContactWithAddress:addr];
-	if (c && c.friend) {
-		LinphoneFriend *f = c.friend;
-		const LinphonePresenceModel *m =
-			f ? linphone_friend_get_presence_model_for_uri_or_tel(f, value.UTF8String) : NULL;
-		const char *contact = m ? linphone_presence_model_get_contact(m) : NULL;
-		if (contact) {
-			LinphoneAddress *contact_addr = linphone_address_new(contact);
-			if (contact_addr) {
-				linphone_address_destroy(addr);
-				return contact_addr;
-			}
-		}
-	}
-
 	// since user wants to escape plus, we assume it expects to have phone numbers by default
 	if (addr && cfg && (linphone_proxy_config_get_dial_escape_plus(cfg))) {
 		linphone_address_set_username(addr, normvalue);

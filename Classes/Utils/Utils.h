@@ -18,6 +18,7 @@
  */
 
 #import "LinphoneManager.h"
+#import "Contact.h"
 
 #define IPAD (LinphoneManager.runningOnIpad)
 #define ANIMATED ([LinphoneManager.instance lpConfigBoolForKey:@"animations_preference"])
