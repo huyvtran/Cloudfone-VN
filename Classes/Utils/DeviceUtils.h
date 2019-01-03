@@ -15,5 +15,6 @@
 + (float)getSpaceXBetweenKeypadButtonsForDevice: (NSString *)deviceMode;
 + (float)getSpaceYBetweenKeypadButtonsForDevice: (NSString *)deviceMode;
 + (BOOL)checkNetworkAvailable;
++ (float)getHeightForAddressTextFieldDialerWithDevice: (NSString *)deviceMode;
 
 @end

@@ -549,7 +549,10 @@ static UICompositeViewDescription *compositeDescription = nil;
     linphone_nat_policy_enable_ice(LNP, FALSE);
 }
 
-- (void)autoLayoutForView {
+- (void)autoLayoutForView
+{
+    NSString *modelName = [DeviceUtils getModelsOfCurrentDevice];
+    
     self.view.backgroundColor = UIColor.whiteColor;
     //  view status
     _viewStatus.backgroundColor = [UIColor colorWithRed:(21/255.0) green:(41/255.0)
@@ -587,18 +590,25 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_lbStatus addGestureRecognizer: tapOnStatus];
     
     //  Number view
+    float hNumber = 100.0;
+    float hTextField = 60.0;
+    if ([modelName isEqualToString: IphoneX_1] || [modelName isEqualToString: IphoneX_2] || [modelName isEqualToString: IphoneXR] || [modelName isEqualToString: IphoneXS] || [modelName isEqualToString: IphoneXS_Max1] || [modelName isEqualToString: IphoneXS_Max2] || [modelName isEqualToString: simulator])
+    {
+        hNumber = 120.0;
+        hTextField = 80.0;
+    }
+    
     [_viewNumber mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.view);
         make.top.equalTo(_viewStatus.mas_bottom);
-        make.height.mas_equalTo(100.0);
+        make.height.mas_equalTo(hNumber);
     }];
-    
     
     [_addressField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_viewNumber).offset(10);
         make.left.equalTo(self.view).offset(80);
         make.right.equalTo(self.view).offset(-80);
-        make.height.mas_equalTo(60.0);
+        make.height.mas_equalTo(hTextField);
     }];
     _addressField.keyboardType = UIKeyboardTypePhonePad;
     _addressField.enabled = YES;
@@ -633,7 +643,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     
     //  Number keypad
-    NSString *modelName = [DeviceUtils getModelsOfCurrentDevice];
     float wIcon = [DeviceUtils getSizeOfKeypadButtonForDevice: modelName];
     float spaceMarginY = [DeviceUtils getSpaceYBetweenKeypadButtonsForDevice: modelName];
     float spaceMarginX = [DeviceUtils getSpaceXBetweenKeypadButtonsForDevice: modelName];
