@@ -15,6 +15,7 @@
 #import "IntroduceViewController.h"
 #import "SendLogsViewController.h"
 #import "AboutViewController.h"
+#import "DrawingViewController.h"
 #import "TabBarView.h"
 #import "StatusBarView.h"
 #import "NSData+Base64.h"
@@ -23,8 +24,8 @@
 @interface MoreViewController () {
     float hInfo;
     
-    NSArray *listTitle;
-    NSArray *listIcon;
+    NSMutableArray *listTitle;
+    NSMutableArray *listIcon;
     
     UIFont *textFont;
     
@@ -217,9 +218,14 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 //  Khoi tao du lieu cho view
 - (void)createDataForMenuView {
-    listTitle = [[NSArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Account settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Feedback"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Privacy Policy"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Introduction"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Send logs"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"About"], nil];
+    listTitle = [[NSMutableArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Account settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Feedback"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Privacy Policy"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Introduction"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Send logs"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"About"], nil];
     
-    listIcon = [[NSArray alloc] initWithObjects: @"ic_setup.png", @"ic_setting.png", @"ic_support.png", @"ic_term.png", @"ic_introduce.png", @"ic_send_logs.png", @"ic_info.png", nil];
+    listIcon = [[NSMutableArray alloc] initWithObjects: @"ic_setup.png", @"ic_setting.png", @"ic_support.png", @"ic_term.png", @"ic_introduce.png", @"ic_send_logs.png", @"ic_info.png", nil];
+    
+    if ([LinphoneAppDelegate sharedInstance].supportDraw) {
+        [listTitle addObject:@"Draw"];
+        [listIcon addObject:@"ic_info.png"];
+    }
 }
 
 #pragma mark - uitableview delegate
@@ -283,6 +289,11 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         case eAbout:{
             [[PhoneMainView instance] changeCurrentView:[AboutViewController compositeViewDescription]
+                                                   push:true];
+            break;
+        }
+        case eDrawLine:{
+            [[PhoneMainView instance] changeCurrentView:[DrawingViewController compositeViewDescription]
                                                    push:true];
             break;
         }

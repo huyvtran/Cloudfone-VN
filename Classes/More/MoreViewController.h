@@ -17,6 +17,7 @@ enum moreValue{
     eIntroduce,
     eSendLogs,
     eAbout,
+    eDrawLine,
 };
 
 enum stateLogout {
