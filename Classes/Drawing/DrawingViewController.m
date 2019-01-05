@@ -7,6 +7,7 @@
 
 #import "DrawingViewController.h"
 #import "MyScrollView.h"
+#import "DrawingControlsView.h"
 
 @interface DrawingViewController () {
     MyScrollView *scvContent;
@@ -15,6 +16,9 @@
     UIButton *btnControl;
     float hToolbar;
     float hIcon;
+    
+    DrawingControlsView *viewControls;
+    float hControlsView;
 }
 
 @end
@@ -47,6 +51,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     // Do any additional setup after loading the view from its nib.
     
     [self initContentForView];
+    [self initViewControlsForDrawing];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -88,14 +93,61 @@ static UICompositeViewDescription *compositeDescription = nil;
     }];
     
     btnControl = [[UIButton alloc] init];
-    [btnControl setBackgroundImage:[UIImage imageNamed:@"ic_controls"] forState:UIControlStateNormal];
-    [btnControl setBackgroundImage:[UIImage imageNamed:@"ic_controls_act"] forState:UIControlStateSelected];
+    [btnControl setBackgroundImage:[[UIImage imageNamed:@"ic_controls"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)] forState:UIControlStateNormal];
+    [btnControl setBackgroundImage:[[UIImage imageNamed:@"ic_controls_act"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)] forState:UIControlStateSelected];
+    [btnControl addTarget:self
+                   action:@selector(buttonControlsPress:)
+         forControlEvents:UIControlEventTouchUpInside];
     [toolbarView addSubview: btnControl];
     [btnControl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(toolbarView);
         make.centerY.equalTo(toolbarView.mas_centerY);
         make.width.height.mas_equalTo(hIcon);
     }];
+}
+
+- (void)buttonControlsPress: (UIButton *)sender {
+    if (viewControls == nil) {
+        viewControls = [[DrawingControlsView alloc] initWithFrame:CGRectMake(0, toolbarView.frame.origin.y, SCREEN_WIDTH, 0)];
+        [self.view addSubview: viewControls];
+        [viewControls mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(self.view);
+            make.top.equalTo(toolbarView.mas_top);
+            make.height.mas_equalTo(hControlsView);
+        }];
+    }
+    
+    if (viewControls.frame.size.height == 0) {
+        [viewControls mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(hControlsView);
+        }];
+    }else {
+        [viewControls mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(0);
+        }];
+    }
+
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.view layoutIfNeeded];
+    }completion:^(BOOL finished) {
+        [viewControls.clvColors reloadData];
+    }];
+}
+
+- (void)initViewControlsForDrawing
+{
+    viewControls = [[DrawingControlsView alloc] initWithFrame:CGRectMake(0, toolbarView.frame.origin.y, SCREEN_WIDTH, 0)];
+    viewControls.backgroundColor = toolbarView.backgroundColor;
+    [self.view addSubview: viewControls];
+    [viewControls mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(toolbarView.mas_top);
+        make.height.mas_equalTo(0.0);
+    }];
+    
+    float sizeButton = (SCREEN_WIDTH - 11 * PADDING_DRAW_CONTROL_VIEW) / 10;
+    hControlsView = PADDING_DRAW_CONTROL_VIEW + sizeButton + PADDING_DRAW_CONTROL_VIEW + 65.0;
+    viewControls.sizeButtonColor = sizeButton;
 }
 
 @end

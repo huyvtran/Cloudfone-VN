@@ -11,6 +11,8 @@
 
 #define SHOW_LOGS @"[Show logs]"
 #define HEADER_ICON_WIDTH 35.0
+#define PADDING_DRAW_CONTROL_VIEW   5.0
+
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"
 #define AES_KEY         @"OdsCloudfone@123"
 
