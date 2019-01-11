@@ -62,6 +62,16 @@
 		1556A8DE2181BE67002E8D26 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 1556A8DD2181BE66002E8D26 /* logo.png */; };
 		1556A8E12181C347002E8D26 /* launch_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 1556A8DF2181C346002E8D26 /* launch_logo.png */; };
 		1556A8E22181C347002E8D26 /* launch_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 1556A8E02181C346002E8D26 /* launch_bg.png */; };
+		156E175F21E85BAE00C15E79 /* HomeSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156E175D21E85BAE00C15E79 /* HomeSplitViewController.m */; };
+		156E176021E85BAE00C15E79 /* HomeSplitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 156E175E21E85BAE00C15E79 /* HomeSplitViewController.xib */; };
+		156E176421E8793B00C15E79 /* iPadRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156E176221E8793B00C15E79 /* iPadRootViewController.m */; };
+		156E176521E8793B00C15E79 /* iPadRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 156E176321E8793B00C15E79 /* iPadRootViewController.xib */; };
+		156E176921E87B1300C15E79 /* iPadDialerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156E176721E87B1300C15E79 /* iPadDialerViewController.m */; };
+		156E176A21E87B1300C15E79 /* iPadDialerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 156E176821E87B1300C15E79 /* iPadDialerViewController.xib */; };
+		156E176E21E8A39600C15E79 /* iPadContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156E176C21E8A39600C15E79 /* iPadContactsViewController.m */; };
+		156E176F21E8A39600C15E79 /* iPadContactsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 156E176D21E8A39600C15E79 /* iPadContactsViewController.xib */; };
+		156E177821E8A44600C15E79 /* iPadMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156E177621E8A44600C15E79 /* iPadMoreViewController.m */; };
+		156E177921E8A44600C15E79 /* iPadMoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 156E177721E8A44600C15E79 /* iPadMoreViewController.xib */; };
 		157527912166028B007D789A /* ic_sync.png in Resources */ = {isa = PBXBuildFile; fileRef = 1575278A2166028A007D789A /* ic_sync.png */; };
 		1575279821661D1A007D789A /* ic_search.png in Resources */ = {isa = PBXBuildFile; fileRef = 1575279721661D1A007D789A /* ic_search.png */; };
 		1575279A21661D44007D789A /* tf_close_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 1575279921661D43007D789A /* tf_close_bg.png */; };
@@ -884,6 +894,21 @@
 		1556A8DF2181C346002E8D26 /* launch_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch_logo.png; sourceTree = "<group>"; };
 		1556A8E02181C346002E8D26 /* launch_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch_bg.png; sourceTree = "<group>"; };
 		1560821E18EEF26100765332 /* libmsopenh264.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmsopenh264.a; path = "liblinphone-sdk/apple-darwin/lib/mediastreamer/plugins/libmsopenh264.a"; sourceTree = "<group>"; };
+		156E175C21E85BAE00C15E79 /* HomeSplitViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HomeSplitViewController.h; path = iPad/HomeSplitViewController.h; sourceTree = "<group>"; };
+		156E175D21E85BAE00C15E79 /* HomeSplitViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = HomeSplitViewController.m; path = iPad/HomeSplitViewController.m; sourceTree = "<group>"; };
+		156E175E21E85BAE00C15E79 /* HomeSplitViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = HomeSplitViewController.xib; path = iPad/HomeSplitViewController.xib; sourceTree = "<group>"; };
+		156E176121E8793B00C15E79 /* iPadRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iPadRootViewController.h; path = iPad/iPadRootViewController.h; sourceTree = "<group>"; };
+		156E176221E8793B00C15E79 /* iPadRootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = iPadRootViewController.m; path = iPad/iPadRootViewController.m; sourceTree = "<group>"; };
+		156E176321E8793B00C15E79 /* iPadRootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iPadRootViewController.xib; path = iPad/iPadRootViewController.xib; sourceTree = "<group>"; };
+		156E176621E87B1300C15E79 /* iPadDialerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iPadDialerViewController.h; path = iPad/iPadDialerViewController.h; sourceTree = "<group>"; };
+		156E176721E87B1300C15E79 /* iPadDialerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = iPadDialerViewController.m; path = iPad/iPadDialerViewController.m; sourceTree = "<group>"; };
+		156E176821E87B1300C15E79 /* iPadDialerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iPadDialerViewController.xib; path = iPad/iPadDialerViewController.xib; sourceTree = "<group>"; };
+		156E176B21E8A39600C15E79 /* iPadContactsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iPadContactsViewController.h; path = iPad/iPadContactsViewController.h; sourceTree = "<group>"; };
+		156E176C21E8A39600C15E79 /* iPadContactsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = iPadContactsViewController.m; path = iPad/iPadContactsViewController.m; sourceTree = "<group>"; };
+		156E176D21E8A39600C15E79 /* iPadContactsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iPadContactsViewController.xib; path = iPad/iPadContactsViewController.xib; sourceTree = "<group>"; };
+		156E177521E8A44600C15E79 /* iPadMoreViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iPadMoreViewController.h; path = iPad/iPadMoreViewController.h; sourceTree = "<group>"; };
+		156E177621E8A44600C15E79 /* iPadMoreViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = iPadMoreViewController.m; path = iPad/iPadMoreViewController.m; sourceTree = "<group>"; };
+		156E177721E8A44600C15E79 /* iPadMoreViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iPadMoreViewController.xib; path = iPad/iPadMoreViewController.xib; sourceTree = "<group>"; };
 		1575278A2166028A007D789A /* ic_sync.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_sync.png; sourceTree = "<group>"; };
 		1575279721661D1A007D789A /* ic_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_search.png; sourceTree = "<group>"; };
 		1575279921661D43007D789A /* tf_close_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tf_close_bg.png; sourceTree = "<group>"; };
@@ -2142,6 +2167,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				156E175521E85A9200C15E79 /* iPad */,
 				15B9C6E821DF5D33009CCD53 /* Drawing */,
 				15E9153C21C4B5210083EC30 /* linphone-Info.plist */,
 				842E03E11FFCD57C00BA16BD /* Crashlytics.framework */,
@@ -2367,6 +2393,28 @@
 			);
 			name = keypad;
 			path = "New Group";
+			sourceTree = "<group>";
+		};
+		156E175521E85A9200C15E79 /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+				156E175C21E85BAE00C15E79 /* HomeSplitViewController.h */,
+				156E175D21E85BAE00C15E79 /* HomeSplitViewController.m */,
+				156E175E21E85BAE00C15E79 /* HomeSplitViewController.xib */,
+				156E176121E8793B00C15E79 /* iPadRootViewController.h */,
+				156E176221E8793B00C15E79 /* iPadRootViewController.m */,
+				156E176321E8793B00C15E79 /* iPadRootViewController.xib */,
+				156E176621E87B1300C15E79 /* iPadDialerViewController.h */,
+				156E176721E87B1300C15E79 /* iPadDialerViewController.m */,
+				156E176821E87B1300C15E79 /* iPadDialerViewController.xib */,
+				156E176B21E8A39600C15E79 /* iPadContactsViewController.h */,
+				156E176C21E8A39600C15E79 /* iPadContactsViewController.m */,
+				156E176D21E8A39600C15E79 /* iPadContactsViewController.xib */,
+				156E177521E8A44600C15E79 /* iPadMoreViewController.h */,
+				156E177621E8A44600C15E79 /* iPadMoreViewController.m */,
+				156E177721E8A44600C15E79 /* iPadMoreViewController.xib */,
+			);
+			name = iPad;
 			sourceTree = "<group>";
 		};
 		1599BB0D21B14E5A00A7903D /* AESCrypt */ = {
@@ -4053,6 +4101,7 @@
 				63130FB21C1ED06900371918 /* SideMenuView~ipad.xib in Resources */,
 				63CDC4661C3BDE370085F529 /* shortring.caf in Resources */,
 				1579B72721674A6B002BECE3 /* call_disable.png in Resources */,
+				156E176021E85BAE00C15E79 /* HomeSplitViewController.xib in Resources */,
 				1578D06121ACE87000E8BA5F /* ic_send_logs.png in Resources */,
 				1578D06D21ACEB6100E8BA5F /* SendLogsViewController.xib in Resources */,
 				1579B72221674989002BECE3 /* ic_back@2x.png in Resources */,
@@ -4073,6 +4122,7 @@
 				639E9C9D1C0DB7DF00019A75 /* UICallPausedCell.xib in Resources */,
 				153D00352164D537007B69B3 /* menu_history_def.png in Resources */,
 				153D00182164A67E007B69B3 /* numpad_nine_default.png in Resources */,
+				156E176F21E8A39600C15E79 /* iPadContactsViewController.xib in Resources */,
 				15906E39217AEA1E000877A9 /* button_back_dialer.png in Resources */,
 				84ECF9CA216679A70067B4B6 /* ic_addcall_act.png in Resources */,
 				15906E38217AEA1E000877A9 /* button_back_dialer_hover.png in Resources */,
@@ -4089,6 +4139,7 @@
 				63E27A321C4FECD000D332AE /* LaunchScreen.xib in Resources */,
 				15B9C6F521DF67D8009CCD53 /* ic_controls.png in Resources */,
 				15C5A5FE219AAF5600FDD6C5 /* NewHistoryDetailCell.xib in Resources */,
+				156E176521E8793B00C15E79 /* iPadRootViewController.xib in Resources */,
 				636316D41A1DEC650009B839 /* SettingsView.xib in Resources */,
 				84B889F01FAF6C73008D88C5 /* PhoneBookContactCell.xib in Resources */,
 				841B359D2191F26D0019BD45 /* ic-pause-default.png in Resources */,
@@ -4157,6 +4208,7 @@
 				84ECF9CB216679A70067B4B6 /* ic_mute_def.png in Resources */,
 				8440F195216BA82000BB559C /* mini_key_0.png in Resources */,
 				153D003A2164D537007B69B3 /* menu_more_act.png in Resources */,
+				156E177921E8A44600C15E79 /* iPadMoreViewController.xib in Resources */,
 				15A64DA1216C8BC700D194BD /* InfoForNewContactTableCell.xib in Resources */,
 				8442A3641FB1321D00F08F11 /* MYRIADPRO-BOLD.OTF in Resources */,
 				24A3459E1D95797700881A5C /* UIShopTableCell.xib in Resources */,
@@ -4184,6 +4236,7 @@
 				153D001B2164A67E007B69B3 /* numpad_star_default.png in Resources */,
 				63AADC021B6A0FF200AA16FD /* assistant_remote.rc in Resources */,
 				84C47D051FB62C660015695E /* callnex.sqlite in Resources */,
+				156E176A21E87B1300C15E79 /* iPadDialerViewController.xib in Resources */,
 				15A64DA5216CACD900D194BD /* ic_add_phone.png in Resources */,
 				157527912166028B007D789A /* ic_sync.png in Resources */,
 				63F1DF511BCE986A00EDED90 /* UICallConferenceCell.xib in Resources */,
@@ -4414,6 +4467,7 @@
 				1556A8D321817BFE002E8D26 /* NgnFileUtils.m in Sources */,
 				84EFFE161FF3E6B60085A9F4 /* DGActivityIndicatorAnimation.m in Sources */,
 				84EFFE051FF3E6B60085A9F4 /* DGActivityIndicatorDoubleBounceAnimation.m in Sources */,
+				156E175F21E85BAE00C15E79 /* HomeSplitViewController.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				84EFFDFE1FF3E6B60085A9F4 /* DGActivityIndicatorRotatingSandglassAnimation.m in Sources */,
 				1D3623260D0F684500981E51 /* LinphoneAppDelegate.m in Sources */,
@@ -4551,6 +4605,7 @@
 				15B4462F219FCA0400FB8DCB /* CustomSwitchButton.m in Sources */,
 				84E286C61FC9E1AC009CBA27 /* UIImageView+HighlightedWebCache.m in Sources */,
 				63B81A0D1B57DA33009604A6 /* TPKeyboardAvoidingCollectionView.m in Sources */,
+				156E176421E8793B00C15E79 /* iPadRootViewController.m in Sources */,
 				84EFFE0E1FF3E6B60085A9F4 /* DGActivityIndicatorBallPulseSyncAnimation.m in Sources */,
 				843ED6601FB658F9005FE1C1 /* MoreViewController.m in Sources */,
 				570742611D5A09B8004B9C84 /* ShopView.m in Sources */,
@@ -4573,6 +4628,7 @@
 				D31AAF5E159B3919002C6B02 /* CallPausedTableView.m in Sources */,
 				84B889EF1FAF6C73008D88C5 /* PhoneBookContactCell.m in Sources */,
 				84EFFDFF1FF3E6B60085A9F4 /* DGActivityIndicatorBallRotateAnimation.m in Sources */,
+				156E176921E87B1300C15E79 /* iPadDialerViewController.m in Sources */,
 				15C5A5FD219AAF5600FDD6C5 /* NewHistoryDetailCell.m in Sources */,
 				840B574020061FD300DCBA7E /* QRToggleTorchButton.m in Sources */,
 				84EFFE181FF3E6B60085A9F4 /* DGActivityIndicatorBallZigZagAnimation.m in Sources */,
@@ -4666,6 +4722,7 @@
 				84EFFE0B1FF3E6B60085A9F4 /* DGActivityIndicatorBallPulseAnimation.m in Sources */,
 				D380800215C2894A005BE9BC /* IASKTextField.m in Sources */,
 				84EFFE141FF3E6B60085A9F4 /* DGActivityIndicatorTriplePulseAnimation.m in Sources */,
+				156E177821E8A44600C15E79 /* iPadMoreViewController.m in Sources */,
 				84EFFE121FF3E6B60085A9F4 /* DGActivityIndicatorCookieTerminatorAnimation.m in Sources */,
 				84C1E2621FAEBE4B00EED0B9 /* FMDatabaseQueue.m in Sources */,
 				D380801315C299D0005BE9BC /* ColorSpaceUtilites.m in Sources */,
@@ -4684,6 +4741,7 @@
 				840B574320061FD300DCBA7E /* QRCodeReaderViewController.m in Sources */,
 				15A64DA0216C8BC700D194BD /* InfoForNewContactTableCell.m in Sources */,
 				84E286CC1FC9E1AC009CBA27 /* UIImage+WebP.m in Sources */,
+				156E176E21E8A39600C15E79 /* iPadContactsViewController.m in Sources */,
 				D37EE162160377D7003608A6 /* DTActionSheet.m in Sources */,
 				15A4333721A7EE5000055E02 /* WriteLogsUtils.m in Sources */,
 				D306459E1611EC2A00BB571E /* UILoadingImageView.m in Sources */,
@@ -5248,7 +5306,7 @@
 				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
 				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Development";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				WARNING_CFLAGS = (
 					"-Werror=objc-method-access",
@@ -5357,7 +5415,7 @@
 				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
 				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Development";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				WARNING_CFLAGS = (
 					"-Werror=objc-method-access",
@@ -5466,7 +5524,7 @@
 				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
 				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Development";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				WARNING_CFLAGS = (
 					"-Werror=objc-method-access",
@@ -5575,7 +5633,7 @@
 				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
 				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Development";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
 				WARNING_CFLAGS = (
 					"-Werror=objc-method-access",

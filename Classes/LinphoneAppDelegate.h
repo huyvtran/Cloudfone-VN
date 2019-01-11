@@ -36,6 +36,7 @@
 #import "UIView+Toast.h"
 #import "WebServices.h"
 #import "Constant.h"
+#import "HomeSplitViewController.h"
 
 typedef enum AccountState{
     eAccountNone,
@@ -125,9 +126,10 @@ typedef enum typePhoneNumber{
 
 //  [Khai le - 15/12/2018]
 @property (nonatomic, strong) UIView *splashScreen;
-
 @property (nonatomic, assign) BOOL supportVoice;
-@property (nonatomic, assign) BOOL supportDraw;
+
+//  [Khai le - 11/01/2019]
+@property (nonatomic, strong) HomeSplitViewController *homeSplitVC;
 
 @end
 

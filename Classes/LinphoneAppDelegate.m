@@ -45,6 +45,11 @@
 #import "PhoneObject.h"
 #import <Intents/Intents.h>
 
+#import "iPadRootViewController.h"
+#import "iPadDialerViewController.h"
+#import "iPadContactsViewController.h"
+#import "iPadMoreViewController.h"
+
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
 @interface LinphoneAppDelegate (){
@@ -77,7 +82,8 @@
 @synthesize _isSyncing;
 @synthesize contactLoaded;
 @synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, supportLoginWithPhoneNumber, logFilePath, dbQueue, splashScreen;
-@synthesize supportVoice, supportDraw;
+@synthesize supportVoice;
+@synthesize homeSplitVC;
 
 #pragma mark - Lifecycle Functions
 
@@ -433,7 +439,6 @@ void onUncaughtException(NSException* exception)
     enableForTest = NO;
     supportLoginWithPhoneNumber = NO;
     supportVoice = NO;
-    supportDraw = YES;
     
     listInfoPhoneNumber = [[NSMutableArray alloc] init];
     
@@ -549,9 +554,12 @@ void onUncaughtException(NSException* exception)
         [self showSplashScreenOnView: YES];
     }
     
-    [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
-	[PhoneMainView.instance updateStatusBar:nil];
-    
+    if (IS_IPHONE || IS_IPOD) {
+        [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
+        [PhoneMainView.instance updateStatusBar:nil];
+    }else{
+        [self settingForStartApplicationWithIpad];
+    }
     
     //  Enable all notification type. VoIP Notifications don't present a UI but we will use this to show local nofications later
     UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert| UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
@@ -2255,6 +2263,30 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     }
 }
 
+//  [Khai Le - 11/01/2019]
+- (void)settingForStartApplicationWithIpad {
+    UITabBarController *tabBars = [[UITabBarController alloc] init];
+    
+    iPadDialerViewController *iPadDialerVC = [[iPadDialerViewController alloc] initWithNibName:@"iPadDialerViewController" bundle:nil];
+    iPadDialerVC.tabBarItem.title = @"Dialer";
+    
+    iPadContactsViewController *iPadContactsVC = [[iPadContactsViewController alloc] initWithNibName:@"iPadContactsViewController" bundle:nil];
+    iPadContactsVC.tabBarItem.title = @"Contacts";
+    
+    iPadMoreViewController *iPadMoreVC = [[iPadMoreViewController alloc] initWithNibName:@"iPadMoreViewController" bundle:nil];
+    iPadMoreVC.tabBarItem.title = @"More";
+    
+    NSArray *listVC = @[iPadDialerVC, iPadContactsVC, iPadMoreVC];
+    tabBars.viewControllers = listVC;
+    
+    //  iPadRootViewController *iPadRoot = [[iPadRootViewController alloc] init];
+    iPadDialerViewController *iPadDialer = [[iPadDialerViewController alloc] init];
+    
+    homeSplitVC = [[HomeSplitViewController alloc] init];
+    homeSplitVC.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+    homeSplitVC.viewControllers = [NSArray arrayWithObjects:tabBars, iPadDialer, nil];
+    self.window.rootViewController = homeSplitVC;
+}
 
 
 
