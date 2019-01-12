@@ -9,17 +9,20 @@
 #ifndef AppStrings_h
 #define AppStrings_h
 
+#define link_appstore @"https://itunes.apple.com/vn/app/cloudfone-vn/id1445535617?mt=8"
+
 #define SHOW_LOGS @"[Show logs]"
 #define HEADER_ICON_WIDTH 35.0
 #define PADDING_DRAW_CONTROL_VIEW   5.0
 
 #define STATUS_BAR_HEIGHT   ([UIApplication sharedApplication].statusBarFrame.size.height)
-#define PADDING_HEADER_ICON 20.0
+#define PADDING_HEADER_ICON 10.0
 #define HEIGHT_IPAD_NAV 80.0
 #define HEIGHT_IPAD_HEADER_BUTTON 38.0
 #define HEIGHT_HEADER_BTN 32.0
 
 #define IPAD_BG_COLOR ([UIColor colorWithRed:(240/255.0) green:(240/255.0) blue:(240/255.0) alpha:1.0])
+#define IPAD_HEADER_BG_COLOR ([UIColor colorWithRed:(29/255.0) green:(106/255.0) blue:(207/255.0) alpha:1.0])
 
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"
 #define AES_KEY         @"OdsCloudfone@123"
@@ -245,6 +248,8 @@
 #define k11DeleteAllMessageAccept           @"k11DeleteAllMessageAccept"
 #define closeRightChatGroupVC               @"closeRightChatGroupVC"
 #define reloadRightGroupChatVC              @"reloadRightGroupChatVC"
+
+#define showContactInformation      @"showContactInformation"
 
 
 #define userAvatar          @"userAvatar"

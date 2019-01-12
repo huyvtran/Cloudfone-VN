@@ -15,7 +15,6 @@
 #import "TypePhoneContact.h"
 #import "ContactDetailObj.h"
 #import "EditContactViewController.h"
-#import "ContactDetailObj.h"
 
 @interface KContactDetailViewController (){
     LinphoneAppDelegate *appDelegate;
@@ -105,7 +104,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         isPBXContact = NO;
     }
     
-    [self showContactInformation];
+    [self displayContactInformation];
     [_tbContactInfo reloadData];
     
     [btnDelete setTitle:[appDelegate.localization localizedStringForKey:@"Delete contact"]
@@ -263,7 +262,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 //  Hiển thị thông tin của contact
-- (void)showContactInformation
+- (void)displayContactInformation
 {
     if ([detailsContact._fullName isEqualToString:@""] && ![detailsContact._sipPhone isEqualToString:@""]) {
         _lbContactName.text = detailsContact._sipPhone;

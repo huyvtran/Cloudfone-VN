@@ -10,10 +10,7 @@
 #import "UICompositeView.h"
 #import "WebServices.h"
 
-typedef enum eContact{
-    eContactPBX,
-    eContactAll,
-}eContact;
+
 
 @interface ContactsViewController : UIViewController<UICompositeViewDelegate, UIPageViewControllerDelegate, UIPageViewControllerDataSource, UITextFieldDelegate, WebServicesDelegate>
 

@@ -108,7 +108,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             [detailsContact._listPhone addObject: aPhone];
         }
     }
-    [self showContactInformation];
+    [self displayContactInformation];
     
     [tbContents reloadData];
     if ([detailsContact._fullName isEqualToString:@""] || detailsContact._fullName == nil) {
@@ -342,7 +342,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 //  Hiển thị thông tin của contact
-- (void)showContactInformation
+- (void)displayContactInformation
 {
     if (detailsContact._listPhone == nil) {
         detailsContact._listPhone = [[NSMutableArray alloc] init];

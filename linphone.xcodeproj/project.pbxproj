@@ -589,6 +589,16 @@
 		84E286EC1FC9FC52009CBA27 /* PhoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E286EA1FC9FC51009CBA27 /* PhoneCell.m */; };
 		84E2BB4E200A4B9200F152C1 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E2BB47200A4B9200F152C1 /* AVKit.framework */; };
 		84E343A41FDAFEA90042D048 /* UploadPicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E343A31FDAFEA90042D048 /* UploadPicture.m */; };
+		84E3BC6921EA0E3E00507CFB /* iPadContactDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E3BC6721EA0E3E00507CFB /* iPadContactDetailViewController.m */; };
+		84E3BC6A21EA0E3E00507CFB /* iPadContactDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E3BC6821EA0E3E00507CFB /* iPadContactDetailViewController.xib */; };
+		84E3BC7221EA139A00507CFB /* phone_book.png in Resources */ = {isa = PBXBuildFile; fileRef = 84E3BC7121EA139800507CFB /* phone_book.png */; };
+		84E3BC7421EA3DEE00507CFB /* man_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 84E3BC7321EA3DEE00507CFB /* man_user.png */; };
+		84E3BC7921EA427700507CFB /* AccountInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E3BC7721EA427700507CFB /* AccountInfoCell.m */; };
+		84E3BC7A21EA427700507CFB /* AccountInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E3BC7821EA427700507CFB /* AccountInfoCell.xib */; };
+		84E3BC7E21EA497400507CFB /* iPadPolicyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E3BC7C21EA497400507CFB /* iPadPolicyViewController.m */; };
+		84E3BC7F21EA497400507CFB /* iPadPolicyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E3BC7D21EA497400507CFB /* iPadPolicyViewController.xib */; };
+		84E3BC8321EA4BEC00507CFB /* iPadIntroduceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E3BC8121EA4BEC00507CFB /* iPadIntroduceViewController.m */; };
+		84E3BC8421EA4BEC00507CFB /* iPadIntroduceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E3BC8221EA4BEC00507CFB /* iPadIntroduceViewController.xib */; };
 		84E87DDA1FC1DE3B0074A54C /* NewContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E87DD81FC1DE3B0074A54C /* NewContactViewController.m */; };
 		84E87DDB1FC1DE3B0074A54C /* NewContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E87DD91FC1DE3B0074A54C /* NewContactViewController.xib */; };
 		84EA0AE21FE9243000C3C78E /* ringbacktone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84EA0ADB1FE9243000C3C78E /* ringbacktone.mp3 */; };
@@ -1668,6 +1678,20 @@
 		84E2BB47200A4B9200F152C1 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		84E343A21FDAFEA90042D048 /* UploadPicture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UploadPicture.h; path = AppObjects/UploadPicture.h; sourceTree = "<group>"; };
 		84E343A31FDAFEA90042D048 /* UploadPicture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UploadPicture.m; path = AppObjects/UploadPicture.m; sourceTree = "<group>"; };
+		84E3BC6621EA0E3E00507CFB /* iPadContactDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iPadContactDetailViewController.h; path = iPad/iPadContactDetailViewController.h; sourceTree = "<group>"; };
+		84E3BC6721EA0E3E00507CFB /* iPadContactDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = iPadContactDetailViewController.m; path = iPad/iPadContactDetailViewController.m; sourceTree = "<group>"; };
+		84E3BC6821EA0E3E00507CFB /* iPadContactDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iPadContactDetailViewController.xib; path = iPad/iPadContactDetailViewController.xib; sourceTree = "<group>"; };
+		84E3BC7121EA139800507CFB /* phone_book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = phone_book.png; sourceTree = "<group>"; };
+		84E3BC7321EA3DEE00507CFB /* man_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = man_user.png; sourceTree = "<group>"; };
+		84E3BC7621EA427700507CFB /* AccountInfoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AccountInfoCell.h; path = iPad/UI/AccountInfoCell.h; sourceTree = "<group>"; };
+		84E3BC7721EA427700507CFB /* AccountInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AccountInfoCell.m; path = iPad/UI/AccountInfoCell.m; sourceTree = "<group>"; };
+		84E3BC7821EA427700507CFB /* AccountInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AccountInfoCell.xib; path = iPad/UI/AccountInfoCell.xib; sourceTree = "<group>"; };
+		84E3BC7B21EA497400507CFB /* iPadPolicyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iPadPolicyViewController.h; path = iPad/iPadPolicyViewController.h; sourceTree = "<group>"; };
+		84E3BC7C21EA497400507CFB /* iPadPolicyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = iPadPolicyViewController.m; path = iPad/iPadPolicyViewController.m; sourceTree = "<group>"; };
+		84E3BC7D21EA497400507CFB /* iPadPolicyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iPadPolicyViewController.xib; path = iPad/iPadPolicyViewController.xib; sourceTree = "<group>"; };
+		84E3BC8021EA4BEC00507CFB /* iPadIntroduceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iPadIntroduceViewController.h; path = iPad/iPadIntroduceViewController.h; sourceTree = "<group>"; };
+		84E3BC8121EA4BEC00507CFB /* iPadIntroduceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = iPadIntroduceViewController.m; path = iPad/iPadIntroduceViewController.m; sourceTree = "<group>"; };
+		84E3BC8221EA4BEC00507CFB /* iPadIntroduceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iPadIntroduceViewController.xib; path = iPad/iPadIntroduceViewController.xib; sourceTree = "<group>"; };
 		84E87DD71FC1DE3B0074A54C /* NewContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewContactViewController.h; path = Contacts/NewContactViewController.h; sourceTree = "<group>"; };
 		84E87DD81FC1DE3B0074A54C /* NewContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewContactViewController.m; path = Contacts/NewContactViewController.m; sourceTree = "<group>"; };
 		84E87DD91FC1DE3B0074A54C /* NewContactViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewContactViewController.xib; path = Contacts/NewContactViewController.xib; sourceTree = "<group>"; };
@@ -2442,6 +2466,7 @@
 		156E175521E85A9200C15E79 /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				84E3BC7521EA41F900507CFB /* UI */,
 				156E175C21E85BAE00C15E79 /* HomeSplitViewController.h */,
 				156E175D21E85BAE00C15E79 /* HomeSplitViewController.m */,
 				156E175E21E85BAE00C15E79 /* HomeSplitViewController.xib */,
@@ -2454,9 +2479,18 @@
 				156E176B21E8A39600C15E79 /* iPadContactsViewController.h */,
 				156E176C21E8A39600C15E79 /* iPadContactsViewController.m */,
 				156E176D21E8A39600C15E79 /* iPadContactsViewController.xib */,
+				84E3BC6621EA0E3E00507CFB /* iPadContactDetailViewController.h */,
+				84E3BC6721EA0E3E00507CFB /* iPadContactDetailViewController.m */,
+				84E3BC6821EA0E3E00507CFB /* iPadContactDetailViewController.xib */,
 				156E177521E8A44600C15E79 /* iPadMoreViewController.h */,
 				156E177621E8A44600C15E79 /* iPadMoreViewController.m */,
 				156E177721E8A44600C15E79 /* iPadMoreViewController.xib */,
+				84E3BC7B21EA497400507CFB /* iPadPolicyViewController.h */,
+				84E3BC7C21EA497400507CFB /* iPadPolicyViewController.m */,
+				84E3BC7D21EA497400507CFB /* iPadPolicyViewController.xib */,
+				84E3BC8021EA4BEC00507CFB /* iPadIntroduceViewController.h */,
+				84E3BC8121EA4BEC00507CFB /* iPadIntroduceViewController.m */,
+				84E3BC8221EA4BEC00507CFB /* iPadIntroduceViewController.xib */,
 			);
 			name = iPad;
 			sourceTree = "<group>";
@@ -2842,6 +2876,8 @@
 			isa = PBXGroup;
 			children = (
 				84B4F0F921E8DD3300591C50 /* no_calls.png */,
+				84E3BC7321EA3DEE00507CFB /* man_user.png */,
+				84E3BC7121EA139800507CFB /* phone_book.png */,
 				15A2596021998DB70089941A /* ic_call_history.png */,
 				841B359B2191F26D0019BD45 /* button-endcall.png */,
 				841B35992191F26B0019BD45 /* ic-pause-active.png */,
@@ -3532,6 +3568,16 @@
 			name = SDWebImage;
 			sourceTree = "<group>";
 		};
+		84E3BC7521EA41F900507CFB /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				84E3BC7621EA427700507CFB /* AccountInfoCell.h */,
+				84E3BC7721EA427700507CFB /* AccountInfoCell.m */,
+				84E3BC7821EA427700507CFB /* AccountInfoCell.xib */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		84E87DDD1FC1E01B0074A54C /* PEPhotoCropEditor */ = {
 			isa = PBXGroup;
 			children = (
@@ -4056,10 +4102,12 @@
 				153D002C2164D537007B69B3 /* menu_history_en_def.png in Resources */,
 				153D002F2164D537007B69B3 /* menu_history_en_act.png in Resources */,
 				636316D11A1DEBCB0009B839 /* AboutView.xib in Resources */,
+				84E3BC7221EA139A00507CFB /* phone_book.png in Resources */,
 				1579B72321674989002BECE3 /* ic_sync@2x.png in Resources */,
 				153D00562164D9D3007B69B3 /* numpad_four_hover.png in Resources */,
 				1556A8DE2181BE67002E8D26 /* logo.png in Resources */,
 				1579B72421674989002BECE3 /* ic_add_contact.png in Resources */,
+				84E3BC7421EA3DEE00507CFB /* man_user.png in Resources */,
 				84C1E2291FAEB94500EED0B9 /* en.txt in Resources */,
 				8440F193216BA82000BB559C /* mini_key_5.png in Resources */,
 				8429871021B29D4000150EB0 /* ic_call_bottom_bar_act.png in Resources */,
@@ -4141,6 +4189,7 @@
 				F088488A19FF8C41007FFCF3 /* UIContactCell.xib in Resources */,
 				153D003B2164D537007B69B3 /* menu_contacts_def.png in Resources */,
 				8489DED22160B2EC00A7A1DD /* icon-next.png in Resources */,
+				84E3BC7A21EA427700507CFB /* AccountInfoCell.xib in Resources */,
 				8440F187216BA82000BB559C /* mini_key_star_hover.png in Resources */,
 				843ED6611FB658F9005FE1C1 /* MoreViewController.xib in Resources */,
 				159002D72168618E00CECB7A /* ic_call_missed.png in Resources */,
@@ -4238,6 +4287,7 @@
 				8459953A216F8CE00004143A /* ic_add_def.png in Resources */,
 				D38187DD15FE348A00C3EDCA /* AssistantView.xib in Resources */,
 				8489DED02160B16100A7A1DD /* NewSettingCell.xib in Resources */,
+				84E3BC6A21EA0E3E00507CFB /* iPadContactDetailViewController.xib in Resources */,
 				153D00322164D537007B69B3 /* menu_more_en_def.png in Resources */,
 				84B4F0E021E8CC2B00591C50 /* ic_call_bottom_bar_act@2x.png in Resources */,
 				15F2E5F5216B56F60076CB1F /* ic_setting.png in Resources */,
@@ -4296,6 +4346,7 @@
 				84C47D051FB62C660015695E /* callnex.sqlite in Resources */,
 				156E176A21E87B1300C15E79 /* iPadDialerViewController.xib in Resources */,
 				15A64DA5216CACD900D194BD /* ic_add_phone.png in Resources */,
+				84E3BC8421EA4BEC00507CFB /* iPadIntroduceViewController.xib in Resources */,
 				157527912166028B007D789A /* ic_sync.png in Resources */,
 				63F1DF511BCE986A00EDED90 /* UICallConferenceCell.xib in Resources */,
 				84B4F0F021E8D65F00591C50 /* ic_call_bottom_bar_act@3x.png in Resources */,
@@ -4330,6 +4381,7 @@
 				153D00192164A67E007B69B3 /* numpad_two_default.png in Resources */,
 				1579B72521674989002BECE3 /* ic_back.png in Resources */,
 				D381881915FE3FCA00C3EDCA /* CallView.xib in Resources */,
+				84E3BC7F21EA497400507CFB /* iPadPolicyViewController.xib in Resources */,
 				153D00542164D9D3007B69B3 /* numpad_three_hover.png in Resources */,
 				8440F18E216BA82000BB559C /* mini_key_7.png in Resources */,
 				8440F184216BA82000BB559C /* mini_key_star.png in Resources */,
@@ -4526,6 +4578,7 @@
 				63B81A0F1B57DA33009604A6 /* TPKeyboardAvoidingTableView.m in Sources */,
 				1556A8D321817BFE002E8D26 /* NgnFileUtils.m in Sources */,
 				84B4F0FE21E8DFBD00591C50 /* iPadKeypadViewController.m in Sources */,
+				84E3BC7921EA427700507CFB /* AccountInfoCell.m in Sources */,
 				84EFFE161FF3E6B60085A9F4 /* DGActivityIndicatorAnimation.m in Sources */,
 				84EFFE051FF3E6B60085A9F4 /* DGActivityIndicatorDoubleBounceAnimation.m in Sources */,
 				156E175F21E85BAE00C15E79 /* HomeSplitViewController.m in Sources */,
@@ -4565,6 +4618,7 @@
 				84C4435D1FBE00B90015854C /* IntroduceViewController.m in Sources */,
 				842C73052027744D009C4F9C /* YBHud.m in Sources */,
 				843ED6831FB66BBC005FE1C1 /* CallnexSwitchButton.m in Sources */,
+				84E3BC7E21EA497400507CFB /* iPadPolicyViewController.m in Sources */,
 				84C1E2371FAEBAE100EED0B9 /* BEMAnimationManager.m in Sources */,
 				84E286C71FC9E1AC009CBA27 /* SDWebImageDecoder.m in Sources */,
 				84B889E51FAF6C1D008D88C5 /* PhoneBookObject.m in Sources */,
@@ -4599,6 +4653,7 @@
 				84EFFE101FF3E6B60085A9F4 /* DGActivityIndicatorBallGridPulseAnimation.m in Sources */,
 				D3F83F8E15822ABE00336684 /* PhoneMainView.m in Sources */,
 				15F21B5821DF6F96004C8330 /* DrawingControlsView.m in Sources */,
+				84E3BC6921EA0E3E00507CFB /* iPadContactDetailViewController.m in Sources */,
 				848725BA1FC9C6AA008F4BE8 /* NSString+HTML.m in Sources */,
 				84E286CD1FC9E1AC009CBA27 /* UIView+WebCacheOperation.m in Sources */,
 				6377AC801BDE4069007F7625 /* UIBackToCallButton.m in Sources */,
@@ -4642,6 +4697,7 @@
 				84EFFE1F1FF3E6B60085A9F4 /* DGActivityIndicatorBallScaleRippleAnimation.m in Sources */,
 				15D21BE42176E70000FEBED2 /* EditProfileViewController.m in Sources */,
 				D326483815887D5200930C67 /* OrderedDictionary.m in Sources */,
+				84E3BC8321EA4BEC00507CFB /* iPadIntroduceViewController.m in Sources */,
 				D32648441588F6FC00930C67 /* UIToggleButton.m in Sources */,
 				84EFFE041FF3E6B60085A9F4 /* DGActivityIndicatorBallTrianglePathAnimation.m in Sources */,
 				84E07EFE2025F39E0000CD12 /* SettingSoundCell.m in Sources */,

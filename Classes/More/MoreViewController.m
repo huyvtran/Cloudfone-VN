@@ -262,7 +262,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         case eFeedback:{
             [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to feedback on App Store", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
             
-            NSURL *linkCloudfoneOnAppStore = [NSURL URLWithString:@"https://itunes.apple.com/vn/app/cloudfone/id1275900068?mt=8"];
+            NSURL *linkCloudfoneOnAppStore = [NSURL URLWithString: link_appstore];
             [[UIApplication sharedApplication] openURL: linkCloudfoneOnAppStore];
             
             break;

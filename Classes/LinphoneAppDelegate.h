@@ -54,7 +54,12 @@ typedef enum eTypeHistory{
     eMissedCalls,
 }eTypeHistory;
 
-@interface LinphoneAppDelegate : NSObject <UIApplicationDelegate, PKPushRegistryDelegate, UNUserNotificationCenterDelegate, WebServicesDelegate, UIAlertViewDelegate> {
+typedef enum eContact{
+    eContactPBX,
+    eContactAll,
+}eContact;
+
+@interface LinphoneAppDelegate : NSObject <UIApplicationDelegate, PKPushRegistryDelegate, UNUserNotificationCenterDelegate, WebServicesDelegate, UIAlertViewDelegate, UITabBarControllerDelegate, UITabBarDelegate> {
     @private
 	UIBackgroundTaskIdentifier bgStartId;
     BOOL startedInBackground;
@@ -135,6 +140,7 @@ typedef enum eTypeHistory{
 
 //  [Khai le - 11/01/2019]
 @property (nonatomic, strong) HomeSplitViewController *homeSplitVC;
+@property (nonatomic, assign) eContact contactType;
 
 @end
 
