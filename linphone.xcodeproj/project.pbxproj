@@ -5315,8 +5315,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5364,7 +5364,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfonevn;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
-				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Addhoc";
+				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5424,8 +5424,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5473,7 +5473,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfonevn;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
-				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Addhoc";
+				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5533,8 +5533,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5582,7 +5582,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfonevn;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
-				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Addhoc";
+				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";
@@ -5642,8 +5642,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CODE_SIGN_ENTITLEMENTS = linphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Online Data Services Joint Stock Company (JWYJ345PPC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Thuan Phuoc Tran (TGFVP599Q6)";
 				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = JWYJ345PPC;
@@ -5691,7 +5691,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfonevn;
 				PRODUCT_NAME = linphone;
 				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
-				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Addhoc";
+				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Development";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(inherited)";

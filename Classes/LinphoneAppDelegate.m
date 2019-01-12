@@ -415,7 +415,12 @@ void onUncaughtException(NSException* exception)
     NSString *subDirectory = [NSString stringWithFormat:@"%@/.%@.txt", logsFolderName, [AppUtils getCurrentDate]];
     logFilePath = [WriteLogsUtils makeFilePathWithFileName: subDirectory];
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"==================================================\n==               START APPLICATION              ==\n=================================================="] toFilePath:logFilePath];
+    if (IS_IPHONE || IS_IPOD) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"==================================================\n==               START APPLICATION ON IPHONE OR IPOD              ==\n=================================================="] toFilePath:logFilePath];
+    }else{
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"==================================================\n==               START APPLICATION ON IPAD              ==\n=================================================="] toFilePath:logFilePath];
+    }
+    
     
     UIApplication *app = [UIApplication sharedApplication];
 	UIApplicationState state = app.applicationState;
@@ -1963,45 +1968,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     }
 }
 
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
-{
-    INInteraction *interaction = userActivity.interaction;
-    if (interaction != nil) {
-        INStartAudioCallIntent *startAudioCallIntent = (INStartAudioCallIntent *)interaction.intent;
-        if (startAudioCallIntent != nil && startAudioCallIntent.contacts.count > 0) {
-            INPerson *contact = startAudioCallIntent.contacts[0];
-            if (contact != nil) {
-                INPersonHandle *personHandle = contact.personHandle;
-                NSString *phoneNumber = personHandle.value;
-                if (![AppUtils isNullOrEmpty: phoneNumber])
-                {
-                    phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
-                    if ([AppUtils isNullOrEmpty: phoneNumber]) {
-                        [self showSplashScreenOnView: NO];
-                    }else{
-                        [self showSplashScreenOnView: YES];
-
-                        [[NSUserDefaults standardUserDefaults] setObject:phoneNumber forKey:UserActivity];
-                        [[NSUserDefaults standardUserDefaults] synchronize];
-                    }
-                }
-            }
-        }
-    }
-    return YES;
-}
-
-- (void)showSplashScreenOnView: (BOOL)show {
-    if (splashScreen == nil) {
-        UINib *nib = [UINib nibWithNibName:@"LaunchScreen" bundle:nil];
-        splashScreen = [[nib instantiateWithOwner:self options:nil] objectAtIndex:0];
-        [self.window addSubview:splashScreen];
-    }
-    splashScreen.frame = [UIScreen mainScreen].bounds;
-    splashScreen.hidden = !show;
-}
-
-//-(BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+//- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
 //{
 //    INInteraction *interaction = userActivity.interaction;
 //    if (interaction != nil) {
@@ -2028,6 +1995,44 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 //    }
 //    return YES;
 //}
+
+- (void)showSplashScreenOnView: (BOOL)show {
+    if (splashScreen == nil) {
+        UINib *nib = [UINib nibWithNibName:@"LaunchScreen" bundle:nil];
+        splashScreen = [[nib instantiateWithOwner:self options:nil] objectAtIndex:0];
+        [self.window addSubview:splashScreen];
+    }
+    splashScreen.frame = [UIScreen mainScreen].bounds;
+    splashScreen.hidden = !show;
+}
+
+-(BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+{
+    INInteraction *interaction = userActivity.interaction;
+    if (interaction != nil) {
+        INStartAudioCallIntent *startAudioCallIntent = (INStartAudioCallIntent *)interaction.intent;
+        if (startAudioCallIntent != nil && startAudioCallIntent.contacts.count > 0) {
+            INPerson *contact = startAudioCallIntent.contacts[0];
+            if (contact != nil) {
+                INPersonHandle *personHandle = contact.personHandle;
+                NSString *phoneNumber = personHandle.value;
+                if (![AppUtils isNullOrEmpty: phoneNumber])
+                {
+                    phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+                    if ([AppUtils isNullOrEmpty: phoneNumber]) {
+                        [self showSplashScreenOnView: NO];
+                    }else{
+                        [self showSplashScreenOnView: YES];
+
+                        [[NSUserDefaults standardUserDefaults] setObject:phoneNumber forKey:UserActivity];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
+                }
+            }
+        }
+    }
+    return YES;
+}
 
 
 #pragma mark - sync contact xmpp

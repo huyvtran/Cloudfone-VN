@@ -82,13 +82,13 @@
         make.top.left.bottom.right.equalTo(viewHeader);
     }];
     
-    float top = STATUS_BAR_HEIGHT + (HEIGHT_IPAD_NAV - STATUS_BAR_HEIGHT - HEIGHT_IPAD_HEADER_BUTTON)/2;
+    float top = STATUS_BAR_HEIGHT + (HEIGHT_IPAD_NAV - STATUS_BAR_HEIGHT - HEIGHT_HEADER_BTN)/2;
     btnAll.backgroundColor = [UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0];
     [btnAll setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     [btnAll mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewHeader).offset(top);
         make.right.equalTo(viewHeader.mas_centerX);
-        make.height.mas_equalTo(HEIGHT_IPAD_HEADER_BUTTON);
+        make.height.mas_equalTo(HEIGHT_HEADER_BTN);
         make.width.mas_equalTo(100);
     }];
     

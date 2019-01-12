@@ -7,8 +7,9 @@
 
 #import <UIKit/UIKit.h>
 #import "UIAddressTextField.h"
+#import "SearchContactPopupView.h"
 
-@interface iPadKeypadViewController : UIViewController
+@interface iPadKeypadViewController : UIViewController<UITextViewDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, SearchContactPopupViewDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *viewHeader;
 @property (weak, nonatomic) IBOutlet UIImageView *imgHeader;
@@ -18,7 +19,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *viewNumber;
 @property (weak, nonatomic) IBOutlet UIButton *icAddContact;
-@property (weak, nonatomic) IBOutlet UIAddressTextField *tfAddress;
+@property (weak, nonatomic) IBOutlet UIAddressTextField *addressField;
+@property (weak, nonatomic) IBOutlet UITextView *tvSearchResult;
 
 
 @property (weak, nonatomic) IBOutlet UIView *viewKeypad;
@@ -40,5 +42,8 @@
 
 
 - (IBAction)icAddContactClicked:(UIButton *)sender;
+- (IBAction)btnBackspaceClicked:(id)sender;
+- (IBAction)btnHotlineClicked:(UIButton *)sender;
+- (IBAction)btnNumberClicked:(id)sender;
 
 @end
