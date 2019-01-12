@@ -49,6 +49,11 @@ typedef enum typePhoneNumber{
     eNormalPhone,
 }typePhoneNumber;
 
+typedef enum eTypeHistory{
+    eAllCalls,
+    eMissedCalls,
+}eTypeHistory;
+
 @interface LinphoneAppDelegate : NSObject <UIApplicationDelegate, PKPushRegistryDelegate, UNUserNotificationCenterDelegate, WebServicesDelegate, UIAlertViewDelegate> {
     @private
 	UIBackgroundTaskIdentifier bgStartId;

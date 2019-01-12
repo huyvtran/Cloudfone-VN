@@ -9,10 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "UICompositeView.h"
 
-typedef enum eTypeHistory{
-    eAllCalls,
-    eMissedCalls,
-}eTypeHistory;
 
 @interface CallsHistoryViewController : UIViewController<UICompositeViewDelegate, UIPageViewControllerDelegate, UIPageViewControllerDataSource>
 

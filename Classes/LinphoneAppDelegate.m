@@ -45,8 +45,8 @@
 #import "PhoneObject.h"
 #import <Intents/Intents.h>
 
-#import "iPadRootViewController.h"
 #import "iPadDialerViewController.h"
+#import "iPadKeypadViewController.h"
 #import "iPadContactsViewController.h"
 #import "iPadMoreViewController.h"
 
@@ -2266,25 +2266,32 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 //  [Khai Le - 11/01/2019]
 - (void)settingForStartApplicationWithIpad {
     UITabBarController *tabBars = [[UITabBarController alloc] init];
-    
+    //  Dialer and call history
     iPadDialerViewController *iPadDialerVC = [[iPadDialerViewController alloc] initWithNibName:@"iPadDialerViewController" bundle:nil];
     iPadDialerVC.tabBarItem.title = @"Dialer";
+    iPadDialerVC.tabBarItem.image = [UIImage imageNamed:@"ic_call_bottom_bar_def"];
+    iPadDialerVC.tabBarItem.selectedImage = [UIImage imageNamed:@"ic_call_bottom_bar_act"];
     
+    //  contacts
     iPadContactsViewController *iPadContactsVC = [[iPadContactsViewController alloc] initWithNibName:@"iPadContactsViewController" bundle:nil];
     iPadContactsVC.tabBarItem.title = @"Contacts";
+    iPadContactsVC.tabBarItem.image = [UIImage imageNamed:@"ic_phonebook_bottom_bar_def"];
+    iPadContactsVC.tabBarItem.selectedImage = [UIImage imageNamed:@"ic_phonebook_bottom_bar_act"];
     
+    //  more
     iPadMoreViewController *iPadMoreVC = [[iPadMoreViewController alloc] initWithNibName:@"iPadMoreViewController" bundle:nil];
     iPadMoreVC.tabBarItem.title = @"More";
+    iPadMoreVC.tabBarItem.image = [UIImage imageNamed:@"ic_more_bottom_bar_def"];
+    iPadMoreVC.tabBarItem.selectedImage = [UIImage imageNamed:@"ic_more_bottom_bar_act"];
     
     NSArray *listVC = @[iPadDialerVC, iPadContactsVC, iPadMoreVC];
     tabBars.viewControllers = listVC;
     
-    //  iPadRootViewController *iPadRoot = [[iPadRootViewController alloc] init];
-    iPadDialerViewController *iPadDialer = [[iPadDialerViewController alloc] init];
+    iPadKeypadViewController *iPadKeypadVC = [[iPadKeypadViewController alloc] init];
     
     homeSplitVC = [[HomeSplitViewController alloc] init];
     homeSplitVC.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
-    homeSplitVC.viewControllers = [NSArray arrayWithObjects:tabBars, iPadDialer, nil];
+    homeSplitVC.viewControllers = [NSArray arrayWithObjects:tabBars, iPadKeypadVC, nil];
     self.window.rootViewController = homeSplitVC;
 }
 

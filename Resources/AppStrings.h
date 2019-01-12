@@ -13,6 +13,11 @@
 #define HEADER_ICON_WIDTH 35.0
 #define PADDING_DRAW_CONTROL_VIEW   5.0
 
+#define STATUS_BAR_HEIGHT   ([UIApplication sharedApplication].statusBarFrame.size.height)
+#define HEIGHT_IPAD_NAV 80.0
+#define HEIGHT_IPAD_HEADER_BUTTON 38.0
+#define IPAD_BG_COLOR ([UIColor colorWithRed:(240/255.0) green:(240/255.0) blue:(240/255.0) alpha:1.0])
+
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"
 #define AES_KEY         @"OdsCloudfone@123"
 
