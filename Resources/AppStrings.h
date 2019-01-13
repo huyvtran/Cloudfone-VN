@@ -9,7 +9,8 @@
 #ifndef AppStrings_h
 #define AppStrings_h
 
-#define link_appstore @"https://itunes.apple.com/vn/app/cloudfone-vn/id1445535617?mt=8"
+#define link_appstore   @"https://itunes.apple.com/vn/app/cloudfone-vn/id1445535617?mt=8"
+#define link_introduce  @"https://cloudfone.vn/gioi-thieu-dich-vu-cloudfone/"
 
 #define SHOW_LOGS @"[Show logs]"
 #define HEADER_ICON_WIDTH 35.0

@@ -12,7 +12,7 @@
 @end
 
 @implementation iPadIntroduceViewController
-@synthesize viewHeader, lbHeader, wvContent;
+@synthesize viewHeader, lbHeader, wvContent, icWaiting;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -31,10 +31,12 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear: animated];
     
-    NSString *url = @"https://cloudfone.vn/gioi-thieu-dich-vu-cloudfone/";
-    NSURL *nsurl=[NSURL URLWithString:url];
+    NSURL *nsurl=[NSURL URLWithString: link_introduce];
     NSURLRequest *nsrequest = [NSURLRequest requestWithURL: nsurl];
     [wvContent loadRequest:nsrequest];
+    
+    icWaiting.hidden = NO;
+    [icWaiting startAnimating];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -71,5 +73,39 @@
     wvContent.layer.borderWidth = 1.0;
     wvContent.layer.cornerRadius = 5.0;
     wvContent.backgroundColor = [UIColor whiteColor];
+    wvContent.delegate = self;
+    wvContent.clipsToBounds = YES;
+    //  waiting loading
+    [icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(wvContent.mas_centerX);
+        make.centerY.equalTo(wvContent.mas_centerY);
+        make.width.height.mas_equalTo(40.0);
+    }];
 }
+
+#pragma mark - Webview delegate
+
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    return YES;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    if (webView.loading) {
+        return;
+    }
+    if ([[webView stringByEvaluatingJavaScriptFromString:@"document.readyState"] isEqualToString:@"complete"])
+    {
+        if ([[webView.request.URL absoluteString] isEqualToString: link_introduce]) {
+            wvContent.hidden = NO;
+            icWaiting.hidden = YES;
+            [icWaiting stopAnimating];
+        }
+    }
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    NSLog(@"KL didFail: %@; stillLoading: %@", [[webView request]URL],
+          (webView.loading?@"YES":@"NO"));
+}
+
 @end

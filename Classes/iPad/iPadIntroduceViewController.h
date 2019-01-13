@@ -7,10 +7,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface iPadIntroduceViewController : UIViewController
+@interface iPadIntroduceViewController : UIViewController<UIWebViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewHeader;
 @property (weak, nonatomic) IBOutlet UILabel *lbHeader;
 @property (weak, nonatomic) IBOutlet UIWebView *wvContent;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *icWaiting;
 
 @end

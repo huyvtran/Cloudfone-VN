@@ -61,6 +61,17 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSURL *linkToApp = [NSURL URLWithString:[NSString stringWithFormat:@"youtube://watch?v=%@", @"UCBoBK-efPAsF1NbvCJFCzJw"]]; // I dont know excatly this one
+    NSURL *linkToWeb = [NSURL URLWithString:@"https://www.youtube.com/channel/UCBoBK-efPAsF1NbvCJFCzJw"]; // this is correct
+    if ([[UIApplication sharedApplication] canOpenURL:linkToApp]) {
+        // Can open the youtube app URL so launch the youTube app with this URL
+        [[UIApplication sharedApplication] openURL:linkToApp];
+    }
+    else{
+        // Can't open the youtube app URL so launch Safari instead
+        [[UIApplication sharedApplication] openURL:linkToWeb];
+    }
+    
     
     [self createDataForMenuView];
 }

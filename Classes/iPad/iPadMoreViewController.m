@@ -8,6 +8,7 @@
 #import "iPadMoreViewController.h"
 #import "iPadPolicyViewController.h"
 #import "iPadIntroduceViewController.h"
+#import "iPadAboutViewController.h"
 #import "MenuCell.h"
 #import "AccountInfoCell.h"
 
@@ -145,6 +146,13 @@
         
         UITabBarController *tabbarVC = [[LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers objectAtIndex:0];
         NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, introduceVC, nil];
+        [LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers = viewControllers;
+        
+    }else if (indexPath.row == 7) {
+        iPadAboutViewController *aboutVC = [[iPadAboutViewController alloc] initWithNibName:@"iPadAboutViewController" bundle:nil];
+        
+        UITabBarController *tabbarVC = [[LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers objectAtIndex:0];
+        NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, aboutVC, nil];
         [LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers = viewControllers;
     }
     
