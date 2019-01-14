@@ -6,11 +6,24 @@
 //
 
 #import "iPadMoreViewController.h"
+#import "iPadAccountSettingsViewController.h"
+#import "iPadSettingsViewController.h"
 #import "iPadPolicyViewController.h"
 #import "iPadIntroduceViewController.h"
+#import "iPadSendLogsViewController.h"
 #import "iPadAboutViewController.h"
 #import "MenuCell.h"
 #import "AccountInfoCell.h"
+
+typedef enum ipadMoreType{
+    iPadMoreAccount = 1,
+    iPadMoreSettings,
+    iPadMoreFeedback,
+    iPadMorePrivacy,
+    iPadMoreIntrodution,
+    iPadMoreSendLogs,
+    iPadMoreAbout,
+}ipadMoreType;
 
 @interface iPadMoreViewController (){
     NSMutableArray *listTitle;
@@ -60,7 +73,7 @@
         make.height.mas_equalTo(HEIGHT_IPAD_NAV);
     }];
     
-    lbHeader.font = [UIFont fontWithName:HelveticaNeue size:24.0];
+    lbHeader.font = [UIFont fontWithName:HelveticaNeue size: IPAD_HEADER_FONT_SIZE];
     [lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.right.equalTo(viewHeader);
         make.top.equalTo(viewHeader).offset(STATUS_BAR_HEIGHT);
@@ -128,77 +141,65 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 3) {
+    if (indexPath.row == iPadMoreAccount) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to account settings view", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
+        iPadAccountSettingsViewController *settingsAccVC = [[iPadAccountSettingsViewController alloc] initWithNibName:@"iPadAccountSettingsViewController" bundle:nil];
+        UINavigationController *navigationVC = [AppUtils createNavigationWithController: settingsAccVC];
+        [self showDetailViewWithController: navigationVC];
+        
+    }else if (indexPath.row == iPadMoreSettings) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to settings view", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
+        iPadSettingsViewController *settingsVC = [[iPadSettingsViewController alloc] initWithNibName:@"iPadSettingsViewController" bundle:nil];
+        UINavigationController *navigationVC = [AppUtils createNavigationWithController: settingsVC];
+        [self showDetailViewWithController: navigationVC];
+        
+    }else if (indexPath.row == iPadMoreFeedback) {
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to feedback on App Store", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
         NSURL *linkCloudfoneOnAppStore = [NSURL URLWithString: link_appstore];
         [[UIApplication sharedApplication] openURL: linkCloudfoneOnAppStore];
         
-    }else if (indexPath.row == 4) {
+    }else if (indexPath.row == iPadMorePrivacy) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to privacy view", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
         iPadPolicyViewController *policyVC = [[iPadPolicyViewController alloc] initWithNibName:@"iPadPolicyViewController" bundle:nil];
+        UINavigationController *navigationVC = [AppUtils createNavigationWithController: policyVC];
+        [self showDetailViewWithController: navigationVC];
         
-        UITabBarController *tabbarVC = [[LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers objectAtIndex:0];
-        NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, policyVC, nil];
-        [LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers = viewControllers;
+    }else if (indexPath.row == iPadMoreIntrodution) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to introduction view", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
-    }else if (indexPath.row == 5) {
         iPadIntroduceViewController *introduceVC = [[iPadIntroduceViewController alloc] initWithNibName:@"iPadIntroduceViewController" bundle:nil];
+        UINavigationController *navigationVC = [AppUtils createNavigationWithController: introduceVC];
+        [self showDetailViewWithController: navigationVC];
         
-        UITabBarController *tabbarVC = [[LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers objectAtIndex:0];
-        NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, introduceVC, nil];
-        [LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers = viewControllers;
+    }else if (indexPath.row == iPadMoreSendLogs) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to send logs view", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
-    }else if (indexPath.row == 7) {
+        iPadSendLogsViewController *sendLogsVC = [[iPadSendLogsViewController alloc] initWithNibName:@"iPadSendLogsViewController" bundle:nil];
+        UINavigationController *navigationVC = [AppUtils createNavigationWithController: sendLogsVC];
+        [self showDetailViewWithController: navigationVC];
+        
+    }else if (indexPath.row == iPadMoreAbout) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to about view", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
         iPadAboutViewController *aboutVC = [[iPadAboutViewController alloc] initWithNibName:@"iPadAboutViewController" bundle:nil];
-        
-        UITabBarController *tabbarVC = [[LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers objectAtIndex:0];
-        NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, aboutVC, nil];
-        [LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers = viewControllers;
+        UINavigationController *navigationVC = [AppUtils createNavigationWithController: aboutVC];
+        [self showDetailViewWithController: navigationVC];
     }
-    
-//    
-//    
-//    switch (indexPath.row) {
-//        case eSettingsAccount:{
-//            [[PhoneMainView instance] changeCurrentView:[AccountSettingsViewController compositeViewDescription] push:true];
-//            break;
-//        }
-//        case eSettings:{
-//            [[PhoneMainView instance] changeCurrentView:[KSettingViewController compositeViewDescription] push:true];
-//            break;
-//        }
-//        case ePolicy:{
-//            [[PhoneMainView instance] changeCurrentView:[PolicyViewController compositeViewDescription]
-//                                                   push:true];
-//            break;
-//        }
-//        case eIntroduce:{
-//            [[PhoneMainView instance] changeCurrentView:[IntroduceViewController compositeViewDescription]
-//                                                   push:true];
-//            break;
-//        }
-//        case eSendLogs:{
-//            [[PhoneMainView instance] changeCurrentView:[SendLogsViewController compositeViewDescription]
-//                                                   push:true];
-//            break;
-//        }
-//        case eAbout:{
-//            [[PhoneMainView instance] changeCurrentView:[AboutViewController compositeViewDescription]
-//                                                   push:true];
-//            break;
-//        }
-//        case eDrawLine:{
-//            [[PhoneMainView instance] changeCurrentView:[DrawingViewController compositeViewDescription]
-//                                                   push:true];
-//            break;
-//        }
-//        default:
-//            break;
-//    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 65.0;
+}
+
+- (void)showDetailViewWithController: (UIViewController *)detailVC
+{
+    UITabBarController *tabbarVC = [[LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers objectAtIndex:0];
+    NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, detailVC, nil];
+    [LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers = viewControllers;
 }
 
 @end

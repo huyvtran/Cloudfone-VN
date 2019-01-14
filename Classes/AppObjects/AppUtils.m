@@ -976,4 +976,13 @@
     return result;
 }
 
++ (UINavigationController *)createNavigationWithController: (UIViewController *)viewController {
+    UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController: viewController];
+    navigationVC.navigationBar.barTintColor = IPAD_HEADER_BG_COLOR;
+    navigationVC.navigationBar.translucent = NO;
+    navigationVC.navigationBar.tintColor = UIColor.whiteColor;
+    navigationVC.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:UIColor.whiteColor forKey:NSForegroundColorAttributeName];
+    return navigationVC;
+}
+
 @end

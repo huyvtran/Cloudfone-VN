@@ -9,8 +9,6 @@
 
 @interface iPadAboutViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UIView *viewHeader;
-@property (weak, nonatomic) IBOutlet UILabel *lbHeader;
 @property (weak, nonatomic) IBOutlet UIImageView *imgLogo;
 @property (weak, nonatomic) IBOutlet UILabel *lbVersion;
 @property (weak, nonatomic) IBOutlet UIButton *btnCheckForUpdate;

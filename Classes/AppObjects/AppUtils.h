@@ -118,4 +118,6 @@
 
 + (NSString *)convertDurtationToString: (long)duration;
 
++ (UINavigationController *)createNavigationWithController: (UIViewController *)viewController;
+
 @end

@@ -12,7 +12,7 @@
 @end
 
 @implementation iPadPolicyViewController
-@synthesize viewHeader, lbHeader, wvContent;
+@synthesize wvContent, icWaiting;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -25,16 +25,18 @@
     
     [WriteLogsUtils writeForGoToScreen:@"iPadPolicyViewController"];
     
-    lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Privacy Policy"];
+    self.title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Privacy Policy"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear: animated];
     
-    NSString *url = @"http://dieukhoan.cloudfone.vn";
-    NSURL *nsurl = [NSURL URLWithString:url];
+    NSURL *nsurl = [NSURL URLWithString: link_policy];
     NSURLRequest *nsrequest = [NSURLRequest requestWithURL: nsurl];
     [wvContent loadRequest:nsrequest];
+    
+    icWaiting.hidden = NO;
+    [icWaiting startAnimating];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,27 +45,9 @@
 }
 
 - (void)setupUIForView {
-    //  header
-    [viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo(HEIGHT_IPAD_NAV);
-    }];
-    
-    lbHeader.font = [UIFont fontWithName:HelveticaNeue size:24.0];
-    [lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewHeader).offset(STATUS_BAR_HEIGHT);
-        make.left.right.bottom.equalTo(viewHeader);
-    }];
-    
-    [lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewHeader).offset(STATUS_BAR_HEIGHT);
-        make.left.right.bottom.equalTo(viewHeader);
-    }];
-    
     float tmpMargin = 15.0;
     [wvContent mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewHeader.mas_bottom).offset(tmpMargin);
-        make.left.equalTo(self.view).offset(tmpMargin);
+        make.top.left.equalTo(self.view).offset(tmpMargin);
         make.bottom.right.equalTo(self.view).offset(-tmpMargin);
     }];
     wvContent.layer.borderColor = [UIColor colorWithRed:(200/255.0) green:(200/255.0)
@@ -71,6 +55,34 @@
     wvContent.layer.borderWidth = 1.0;
     wvContent.layer.cornerRadius = 5.0;
     wvContent.backgroundColor = [UIColor whiteColor];
+    wvContent.delegate = self;
+    
+    [icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(wvContent);
+    }];
+}
+
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    return YES;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    if (webView.loading) {
+        return;
+    }
+    if ([[webView stringByEvaluatingJavaScriptFromString:@"document.readyState"] isEqualToString:@"complete"])
+    {
+        if ([[webView.request.URL absoluteString] isEqualToString: link_policy]) {
+            wvContent.hidden = NO;
+            icWaiting.hidden = YES;
+            [icWaiting stopAnimating];
+        }
+    }
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    NSLog(@"KL didFail: %@; stillLoading: %@", [[webView request]URL],
+          (webView.loading?@"YES":@"NO"));
 }
 
 @end

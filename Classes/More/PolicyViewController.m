@@ -10,7 +10,7 @@
 
 @implementation PolicyViewController
 @synthesize _viewHeader, bgHeader, _iconBack, _lbHeader;
-@synthesize _wvPolicy;
+@synthesize _wvPolicy, icWaiting;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -54,10 +54,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear: animated];
     
-    NSString *url = @"http://dieukhoan.cloudfone.vn";
-    NSURL *nsurl = [NSURL URLWithString:url];
+    NSURL *nsurl = [NSURL URLWithString: link_policy];
     NSURLRequest *nsrequest = [NSURLRequest requestWithURL: nsurl];
     [_wvPolicy loadRequest:nsrequest];
+    
+    icWaiting.hidden = NO;
+    [icWaiting startAnimating];
 }
 
 
@@ -114,7 +116,40 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                    blue:(200/255.0) alpha:1.0].CGColor;
     _wvPolicy.layer.borderWidth = 1.0;
     _wvPolicy.layer.cornerRadius = 5.0;
-    _wvPolicy.backgroundColor = [UIColor whiteColor];
+    _wvPolicy.backgroundColor = UIColor.whiteColor;
+    _wvPolicy.delegate = self;
+    
+    //  waiting loading
+    [icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_wvPolicy.mas_centerX);
+        make.centerY.equalTo(_wvPolicy.mas_centerY);
+        make.width.height.mas_equalTo(40.0);
+    }];
+}
+
+#pragma mark - Webview delegate
+
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    return YES;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    if (webView.loading) {
+        return;
+    }
+    if ([[webView stringByEvaluatingJavaScriptFromString:@"document.readyState"] isEqualToString:@"complete"])
+    {
+        if ([[webView.request.URL absoluteString] isEqualToString: link_policy]) {
+            _wvPolicy.hidden = NO;
+            icWaiting.hidden = YES;
+            [icWaiting stopAnimating];
+        }
+    }
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    NSLog(@"KL didFail: %@; stillLoading: %@", [[webView request]URL],
+          (webView.loading?@"YES":@"NO"));
 }
 
 @end

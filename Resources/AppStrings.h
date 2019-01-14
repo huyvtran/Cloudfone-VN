@@ -11,6 +11,9 @@
 
 #define link_appstore   @"https://itunes.apple.com/vn/app/cloudfone-vn/id1445535617?mt=8"
 #define link_introduce  @"https://cloudfone.vn/gioi-thieu-dich-vu-cloudfone/"
+#define link_policy     @"http://dieukhoan.cloudfone.vn/"
+#define youtube_channel @"UCBoBK-efPAsF1NbvCJFCzJw"
+#define facebook_link   @"https://www.facebook.com/CloudFone.VN/"
 
 #define SHOW_LOGS @"[Show logs]"
 #define HEADER_ICON_WIDTH 35.0
@@ -21,9 +24,10 @@
 #define HEIGHT_IPAD_NAV 80.0
 #define HEIGHT_IPAD_HEADER_BUTTON 38.0
 #define HEIGHT_HEADER_BTN 32.0
+#define IPAD_HEADER_FONT_SIZE   24
 
 #define IPAD_BG_COLOR ([UIColor colorWithRed:(240/255.0) green:(240/255.0) blue:(240/255.0) alpha:1.0])
-#define IPAD_HEADER_BG_COLOR ([UIColor colorWithRed:(29/255.0) green:(106/255.0) blue:(207/255.0) alpha:1.0])
+#define IPAD_HEADER_BG_COLOR ([UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0])
 
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"
 #define AES_KEY         @"OdsCloudfone@123"

@@ -85,4 +85,30 @@
     return 60.0;
 }
 
++ (void)cleanLogFolder {
+    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    NSArray *arr = [WriteLogsUtils getAllFilesInDirectory: logsFolderName];
+    for (int i=0; i<arr.count; i++) {
+        NSString *fileName = [arr objectAtIndex: i];
+        if ([fileName hasPrefix: bundleIdentifier]) {
+            NSString *path = [NgnFileUtils getPathOfFileWithSubDir:[NSString stringWithFormat:@"%@/%@", logsFolderName, fileName]];
+            [WriteLogsUtils removeFileWithPath: path];
+        }
+    }
+}
+
++ (NSString *)convertLogFileName: (NSString *)fileName {
+    if ([fileName hasPrefix:@"."]) {
+        fileName = [fileName substringFromIndex: 1];
+    }
+    
+    if ([fileName hasSuffix:@".txt"]) {
+        fileName = [fileName substringToIndex:(fileName.length - 4)];
+    }
+    
+    fileName = [fileName stringByReplacingOccurrencesOfString:@"-" withString:@"/"];
+    
+    return [NSString stringWithFormat:@"Log_file_%@", fileName];
+}
+
 @end

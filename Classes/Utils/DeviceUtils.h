@@ -16,5 +16,7 @@
 + (float)getSpaceYBetweenKeypadButtonsForDevice: (NSString *)deviceMode;
 + (BOOL)checkNetworkAvailable;
 + (float)getHeightForAddressTextFieldDialerWithDevice: (NSString *)deviceMode;
++ (void)cleanLogFolder;
++ (NSString *)convertLogFileName: (NSString *)fileName;
 
 @end

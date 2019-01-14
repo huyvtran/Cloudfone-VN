@@ -1,60 +1,43 @@
 //
-//  SendLogsViewController.m
+//  iPadSendLogsViewController.m
 //  linphone
 //
-//  Created by lam quang quan on 11/27/18.
+//  Created by lam quang quan on 1/14/19.
 //
 
-#import "SendLogsViewController.h"
+#import "iPadSendLogsViewController.h"
 #import "SendLogFileCell.h"
 #import "AESCrypt.h"
 
-@interface SendLogsViewController (){
+@interface iPadSendLogsViewController () {
     NSMutableArray *listFiles;
     NSMutableArray *listSelect;
+    UIBarButtonItem *btnSend;
 }
 
 @end
 
-@implementation SendLogsViewController
-@synthesize viewHeader, bgHeader, icBack, lbHeader, icSend, tbLogs;
-
-#pragma mark - UICompositeViewDelegate Functions
-static UICompositeViewDescription *compositeDescription = nil;
-+ (UICompositeViewDescription *)compositeViewDescription {
-    if (compositeDescription == nil) {
-        compositeDescription = [[UICompositeViewDescription alloc] init:self.class
-                                                              statusBar:nil
-                                                                 tabBar:nil
-                                                               sideMenu:nil
-                                                             fullscreen:NO
-                                                         isLeftFragment:YES
-                                                           fragmentWith:nil];
-        compositeDescription.darkBackground = true;
-    }
-    return compositeDescription;
-}
-
-- (UICompositeViewDescription *)compositeViewDescription {
-    return self.class.compositeViewDescription;
-}
+@implementation iPadSendLogsViewController
+@synthesize tbLogs;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    //  my code here
     [self setupUIForView];
+    
+    btnSend = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:nil action:nil];
+    self.navigationItem.rightBarButtonItem = btnSend;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+-(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
+    
     //  remove other files if it is not log file
     [DeviceUtils cleanLogFolder];
     [WriteLogsUtils clearLogFilesAfterExpireTime: DAY_FOR_LOGS*24*3600];
     
-    icSend.enabled = NO;
+    //  btnSend.enabled = NO;
     
     if (listSelect == nil) {
         listSelect = [[NSMutableArray alloc] init];
@@ -74,17 +57,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)icBackClicked:(UIButton *)sender {
-    [[PhoneMainView instance] popCurrentView];
-}
-
-- (IBAction)icSendClicked:(UIButton *)sender {
-    /*
-    NSString *totalEmail = [NSString stringWithFormat:@"mailto:%@?subject=%@&body=%@", @"lekhai0212@gmail.com", @"Send logs file", messageSend];
-    NSString *url = [totalEmail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
-    */
-    
+- (IBAction)btnSendPressed:(UIButton *)sender {
     if ([MFMailComposeViewController canSendMail]) {
         BOOL networkReady = [DeviceUtils checkNetworkAvailable];
         if (!networkReady) {
@@ -109,6 +82,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                              error:NULL];
             NSString *encryptStr = [AESCrypt encrypt:content password:AES_KEY];
             NSData *logFileData = [encryptStr dataUsingEncoding:NSUTF8StringEncoding];
+            
             NSString *nameForSend = [DeviceUtils convertLogFileName: fileName];
             [mc addAttachmentData:logFileData mimeType:@"text/plain" fileName:nameForSend];
         }
@@ -124,51 +98,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-//  setup ui trong view
 - (void)setupUIForView
 {
-    if (SCREEN_WIDTH > 320) {
-        lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
-    }else{
-        lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
-    }
-    
-    //  header view
-    [viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState);
-    }];
-    
-    [icBack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(viewHeader);
-        make.centerY.equalTo(lbHeader.mas_centerY);
-        make.width.height.mas_equalTo(HEADER_ICON_WIDTH);
-    }];
-    
-    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(viewHeader);
-    }];
-    
-    [lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus);
-        make.bottom.equalTo(viewHeader);
-        make.centerX.equalTo(viewHeader.mas_centerX);
-        make.width.mas_equalTo(200);
-    }];
-    
-    [icSend setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    [icSend setTitleColor:UIColor.grayColor forState:UIControlStateDisabled];
-    [icSend mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(viewHeader).offset(-5.0);
-        make.centerY.equalTo(lbHeader.mas_centerY);
-        make.width.mas_equalTo(80.0);
-        make.height.mas_equalTo(HEADER_ICON_WIDTH);
-    }];
-    
+    //  tableview
     tbLogs.backgroundColor = UIColor.clearColor;
     [tbLogs mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewHeader.mas_bottom);
-        make.bottom.left.right.equalTo(self.view);
+        make.top.bottom.left.right.equalTo(self.view);
     }];
     tbLogs.delegate = self;
     tbLogs.dataSource = self;
@@ -213,9 +148,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     [tbLogs reloadData];
     if (listSelect.count > 0) {
-        icSend.enabled = YES;
+        btnSend.enabled = YES;
     }else{
-        icSend.enabled = NO;
+        btnSend.enabled = NO;
     }
 }
 
