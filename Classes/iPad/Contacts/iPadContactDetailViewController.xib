@@ -20,6 +20,7 @@
                 <outlet property="lbName" destination="DAg-Wa-aJg" id="yVx-7z-7rK"/>
                 <outlet property="lbNoContacts" destination="5VF-jf-KyM" id="2m1-MF-fxB"/>
                 <outlet property="tbDetail" destination="Jnm-dt-hwl" id="R1s-gL-7sj"/>
+                <outlet property="tbPBXDetail" destination="nI7-4D-rHh" id="Ps7-O3-oBf"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="viewHeader" destination="S82-3t-nOG" id="gQw-4H-sp9"/>
                 <outlet property="viewNoContacts" destination="gOu-Ht-DYR" id="0Jg-ca-qWd"/>
@@ -74,6 +75,11 @@
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                 </tableView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nI7-4D-rHh">
+                    <rect key="frame" x="40" y="166" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QO6-qV-7X2">
                     <rect key="frame" x="137" y="115" width="76" height="76"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -103,7 +109,7 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-270" y="-143"/>
+            <point key="canvasLocation" x="-438" y="-183"/>
         </view>
     </objects>
     <resources>

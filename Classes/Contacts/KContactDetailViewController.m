@@ -97,7 +97,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Get contact info with id: %d", appDelegate.idContact]
                          toFilePath:appDelegate.logFilePath];
     
-    detailsContact = [AppUtils getContactWithId: appDelegate.idContact];
+    detailsContact = [ContactUtils getContactWithId: appDelegate.idContact];
     if (![AppUtils isNullOrEmpty:detailsContact._sipPhone]) {
         isPBXContact = YES;
     }else{

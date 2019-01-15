@@ -13,11 +13,6 @@
 #import "CustomSwitchButton.h"
 #import "WebServices.h"
 
-typedef enum{
-    normalLogin,
-    qrCodeLogin,
-}typeLoginPBX;
-
 @interface PBXSettingViewController : UIViewController<UICompositeViewDelegate, WebServicesDelegate, QRCodeReaderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RegisterPBXWithPhoneViewDelegate, CustomSwitchButtonDelegate>
 @property (weak, nonatomic) IBOutlet UIView *_viewHeader;
 @property (weak, nonatomic) IBOutlet UIButton *_iconBack;

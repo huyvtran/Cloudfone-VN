@@ -11,5 +11,4 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tbLogs;
 
-- (IBAction)btnSendPressed:(UIButton *)sender;
 @end

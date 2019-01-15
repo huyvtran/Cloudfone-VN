@@ -24,6 +24,7 @@
     [super viewWillAppear: animated];
     
     self.title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"About"];
+    [btnCheckForUpdate setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Check for update"] forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -80,7 +81,8 @@
     btnCheckForUpdate.layer.cornerRadius = 45.0/2;
     [btnCheckForUpdate mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbVersion.mas_bottom).offset(40.0);
-        make.centerX.equalTo(self.view.mas_centerX);
+        make.left.equalTo(self.view).offset(30.0);
+        make.right.equalTo(self.view).offset(-30.0);
         make.height.mas_equalTo(45.0);
     }];
     

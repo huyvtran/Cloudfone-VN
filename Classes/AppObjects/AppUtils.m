@@ -301,14 +301,7 @@
     return newImage;
 }
 
-+ (ContactObject *)getContactWithId: (int)idContact {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_id_contact = %d", idContact];
-    NSArray *filter = [[LinphoneAppDelegate sharedInstance].listContacts filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        return [filter objectAtIndex: 0];
-    }
-    return nil;
-}
+
 
 /*---
  Cập nhật badge và tạo notifications khi đang chạy background

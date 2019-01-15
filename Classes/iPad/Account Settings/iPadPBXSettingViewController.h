@@ -6,8 +6,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CustomSwitchButton.h"
+#import "WebServices.h"
+#import "RegisterPBXWithPhoneView.h"
+#import "QRCodeReaderDelegate.h"
 
-@interface iPadPBXSettingViewController : UIViewController
+@interface iPadPBXSettingViewController : UIViewController<CustomSwitchButtonDelegate, WebServicesDelegate, RegisterPBXWithPhoneViewDelegate, QRCodeReaderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *icWaiting;
 
 @property (weak, nonatomic) IBOutlet UIView *viewContent;
@@ -26,5 +31,8 @@
 
 - (IBAction)btnClearPressed:(UIButton *)sender;
 - (IBAction)btnSavePressed:(UIButton *)sender;
+- (IBAction)btnLoginWithPhonePressed:(UIButton *)sender;
+
+@property (nonatomic, strong) WebServices *webService;
 
 @end

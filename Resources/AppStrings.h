@@ -18,6 +18,7 @@
 #define SHOW_LOGS @"[Show logs]"
 #define HEADER_ICON_WIDTH 35.0
 #define PADDING_DRAW_CONTROL_VIEW   5.0
+#define IPAD_HEIGHT_TF   45.0
 
 #define STATUS_BAR_HEIGHT   ([UIApplication sharedApplication].statusBarFrame.size.height)
 #define PADDING_HEADER_ICON 10.0

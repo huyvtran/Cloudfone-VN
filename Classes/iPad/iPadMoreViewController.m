@@ -45,6 +45,7 @@ typedef enum ipadMoreType{
     [super viewWillAppear: animated];
     
     [self showContentWithCurrentLanguage];
+    [self selectDefaultForView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -63,6 +64,14 @@ typedef enum ipadMoreType{
     listTitle = [[NSMutableArray alloc] initWithObjects: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Account settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Settings"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Feedback"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Privacy Policy"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Introduction"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Send logs"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"About"], nil];
     
     listIcon = [[NSMutableArray alloc] initWithObjects: @"ic_setup.png", @"ic_setting.png", @"ic_support.png", @"ic_term.png", @"ic_introduce.png", @"ic_send_logs.png", @"ic_info.png", nil];
+}
+
+- (void)selectDefaultForView {
+    [tbMenu selectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+    
+    iPadAccountSettingsViewController *settingsAccVC = [[iPadAccountSettingsViewController alloc] initWithNibName:@"iPadAccountSettingsViewController" bundle:nil];
+    UINavigationController *navigationVC = [AppUtils createNavigationWithController: settingsAccVC];
+    [self showDetailViewWithController: navigationVC];
 }
 
 - (void)setupUIForView {

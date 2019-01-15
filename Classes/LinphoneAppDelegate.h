@@ -59,6 +59,11 @@ typedef enum eContact{
     eContactAll,
 }eContact;
 
+typedef enum{
+    normalLogin,
+    qrCodeLogin,
+}typeLoginPBX;
+
 @interface LinphoneAppDelegate : NSObject <UIApplicationDelegate, PKPushRegistryDelegate, UNUserNotificationCenterDelegate, WebServicesDelegate, UIAlertViewDelegate, UITabBarControllerDelegate, UITabBarDelegate> {
     @private
 	UIBackgroundTaskIdentifier bgStartId;

@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet MarqueeLabel *lbName;
 @property (weak, nonatomic) IBOutlet UIButton *icCallPBX;
 @property (weak, nonatomic) IBOutlet UITableView *tbDetail;
+@property (weak, nonatomic) IBOutlet UITableView *tbPBXDetail;
 
 @property (weak, nonatomic) IBOutlet UIView *viewNoContacts;
 @property (weak, nonatomic) IBOutlet UILabel *lbNoContacts;
@@ -27,5 +28,6 @@
 - (IBAction)icCallPBXClicked:(UIButton *)sender;
 
 @property (nonatomic, strong) ContactObject *detailsContact;
+@property (nonatomic, strong) PBXContact *detailsPBXContact;
 
 @end

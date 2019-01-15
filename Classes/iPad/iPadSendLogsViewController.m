@@ -26,7 +26,7 @@
     
     [self setupUIForView];
     
-    btnSend = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:nil action:nil];
+    btnSend = [[UIBarButtonItem alloc] initWithTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Send"] style:UIBarButtonItemStyleDone target:self action:@selector(sendLogFilePressed)];
     self.navigationItem.rightBarButtonItem = btnSend;
 }
 
@@ -37,7 +37,9 @@
     [DeviceUtils cleanLogFolder];
     [WriteLogsUtils clearLogFilesAfterExpireTime: DAY_FOR_LOGS*24*3600];
     
-    //  btnSend.enabled = NO;
+    self.title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Send logs"];
+    btnSend.title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Send"];
+    btnSend.enabled = NO;
     
     if (listSelect == nil) {
         listSelect = [[NSMutableArray alloc] init];
@@ -57,7 +59,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)btnSendPressed:(UIButton *)sender {
+- (void)sendLogFilePressed {
     if ([MFMailComposeViewController canSendMail]) {
         BOOL networkReady = [DeviceUtils checkNetworkAvailable];
         if (!networkReady) {
@@ -90,6 +92,8 @@
         [mc setSubject:emailTitle];
         [mc setMessageBody:messageBody isHTML:NO];
         [mc setToRecipients:toRecipents];
+        
+        
         
         [self presentViewController:mc animated:YES completion:NULL];
     }else{

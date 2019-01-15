@@ -119,6 +119,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.row) {
         case 0:{
+            UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+            self.navigationItem.backBarButtonItem = newBackButton;
+            
             iPadLanguageViewController *languageVC = [[iPadLanguageViewController alloc] init];
             [self.navigationController pushViewController:languageVC animated:YES];
             break;

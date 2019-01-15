@@ -56,6 +56,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     icSend.enabled = NO;
     
+    [icSend setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Send"] forState:UIControlStateNormal];
+    [icSend setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Send"] forState:UIControlStateDisabled];
+    
     if (listSelect == nil) {
         listSelect = [[NSMutableArray alloc] init];
     }

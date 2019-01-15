@@ -6,6 +6,8 @@
 //
 
 #import "iPadAccountSettingsViewController.h"
+#import "iPadPBXSettingViewController.h"
+#import "iPadChangePasswordViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "NewSettingCell.h"
 
@@ -60,14 +62,14 @@
 
 #pragma mark - UITableview Delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if ([SipUtils getStateOfDefaultProxyConfig] == eAccountNone) {
         return 1;
     }
     return 2;
-}
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -80,7 +82,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    switch (indexPath.section) {
+    switch (indexPath.row) {
         case 0:{
             cell.lbTitle.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"PBX account"];
             
@@ -108,6 +110,17 @@
                 make.top.bottom.equalTo(cell);
             }];
             cell.lbDescription.text = @"";
+            
+            UILabel *lbSepa = [[UILabel alloc] init];
+            lbSepa.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
+                                                      blue:(235/255.0) alpha:1.0];
+            [cell addSubview: lbSepa];
+            [lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.left.right.equalTo(cell);
+                make.height.mas_equalTo(1.0);
+            }];
+            
+            
             break;
         }
         default:
@@ -121,22 +134,24 @@
 {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] indexPath row = %d", __FUNCTION__, (int)indexPath.row] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
-    if (indexPath.section == 0) {
-        //  [[PhoneMainView instance] changeCurrentView:[PBXSettingViewController compositeViewDescription] push:YES];
-    }else if (indexPath.section == 1){
+    if (indexPath.row == 0) {
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.navigationItem.backBarButtonItem = newBackButton;
+        
+        iPadPBXSettingViewController *pbxSettingsVC = [[iPadPBXSettingViewController alloc] init];
+        [self.navigationController pushViewController:pbxSettingsVC animated:YES];
+
+    }else if (indexPath.row == 1){
         if (stateAccount == eAccountNone) {
             [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"] duration:3.0 position:CSToastPositionCenter];
         }else{
-            //  [[PhoneMainView instance] changeCurrentView:[ManagerPasswordViewController compositeViewDescription] push:YES];
+            UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+            self.navigationItem.backBarButtonItem = newBackButton;
+            
+            iPadChangePasswordViewController *changePassVC = [[iPadChangePasswordViewController alloc] init];
+            [self.navigationController pushViewController:changePassVC animated:YES];
         }
     }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        return 0;
-    }
-    return 10;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

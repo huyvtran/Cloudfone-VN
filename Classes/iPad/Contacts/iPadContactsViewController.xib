@@ -16,7 +16,7 @@
                 <outlet property="btnPBX" destination="uts-1i-wDE" id="sqF-dz-zGL"/>
                 <outlet property="icAddNew" destination="D3b-bF-Z1J" id="yxj-D3-jhg"/>
                 <outlet property="icSync" destination="53f-Ov-bq7" id="ul9-wY-Shr"/>
-                <outlet property="lbNoContacts" destination="p9A-yu-3p5" id="hbX-IF-Khx"/>
+                <outlet property="icWaiting" destination="pMf-9M-ecA" id="rUO-SI-bX0"/>
                 <outlet property="tbContacts" destination="eQu-Rb-hMv" id="yd4-WU-MRs"/>
                 <outlet property="tfSearch" destination="ldN-Bb-FBd" id="aH2-sC-WaJ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -83,17 +83,14 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p9A-yu-3p5">
-                    <rect key="frame" x="0.0" y="90" width="320" height="370"/>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="pMf-9M-ecA">
+                    <rect key="frame" x="150" y="220" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-347" y="-156"/>
+            <point key="canvasLocation" x="-356" y="-321"/>
         </view>
     </objects>
     <resources>

@@ -90,4 +90,22 @@
     return attrResult;
 }
 
++ (ContactObject *)getContactWithId: (int)idContact {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_id_contact = %d", idContact];
+    NSArray *filter = [[LinphoneAppDelegate sharedInstance].listContacts filteredArrayUsingPredicate: predicate];
+    if (filter.count > 0) {
+        return [filter objectAtIndex: 0];
+    }
+    return nil;
+}
+
++ (PBXContact *)getPBXContactWithId: (int)idContact {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_id_contact = %d", idContact];
+    NSArray *filter = [[LinphoneAppDelegate sharedInstance].listContacts filteredArrayUsingPredicate: predicate];
+    if (filter.count > 0) {
+        return [filter objectAtIndex: 0];
+    }
+    return nil;
+}
+
 @end

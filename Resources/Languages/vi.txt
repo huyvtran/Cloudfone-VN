@@ -197,3 +197,4 @@
 "Can not make call now. Perhaps you have not signed your account yet!" = "Không thể gọi lúc này. Có lẽ bạn chưa đăng nhập tài khoản!"
 "Can not make call with yourself!" = "Không thể gọi cho chính bạn!"
 "You have not signed your account yet" = "Bạn chưa đăng nhập tài khoản"
+"Send" = "Gửi"

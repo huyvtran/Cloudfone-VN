@@ -49,8 +49,6 @@
 
 /*--Hàm crop một ảnh với kích thước--*/
 + (UIImage*)cropImageWithSize:(CGSize)targetSize fromImage: (UIImage *)sourceImage;
-+ (ContactObject *)getContactWithId: (int)idContact;
-
 + (void)createLocalNotificationWithAlertBody: (NSString *)alertBodyStr andInfoDict: (NSDictionary *)infoDict ofUser: (NSString *)user;
 
 // Hàm crop image từ 1 image

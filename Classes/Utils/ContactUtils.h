@@ -12,5 +12,7 @@
 + (PhoneObject *)getContactPhoneObjectWithNumber: (NSString *)number;
 + (NSString *)getContactNameWithNumber: (NSString *)number;
 + (NSAttributedString *)getSearchValueFromResultForNewSearchMethod: (NSArray *)searchs;
++ (ContactObject *)getContactWithId: (int)idContact;
++ (PBXContact *)getPBXContactWithId: (int)idContact;
 
 @end

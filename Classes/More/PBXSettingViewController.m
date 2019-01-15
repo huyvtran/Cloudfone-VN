@@ -1236,6 +1236,9 @@ static UICompositeViewDescription *compositeDescription = nil;
         
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Enable proxy config with accountId = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath:appDelegate.logFilePath];
     }else{
+        [swAccount setUIForDisableStateWithActionTarget: NO];
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"You have not signed your account yet"] duration:2.0 position:CSToastPositionCenter];
+        
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Can not enable with defaultConfig = NULL", __FUNCTION__] toFilePath:appDelegate.logFilePath];
     }
 }

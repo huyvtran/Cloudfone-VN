@@ -18,8 +18,8 @@
 @end
 
 @implementation iPadContactDetailViewController
-@synthesize viewHeader, bgHeader, lbHeader, icEdit, imgAvatar, lbName, icCallPBX, tbDetail, viewNoContacts, imgNoContacts, lbNoContacts;
-@synthesize detailsContact;
+@synthesize viewHeader, bgHeader, lbHeader, icEdit, imgAvatar, lbName, icCallPBX, tbDetail, tbPBXDetail, viewNoContacts, imgNoContacts, lbNoContacts;
+@synthesize detailsContact, detailsPBXContact;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -52,6 +52,16 @@
 }
 
 - (IBAction)icCallPBXClicked:(UIButton *)sender {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Call from %@ to %@", __FUNCTION__, USERNAME, sender.currentTitle] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
+    if ([AppUtils isNullOrEmpty: detailsPBXContact._number]) {
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"] duration:2.0 position:CSToastPositionCenter];
+    }else{
+        NSString *number = [AppUtils removeAllSpecialInString: detailsPBXContact._number];
+        if (![AppUtils isNullOrEmpty: number]) {
+            [SipUtils makeCallWithPhoneNumber: number];
+        }
+    }
 }
 
 - (void)registerNotifications {
@@ -69,7 +79,7 @@
 - (void)displayContactInformation: (NSNotification *)notif {
     id object = [notif object];
     if ([object isKindOfClass:[ContactObject class]]) {
-        detailsContact = [AppUtils getContactWithId: [(ContactObject *)object _id_contact]];
+        detailsContact = [ContactUtils getContactWithId: [(ContactObject *)object _id_contact]];
         if (![AppUtils isNullOrEmpty:detailsContact._sipPhone]) {
             isPBXContact = YES;
         }else{
@@ -77,7 +87,32 @@
         }
         
         [self displayContactInformation];
+        icCallPBX.enabled = NO;
+        tbDetail.hidden = NO;
+        tbPBXDetail.hidden = YES;
         [tbDetail reloadData];
+        
+    }else if ([object isKindOfClass:[PBXContact class]]) {
+        detailsPBXContact = (PBXContact *)object;
+        [self displayPBXContactInformation];
+        
+        icCallPBX.enabled = YES;
+        tbDetail.hidden = YES;
+        tbPBXDetail.hidden = NO;
+        [tbPBXDetail reloadData];
+    }
+}
+
+- (void)displayPBXContactInformation
+{
+    viewNoContacts.hidden = YES;
+    icEdit.hidden = YES;
+    
+    lbName.text = detailsPBXContact._name;
+    if ([AppUtils isNullOrEmpty: detailsPBXContact._avatar]) {
+        imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+    }else{
+        imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: detailsPBXContact._avatar]];
     }
 }
 
@@ -147,9 +182,21 @@
         make.left.right.bottom.equalTo(self.view);
     }];
     
+    //  table pbx detail
+    tbPBXDetail.delegate = self;
+    tbPBXDetail.dataSource = self;
+    tbPBXDetail.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tbPBXDetail.backgroundColor = UIColor.clearColor;
+    [tbPBXDetail mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.bottom.equalTo(tbDetail);
+    }];
+    
     //  button call
     [icCallPBX setBackgroundImage:[UIImage imageNamed:@"call_disable.png"]
                              forState:UIControlStateDisabled];
+    [icCallPBX setBackgroundImage:[UIImage imageNamed:@"call_default.png"]
+                         forState:UIControlStateNormal];
+    
     //  icCallPBX.hidden = YES;
     icCallPBX.enabled = NO;
     icCallPBX.layer.cornerRadius = 70.0/2;
@@ -206,20 +253,71 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    int numRow = [self getRowForSection];
-    return numRow;
-    
-    if (detailsContact._sipPhone != nil && ![detailsContact._sipPhone isEqualToString:@""]) {
-        return detailsContact._listPhone.count + 1;
+    if (tableView == tbDetail) {
+        int numRow = [self getRowForSection];
+        return numRow;
+        
+        if (detailsContact._sipPhone != nil && ![detailsContact._sipPhone isEqualToString:@""]) {
+            return detailsContact._listPhone.count + 1;
+        }else{
+            return detailsContact._listPhone.count;
+        }
     }else{
-        return detailsContact._listPhone.count;
+        return 1;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row < detailsContact._listPhone.count)
+    if (tableView == tbDetail)
     {
+        if (indexPath.row < detailsContact._listPhone.count)
+        {
+            static NSString *CellIdentifier = @"UIContactPhoneCell";
+            UIContactPhoneCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
+            if (cell == nil) {
+                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UIContactPhoneCell" owner:self options:nil];
+                cell = topLevelObjects[0];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            ContactDetailObj *anItem = [detailsContact._listPhone objectAtIndex: indexPath.row];
+            cell.lbTitle.text = anItem._titleStr;
+            cell.lbPhone.text = anItem._valueStr;
+            
+            [cell.icCall setTitle:anItem._valueStr forState:UIControlStateNormal];
+            [cell.icCall addTarget:self
+                            action:@selector(onIconCallClicked:)
+                  forControlEvents:UIControlEventTouchUpInside];
+            
+            return cell;
+        }else{
+            static NSString *CellIdentifier = @"UIKContactCell";
+            UIKContactCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
+            if (cell == nil) {
+                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UIKContactCell" owner:self options:nil];
+                cell = topLevelObjects[0];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            if (indexPath.row == detailsContact._listPhone.count) {
+                if (detailsContact._company != nil && ![detailsContact._company isEqualToString:@""]) {
+                    cell.lbTitle.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Company"];
+                    cell.lbValue.text = detailsContact._company;
+                }else if (detailsContact._email != nil && ![detailsContact._email isEqualToString:@""]){
+                    cell.lbTitle.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Email"];
+                    cell.lbValue.text = detailsContact._email;
+                }
+            }else if (indexPath.row == detailsContact._listPhone.count + 1){
+                if (detailsContact._email != nil && ![detailsContact._email isEqualToString:@""]){
+                    cell.lbTitle.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Email"];
+                    cell.lbValue.text = detailsContact._email;
+                }
+            }
+            return cell;
+        }
+        
+    }else{
         static NSString *CellIdentifier = @"UIContactPhoneCell";
         UIContactPhoneCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
         if (cell == nil) {
@@ -228,39 +326,13 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        ContactDetailObj *anItem = [detailsContact._listPhone objectAtIndex: indexPath.row];
-        cell.lbTitle.text = anItem._titleStr;
-        cell.lbPhone.text = anItem._valueStr;
-        
-        [cell.icCall setTitle:anItem._valueStr forState:UIControlStateNormal];
+        cell.lbTitle.text = @"PBX ID";
+        cell.lbPhone.text = detailsPBXContact._number;
+        [cell.icCall setTitle:detailsPBXContact._number forState:UIControlStateNormal];
         [cell.icCall addTarget:self
                         action:@selector(onIconCallClicked:)
               forControlEvents:UIControlEventTouchUpInside];
         
-        return cell;
-    }else{
-        static NSString *CellIdentifier = @"UIKContactCell";
-        UIKContactCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];
-        if (cell == nil) {
-            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UIKContactCell" owner:self options:nil];
-            cell = topLevelObjects[0];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        if (indexPath.row == detailsContact._listPhone.count) {
-            if (detailsContact._company != nil && ![detailsContact._company isEqualToString:@""]) {
-                cell.lbTitle.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Company"];
-                cell.lbValue.text = detailsContact._company;
-            }else if (detailsContact._email != nil && ![detailsContact._email isEqualToString:@""]){
-                cell.lbTitle.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Email"];
-                cell.lbValue.text = detailsContact._email;
-            }
-        }else if (indexPath.row == detailsContact._listPhone.count + 1){
-            if (detailsContact._email != nil && ![detailsContact._email isEqualToString:@""]){
-                cell.lbTitle.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Email"];
-                cell.lbValue.text = detailsContact._email;
-            }
-        }
         return cell;
     }
 }
