@@ -6,8 +6,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BEMCheckBox.h"
 
-@interface iPadDialerViewController : UIViewController
+@interface iPadDialerViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, BEMCheckBoxDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewHeader;
 @property (weak, nonatomic) IBOutlet UIImageView *imgHeader;

@@ -6,10 +6,12 @@
 //
 
 #import "iPadDialerViewController.h"
+#import "iPadHistoryCallCell.h"
+#import "KHistoryCallObject.h"
 
 @interface iPadDialerViewController (){
-    eTypeHistory typeHistory;
     NSMutableArray *listCalls;
+    BOOL isDeleted;
 }
 
 @end
@@ -28,8 +30,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [WriteLogsUtils writeForGoToScreen:@"iPadDialerViewController"];
-    
-    typeHistory = eAllCalls;
     
     [self showContentWithCurrentLanguage];
     [self getHistoryCallForUser];
@@ -58,15 +58,49 @@
 */
 
 - (IBAction)btnAllPress:(UIButton *)sender {
+    if ([LinphoneAppDelegate sharedInstance].historyType == eAllCalls) {
+        return;
+    }
+    
+    [LinphoneAppDelegate sharedInstance].historyType = eAllCalls;
+    [self updateStateIconWithView];
+    [self getHistoryCallForUser];
 }
 
 - (IBAction)btnMissedPress:(UIButton *)sender {
+    if ([LinphoneAppDelegate sharedInstance].historyType == eMissedCalls) {
+        return;
+    }
+    
+    [LinphoneAppDelegate sharedInstance].historyType = eMissedCalls;
+    [self updateStateIconWithView];
+    [self getHistoryCallForUser];
 }
 
 - (void)showContentWithCurrentLanguage {
     lbNoCalls.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No call in your history"];
     [btnAll setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"All"] forState:UIControlStateNormal];
     [btnMissed setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Missed"] forState:UIControlStateNormal];
+}
+
+//  Cập nhật trạng thái của các icon trên header
+- (void)updateStateIconWithView
+{
+    if ([LinphoneAppDelegate sharedInstance].historyType == eAllCalls){
+        [self setSelected: YES forButton: btnAll];
+        [self setSelected: NO forButton: btnMissed];
+    }else{
+        [self setSelected: NO forButton: btnAll];
+        [self setSelected: YES forButton: btnMissed];
+    }
+}
+
+- (void)setSelected: (BOOL)selected forButton: (UIButton *)button {
+    if (selected) {
+        button.backgroundColor = [UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0];
+    }else{
+        button.backgroundColor = UIColor.clearColor;
+    }
 }
 
 - (void)setupUIForView {
@@ -102,7 +136,10 @@
     }];
     
     //  table calls
+    tbCalls.separatorStyle = UITableViewCellSelectionStyleNone;
     tbCalls.backgroundColor = UIColor.clearColor;
+    tbCalls.delegate = self;
+    tbCalls.dataSource = self;
     [tbCalls mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewHeader.mas_bottom);
         make.left.right.equalTo(self.view);
@@ -142,7 +179,9 @@
         }
         [listCalls removeAllObjects];
         
-        NSArray *tmpArr = [NSDatabase getHistoryCallListOfUser:USERNAME isMissed: false];
+        BOOL isMissedCall = ([LinphoneAppDelegate sharedInstance].historyType == eMissedCalls) ? YES : NO;
+        
+        NSArray *tmpArr = [NSDatabase getHistoryCallListOfUser:USERNAME isMissed: isMissedCall];
         [listCalls addObjectsFromArray: tmpArr];
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -160,6 +199,145 @@
     tbCalls.hidden = show;
     lbNoCalls.hidden = !show;
     imgNoCalls.hidden = !show;
+}
+
+#pragma mark - UITableview
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return listCalls.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return [[[listCalls objectAtIndex:section] valueForKey:@"rows"] count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *identifier = @"iPadHistoryCallCell";
+    iPadHistoryCallCell *cell = (iPadHistoryCallCell *)[tableView dequeueReusableCellWithIdentifier: identifier];
+    if (cell == nil) {
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"iPadHistoryCallCell" owner:self options:nil];
+        cell = topLevelObjects[0];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    KHistoryCallObject *aCall = [[[listCalls objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex: indexPath.row];
+    
+    // Set name for cell
+    cell.lbNumber.text = aCall._phoneNumber;
+    //  cell._phoneNumber = aCall._phoneNumber;
+    
+    if ([aCall._phoneNumber isEqualToString: hotline]) {
+        cell.lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Hotline"];
+        cell.imgAvatar.image = [UIImage imageNamed:@"hotline_avatar.png"];
+        
+//        [cell updateFrameForHotline: YES];
+//        cell._lbPhone.hidden = YES;
+//        cell.lbMissed.hidden = YES;
+    }else{
+        //  [cell updateFrameForHotline: NO];
+        cell.lbNumber.hidden = NO;
+        
+        if ([AppUtils isNullOrEmpty: aCall._phoneName]) {
+            cell.lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+        }else{
+            cell.lbName.text = aCall._phoneName;
+        }
+        
+        if ([AppUtils isNullOrEmpty: aCall._phoneAvatar])
+        {
+            if (aCall._phoneNumber.length < 10) {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+                    NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, aCall._phoneNumber];
+                    NSString *localFile = [NSString stringWithFormat:@"/avatars/%@", avatarName];
+                    NSData *avatarData = [AppUtils getFileDataFromDirectoryWithFileName:localFile];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^(void){
+                        if (avatarData != nil) {
+                            cell.imgAvatar.image = [UIImage imageWithData: avatarData];
+                        }else{
+                            cell.imgAvatar.image = [[UIImage imageNamed:@"ic_user_blue"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+                        }
+                    });
+                });
+            }else{
+                cell.imgAvatar.image = [[UIImage imageNamed:@"ic_user_blue"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+            }
+        }else{
+            NSData *imgData = [[NSData alloc] initWithData:[NSData dataFromBase64String: aCall._phoneAvatar]];
+            cell.imgAvatar.image = [UIImage imageWithData: imgData];
+        }
+        
+        //  Show missed notification
+//        if (aCall.newMissedCall > 0) {
+//            cell.lbMissed.hidden = NO;
+//        }else{
+//            cell.lbMissed.hidden = YES;
+//        }
+    }
+    
+    NSString *strTime = [AppUtils getTimeStringFromTimeInterval: aCall.timeInt];
+    cell.lbTime.text = strTime;
+    cell.lbTime.text = aCall._callTime;
+    
+    //  cell.lbDuration.text = [AppUtils convertDurtationToString: aCall.duration];
+    
+//    if (isDeleted) {
+//        cell._cbDelete.hidden = NO;
+//        cell._btnCall.hidden = YES;
+//    }else{
+//        cell._cbDelete.hidden = YES;
+//        cell._btnCall.hidden = NO;
+//    }
+    
+    if ([aCall._callDirection isEqualToString: incomming_call]) {
+        if ([aCall._status isEqualToString: missed_call]) {
+            cell.imgDirection.image = [UIImage imageNamed:@"ic_call_missed.png"];
+        }else{
+            cell.imgDirection.image = [UIImage imageNamed:@"ic_call_incoming.png"];
+        }
+    }else{
+        cell.imgDirection.image = [UIImage imageNamed:@"ic_call_outgoing.png"];
+    }
+    
+//    cell._cbDelete._indexPath = indexPath;
+//    cell._cbDelete._idHisCall = aCall._callId;
+//    cell._cbDelete.delegate = self;
+//
+//    [cell._btnCall setTitle:aCall._phoneNumber forState:UIControlStateNormal];
+//    [cell._btnCall setTitleColor:[UIColor clearColor] forState:UIControlStateNormal];
+//    [cell._btnCall addTarget:self
+//                      action:@selector(btnCallOnCellPressed:)
+//            forControlEvents:UIControlEventTouchUpInside];
+    
+    //  get missed call
+//    if (aCall.newMissedCall > 0) {
+//        NSString *strMissed = [NSString stringWithFormat:@"%d", aCall.newMissedCall];
+//        if (aCall.newMissedCall > 5) {
+//            strMissed = @"+5";
+//        }
+//        cell.lbMissed.hidden = NO;
+//        cell.lbMissed.text = strMissed;
+//    }else{
+//        cell.lbMissed.hidden = YES;
+//    }
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 80.0;
+}
+
+
+- (void)btnCallOnCellPressed: (UIButton *)sender {
+    if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
+        NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
+        if (![phoneNumber isEqualToString:@""]) {
+            [SipUtils makeCallWithPhoneNumber: phoneNumber];
+        }
+        return;
+    }
+    [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"] duration:2.0 position:CSToastPositionCenter];
 }
 
 @end

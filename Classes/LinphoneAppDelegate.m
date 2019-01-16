@@ -50,6 +50,7 @@
 #import "iPadContactsViewController.h"
 #import "iPadContactDetailViewController.h"
 #import "iPadMoreViewController.h"
+#import "iPadPopupCall.h"
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -84,7 +85,7 @@
 @synthesize contactLoaded;
 @synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, supportLoginWithPhoneNumber, logFilePath, dbQueue, splashScreen;
 @synthesize supportVoice;
-@synthesize homeSplitVC, contactType;
+@synthesize homeSplitVC, contactType, historyType;
 
 #pragma mark - Lifecycle Functions
 
@@ -2301,6 +2302,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     homeSplitVC.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
     homeSplitVC.viewControllers = [NSArray arrayWithObjects:tabBars, iPadKeypadVC, nil];
     self.window.rootViewController = homeSplitVC;
+    
+    [self testAddCallViewForIpad];
+    
 }
 
 #pragma mark - UITabbar delegate
@@ -2337,6 +2341,21 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 -(void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
     NSLog(@"%@", item);
 }
+
+- (void)testAddCallViewForIpad {
+    NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"iPadPopupCall" owner:nil options:nil];
+    iPadPopupCall *popupCall;
+    for(id currentObject in toplevelObject){
+        if ([currentObject isKindOfClass:[iPadPopupCall class]]) {
+            popupCall = (iPadPopupCall *) currentObject;
+            break;
+        }
+    }
+    popupCall.frame = CGRectMake((SCREEN_WIDTH-400)/2, (SCREEN_HEIGHT-750)/2, 400, 750);
+    [popupCall setupUIForView];
+    [popupCall showInView:self.window animated:YES];
+}
+
 
 
 

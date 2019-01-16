@@ -146,6 +146,7 @@ typedef enum{
 //  [Khai le - 11/01/2019]
 @property (nonatomic, strong) HomeSplitViewController *homeSplitVC;
 @property (nonatomic, assign) eContact contactType;
+@property (nonatomic, assign) eTypeHistory historyType;
 
 @end
 

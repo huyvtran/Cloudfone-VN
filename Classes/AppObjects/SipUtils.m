@@ -253,7 +253,11 @@
             controller.phoneNumber = phoneNumber;
         }
         
-        [[PhoneMainView instance] changeCurrentView:[CallView compositeViewDescription] push:TRUE];
+        if (IS_IPHONE || IS_IPOD) {
+            [[PhoneMainView instance] changeCurrentView:[CallView compositeViewDescription] push:TRUE];
+        }else{
+            
+        }
         return YES;
     }
     return NO;
