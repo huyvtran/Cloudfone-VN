@@ -386,6 +386,8 @@
 		8404CD5321EDD13000C28E48 /* iPadContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8404CD4F21EDD12F00C28E48 /* iPadContactsViewController.m */; };
 		8404CD5421EDD13000C28E48 /* iPadContactsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8404CD5021EDD13000C28E48 /* iPadContactsViewController.xib */; };
 		8404CD5621EDE20B00C28E48 /* close_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 8404CD5521EDE20B00C28E48 /* close_white.png */; };
+		8404CD5A21EDE59200C28E48 /* iPadNewContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8404CD5821EDE59200C28E48 /* iPadNewContactViewController.m */; };
+		8404CD5B21EDE59200C28E48 /* iPadNewContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8404CD5921EDE59200C28E48 /* iPadNewContactViewController.xib */; };
 		840B574020061FD300DCBA7E /* QRToggleTorchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573720061FD100DCBA7E /* QRToggleTorchButton.m */; };
 		840B574120061FD300DCBA7E /* QRCodeReaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573820061FD100DCBA7E /* QRCodeReaderView.m */; };
 		840B574220061FD300DCBA7E /* QRCodeReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 840B573920061FD100DCBA7E /* QRCodeReader.m */; };
@@ -1368,6 +1370,9 @@
 		8404CD4F21EDD12F00C28E48 /* iPadContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iPadContactsViewController.m; path = iPad/Contacts/iPadContactsViewController.m; sourceTree = "<group>"; };
 		8404CD5021EDD13000C28E48 /* iPadContactsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = iPadContactsViewController.xib; path = iPad/Contacts/iPadContactsViewController.xib; sourceTree = "<group>"; };
 		8404CD5521EDE20B00C28E48 /* close_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_white.png; sourceTree = "<group>"; };
+		8404CD5721EDE59200C28E48 /* iPadNewContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iPadNewContactViewController.h; path = iPad/Contacts/iPadNewContactViewController.h; sourceTree = "<group>"; };
+		8404CD5821EDE59200C28E48 /* iPadNewContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = iPadNewContactViewController.m; path = iPad/Contacts/iPadNewContactViewController.m; sourceTree = "<group>"; };
+		8404CD5921EDE59200C28E48 /* iPadNewContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iPadNewContactViewController.xib; path = iPad/Contacts/iPadNewContactViewController.xib; sourceTree = "<group>"; };
 		840B573520061FD000DCBA7E /* QRCodeReaderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRCodeReaderDelegate.h; path = OutSources/QRCodeReader/QRCodeReaderDelegate.h; sourceTree = "<group>"; };
 		840B573620061FD000DCBA7E /* QRCodeReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRCodeReaderViewController.h; path = OutSources/QRCodeReader/QRCodeReaderViewController.h; sourceTree = "<group>"; };
 		840B573720061FD100DCBA7E /* QRToggleTorchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QRToggleTorchButton.m; path = OutSources/QRCodeReader/QRToggleTorchButton.m; sourceTree = "<group>"; };
@@ -3098,6 +3103,9 @@
 				8404CD4E21EDD12F00C28E48 /* iPadContactsViewController.h */,
 				8404CD4F21EDD12F00C28E48 /* iPadContactsViewController.m */,
 				8404CD5021EDD13000C28E48 /* iPadContactsViewController.xib */,
+				8404CD5721EDE59200C28E48 /* iPadNewContactViewController.h */,
+				8404CD5821EDE59200C28E48 /* iPadNewContactViewController.m */,
+				8404CD5921EDE59200C28E48 /* iPadNewContactViewController.xib */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -4395,6 +4403,7 @@
 				1592763821EC40D7009D22FD /* iPadSendLogsViewController.xib in Resources */,
 				15F2E5F5216B56F60076CB1F /* ic_setting.png in Resources */,
 				153D000F2164A67E007B69B3 /* numpad_six_default.png in Resources */,
+				8404CD5B21EDE59200C28E48 /* iPadNewContactViewController.xib in Resources */,
 				1578D07221AD3DDF00E8BA5F /* SendLogFileCell.xib in Resources */,
 				153D004C2164D9D3007B69B3 /* numpad_two_hover.png in Resources */,
 				841B359E2191F26D0019BD45 /* button-endcall.png in Resources */,
@@ -4918,6 +4927,7 @@
 				D3807FC515C28940005BE9BC /* DCRoundSwitchToggleLayer.m in Sources */,
 				84C1E20B1FAEB3EB00EED0B9 /* HMLocalization.m in Sources */,
 				633E41821D74259000320475 /* AssistantLinkView.m in Sources */,
+				8404CD5A21EDE59200C28E48 /* iPadNewContactViewController.m in Sources */,
 				846B716920E240410019AD41 /* SipUtils.m in Sources */,
 				D3807FE815C2894A005BE9BC /* IASKAppSettingsViewController.m in Sources */,
 				15EB547F21E0619200636C63 /* ColorCollectionCell.m in Sources */,
