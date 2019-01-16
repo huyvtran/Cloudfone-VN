@@ -6,6 +6,7 @@
 //
 
 #import "iPadContactsViewController.h"
+#import "iPadNewContactViewController.h"
 #import "PBXContactTableCell.h"
 #import "UIImage+GKContact.h"
 #import "NSData+Base64.h"
@@ -184,6 +185,11 @@
 }
 
 - (IBAction)icAddNewClicked:(UIButton *)sender {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
+    iPadNewContactViewController *newContactVC = [[iPadNewContactViewController alloc] initWithNibName:@"iPadNewContactViewController" bundle:nil];
+    UINavigationController *navigationVC = [AppUtils createNavigationWithController: newContactVC];
+    [AppUtils showDetailViewWithController: navigationVC];
 }
 
 - (void)showContentWithCurrentLanguage {

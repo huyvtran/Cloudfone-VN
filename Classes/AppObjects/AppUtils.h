@@ -117,5 +117,6 @@
 + (NSString *)convertDurtationToString: (long)duration;
 
 + (UINavigationController *)createNavigationWithController: (UIViewController *)viewController;
++ (void)showDetailViewWithController: (UIViewController *)detailVC;
 
 @end

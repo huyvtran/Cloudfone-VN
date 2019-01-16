@@ -71,7 +71,7 @@ typedef enum ipadMoreType{
     
     iPadAccountSettingsViewController *settingsAccVC = [[iPadAccountSettingsViewController alloc] initWithNibName:@"iPadAccountSettingsViewController" bundle:nil];
     UINavigationController *navigationVC = [AppUtils createNavigationWithController: settingsAccVC];
-    [self showDetailViewWithController: navigationVC];
+    [AppUtils showDetailViewWithController: navigationVC];
 }
 
 - (void)setupUIForView {
@@ -155,14 +155,14 @@ typedef enum ipadMoreType{
         
         iPadAccountSettingsViewController *settingsAccVC = [[iPadAccountSettingsViewController alloc] initWithNibName:@"iPadAccountSettingsViewController" bundle:nil];
         UINavigationController *navigationVC = [AppUtils createNavigationWithController: settingsAccVC];
-        [self showDetailViewWithController: navigationVC];
+        [AppUtils showDetailViewWithController: navigationVC];
         
     }else if (indexPath.row == iPadMoreSettings) {
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to settings view", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
         iPadSettingsViewController *settingsVC = [[iPadSettingsViewController alloc] initWithNibName:@"iPadSettingsViewController" bundle:nil];
         UINavigationController *navigationVC = [AppUtils createNavigationWithController: settingsVC];
-        [self showDetailViewWithController: navigationVC];
+        [AppUtils showDetailViewWithController: navigationVC];
         
     }else if (indexPath.row == iPadMoreFeedback) {
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to feedback on App Store", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
@@ -175,28 +175,28 @@ typedef enum ipadMoreType{
         
         iPadPolicyViewController *policyVC = [[iPadPolicyViewController alloc] initWithNibName:@"iPadPolicyViewController" bundle:nil];
         UINavigationController *navigationVC = [AppUtils createNavigationWithController: policyVC];
-        [self showDetailViewWithController: navigationVC];
+        [AppUtils showDetailViewWithController: navigationVC];
         
     }else if (indexPath.row == iPadMoreIntrodution) {
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to introduction view", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
         iPadIntroduceViewController *introduceVC = [[iPadIntroduceViewController alloc] initWithNibName:@"iPadIntroduceViewController" bundle:nil];
         UINavigationController *navigationVC = [AppUtils createNavigationWithController: introduceVC];
-        [self showDetailViewWithController: navigationVC];
+        [AppUtils showDetailViewWithController: navigationVC];
         
     }else if (indexPath.row == iPadMoreSendLogs) {
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to send logs view", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
         iPadSendLogsViewController *sendLogsVC = [[iPadSendLogsViewController alloc] initWithNibName:@"iPadSendLogsViewController" bundle:nil];
         UINavigationController *navigationVC = [AppUtils createNavigationWithController: sendLogsVC];
-        [self showDetailViewWithController: navigationVC];
+        [AppUtils showDetailViewWithController: navigationVC];
         
     }else if (indexPath.row == iPadMoreAbout) {
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Go to about view", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
         iPadAboutViewController *aboutVC = [[iPadAboutViewController alloc] initWithNibName:@"iPadAboutViewController" bundle:nil];
         UINavigationController *navigationVC = [AppUtils createNavigationWithController: aboutVC];
-        [self showDetailViewWithController: navigationVC];
+        [AppUtils showDetailViewWithController: navigationVC];
     }
 }
 
@@ -204,11 +204,6 @@ typedef enum ipadMoreType{
     return 65.0;
 }
 
-- (void)showDetailViewWithController: (UIViewController *)detailVC
-{
-    UITabBarController *tabbarVC = [[LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers objectAtIndex:0];
-    NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, detailVC, nil];
-    [LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers = viewControllers;
-}
+
 
 @end

@@ -978,4 +978,11 @@
     return navigationVC;
 }
 
++ (void)showDetailViewWithController: (UIViewController *)detailVC
+{
+    UITabBarController *tabbarVC = [[LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers objectAtIndex:0];
+    NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, detailVC, nil];
+    [LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers = viewControllers;
+}
+
 @end
