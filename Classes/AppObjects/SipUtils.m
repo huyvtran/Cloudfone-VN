@@ -256,7 +256,8 @@
         if (IS_IPHONE || IS_IPOD) {
             [[PhoneMainView instance] changeCurrentView:[CallView compositeViewDescription] push:TRUE];
         }else{
-            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"showPopupCall"
+                                                                object:nil];
         }
         return YES;
     }

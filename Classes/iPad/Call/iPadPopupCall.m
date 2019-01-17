@@ -17,9 +17,9 @@
     self.clipsToBounds = YES;
     self.layer.cornerRadius = 10.0;
     
-    float padding = 30.0;
+    float padding = 20.0;
     wButton = 80.0;
-    hLabel = 25.0;
+    hLabel = 30.0;
     float hButtonsView = wButton + hLabel + 20 + wButton + hLabel;
     
     //  scrollview buttons
@@ -45,7 +45,7 @@
     
     lbKeypad.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Keypad"];
     lbKeypad.backgroundColor = UIColor.clearColor;
-    lbKeypad.font = [UIFont fontWithName:HelveticaNeue size:16.0];
+    lbKeypad.font = [UIFont fontWithName:HelveticaNeue size:15.0];
     [lbKeypad mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(btnKeypad.mas_bottom);
         make.centerX.equalTo(btnKeypad.mas_centerX);
@@ -201,7 +201,7 @@
     if (selected) {
         sender.backgroundColor = UIColor.whiteColor;
     }else{
-        sender.backgroundColor = UIColor.grayColor;
+        sender.backgroundColor = UIColor.lightGrayColor;
     }
 }
 

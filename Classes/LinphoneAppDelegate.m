@@ -457,6 +457,9 @@ void onUncaughtException(NSException* exception)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadContactListAfterAddSuccess)
                                                  name:@"reloadContactAfterAdd" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showPopupCallForIpad)
+                                                 name:@"showPopupCall" object:nil];
+    
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(registrationUpdateEvent:)
                                                name:kLinphoneRegistrationUpdate object:nil];
     
@@ -2304,9 +2307,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     homeSplitVC.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
     homeSplitVC.viewControllers = [NSArray arrayWithObjects:tabBars, iPadKeypadVC, nil];
     self.window.rootViewController = homeSplitVC;
-    
-    [self testAddCallViewForIpad];
-    
 }
 
 //  [Khai Le - 11/01/2019]
@@ -2351,7 +2351,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     NSLog(@"%@", item);
 }
 
-- (void)testAddCallViewForIpad {
+- (void)showPopupCallForIpad {
     NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"iPadPopupCall" owner:nil options:nil];
     iPadPopupCall *popupCall;
     for(id currentObject in toplevelObject){
