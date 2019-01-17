@@ -51,6 +51,7 @@
 #import "iPadContactDetailViewController.h"
 #import "iPadMoreViewController.h"
 #import "iPadPopupCall.h"
+#import "TestViewController.h"
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -562,8 +563,9 @@ void onUncaughtException(NSException* exception)
     }
     
     if (IS_IPHONE || IS_IPOD) {
-        [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
-        [PhoneMainView.instance updateStatusBar:nil];
+        [self testRootVC];
+        //  [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
+        //  [PhoneMainView.instance updateStatusBar:nil];
     }else{
         contactType = eContactPBX;
         [self settingForStartApplicationWithIpad];
@@ -2305,6 +2307,13 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     
     [self testAddCallViewForIpad];
     
+}
+
+//  [Khai Le - 11/01/2019]
+- (void)testRootVC {
+    
+    TestViewController *testVC = [[TestViewController alloc] initWithNibName:@"TestViewController" bundle:nil];
+    self.window.rootViewController = testVC;
 }
 
 #pragma mark - UITabbar delegate

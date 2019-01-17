@@ -8,11 +8,12 @@
 #import <UIKit/UIKit.h>
 
 @interface iPadPopupCall : UIView
+
 @property (weak, nonatomic) IBOutlet UILabel *lbName;
 @property (weak, nonatomic) IBOutlet UILabel *lbTime;
 @property (weak, nonatomic) IBOutlet UIButton *icShink;
-@property (weak, nonatomic) IBOutlet UILabel *lbNetwork;
-@property (weak, nonatomic) IBOutlet UILabel *lbNetworkState;
+@property (weak, nonatomic) IBOutlet UILabel *lbQuality;
+
 @property (weak, nonatomic) IBOutlet UIScrollView *scvButtons;
 @property (weak, nonatomic) IBOutlet UIButton *btnMute;
 @property (weak, nonatomic) IBOutlet UILabel *lbMute;
@@ -26,9 +27,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *lbHoldCall;
 @property (weak, nonatomic) IBOutlet UIButton *btnTransfer;
 @property (weak, nonatomic) IBOutlet UILabel *lbTransfer;
+@property (weak, nonatomic) IBOutlet UIButton *btnHangupCall;
 
 - (void)setupUIForView;
 - (void)showInView:(UIView *)aView animated:(BOOL)animated;
 - (void)fadeOut;
+
+@property (nonatomic, assign) float wButton;
+@property (nonatomic, assign) float hLabel;
 
 @end

@@ -34,20 +34,6 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Network Quality:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aQm-VQ-b5j">
-                    <rect key="frame" x="16" y="86" width="143" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Good" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vnb-y6-ZE8">
-                    <rect key="frame" x="167" y="88" width="137" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" red="0.094117647060000004" green="0.72549019609999998" blue="0.072059461810000003" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8wX-hw-YQu">
                     <rect key="frame" x="16" y="133" width="288" height="192"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -127,16 +113,24 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </scrollView>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xpR-uO-ADp">
-                    <rect key="frame" x="137" y="381" width="46" height="47"/>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xpR-uO-ADp">
+                    <rect key="frame" x="96" y="341" width="50" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Button"/>
+                    <state key="normal" image="ic_end_call_white.png"/>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Network Quality:: Good" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vnb-y6-ZE8">
+                    <rect key="frame" x="80" y="92" width="160" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.094117647060000004" green="0.72549019609999998" blue="0.072059461810000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.078431372549019607" green="0.078431372549019607" blue="0.078431372549019607" alpha="1" colorSpace="calibratedRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="btnAddCall" destination="eET-Yu-dpA" id="AMh-vB-9Pu"/>
+                <outlet property="btnHangupCall" destination="xpR-uO-ADp" id="HJZ-eL-CQP"/>
                 <outlet property="btnHoldCall" destination="OGX-H6-glL" id="V1W-jY-8wQ"/>
                 <outlet property="btnKeypad" destination="HYT-mQ-Z9D" id="wxZ-jj-RqW"/>
                 <outlet property="btnMute" destination="Fye-9y-cLi" id="vC7-b3-knK"/>
@@ -148,8 +142,7 @@
                 <outlet property="lbKeypad" destination="Zta-u2-hjF" id="i3N-KX-KOU"/>
                 <outlet property="lbMute" destination="rYr-sz-0Bk" id="1wj-o6-aau"/>
                 <outlet property="lbName" destination="3fL-jn-HVu" id="IQs-iq-Oxc"/>
-                <outlet property="lbNetwork" destination="aQm-VQ-b5j" id="pwo-B0-SnH"/>
-                <outlet property="lbNetworkState" destination="Vnb-y6-ZE8" id="uNX-6p-Ftn"/>
+                <outlet property="lbQuality" destination="Vnb-y6-ZE8" id="csz-1L-aXn"/>
                 <outlet property="lbSpeaker" destination="1Pr-x6-Ytv" id="vOW-A0-55p"/>
                 <outlet property="lbTime" destination="vDb-RK-qXQ" id="wea-eY-vWe"/>
                 <outlet property="lbTransfer" destination="MyJ-cl-ENf" id="0ZB-z0-ljI"/>
@@ -160,6 +153,7 @@
     </objects>
     <resources>
         <image name="ic_add_call_white.png" width="128" height="128"/>
+        <image name="ic_end_call_white.png" width="128" height="128"/>
         <image name="ic_keyboad_white.png" width="405" height="405"/>
         <image name="ic_muted_white.png" width="128" height="128"/>
         <image name="ic_pause_call_white.png" width="120" height="120"/>
