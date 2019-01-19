@@ -15,11 +15,33 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="call-background.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="sqs-g9-1hf">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cnR-HN-8ig">
+                    <rect key="frame" x="40" y="176" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Khải Leo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3fL-jn-HVu">
                     <rect key="frame" x="89" y="20" width="143" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="19"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rcw-ab-9e1">
+                    <rect key="frame" x="139" y="229" width="42" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q4M-8I-Roh">
+                    <rect key="frame" x="139" y="229" width="42" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NW1-fI-Ids">
@@ -38,7 +60,7 @@
                     <rect key="frame" x="16" y="133" width="288" height="192"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fye-9y-cLi">
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fye-9y-cLi" customClass="UIMutedMicroButton">
                             <rect key="frame" x="14" y="15" width="80" height="80"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Button" image="ic_muted_white.png"/>
@@ -62,7 +84,7 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ho-PL-nfb">
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ho-PL-nfb" customClass="UISpeakerButton">
                             <rect key="frame" x="230" y="15" width="50" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Button" image="ic_speaker_white.png"/>
@@ -79,7 +101,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Button" image="ic_add_call_white.png"/>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OGX-H6-glL">
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OGX-H6-glL" customClass="UIPauseButton">
                             <rect key="frame" x="125" y="100" width="50" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Button" image="ic_pause_call_white.png"/>
@@ -137,21 +159,25 @@
                 <outlet property="btnSpeaker" destination="1ho-PL-nfb" id="skh-IW-3Eh"/>
                 <outlet property="btnTransfer" destination="Tlr-0q-Xp4" id="dVN-2M-npv"/>
                 <outlet property="icShink" destination="NW1-fI-Ids" id="bmF-7L-cyv"/>
+                <outlet property="imgAvatar" destination="cnR-HN-8ig" id="Vtp-mz-NZe"/>
+                <outlet property="imgBgCall" destination="sqs-g9-1hf" id="bfG-DM-Zbr"/>
                 <outlet property="lbAddCall" destination="a5K-3c-Ru1" id="adi-Tq-7jf"/>
                 <outlet property="lbHoldCall" destination="XGT-TK-SIS" id="ecY-M6-kh6"/>
                 <outlet property="lbKeypad" destination="Zta-u2-hjF" id="i3N-KX-KOU"/>
                 <outlet property="lbMute" destination="rYr-sz-0Bk" id="1wj-o6-aau"/>
-                <outlet property="lbName" destination="3fL-jn-HVu" id="IQs-iq-Oxc"/>
+                <outlet property="lbName" destination="rcw-ab-9e1" id="miU-yR-TWH"/>
+                <outlet property="lbPhone" destination="q4M-8I-Roh" id="qBz-Ko-KGx"/>
                 <outlet property="lbQuality" destination="Vnb-y6-ZE8" id="csz-1L-aXn"/>
                 <outlet property="lbSpeaker" destination="1Pr-x6-Ytv" id="vOW-A0-55p"/>
                 <outlet property="lbTime" destination="vDb-RK-qXQ" id="wea-eY-vWe"/>
                 <outlet property="lbTransfer" destination="MyJ-cl-ENf" id="0ZB-z0-ljI"/>
                 <outlet property="scvButtons" destination="8wX-hw-YQu" id="RHg-PJ-VOB"/>
             </connections>
-            <point key="canvasLocation" x="34" y="-42"/>
+            <point key="canvasLocation" x="-63" y="-44"/>
         </view>
     </objects>
     <resources>
+        <image name="call-background.jpg" width="750" height="1334"/>
         <image name="ic_add_call_white.png" width="128" height="128"/>
         <image name="ic_end_call_white.png" width="128" height="128"/>
         <image name="ic_keyboad_white.png" width="405" height="405"/>

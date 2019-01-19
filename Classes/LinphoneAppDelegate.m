@@ -566,9 +566,9 @@ void onUncaughtException(NSException* exception)
     }
     
     if (IS_IPHONE || IS_IPOD) {
-        [self testRootVC];
-        //  [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
-        //  [PhoneMainView.instance updateStatusBar:nil];
+        //  [self testRootVC];
+        [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
+        [PhoneMainView.instance updateStatusBar:nil];
     }else{
         contactType = eContactPBX;
         [self settingForStartApplicationWithIpad];
