@@ -10,11 +10,29 @@
 
 #define kMaxRadius 200
 #define kMaxDuration 10
-const NSInteger MINI_KEYPAD_TAG = 101;
+
 
 @implementation iPadPopupCall
-@synthesize imgBgCall, imgAvatar, lbName, lbPhone, lbTime, lbQuality, scvButtons, btnMute, lbMute, btnKeypad, lbKeypad, btnSpeaker, lbSpeaker, btnAddCall, lbAddCall, btnHoldCall, lbHoldCall, btnTransfer, lbTransfer, btnHangupCall, icShink;
-@synthesize wButton, hLabel, phoneNumber, callDirection, durationTimer, qualityTimer, needEnableSpeaker, viewKeypad;
+@synthesize imgBgCall, imgAvatar, bgTransparent, lbName, lbPhone, lbTime, lbQuality, scvButtons, btnMute, lbMute, btnKeypad, lbKeypad, btnSpeaker, lbSpeaker, btnAddCall, lbAddCall, btnHoldCall, lbHoldCall, btnTransfer, lbTransfer, btnHangupCall, icShink;
+@synthesize wButton, hLabel, phoneNumber, callDirection, durationTimer, qualityTimer, needEnableSpeaker, viewKeypad, viewTransferCall;
+
+- (void)customButton: (UIButton *)sender withImage: (UIImage *)normalImg selectedImage: (UIImage *)selectedImg disableImage: (UIImage *)disableImage cornerRadius: (float)radius
+{
+    [sender setImage:normalImg forState:UIControlStateNormal];
+    [sender setImage:selectedImg forState:UIControlStateSelected];
+    [sender setImage:disableImage forState:UIControlStateDisabled];
+    sender.layer.cornerRadius = radius;
+    sender.imageEdgeInsets = UIEdgeInsetsMake(22.0, 22.0, 22.0, 22.0);
+}
+
+- (void)setButton: (UIButton *)sender selected: (BOOL)selected {
+    sender.selected = selected;
+    if (selected) {
+        sender.backgroundColor = UIColor.whiteColor;
+    }else{
+        sender.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.3];
+    }
+}
 
 - (void)setupUIForView {
     self.backgroundColor = [UIColor colorWithRed:(20/255.0) green:(20/255.0)
@@ -23,11 +41,26 @@ const NSInteger MINI_KEYPAD_TAG = 101;
     self.layer.cornerRadius = 10.0;
     
     float padding = 20.0;
-    wButton = 80.0;
+    wButton = 75.0;
     hLabel = 30.0;
     float hButtonsView = wButton + hLabel + 20 + wButton + hLabel;
     
+    [imgBgCall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self);
+    }];
+    
+    [imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self);
+    }];
+    
+    bgTransparent.backgroundColor = [UIColor colorWithRed:(20/255.0) green:(20/255.0)
+                                                     blue:(20/255.0) alpha:0.7];
+    [bgTransparent mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self);
+    }];
+    
     //  scrollview buttons
+    float buttonRadius = (wButton-15.0)/2;
     float marginButton = (self.frame.size.width - 2*padding - 3*wButton)/4;
     scvButtons.scrollEnabled = NO;
     scvButtons.backgroundColor = UIColor.clearColor;
@@ -44,10 +77,8 @@ const NSInteger MINI_KEYPAD_TAG = 101;
         make.top.equalTo(scvButtons);
         make.width.height.mas_equalTo(wButton);
     }];
-    [btnKeypad setBackgroundImage:[UIImage imageNamed:@"ic_keypad_def.png"] forState:UIControlStateNormal];
-    [btnKeypad setBackgroundImage:[UIImage imageNamed:@"ic_keypad_act.png"] forState:UIControlStateSelected];
-    [btnKeypad setBackgroundImage:[UIImage imageNamed:@"ic_keypad_dis.png"] forState:UIControlStateDisabled];
-    btnKeypad.backgroundColor = UIColor.clearColor;
+    [self customButton: btnKeypad withImage: [UIImage imageNamed:@"ic_keyboard_white"] selectedImage: [UIImage imageNamed:@"ic_keyboard_black"] disableImage: [UIImage imageNamed:@"ic_keyboard_gray"] cornerRadius: buttonRadius];
+    [self setButton:btnKeypad selected:NO];
     btnKeypad.enabled = NO;
     [btnKeypad addTarget:self
                   action:@selector(onNumpadClick)
@@ -70,12 +101,10 @@ const NSInteger MINI_KEYPAD_TAG = 101;
         make.right.equalTo(btnKeypad.mas_left).offset(-marginButton);
         make.width.height.mas_equalTo(wButton);
     }];
-    [btnMute setBackgroundImage:[UIImage imageNamed:@"ic_mute_def.png"] forState:UIControlStateNormal];
-    [btnMute setBackgroundImage:[UIImage imageNamed:@"ic_mute_act.png"] forState:UIControlStateSelected];
-    [btnMute setBackgroundImage:[UIImage imageNamed:@"ic_mute_dis.png"] forState:UIControlStateDisabled];
-    btnMute.backgroundColor = UIColor.clearColor;
+    [self customButton:btnMute withImage:[UIImage imageNamed:@"ic_muted_white"] selectedImage:[UIImage imageNamed:@"ic_muted_black"] disableImage:[UIImage imageNamed:@"ic_muted_gray"] cornerRadius:buttonRadius];
+    [self setButton:btnMute selected:NO];
     btnMute.enabled = NO;
-    
+    btnMute.delegate = self;
     
     lbMute.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Mute"];
     lbMute.backgroundColor = UIColor.clearColor;
@@ -93,11 +122,10 @@ const NSInteger MINI_KEYPAD_TAG = 101;
         make.left.equalTo(btnKeypad.mas_right).offset(marginButton);
         make.width.height.mas_equalTo(wButton);
     }];
-    [btnSpeaker setBackgroundImage:[UIImage imageNamed:@"ic_speaker_def.png"] forState:UIControlStateNormal];
-    [btnSpeaker setBackgroundImage:[UIImage imageNamed:@"ic_speaker_act.png"] forState:UIControlStateSelected];
-    [btnSpeaker setBackgroundImage:[UIImage imageNamed:@"ic_speaker_dis.png"] forState:UIControlStateDisabled];
-    btnSpeaker.backgroundColor = UIColor.clearColor;
+    [self customButton:btnSpeaker withImage:[UIImage imageNamed:@"ic_speaker_white"] selectedImage:[UIImage imageNamed:@"ic_speaker_black"] disableImage:[UIImage imageNamed:@"ic_speaker_gray"] cornerRadius:buttonRadius];
+    [self setButton:btnSpeaker selected:NO];
     btnSpeaker.enabled = NO;
+    btnSpeaker.delegate = self;
     
     lbSpeaker.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Speaker"];
     lbSpeaker.backgroundColor = UIColor.clearColor;
@@ -115,11 +143,10 @@ const NSInteger MINI_KEYPAD_TAG = 101;
         make.centerX.equalTo(scvButtons.mas_centerX);
         make.width.height.mas_equalTo(wButton);
     }];
-    [btnHoldCall setBackgroundImage:[UIImage imageNamed:@"ic_pause_def.png"] forState:UIControlStateNormal];
-    [btnHoldCall setBackgroundImage:[UIImage imageNamed:@"ic_pause_act.png"] forState:UIControlStateSelected];
-    [btnHoldCall setBackgroundImage:[UIImage imageNamed:@"ic_pause_dis.png"] forState:UIControlStateDisabled];
-    btnHoldCall.backgroundColor = UIColor.clearColor;
+    [self customButton:btnHoldCall withImage:[UIImage imageNamed:@"ic_pause_call_white"] selectedImage:[UIImage imageNamed:@"ic_pause_call_black"] disableImage:[UIImage imageNamed:@"ic_pause_call_gray"] cornerRadius:buttonRadius];
+    [self setButton:btnHoldCall selected:NO];
     btnHoldCall.enabled = NO;
+    btnHoldCall.delegate = self;
     
     lbHoldCall.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Hold"];
     lbHoldCall.backgroundColor = UIColor.clearColor;
@@ -137,10 +164,8 @@ const NSInteger MINI_KEYPAD_TAG = 101;
         make.right.equalTo(btnHoldCall.mas_left).offset(-marginButton);
         make.width.height.mas_equalTo(wButton);
     }];
-    [btnAddCall setBackgroundImage:[UIImage imageNamed:@"ic_addcall_def.png"] forState:UIControlStateNormal];
-    [btnAddCall setBackgroundImage:[UIImage imageNamed:@"ic_addcall_act.png"] forState:UIControlStateSelected];
-    [btnAddCall setBackgroundImage:[UIImage imageNamed:@"ic_addcall_dis.png"] forState:UIControlStateDisabled];
-    btnAddCall.backgroundColor = UIColor.clearColor;
+    [self customButton:btnAddCall withImage:[UIImage imageNamed:@"ic_add_call_white"] selectedImage:[UIImage imageNamed:@"ic_add_call_black"] disableImage:[UIImage imageNamed:@"ic_add_call_gray"] cornerRadius:buttonRadius];
+    [self setButton:btnAddCall selected:NO];
     btnAddCall.enabled = NO;
     [btnAddCall addTarget:self
                   action:@selector(onAddCallClick:)
@@ -162,10 +187,8 @@ const NSInteger MINI_KEYPAD_TAG = 101;
         make.left.equalTo(btnHoldCall.mas_right).offset(marginButton);
         make.width.height.mas_equalTo(wButton);
     }];
-    [btnTransfer setBackgroundImage:[UIImage imageNamed:@"ic_transfer_def.png"] forState:UIControlStateNormal];
-    [btnTransfer setBackgroundImage:[UIImage imageNamed:@"ic_transfer_act.png"] forState:UIControlStateSelected];
-    [btnTransfer setBackgroundImage:[UIImage imageNamed:@"ic_transfer_dis.png"] forState:UIControlStateDisabled];
-    btnTransfer.backgroundColor = UIColor.clearColor;
+    [self customButton:btnTransfer withImage:[UIImage imageNamed:@"ic_transfer_call_white"] selectedImage:[UIImage imageNamed:@"ic_transfer_call_black"] disableImage:[UIImage imageNamed:@"ic_transfer_call_gray"] cornerRadius:buttonRadius];
+    [self setButton:btnTransfer selected:NO];
     btnTransfer.enabled = NO;
     
     lbTransfer.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Transfer"];
@@ -179,49 +202,54 @@ const NSInteger MINI_KEYPAD_TAG = 101;
     }];
     
     //  hangup call button
+    [self customButton:btnHangupCall withImage:nil selectedImage:nil disableImage:nil cornerRadius:buttonRadius];
+    btnHangupCall.imageEdgeInsets = UIEdgeInsetsMake(19.0, 19.0, 19.0, 19.0);
     float hBottom = (self.frame.size.height - hButtonsView)/2;
-    btnHangupCall.backgroundColor = [UIColor colorWithRed:(254/255.0) green:(59/255.0)
-                                                     blue:(47/255.0) alpha:1.0];
+    
+    [btnHangupCall setImage:[UIImage imageNamed:@"ic_end_call_white"] forState:UIControlStateNormal];
+    btnHangupCall.backgroundColor = [UIColor colorWithRed:(216/255.0) green:(0/255.0)
+                                                     blue:(39.0/255.0) alpha:1.0];
     [btnHangupCall mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.mas_centerX);
         make.bottom.equalTo(self).offset(-hBottom/2 + wButton/2);
         make.width.height.mas_equalTo(wButton);
     }];
     
+    
     //  quality
+    lbQuality.text = @"";
+    lbQuality.backgroundColor = UIColor.clearColor;
+    lbQuality.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightThin];
+    lbQuality.textColor = UIColor.whiteColor;
+    lbQuality.textAlignment = NSTextAlignmentCenter;
     [lbQuality mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(scvButtons.mas_top);
+        make.bottom.equalTo(scvButtons.mas_top).offset(-20.0);
         make.left.right.equalTo(scvButtons);
         make.height.mas_equalTo(40.0);
     }];
     
     //  header
-    [imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(50.0);
-        make.centerX.equalTo(self.mas_centerX);
-        make.width.height.mas_equalTo(80.0);
-    }];
-    
-    lbName.font = [UIFont fontWithName:HelveticaNeue size:24.0];
+    lbName.text = @"";
+    lbName.font = [UIFont systemFontOfSize:32.0 weight:UIFontWeightThin];
     [lbName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(imgAvatar.mas_bottom).offset(10.0);
+        make.top.equalTo(self).offset(50.0);
         make.left.equalTo(self).offset(padding);
         make.right.equalTo(self).offset(-padding);
         make.height.mas_equalTo(40.0);
     }];
     
-    lbPhone.font = [UIFont fontWithName:HelveticaNeue size:18.0];
+    lbPhone.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightThin];
     [lbPhone mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(lbName.mas_bottom).offset(5.0);
+        make.top.equalTo(lbName.mas_bottom).offset(10.0);
         make.left.equalTo(self).offset(padding);
         make.right.equalTo(self).offset(-padding);
         make.height.mas_equalTo(40.0);
     }];
     
-    lbTime.font = [UIFont fontWithName:HelveticaNeue size:18.0];
+    lbTime.font = [UIFont systemFontOfSize:32.0 weight:UIFontWeightThin];
     [lbTime mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(lbName.mas_bottom).offset(5.0);
-        make.left.right.equalTo(lbName);
+        make.top.equalTo(lbPhone.mas_bottom).offset(5.0);
+        make.left.right.equalTo(lbPhone);
         make.height.mas_equalTo(30.0);
     }];
     
@@ -244,7 +272,7 @@ const NSInteger MINI_KEYPAD_TAG = 101;
     //  _tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closePopupViewWhenTagOut)];
     UIView *viewBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
     viewBackground.backgroundColor = UIColor.blackColor;
-    viewBackground.alpha = 0.7;
+    viewBackground.alpha = 0.5;
     viewBackground.tag = 20;
     [aView addSubview:viewBackground];
     
@@ -254,6 +282,8 @@ const NSInteger MINI_KEYPAD_TAG = 101;
     if (animated) {
         [self fadeIn];
     }
+    
+    [self showCallInformation];
 }
 
 
@@ -289,12 +319,11 @@ const NSInteger MINI_KEYPAD_TAG = 101;
 
 - (void)onAddCallClick: (UIButton *)sender
 {
-    /*  Khai Le
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
-                         toFilePath:appDelegate.logFilePath];
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
-    if (!appDelegate.enableForTest) {
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"This feature have not supported yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
+    if (![LinphoneAppDelegate sharedInstance].enableForTest) {
+        [self makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"This feature have not supported yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
     
@@ -302,7 +331,6 @@ const NSInteger MINI_KEYPAD_TAG = 101;
     [view setAddress:@""];
     LinphoneManager.instance.nextCallIsTransfer = NO;
     [PhoneMainView.instance changeCurrentView:view.compositeViewDescription];
-    */
 }
 
 - (void)showCallInformation {
@@ -355,8 +383,14 @@ const NSInteger MINI_KEYPAD_TAG = 101;
     }else{
         LinphoneCall *curCall = linphone_core_get_current_call([LinphoneManager getLc]);
         if (curCall == NULL) {
-            [[PhoneMainView instance] popCurrentView];
+            [self closeTimer];
+            [self hideCallView];
         }else{
+            LinphoneCallState callState = (curCall != NULL) ? linphone_call_get_state(curCall) : 0;
+            if (callState == LinphoneCallOutgoingProgress) {
+                lbTime.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Calling"];
+                lbTime.textColor = UIColor.whiteColor;
+            }
             callDirection = linphone_call_get_dir(curCall);
             if (callDirection == LinphoneCallIncoming) {
                 [self countUpTimeForCall];
@@ -462,9 +496,13 @@ const NSInteger MINI_KEYPAD_TAG = 101;
         imgAvatar.image = [UIImage imageNamed:@"hotline_avatar.png"];
     }else{
         if ([AppUtils isNullOrEmpty: contact.avatar]) {
-            imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+            imgAvatar.image = nil;
+            bgTransparent.backgroundColor = [UIColor colorWithRed:(20/255.0) green:(20/255.0)
+                                                             blue:(20/255.0) alpha:1.0];
         }else{
             imgAvatar.image = [UIImage imageWithData:[NSData dataFromBase64String: contact.avatar]];
+            bgTransparent.backgroundColor = [UIColor colorWithRed:(20/255.0) green:(20/255.0)
+                                                             blue:(20/255.0) alpha:0.7];
         }
     }
     lbName.text = contact.name;
@@ -702,15 +740,12 @@ const NSInteger MINI_KEYPAD_TAG = 101;
             break;
         }
         case LinphoneCallOutgoingInit:{
-            if (self.halo == nil) {
-                [self addAnimationForOutgoingCall];
-            }
-            self.halo.hidden = YES;
-            [self.halo start];
-            
             btnMute.enabled = YES;
             btnKeypad.enabled = YES;
+            
             btnSpeaker.enabled = YES;
+            [self setButton:btnSpeaker selected:YES];
+            
             btnAddCall.enabled = NO;
             btnHoldCall.enabled = NO;
             btnTransfer.enabled = NO;
@@ -739,12 +774,6 @@ const NSInteger MINI_KEYPAD_TAG = 101;
             
             [self countUpTimeForCall];
             [self updateQualityForCall];
-            
-            //  Stop halo waiting
-            self.halo.hidden = YES;
-            [self.halo start];
-            self.halo = nil;
-            [self.halo removeFromSuperlayer];
             
             break;
         }
@@ -798,51 +827,21 @@ const NSInteger MINI_KEYPAD_TAG = 101;
             }
             break;
         case LinphoneCallEnd:{
-            if (durationTimer != nil) {
-                [durationTimer invalidate];
-                durationTimer = nil;
-            }
-            if (qualityTimer != nil) {
-                [qualityTimer invalidate];
-                qualityTimer = nil;
-            }
+            [self closeTimer];
             
-            //  Stop halo waiting
-            self.halo.hidden = YES;
-            [self.halo start];
-            self.halo = nil;
-            [self.halo removeFromSuperlayer];
+            [self performSelector:@selector(hideCallView) withObject:nil afterDelay:2.0];
             
             break;
         }
         case LinphoneCallError:{
-            if (durationTimer != nil) {
-                [durationTimer invalidate];
-                durationTimer = nil;
-            }
-            if (qualityTimer != nil) {
-                [qualityTimer invalidate];
-                qualityTimer = nil;
-            }
+            [self closeTimer];
+            
             [self displayCallError:call message:message];
             [self performSelector:@selector(hideCallView) withObject:nil afterDelay:2.0];
             break;
         }
         case LinphoneCallReleased:{
-            if (durationTimer != nil) {
-                [durationTimer invalidate];
-                durationTimer = nil;
-            }
-            if (qualityTimer != nil) {
-                [qualityTimer invalidate];
-                qualityTimer = nil;
-            }
-            
-            //  Stop halo waiting
-            self.halo.hidden = YES;
-            [self.halo start];
-            self.halo = nil;
-            [self.halo removeFromSuperlayer];
+            [self closeTimer];
             
             [self performSelector:@selector(hideCallView) withObject:nil afterDelay:2.0];
             break;
@@ -852,26 +851,15 @@ const NSInteger MINI_KEYPAD_TAG = 101;
     }
 }
 
-- (void)addAnimationForOutgoingCall {
-    LinphoneCall *call = linphone_core_get_current_call(LC);
-    LinphoneCallState state = (call != NULL) ? linphone_call_get_state(call) : 0;
-    
-    if (callDirection == LinphoneCallOutgoing && state != LinphoneCallConnected && state != LinphoneCallStreamsRunning) {
-        // basic setup
-        PulsingHaloLayer *layer = [PulsingHaloLayer layer];
-        self.halo = layer;
-        [imgAvatar.superview.layer insertSublayer:self.halo below:imgAvatar.layer];
-        [self setupInitialValuesWithNumLayer:5 radius:0.8 duration:0.45
-                                       color:[UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:0.7]];
+- (void)closeTimer {
+    if (durationTimer != nil) {
+        [durationTimer invalidate];
+        durationTimer = nil;
     }
-}
-
-- (void)setupInitialValuesWithNumLayer: (int)numLayer radius: (float)radius duration: (float)duration color: (UIColor *)color
-{
-    self.halo.haloLayerNumber = numLayer;
-    self.halo.radius = radius * kMaxRadius;
-    self.halo.animationDuration = duration * kMaxDuration;
-    [self.halo setBackgroundColor:color.CGColor];
+    if (qualityTimer != nil) {
+        [qualityTimer invalidate];
+        qualityTimer = nil;
+    }
 }
 
 - (void)hideCallView {
@@ -893,10 +881,11 @@ const NSInteger MINI_KEYPAD_TAG = 101;
         NSLog(@"Van con call ne");
     }
     
-    if ([PhoneMainView instance].currentView == CallView.compositeViewDescription) {
-        [[PhoneMainView instance] popCurrentView];
-    }else{
-        NSLog(@"Not popCurrentView");
+    [self fadeOut];
+    if ([LinphoneAppDelegate sharedInstance].callTransfered) {
+        [LinphoneAppDelegate sharedInstance].callTransfered = NO;
+        
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your call has been transfered"] duration:3.0 position:CSToastPositionCenter];
     }
 }
 
@@ -1019,6 +1008,94 @@ const NSInteger MINI_KEYPAD_TAG = 101;
         view.transform = CGAffineTransformMakeScale(1.0, 1.0);
         view.alpha = 1.0;
     }];
+}
+
+- (IBAction)btnTransferPressed:(UIButton *)sender
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Show transfer call view", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
+    NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"iPadTransferCallView" owner:nil options:nil];
+    for(id currentObject in toplevelObject){
+        if ([currentObject isKindOfClass:[iPadTransferCallView class]]) {
+            viewTransferCall = (iPadTransferCallView *) currentObject;
+            break;
+        }
+    }
+    
+    viewTransferCall.tag = MINI_TRANSFER_CALL_VIEW_TAG;
+    [viewTransferCall.zeroButton setDigit:'0'];
+    [viewTransferCall.oneButton    setDigit:'1'];
+    [viewTransferCall.twoButton    setDigit:'2'];
+    [viewTransferCall.threeButton  setDigit:'3'];
+    [viewTransferCall.fourButton   setDigit:'4'];
+    [viewTransferCall.fiveButton   setDigit:'5'];
+    [viewTransferCall.sixButton    setDigit:'6'];
+    [viewTransferCall.sevenButton  setDigit:'7'];
+    [viewTransferCall.eightButton  setDigit:'8'];
+    [viewTransferCall.nineButton   setDigit:'9'];
+    [viewTransferCall.starButton   setDigit:'*'];
+    [viewTransferCall.sharpButton  setDigit:'#'];
+    
+    [self addSubview:viewTransferCall];
+    [self fadeIn:viewTransferCall];
+    
+    
+    [viewTransferCall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self);
+    }];
+    [viewTransferCall setupUIForView];
+    
+    [viewTransferCall.backToCallButton addTarget:self
+                                          action:@selector(hideTransferCallView)
+                                forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)hideTransferCallView
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
+    for (UIView *subView in self.subviews) {
+        if (subView.tag == MINI_TRANSFER_CALL_VIEW_TAG) {
+            [UIView animateWithDuration:.35 animations:^{
+                subView.transform = CGAffineTransformMakeScale(1.3, 1.3);
+                subView.alpha = 0.0;
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    [subView removeFromSuperview];
+                }
+            }];
+        }
+    }
+}
+
+- (IBAction)btnHangupCallPressed:(UIButton *)sender {
+    // Bien cho biết mình kết thúc cuộc gọi
+    [LinphoneAppDelegate sharedInstance]._meEnded = YES;
+    
+    [btnHangupCall setImage:[UIImage imageNamed:@"ic_end_call_red"] forState:UIControlStateNormal];
+    btnHangupCall.backgroundColor = UIColor.whiteColor;
+    
+    [self performSelector:@selector(resetStateOfHangupCallButton) withObject:nil afterDelay:0.05];
+}
+
+- (void)resetStateOfHangupCallButton {
+    [btnHangupCall setImage:[UIImage imageNamed:@"ic_end_call_white"] forState:UIControlStateNormal];
+    btnHangupCall.backgroundColor = [UIColor colorWithRed:(216/255.0) green:(0/255.0)
+                                                     blue:(39.0/255.0) alpha:1.0];
+}
+
+#pragma mark - UISpeakerButton Delegate
+- (void)onSpeakerStateChangedTo:(BOOL)speaker {
+    [self setButton:btnSpeaker selected:speaker];
+}
+
+- (void)onMuteStateChangedTo:(BOOL)muted {
+    [self setButton:btnMute selected:muted];
+}
+
+- (void)onPauseStateChangedTo:(BOOL)paused {
+    [self setButton:btnHoldCall selected:paused];
 }
 
 @end

@@ -22,15 +22,18 @@
 #import "LinphoneManager.h"
 
 @implementation UIMutedMicroButton
+@synthesize delegate;
 
 - (void)onOn {
 	linphone_core_enable_mic(LC, false);
+    [delegate onMuteStateChangedTo: YES];
     
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
 }
 
 - (void)onOff {
 	linphone_core_enable_mic(LC, true);
+    [delegate onMuteStateChangedTo: NO];
     
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
 }

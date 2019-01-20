@@ -38,6 +38,9 @@
 #import "Constant.h"
 #import "HomeSplitViewController.h"
 
+#define MINI_KEYPAD_TAG 101
+#define MINI_TRANSFER_CALL_VIEW_TAG 102
+
 typedef enum AccountState{
     eAccountNone,
     eAccountOff,
@@ -147,6 +150,8 @@ typedef enum{
 @property (nonatomic, strong) HomeSplitViewController *homeSplitVC;
 @property (nonatomic, assign) eContact contactType;
 @property (nonatomic, assign) eTypeHistory historyType;
+
+@property (nonatomic, assign) BOOL callTransfered;
 
 @end
 

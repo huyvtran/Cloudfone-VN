@@ -2893,6 +2893,7 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
 		call = linphone_core_get_current_call(theLinphoneCore);
 		linphone_core_transfer_call(theLinphoneCore, call, caddr);
 		LinphoneManager.instance.nextCallIsTransfer = NO;
+        [LinphoneAppDelegate sharedInstance].callTransfered = YES;
         
         NSString *number = [NSString stringWithUTF8String:linphone_address_get_username(iaddr)];
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s: nextCallIsTransfer = YES, transfer current call to address: %@", __FUNCTION__, number] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];

@@ -21,7 +21,12 @@
 
 #import "UIToggleButton.h"
 
+@protocol UIMutedMicroButtonDelegate
+- (void)onMuteStateChangedTo: (BOOL)muted;
+@end
+
 @interface UIMutedMicroButton : UIToggleButton <UIToggleButtonDelegate> {
 }
+@property (nonatomic, strong) id <NSObject, UIMutedMicroButtonDelegate> delegate;
 
 @end

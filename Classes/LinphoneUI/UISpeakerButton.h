@@ -21,8 +21,14 @@
 
 #import "UIToggleButton.h"
 
-@interface UISpeakerButton : UIToggleButton<UIToggleButtonDelegate> {
+@protocol UISpeakerButtonDelegate
+- (void)onSpeakerStateChangedTo: (BOOL)speaker;
+@end
 
+
+@interface UISpeakerButton : UIToggleButton<UIToggleButtonDelegate> {
 }
+
+@property (nonatomic, strong) id <NSObject, UISpeakerButtonDelegate> delegate;
 
 @end

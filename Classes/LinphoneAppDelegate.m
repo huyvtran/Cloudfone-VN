@@ -86,7 +86,7 @@
 @synthesize contactLoaded;
 @synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, supportLoginWithPhoneNumber, logFilePath, dbQueue, splashScreen;
 @synthesize supportVoice;
-@synthesize homeSplitVC, contactType, historyType;
+@synthesize homeSplitVC, contactType, historyType, callTransfered;
 
 #pragma mark - Lifecycle Functions
 
@@ -457,8 +457,8 @@ void onUncaughtException(NSException* exception)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadContactListAfterAddSuccess)
                                                  name:@"reloadContactAfterAdd" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showPopupCallForIpad)
-                                                 name:@"showPopupCall" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showPopupCallForIpad:)
+                                                 name:showIpadPopupCall object:nil];
     
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(registrationUpdateEvent:)
                                                name:kLinphoneRegistrationUpdate object:nil];
@@ -2351,18 +2351,24 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     NSLog(@"%@", item);
 }
 
-- (void)showPopupCallForIpad {
-    NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"iPadPopupCall" owner:nil options:nil];
-    iPadPopupCall *popupCall;
-    for(id currentObject in toplevelObject){
-        if ([currentObject isKindOfClass:[iPadPopupCall class]]) {
-            popupCall = (iPadPopupCall *) currentObject;
-            break;
+- (void)showPopupCallForIpad: (NSNotification *)notif
+{
+    NSString *phonenumber = [notif object];
+    if ([phonenumber isKindOfClass:[NSString class]]) {
+        NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"iPadPopupCall" owner:nil options:nil];
+        iPadPopupCall *popupCall;
+        for(id currentObject in toplevelObject){
+            if ([currentObject isKindOfClass:[iPadPopupCall class]]) {
+                popupCall = (iPadPopupCall *) currentObject;
+                break;
+            }
         }
+        popupCall.frame = CGRectMake((SCREEN_WIDTH-400)/2, (SCREEN_HEIGHT-750)/2, 400, 750);
+        [popupCall setNeedsDisplay];
+        [popupCall setupUIForView];
+        popupCall.phoneNumber = phonenumber;
+        [popupCall showInView:self.window animated:YES];
     }
-    popupCall.frame = CGRectMake((SCREEN_WIDTH-400)/2, (SCREEN_HEIGHT-750)/2, 400, 750);
-    [popupCall setupUIForView];
-    [popupCall showInView:self.window animated:YES];
 }
 
 

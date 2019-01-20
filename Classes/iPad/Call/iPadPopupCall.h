@@ -9,11 +9,13 @@
 #import "UIMutedMicroButton.h"
 #import "UISpeakerButton.h"
 #import "UIPauseButton.h"
-#import "PulsingHaloLayer.h"
+#import "UIHangUpButton.h"
 #import "UIMiniKeypad.h"
+#import "iPadTransferCallView.h"
 
-@interface iPadPopupCall : UIView
+@interface iPadPopupCall : UIView<UISpeakerButtonDelegate, UIMutedMicroButtonDelegate, UIPauseButtonDelegate>
 
+@property (weak, nonatomic) IBOutlet UIView *bgTransparent;
 @property (weak, nonatomic) IBOutlet UIImageView *imgBgCall;
 @property (weak, nonatomic) IBOutlet UIImageView *imgAvatar;
 @property (weak, nonatomic) IBOutlet UILabel *lbPhone;
@@ -43,7 +45,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lbTransfer;
 @property (weak, nonatomic) IBOutlet UIButton *btnTransfer;
 
-@property (weak, nonatomic) IBOutlet UIButton *btnHangupCall;
+@property (weak, nonatomic) IBOutlet UIHangUpButton *btnHangupCall;
 
 - (void)setupUIForView;
 - (void)showInView:(UIView *)aView animated:(BOOL)animated;
@@ -59,7 +61,10 @@
 @property (nonatomic, strong) NSTimer *qualityTimer;
 @property (nonatomic, assign) BOOL needEnableSpeaker;
 
-@property (nonatomic, weak) PulsingHaloLayer *halo;
 @property (nonatomic, strong) UIMiniKeypad *viewKeypad;
+@property (nonatomic, strong) iPadTransferCallView *viewTransferCall;
+- (IBAction)btnTransferPressed:(UIButton *)sender;
+
+- (IBAction)btnHangupCallPressed:(UIButton *)sender;
 
 @end

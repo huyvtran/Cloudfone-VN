@@ -21,6 +21,10 @@
 
 #include "linphone/linphonecore.h"
 
+@protocol UIPauseButtonDelegate
+- (void)onPauseStateChangedTo: (BOOL)paused;
+@end
+
 typedef enum _UIPauseButtonType {
     UIPauseButtonType_CurrentCall,
     UIPauseButtonType_Call,
@@ -32,7 +36,7 @@ typedef enum _UIPauseButtonType {
     UIPauseButtonType type;
     LinphoneCall* call;
 }
-
+@property (nonatomic, strong) id <NSObject, UIPauseButtonDelegate> delegate;
 - (void)setType:(UIPauseButtonType) type call:(LinphoneCall*)call;
 
 @end

@@ -26,6 +26,7 @@
 #include "linphone/linphonecore.h"
 
 @implementation UISpeakerButton
+@synthesize delegate;
 
 INIT_WITH_COMMON_CF {
 	[NSNotificationCenter.defaultCenter addObserver:self
@@ -53,12 +54,14 @@ INIT_WITH_COMMON_CF {
 
 - (void)onOn {
 	[LinphoneManager.instance setSpeakerEnabled:TRUE];
+    [delegate onSpeakerStateChangedTo: YES];
     
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
 }
 
 - (void)onOff {
 	[LinphoneManager.instance setSpeakerEnabled:FALSE];
+    [delegate onSpeakerStateChangedTo: NO];
     
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
 }

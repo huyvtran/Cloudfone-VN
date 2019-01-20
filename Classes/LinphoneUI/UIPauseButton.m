@@ -22,6 +22,7 @@
 #import "Utils.h"
 
 @implementation UIPauseButton
+@synthesize delegate;
 
 #pragma mark - Lifecycle Functions
 
@@ -83,6 +84,7 @@
 		case UIPauseButtonType_Call: {
 			if (call != nil) {
 				linphone_core_pause_call(LC, call);
+                [delegate onPauseStateChangedTo: YES];
 			} else {
 				NSLog(@"Cannot toggle pause buttton, because no current call");
 			}
@@ -99,6 +101,7 @@
 			LinphoneCall *currentCall = [UIPauseButton getCall];
 			if (currentCall != nil) {
 				linphone_core_pause_call(LC, currentCall);
+                [delegate onPauseStateChangedTo: YES];
 			} else {
 				NSLog(@"Cannot toggle pause buttton, because no current call");
 			}
@@ -112,6 +115,7 @@
 		case UIPauseButtonType_Call: {
 			if (call != nil) {
 				linphone_core_resume_call(LC, call);
+                [delegate onPauseStateChangedTo: NO];
 			} else {
 				NSLog(@"Cannot toggle pause buttton, because no current call");
 			}
@@ -138,6 +142,7 @@
 		case UIPauseButtonType_CurrentCall: {
 			LinphoneCall *currentCall = [UIPauseButton getCall];
 			linphone_core_resume_call(LC, currentCall);
+            [delegate onPauseStateChangedTo: NO];
 			break;
 		}
 	}

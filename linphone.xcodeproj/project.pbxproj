@@ -502,6 +502,14 @@
 		8489DED02160B16100A7A1DD /* NewSettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8489DECE2160B16100A7A1DD /* NewSettingCell.xib */; };
 		8489DED22160B2EC00A7A1DD /* icon-next.png in Resources */ = {isa = PBXBuildFile; fileRef = 8489DED12160B2EC00A7A1DD /* icon-next.png */; };
 		8489DED42160B5FA00A7A1DD /* right-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 8489DED32160B5FA00A7A1DD /* right-arrow.png */; };
+		848C5D9221F4313200094D7C /* ic_muted_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 848C5D8B21F4313100094D7C /* ic_muted_gray.png */; };
+		848C5D9421F4369C00094D7C /* ic_speaker_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 848C5D9321F4369B00094D7C /* ic_speaker_gray.png */; };
+		848C5D9621F436DD00094D7C /* ic_pause_call_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 848C5D9521F436DD00094D7C /* ic_pause_call_gray.png */; };
+		848C5D9821F4370400094D7C /* ic_transfer_call_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 848C5D9721F4370400094D7C /* ic_transfer_call_gray.png */; };
+		848C5D9A21F4373000094D7C /* ic_add_call_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 848C5D9921F4372F00094D7C /* ic_add_call_gray.png */; };
+		848C5D9C21F4376200094D7C /* ic_keyboard_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 848C5D9B21F4376200094D7C /* ic_keyboard_gray.png */; };
+		848C5D9F21F456C900094D7C /* iPadTransferCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C5D9E21F456C900094D7C /* iPadTransferCallView.m */; };
+		848C5DA321F4571E00094D7C /* iPadTransferCallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 848C5DA221F4571E00094D7C /* iPadTransferCallView.xib */; };
 		84AA051E21855ADD008CA775 /* lauch_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AA051721855ADC008CA775 /* lauch_icon.png */; };
 		84AEA9241FC4FD5500DAA68A /* EditContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEA9221FC4FD5500DAA68A /* EditContactViewController.m */; };
 		84AEA9251FC4FD5500DAA68A /* EditContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AEA9231FC4FD5500DAA68A /* EditContactViewController.xib */; };
@@ -712,8 +720,8 @@
 		84F81BE221EF858A009629C9 /* ic_transfer_call_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F81BE021EF8589009629C9 /* ic_transfer_call_white.png */; };
 		84F81BE521EF85E8009629C9 /* ic_add_call_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F81BE321EF85E6009629C9 /* ic_add_call_black.png */; };
 		84F81BE621EF85E8009629C9 /* ic_add_call_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F81BE421EF85E7009629C9 /* ic_add_call_white.png */; };
-		84F81BE921EF86C3009629C9 /* ic_keyboad_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F81BE721EF86C2009629C9 /* ic_keyboad_white.png */; };
-		84F81BEA21EF86C3009629C9 /* ic_keyboad_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F81BE821EF86C3009629C9 /* ic_keyboad_black.png */; };
+		84F81BE921EF86C3009629C9 /* ic_keyboard_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F81BE721EF86C2009629C9 /* ic_keyboard_white.png */; };
+		84F81BEA21EF86C3009629C9 /* ic_keyboard_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F81BE821EF86C3009629C9 /* ic_keyboard_black.png */; };
 		84FE45C520E4D0740067405F /* keepawake.wav in Resources */ = {isa = PBXBuildFile; fileRef = 84FE45BE20E4D0740067405F /* keepawake.wav */; };
 		8C1B67061E671826001EA2FE /* AudioHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B67051E671826001EA2FE /* AudioHelper.m */; };
 		8C2595DD1DEDC92D007A6424 /* ProviderDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2595DC1DEDC92D007A6424 /* ProviderDelegate.m */; };
@@ -1577,6 +1585,15 @@
 		8489DECE2160B16100A7A1DD /* NewSettingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = NewSettingCell.xib; path = AppUI/NewSettingCell.xib; sourceTree = "<group>"; };
 		8489DED12160B2EC00A7A1DD /* icon-next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-next.png"; sourceTree = "<group>"; };
 		8489DED32160B5FA00A7A1DD /* right-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right-arrow.png"; sourceTree = "<group>"; };
+		848C5D8B21F4313100094D7C /* ic_muted_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_muted_gray.png; sourceTree = "<group>"; };
+		848C5D9321F4369B00094D7C /* ic_speaker_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_speaker_gray.png; sourceTree = "<group>"; };
+		848C5D9521F436DD00094D7C /* ic_pause_call_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_pause_call_gray.png; sourceTree = "<group>"; };
+		848C5D9721F4370400094D7C /* ic_transfer_call_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_transfer_call_gray.png; sourceTree = "<group>"; };
+		848C5D9921F4372F00094D7C /* ic_add_call_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_add_call_gray.png; sourceTree = "<group>"; };
+		848C5D9B21F4376200094D7C /* ic_keyboard_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_keyboard_gray.png; sourceTree = "<group>"; };
+		848C5D9D21F456C900094D7C /* iPadTransferCallView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iPadTransferCallView.h; path = iPad/Call/iPadTransferCallView.h; sourceTree = "<group>"; };
+		848C5D9E21F456C900094D7C /* iPadTransferCallView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = iPadTransferCallView.m; path = iPad/Call/iPadTransferCallView.m; sourceTree = "<group>"; };
+		848C5DA221F4571E00094D7C /* iPadTransferCallView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iPadTransferCallView.xib; path = iPad/Call/iPadTransferCallView.xib; sourceTree = "<group>"; };
 		84AA051721855ADC008CA775 /* lauch_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lauch_icon.png; sourceTree = "<group>"; };
 		84AEA9211FC4FD5500DAA68A /* EditContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditContactViewController.h; path = Contacts/EditContactViewController.h; sourceTree = "<group>"; };
 		84AEA9221FC4FD5500DAA68A /* EditContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditContactViewController.m; path = Contacts/EditContactViewController.m; sourceTree = "<group>"; };
@@ -1907,8 +1924,8 @@
 		84F81BE021EF8589009629C9 /* ic_transfer_call_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_transfer_call_white.png; sourceTree = "<group>"; };
 		84F81BE321EF85E6009629C9 /* ic_add_call_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_add_call_black.png; sourceTree = "<group>"; };
 		84F81BE421EF85E7009629C9 /* ic_add_call_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_add_call_white.png; sourceTree = "<group>"; };
-		84F81BE721EF86C2009629C9 /* ic_keyboad_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_keyboad_white.png; sourceTree = "<group>"; };
-		84F81BE821EF86C3009629C9 /* ic_keyboad_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_keyboad_black.png; sourceTree = "<group>"; };
+		84F81BE721EF86C2009629C9 /* ic_keyboard_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_keyboard_white.png; sourceTree = "<group>"; };
+		84F81BE821EF86C3009629C9 /* ic_keyboard_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_keyboard_black.png; sourceTree = "<group>"; };
 		84FE45BE20E4D0740067405F /* keepawake.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = keepawake.wav; sourceTree = "<group>"; };
 		888B75431B1859C14849ED48 /* libPods-linphoneTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-linphoneTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89AD7C7EF2E7673980DA481B /* Pods-liblinphoneTesterTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-liblinphoneTesterTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-liblinphoneTesterTests/Pods-liblinphoneTesterTests.distribution.xcconfig"; sourceTree = "<group>"; };
@@ -2489,6 +2506,9 @@
 				84F81BCC21EF7BF9009629C9 /* iPadPopupCall.h */,
 				84F81BCD21EF7BF9009629C9 /* iPadPopupCall.m */,
 				84F81BCF21EF7CBB009629C9 /* iPadPopupCall.xib */,
+				848C5D9D21F456C900094D7C /* iPadTransferCallView.h */,
+				848C5D9E21F456C900094D7C /* iPadTransferCallView.m */,
+				848C5DA221F4571E00094D7C /* iPadTransferCallView.xib */,
 			);
 			name = Call;
 			sourceTree = "<group>";
@@ -3027,16 +3047,22 @@
 			children = (
 				84F81BD321EF83E1009629C9 /* ic_speaker_black.png */,
 				84F81BD421EF83E2009629C9 /* ic_speaker_white.png */,
+				848C5D9321F4369B00094D7C /* ic_speaker_gray.png */,
 				84F81BD721EF8417009629C9 /* ic_muted_black.png */,
 				84F81BD821EF8417009629C9 /* ic_muted_white.png */,
+				848C5D8B21F4313100094D7C /* ic_muted_gray.png */,
 				84F81BDC21EF8476009629C9 /* ic_pause_call_black.png */,
 				84F81BDB21EF8475009629C9 /* ic_pause_call_white.png */,
+				848C5D9521F436DD00094D7C /* ic_pause_call_gray.png */,
 				84F81BDF21EF8588009629C9 /* ic_transfer_call_black.png */,
 				84F81BE021EF8589009629C9 /* ic_transfer_call_white.png */,
+				848C5D9721F4370400094D7C /* ic_transfer_call_gray.png */,
 				84F81BE321EF85E6009629C9 /* ic_add_call_black.png */,
 				84F81BE421EF85E7009629C9 /* ic_add_call_white.png */,
-				84F81BE821EF86C3009629C9 /* ic_keyboad_black.png */,
-				84F81BE721EF86C2009629C9 /* ic_keyboad_white.png */,
+				848C5D9921F4372F00094D7C /* ic_add_call_gray.png */,
+				84F81BE821EF86C3009629C9 /* ic_keyboard_black.png */,
+				84F81BE721EF86C2009629C9 /* ic_keyboard_white.png */,
+				848C5D9B21F4376200094D7C /* ic_keyboard_gray.png */,
 				15CAA26F21F02A6700D3739A /* ic_end_call_red.png */,
 				15CAA27621F02A6900D3739A /* ic_end_call_white.png */,
 				84B4F0F921E8DD3300591C50 /* no_calls.png */,
@@ -4389,6 +4415,7 @@
 				84B4F0E721E8CD4E00591C50 /* ic_more_bottom_bar_act@2x.png in Resources */,
 				15CAA27821F02A6A00D3739A /* ic_end_call_white.png in Resources */,
 				841F97E71FB4B2DC00A9A8CD /* UIConferenceCell.xib in Resources */,
+				848C5DA321F4571E00094D7C /* iPadTransferCallView.xib in Resources */,
 				153D00132164A67E007B69B3 /* numpad_five_default.png in Resources */,
 				8440F18C216BA82000BB559C /* mini_key_1_hover.png in Resources */,
 				639CEAFD1A1DF4D9004DE38F /* StatusBarView.xib in Resources */,
@@ -4419,6 +4446,7 @@
 				1579B72721674A6B002BECE3 /* call_disable.png in Resources */,
 				156E176021E85BAE00C15E79 /* HomeSplitViewController.xib in Resources */,
 				1578D06121ACE87000E8BA5F /* ic_send_logs.png in Resources */,
+				848C5D9C21F4376200094D7C /* ic_keyboard_gray.png in Resources */,
 				15E9B6D321F0863600F25EA1 /* TestViewController.xib in Resources */,
 				1578D06D21ACEB6100E8BA5F /* SendLogsViewController.xib in Resources */,
 				1579B72221674989002BECE3 /* ic_back@2x.png in Resources */,
@@ -4430,6 +4458,7 @@
 				8429871221B29D4000150EB0 /* ic_more_bottom_bar_act.png in Resources */,
 				633FEE931D3CD55A0014B822 /* menu@2x.png in Resources */,
 				84C8B2401FBBBDB50080D673 /* UIHistoryDetailCell.xib in Resources */,
+				848C5D9A21F4373000094D7C /* ic_add_call_gray.png in Resources */,
 				8429871121B29D4000150EB0 /* ic_more_bottom_bar_def.png in Resources */,
 				D38187B115FE340500C3EDCA /* ChatsListView.xib in Resources */,
 				8440F198216BA82000BB559C /* mini_key_6_hover.png in Resources */,
@@ -4458,11 +4487,13 @@
 				84E07EF92025E3160000CD12 /* silence.mp3 in Resources */,
 				63E27A321C4FECD000D332AE /* LaunchScreen.xib in Resources */,
 				15B9C6F521DF67D8009CCD53 /* ic_controls.png in Resources */,
+				848C5D9221F4313200094D7C /* ic_muted_gray.png in Resources */,
 				15C5A5FE219AAF5600FDD6C5 /* NewHistoryDetailCell.xib in Resources */,
 				636316D41A1DEC650009B839 /* SettingsView.xib in Resources */,
 				84B889F01FAF6C73008D88C5 /* PhoneBookContactCell.xib in Resources */,
 				841B359D2191F26D0019BD45 /* ic-pause-default.png in Resources */,
 				153D00362164D537007B69B3 /* menu_contacts_en_def.png in Resources */,
+				848C5D9421F4369C00094D7C /* ic_speaker_gray.png in Resources */,
 				15E641B22179779900A9E15E /* ic_phone_login.png in Resources */,
 				D34F6F9E1594D3FB0095705B /* InAppSettings.bundle in Resources */,
 				8404CD5621EDE20B00C28E48 /* close_white.png in Resources */,
@@ -4549,9 +4580,10 @@
 				845056CD1FE596200035B6B3 /* OutgoingCallViewController.xib in Resources */,
 				63AADC001B6A0FF200AA16FD /* assistant_linphone_create.rc in Resources */,
 				8440F186216BA82000BB559C /* mini_key_5_hover.png in Resources */,
-				84F81BEA21EF86C3009629C9 /* ic_keyboad_black.png in Resources */,
+				84F81BEA21EF86C3009629C9 /* ic_keyboard_black.png in Resources */,
 				84ECF9C0216679A70067B4B6 /* ic_pause_dis.png in Resources */,
-				84F81BE921EF86C3009629C9 /* ic_keyboad_white.png in Resources */,
+				848C5D9621F436DD00094D7C /* ic_pause_call_gray.png in Resources */,
+				84F81BE921EF86C3009629C9 /* ic_keyboard_white.png in Resources */,
 				84ECF9BD216679A70067B4B6 /* ic_keypad_def.png in Resources */,
 				841B359C2191F26D0019BD45 /* ic-pause-active.png in Resources */,
 				153D00582164D9D3007B69B3 /* numpad_zero_hover.png in Resources */,
@@ -4625,6 +4657,7 @@
 				D3D5126C160B3A8E00946DF8 /* AssistantViewScreens.xib in Resources */,
 				63AADBEA1B6A0FF200AA16FD /* Images.xcassets in Resources */,
 				159002D82168618E00CECB7A /* ic_call_outgoing.png in Resources */,
+				848C5D9821F4370400094D7C /* ic_transfer_call_gray.png in Resources */,
 				84C4435E1FBE00B90015854C /* IntroduceViewController.xib in Resources */,
 				639E9CA91C0DB7FB00019A75 /* UIConfirmationDialog.xib in Resources */,
 				153D00162164A67E007B69B3 /* numpad_seven_default.png in Resources */,
@@ -4939,6 +4972,7 @@
 				D326483815887D5200930C67 /* OrderedDictionary.m in Sources */,
 				84E3BC8321EA4BEC00507CFB /* iPadIntroduceViewController.m in Sources */,
 				D32648441588F6FC00930C67 /* UIToggleButton.m in Sources */,
+				848C5D9F21F456C900094D7C /* iPadTransferCallView.m in Sources */,
 				84EFFE041FF3E6B60085A9F4 /* DGActivityIndicatorBallTrianglePathAnimation.m in Sources */,
 				84E07EFE2025F39E0000CD12 /* SettingSoundCell.m in Sources */,
 				D36FB2D51589EF7C0036F6F2 /* UIPauseButton.m in Sources */,

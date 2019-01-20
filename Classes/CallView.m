@@ -58,7 +58,6 @@ void message_received(LinphoneCore *lc, LinphoneChatRoom *room, const LinphoneAd
 }
 
 const NSInteger SECURE_BUTTON_TAG = 5;
-const NSInteger MINI_KEYPAD_TAG = 101;
 
 @interface CallView (){
     LinphoneAppDelegate *appDelegate;
@@ -1713,6 +1712,12 @@ static UICompositeViewDescription *compositeDescription = nil;
         [[PhoneMainView instance] popCurrentView];
     }else{
         NSLog(@"Not popCurrentView");
+    }
+    
+    if ([LinphoneAppDelegate sharedInstance].callTransfered) {
+        [LinphoneAppDelegate sharedInstance].callTransfered = NO;
+        
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your call has been transfered"] duration:3.0 position:CSToastPositionCenter];
     }
 }
 
