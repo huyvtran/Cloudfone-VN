@@ -6,6 +6,7 @@
 //
 
 #import "iPadDialerViewController.h"
+#import "iPadCallHistoryViewController.h"
 #import "iPadHistoryCallCell.h"
 #import "KHistoryCallObject.h"
 
@@ -322,6 +323,13 @@
 //    }
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    iPadCallHistoryViewController *callHistoryVC = [[iPadCallHistoryViewController alloc] initWithNibName:@"iPadCallHistoryViewController" bundle:nil];
+    UINavigationController *navigationVC = [AppUtils createNavigationWithController: callHistoryVC];
+    [AppUtils showDetailViewWithController: navigationVC];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

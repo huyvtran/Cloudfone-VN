@@ -7,6 +7,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface iPadCallHistoryViewController : UIViewController
+@interface iPadCallHistoryViewController : UIViewController<UIScrollViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UIImageView *imgAvatar;
+@property (weak, nonatomic) IBOutlet UIScrollView *scvContent;
+@property (weak, nonatomic) IBOutlet UITableView *tbHistory;
 
 @end

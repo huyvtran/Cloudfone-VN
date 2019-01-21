@@ -72,6 +72,9 @@
 		1556A8DE2181BE67002E8D26 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 1556A8DD2181BE66002E8D26 /* logo.png */; };
 		1556A8E12181C347002E8D26 /* launch_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 1556A8DF2181C346002E8D26 /* launch_logo.png */; };
 		1556A8E22181C347002E8D26 /* launch_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 1556A8E02181C346002E8D26 /* launch_bg.png */; };
+		156910D221F56E6B005D20DF /* CustomTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 156910D121F56E6B005D20DF /* CustomTableView.m */; };
+		156910DB21F58BFD005D20DF /* CustomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 156910DA21F58BFD005D20DF /* CustomScrollView.m */; };
+		156910E421F5AC2F005D20DF /* messi.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 156910DD21F5AC2A005D20DF /* messi.jpg */; };
 		156E175F21E85BAE00C15E79 /* HomeSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156E175D21E85BAE00C15E79 /* HomeSplitViewController.m */; };
 		156E176021E85BAE00C15E79 /* HomeSplitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 156E175E21E85BAE00C15E79 /* HomeSplitViewController.xib */; };
 		156E177821E8A44600C15E79 /* iPadMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156E177621E8A44600C15E79 /* iPadMoreViewController.m */; };
@@ -990,6 +993,11 @@
 		1556A8DF2181C346002E8D26 /* launch_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch_logo.png; sourceTree = "<group>"; };
 		1556A8E02181C346002E8D26 /* launch_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch_bg.png; sourceTree = "<group>"; };
 		1560821E18EEF26100765332 /* libmsopenh264.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmsopenh264.a; path = "liblinphone-sdk/apple-darwin/lib/mediastreamer/plugins/libmsopenh264.a"; sourceTree = "<group>"; };
+		156910D021F56E6B005D20DF /* CustomTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CustomTableView.h; path = AppUI/CustomTableView.h; sourceTree = "<group>"; };
+		156910D121F56E6B005D20DF /* CustomTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CustomTableView.m; path = AppUI/CustomTableView.m; sourceTree = "<group>"; };
+		156910D921F58BFD005D20DF /* CustomScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CustomScrollView.h; path = AppUI/CustomScrollView.h; sourceTree = "<group>"; };
+		156910DA21F58BFD005D20DF /* CustomScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CustomScrollView.m; path = AppUI/CustomScrollView.m; sourceTree = "<group>"; };
+		156910DD21F5AC2A005D20DF /* messi.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = messi.jpg; sourceTree = "<group>"; };
 		156E175C21E85BAE00C15E79 /* HomeSplitViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HomeSplitViewController.h; path = iPad/HomeSplitViewController.h; sourceTree = "<group>"; };
 		156E175D21E85BAE00C15E79 /* HomeSplitViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = HomeSplitViewController.m; path = iPad/HomeSplitViewController.m; sourceTree = "<group>"; };
 		156E175E21E85BAE00C15E79 /* HomeSplitViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = HomeSplitViewController.xib; path = iPad/HomeSplitViewController.xib; sourceTree = "<group>"; };
@@ -2455,6 +2463,8 @@
 				15E9B6CF21F0863500F25EA1 /* TestViewController.h */,
 				15E9B6D021F0863500F25EA1 /* TestViewController.m */,
 				15E9B6D121F0863500F25EA1 /* TestViewController.xib */,
+				156910D021F56E6B005D20DF /* CustomTableView.h */,
+				156910D121F56E6B005D20DF /* CustomTableView.m */,
 				2214EB7012F84668002A5394 /* LinphoneUI */,
 				F0642EF019DAC891009DB336 /* MainStoryboard.storyboard */,
 				D3F83F8C158229C500336684 /* PhoneMainView.h */,
@@ -3045,6 +3055,7 @@
 		633FEBE11D3CD5570014B822 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				156910DD21F5AC2A005D20DF /* messi.jpg */,
 				84F81BD321EF83E1009629C9 /* ic_speaker_black.png */,
 				84F81BD421EF83E2009629C9 /* ic_speaker_white.png */,
 				848C5D9321F4369B00094D7C /* ic_speaker_gray.png */,
@@ -3560,6 +3571,8 @@
 				841B35902191F1360019BD45 /* ConferenceTableViewCell.xib */,
 				15B44627219FCA0300FB8DCB /* CustomSwitchButton.h */,
 				15B4462E219FCA0300FB8DCB /* CustomSwitchButton.m */,
+				156910D921F58BFD005D20DF /* CustomScrollView.h */,
+				156910DA21F58BFD005D20DF /* CustomScrollView.m */,
 			);
 			name = AppUI;
 			sourceTree = "<group>";
@@ -4656,6 +4669,7 @@
 				84B4F0DF21E8CC2B00591C50 /* ic_call_bottom_bar_def@2x.png in Resources */,
 				D3D5126C160B3A8E00946DF8 /* AssistantViewScreens.xib in Resources */,
 				63AADBEA1B6A0FF200AA16FD /* Images.xcassets in Resources */,
+				156910E421F5AC2F005D20DF /* messi.jpg in Resources */,
 				159002D82168618E00CECB7A /* ic_call_outgoing.png in Resources */,
 				848C5D9821F4370400094D7C /* ic_transfer_call_gray.png in Resources */,
 				84C4435E1FBE00B90015854C /* IntroduceViewController.xib in Resources */,
@@ -5029,6 +5043,7 @@
 				84C1E2631FAEBE4C00EED0B9 /* FMResultSet.m in Sources */,
 				84C443961FBE10BE0015854C /* ChooseAvatarPopupView.m in Sources */,
 				631098491D4660580041F2B3 /* CountryListView.m in Sources */,
+				156910DB21F58BFD005D20DF /* CustomScrollView.m in Sources */,
 				84C47D0D1FB62CE00015695E /* KHistoryCallObject.m in Sources */,
 				84EFFDB91FF3E6980085A9F4 /* DGActivityIndicatorView.m in Sources */,
 				84E286C91FC9E1AC009CBA27 /* NSData+ImageContentType.m in Sources */,
@@ -5060,6 +5075,7 @@
 				845A13311FE2C70300640B51 /* PBXContactTableCell.m in Sources */,
 				635775251B6673EC00C8B704 /* HistoryDetailsTableView.m in Sources */,
 				84EFFE071FF3E6B60085A9F4 /* DGActivityIndicatorBallClipRotatePulseAnimation.m in Sources */,
+				156910D221F56E6B005D20DF /* CustomTableView.m in Sources */,
 				84C1E26B1FAEBEA500EED0B9 /* ContactObject.m in Sources */,
 				84C47CD71FB5E8B60015695E /* UIKContactCell.m in Sources */,
 				63C441C31BBC23ED0053DC5E /* UIAssistantTextField.m in Sources */,

@@ -8,31 +8,56 @@
 #import "TestViewController.h"
 
 @interface TestViewController () {
+    UIImageView *imgView;
+    UITableView *tbView;
+    UIScrollView *scvContent;
+    float tbHeight;
+    
     MASConstraint *heightConstraint;
     float firstHeight;
+    
+    CGPoint startPoint;
+    CGPoint endPoint;
 }
 
 @end
 
 @implementation TestViewController
-@synthesize viewContnet, tbContent;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    viewContnet.backgroundColor = UIColor.orangeColor;
-    firstHeight = 150.0;
-    [viewContnet mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(firstHeight);
+    tbHeight = SCREEN_WIDTH;
+    imgView = [[UIImageView alloc] init];
+    imgView.image = [UIImage imageNamed:@"messi.jpg"];
+    imgView.contentMode = UIViewContentModeScaleAspectFill;
+    [self.view addSubview: imgView];
+    [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo(tbHeight);
     }];
     
-    tbContent.delegate = self;
-    tbContent.dataSource = self;
-    [tbContent mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewContnet.mas_bottom);
-        make.bottom.left.right.equalTo(self.view);
+    scvContent = [[UIScrollView alloc] init];
+    scvContent.delegate = self;
+    scvContent.backgroundColor = UIColor.clearColor;
+    scvContent.contentSize = CGSizeMake(SCREEN_WIDTH, 1200);
+    scvContent.translatesAutoresizingMaskIntoConstraints  = NO;
+    [self.view addSubview: scvContent];
+    [scvContent mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view);
+        make.bottom.left.equalTo(self.view);
+        make.width.mas_equalTo(SCREEN_WIDTH);
+    }];
+    
+    tbView = [[UITableView alloc] init];
+    tbView.backgroundColor = UIColor.orangeColor;
+    [scvContent addSubview: tbView];
+    [tbView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(scvContent).offset(tbHeight/2);
+        make.left.equalTo(scvContent);
+        make.height.mas_equalTo(500.0);
+        make.width.mas_equalTo(SCREEN_WIDTH);
     }];
 }
 
@@ -64,10 +89,20 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSLog(@"%f", firstHeight + scrollView.contentOffset.y);
-    [viewContnet mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(firstHeight + scrollView.contentOffset.y);
-    }];
+    NSLog(@"%f", scrollView.contentOffset.y);
+    if (scrollView.contentOffset.y <= 0) {
+        [imgView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view);
+        }];
+    }else{
+        if (scrollView.contentOffset.y < tbHeight/2) {
+            [imgView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.view).offset(-scrollView.contentOffset.y);
+            }];
+        }else{
+
+        }
+    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {

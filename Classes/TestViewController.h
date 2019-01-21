@@ -7,9 +7,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TestViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-
-@property(nonatomic, strong) IBOutlet UITableView *tbContent;
-@property(nonatomic, strong) IBOutlet UIView *viewContnet;
+@interface TestViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 
 @end
