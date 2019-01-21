@@ -13,6 +13,7 @@
 @interface iPadDialerViewController (){
     NSMutableArray *listCalls;
     BOOL isDeleted;
+    float hSection;
 }
 
 @end
@@ -47,16 +48,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (IBAction)btnAllPress:(UIButton *)sender {
     if ([LinphoneAppDelegate sharedInstance].historyType == eAllCalls) {
@@ -106,6 +97,7 @@
 
 - (void)setupUIForView {
     self.view.backgroundColor = IPAD_BG_COLOR;
+    hSection = 40.0;
     
     //  header view
     [viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -325,11 +317,47 @@
     return cell;
 }
 
+- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    NSString *titleHeader = @"";
+    NSString *currentDate = [[listCalls objectAtIndex: section] valueForKey:@"title"];
+    NSString *today = [AppUtils checkTodayForHistoryCall: currentDate];
+    if ([today isEqualToString: @"Today"]) {
+        titleHeader =  [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"TODAY"];
+    }else{
+        NSString *yesterday = [AppUtils checkYesterdayForHistoryCall:currentDate];
+        if ([yesterday isEqualToString:@"Yesterday"]) {
+            titleHeader =  [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"YESTERDAY"];
+        }else{
+            titleHeader = currentDate;
+        }
+    }
+    
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, hSection)];
+    headerView.backgroundColor = [UIColor colorWithRed:(243/255.0) green:(244/255.0)
+                                                  blue:(248/255.0) alpha:1.0];
+    
+    UILabel *descLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 150, hSection)];
+    descLabel.textColor = UIColor.darkGrayColor;
+    descLabel.font = [UIFont systemFontOfSize:16.0 weight:UIFontWeightSemibold];
+    descLabel.text = titleHeader;
+    [headerView addSubview: descLabel];
+    return headerView;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     iPadCallHistoryViewController *callHistoryVC = [[iPadCallHistoryViewController alloc] initWithNibName:@"iPadCallHistoryViewController" bundle:nil];
+    
+    KHistoryCallObject *aCall = [[[listCalls objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex: indexPath.row];
+    callHistoryVC.phoneNumber = aCall._phoneNumber;
+    callHistoryVC.onDate = aCall._callDate;
+    
     UINavigationController *navigationVC = [AppUtils createNavigationWithController: callHistoryVC];
     [AppUtils showDetailViewWithController: navigationVC];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return hSection;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

@@ -200,3 +200,5 @@
 "Send" = "Gửi"
 "Please input phone number to transfer" = "Vui lòng nhập số điện thoại để chuyển"
 "Your call has been transfered" = "Cuộc gọi của bạn đã được chuyển thành công"
+"Call" = "Gọi"
+"Send message" = "Gửi tin nhắn"

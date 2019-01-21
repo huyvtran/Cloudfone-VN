@@ -2304,6 +2304,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     iPadKeypadViewController *iPadKeypadVC = [[iPadKeypadViewController alloc] initWithNibName:@"iPadKeypadViewController" bundle:nil];
     
     homeSplitVC = [[HomeSplitViewController alloc] init];
+    homeSplitVC.maximumPrimaryColumnWidth = gia tri;
     homeSplitVC.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
     homeSplitVC.viewControllers = [NSArray arrayWithObjects:tabBars, iPadKeypadVC, nil];
     self.window.rootViewController = homeSplitVC;

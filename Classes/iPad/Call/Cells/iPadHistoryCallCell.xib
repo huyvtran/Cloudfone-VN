@@ -70,7 +70,7 @@
                 <outlet property="lbSepa" destination="H5Q-cd-B4p" id="zaF-RB-pAC"/>
                 <outlet property="lbTime" destination="GdO-hI-IQi" id="qzB-iZ-1pW"/>
             </connections>
-            <point key="canvasLocation" x="19" y="-85.5"/>
+            <point key="canvasLocation" x="-71" y="-144"/>
         </tableViewCell>
     </objects>
     <resources>
