@@ -64,42 +64,43 @@
     NSLog(@"CGRectGetMidX(rect) = %f", CGRectGetMidX(rect));
     NSLog(@"CGRectGetMidY(rect) = %f", CGRectGetMidY(rect));
     
-    CGRect rectangle = CGRectMake(0, 0, rectSize-10, rectSize-10);
+    CGRect rectangle = CGRectMake(0, 0, rectSize-8, rectSize-8);
 
     // offset the draw to allow the line thickness to not get clipped
-    //  CGContextTranslateCTM(context, 5, 5);
+    CGContextTranslateCTM(context, 4.0, 4.0);
     
     //Rounded rectangle
     CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
-    CGContextSetFillColorWithColor(context, UIColor.greenColor.CGColor);
+    CGContextSetFillColorWithColor(context, UIColor.clearColor.CGColor);
     
-    UIBezierPath* roundedPath = [UIBezierPath bezierPathWithRoundedRect:rectangle cornerRadius:rectSize/2];
-    [roundedPath moveToPoint:midLPoint];
-    [roundedPath stroke];
-    [roundedPath fill];
+//    UIBezierPath* roundedPath = [UIBezierPath bezierPathWithRoundedRect:rectangle cornerRadius:rectSize/2];
+//    [roundedPath moveToPoint:midLPoint];
+//    [roundedPath stroke];
+//    [roundedPath fill];
 
     //Rectangle from Fours Bezier Curves
     UIBezierPath *bezierCurvePath = [UIBezierPath bezierPath];
-    bezierCurvePath.lineWidth = 2.0;
+    bezierCurvePath.lineWidth = 4.0;
 
     //set coner points
+    float radius = 8.0;
     CGPoint topLPoint = CGPointMake(CGRectGetMinX(rectangle), CGRectGetMinY(rectangle));
-    topLPoint.x += 8.0;
-    topLPoint.y += 8.0;
+    topLPoint.x += radius;
+    topLPoint.y += radius;
     
     CGPoint topRPoint = CGPointMake(CGRectGetMaxX(rectangle), CGRectGetMinY(rectangle));
-    topRPoint.x -= 8.0;
-    topRPoint.y += 8.0;
+    topRPoint.x -= radius;
+    topRPoint.y += radius;
     
     CGPoint botLPoint = CGPointMake(CGRectGetMinX(rectangle), CGRectGetMaxY(rectangle));
-    botLPoint.x += 8.0;
-    botLPoint.y -= 8.0;
+    botLPoint.x += radius;
+    botLPoint.y -= radius;
     
     CGPoint botRPoint = CGPointMake(CGRectGetMaxX(rectangle), CGRectGetMaxY(rectangle));
-    botRPoint.x -= 8.0;
-    botRPoint.y -= 8.0;
+    botRPoint.x -= radius;
+    botRPoint.y -= radius;
     
-    //set start-end points
+//    //set start-end points
     CGPoint midRPoint = CGPointMake(CGRectGetMaxX(rectangle), CGRectGetMidY(rectangle));
     CGPoint botMPoint = CGPointMake(CGRectGetMidX(rectangle), CGRectGetMaxY(rectangle));
     CGPoint topMPoint = CGPointMake(CGRectGetMidX(rectangle), CGRectGetMinY(rectangle));
@@ -107,36 +108,40 @@
     
 
     //Four Bezier Curve
+    
     [bezierCurvePath moveToPoint:midLPoint];
     [bezierCurvePath addCurveToPoint:topMPoint controlPoint1:topLPoint controlPoint2:topLPoint];
-    [bezierCurvePath moveToPoint:midLPoint];
-    [bezierCurvePath addCurveToPoint:botMPoint controlPoint1:botLPoint controlPoint2:botLPoint];
-    [bezierCurvePath moveToPoint:midRPoint];
-    [bezierCurvePath addCurveToPoint:topMPoint controlPoint1:topRPoint controlPoint2:topRPoint];
+    [bezierCurvePath moveToPoint:topMPoint];
+    [bezierCurvePath addCurveToPoint:midRPoint controlPoint1:topRPoint controlPoint2:topRPoint];
     [bezierCurvePath moveToPoint:midRPoint];
     [bezierCurvePath addCurveToPoint:botMPoint controlPoint1:botRPoint controlPoint2:botRPoint];
-    [bezierCurvePath closePath];
+    [bezierCurvePath moveToPoint:botMPoint];
+    [bezierCurvePath addCurveToPoint:midLPoint controlPoint1:botLPoint controlPoint2:botLPoint];
 
     [bezierCurvePath stroke];
     [bezierCurvePath fill];
+    
+//    CGContextSetStrokeColorWithColor(context, [UIColor greenColor].CGColor);
+//    CGContextTranslateCTM(context, 1, 1);
+//    UIBezierPath *testPath = [UIBezierPath bezierPath];
+//    testPath.lineWidth = 1.0;
+//    [testPath moveToPoint: CGPointMake(midLPoint.x+0.5, midLPoint.y)];
+//    [testPath addLineToPoint: CGPointMake(topMPoint.x, topMPoint.y+0.5)];
+//    [testPath addLineToPoint: CGPointMake(midRPoint.x-0.5, midRPoint.y)];
+//    [testPath addLineToPoint: CGPointMake(botMPoint.x, botMPoint.y-0.5)];
+//    [testPath closePath];
+//    [testPath stroke];
+//    [testPath fill];
+
+//    [bezierCurvePath appendPath: testPath];
+    
     UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
     
     CGContextRestoreGState(context);
 
-    
-    
     UIGraphicsEndImageContext();
     
-    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-    
-    shapeLayer.path = bezierCurvePath.CGPath;
-    shapeLayer.strokeColor = [UIColor blueColor].CGColor;
-    shapeLayer.fillColor = [UIColor colorWithRed:0.02 green:0.75 blue:0.96 alpha:1.0].CGColor;
-    shapeLayer.lineWidth = 2.0;
-    //  [self.view.layer addSublayer:shapeLayer];
-    
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-rectSize)/2, (SCREEN_HEIGHT-rectSize)/2, rectSize, rectSize)];
-    //  [imgView.layer addSublayer: shapeLayer];
     imgView.image = result;
     imgView.backgroundColor = UIColor.clearColor;
     [self.view addSubview: imgView];
