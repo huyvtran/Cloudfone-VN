@@ -26,7 +26,4 @@
 @property (nonatomic, strong) NSString *phoneNumber;
 @property (nonatomic, strong) NSString *onDate;
 
-@property (nonatomic, assign) float sizeWidth;
-
-
 @end

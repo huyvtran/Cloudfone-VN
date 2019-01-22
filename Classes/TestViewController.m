@@ -24,10 +24,124 @@
 
 @implementation TestViewController
 
+#define TOP_LEFT(X, Y) CGPointMake(rect.origin.x + X * limitedRadius, rect.origin.y + Y * limitedRadius)
+#define TOP_RIGHT(X, Y) CGPointMake(rect.origin.x + rect.size.width - X * limitedRadius, rect.origin.y + Y * limitedRadius)
+#define BOTTOM_RIGHT(X, Y) CGPointMake(rect.origin.x + rect.size.width - X * limitedRadius, rect.origin.y + rect.size.height - Y * limitedRadius)
+#define BOTTOM_LEFT(X, Y) CGPointMake(rect.origin.x + X * limitedRadius, rect.origin.y + rect.size.height - Y * limitedRadius)
+
+- (UIImage *) imageWithUIBezierPath: (UIBezierPath *)path
+{
+    CGRect bounds = path.bounds;
+    
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(bounds.size.width + 1 * 2, bounds.size.width + 1 * 2),
+                                           false, [UIScreen mainScreen].scale);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    // offset the draw to allow the line thickness to not get clipped
+    CGContextTranslateCTM(context, 1, 1);
+    
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return result;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(275, 275), false, [UIScreen mainScreen].scale);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(context);
+
+    //set rect size for draw
+
+    CGRect rect = self.view.bounds;
+    float rectSize = 275.;
+    NSLog(@"CGRectGetMidX(rect) = %f", CGRectGetMidX(rect));
+    NSLog(@"CGRectGetMidY(rect) = %f", CGRectGetMidY(rect));
+    
+    CGRect rectangle = CGRectMake(0, 0, rectSize-10, rectSize-10);
+
+    // offset the draw to allow the line thickness to not get clipped
+    //  CGContextTranslateCTM(context, 5, 5);
+    
+    //Rounded rectangle
+    CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
+    CGContextSetFillColorWithColor(context, UIColor.greenColor.CGColor);
+    
+    UIBezierPath* roundedPath = [UIBezierPath bezierPathWithRoundedRect:rectangle cornerRadius:rectSize/2];
+    [roundedPath moveToPoint:midLPoint];
+    [roundedPath stroke];
+    [roundedPath fill];
+
+    //Rectangle from Fours Bezier Curves
+    UIBezierPath *bezierCurvePath = [UIBezierPath bezierPath];
+    bezierCurvePath.lineWidth = 2.0;
+
+    //set coner points
+    CGPoint topLPoint = CGPointMake(CGRectGetMinX(rectangle), CGRectGetMinY(rectangle));
+    topLPoint.x += 8.0;
+    topLPoint.y += 8.0;
+    
+    CGPoint topRPoint = CGPointMake(CGRectGetMaxX(rectangle), CGRectGetMinY(rectangle));
+    topRPoint.x -= 8.0;
+    topRPoint.y += 8.0;
+    
+    CGPoint botLPoint = CGPointMake(CGRectGetMinX(rectangle), CGRectGetMaxY(rectangle));
+    botLPoint.x += 8.0;
+    botLPoint.y -= 8.0;
+    
+    CGPoint botRPoint = CGPointMake(CGRectGetMaxX(rectangle), CGRectGetMaxY(rectangle));
+    botRPoint.x -= 8.0;
+    botRPoint.y -= 8.0;
+    
+    //set start-end points
+    CGPoint midRPoint = CGPointMake(CGRectGetMaxX(rectangle), CGRectGetMidY(rectangle));
+    CGPoint botMPoint = CGPointMake(CGRectGetMidX(rectangle), CGRectGetMaxY(rectangle));
+    CGPoint topMPoint = CGPointMake(CGRectGetMidX(rectangle), CGRectGetMinY(rectangle));
+    CGPoint midLPoint = CGPointMake(CGRectGetMinX(rectangle), CGRectGetMidY(rectangle));
+    
+
+    //Four Bezier Curve
+    [bezierCurvePath moveToPoint:midLPoint];
+    [bezierCurvePath addCurveToPoint:topMPoint controlPoint1:topLPoint controlPoint2:topLPoint];
+    [bezierCurvePath moveToPoint:midLPoint];
+    [bezierCurvePath addCurveToPoint:botMPoint controlPoint1:botLPoint controlPoint2:botLPoint];
+    [bezierCurvePath moveToPoint:midRPoint];
+    [bezierCurvePath addCurveToPoint:topMPoint controlPoint1:topRPoint controlPoint2:topRPoint];
+    [bezierCurvePath moveToPoint:midRPoint];
+    [bezierCurvePath addCurveToPoint:botMPoint controlPoint1:botRPoint controlPoint2:botRPoint];
+    [bezierCurvePath closePath];
+
+    [bezierCurvePath stroke];
+    [bezierCurvePath fill];
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    
+    CGContextRestoreGState(context);
+
+    
+    
+    UIGraphicsEndImageContext();
+    
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    
+    shapeLayer.path = bezierCurvePath.CGPath;
+    shapeLayer.strokeColor = [UIColor blueColor].CGColor;
+    shapeLayer.fillColor = [UIColor colorWithRed:0.02 green:0.75 blue:0.96 alpha:1.0].CGColor;
+    shapeLayer.lineWidth = 2.0;
+    //  [self.view.layer addSublayer:shapeLayer];
+    
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-rectSize)/2, (SCREEN_HEIGHT-rectSize)/2, rectSize, rectSize)];
+    //  [imgView.layer addSublayer: shapeLayer];
+    imgView.image = result;
+    imgView.backgroundColor = UIColor.clearColor;
+    [self.view addSubview: imgView];
+    
+    /*
     tbHeight = SCREEN_WIDTH;
     imgView = [[UIImageView alloc] init];
     imgView.image = [UIImage imageNamed:@"messi.jpg"];
@@ -58,7 +172,7 @@
         make.left.equalTo(scvContent);
         make.height.mas_equalTo(500.0);
         make.width.mas_equalTo(SCREEN_WIDTH);
-    }];
+    }]; */
 }
 
 - (void)didReceiveMemoryWarning {

@@ -62,20 +62,18 @@
     tbHeight = SCREEN_WIDTH;
     hInfo = 150;
     hCell = 35.0;
-    self.sizeWidth = [LinphoneAppDelegate sharedInstance].homeSplitVC.maximumPrimaryColumnWidth;
-    NSLog(@"%f", self.sizeWidth);
     
     scvContent.delegate = self;
     scvContent.backgroundColor = UIColor.redColor;
     [scvContent mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.equalTo(self.view);
-        make.width.mas_equalTo(self.sizeWidth);
+        make.width.mas_equalTo(SCREEN_WIDTH - SPLIT_MASTER_WIDTH);
     }];
     
     //  view info
     [viewInfo mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.equalTo(scvContent);
-        make.width.mas_equalTo(self.sizeWidth);
+        make.width.mas_equalTo(SCREEN_WIDTH - SPLIT_MASTER_WIDTH);
         make.height.mas_equalTo(hInfo);
     }];
     
@@ -148,7 +146,7 @@
         make.top.equalTo(viewInfo.mas_bottom);
         make.left.equalTo(scvContent);
         make.height.mas_equalTo(SCREEN_HEIGHT - (STATUS_BAR_HEIGHT + HEIGHT_IPAD_NAV + hInfo));
-        make.width.mas_equalTo(self.sizeWidth);
+        make.width.mas_equalTo(SCREEN_WIDTH - SPLIT_MASTER_WIDTH);
     }];
 }
 
@@ -219,19 +217,6 @@
 //        make.height.mas_equalTo(listHistoryCalls.count * hCell);
 //    }];
 }
-
-//- (void)viewDidLayoutSubviews
-//{
-//    UIViewController *masterViewController = [[LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers objectAtIndex:0];
-//    UIViewController *detailViewController = [[LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers objectAtIndex:1];
-//
-//    if (detailViewController.view.frame.origin.x > 0.0) {
-//        // Adjust the width of the master view
-//        CGRect masterViewFrame = masterViewController.view.frame;
-//        self.sizeWidth = masterViewFrame.size.width;
-//        [self setupUIForView];
-//    }
-//}
 
 
 - (IBAction)btnCallPressed:(UIButton *)sender {

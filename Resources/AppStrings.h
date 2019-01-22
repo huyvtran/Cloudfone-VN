@@ -26,6 +26,7 @@
 #define HEIGHT_IPAD_HEADER_BUTTON 38.0
 #define HEIGHT_HEADER_BTN 32.0
 #define IPAD_HEADER_FONT_SIZE   24
+#define SPLIT_MASTER_WIDTH  320
 
 #define IPAD_BG_COLOR ([UIColor colorWithRed:(240/255.0) green:(240/255.0) blue:(240/255.0) alpha:1.0])
 #define IPAD_HEADER_BG_COLOR ([UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0])

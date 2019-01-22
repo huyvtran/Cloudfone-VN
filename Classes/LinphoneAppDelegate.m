@@ -566,9 +566,9 @@ void onUncaughtException(NSException* exception)
     }
     
     if (IS_IPHONE || IS_IPOD) {
-        //  [self testRootVC];
-        [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
-        [PhoneMainView.instance updateStatusBar:nil];
+        [self testRootVC];
+        //  [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
+        //  [PhoneMainView.instance updateStatusBar:nil];
     }else{
         contactType = eContactPBX;
         [self settingForStartApplicationWithIpad];
@@ -2304,7 +2304,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     iPadKeypadViewController *iPadKeypadVC = [[iPadKeypadViewController alloc] initWithNibName:@"iPadKeypadViewController" bundle:nil];
     
     homeSplitVC = [[HomeSplitViewController alloc] init];
-    homeSplitVC.maximumPrimaryColumnWidth = gia tri;
+    homeSplitVC.maximumPrimaryColumnWidth = SPLIT_MASTER_WIDTH;
     homeSplitVC.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
     homeSplitVC.viewControllers = [NSArray arrayWithObjects:tabBars, iPadKeypadVC, nil];
     self.window.rootViewController = homeSplitVC;
