@@ -13,7 +13,6 @@
             <connections>
                 <outlet property="btnAll" destination="plJ-Xs-zeP" id="zDa-LH-V81"/>
                 <outlet property="btnMissed" destination="Fy3-GJ-PAX" id="7oZ-ii-s1u"/>
-                <outlet property="imgHeader" destination="hRh-cm-yk0" id="532-D2-bJY"/>
                 <outlet property="imgNoCalls" destination="DYk-Wq-td9" id="vEo-xV-4Yg"/>
                 <outlet property="lbNoCalls" destination="MFB-mK-ZPB" id="0Cd-Eh-9Op"/>
                 <outlet property="tbCalls" destination="bXR-SO-4Dz" id="rFH-b2-yF3"/>
@@ -30,10 +29,6 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background_header.png" translatesAutoresizingMaskIntoConstraints="NO" id="hRh-cm-yk0">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </imageView>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="plJ-Xs-zeP">
                             <rect key="frame" x="99" y="0.0" width="63" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -52,6 +47,7 @@
                             </connections>
                         </button>
                     </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bXR-SO-4Dz">
                     <rect key="frame" x="0.0" y="42" width="320" height="439"/>
@@ -76,7 +72,6 @@
         </view>
     </objects>
     <resources>
-        <image name="background_header.png" width="750" height="130"/>
         <image name="missed_act" width="16" height="16"/>
         <image name="no_calls.png" width="200" height="200"/>
     </resources>

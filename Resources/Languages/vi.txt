@@ -202,3 +202,4 @@
 "Your call has been transfered" = "Cuộc gọi của bạn đã được chuyển thành công"
 "Call" = "Gọi"
 "Send message" = "Gửi tin nhắn"
+"More" = "Thêm"

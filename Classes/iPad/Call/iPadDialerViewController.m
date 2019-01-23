@@ -19,7 +19,7 @@
 @end
 
 @implementation iPadDialerViewController
-@synthesize viewHeader, btnAll, btnMissed, imgHeader;
+@synthesize viewHeader, btnAll, btnMissed;
 @synthesize tbCalls, lbNoCalls, imgNoCalls;
 
 
@@ -40,8 +40,8 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear: animated];
     
-    [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:btnAll radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0] border:2.0];
-    [AppUtils addCornerRadiusTopRightAndBottomRightForButton:btnMissed radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0] border:2.0];
+    [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:btnAll radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:SELECT_TAB_BG_COLOR border:2.0];
+    [AppUtils addCornerRadiusTopRightAndBottomRightForButton:btnMissed radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:SELECT_TAB_BG_COLOR border:2.0];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -89,7 +89,7 @@
 
 - (void)setSelected: (BOOL)selected forButton: (UIButton *)button {
     if (selected) {
-        button.backgroundColor = [UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0];
+        button.backgroundColor = SELECT_TAB_BG_COLOR;
     }else{
         button.backgroundColor = UIColor.clearColor;
     }
@@ -100,17 +100,14 @@
     hSection = 40.0;
     
     //  header view
+    viewHeader.backgroundColor = IPAD_HEADER_BG_COLOR;
     [viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.mas_equalTo(HEIGHT_IPAD_NAV);
     }];
     
-    [imgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(viewHeader);
-    }];
-    
     float top = STATUS_BAR_HEIGHT + (HEIGHT_IPAD_NAV - STATUS_BAR_HEIGHT - HEIGHT_HEADER_BTN)/2;
-    btnAll.backgroundColor = [UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0];
+    btnAll.backgroundColor = SELECT_TAB_BG_COLOR;
     [btnAll setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     [btnAll mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewHeader).offset(top);

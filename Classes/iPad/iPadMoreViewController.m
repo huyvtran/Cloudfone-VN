@@ -33,7 +33,7 @@ typedef enum ipadMoreType{
 @end
 
 @implementation iPadMoreViewController
-@synthesize viewHeader, lbHeader, btnAvatar, tbMenu;
+@synthesize btnAvatar, tbMenu;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -46,6 +46,8 @@ typedef enum ipadMoreType{
     
     [self showContentWithCurrentLanguage];
     [self selectDefaultForView];
+    
+    [self registerNotifications];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,8 +56,8 @@ typedef enum ipadMoreType{
 }
 
 - (void)showContentWithCurrentLanguage {
+    self.title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"More"];
     [self createDataForMenuView];
-    
     [tbMenu reloadData];
 }
 
@@ -76,24 +78,14 @@ typedef enum ipadMoreType{
 
 - (void)setupUIForView {
     self.view.backgroundColor = IPAD_BG_COLOR;
-    //  header view
-    [viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo(HEIGHT_IPAD_NAV);
-    }];
-    
-    lbHeader.font = [UIFont fontWithName:HelveticaNeue size: IPAD_HEADER_FONT_SIZE];
-    [lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.right.equalTo(viewHeader);
-        make.top.equalTo(viewHeader).offset(STATUS_BAR_HEIGHT);
-    }];
     
     //  view info
+    btnAvatar.backgroundColor = UIColor.clearColor;
+    btnAvatar.imageEdgeInsets = UIEdgeInsetsMake(15.0, 15.0, 15.0, 15.0);
     [btnAvatar setImage:[UIImage imageNamed:@"man_user.png"] forState:UIControlStateNormal];
     [btnAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewHeader.mas_bottom);
-        make.left.right.equalTo(self.view);
-        make.height.mas_equalTo(self.view.frame.size.width);
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo(SPLIT_MASTER_WIDTH);
     }];
     
     
@@ -103,10 +95,16 @@ typedef enum ipadMoreType{
     tbMenu.dataSource = self;
     tbMenu.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tbMenu mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(btnAvatar.mas_centerY).offset(-25.0);
+        make.top.equalTo(btnAvatar.mas_centerY).offset(25.0);
         make.left.right.equalTo(self.view);
         make.bottom.equalTo(self.view).offset(-self.tabBarController.tabBar.frame.size.height);
     }];
+}
+
+- (void)registerNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMyAvatar)
+                                                 name:<#(nullable NSNotificationName)#> object:@""]
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAvatarAfterDownloadSuccessful" object:strAvatar];
 }
 
 #pragma mark - uitableview delegate

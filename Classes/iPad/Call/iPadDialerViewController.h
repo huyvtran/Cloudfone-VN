@@ -11,7 +11,6 @@
 @interface iPadDialerViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, BEMCheckBoxDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewHeader;
-@property (weak, nonatomic) IBOutlet UIImageView *imgHeader;
 @property (weak, nonatomic) IBOutlet UIButton *btnAll;
 @property (weak, nonatomic) IBOutlet UIButton *btnMissed;
 

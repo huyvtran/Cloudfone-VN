@@ -30,7 +30,7 @@
 
 #define IPAD_BG_COLOR ([UIColor colorWithRed:(240/255.0) green:(240/255.0) blue:(240/255.0) alpha:1.0])
 #define IPAD_HEADER_BG_COLOR ([UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0])
-
+#define SELECT_TAB_BG_COLOR [UIColor colorWithRed:(15/255.0) green:(73/255.0) blue:(165/255.0) alpha:1.0]
 #define showIpadPopupCall   @"showIpadPopupCall"
 
 

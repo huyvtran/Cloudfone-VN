@@ -198,11 +198,13 @@
     //  header
     
     self.view.backgroundColor = UIColor.whiteColor;
+    viewHeader.backgroundColor = IPAD_HEADER_BG_COLOR;
     [viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.mas_equalTo(HEIGHT_IPAD_NAV);
     }];
     
+    imgHeader.hidden = YES;
     [imgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.equalTo(viewHeader);
     }];
@@ -616,12 +618,7 @@
     AccountState curState = [SipUtils getStateOfDefaultProxyConfig];
     //  No account
     if (curState == eAccountNone) {
-        NSString *content = [NSString stringWithFormat:@"%@", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"You have not set up an account yet. Do you want to setup now?"]];
-        
-        UIAlertView *alertAcc = [[UIAlertView alloc] initWithTitle:nil message:content delegate:self cancelButtonTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Cancel"] otherButtonTitles: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Go to settings"], nil];
-        alertAcc.delegate = self;
-        alertAcc.tag = 1;
-        [alertAcc show];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"You have not set up an account yet. Do you want to setup now?"] duration:2.5 position:CSToastPositionCenter];
         return;
     }
     

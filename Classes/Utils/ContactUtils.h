@@ -14,5 +14,6 @@
 + (NSAttributedString *)getSearchValueFromResultForNewSearchMethod: (NSArray *)searchs;
 + (ContactObject *)getContactWithId: (int)idContact;
 + (PBXContact *)getPBXContactWithId: (int)idContact;
++ (void)addBorderForImageView: (UIImageView *)imageView withRectSize: (float)rectSize strokeWidth: (int)stroke strokeColor: (UIColor *)strokeColor radius: (float)radius;
 
 @end

@@ -29,58 +29,43 @@
 #define BOTTOM_RIGHT(X, Y) CGPointMake(rect.origin.x + rect.size.width - X * limitedRadius, rect.origin.y + rect.size.height - Y * limitedRadius)
 #define BOTTOM_LEFT(X, Y) CGPointMake(rect.origin.x + X * limitedRadius, rect.origin.y + rect.size.height - Y * limitedRadius)
 
-- (UIImage *) imageWithUIBezierPath: (UIBezierPath *)path
-{
-    CGRect bounds = path.bounds;
-    
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(bounds.size.width + 1 * 2, bounds.size.width + 1 * 2),
-                                           false, [UIScreen mainScreen].scale);
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    // offset the draw to allow the line thickness to not get clipped
-    CGContextTranslateCTM(context, 1, 1);
-    
-    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return result;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(275, 275), false, [UIScreen mainScreen].scale);
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSaveGState(context);
-
-    //set rect size for draw
-
-    CGRect rect = self.view.bounds;
     float rectSize = 275.;
-    NSLog(@"CGRectGetMidX(rect) = %f", CGRectGetMidX(rect));
-    NSLog(@"CGRectGetMidY(rect) = %f", CGRectGetMidY(rect));
     
-    CGRect rectangle = CGRectMake(0, 0, rectSize-8, rectSize-8);
+    BOOL supportStroke = YES;
+    float stroke = 0.0;
+    if (supportStroke) {
+        stroke = 4.0;
+    }
+    
+    
+    CGRect rectangle = CGRectMake(0, 0, rectSize-2*stroke, rectSize-2*stroke);
 
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(275, 275), false, [UIScreen mainScreen].scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextClearRect(context, CGRectMake(0, 0, rectSize, rectSize));
+    
+    CGContextSaveGState(context);
+    
+    //set rect size for draw
+    
     // offset the draw to allow the line thickness to not get clipped
-    CGContextTranslateCTM(context, 4.0, 4.0);
+    if (supportStroke) {
+        CGContextTranslateCTM(context, stroke, stroke);
+    }
     
     //Rounded rectangle
     CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
-    CGContextSetFillColorWithColor(context, UIColor.clearColor.CGColor);
+    CGContextSetFillColorWithColor(context, UIColor.greenColor.CGColor);
     
-//    UIBezierPath* roundedPath = [UIBezierPath bezierPathWithRoundedRect:rectangle cornerRadius:rectSize/2];
-//    [roundedPath moveToPoint:midLPoint];
-//    [roundedPath stroke];
-//    [roundedPath fill];
-
     //Rectangle from Fours Bezier Curves
     UIBezierPath *bezierCurvePath = [UIBezierPath bezierPath];
-    bezierCurvePath.lineWidth = 4.0;
+    if (supportStroke) {
+        bezierCurvePath.lineWidth = 4.0;
+    }
 
     //set coner points
     float radius = 8.0;
@@ -108,8 +93,10 @@
     
 
     //Four Bezier Curve
-    
     [bezierCurvePath moveToPoint:midLPoint];
+    [bezierCurvePath addQuadCurveToPoint:CGPointMake(midLPoint.x+5, midLPoint.y/4) controlPoint:CGPointMake(midLPoint.x+10, midLPoint.y/2)];
+    
+    [bezierCurvePath moveToPoint:CGPointMake(midLPoint.x+10, midLPoint.y/2)];
     [bezierCurvePath addCurveToPoint:topMPoint controlPoint1:topLPoint controlPoint2:topLPoint];
     [bezierCurvePath moveToPoint:topMPoint];
     [bezierCurvePath addCurveToPoint:midRPoint controlPoint1:topRPoint controlPoint2:topRPoint];
@@ -121,30 +108,34 @@
     [bezierCurvePath stroke];
     [bezierCurvePath fill];
     
-//    CGContextSetStrokeColorWithColor(context, [UIColor greenColor].CGColor);
-//    CGContextTranslateCTM(context, 1, 1);
-//    UIBezierPath *testPath = [UIBezierPath bezierPath];
-//    testPath.lineWidth = 1.0;
-//    [testPath moveToPoint: CGPointMake(midLPoint.x+0.5, midLPoint.y)];
-//    [testPath addLineToPoint: CGPointMake(topMPoint.x, topMPoint.y+0.5)];
-//    [testPath addLineToPoint: CGPointMake(midRPoint.x-0.5, midRPoint.y)];
-//    [testPath addLineToPoint: CGPointMake(botMPoint.x, botMPoint.y-0.5)];
-//    [testPath closePath];
-//    [testPath stroke];
-//    [testPath fill];
-
-//    [bezierCurvePath appendPath: testPath];
+    CGContextSetFillColorWithColor(context, UIColor.yellowColor.CGColor);
+    UIBezierPath *testPath = [UIBezierPath bezierPath];
+    [testPath moveToPoint: midLPoint];
+    [testPath addLineToPoint: topMPoint];
+    [testPath addLineToPoint: midRPoint];
+    [testPath addLineToPoint: botMPoint];
+    [testPath closePath];
+    [testPath fill];
+    [bezierCurvePath appendPath: testPath];
     
-    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    //  UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
     
     CGContextRestoreGState(context);
 
     UIGraphicsEndImageContext();
     
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    shapeLayer.path = bezierCurvePath.CGPath;
+    
+    
+    [self.view.layer addSublayer:shapeLayer];
+    
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-rectSize)/2, (SCREEN_HEIGHT-rectSize)/2, rectSize, rectSize)];
-    imgView.image = result;
-    imgView.backgroundColor = UIColor.clearColor;
-    [self.view addSubview: imgView];
+    imgView.image = [UIImage imageNamed:@"avatar"];
+    imgView.backgroundColor = UIColor.orangeColor;
+    imgView.layer.mask = shapeLayer;
+    
+    //  [self.view addSubview: imgView];
     
     /*
     tbHeight = SCREEN_WIDTH;
