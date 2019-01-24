@@ -13,23 +13,27 @@
 
 @interface iPadContactDetailViewController () {
     BOOL isPBXContact;
+    UIBarButtonItem *icEdit;
 }
 
 @end
 
 @implementation iPadContactDetailViewController
-@synthesize viewHeader, bgHeader, lbHeader, icEdit, imgAvatar, lbName, icCallPBX, tbDetail, tbPBXDetail, viewNoContacts, imgNoContacts, lbNoContacts;
+@synthesize viewHeader, imgAvatar, lbName, btnCall, btnSendMessage, tbDetail, tbPBXDetail, viewNoContacts, imgNoContacts, lbNoContacts;
 @synthesize detailsContact, detailsPBXContact;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self setupUIForView];
+    
+    icEdit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(iconEditClicked)];
+    self.navigationItem.rightBarButtonItem = icEdit;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
-    lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Contact info"];
+    self.title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Contact info"];
     [self registerNotifications];
 }
 
@@ -38,17 +42,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-- (IBAction)icEditClicked:(UIButton *)sender {
+- (void)iconEditClicked {
 }
 
 - (IBAction)icCallPBXClicked:(UIButton *)sender {
@@ -77,8 +71,11 @@
 }
 
 - (void)displayContactInformation: (NSNotification *)notif {
+    viewNoContacts.hidden = YES;
     id object = [notif object];
     if ([object isKindOfClass:[ContactObject class]]) {
+        self.navigationItem.rightBarButtonItem = icEdit;
+        
         detailsContact = [ContactUtils getContactWithId: [(ContactObject *)object _id_contact]];
         if (![AppUtils isNullOrEmpty:detailsContact._sipPhone]) {
             isPBXContact = YES;
@@ -87,16 +84,18 @@
         }
         
         [self displayContactInformation];
-        icCallPBX.enabled = NO;
+        btnCall.enabled = NO;
         tbDetail.hidden = NO;
         tbPBXDetail.hidden = YES;
         [tbDetail reloadData];
         
     }else if ([object isKindOfClass:[PBXContact class]]) {
+        self.navigationItem.rightBarButtonItem = nil;
+        
         detailsPBXContact = (PBXContact *)object;
         [self displayPBXContactInformation];
         
-        icCallPBX.enabled = YES;
+        btnCall.enabled = YES;
         tbDetail.hidden = YES;
         tbPBXDetail.hidden = NO;
         [tbPBXDetail reloadData];
@@ -106,11 +105,9 @@
 - (void)displayPBXContactInformation
 {
     viewNoContacts.hidden = YES;
-    icEdit.hidden = YES;
-    
     lbName.text = detailsPBXContact._name;
     if ([AppUtils isNullOrEmpty: detailsPBXContact._avatar]) {
-        imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+        imgAvatar.image = [UIImage imageNamed:@"avatar"];
     }else{
         imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: detailsPBXContact._avatar]];
     }
@@ -120,8 +117,6 @@
 {
     viewNoContacts.hidden = YES;
     
-    icEdit.hidden = isPBXContact;
-    
     if ([detailsContact._fullName isEqualToString:@""] && ![detailsContact._sipPhone isEqualToString:@""]) {
         lbName.text = detailsContact._sipPhone;
     }else{
@@ -129,48 +124,74 @@
     }
     
     //  Avatar contact
-    if (detailsContact._avatar == nil || [detailsContact._avatar isEqualToString:@""] || [detailsContact._avatar isEqualToString:@"<null>"] || [detailsContact._avatar isEqualToString:@"(null)"] || [detailsContact._avatar isEqualToString:@"(null)"]) {
-        imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
+    if ([AppUtils isNullOrEmpty: detailsContact._avatar]) {
+        imgAvatar.image = [UIImage imageNamed:@"avatar"];
     }else{
         imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: detailsContact._avatar]];
     }
 }
 
 - (void)setupUIForView {
+    self.view.backgroundColor = viewHeader.backgroundColor = IPAD_BG_COLOR;
     [viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo(HEIGHT_IPAD_NAV + 190.0);
+        make.height.mas_equalTo(140.0);
     }];
     
-    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(viewHeader);
-    }];
+    float hAvatar = 100.0;
+    float padding = 20.0;
     
-    float top = STATUS_BAR_HEIGHT + (HEIGHT_IPAD_NAV - STATUS_BAR_HEIGHT - HEIGHT_IPAD_HEADER_BUTTON)/2;
-    [icEdit mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewHeader).offset(top);
-        make.right.equalTo(viewHeader).offset(-PADDING_HEADER_ICON);
-        make.width.height.mas_equalTo(HEIGHT_IPAD_HEADER_BUTTON);
-    }];
-    
-    [lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(icEdit);
-        make.centerX.equalTo(viewHeader.mas_centerX);
-        make.width.mas_equalTo(200);
-    }];
+    [ContactUtils addBorderForImageView:imgAvatar withRectSize:hAvatar strokeWidth:0 strokeColor:nil radius:4.0];
     
     [imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewHeader).offset(HEIGHT_IPAD_NAV + 10);
-        make.centerX.equalTo(viewHeader.mas_centerX);
-        make.width.height.mas_equalTo(100.0);
+        make.left.equalTo(viewHeader).offset(padding);
+        make.centerY.equalTo(viewHeader.mas_centerY);
+        make.width.height.mas_equalTo(hAvatar);
     }];
     
-    lbName.textColor = UIColor.whiteColor;
+    lbName.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightThin];
+    lbName.textColor = [UIColor colorWithRed:(120/255.0) green:(120/255.0)
+                                        blue:(120/255.0) alpha:1.0];
     [lbName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(imgAvatar.mas_bottom);
-        make.left.right.equalTo(viewHeader);
+        make.top.equalTo(imgAvatar);
+        make.left.equalTo(imgAvatar.mas_right).offset(padding);
+        make.right.equalTo(viewHeader).offset(-padding);
         make.height.mas_equalTo(40.0);
     }];
+    
+    UIFont *btnFont = [UIFont systemFontOfSize:18.0 weight:UIFontWeightThin];
+    CGSize textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Call"] withFont:btnFont];
+    if (textSize.width < 60) {
+        textSize.width = 60.0;
+    }
+    
+    btnCall.layer.cornerRadius = 12.0;
+    btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;
+    [btnCall setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    btnCall.titleLabel.font = btnFont;
+    [btnCall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(lbName.mas_bottom).offset(10.0);
+        make.left.equalTo(lbName);
+        make.width.mas_equalTo(textSize.width + 10.0);
+        make.height.mas_equalTo(40.0);
+    }];
+    
+    textSize = [AppUtils getSizeWithText:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Send message"] withFont:btnFont];
+    if (textSize.width < 60) {
+        textSize.width = 60.0;
+    }
+    
+    btnSendMessage.layer.cornerRadius = btnCall.layer.cornerRadius;
+    //  btnSendMessage.backgroundColor = IPAD_HEADER_BG_COLOR;
+    btnSendMessage.backgroundColor = GRAY_COLOR;
+    [btnSendMessage setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    btnSendMessage.titleLabel.font = btnFont;
+    [btnSendMessage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(btnCall);
+        make.left.equalTo(btnCall.mas_right).offset(10.0);
+        make.width.mas_equalTo(textSize.width + 40.0);
+    }];
+    
     
     //  table contacts
     tbDetail.delegate = self;
@@ -191,24 +212,6 @@
         make.top.left.right.bottom.equalTo(tbDetail);
     }];
     
-    //  button call
-    [icCallPBX setBackgroundImage:[UIImage imageNamed:@"call_disable.png"]
-                             forState:UIControlStateDisabled];
-    [icCallPBX setBackgroundImage:[UIImage imageNamed:@"call_default.png"]
-                         forState:UIControlStateNormal];
-    
-    //  icCallPBX.hidden = YES;
-    icCallPBX.enabled = NO;
-    icCallPBX.layer.cornerRadius = 70.0/2;
-    icCallPBX.clipsToBounds = YES;
-    icCallPBX.layer.borderWidth = 2.0;
-    icCallPBX.layer.borderColor = UIColor.whiteColor.CGColor;
-    [icCallPBX mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view.mas_centerX);
-        make.centerY.equalTo(viewHeader.mas_bottom);
-        make.width.height.mas_equalTo(70.0);
-    }];
-    
     //  view no contacts
     [viewNoContacts mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.equalTo(self.view);
@@ -220,14 +223,9 @@
         make.width.height.mas_equalTo(120.0);
     }];
     
-    if (SCREEN_WIDTH > 320) {
-        lbNoContacts.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
-    }else{
-        lbNoContacts.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:17.0];
-    }
+    lbNoContacts.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightThin];
     lbNoContacts.textAlignment = NSTextAlignmentCenter;
-    lbNoContacts.textColor = [UIColor colorWithRed:(180/255.0) green:(180/255.0)
-                                              blue:(180/255.0) alpha:1.0];
+    lbNoContacts.textColor = GRAY_COLOR;
     [lbNoContacts mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(imgNoContacts.mas_bottom);
         make.left.right.equalTo(viewNoContacts);
@@ -356,4 +354,9 @@
     }
 }
 
+- (IBAction)btnCallPressed:(UIButton *)sender {
+}
+
+- (IBAction)btnSendMessagePressed:(UIButton *)sender {
+}
 @end

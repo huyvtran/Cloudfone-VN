@@ -18,9 +18,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *icSync;
 @property (weak, nonatomic) IBOutlet UIButton *icAddNew;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *icWaiting;
-@property (weak, nonatomic) IBOutlet UIView *viewNoContacts;
-@property (weak, nonatomic) IBOutlet UIImageView *imgNoContacts;
-@property (weak, nonatomic) IBOutlet UILabel *lbNoContacts;
 
 - (IBAction)btnPBXPressed:(UIButton *)sender;
 - (IBAction)btnAllPressed:(UIButton *)sender;

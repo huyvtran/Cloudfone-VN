@@ -203,3 +203,4 @@
 "Call" = "Gọi"
 "Send message" = "Gửi tin nhắn"
 "More" = "Thêm"
+"Search..." = "Tìm kiếm..."

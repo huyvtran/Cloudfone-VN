@@ -261,9 +261,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     _tfSearch.clipsToBounds = YES;
     _tfSearch.textColor = UIColor.whiteColor;
     if ([self._tfSearch respondsToSelector:@selector(setAttributedPlaceholder:)]) {
-        _tfSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Type name or phone number"] attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1.0]}];
+        _tfSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Search..."] attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1.0]}];
     } else {
-        _tfSearch.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Type name or phone number"];
+        _tfSearch.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Search..."];
     }
     [_tfSearch addTarget:self
                   action:@selector(onSearchContactChange:)
@@ -311,21 +311,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (view == eContactAll){
         _iconSyncPBXContact.hidden = YES;
         _iconAddNew.hidden = NO;
-        [self setSelected: YES forButton: _iconAll];
-        [self setSelected: NO forButton: _iconPBX];
+        [AppUtils setSelected: YES forButton: _iconAll];
+        [AppUtils setSelected: NO forButton: _iconPBX];
     }else{
         _iconSyncPBXContact.hidden = NO;
         _iconAddNew.hidden = YES;
-        [self setSelected: NO forButton: _iconAll];
-        [self setSelected: YES forButton: _iconPBX];
-    }
-}
-
-- (void)setSelected: (BOOL)selected forButton: (UIButton *)button {
-    if (selected) {
-        button.backgroundColor = [UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0];
-    }else{
-        button.backgroundColor = UIColor.clearColor;
+        [AppUtils setSelected: NO forButton: _iconAll];
+        [AppUtils setSelected: YES forButton: _iconPBX];
     }
 }
 

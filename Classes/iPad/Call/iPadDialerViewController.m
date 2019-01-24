@@ -79,19 +79,11 @@
 - (void)updateStateIconWithView
 {
     if ([LinphoneAppDelegate sharedInstance].historyType == eAllCalls){
-        [self setSelected: YES forButton: btnAll];
-        [self setSelected: NO forButton: btnMissed];
+        [AppUtils setSelected:YES forButton:btnAll];
+        [AppUtils setSelected:NO forButton:btnMissed];
     }else{
-        [self setSelected: NO forButton: btnAll];
-        [self setSelected: YES forButton: btnMissed];
-    }
-}
-
-- (void)setSelected: (BOOL)selected forButton: (UIButton *)button {
-    if (selected) {
-        button.backgroundColor = SELECT_TAB_BG_COLOR;
-    }else{
-        button.backgroundColor = UIColor.clearColor;
+        [AppUtils setSelected:NO forButton:btnAll];
+        [AppUtils setSelected:YES forButton:btnMissed];
     }
 }
 

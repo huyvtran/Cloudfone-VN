@@ -187,9 +187,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     tfSearch.clipsToBounds = YES;
     tfSearch.textColor = UIColor.whiteColor;
     if ([self.tfSearch respondsToSelector:@selector(setAttributedPlaceholder:)]) {
-        tfSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Type name or phone number"] attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1.0]}];
+        tfSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Search..."] attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1.0]}];
     } else {
-        tfSearch.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Type name or phone number"];
+        tfSearch.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Search..."];
     }
     [tfSearch addTarget:self
                   action:@selector(whenTextFieldDidChange:)
@@ -394,8 +394,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
     }
     
-    if (contact._avatar != nil && ![contact._avatar isEqualToString:@""] && ![contact._avatar isEqualToString:@"<null>"] && ![contact._avatar isEqualToString:@"(null)"] && ![contact._avatar isEqualToString:@"null"])
-    {
+    if (![AppUtils isNullOrEmpty: contact._avatar]){
         NSData *imageData = [NSData dataFromBase64String:contact._avatar];
         cell.image.image = [UIImage imageWithData: imageData];
     }else {

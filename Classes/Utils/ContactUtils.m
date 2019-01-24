@@ -189,6 +189,7 @@
     borderLayer.path = bezierCurvePath.CGPath;
     
     imageView.layer.mask = borderLayer;
+    imageView.clipsToBounds = YES;
 }
 
 @end

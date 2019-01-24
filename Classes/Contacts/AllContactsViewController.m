@@ -251,8 +251,7 @@
         }
     }
     
-    if (contact._avatar != nil && ![contact._avatar isEqualToString:@""] && ![contact._avatar isEqualToString:@"<null>"] && ![contact._avatar isEqualToString:@"(null)"] && ![contact._avatar isEqualToString:@"null"])
-    {
+    if (![AppUtils isNullOrEmpty: contact._avatar]){
         NSData *imageData = [NSData dataFromBase64String:contact._avatar];
         cell.image.image = [UIImage imageWithData: imageData];
     }else {

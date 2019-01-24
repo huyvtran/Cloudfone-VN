@@ -189,6 +189,11 @@ static UICompositeViewDescription *compositeDescription = nil;
     int count = linphone_core_get_calls_nb([LinphoneManager getLc]);
     if (count > 0) {
         phoneNumber = [self getPhoneNumberOfCall];
+        
+        if (LinphoneManager.instance.bluetoothAvailable) {
+            [LinphoneManager.instance setSpeakerEnabled:FALSE];
+            [LinphoneManager.instance setBluetoothEnabled:TRUE];
+        }
     }
     
     [WriteLogsUtils writeForGoToScreen: @"CallView"];
@@ -216,10 +221,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     _nameLabel.text = @"";
 
 	// Update on show
-	[self hideRoutes:TRUE animated:FALSE];
+	[self hideRoutes:NO animated:FALSE];
 	[self hideOptions:TRUE animated:FALSE];
 	[self hidePad:TRUE animated:FALSE];
-	[self hideSpeaker:LinphoneManager.instance.bluetoothAvailable];
 	[self callDurationUpdate];
 	[self onCurrentCallChange];
 	
@@ -288,6 +292,51 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[self callUpdate:call state:state animated:FALSE message:@""];
     
     [self requestAccessToMicroIfNot];
+    
+    UIButton *test = [[UIButton alloc] initWithFrame:CGRectMake(10, 10, 100, 30)];
+    test.backgroundColor = UIColor.redColor;
+    [test addTarget:self
+             action:@selector(testtest)
+   forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview: test];
+}
+
+- (AVAudioSessionPortDescription*)bluetoothAudioDevice
+{
+    NSArray* bluetoothRoutes = @[AVAudioSessionPortBluetoothA2DP, AVAudioSessionPortBluetoothLE, AVAudioSessionPortBluetoothHFP];
+    return [self audioDeviceFromTypes:bluetoothRoutes];
+}
+
+- (void)testtest {
+    NSError* audioError = nil;
+    BOOL changeResult = NO;
+    AVAudioSessionPortDescription* _bluetoothPort = [self bluetoothAudioDevice];
+    changeResult = [[AVAudioSession sharedInstance] setPreferredInput:_bluetoothPort
+                                                                error:&audioError];
+    
+    [[AVAudioSession sharedInstance]
+     setCategory:AVAudioSessionCategoryPlayAndRecord
+     withOptions:AVAudioSessionCategoryOptionAllowBluetoothA2DP| AVAudioSessionCategoryOptionAllowAirPlay
+     error:nil];
+    
+    if (changeResult) {
+        NSLog(@"OKE OKE");
+    }else{
+        NSLog(@"NO OKE");
+    }
+}
+
+- (AVAudioSessionPortDescription*)audioDeviceFromTypes:(NSArray*)types
+{
+    NSArray* routes = [[AVAudioSession sharedInstance] availableInputs];
+    for (AVAudioSessionPortDescription* route in routes)
+    {
+        if ([types containsObject:route.portType])
+        {
+            return route;
+        }
+    }
+    return nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -520,8 +569,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)hideSpeaker:(BOOL)hidden {
-	_speakerButton.hidden = hidden;
-	_routesButton.hidden = !hidden;
+	//  _speakerButton.hidden = hidden;
+	//  _routesButton.hidden = !hidden;
 }
 
 #pragma mark - Event Functions
@@ -530,6 +579,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
         bool available = [[notif.userInfo objectForKey:@"available"] intValue];
         [self hideSpeaker:available];
+        //  [Khai Le - 25/01/2019]
+        if (available) {
+            [LinphoneManager.instance setSpeakerEnabled:FALSE];
+            [LinphoneManager.instance setBluetoothEnabled:TRUE];
+            
+//            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]:\n-------------> setSpeakerEnabled = FALSE and setBluetoothEnabled = TRUE \n", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+        }
     });
 }
 
@@ -867,7 +923,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)onRoutesBluetoothClick:(id)sender {
-	[self hideRoutes:TRUE animated:TRUE];
+	//  [self hideRoutes:TRUE animated:TRUE];
 	[LinphoneManager.instance setSpeakerEnabled:FALSE];
 	[LinphoneManager.instance setBluetoothEnabled:TRUE];
     
@@ -875,7 +931,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)onRoutesEarpieceClick:(id)sender {
-	[self hideRoutes:TRUE animated:TRUE];
+	//  [self hideRoutes:TRUE animated:TRUE];
 	[LinphoneManager.instance setSpeakerEnabled:FALSE];
 	[LinphoneManager.instance setBluetoothEnabled:FALSE];
     

@@ -426,7 +426,7 @@
                             </subviews>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
-                        <view hidden="YES" tag="37" contentMode="scaleToFill" id="qcR-Qb-Bst" userLabel="routesView">
+                        <view tag="37" contentMode="scaleToFill" id="qcR-Qb-Bst" userLabel="routesView">
                             <rect key="frame" x="188" y="301" width="94" height="198"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <subviews>
@@ -437,6 +437,7 @@
                                 <button opaque="NO" tag="39" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" id="6uv-FV-mUL" userLabel="routesBluetoothButton" customClass="UIBluetoothButton">
                                     <rect key="frame" x="0.0" y="0.0" width="94" height="66"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" red="0.0054755001599999997" green="1" blue="0.30046484340000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" label="Bluetooth"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <inset key="titleEdgeInsets" minX="0.0" minY="28" maxX="0.0" maxY="0.0"/>
@@ -458,6 +459,7 @@
                                 <button opaque="NO" tag="40" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" id="jSA-bD-bCs" userLabel="routesEarpieceButton">
                                     <rect key="frame" x="0.0" y="66" width="94" height="66"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" label="Receiver"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <inset key="titleEdgeInsets" minX="0.0" minY="28" maxX="0.0" maxY="0.0"/>
@@ -477,6 +479,7 @@
                                     </connections>
                                 </button>
                             </subviews>
+                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <view hidden="YES" tag="42" contentMode="scaleToFill" id="sHZ-53-Hta" userLabel="optionsView">
                             <rect key="frame" x="282" y="301" width="94" height="198"/>
@@ -1306,7 +1309,7 @@
         </view>
     </objects>
     <resources>
-        <image name="avatar.png" width="259" height="259"/>
+        <image name="avatar.png" width="200" height="200"/>
         <image name="call-background.jpg" width="750" height="1334"/>
         <image name="call_hangup_default.png" width="42" height="36"/>
         <image name="camera_default.png" width="33" height="19"/>

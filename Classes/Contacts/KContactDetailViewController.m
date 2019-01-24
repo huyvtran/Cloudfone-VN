@@ -271,7 +271,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     
     //  Avatar contact
-    if (detailsContact._avatar == nil || [detailsContact._avatar isEqualToString:@""] || [detailsContact._avatar isEqualToString:@"<null>"] || [detailsContact._avatar isEqualToString:@"(null)"] || [detailsContact._avatar isEqualToString:@"(null)"]) {
+    if ([AppUtils isNullOrEmpty:detailsContact._avatar]) {
         _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
     }else{
         _imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: detailsContact._avatar]];

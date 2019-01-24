@@ -985,4 +985,12 @@
     [LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers = viewControllers;
 }
 
++ (void)setSelected: (BOOL)selected forButton: (UIButton *)button {
+    if (selected) {
+        button.backgroundColor = SELECT_TAB_BG_COLOR;
+    }else{
+        button.backgroundColor = UIColor.clearColor;
+    }
+}
+
 @end

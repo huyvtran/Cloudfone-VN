@@ -118,5 +118,6 @@
 
 + (UINavigationController *)createNavigationWithController: (UIViewController *)viewController;
 + (void)showDetailViewWithController: (UIViewController *)detailVC;
++ (void)setSelected: (BOOL)selected forButton: (UIButton *)button;
 
 @end

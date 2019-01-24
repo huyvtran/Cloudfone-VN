@@ -36,7 +36,7 @@
 @end
 
 @implementation iPadContactsViewController
-@synthesize viewHeader, btnAll, btnPBX, tfSearch, tbContacts, icSync, icAddNew, icWaiting, viewNoContacts, lbNoContacts, imgNoContacts;
+@synthesize viewHeader, btnAll, btnPBX, tfSearch, tbContacts, icSync, icAddNew, icWaiting;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -136,8 +136,8 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear: animated];
     
-    [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:btnPBX radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0] border:2.0];
-    [AppUtils addCornerRadiusTopRightAndBottomRightForButton:btnAll radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0] border:2.0];
+    [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:btnPBX radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:SELECT_TAB_BG_COLOR border:2.0];
+    [AppUtils addCornerRadiusTopRightAndBottomRightForButton:btnAll radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:SELECT_TAB_BG_COLOR border:2.0];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -164,6 +164,7 @@
     isSearching = NO;
     [self showAndReloadContactList];
     [tbContacts reloadData];
+    [self selectFirstContactIfExists];
 }
 
 - (IBAction)btnAllPressed:(UIButton *)sender {
@@ -175,6 +176,7 @@
     isSearching = NO;
     [self showAndReloadContactList];
     [tbContacts reloadData];
+    [self selectFirstContactIfExists];
 }
 
 - (IBAction)icSyncClicked:(UIButton *)sender {
@@ -194,7 +196,6 @@
 - (void)showContentWithCurrentLanguage {
     [btnPBX setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"PBX"] forState:UIControlStateNormal];
     [btnAll setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Contacts"] forState:UIControlStateNormal];
-    lbNoContacts.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No contacts"];
 }
 
 - (void)setupUIForView {
@@ -222,7 +223,7 @@
         make.width.height.mas_equalTo(HEIGHT_IPAD_HEADER_BUTTON);
     }];
     
-    btnPBX.backgroundColor = [UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0];
+    btnPBX.backgroundColor = SELECT_TAB_BG_COLOR;
     [btnPBX setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"PBX"] forState:UIControlStateNormal];
     [btnPBX setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     [btnPBX mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -251,9 +252,9 @@
     tfSearch.clipsToBounds = YES;
     tfSearch.textColor = UIColor.whiteColor;
     if ([tfSearch respondsToSelector:@selector(setAttributedPlaceholder:)]) {
-        tfSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Type name or phone number"] attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1.0]}];
+        tfSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Search..."] attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:(230/255.0) green:(230/255.0) blue:(230/255.0) alpha:1.0]}];
     } else {
-        tfSearch.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Type name or phone number"];
+        tfSearch.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Search..."];
     }
     [tfSearch addTarget:self
                  action:@selector(onSearchContactChange:)
@@ -315,28 +316,6 @@
     
     [icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.equalTo(tbContacts);
-    }];
-    
-    //  view no contacts
-    viewNoContacts.hidden = YES;
-    viewNoContacts.backgroundColor = UIColor.clearColor;
-    [viewNoContacts mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(tbContacts);
-    }];
-    
-    [imgNoContacts mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(viewNoContacts.mas_centerX);
-        make.centerY.equalTo(viewNoContacts.mas_centerY).offset(-40);
-        make.width.height.mas_equalTo(120.0);
-    }];
-    
-    lbNoContacts.textAlignment = NSTextAlignmentCenter;
-    lbNoContacts.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightThin];
-    lbNoContacts.textColor = GRAY_COLOR;
-    [lbNoContacts mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(imgNoContacts.mas_bottom);
-        make.left.right.equalTo(viewNoContacts);
-        make.height.mas_equalTo(40.0);
     }];
 }
 
@@ -515,7 +494,6 @@
         
         return cell;
     }else{
-        
         ContactObject *contact = [[ContactObject alloc] init];
         NSString *key = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section];
         contact = [[contactSections objectForKey: key] objectAtIndex:indexPath.row];
@@ -537,8 +515,7 @@
             }
         }
         
-        if (contact._avatar != nil && ![contact._avatar isEqualToString:@""] && ![contact._avatar isEqualToString:@"<null>"] && ![contact._avatar isEqualToString:@"(null)"] && ![contact._avatar isEqualToString:@"null"])
-        {
+        if (![AppUtils isNullOrEmpty: contact._avatar]) {
             NSData *imageData = [NSData dataFromBase64String:contact._avatar];
             cell.image.image = [UIImage imageWithData: imageData];
         }else {
@@ -749,22 +726,14 @@
         icSync.hidden = NO;
         icAddNew.hidden = YES;
         
-        [self setSelected: NO forButton: btnAll];
-        [self setSelected: YES forButton: btnPBX];
+        [AppUtils setSelected: NO forButton: btnAll];
+        [AppUtils setSelected: YES forButton: btnPBX];
     }else{
         icSync.hidden = YES;
         icAddNew.hidden = NO;
         
-        [self setSelected: YES forButton: btnAll];
-        [self setSelected: NO forButton: btnPBX];
-    }
-}
-
-- (void)setSelected: (BOOL)selected forButton: (UIButton *)button {
-    if (selected) {
-        button.backgroundColor = [UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0];
-    }else{
-        button.backgroundColor = UIColor.clearColor;
+        [AppUtils setSelected: YES forButton: btnAll];
+        [AppUtils setSelected: NO forButton: btnPBX];
     }
 }
 
@@ -779,12 +748,29 @@
     }
     
     if (contactList.count == 0) {
-        viewNoContacts.hidden = NO;
         tbContacts.hidden = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"showViewNoContactsDetailForIpad" object:nil];
     }else{
         tbContacts.hidden = NO;
-        viewNoContacts.hidden = YES;
+    }
+}
+
+- (void)selectFirstContactIfExists {
+    if ([contactSections allKeys].count > 0) {
+        [tbContacts selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+        
+        if ([LinphoneAppDelegate sharedInstance].contactType == eContactPBX) {
+            NSString *key = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:0];
+            PBXContact *contact = [[contactSections objectForKey: key] objectAtIndex:0];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:showContactInformation
+                                                                object:contact];
+        }else{
+            NSString *key = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:0];
+            ContactObject *contact = [[contactSections objectForKey: key] objectAtIndex:0];
+            [[NSNotificationCenter defaultCenter] postNotificationName:showContactInformation
+                                                                object:contact];
+        }
     }
 }
 

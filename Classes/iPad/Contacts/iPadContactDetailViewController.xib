@@ -11,12 +11,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="iPadContactDetailViewController">
             <connections>
-                <outlet property="bgHeader" destination="wvG-UO-VZp" id="pB6-26-amV"/>
-                <outlet property="icCallPBX" destination="QO6-qV-7X2" id="gL5-cZ-Dt5"/>
-                <outlet property="icEdit" destination="yc0-ss-kcX" id="ZK3-tO-zfg"/>
+                <outlet property="btnCall" destination="QO6-qV-7X2" id="Nfg-ap-xXD"/>
+                <outlet property="btnSendMessage" destination="OJp-jG-PeH" id="h8m-c4-BGE"/>
                 <outlet property="imgAvatar" destination="8HF-wB-Wet" id="P9j-8S-UqR"/>
                 <outlet property="imgNoContacts" destination="K5Y-Sq-Yuz" id="uPf-kk-Nod"/>
-                <outlet property="lbHeader" destination="BNU-T0-5OF" id="aSV-d5-N9C"/>
                 <outlet property="lbName" destination="DAg-Wa-aJg" id="yVx-7z-7rK"/>
                 <outlet property="lbNoContacts" destination="5VF-jf-KyM" id="2m1-MF-fxB"/>
                 <outlet property="tbDetail" destination="Jnm-dt-hwl" id="R1s-gL-7sj"/>
@@ -32,67 +30,59 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S82-3t-nOG" userLabel="ToolBar View">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="140"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="108"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background_header.png" translatesAutoresizingMaskIntoConstraints="NO" id="wvG-UO-VZp">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="140"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="8HF-wB-Wet">
+                            <rect key="frame" x="8" y="19" width="69" height="69"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Thông tin liên lạc" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BNU-T0-5OF">
-                            <rect key="frame" x="89" y="10" width="142" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yc0-ss-kcX">
-                            <rect key="frame" x="278" y="1" width="40" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" backgroundImage="ic_edit.png">
-                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="icEditClicked:" destination="-1" eventType="touchUpInside" id="0Vm-XQ-Omt"/>
-                            </connections>
-                        </button>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="no_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="8HF-wB-Wet">
-                            <rect key="frame" x="128" y="39" width="49" height="49"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Contact Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAg-Wa-aJg" customClass="MarqueeLabel">
-                            <rect key="frame" x="41" y="96" width="223" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Contact Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAg-Wa-aJg" customClass="MarqueeLabel">
+                            <rect key="frame" x="85" y="19" width="189" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QO6-qV-7X2">
+                            <rect key="frame" x="85" y="56" width="79" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.16862745100000001" green="0.53333333329999999" blue="0.95294117649999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" title="Call"/>
+                            <connections>
+                                <action selector="btnCallPressed:" destination="-1" eventType="touchUpInside" id="ZsM-MY-r1M"/>
+                                <action selector="icCallPBXClicked:" destination="-1" eventType="touchUpInside" id="s7u-P7-lif"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OJp-jG-PeH">
+                            <rect key="frame" x="172" y="56" width="120" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.16862745100000001" green="0.53333333329999999" blue="0.95294117649999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" title="Send message"/>
+                            <connections>
+                                <action selector="btnSendMessagePressed:" destination="-1" eventType="touchUpInside" id="5eC-S1-lHd"/>
+                                <action selector="icCallPBXClicked:" destination="-1" eventType="touchUpInside" id="032-XK-kct"/>
+                            </connections>
+                        </button>
                     </subviews>
+                    <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Jnm-dt-hwl">
-                    <rect key="frame" x="0.0" y="140" width="320" height="320"/>
+                    <rect key="frame" x="0.0" y="108" width="320" height="352"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                 </tableView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nI7-4D-rHh">
-                    <rect key="frame" x="40" y="166" width="240" height="128"/>
+                    <rect key="frame" x="0.0" y="108" width="320" height="352"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QO6-qV-7X2">
-                    <rect key="frame" x="137" y="115" width="76" height="76"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" backgroundImage="call_default.png"/>
-                    <connections>
-                        <action selector="icCallPBXClicked:" destination="-1" eventType="touchUpInside" id="s7u-P7-lif"/>
-                    </connections>
-                </button>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gOu-Ht-DYR">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="phone_book.png" translatesAutoresizingMaskIntoConstraints="NO" id="K5Y-Sq-Yuz">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="phonebook_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="K5Y-Sq-Yuz">
                             <rect key="frame" x="108" y="164" width="104" height="104"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
@@ -113,10 +103,7 @@
         </view>
     </objects>
     <resources>
-        <image name="background_header.png" width="750" height="130"/>
-        <image name="call_default.png" width="201" height="201"/>
-        <image name="ic_edit.png" width="100" height="100"/>
-        <image name="no_avatar.png" width="198" height="198"/>
-        <image name="phone_book.png" width="300" height="300"/>
+        <image name="avatar.png" width="200" height="200"/>
+        <image name="phonebook_empty.png" width="200" height="200"/>
     </resources>
 </document>

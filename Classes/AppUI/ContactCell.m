@@ -69,7 +69,15 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
+    if (!IS_IPHONE && !IS_IPOD) {
+        if (selected) {
+            self.backgroundColor = IPAD_BG_COLOR;
+        }else{
+            self.backgroundColor = UIColor.whiteColor;
+        }
+    }
+    
+    
     // Configure the view for the selected state
 }
 
@@ -78,7 +86,11 @@
         self.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
                                                 blue:(240/255.0) alpha:1];
     }else{
-        self.backgroundColor = UIColor.clearColor;
+        if (IS_IPHONE || IS_IPOD) {
+            self.backgroundColor = UIColor.clearColor;
+        }else{
+            self.backgroundColor = UIColor.whiteColor;
+        }
     }
 }
 

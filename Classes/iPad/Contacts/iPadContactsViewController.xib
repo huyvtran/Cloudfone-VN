@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,13 +16,10 @@
                 <outlet property="icAddNew" destination="D3b-bF-Z1J" id="yxj-D3-jhg"/>
                 <outlet property="icSync" destination="53f-Ov-bq7" id="ul9-wY-Shr"/>
                 <outlet property="icWaiting" destination="pMf-9M-ecA" id="rUO-SI-bX0"/>
-                <outlet property="imgNoContacts" destination="jEY-5z-Zwf" id="mda-2D-7nk"/>
-                <outlet property="lbNoContacts" destination="Zdn-1b-8QV" id="W31-TA-TjT"/>
                 <outlet property="tbContacts" destination="eQu-Rb-hMv" id="yd4-WU-MRs"/>
                 <outlet property="tfSearch" destination="ldN-Bb-FBd" id="aH2-sC-WaJ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="viewHeader" destination="ceZ-61-qIJ" id="Fw5-mF-fDd"/>
-                <outlet property="viewNoContacts" destination="GDf-BC-WML" id="gKf-Hg-QjO"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -77,24 +74,6 @@
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GDf-BC-WML">
-                    <rect key="frame" x="0.0" y="90" width="320" height="370"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="phonebook_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="jEY-5z-Zwf">
-                            <rect key="frame" x="40" y="121" width="240" height="128"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zdn-1b-8QV">
-                            <rect key="frame" x="139" y="174" width="42" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eQu-Rb-hMv">
                     <rect key="frame" x="0.0" y="90" width="320" height="370"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -114,6 +93,5 @@
         <image name="ic_add_def.png" width="100" height="100"/>
         <image name="ic_sync.png" width="100" height="100"/>
         <image name="missed_act" width="16" height="16"/>
-        <image name="phonebook_empty.png" width="200" height="200"/>
     </resources>
 </document>

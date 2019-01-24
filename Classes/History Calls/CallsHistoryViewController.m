@@ -208,21 +208,14 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)updateStateIconWithView: (int)view
 {
     if (view == eAllCalls){
-        [self setSelected: YES forButton: _iconAll];
-        [self setSelected: NO forButton: _iconMissed];
+        [AppUtils setSelected: YES forButton: _iconAll];
+        [AppUtils setSelected: NO forButton: _iconMissed];
     }else{
-        [self setSelected: NO forButton: _iconAll];
-        [self setSelected: YES forButton: _iconMissed];
+        [AppUtils setSelected: NO forButton: _iconAll];
+        [AppUtils setSelected: YES forButton: _iconMissed];
     }
 }
 
-- (void)setSelected: (BOOL)selected forButton: (UIButton *)button {
-    if (selected) {
-        button.backgroundColor = [UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0];
-    }else{
-        button.backgroundColor = UIColor.clearColor;
-    }
-}
 
 //  setup trạng thái cho các button
 - (void)autoLayoutForView {
