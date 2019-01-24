@@ -150,6 +150,7 @@ typedef enum{
 @property (nonatomic, strong) HomeSplitViewController *homeSplitVC;
 @property (nonatomic, assign) eContact contactType;
 @property (nonatomic, assign) eTypeHistory historyType;
+@property (nonatomic, assign) float hNavigation;
 
 @property (nonatomic, assign) BOOL callTransfered;
 

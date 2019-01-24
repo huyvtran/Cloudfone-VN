@@ -100,13 +100,15 @@
     hSection = 40.0;
     
     //  header view
+    float hNav = [LinphoneAppDelegate sharedInstance].hNavigation;
+    float hHeader = STATUS_BAR_HEIGHT + hNav + 60.0;
     viewHeader.backgroundColor = IPAD_HEADER_BG_COLOR;
     [viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo(HEIGHT_IPAD_NAV);
+        make.height.mas_equalTo(hHeader);
     }];
     
-    float top = STATUS_BAR_HEIGHT + (HEIGHT_IPAD_NAV - STATUS_BAR_HEIGHT - HEIGHT_HEADER_BTN)/2;
+    float top = STATUS_BAR_HEIGHT + (hNav - STATUS_BAR_HEIGHT - HEIGHT_HEADER_BTN)/2;
     btnAll.backgroundColor = SELECT_TAB_BG_COLOR;
     [btnAll setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     [btnAll mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -144,18 +146,13 @@
     }];
     
     lbNoCalls.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No call in your history"];
-    lbNoCalls.textColor = [UIColor colorWithRed:(180/255.0) green:(180/255.0)
-                                           blue:(180/255.0) alpha:1.0];
+    lbNoCalls.textColor = GRAY_COLOR;
+    lbNoCalls.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightThin];
     [lbNoCalls mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(imgNoCalls.mas_bottom).offset(10.0);
         make.left.right.equalTo(self.view);
         make.height.mas_equalTo(50.0);
     }];
-    if (SCREEN_WIDTH > 320) {
-        lbNoCalls.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
-    }else{
-        lbNoCalls.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:17.0];
-    }
 }
 
 - (void)getHistoryCallForUser

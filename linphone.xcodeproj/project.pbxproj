@@ -162,6 +162,7 @@
 		15E9154321C4C40B0083EC30 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 844DEF071FE8D3410047A358 /* Intents.framework */; };
 		15E9B6D221F0863600F25EA1 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15E9B6D021F0863500F25EA1 /* TestViewController.m */; };
 		15E9B6D321F0863600F25EA1 /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15E9B6D121F0863500F25EA1 /* TestViewController.xib */; };
+		15EB292321F9BAB00048C459 /* phonebook_empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 15EB291C21F9BAB00048C459 /* phonebook_empty.png */; };
 		15EB547F21E0619200636C63 /* ColorCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15EB547D21E0619200636C63 /* ColorCollectionCell.m */; };
 		15EB548021E0619200636C63 /* ColorCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15EB547E21E0619200636C63 /* ColorCollectionCell.xib */; };
 		15EB548221E08C1200636C63 /* bg_transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = 15EB548121E08C1100636C63 /* bg_transparent.png */; };
@@ -1116,6 +1117,7 @@
 		15E9B6CF21F0863500F25EA1 /* TestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		15E9B6D021F0863500F25EA1 /* TestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		15E9B6D121F0863500F25EA1 /* TestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
+		15EB291C21F9BAB00048C459 /* phonebook_empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = phonebook_empty.png; sourceTree = "<group>"; };
 		15EB547C21E0619200636C63 /* ColorCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ColorCollectionCell.h; path = Drawing/ColorCollectionCell.h; sourceTree = "<group>"; };
 		15EB547D21E0619200636C63 /* ColorCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ColorCollectionCell.m; path = Drawing/ColorCollectionCell.m; sourceTree = "<group>"; };
 		15EB547E21E0619200636C63 /* ColorCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ColorCollectionCell.xib; path = Drawing/ColorCollectionCell.xib; sourceTree = "<group>"; };
@@ -3064,6 +3066,7 @@
 			children = (
 				156910DD21F5AC2A005D20DF /* messi.jpg */,
 				1584470321F80B6A00BFC96E /* avatar.png */,
+				15EB291C21F9BAB00048C459 /* phonebook_empty.png */,
 				84F81BD321EF83E1009629C9 /* ic_speaker_black.png */,
 				84F81BD421EF83E2009629C9 /* ic_speaker_white.png */,
 				848C5D9321F4369B00094D7C /* ic_speaker_gray.png */,
@@ -4503,6 +4506,7 @@
 				84C47D171FB632640015695E /* IncomingCallViewController.xib in Resources */,
 				638F1A911C21993D004B8E02 /* UICompositeView~ipad.xib in Resources */,
 				153D00302164D537007B69B3 /* menu_more_en_act.png in Resources */,
+				15EB292321F9BAB00048C459 /* phonebook_empty.png in Resources */,
 				63AADC011B6A0FF200AA16FD /* assistant_linphone_existing.rc in Resources */,
 				84F81BC921EF6FFA009629C9 /* ic_call_blue.png in Resources */,
 				8440F181216BA82000BB559C /* mini_key_3_hover.png in Resources */,

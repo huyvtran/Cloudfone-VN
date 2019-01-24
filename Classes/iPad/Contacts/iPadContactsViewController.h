@@ -11,7 +11,6 @@
 @interface iPadContactsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, WebServicesDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewHeader;
-@property (weak, nonatomic) IBOutlet UIImageView *bgHeader;
 @property (weak, nonatomic) IBOutlet UIButton *btnPBX;
 @property (weak, nonatomic) IBOutlet UIButton *btnAll;
 @property (weak, nonatomic) IBOutlet UITextField *tfSearch;
@@ -19,6 +18,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *icSync;
 @property (weak, nonatomic) IBOutlet UIButton *icAddNew;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *icWaiting;
+@property (weak, nonatomic) IBOutlet UIView *viewNoContacts;
+@property (weak, nonatomic) IBOutlet UIImageView *imgNoContacts;
+@property (weak, nonatomic) IBOutlet UILabel *lbNoContacts;
 
 - (IBAction)btnPBXPressed:(UIButton *)sender;
 - (IBAction)btnAllPressed:(UIButton *)sender;

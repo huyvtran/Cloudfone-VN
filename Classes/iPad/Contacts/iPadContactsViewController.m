@@ -28,7 +28,6 @@
     
     BOOL isFound;
     BOOL found;
-    UIFont *textFont;
     
     WebServices *webService;
     NSTimer *searchTimer;
@@ -37,7 +36,7 @@
 @end
 
 @implementation iPadContactsViewController
-@synthesize viewHeader, bgHeader, btnAll, btnPBX, tfSearch, tbContacts, icSync, icAddNew, icWaiting;
+@synthesize viewHeader, btnAll, btnPBX, tfSearch, tbContacts, icSync, icAddNew, icWaiting, viewNoContacts, lbNoContacts, imgNoContacts;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -194,28 +193,18 @@
 
 - (void)showContentWithCurrentLanguage {
     [btnPBX setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"PBX"] forState:UIControlStateNormal];
-    [btnPBX setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Contacts"] forState:UIControlStateNormal];
+    [btnAll setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Contacts"] forState:UIControlStateNormal];
+    lbNoContacts.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No contacts"];
 }
 
 - (void)setupUIForView {
-    if (SCREEN_WIDTH > 320) {
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
-    }else{
-        textFont = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
-    }
+    self.view.backgroundColor = IPAD_BG_COLOR;
     
     //  header view
+    viewHeader.backgroundColor = IPAD_HEADER_BG_COLOR;
     [viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.mas_equalTo(HEIGHT_IPAD_NAV + 60.0);
-    }];
-    
-    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(viewHeader);
-    }];
-    
-    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(viewHeader);
     }];
     
     float top = STATUS_BAR_HEIGHT + (HEIGHT_IPAD_NAV - STATUS_BAR_HEIGHT - HEIGHT_IPAD_HEADER_BUTTON)/2;
@@ -326,6 +315,28 @@
     
     [icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.equalTo(tbContacts);
+    }];
+    
+    //  view no contacts
+    viewNoContacts.hidden = YES;
+    viewNoContacts.backgroundColor = UIColor.clearColor;
+    [viewNoContacts mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(tbContacts);
+    }];
+    
+    [imgNoContacts mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(viewNoContacts.mas_centerX);
+        make.centerY.equalTo(viewNoContacts.mas_centerY).offset(-40);
+        make.width.height.mas_equalTo(120.0);
+    }];
+    
+    lbNoContacts.textAlignment = NSTextAlignmentCenter;
+    lbNoContacts.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightThin];
+    lbNoContacts.textColor = GRAY_COLOR;
+    [lbNoContacts mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(imgNoContacts.mas_bottom);
+        make.left.right.equalTo(viewNoContacts);
+        make.height.mas_equalTo(40.0);
     }];
 }
 
@@ -596,7 +607,7 @@
         descLabel.font = [UIFont fontWithName:HelveticaNeue size:20.0];
         descLabel.text = @"#";
     }else{
-        descLabel.font = textFont;
+        descLabel.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightThin];
         descLabel.text = titleHeader;
     }
     descLabel.backgroundColor = UIColor.clearColor;
@@ -761,16 +772,19 @@
     if ([LinphoneAppDelegate sharedInstance].contactType == eContactPBX) {
         [contactList removeAllObjects];
         [contactList addObjectsFromArray: [[LinphoneAppDelegate sharedInstance].pbxContacts copy]];
+        
     }else{
         [contactList removeAllObjects];
         [contactList addObjectsFromArray:[[LinphoneAppDelegate sharedInstance].listContacts copy]];
     }
     
     if (contactList.count == 0) {
+        viewNoContacts.hidden = NO;
         tbContacts.hidden = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"showViewNoContactsDetailForIpad" object:nil];
     }else{
         tbContacts.hidden = NO;
+        viewNoContacts.hidden = YES;
     }
 }
 

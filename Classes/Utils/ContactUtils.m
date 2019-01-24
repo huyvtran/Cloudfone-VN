@@ -64,7 +64,7 @@
         PhoneObject *phone = [searchs firstObject];
         
         NSMutableAttributedString * str1 = [[NSMutableAttributedString alloc] initWithString:phone.name];
-        [str1 addAttribute: NSLinkAttributeName value:phone range: NSMakeRange(0, phone.name.length)];
+        [str1 addAttribute: NSLinkAttributeName value:phone.number range: NSMakeRange(0, phone.name.length)];
         [str1 addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleNone) range:NSMakeRange(0, phone.name.length)];
         [str1 addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, phone.name.length)];
         [attrResult appendAttributedString:str1];

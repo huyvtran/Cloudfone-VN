@@ -86,7 +86,7 @@
 @synthesize contactLoaded;
 @synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, supportLoginWithPhoneNumber, logFilePath, dbQueue, splashScreen;
 @synthesize supportVoice;
-@synthesize homeSplitVC, contactType, historyType, callTransfered;
+@synthesize homeSplitVC, contactType, historyType, callTransfered, hNavigation;
 
 #pragma mark - Lifecycle Functions
 
@@ -2299,6 +2299,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     iPadMoreVC.tabBarItem.selectedImage = [UIImage imageNamed:@"ic_more_bottom_bar_act"];
     
     UINavigationController *moreNavigationVC = [AppUtils createNavigationWithController: iPadMoreVC];
+    
+    //  save navigation bar height
+    hNavigation = moreNavigationVC.navigationBar.frame.size.height;
     
     NSArray *listVC = @[iPadDialerVC, iPadContactsVC, moreNavigationVC];
     tabBars.viewControllers = listVC;

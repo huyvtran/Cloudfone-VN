@@ -1235,7 +1235,7 @@
             [[NSUserDefaults standardUserDefaults] setObject:strAvatar forKey:pbxKeyAvatar];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAvatarAfterDownloadSuccessful" object:strAvatar];
+            [[NSNotificationCenter defaultCenter] postNotificationName:updateAvatarAfterDownloadSuccessful object:strAvatar];
         }
     });
 }

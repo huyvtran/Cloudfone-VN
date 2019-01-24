@@ -413,9 +413,10 @@
            forControlEvents:UIControlEventEditingChanged];
     
     tvSearchResult.backgroundColor = UIColor.clearColor;
+    tvSearchResult.font = [UIFont systemFontOfSize:30.0 weight:UIFontWeightMedium];
     tvSearchResult.editable = NO;
     tvSearchResult.hidden = YES;
-    //  tvSearchResult.delegate = self;
+    tvSearchResult.delegate = self;
     [tvSearchResult mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(viewNumber).offset(numberPadding);
         make.right.equalTo(viewNumber).offset(-10.0);
@@ -761,7 +762,7 @@
             totalHeight = SCREEN_HEIGHT - 70.0*2;
         }
         
-        popupSearchContacts = [[SearchContactPopupView alloc] initWithFrame:CGRectMake(30.0, (SCREEN_HEIGHT-totalHeight)/2, SCREEN_WIDTH-60.0, totalHeight)];
+        popupSearchContacts = [[SearchContactPopupView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-400)/2, (SCREEN_HEIGHT-totalHeight)/2, 400, totalHeight)];
         popupSearchContacts.contacts = listPhoneSearched;
         [popupSearchContacts.tbContacts reloadData];
         popupSearchContacts.delegate = self;
@@ -803,9 +804,9 @@
 
 #pragma mark - Tap Gesture delegate
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    //    if ([touch.view isDescendantOfView: _tbSearch]) {
-    //        return NO;
-    //    }
+    if ([touch.view isDescendantOfView: tvSearchResult]) {
+        return NO;
+    }
     return YES;
 }
 

@@ -48,6 +48,8 @@ typedef enum ipadMoreType{
     [self selectDefaultForView];
     
     [self registerNotifications];
+    
+    [self showAccountInformation];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -102,9 +104,69 @@ typedef enum ipadMoreType{
 }
 
 - (void)registerNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMyAvatar)
-                                                 name:<#(nullable NSNotificationName)#> object:@""]
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAvatarAfterDownloadSuccessful" object:strAvatar];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMyAvatarAfterDownloaded:)
+                                                 name:updateAvatarAfterDownloadSuccessful object:nil];
+}
+
+- (void)showAccountInformation {
+    if ([SipUtils getStateOfDefaultProxyConfig] != eAccountNone) {
+        NSString *accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
+        
+        NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", accountID];
+        NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyName];
+        NSLog(@"%@", name);
+        
+        NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", accountID];
+        NSString *avatar = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyAvatar];
+        if (![AppUtils isNullOrEmpty: avatar]){
+            [btnAvatar setImage:[UIImage imageWithData: [NSData dataFromBase64String: avatar]]
+                       forState:UIControlStateNormal];
+        }else{
+            [btnAvatar setImage:[UIImage imageNamed:@"man_user"] forState:UIControlStateNormal];
+            [self downloadMyAvatar: accountID];
+        }
+    }
+}
+
+- (void)updateMyAvatarAfterDownloaded: (NSNotification *)notif {
+    NSString *avatar = [notif object];
+    if (avatar != nil && [avatar isKindOfClass:[NSString class]]) {
+        [btnAvatar setImage:[UIImage imageWithData: [NSData dataFromBase64String: avatar]]
+                   forState:UIControlStateNormal];
+    }
+}
+
+#pragma mark - Webservice
+- (void)downloadMyAvatar: (NSString *)myaccount
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+        NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, myaccount];
+        NSString *linkAvatar = [NSString stringWithFormat:@"%@/%@", link_picture_chat_group, avatarName];
+        NSData *data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: linkAvatar]];
+        
+        if (data != nil) {
+            NSString *folder = [NSString stringWithFormat:@"/avatars/%@", avatarName];
+            [AppUtils saveFileToFolder:data withName: folder];
+            
+            //  save avatar to get from local
+            NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", myaccount];
+            
+            NSString *strAvatar = @"";
+            if ([data respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
+                strAvatar = [data base64EncodedStringWithOptions: 0];
+            } else {
+                strAvatar = [data base64Encoding];
+            }
+            
+            [[NSUserDefaults standardUserDefaults] setObject:strAvatar forKey:pbxKeyAvatar];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [btnAvatar setImage:[UIImage imageWithData: data] forState:UIControlStateNormal];
+            });
+        }
+    });
 }
 
 #pragma mark - uitableview delegate
