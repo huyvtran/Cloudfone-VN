@@ -6,6 +6,7 @@
 //
 
 #import "iPadContactDetailViewController.h"
+#import "iPadEditContactViewController.h"
 #import "NSData+Base64.h"
 #import "UIContactPhoneCell.h"
 #import "ContactDetailObj.h"
@@ -26,9 +27,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self setupUIForView];
-    
-    icEdit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(iconEditClicked)];
-    self.navigationItem.rightBarButtonItem = icEdit;
+    [self createEditContactButtonForView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -42,7 +41,12 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)iconEditClicked {
+- (void)iconEditContactClicked {
+    UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = newBackButton;
+    
+    iPadEditContactViewController *editContactVC = [[iPadEditContactViewController alloc] initWithNibName:@"iPadEditContactViewController" bundle:nil];
+    [self.navigationController pushViewController:editContactVC animated:YES];
 }
 
 - (IBAction)icCallPBXClicked:(UIButton *)sender {
@@ -76,6 +80,8 @@
     if ([object isKindOfClass:[ContactObject class]]) {
         self.navigationItem.rightBarButtonItem = icEdit;
         
+        [LinphoneAppDelegate sharedInstance].idContact = [(ContactObject *)object _id_contact];
+        
         detailsContact = [ContactUtils getContactWithId: [(ContactObject *)object _id_contact]];
         if (![AppUtils isNullOrEmpty:detailsContact._sipPhone]) {
             isPBXContact = YES;
@@ -90,6 +96,8 @@
         [tbDetail reloadData];
         
     }else if ([object isKindOfClass:[PBXContact class]]) {
+        [LinphoneAppDelegate sharedInstance].idContact = 0;
+        
         self.navigationItem.rightBarButtonItem = nil;
         
         detailsPBXContact = (PBXContact *)object;
@@ -233,6 +241,24 @@
     }];
 }
 
+- (void)createEditContactButtonForView {
+    UIButton *edit = [UIButton buttonWithType:UIButtonTypeCustom];
+    edit.backgroundColor = UIColor.clearColor;
+    [edit setImage:[UIImage imageNamed:@"ic_edit"] forState:UIControlStateNormal];
+    edit.imageEdgeInsets = UIEdgeInsetsMake(15.0, 15.0, 15.0, 15.0);
+    edit.frame = CGRectMake(17, 0, 50.0, 50.0 );
+    [edit addTarget:self
+             action:@selector(iconEditContactClicked)
+   forControlEvents:UIControlEventTouchUpInside];
+    
+    UIView *editView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50.0, 50.0)];
+    [editView addSubview: edit];
+    
+    icEdit = [[UIBarButtonItem alloc] initWithCustomView: editView];
+    icEdit.customView.backgroundColor = UIColor.clearColor;
+    self.navigationItem.rightBarButtonItem = icEdit;
+}
+
 #pragma mark - Tableview Delegate
 //  Added by Khai Le on 05/10/2018
 - (int)getRowForSection {
@@ -349,8 +375,7 @@
             [SipUtils makeCallWithPhoneNumber: number];
         }
     }else{
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"]
-                    duration:2.0 position:CSToastPositionCenter];
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"] duration:2.0 position:CSToastPositionCenter];
     }
 }
 

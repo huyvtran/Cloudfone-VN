@@ -30,10 +30,7 @@
     
     YBHud *waitingHud;
     
-    ContactObject *newContact;
-    
     PECropViewController *PECropController;
-    UIActionSheet *optionsPopup;
     
     UIView *viewFooter;
     UIButton *btnCancel;
