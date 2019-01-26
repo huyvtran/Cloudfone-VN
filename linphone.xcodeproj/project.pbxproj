@@ -135,6 +135,9 @@
 		15A64DA1216C8BC700D194BD /* InfoForNewContactTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15A64D9F216C8BC700D194BD /* InfoForNewContactTableCell.xib */; };
 		15A64DA4216CACD900D194BD /* ic_delete_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A64DA2216CACD500D194BD /* ic_delete_phone.png */; };
 		15A64DA5216CACD900D194BD /* ic_add_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A64DA3216CACD700D194BD /* ic_add_phone.png */; };
+		15B292C121FC0AF4005B6568 /* ic_speaker_ble_def.png in Resources */ = {isa = PBXBuildFile; fileRef = 15B292B821FC0AED005B6568 /* ic_speaker_ble_def.png */; };
+		15B292C221FC0AF4005B6568 /* ic_speaker_ble_act.png in Resources */ = {isa = PBXBuildFile; fileRef = 15B292BF21FC0AEF005B6568 /* ic_speaker_ble_act.png */; };
+		15B292C321FC0AF4005B6568 /* ic_speaker_ble_dis.png in Resources */ = {isa = PBXBuildFile; fileRef = 15B292C021FC0AF1005B6568 /* ic_speaker_ble_dis.png */; };
 		15B4462F219FCA0400FB8DCB /* CustomSwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B4462E219FCA0300FB8DCB /* CustomSwitchButton.m */; };
 		15B9C6EC21DF5D4C009CCD53 /* DrawingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B9C6EA21DF5D4C009CCD53 /* DrawingViewController.m */; };
 		15B9C6ED21DF5D4C009CCD53 /* DrawingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15B9C6EB21DF5D4C009CCD53 /* DrawingViewController.xib */; };
@@ -1083,6 +1086,9 @@
 		15A64D9F216C8BC700D194BD /* InfoForNewContactTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = InfoForNewContactTableCell.xib; path = AppUI/InfoForNewContactTableCell.xib; sourceTree = "<group>"; };
 		15A64DA2216CACD500D194BD /* ic_delete_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_delete_phone.png; sourceTree = "<group>"; };
 		15A64DA3216CACD700D194BD /* ic_add_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_add_phone.png; sourceTree = "<group>"; };
+		15B292B821FC0AED005B6568 /* ic_speaker_ble_def.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_speaker_ble_def.png; path = Resources/images/keypad/ic_speaker_ble_def.png; sourceTree = SOURCE_ROOT; };
+		15B292BF21FC0AEF005B6568 /* ic_speaker_ble_act.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_speaker_ble_act.png; path = Resources/images/keypad/ic_speaker_ble_act.png; sourceTree = SOURCE_ROOT; };
+		15B292C021FC0AF1005B6568 /* ic_speaker_ble_dis.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_speaker_ble_dis.png; path = Resources/images/keypad/ic_speaker_ble_dis.png; sourceTree = SOURCE_ROOT; };
 		15B44627219FCA0300FB8DCB /* CustomSwitchButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomSwitchButton.h; path = AppUI/CustomSwitchButton.h; sourceTree = "<group>"; };
 		15B4462E219FCA0300FB8DCB /* CustomSwitchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomSwitchButton.m; path = AppUI/CustomSwitchButton.m; sourceTree = "<group>"; };
 		15B9C6E921DF5D4C009CCD53 /* DrawingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DrawingViewController.h; path = Drawing/DrawingViewController.h; sourceTree = "<group>"; };
@@ -2561,6 +2567,9 @@
 				84ECF9B7216679A60067B4B6 /* ic_speaker_act.png */,
 				84ECF9AC216679A30067B4B6 /* ic_speaker_def.png */,
 				84ECF9AD216679A30067B4B6 /* ic_speaker_dis.png */,
+				15B292BF21FC0AEF005B6568 /* ic_speaker_ble_act.png */,
+				15B292B821FC0AED005B6568 /* ic_speaker_ble_def.png */,
+				15B292C021FC0AF1005B6568 /* ic_speaker_ble_dis.png */,
 				84ECF9BA216679A60067B4B6 /* ic_transfer_act.png */,
 				84ECF9AA216679A20067B4B6 /* ic_transfer_def.png */,
 				84ECF9AF216679A40067B4B6 /* ic_transfer_dis.png */,
@@ -4368,6 +4377,7 @@
 				1579B72321674989002BECE3 /* ic_sync@2x.png in Resources */,
 				153D00562164D9D3007B69B3 /* numpad_four_hover.png in Resources */,
 				1556A8DE2181BE67002E8D26 /* logo.png in Resources */,
+				15B292C221FC0AF4005B6568 /* ic_speaker_ble_act.png in Resources */,
 				1579B72421674989002BECE3 /* ic_add_contact.png in Resources */,
 				84E3BC7421EA3DEE00507CFB /* man_user.png in Resources */,
 				84C1E2291FAEB94500EED0B9 /* en.txt in Resources */,
@@ -4420,6 +4430,7 @@
 				8414C3CE21EB235500F54DD1 /* call_hotline.png in Resources */,
 				8414C3D421EB23FD00F54DD1 /* facebook.png in Resources */,
 				8404CD5421EDD13000C28E48 /* iPadContactsViewController.xib in Resources */,
+				15B292C321FC0AF4005B6568 /* ic_speaker_ble_dis.png in Resources */,
 				1523A3C521FB134D00C40F44 /* ic_save.png in Resources */,
 				84F81BC721EF6AE4009629C9 /* iPadHistoryCallCell.xib in Resources */,
 				154E400C217440FD0030A6B8 /* no_avatar_blue.png in Resources */,
@@ -4594,6 +4605,7 @@
 				84ECF9C6216679A70067B4B6 /* ic_addcall_dis.png in Resources */,
 				15F2E5FC216B575D0076CB1F /* background_more.png in Resources */,
 				153D00382164D537007B69B3 /* menu_keypad_act.png in Resources */,
+				15B292C121FC0AF4005B6568 /* ic_speaker_ble_def.png in Resources */,
 				159E08842179E9130056E2BB /* ic_not_check.png in Resources */,
 				1592762621EC35DB009D22FD /* headset.png in Resources */,
 				8429870C21B29D4000150EB0 /* ic_phonebook_bottom_bar_def.png in Resources */,

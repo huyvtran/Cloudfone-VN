@@ -186,9 +186,20 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
+    if (LinphoneManager.instance.bluetoothAvailable) {
+        NSLog(@"Test: BLuetooth da ket noi");
+    }else{
+        NSLog(@"Test: Khong thay gi");
+    }
+    
     int count = linphone_core_get_calls_nb([LinphoneManager getLc]);
     if (count > 0) {
         phoneNumber = [self getPhoneNumberOfCall];
+        
+        LinphoneCall *curCall = linphone_core_get_current_call([LinphoneManager getLc]);
+        
+        LinphoneCallState callState = linphone_call_get_state(curCall);
+        NSLog(@"call state = %d", callState);
     }
     
     [WriteLogsUtils writeForGoToScreen: @"CallView"];
