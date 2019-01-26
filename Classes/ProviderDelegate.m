@@ -62,7 +62,11 @@
 						error:nil];
 	[audioSession setMode:AVAudioSessionModeVoiceChat error:nil];
 	double sampleRate = 44100.0;
+    //  double sampleRate = 16000.0;
 	[audioSession setPreferredSampleRate:sampleRate error:nil];
+    
+    NSTimeInterval bufferDuration = .005;
+    [audioSession setPreferredIOBufferDuration:bufferDuration error: nil];
 }
 
 - (void)reportIncomingCallwithUUID:(NSUUID *)uuid handle:(NSString *)handle video:(BOOL)video {
@@ -78,7 +82,7 @@
 	update.supportsGrouping = TRUE;
 	update.supportsUngrouping = TRUE;
 	update.hasVideo = video;
-
+    
 	// Report incoming call to system
 	LOGD(@"CallKit: report new incoming call");
 	[self.provider reportNewIncomingCallWithUUID:uuid

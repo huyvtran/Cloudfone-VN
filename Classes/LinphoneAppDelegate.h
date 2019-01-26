@@ -153,6 +153,7 @@ typedef enum{
 @property (nonatomic, assign) float hNavigation;
 
 @property (nonatomic, assign) BOOL callTransfered;
+@property (nonatomic, assign) BOOL hasBluetoothEar;
 
 @end
 

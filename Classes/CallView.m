@@ -189,11 +189,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     int count = linphone_core_get_calls_nb([LinphoneManager getLc]);
     if (count > 0) {
         phoneNumber = [self getPhoneNumberOfCall];
-        
-        if (LinphoneManager.instance.bluetoothAvailable) {
-            [LinphoneManager.instance setSpeakerEnabled:FALSE];
-            [LinphoneManager.instance setBluetoothEnabled:TRUE];
-        }
     }
     
     [WriteLogsUtils writeForGoToScreen: @"CallView"];
@@ -293,12 +288,29 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [self requestAccessToMicroIfNot];
     
-    UIButton *test = [[UIButton alloc] initWithFrame:CGRectMake(10, 10, 100, 30)];
-    test.backgroundColor = UIColor.redColor;
-    [test addTarget:self
+    UIButton *bluetooth = [[UIButton alloc] initWithFrame:CGRectMake(10, 50, 100, 50)];
+    bluetooth.backgroundColor = UIColor.redColor;
+    [bluetooth setTitle:@"bluetooth" forState:UIControlStateNormal];
+    [bluetooth addTarget:self
              action:@selector(testtest)
    forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview: test];
+    [self.view addSubview: bluetooth];
+    
+    UIButton *speaker = [[UIButton alloc] initWithFrame:CGRectMake(120, 50, 100, 50)];
+    speaker.backgroundColor = UIColor.redColor;
+    [speaker setTitle:@"speaker" forState:UIControlStateNormal];
+    [speaker addTarget:self
+             action:@selector(testtest1)
+   forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview: speaker];
+    
+    UIButton *normal = [[UIButton alloc] initWithFrame:CGRectMake(230, 50, 100, 50)];
+    normal.backgroundColor = UIColor.redColor;
+    [normal setTitle:@"normal" forState:UIControlStateNormal];
+    [normal addTarget:self
+                action:@selector(testtest2)
+      forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview: normal];
 }
 
 - (AVAudioSessionPortDescription*)bluetoothAudioDevice
@@ -307,23 +319,48 @@ static UICompositeViewDescription *compositeDescription = nil;
     return [self audioDeviceFromTypes:bluetoothRoutes];
 }
 
+- (void)enableBluetooth{
+    [LinphoneManager.instance setBluetoothEnabled:TRUE];
+}
+
 - (void)testtest {
-    NSError* audioError = nil;
-    BOOL changeResult = NO;
-    AVAudioSessionPortDescription* _bluetoothPort = [self bluetoothAudioDevice];
-    changeResult = [[AVAudioSession sharedInstance] setPreferredInput:_bluetoothPort
-                                                                error:&audioError];
+    [LinphoneManager.instance setSpeakerEnabled:TRUE];
+    [self performSelector:@selector(enableBluetooth)
+               withObject:nil afterDelay:0.5];
     
-    [[AVAudioSession sharedInstance]
-     setCategory:AVAudioSessionCategoryPlayAndRecord
-     withOptions:AVAudioSessionCategoryOptionAllowBluetoothA2DP| AVAudioSessionCategoryOptionAllowAirPlay
-     error:nil];
+//
+//    UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
+//    AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
     
-    if (changeResult) {
-        NSLog(@"OKE OKE");
-    }else{
-        NSLog(@"NO OKE");
-    }
+//    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
+//    AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute,sizeof (audioRouteOverride),&audioRouteOverride);
+        //  [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+}
+
+- (void)disableBluetooth{
+    [LinphoneManager.instance setBluetoothEnabled:FALSE];
+}
+
+- (void)testtest1 {
+    [LinphoneManager.instance setSpeakerEnabled:TRUE];
+    [self performSelector:@selector(disableBluetooth)
+               withObject:nil afterDelay:0.5];
+    
+//    UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
+//    AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
+//    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
+//    AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute,sizeof (audioRouteOverride),&audioRouteOverride);
+}
+
+- (void)testtest2 {
+    [LinphoneManager.instance setSpeakerEnabled:FALSE];
+    [self performSelector:@selector(disableBluetooth)
+               withObject:nil afterDelay:0.5];
+    
+//    UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
+//    AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
+//    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_None;
+//    AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute,sizeof (audioRouteOverride),&audioRouteOverride);
 }
 
 - (AVAudioSessionPortDescription*)audioDeviceFromTypes:(NSArray*)types
@@ -581,8 +618,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         [self hideSpeaker:available];
         //  [Khai Le - 25/01/2019]
         if (available) {
-            [LinphoneManager.instance setSpeakerEnabled:FALSE];
-            [LinphoneManager.instance setBluetoothEnabled:TRUE];
+            //  [LinphoneManager.instance setSpeakerEnabled:FALSE];
+            //  [LinphoneManager.instance setBluetoothEnabled:TRUE];
             
 //            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]:\n-------------> setSpeakerEnabled = FALSE and setBluetoothEnabled = TRUE \n", __FUNCTION__] toFilePath:appDelegate.logFilePath];
         }

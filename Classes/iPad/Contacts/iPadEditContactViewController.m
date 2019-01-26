@@ -618,12 +618,14 @@
                                           [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Remove Avatar"],
                                           nil];
         popupAddContact.tag = 100;
-        [popupAddContact showInView:self.view];
+        //  [popupAddContact showInView:self.view];
+        [popupAddContact showFromRect:imgAvatar.bounds inView:imgAvatar animated:YES];
     }else{
         UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Options"] delegate:self cancelButtonTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Cancel"] destructiveButtonTitle:nil otherButtonTitles: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Gallery"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Camera"],
                                           nil];
         popupAddContact.tag = 101;
-        [popupAddContact showInView:self.view];
+        //  [popupAddContact showInView:self.view];
+        [popupAddContact showFromRect:imgAvatar.bounds inView:imgAvatar animated:YES];
     }
 }
 
@@ -674,18 +676,12 @@
 - (void)pressOnGallery {
     [LinphoneAppDelegate sharedInstance].fromImagePicker = YES;
     
-    UILabel *testLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, -20, 320, 20)];
     UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
-    [pickerController.view addSubview: testLabel];
-    
     pickerController.delegate = self;
     
     UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:pickerController];
-    [popover presentPopoverFromRect:self.view.bounds inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    [popover presentPopoverFromRect:imgAvatar.bounds inView:imgAvatar permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     self.popOver = popover;
-    
-    //  [self.navigationController pushViewController:pickerController animated:YES];
-    //  [self.navigationController presentViewController:pickerController animated:YES completion:nil];
 }
 
 - (void)removeAvatar {
@@ -749,8 +745,8 @@
     }
 //    [[PhoneMainView instance] changeCurrentView:PECropViewController.compositeViewDescription
 //                                           push:true];
-    
-    [self presentViewController:navigationController animated:YES completion:NULL];
+    [self.navigationController pushViewController:PECropController animated:YES];
+    //  [self presentViewController:navigationController animated:YES completion:NULL];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{

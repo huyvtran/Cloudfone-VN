@@ -17,4 +17,4 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#define LINPHONE_IOS_VERSION "05b8d08f"
+#define LINPHONE_IOS_VERSION "cd0e5133"
