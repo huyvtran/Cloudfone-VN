@@ -52,6 +52,7 @@
 #import "iPadMoreViewController.h"
 #import "iPadPopupCall.h"
 #import "TestViewController.h"
+#import <ExternalAccessory/ExternalAccessory.h>
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -423,6 +424,11 @@ void onUncaughtException(NSException* exception)
     }else{
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"==================================================\n==               START APPLICATION ON IPAD              ==\n=================================================="] toFilePath:logFilePath];
     }
+    
+    [[EAAccessoryManager sharedAccessoryManager] registerForLocalNotifications];
+    NSArray *list = [[EAAccessoryManager sharedAccessoryManager] connectedAccessories];
+    NSLog(@"%d", (int)list.count);
+    [self detectBluetooth];
     
     
     UIApplication *app = [UIApplication sharedApplication];
@@ -1976,45 +1982,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     }
 }
 
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
-{
-    INInteraction *interaction = userActivity.interaction;
-    if (interaction != nil) {
-        INStartAudioCallIntent *startAudioCallIntent = (INStartAudioCallIntent *)interaction.intent;
-        if (startAudioCallIntent != nil && startAudioCallIntent.contacts.count > 0) {
-            INPerson *contact = startAudioCallIntent.contacts[0];
-            if (contact != nil) {
-                INPersonHandle *personHandle = contact.personHandle;
-                NSString *phoneNumber = personHandle.value;
-                if (![AppUtils isNullOrEmpty: phoneNumber])
-                {
-                    phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
-                    if ([AppUtils isNullOrEmpty: phoneNumber]) {
-                        [self showSplashScreenOnView: NO];
-                    }else{
-                        [self showSplashScreenOnView: YES];
-
-                        [[NSUserDefaults standardUserDefaults] setObject:phoneNumber forKey:UserActivity];
-                        [[NSUserDefaults standardUserDefaults] synchronize];
-                    }
-                }
-            }
-        }
-    }
-    return YES;
-}
-
-- (void)showSplashScreenOnView: (BOOL)show {
-    if (splashScreen == nil) {
-        UINib *nib = [UINib nibWithNibName:@"LaunchScreen" bundle:nil];
-        splashScreen = [[nib instantiateWithOwner:self options:nil] objectAtIndex:0];
-        [self.window addSubview:splashScreen];
-    }
-    splashScreen.frame = [UIScreen mainScreen].bounds;
-    splashScreen.hidden = !show;
-}
-
-//-(BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+//- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
 //{
 //    INInteraction *interaction = userActivity.interaction;
 //    if (interaction != nil) {
@@ -2041,6 +2009,44 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 //    }
 //    return YES;
 //}
+
+- (void)showSplashScreenOnView: (BOOL)show {
+    if (splashScreen == nil) {
+        UINib *nib = [UINib nibWithNibName:@"LaunchScreen" bundle:nil];
+        splashScreen = [[nib instantiateWithOwner:self options:nil] objectAtIndex:0];
+        [self.window addSubview:splashScreen];
+    }
+    splashScreen.frame = [UIScreen mainScreen].bounds;
+    splashScreen.hidden = !show;
+}
+
+-(BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+{
+    INInteraction *interaction = userActivity.interaction;
+    if (interaction != nil) {
+        INStartAudioCallIntent *startAudioCallIntent = (INStartAudioCallIntent *)interaction.intent;
+        if (startAudioCallIntent != nil && startAudioCallIntent.contacts.count > 0) {
+            INPerson *contact = startAudioCallIntent.contacts[0];
+            if (contact != nil) {
+                INPersonHandle *personHandle = contact.personHandle;
+                NSString *phoneNumber = personHandle.value;
+                if (![AppUtils isNullOrEmpty: phoneNumber])
+                {
+                    phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+                    if ([AppUtils isNullOrEmpty: phoneNumber]) {
+                        [self showSplashScreenOnView: NO];
+                    }else{
+                        [self showSplashScreenOnView: YES];
+
+                        [[NSUserDefaults standardUserDefaults] setObject:phoneNumber forKey:UserActivity];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
+                }
+            }
+        }
+    }
+    return YES;
+}
 
 
 #pragma mark - sync contact xmpp
@@ -2379,7 +2385,52 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     }
 }
 
+#pragma mark - Bluetooth Delegate
+
+- (void)detectBluetooth
+{
+    if(!self.bluetoothManager)
+    {
+        // Put on main queue so we can call UIAlertView from delegate callbacks.
+        self.bluetoothManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+    }
+    [self centralManagerDidUpdateState:self.bluetoothManager]; // Show initial state
+}
+
+-(void) centralManagerDidUpdateState:(CBCentralManager *)central {
+    if (central.state == CBCentralManagerStatePoweredOn) {
+        //Powered on means ready for use
+        [self.bluetoothManager scanForPeripheralsWithServices:nil options:nil];
+    }
+}
+
+-(void) centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI {
+    // NSLog(@"bluetoothHandler: Found peripheral with UUID : %@ and Name : %@ (%ld dBm)",peripheral.identifier,peripheral.name,(long)[RSSI integerValue]);
+    if (peripheral.state == CBPeripheralStateConnected) {
+        NSLog(@"Ahi ahi");
+    }
+    NSString *localName = [advertisementData objectForKey:CBAdvertisementDataLocalNameKey];
+    NSLog(@"Local name: %@ - state: %d", localName, (int)peripheral.state);
+}
+
+-(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
+    NSLog(@"didDisconnectPeripheral called");
+}
 
 
+- (void)centralManager:(CBCentralManager *)central didRetrieveConnectedPeripherals:(NSArray *)peripherals{
+    NSLog(@"didRetrieveConnectedPeripherals called");
+    for (CBPeripheral *a in peripherals){
+        NSLog(@"%@", a);
+    } //but it never ends up logging anything, and I have a BT keyboard paired/connected with the iPhone 5
+}
+
+/// This delegate method is called when iOS has established connection with a
+/// peripheral after the connectToPeripheral call, here we start scanning of
+/// services automatically
+- (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {
+    NSLog(@"bluetoothHandler: Connected to peripheral %@ with UUID : %@", peripheral.name, peripheral.identifier);
+    [self.bluetoothManager stopScan];
+}
 
 @end

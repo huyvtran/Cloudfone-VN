@@ -197,9 +197,10 @@ static UICompositeViewDescription *compositeDescription = nil;
         phoneNumber = [self getPhoneNumberOfCall];
         
         LinphoneCall *curCall = linphone_core_get_current_call([LinphoneManager getLc]);
-        
-        LinphoneCallState callState = linphone_call_get_state(curCall);
-        NSLog(@"call state = %d", callState);
+        if (curCall != NULL) {
+            LinphoneCallState callState = linphone_call_get_state(curCall);
+            NSLog(@"call state = %d", callState);
+        }
     }
     
     [WriteLogsUtils writeForGoToScreen: @"CallView"];
@@ -227,7 +228,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     _nameLabel.text = @"";
 
 	// Update on show
-	[self hideRoutes:NO animated:FALSE];
+	[self hideRoutes:TRUE animated:FALSE];
 	[self hideOptions:TRUE animated:FALSE];
 	[self hidePad:TRUE animated:FALSE];
 	[self callDurationUpdate];
@@ -1309,9 +1310,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_optionsTransferButton setBackgroundImage:[UIImage imageNamed:@"ic_transfer_dis.png"] forState:UIControlStateDisabled];
     _optionsTransferButton.backgroundColor = UIColor.clearColor;
     _optionsTransferButton.enabled = NO;
-//    [_optionsTransferButton addTarget:self
-//                               action:@selector(onTransfer)
-//                     forControlEvents:UIControlEventTouchUpInside];
+    [_optionsTransferButton addTarget:self
+                               action:@selector(onTransfer)
+                     forControlEvents:UIControlEventTouchUpInside];
     lbTransfer.font = lbKeypad.font;
     [lbTransfer mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbPause.mas_top);
@@ -1923,6 +1924,17 @@ static UICompositeViewDescription *compositeDescription = nil;
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"This feature have not supported yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
+    
+    DialerView *view = VIEW(DialerView);
+    [view setAddress:@""];
+    LinphoneManager.instance.nextCallIsTransfer = NO;
+    [PhoneMainView.instance changeCurrentView:view.compositeViewDescription];
+}
+
+- (void)onTransfer {
+    return;
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:appDelegate.logFilePath];
     
     DialerView *view = VIEW(DialerView);
     [view setAddress:@""];

@@ -499,6 +499,8 @@
 		846586951FCA9AC900C5142C /* KMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 846586921FCA9AC600C5142C /* KMessageViewController.xib */; };
 		846586961FCA9AC900C5142C /* KMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846586931FCA9AC700C5142C /* KMessageViewController.m */; };
 		846586991FCA9BD600C5142C /* SwipeableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 846586981FCA9BD600C5142C /* SwipeableTableViewCell.m */; };
+		84699CBF21FCCD6300C82EFD /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84699CB521FCC03800C82EFD /* CoreBluetooth.framework */; };
+		84699CC121FCD90D00C82EFD /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84699CC021FCD90D00C82EFD /* ExternalAccessory.framework */; };
 		846B716920E240410019AD41 /* SipUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 846B716120E240400019AD41 /* SipUtils.m */; };
 		84767D6121664BCA00561A85 /* call-background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84767D5A21664BC900561A85 /* call-background.jpg */; };
 		84767D6321664C2900561A85 /* ic_call_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 84767D6221664C2900561A85 /* ic_call_back.png */; };
@@ -1563,6 +1565,8 @@
 		846586941FCA9AC800C5142C /* KMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KMessageViewController.h; path = Chats/KMessageViewController.h; sourceTree = "<group>"; };
 		846586971FCA9BD500C5142C /* SwipeableTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwipeableTableViewCell.h; path = AppUI/SwipeableTableViewCell.h; sourceTree = "<group>"; };
 		846586981FCA9BD600C5142C /* SwipeableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwipeableTableViewCell.m; path = AppUI/SwipeableTableViewCell.m; sourceTree = "<group>"; };
+		84699CB521FCC03800C82EFD /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		84699CC021FCD90D00C82EFD /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		846B716120E240400019AD41 /* SipUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SipUtils.m; path = AppObjects/SipUtils.m; sourceTree = "<group>"; };
 		846B716820E240410019AD41 /* SipUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SipUtils.h; path = AppObjects/SipUtils.h; sourceTree = "<group>"; };
 		84767D5A21664BC900561A85 /* call-background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "call-background.jpg"; sourceTree = "<group>"; };
@@ -2207,6 +2211,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84699CBF21FCCD6300C82EFD /* CoreBluetooth.framework in Frameworks */,
 				15E9154321C4C40B0083EC30 /* Intents.framework in Frameworks */,
 				84E2BB4E200A4B9200F152C1 /* AVKit.framework in Frameworks */,
 				84E2862E1FC9D699009CBA27 /* CoreData.framework in Frameworks */,
@@ -2283,6 +2288,7 @@
 				70E542F513E147EB002BA2C0 /* QuartzCore.framework in Frameworks */,
 				2264B6D211200342002C2C53 /* SystemConfiguration.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				84699CC121FCD90D00C82EFD /* ExternalAccessory.framework in Frameworks */,
 				F0B026F31AA710AF00FF49F7 /* libiconv.dylib in Frameworks */,
 				F05BAA621A5D594E00411815 /* libz.dylib in Frameworks */,
 				344ABDF114850AE9007420B6 /* libc++.1.dylib in Frameworks */,
@@ -2878,6 +2884,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84699CC021FCD90D00C82EFD /* ExternalAccessory.framework */,
+				84699CB521FCC03800C82EFD /* CoreBluetooth.framework */,
 				84E2BB47200A4B9200F152C1 /* AVKit.framework */,
 				844DEF071FE8D3410047A358 /* Intents.framework */,
 				84E2862D1FC9D698009CBA27 /* CoreData.framework */,
@@ -4258,6 +4266,9 @@
 								enabled = 1;
 							};
 							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.WAC = {
 								enabled = 1;
 							};
 						};

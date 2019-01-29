@@ -37,6 +37,7 @@
 #import "WebServices.h"
 #import "Constant.h"
 #import "HomeSplitViewController.h"
+#import <CoreBluetooth/CoreBluetooth.h>
 
 #define MINI_KEYPAD_TAG 101
 #define MINI_TRANSFER_CALL_VIEW_TAG 102
@@ -67,7 +68,7 @@ typedef enum{
     qrCodeLogin,
 }typeLoginPBX;
 
-@interface LinphoneAppDelegate : NSObject <UIApplicationDelegate, PKPushRegistryDelegate, UNUserNotificationCenterDelegate, WebServicesDelegate, UIAlertViewDelegate, UITabBarControllerDelegate, UITabBarDelegate> {
+@interface LinphoneAppDelegate : NSObject <UIApplicationDelegate, PKPushRegistryDelegate, UNUserNotificationCenterDelegate, WebServicesDelegate, UIAlertViewDelegate, UITabBarControllerDelegate, UITabBarDelegate, CBCentralManagerDelegate> {
     @private
 	UIBackgroundTaskIdentifier bgStartId;
     BOOL startedInBackground;
@@ -154,6 +155,8 @@ typedef enum{
 
 @property (nonatomic, assign) BOOL callTransfered;
 @property (nonatomic, assign) BOOL hasBluetoothEar;
+
+@property (nonatomic, strong) CBCentralManager *bluetoothManager;
 
 @end
 
