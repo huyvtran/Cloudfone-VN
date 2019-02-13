@@ -6,6 +6,7 @@
 //
 
 #import "iPadDialerViewController.h"
+#import "iPadKeypadViewController.h"
 #import "iPadCallHistoryViewController.h"
 #import "iPadHistoryCallCell.h"
 #import "KHistoryCallObject.h"
@@ -14,13 +15,14 @@
     NSMutableArray *listCalls;
     BOOL isDeleted;
     float hSection;
+    NSMutableArray *listDelete;
 }
 
 @end
 
 @implementation iPadDialerViewController
-@synthesize viewHeader, btnAll, btnMissed;
-@synthesize tbCalls, lbNoCalls, imgNoCalls;
+@synthesize viewHeader, btnAll, btnMissed, iconDelete;
+@synthesize tbCalls, lbNoCalls, imgNoCalls, btnKeypad;
 
 
 - (void)viewDidLoad {
@@ -69,6 +71,37 @@
     [self getHistoryCallForUser];
 }
 
+- (IBAction)btnKeypadPress:(UIButton *)sender {
+    //  deselect all rows was selected
+    NSArray *selectedRows = [tbCalls indexPathsForSelectedRows];
+    for (int i=0; i<selectedRows.count; i++) {
+        NSIndexPath *indexPath = [selectedRows objectAtIndex: i];
+        [tbCalls deselectRowAtIndexPath: indexPath animated:NO];
+    }
+    //  -----
+    
+    iPadKeypadViewController *keypadVC = [[iPadKeypadViewController alloc] initWithNibName:@"iPadKeypadViewController" bundle:nil];
+    [AppUtils showDetailViewWithController: keypadVC];
+}
+
+- (IBAction)iconDeleteClick:(UIButton *)sender {
+    if (listDelete == nil) {
+        listDelete = [[NSMutableArray alloc] init];
+    }
+    [listDelete removeAllObjects];
+    
+    if (sender.tag == 0) {
+        isDeleted = YES;
+        sender.tag = 1;
+        [sender setImage:[UIImage imageNamed:@"ic_tick_ipad"] forState:UIControlStateNormal];
+    }else{
+        isDeleted = NO;
+        sender.tag = 0;
+        [sender setImage:[UIImage imageNamed:@"ic_trash_ipad"] forState:UIControlStateNormal];
+    }
+    [tbCalls reloadData];
+}
+
 - (void)showContentWithCurrentLanguage {
     lbNoCalls.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No call in your history"];
     [btnAll setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"All"] forState:UIControlStateNormal];
@@ -93,14 +126,14 @@
     
     //  header view
     float hNav = [LinphoneAppDelegate sharedInstance].hNavigation;
-    float hHeader = STATUS_BAR_HEIGHT + hNav + 60.0;
+    float hHeader = STATUS_BAR_HEIGHT + hNav;
     viewHeader.backgroundColor = IPAD_HEADER_BG_COLOR;
     [viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.mas_equalTo(hHeader);
     }];
     
-    float top = STATUS_BAR_HEIGHT + (hNav - STATUS_BAR_HEIGHT - HEIGHT_HEADER_BTN)/2;
+    float top = STATUS_BAR_HEIGHT + (hNav - HEIGHT_HEADER_BTN)/2;
     btnAll.backgroundColor = SELECT_TAB_BG_COLOR;
     [btnAll setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     [btnAll mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -117,6 +150,27 @@
         make.top.bottom.equalTo(btnAll);
         make.width.equalTo(btnAll.mas_width);
         make.height.equalTo(btnAll.mas_height);
+    }];
+    
+    
+    [iconDelete mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(viewHeader);
+        make.centerY.equalTo(btnMissed.mas_centerY);
+        make.width.height.mas_equalTo(HEIGHT_HEADER_BTN);
+    }];
+    
+    //  btnKeypad
+    float rightPadding = 15.0;
+    btnKeypad.backgroundColor = UIColor.whiteColor;
+    btnKeypad.layer.cornerRadius = 60.0/2;
+    btnKeypad.layer.borderColor = [UIColor colorWithRed:(220/255.0) green:(220/255.0)
+                                                   blue:(220/255.0) alpha:1.0].CGColor;
+    btnKeypad.layer.borderWidth = 1.0;
+    btnKeypad.imageEdgeInsets = UIEdgeInsetsMake(14, 14, 14, 14);
+    [btnKeypad mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.view).offset(-rightPadding);
+        make.bottom.equalTo(self.view).offset(-self.tabBarController.tabBar.frame.size.height - rightPadding);
+        make.width.height.mas_equalTo(60.0);
     }];
     
     //  table calls
@@ -189,7 +243,8 @@
     return [[[listCalls objectAtIndex:section] valueForKey:@"rows"] count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *identifier = @"iPadHistoryCallCell";
     iPadHistoryCallCell *cell = (iPadHistoryCallCell *)[tableView dequeueReusableCellWithIdentifier: identifier];
     if (cell == nil) {
@@ -234,12 +289,12 @@
                         if (avatarData != nil) {
                             cell.imgAvatar.image = [UIImage imageWithData: avatarData];
                         }else{
-                            cell.imgAvatar.image = [[UIImage imageNamed:@"ic_user_blue"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+                            cell.imgAvatar.image = [UIImage imageNamed:@"avatar"];
                         }
                     });
                 });
             }else{
-                cell.imgAvatar.image = [[UIImage imageNamed:@"ic_user_blue"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+                cell.imgAvatar.image = [[UIImage imageNamed:@"avatar"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
             }
         }else{
             NSData *imgData = [[NSData alloc] initWithData:[NSData dataFromBase64String: aCall._phoneAvatar]];
@@ -260,13 +315,13 @@
     
     //  cell.lbDuration.text = [AppUtils convertDurtationToString: aCall.duration];
     
-//    if (isDeleted) {
-//        cell._cbDelete.hidden = NO;
-//        cell._btnCall.hidden = YES;
-//    }else{
-//        cell._cbDelete.hidden = YES;
-//        cell._btnCall.hidden = NO;
-//    }
+    if (isDeleted) {
+        cell.cbDelete.hidden = NO;
+        cell.icCall.hidden = YES;
+    }else{
+        cell.cbDelete.hidden = YES;
+        cell.icCall.hidden = NO;
+    }
     
     if ([aCall._callDirection isEqualToString: incomming_call]) {
         if ([aCall._status isEqualToString: missed_call]) {
@@ -278,15 +333,15 @@
         cell.imgDirection.image = [UIImage imageNamed:@"ic_call_outgoing.png"];
     }
     
-//    cell._cbDelete._indexPath = indexPath;
-//    cell._cbDelete._idHisCall = aCall._callId;
-//    cell._cbDelete.delegate = self;
-//
-//    [cell._btnCall setTitle:aCall._phoneNumber forState:UIControlStateNormal];
-//    [cell._btnCall setTitleColor:[UIColor clearColor] forState:UIControlStateNormal];
-//    [cell._btnCall addTarget:self
-//                      action:@selector(btnCallOnCellPressed:)
-//            forControlEvents:UIControlEventTouchUpInside];
+    cell.cbDelete._indexPath = indexPath;
+    cell.cbDelete._idHisCall = aCall._callId;
+    cell.cbDelete.delegate = self;
+
+    [cell.icCall setTitle:aCall._phoneNumber forState:UIControlStateNormal];
+    [cell.icCall setTitleColor:[UIColor clearColor] forState:UIControlStateNormal];
+    [cell.icCall addTarget:self
+                    action:@selector(btnCallOnCellPressed:)
+          forControlEvents:UIControlEventTouchUpInside];
     
     //  get missed call
 //    if (aCall.newMissedCall > 0) {
@@ -332,6 +387,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (isDeleted)
+    {
+        iPadHistoryCallCell *cell = [tableView cellForRowAtIndexPath: indexPath];
+        if ([listDelete containsObject: [NSNumber numberWithInt: cell.cbDelete._idHisCall]]) {
+            [listDelete removeObject: [NSNumber numberWithInt: cell.cbDelete._idHisCall]];
+            [cell.cbDelete setOn:false animated:true];
+        }else{
+            [listDelete addObject: [NSNumber numberWithInt: cell.cbDelete._idHisCall]];
+            [cell.cbDelete setOn:true animated:true];
+        }
+        return;
+    }
+    
     iPadCallHistoryViewController *callHistoryVC = [[iPadCallHistoryViewController alloc] initWithNibName:@"iPadCallHistoryViewController" bundle:nil];
     
     KHistoryCallObject *aCall = [[[listCalls objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex: indexPath.row];
@@ -347,9 +415,8 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 80.0;
+    return 60.0;
 }
-
 
 - (void)btnCallOnCellPressed: (UIButton *)sender {
     if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
@@ -360,6 +427,25 @@
         return;
     }
     [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"] duration:2.0 position:CSToastPositionCenter];
+}
+
+- (void)didTapCheckBox:(BEMCheckBox *)checkBox {
+//    NSIndexPath *indexPath = [checkBox _indexPath];
+//    if (listDelete == nil) {
+//        listDelete = [[NSMutableArray alloc] init];
+//    }
+//
+//    HistoryCallCell *curCell = [_tbListCalls cellForRowAtIndexPath: indexPath];
+//    if ([listDelete containsObject:[NSNumber numberWithInt:curCell._cbDelete._idHisCall]]) {
+//        [listDelete removeObject: [NSNumber numberWithInt:curCell._cbDelete._idHisCall]];
+//        [curCell._cbDelete setOn:false animated:true];
+//    }else{
+//        [listDelete addObject: [NSNumber numberWithInt:curCell._cbDelete._idHisCall]];
+//        [curCell._cbDelete setOn:true animated:true];
+//    }
+//
+//    [[NSNotificationCenter defaultCenter] postNotificationName:updateNumberHistoryCallRemove
+//                                                        object:[NSNumber numberWithInt:(int)listDelete.count]];
 }
 
 @end

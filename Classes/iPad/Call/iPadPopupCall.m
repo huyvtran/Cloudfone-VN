@@ -1073,6 +1073,7 @@
     // Bien cho biết mình kết thúc cuộc gọi
     [LinphoneAppDelegate sharedInstance]._meEnded = YES;
     
+    return;
     [btnHangupCall setImage:[UIImage imageNamed:@"ic_end_call_red"] forState:UIControlStateNormal];
     btnHangupCall.backgroundColor = UIColor.whiteColor;
     
@@ -1083,6 +1084,7 @@
     [btnHangupCall setImage:[UIImage imageNamed:@"ic_end_call_white"] forState:UIControlStateNormal];
     btnHangupCall.backgroundColor = [UIColor colorWithRed:(216/255.0) green:(0/255.0)
                                                      blue:(39.0/255.0) alpha:1.0];
+    linphone_core_terminate_all_calls(LC);
 }
 
 #pragma mark - UISpeakerButton Delegate

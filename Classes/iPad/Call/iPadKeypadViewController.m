@@ -21,7 +21,7 @@
 @end
 
 @implementation iPadKeypadViewController
-@synthesize viewHeader, imgHeader, imgLogo, lbAccount, lbStatus;
+@synthesize viewHeader, imgLogo, lbAccount, lbStatus;
 @synthesize viewNumber, icAddContact, addressField, tvSearchResult;
 @synthesize viewKeypad, oneButton, twoButton, threeButton, fourButton, fiveButton, sixButton, sevenButton, eightButton, nineButton, zeroButton, starButton, sharpButton, btnCall, btnHotline, btnBackspace;
 
@@ -196,24 +196,20 @@
 
 - (void)setupUIForView {
     //  header
-    
     self.view.backgroundColor = UIColor.whiteColor;
+    
+    float hHeader = STATUS_BAR_HEIGHT + [LinphoneAppDelegate sharedInstance].hNavigation;
     viewHeader.backgroundColor = IPAD_HEADER_BG_COLOR;
     [viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo(HEIGHT_IPAD_NAV);
+        make.height.mas_equalTo(hHeader);
     }];
     
-    imgHeader.hidden = YES;
-    [imgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(viewHeader);
-    }];
-    
-    float top = STATUS_BAR_HEIGHT + (HEIGHT_IPAD_NAV - STATUS_BAR_HEIGHT - HEIGHT_IPAD_HEADER_BUTTON)/2;
+    float top = STATUS_BAR_HEIGHT + ([LinphoneAppDelegate sharedInstance].hNavigation - HEIGHT_IPAD_HEADER_BUTTON)/2;
     [imgLogo mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(viewHeader).offset(10.0);
         make.top.equalTo(viewHeader).offset(top);
-        make.width.height.mas_equalTo(HEIGHT_IPAD_HEADER_BUTTON);
+        make.width.height.mas_equalTo(HEIGHT_HEADER_BTN);
     }];
     
     lbAccount.font = [UIFont fontWithName:MYRIADPRO_BOLD size:22.0];
@@ -225,7 +221,8 @@
     }];
     
     //  status label
-    lbStatus.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
+    lbStatus.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
+    //  lbStatus.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
     lbStatus.numberOfLines = 0;
     [lbStatus mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(viewHeader.mas_centerX);
@@ -619,7 +616,7 @@
     AccountState curState = [SipUtils getStateOfDefaultProxyConfig];
     //  No account
     if (curState == eAccountNone) {
-        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"You have not set up an account yet. Do you want to setup now?"] duration:2.5 position:CSToastPositionCenter];
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"You have not set up an account yet. Do you want to setup now?"] duration:2.5 position:CSToastPositionCenter];
         return;
     }
     

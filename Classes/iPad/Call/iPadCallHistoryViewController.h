@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgAvatar;
 @property (weak, nonatomic) IBOutlet UIButton *btnCall;
 @property (weak, nonatomic) IBOutlet UIButton *btnSendMessage;
+@property (weak, nonatomic) IBOutlet UILabel *lbSepa;
 
 @property (weak, nonatomic) IBOutlet UITableView *tbHistory;
 

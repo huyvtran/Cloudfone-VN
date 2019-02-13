@@ -222,12 +222,13 @@ HMLocalization *localization;
     
     [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db)
      {
-         NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND date = '%@' GROUP BY phone_number ORDER BY time_int DESC", account, dateStr];
+         NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND date = '%@' GROUP BY phone_number ORDER BY time_int DESC", account, dateStr];;
+         
          FMResultSet *rs = [db executeQuery: tSQL];
          while ([rs next]) {
              NSDictionary *rsDict = [rs resultDictionary];
              KHistoryCallObject *aCall = [[KHistoryCallObject alloc] init];
-             int callId        = [[rsDict objectForKey:@"_id"] intValue];
+             int callId              = [[rsDict objectForKey:@"_id"] intValue];
              NSString *status        = [rsDict objectForKey:@"status"];
              NSString *callDirection = [rsDict objectForKey:@"call_direction"];
              NSString *callTime      = [rsDict objectForKey:@"time"];

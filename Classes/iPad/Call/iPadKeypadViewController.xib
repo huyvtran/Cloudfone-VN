@@ -19,7 +19,6 @@
                 <outlet property="fiveButton" destination="1rh-IJ-TDl" id="bV6-qJ-uwi"/>
                 <outlet property="fourButton" destination="4Gz-a7-efR" id="YRF-Sb-EZ1"/>
                 <outlet property="icAddContact" destination="Rmb-do-c6o" id="QCb-l2-aVi"/>
-                <outlet property="imgHeader" destination="63J-mh-F9Z" id="kux-eL-nlF"/>
                 <outlet property="imgLogo" destination="7Bp-Nx-XuB" id="8e6-UD-lPW"/>
                 <outlet property="lbAccount" destination="Ugt-U3-9sv" id="bdr-gF-VPA"/>
                 <outlet property="lbStatus" destination="b2T-w6-OIH" id="UJh-gX-ZfW"/>
@@ -48,10 +47,6 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="35"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background_header.png" translatesAutoresizingMaskIntoConstraints="NO" id="63J-mh-F9Z">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="35"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ic_logo" translatesAutoresizingMaskIntoConstraints="NO" id="7Bp-Nx-XuB">
                             <rect key="frame" x="8" y="9" width="25" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -71,6 +66,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
+                    <color key="backgroundColor" red="0.1137254902" green="0.41568627450000001" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gQT-BC-A6b" userLabel="dialer">
                     <rect key="frame" x="0.0" y="35" width="320" height="58"/>
@@ -320,12 +316,11 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-736" y="-106"/>
+            <point key="canvasLocation" x="-190" y="-170"/>
         </view>
     </objects>
     <resources>
         <image name="add_contact_dialer.png" width="200" height="200"/>
-        <image name="background_header.png" width="750" height="130"/>
         <image name="backspace_hover_1" width="16" height="16"/>
         <image name="call_default.png" width="201" height="201"/>
         <image name="call_hover.png" width="201" height="201"/>

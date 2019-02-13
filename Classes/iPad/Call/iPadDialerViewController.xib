@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="iPadDialerViewController">
             <connections>
                 <outlet property="btnAll" destination="plJ-Xs-zeP" id="zDa-LH-V81"/>
+                <outlet property="btnKeypad" destination="Bzm-qu-mv9" id="7Ff-ax-eGN"/>
                 <outlet property="btnMissed" destination="Fy3-GJ-PAX" id="7oZ-ii-s1u"/>
+                <outlet property="iconDelete" destination="bZX-Jw-gfH" id="ODL-jj-S3S"/>
                 <outlet property="imgNoCalls" destination="DYk-Wq-td9" id="vEo-xV-4Yg"/>
                 <outlet property="lbNoCalls" destination="MFB-mK-ZPB" id="0Cd-Eh-9Op"/>
                 <outlet property="tbCalls" destination="bXR-SO-4Dz" id="rFH-b2-yF3"/>
@@ -46,11 +48,19 @@
                                 <action selector="btnMissedPress:" destination="-1" eventType="touchUpInside" id="wsc-bu-hNb"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bZX-Jw-gfH">
+                            <rect key="frame" x="280" y="2" width="40" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="Button" image="ic_trash_ipad.png"/>
+                            <connections>
+                                <action selector="iconDeleteClick:" destination="-1" eventType="touchUpInside" id="YT9-rR-bk5"/>
+                            </connections>
+                        </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.1137254902" green="0.41568627450000001" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bXR-SO-4Dz">
-                    <rect key="frame" x="0.0" y="42" width="320" height="439"/>
+                    <rect key="frame" x="0.0" y="42" width="320" height="381"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
@@ -65,13 +75,23 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bzm-qu-mv9">
+                    <rect key="frame" x="269" y="415" width="45" height="45"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Button" image="ic_dial.png"/>
+                    <connections>
+                        <action selector="btnKeypadPress:" destination="-1" eventType="touchUpInside" id="Rws-ds-ods"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="44" y="-173"/>
+            <point key="canvasLocation" x="-682" y="-721"/>
         </view>
     </objects>
     <resources>
+        <image name="ic_dial.png" width="250" height="250"/>
+        <image name="ic_trash_ipad.png" width="120" height="120"/>
         <image name="missed_act" width="16" height="16"/>
         <image name="no_calls.png" width="200" height="200"/>
     </resources>

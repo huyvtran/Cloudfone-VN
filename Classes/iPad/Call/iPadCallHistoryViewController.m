@@ -19,7 +19,7 @@
 @end
 
 @implementation iPadCallHistoryViewController
-@synthesize scvContent, viewInfo, imgAvatar, lbName, lbPhone, btnCall, btnSendMessage, tbHistory;
+@synthesize scvContent, viewInfo, imgAvatar, lbName, lbPhone, btnCall, btnSendMessage, lbSepa, tbHistory;
 @synthesize phoneNumber, onDate;
 
 - (void)viewDidLoad {
@@ -58,13 +58,16 @@
     [btnSendMessage setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Send message"] forState:UIControlStateNormal];
 }
 
-- (void)setupUIForView {
+- (void)setupUIForView
+{
+    self.view.backgroundColor = IPAD_BG_COLOR;
+
     tbHeight = SCREEN_WIDTH;
     hInfo = 150;
-    hCell = 35.0;
+    hCell = 38.0;
     
     scvContent.delegate = self;
-    scvContent.backgroundColor = UIColor.redColor;
+    scvContent.backgroundColor = UIColor.clearColor;
     [scvContent mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.equalTo(self.view);
         make.width.mas_equalTo(SCREEN_WIDTH - SPLIT_MASTER_WIDTH);
@@ -77,13 +80,16 @@
         make.height.mas_equalTo(hInfo);
     }];
     
+    lbSepa.backgroundColor = IPAD_BG_COLOR;
+    [lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.bottom.right.equalTo(viewInfo);
+        make.height.mas_equalTo(1.0);
+    }];
+    
     float padding = 20.0;
     float hAvatar = hInfo - 2*padding;
-    imgAvatar.layer.borderColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
-                                                   blue:(230/255.0) alpha:1.0].CGColor;
-    imgAvatar.layer.borderWidth = 1.0;
-    imgAvatar.clipsToBounds = YES;
-    imgAvatar.layer.cornerRadius = hAvatar/2;
+    
+    [ContactUtils addBorderForImageView:imgAvatar withRectSize:hAvatar strokeWidth:0 strokeColor:nil radius:4.0];
     [imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.equalTo(viewInfo).offset(padding);
         make.bottom.equalTo(viewInfo).offset(-padding);
@@ -116,6 +122,8 @@
     btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;
     [btnCall setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     btnCall.titleLabel.font = btnFont;
+    btnCall.layer.borderWidth = 1.0;
+    btnCall.layer.borderColor = IPAD_HEADER_BG_COLOR.CGColor;
     [btnCall mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbPhone.mas_bottom).offset(hAvatar/8);
         make.left.equalTo(lbPhone);
@@ -129,7 +137,7 @@
     }
     
     btnSendMessage.layer.cornerRadius = btnCall.layer.cornerRadius;
-    btnSendMessage.backgroundColor = IPAD_HEADER_BG_COLOR;
+    btnSendMessage.backgroundColor = GRAY_COLOR;
     [btnSendMessage setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     btnSendMessage.titleLabel.font = btnFont;
     [btnSendMessage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -140,8 +148,9 @@
     
     tbHistory.delegate = self;
     tbHistory.dataSource = self;
-    tbHistory.backgroundColor = UIColor.whiteColor;
+    tbHistory.backgroundColor = UIColor.clearColor;
     tbHistory.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tbHistory.scrollEnabled = NO;
     [tbHistory mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewInfo.mas_bottom);
         make.left.equalTo(scvContent);
@@ -187,10 +196,29 @@
         lbName.text = ![AppUtils isNullOrEmpty:contact.name] ? contact.name : [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
         lbPhone.text = phoneNumber;
         
-        if (![AppUtils isNullOrEmpty: contact.avatar]) {
-            imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: contact.avatar]];
+        if (contact == nil) {
+            if (phoneNumber.length < 10) {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+                    NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, phoneNumber];
+                    NSString *localFile = [NSString stringWithFormat:@"/avatars/%@", avatarName];
+                    NSData *avatarData = [AppUtils getFileDataFromDirectoryWithFileName:localFile];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^(void){
+                        if (avatarData != nil) {
+                            imgAvatar.image = [UIImage imageWithData: avatarData];
+                        }else{
+                            imgAvatar.image = [UIImage imageNamed:@"avatar"];
+                        }
+                    });
+                });
+            }
         }else{
-            imgAvatar.image = [UIImage imageNamed:@"man_user"];
+            if (![AppUtils isNullOrEmpty: contact.avatar]) {
+                imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: contact.avatar]];
+            }else{
+                imgAvatar.image = [UIImage imageNamed:@"avatar"];
+            }
         }
     }
     
@@ -211,18 +239,28 @@
     [tbHistory reloadData];
     
     float totalHeight = hInfo + hCell * listHistoryCalls.count;
-    scvContent.contentSize = CGSizeMake(SCREEN_WIDTH, totalHeight);
+    scvContent.contentSize = CGSizeMake(SCREEN_WIDTH - SPLIT_MASTER_WIDTH, totalHeight);
     tbHistory.frame = CGRectMake(tbHistory.frame.origin.x, tbHistory.frame.origin.y, tbHistory.frame.size.width, hCell * listHistoryCalls.count);
-//    [tbHistory mas_updateConstraints:^(MASConstraintMaker *make) {
-//        make.height.mas_equalTo(listHistoryCalls.count * hCell);
-//    }];
 }
 
 
-- (IBAction)btnCallPressed:(UIButton *)sender {
+- (IBAction)btnCallPressed:(UIButton *)sender
+{
+    if ([phoneNumber isEqualToString: hotline]) {
+        NSLog(@"Call to Hotline");
+    }else{
+        NSString *phone = [AppUtils removeAllSpecialInString: phoneNumber];
+        if ([AppUtils isNullOrEmpty: phone]) {
+            [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"] duration:2.0 position:CSToastPositionCenter];
+            return;
+        }else{
+            [SipUtils makeCallWithPhoneNumber: phone];
+        }
+    }
 }
 
 - (IBAction)btnSendMessagePressed:(UIButton *)sender {
+    [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"We have not supported this feature yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
 }
 
 #pragma mark - UITableviewCell delegate

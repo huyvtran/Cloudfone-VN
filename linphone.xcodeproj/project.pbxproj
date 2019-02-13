@@ -524,6 +524,9 @@
 		848C5D9C21F4376200094D7C /* ic_keyboard_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 848C5D9B21F4376200094D7C /* ic_keyboard_gray.png */; };
 		848C5D9F21F456C900094D7C /* iPadTransferCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C5D9E21F456C900094D7C /* iPadTransferCallView.m */; };
 		848C5DA321F4571E00094D7C /* iPadTransferCallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 848C5DA221F4571E00094D7C /* iPadTransferCallView.xib */; };
+		8494CB9E22101778001D6FB4 /* ic_dial.png in Resources */ = {isa = PBXBuildFile; fileRef = 8494CB9722101778001D6FB4 /* ic_dial.png */; };
+		8494CBA022102F1B001D6FB4 /* ic_trash_ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8494CB9F22102F1B001D6FB4 /* ic_trash_ipad.png */; };
+		8494CBA222102FA6001D6FB4 /* ic_tick_ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8494CBA122102FA6001D6FB4 /* ic_tick_ipad.png */; };
 		84AA051E21855ADD008CA775 /* lauch_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AA051721855ADC008CA775 /* lauch_icon.png */; };
 		84AEA9241FC4FD5500DAA68A /* EditContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEA9221FC4FD5500DAA68A /* EditContactViewController.m */; };
 		84AEA9251FC4FD5500DAA68A /* EditContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84AEA9231FC4FD5500DAA68A /* EditContactViewController.xib */; };
@@ -1626,6 +1629,9 @@
 		848C5D9D21F456C900094D7C /* iPadTransferCallView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iPadTransferCallView.h; path = iPad/Call/iPadTransferCallView.h; sourceTree = "<group>"; };
 		848C5D9E21F456C900094D7C /* iPadTransferCallView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = iPadTransferCallView.m; path = iPad/Call/iPadTransferCallView.m; sourceTree = "<group>"; };
 		848C5DA221F4571E00094D7C /* iPadTransferCallView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iPadTransferCallView.xib; path = iPad/Call/iPadTransferCallView.xib; sourceTree = "<group>"; };
+		8494CB9722101778001D6FB4 /* ic_dial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_dial.png; sourceTree = "<group>"; };
+		8494CB9F22102F1B001D6FB4 /* ic_trash_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_trash_ipad.png; sourceTree = "<group>"; };
+		8494CBA122102FA6001D6FB4 /* ic_tick_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_tick_ipad.png; sourceTree = "<group>"; };
 		84AA051721855ADC008CA775 /* lauch_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lauch_icon.png; sourceTree = "<group>"; };
 		84AEA9211FC4FD5500DAA68A /* EditContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditContactViewController.h; path = Contacts/EditContactViewController.h; sourceTree = "<group>"; };
 		84AEA9221FC4FD5500DAA68A /* EditContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditContactViewController.m; path = Contacts/EditContactViewController.m; sourceTree = "<group>"; };
@@ -3087,6 +3093,8 @@
 			isa = PBXGroup;
 			children = (
 				156910DD21F5AC2A005D20DF /* messi.jpg */,
+				8494CB9722101778001D6FB4 /* ic_dial.png */,
+				8494CB9F22102F1B001D6FB4 /* ic_trash_ipad.png */,
 				1584470321F80B6A00BFC96E /* avatar.png */,
 				1523A3BE21FB134C00C40F44 /* ic_save.png */,
 				15EB291C21F9BAB00048C459 /* phonebook_empty.png */,
@@ -3158,6 +3166,7 @@
 				1579B71D21674988002BECE3 /* ic_add_contact.png */,
 				15C5A5FF219ACC1D00FDD6C5 /* ic_trash.png */,
 				840F687C21B2645C00681F7F /* ic_tick.png */,
+				8494CBA122102FA6001D6FB4 /* ic_tick_ipad.png */,
 				1579B71921674985002BECE3 /* ic_add_contact@2x.png */,
 				1579B71E21674988002BECE3 /* ic_back.png */,
 				1579B71B21674986002BECE3 /* ic_back@2x.png */,
@@ -4485,6 +4494,7 @@
 				639E9CAC1C0DB80300019A75 /* UIContactDetailsCell.xib in Resources */,
 				841EB1662169818E00B59B8E /* add_call.png in Resources */,
 				8440F197216BA82000BB559C /* mini_key_3.png in Resources */,
+				8494CB9E22101778001D6FB4 /* ic_dial.png in Resources */,
 				F088488A19FF8C41007FFCF3 /* UIContactCell.xib in Resources */,
 				153D003B2164D537007B69B3 /* menu_contacts_def.png in Resources */,
 				84F81BE121EF858A009629C9 /* ic_transfer_call_black.png in Resources */,
@@ -4504,6 +4514,7 @@
 				63CDC4661C3BDE370085F529 /* shortring.caf in Resources */,
 				1579B72721674A6B002BECE3 /* call_disable.png in Resources */,
 				156E176021E85BAE00C15E79 /* HomeSplitViewController.xib in Resources */,
+				8494CBA022102F1B001D6FB4 /* ic_trash_ipad.png in Resources */,
 				1578D06121ACE87000E8BA5F /* ic_send_logs.png in Resources */,
 				848C5D9C21F4376200094D7C /* ic_keyboard_gray.png in Resources */,
 				15E9B6D321F0863600F25EA1 /* TestViewController.xib in Resources */,
@@ -4564,6 +4575,7 @@
 				84B4F0E421E8CCB600591C50 /* ic_history_bottom_bar_def@2x.png in Resources */,
 				63B8D68C1BCBE65600C12B09 /* ChatConversationCreateView.xib in Resources */,
 				8440F190216BA82000BB559C /* mini_key_6.png in Resources */,
+				8494CBA222102FA6001D6FB4 /* ic_tick_ipad.png in Resources */,
 				84B4F0EE21E8D5F400591C50 /* ic_call_bottom_bar_def@3x.png in Resources */,
 				84F81BD221EF7F18009629C9 /* ic_shrink.png in Resources */,
 				D38187D915FE347700C3EDCA /* CallIncomingView.xib in Resources */,

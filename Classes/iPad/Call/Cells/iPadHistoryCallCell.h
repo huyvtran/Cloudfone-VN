@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BEMCheckBox.h"
 
 @interface iPadHistoryCallCell : UITableViewCell
 
@@ -16,5 +17,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lbTime;
 @property (weak, nonatomic) IBOutlet UIButton *icCall;
 @property (weak, nonatomic) IBOutlet UILabel *lbSepa;
+@property (weak, nonatomic) IBOutlet BEMCheckBox *cbDelete;
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 
 @end

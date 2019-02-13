@@ -15,31 +15,32 @@
     // Initialization code
     
     float margin = 20.0;
+    self.contentView.backgroundColor = UIColor.whiteColor;
     
     [imgStatus mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(margin);
         make.centerY.equalTo(self.mas_centerY);
-        make.width.height.mas_equalTo(20.0);
+        make.width.height.mas_equalTo(17.0);
     }];
     
-    lbTime.font = [UIFont systemFontOfSize:16.0 weight:UIFontWeightThin];
-    lbTime.backgroundColor = UIColor.blueColor;
+    lbTime.textColor = UIColor.darkGrayColor;
+    lbTime.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightThin];
     [lbTime mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imgStatus.mas_right).offset(margin);
         make.top.bottom.equalTo(imgStatus);
         make.width.mas_equalTo(80.0);
     }];
     
-    lbDuration.font = [UIFont systemFontOfSize:16.0 weight:UIFontWeightThin];
-    lbDuration.backgroundColor = UIColor.greenColor;
+    lbDuration.textColor = lbTime.textColor;
+    lbDuration.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightThin];
     [lbDuration mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self).offset(-margin);
         make.top.bottom.equalTo(imgStatus);
         make.width.mas_equalTo(120.0);
     }];
     
-    lbCallType.font = [UIFont systemFontOfSize:16.0 weight:UIFontWeightThin];
-    lbCallType.backgroundColor = UIColor.redColor;
+    lbCallType.textColor = lbTime.textColor;
+    lbCallType.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightThin];
     [lbCallType mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(lbTime.mas_right).offset(margin);
         make.right.equalTo(lbDuration.mas_left).offset(-margin);

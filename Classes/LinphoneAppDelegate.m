@@ -426,9 +426,11 @@ void onUncaughtException(NSException* exception)
     }
     
     [[EAAccessoryManager sharedAccessoryManager] registerForLocalNotifications];
+    /*  check bluetooth
     NSArray *list = [[EAAccessoryManager sharedAccessoryManager] connectedAccessories];
     NSLog(@"%d", (int)list.count);
     [self detectBluetooth];
+    */
     
     
     UIApplication *app = [UIApplication sharedApplication];

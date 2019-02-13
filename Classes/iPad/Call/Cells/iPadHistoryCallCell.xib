@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -59,9 +59,15 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CZ7-c3-d6s" customClass="BEMCheckBox">
+                        <rect key="frame" x="269" y="18" width="42" height="38"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
                 </subviews>
             </tableViewCellContentView>
             <connections>
+                <outlet property="cbDelete" destination="CZ7-c3-d6s" id="VTo-d9-42h"/>
                 <outlet property="icCall" destination="It1-xy-U7x" id="9eX-1R-PgM"/>
                 <outlet property="imgAvatar" destination="TYp-5M-cdV" id="HxB-df-Ysg"/>
                 <outlet property="imgDirection" destination="ViA-63-Qfs" id="79f-2g-7gD"/>
@@ -70,7 +76,7 @@
                 <outlet property="lbSepa" destination="H5Q-cd-B4p" id="zaF-RB-pAC"/>
                 <outlet property="lbTime" destination="GdO-hI-IQi" id="qzB-iZ-1pW"/>
             </connections>
-            <point key="canvasLocation" x="-71" y="-144"/>
+            <point key="canvasLocation" x="-434" y="-140"/>
         </tableViewCell>
     </objects>
     <resources>

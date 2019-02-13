@@ -12,7 +12,6 @@
 @interface iPadKeypadViewController : UIViewController<UITextViewDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, SearchContactPopupViewDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *viewHeader;
-@property (weak, nonatomic) IBOutlet UIImageView *imgHeader;
 @property (weak, nonatomic) IBOutlet UIImageView *imgLogo;
 @property (weak, nonatomic) IBOutlet UILabel *lbAccount;
 @property (weak, nonatomic) IBOutlet UILabel *lbStatus;

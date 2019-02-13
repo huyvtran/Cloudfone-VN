@@ -8,25 +8,23 @@
 #import "iPadHistoryCallCell.h"
 
 @implementation iPadHistoryCallCell
-@synthesize imgAvatar, lbName, lbTime, imgDirection, lbNumber, icCall, lbSepa;
+@synthesize imgAvatar, lbName, lbTime, imgDirection, lbNumber, icCall, lbSepa, cbDelete;
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
     
     float padding = 10.0;
-    lbName.font = [UIFont fontWithName:HelveticaNeue size:19.0];
-    lbNumber.font = [UIFont fontWithName:HelveticaNeue size:16.0];
-    lbTime.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0];
+    lbName.font = [UIFont systemFontOfSize:16.0 weight:UIFontWeightRegular];
+    lbNumber.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightThin];
+    lbTime.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightThin];
     
-    imgAvatar.clipsToBounds = YES;
-    imgAvatar.layer.borderColor = [UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0].CGColor;
-    imgAvatar.layer.borderWidth = 1.0;
-    imgAvatar.layer.cornerRadius = 45.0/2;
+    float hAvatar = 42.0;
+    [ContactUtils addBorderForImageView:imgAvatar withRectSize:hAvatar strokeWidth:0 strokeColor:nil radius:1.0];
     [imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(padding);
         make.centerY.equalTo(self.mas_centerY);
-        make.width.height.mas_equalTo(60.0);
+        make.width.height.mas_equalTo(hAvatar);
     }];
     
     icCall.imageEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
@@ -36,15 +34,17 @@
         make.width.height.mas_equalTo(40.0);
     }];
     
+    lbTime.textAlignment = NSTextAlignmentRight;
+    lbTime.textColor = UIColor.darkGrayColor;
     [lbTime mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(imgAvatar);
         make.bottom.equalTo(imgAvatar);
         make.right.equalTo(icCall.mas_left).offset(-5.0);
-        make.width.mas_equalTo(80.0);
+        make.width.mas_equalTo(65.0);
     }];
     
     [lbName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(imgAvatar).offset(4);
+        make.top.equalTo(self).offset(5);
         make.left.equalTo(imgAvatar.mas_right).offset(5.0);
         make.bottom.equalTo(imgAvatar.mas_centerY);
         make.right.equalTo(lbTime.mas_left).offset(-5.0);
@@ -73,12 +73,12 @@
         make.width.height.mas_equalTo(17.0);
     }];
     
-    
+    lbNumber.textColor = lbTime.textColor;
     [lbNumber mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbName.mas_bottom);
         make.left.equalTo(imgDirection.mas_right).offset(5.0);
         make.right.equalTo(lbName);
-        make.bottom.equalTo(imgAvatar.mas_bottom);
+        make.bottom.equalTo(self).offset(-5.0);
     }];
     
     lbSepa.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
@@ -88,28 +88,40 @@
         make.height.mas_equalTo(1.0);
     }];
     
-    //    UIColor *cbColor = [UIColor colorWithRed:(17/255.0) green:(186/255.0)
-    //                                        blue:(153/255.0) alpha:1.0];
-//    UIColor *cbColor = UIColor.redColor;
-//    _cbDelete.lineWidth = 1.0;
-//    _cbDelete.boxType = BEMBoxTypeCircle;
-//    _cbDelete.onAnimationType = BEMAnimationTypeStroke;
-//    _cbDelete.offAnimationType = BEMAnimationTypeStroke;
-//    _cbDelete.tintColor = cbColor;
-//    _cbDelete.onTintColor = cbColor;
-//    _cbDelete.onFillColor = cbColor;
-//    _cbDelete.onCheckColor = UIColor.whiteColor;
-//    [_cbDelete mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.right.equalTo(self).offset(-10);
-//        make.centerY.equalTo(self.mas_centerY);
-//        make.width.height.mas_equalTo(24.0);
-//    }];
+    UIColor *cbColor = UIColor.redColor;
+    cbDelete.lineWidth = 1.0;
+    cbDelete.boxType = BEMBoxTypeCircle;
+    cbDelete.onAnimationType = BEMAnimationTypeStroke;
+    cbDelete.offAnimationType = BEMAnimationTypeStroke;
+    cbDelete.tintColor = cbColor;
+    cbDelete.onTintColor = cbColor;
+    cbDelete.onFillColor = cbColor;
+    cbDelete.onCheckColor = UIColor.whiteColor;
+    [cbDelete mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self).offset(-10);
+        make.centerY.equalTo(self.mas_centerY);
+        make.width.height.mas_equalTo(24.0);
+    }];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
-    // Configure the view for the selected state
+    if (selected) {
+        self.backgroundColor = [UIColor colorWithRed:(220/255.0) green:(220/255.0)
+                                                blue:(220/255.0) alpha:1];
+    }else{
+        self.backgroundColor = UIColor.whiteColor;
+    }
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    if (highlighted) {
+        self.backgroundColor = [UIColor colorWithRed:(220/255.0) green:(220/255.0)
+                                                blue:(220/255.0) alpha:1];
+    }else{
+        self.backgroundColor = UIColor.whiteColor;
+    }
 }
 
 @end
