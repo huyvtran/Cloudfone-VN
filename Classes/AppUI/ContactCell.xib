@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" variant="6xAndEarlier" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" variant="6xAndEarlier" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment version="4096" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -42,10 +42,10 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9AK-e4-f3F">
-                        <rect key="frame" x="277" y="14" width="27" height="30"/>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9AK-e4-f3F">
+                        <rect key="frame" x="277" y="8" width="34" height="34"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" backgroundImage="ic_call_contact.png"/>
+                        <state key="normal" image="ic_call_blue.png"/>
                     </button>
                 </subviews>
             </tableViewCellContentView>
@@ -57,11 +57,11 @@
                 <outlet property="name" destination="ogp-wa-FsJ" id="V6j-JD-weE"/>
                 <outlet property="phone" destination="vIC-Z7-DFE" id="jqQ-bu-3W9"/>
             </connections>
-            <point key="canvasLocation" x="19" y="-238"/>
+            <point key="canvasLocation" x="30.399999999999999" y="-214.09295352323841"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="ic_call_contact.png" width="100" height="100"/>
+        <image name="ic_call_blue.png" width="150" height="150"/>
         <image name="no_avatar.png" width="198" height="198"/>
     </resources>
 </document>

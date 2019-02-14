@@ -465,8 +465,13 @@ void onUncaughtException(NSException* exception)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadContactListAfterAddSuccess)
                                                  name:@"reloadContactAfterAdd" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showPopupCallForIpad:)
-                                                 name:showIpadPopupCall object:nil];
+    if (!IS_IPOD && !IS_IPHONE) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showPopupCallForIpad:)
+                                                     name:showIpadPopupCall object:nil];
+        
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(callUpdateEvent:)
+                                                   name:kLinphoneCallUpdate object:nil];
+    }
     
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(registrationUpdateEvent:)
                                                name:kLinphoneRegistrationUpdate object:nil];
@@ -2387,6 +2392,23 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     }
 }
 
+- (void)showIncomingPopupCallForIpad: (NSString *)phoneNumber
+{
+    NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"iPadPopupCall" owner:nil options:nil];
+    iPadPopupCall *popupCall;
+    for(id currentObject in toplevelObject){
+        if ([currentObject isKindOfClass:[iPadPopupCall class]]) {
+            popupCall = (iPadPopupCall *) currentObject;
+            break;
+        }
+    }
+    popupCall.frame = CGRectMake((SCREEN_WIDTH-400)/2, (SCREEN_HEIGHT-750)/2, 400, 750);
+    [popupCall setNeedsDisplay];
+    [popupCall setupUIForView];
+    popupCall.phoneNumber = phoneNumber;
+    [popupCall showInView:self.window animated:YES];
+}
+
 #pragma mark - Bluetooth Delegate
 
 - (void)detectBluetooth
@@ -2433,6 +2455,83 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {
     NSLog(@"bluetoothHandler: Connected to peripheral %@ with UUID : %@", peripheral.name, peripheral.identifier);
     [self.bluetoothManager stopScan];
+}
+
+#pragma mark - Call update event
+- (void)callUpdateEvent:(NSNotification *)notif {
+    NSString *message = [notif.userInfo objectForKey:@"message"];
+    LinphoneCall *call = [[notif.userInfo objectForKey:@"call"] pointerValue];
+    LinphoneCallState state = [[notif.userInfo objectForKey:@"state"] intValue];
+    [self callUpdate:call state:state animated:TRUE message: message];
+}
+
+- (void)callUpdate:(LinphoneCall *)call state:(LinphoneCallState)state animated:(BOOL)animated message: (NSString *)message
+{
+    // Fake call update
+    if (call == NULL) {
+        return;
+    }
+    
+    switch (state) {
+        case LinphoneCallOutgoingRinging:{
+            NSLog(@"Debug: LinphoneCallOutgoingRinging");
+            break;
+        }
+        case LinphoneCallIncomingReceived:{
+            NSLog(@"Debug: LinphoneCallIncomingReceived");
+            break;
+        }
+        case LinphoneCallOutgoingProgress:{
+            NSLog(@"Debug: LinphoneCallOutgoingProgress");
+            
+            break;
+        }
+        case LinphoneCallOutgoingInit:{
+            NSLog(@"Debug: LinphoneCallOutgoingInit");
+            break;
+        }
+        case LinphoneCallConnected:{
+            LinphoneCallDir callDirection = linphone_call_get_dir(call);
+            if (callDirection == LinphoneCallIncoming) {
+                NSString *phoneNumber = [SipUtils getPhoneNumberOfCall:call orLinphoneAddress:nil];
+                [self showIncomingPopupCallForIpad: phoneNumber];
+            }
+            
+            NSLog(@"Debug: LinphoneCallConnected");
+            
+            break;
+        }
+        case LinphoneCallStreamsRunning: {
+            NSLog(@"Debug: LinphoneCallStreamsRunning");
+            
+            break;
+        }
+        case LinphoneCallUpdatedByRemote: {
+            NSLog(@"Debug: LinphoneCallUpdatedByRemote");
+            break;
+        }
+        case LinphoneCallPausing:
+        case LinphoneCallPaused:{
+            break;
+        }
+        case LinphoneCallPausedByRemote:
+            NSLog(@"Debug: LinphoneCallPausedByRemote");
+            break;
+        case LinphoneCallEnd:{
+            NSLog(@"Debug: LinphoneCallEnd");
+            break;
+        }
+        case LinphoneCallError:{
+            NSLog(@"Debug: LinphoneCallError");
+            break;
+        }
+        case LinphoneCallReleased:{
+            NSLog(@"Debug: LinphoneCallReleased");
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 @end

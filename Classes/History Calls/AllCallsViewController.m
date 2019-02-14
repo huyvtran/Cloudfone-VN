@@ -286,7 +286,7 @@
         KHistoryCallObject *aCall = [[[listCalls objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex: indexPath.row];
         DetailHistoryCNViewController *controller = VIEW(DetailHistoryCNViewController);
         if (controller != nil) {
-            [controller setPhoneNumberForView:aCall._phoneNumber andDate:aCall._callDate];
+            [controller setPhoneNumberForView:aCall._phoneNumber andDate:aCall._callDate onlyMissed: NO];
         }
         [[PhoneMainView instance] changeCurrentView:[DetailHistoryCNViewController compositeViewDescription] push:true];
     }
@@ -347,7 +347,7 @@
 }
 
 - (void)btnCallOnCellPressed: (UIButton *)sender {
-    if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
+    if (![AppUtils isNullOrEmpty: sender.currentTitle]) {
         NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
         if (![phoneNumber isEqualToString:@""]) {
             [SipUtils makeCallWithPhoneNumber: phoneNumber];
@@ -374,7 +374,7 @@
                         NSString *phoneNumber = [callInfo objectForKey:@"phone_number"];
                         if (phoneNumber != nil && ![phoneNumber isEqualToString:@""]) {
                             NSString *date = [callInfo objectForKey:@"date"];
-                            [NSDatabase removeHistoryCallsOfUser:phoneNumber onDate:date ofAccount:USERNAME];
+                            [NSDatabase removeHistoryCallsOfUser:phoneNumber onDate:date ofAccount:USERNAME onlyMissed: NO];
                         }
                     }
                 }

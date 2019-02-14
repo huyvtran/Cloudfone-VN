@@ -119,6 +119,10 @@
     }else{
         imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: detailsPBXContact._avatar]];
     }
+    
+    //  [Khai Le - 14/02/2019]
+    btnCall.enabled = YES;
+    btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;it
 }
 
 - (void)displayContactInformation
@@ -137,6 +141,10 @@
     }else{
         imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: detailsContact._avatar]];
     }
+    
+    //  [Khai Le - 14/02/2019]
+    btnCall.enabled = NO;
+    btnCall.backgroundColor = GRAY_COLOR;
 }
 
 - (void)setupUIForView {
@@ -173,7 +181,7 @@
         textSize.width = 60.0;
     }
     
-    btnCall.layer.cornerRadius = 12.0;
+    btnCall.layer.cornerRadius = 40.0/2;
     btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;
     [btnCall setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     btnCall.titleLabel.font = btnFont;
@@ -367,19 +375,26 @@
 
 - (void)onIconCallClicked: (UIButton *)sender
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Call from %@ to %@", __FUNCTION__, USERNAME, sender.currentTitle] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    btnCall.backgroundColor = UIColor.whiteColor;
+    [btnCall setTitleColor:IPAD_HEADER_BG_COLOR forState:UIControlStateNormal];
+    [self performSelector:@selector(startCallAfterChangeBackground:)
+               withObject:sender.currentTitle afterDelay:0.2];
+}
+
+- (void)startCallAfterChangeBackground: (NSString *)phone {
+    btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;
+    [btnCall setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     
-    if (![AppUtils isNullOrEmpty: sender.currentTitle]) {
-        NSString *number = [AppUtils removeAllSpecialInString: sender.currentTitle];
+    if (![AppUtils isNullOrEmpty: phone]) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Call from %@ to %@", __FUNCTION__, USERNAME, phone] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
+        NSString *number = [AppUtils removeAllSpecialInString: phone];
         if (![AppUtils isNullOrEmpty: number]) {
             [SipUtils makeCallWithPhoneNumber: number];
         }
     }else{
         [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"] duration:2.0 position:CSToastPositionCenter];
     }
-}
-
-- (IBAction)btnCallPressed:(UIButton *)sender {
 }
 
 - (IBAction)btnSendMessagePressed:(UIButton *)sender {

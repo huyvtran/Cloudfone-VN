@@ -43,13 +43,13 @@
 + (NSMutableArray *)getAllListCallOfMe: (NSString *)mySip withPhoneNumber: (NSString *)phoneNumber;
 
 /* Get lịch sử cuộc gọi trong 1 ngày với callDirection */
-+ (NSMutableArray *)getAllCallOfMe: (NSString *)mySip withPhone: (NSString *)phoneNumber onDate: (NSString *)dateStr;
++ (NSMutableArray *)getAllCallOfMe: (NSString *)mySip withPhone: (NSString *)phoneNumber onDate: (NSString *)dateStr onlyMissedCall: (BOOL)onlyMissedCall;
 
 /*--Get last call goi di--*/
 + (NSString *)getLastCallOfUser;
 
 + (NSDictionary *)getCallInfoWithHistoryCallId: (int)callId;
-+ (BOOL)removeHistoryCallsOfUser: (NSString *)user onDate: (NSString *)date ofAccount: (NSString *)account;
++ (BOOL)removeHistoryCallsOfUser: (NSString *)user onDate: (NSString *)date ofAccount: (NSString *)account onlyMissed: (BOOL)missed;
 + (BOOL)checkMissedCallExistsFromUser: (NSString *)phone withAccount: (NSString *)account atTime: (long)time;
 
 + (int)getAllMissedCallUnreadofAccount: (NSString *)account;

@@ -35,6 +35,11 @@
 - (void)viewWillAppear:(BOOL)animated {
     [WriteLogsUtils writeForGoToScreen:@"iPadDialerViewController"];
     
+    if (listDelete == nil) {
+        listDelete = [[NSMutableArray alloc] init];
+    }
+    [listDelete removeAllObjects];
+    
     [self showContentWithCurrentLanguage];
     [self getHistoryCallForUser];
 }
@@ -56,9 +61,15 @@
         return;
     }
     
+    isDeleted = NO;
+    [listDelete removeAllObjects];
+    
     [LinphoneAppDelegate sharedInstance].historyType = eAllCalls;
     [self updateStateIconWithView];
     [self getHistoryCallForUser];
+    
+    //  [Khai Le - 14/02/2019]: If showing detail of history call, after delete all, will not see detail again, so should show keypad
+    [self btnKeypadPress: nil];
 }
 
 - (IBAction)btnMissedPress:(UIButton *)sender {
@@ -66,9 +77,15 @@
         return;
     }
     
+    isDeleted = NO;
+    [listDelete removeAllObjects];
+    
     [LinphoneAppDelegate sharedInstance].historyType = eMissedCalls;
     [self updateStateIconWithView];
     [self getHistoryCallForUser];
+    
+    //  [Khai Le - 14/02/2019]: If showing detail of history call, after delete all, will not see detail again, so should show keypad
+    [self btnKeypadPress: nil];
 }
 
 - (IBAction)btnKeypadPress:(UIButton *)sender {
@@ -85,12 +102,9 @@
 }
 
 - (IBAction)iconDeleteClick:(UIButton *)sender {
-    if (listDelete == nil) {
-        listDelete = [[NSMutableArray alloc] init];
-    }
-    [listDelete removeAllObjects];
-    
     if (sender.tag == 0) {
+        [listDelete removeAllObjects];
+        
         isDeleted = YES;
         sender.tag = 1;
         [sender setImage:[UIImage imageNamed:@"ic_tick_ipad"] forState:UIControlStateNormal];
@@ -98,8 +112,45 @@
         isDeleted = NO;
         sender.tag = 0;
         [sender setImage:[UIImage imageNamed:@"ic_trash_ipad"] forState:UIControlStateNormal];
+        
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                             toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
+        if (listDelete != nil && listDelete.count > 0) {
+            for (int iCount=0; iCount<listDelete.count; iCount++) {
+                int idHisCall = [[listDelete objectAtIndex: iCount] intValue];
+                NSDictionary *callInfo = [NSDatabase getCallInfoWithHistoryCallId: idHisCall];
+                if (callInfo != nil) {
+                    NSString *phoneNumber = [callInfo objectForKey:@"phone_number"];
+                    if (![AppUtils isNullOrEmpty: phoneNumber]) {
+                        NSString *date = [callInfo objectForKey:@"date"];
+                        
+                        BOOL onlyMissed = ([LinphoneAppDelegate sharedInstance].historyType == eMissedCalls) ? YES : NO;
+                        [NSDatabase removeHistoryCallsOfUser:phoneNumber onDate:date ofAccount:USERNAME onlyMissed: onlyMissed];
+                    }
+                }
+            }
+        }
+        
+        [listDelete removeAllObjects];
+        [self reGetListCallsForHistory];
+        
+        //  [Khai Le - 14/02/2019]: If showing detail of history call, after delete all, will not see detail again, so should show keypad
+        [self btnKeypadPress: nil];
     }
     [tbCalls reloadData];
+}
+
+- (void)reGetListCallsForHistory {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
+                         toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
+    BOOL isMissedCall = ([LinphoneAppDelegate sharedInstance].historyType == eMissedCalls) ? YES : NO;
+    
+    NSArray *tmpArr = [NSDatabase getHistoryCallListOfUser:USERNAME isMissed: isMissedCall];
+    [listCalls removeAllObjects];
+    [listCalls addObjectsFromArray: tmpArr];
 }
 
 - (void)showContentWithCurrentLanguage {
@@ -390,7 +441,6 @@
     if (isDeleted)
     {
         iPadHistoryCallCell *cell = [tableView cellForRowAtIndexPath: indexPath];
-        NSLog(@"Debug: %d", cell.cbDelete._idHisCall);
         
         if ([listDelete containsObject: [NSNumber numberWithInt: cell.cbDelete._idHisCall]]) {
             [listDelete removeObject: [NSNumber numberWithInt: cell.cbDelete._idHisCall]];
@@ -421,43 +471,20 @@
 }
 
 - (void)btnCallOnCellPressed: (UIButton *)sender {
-    BOOL networkReady = [DeviceUtils checkNetworkAvailable];
-    if (!networkReady) {
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
-        return;
-    }
-    
-    if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
-        NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
-        if (![phoneNumber isEqualToString:@""]) {
-            BOOL success = [SipUtils makeCallWithPhoneNumber: phoneNumber];
-            if (!success) {
-                make call fail chua bao
-                [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Can not make call now. Perhaps you have not signed your account yet!"] duration:3.0 position:CSToastPositionCenter];
-            }
-        }
-        return;
-    }
-    [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"] duration:2.0 position:CSToastPositionCenter];
+    NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
+    [SipUtils makeCallWithPhoneNumber: phoneNumber];
 }
 
 - (void)didTapCheckBox:(BEMCheckBox *)checkBox {
-//    NSIndexPath *indexPath = [checkBox _indexPath];
-//    if (listDelete == nil) {
-//        listDelete = [[NSMutableArray alloc] init];
-//    }
-//
-//    HistoryCallCell *curCell = [_tbListCalls cellForRowAtIndexPath: indexPath];
-//    if ([listDelete containsObject:[NSNumber numberWithInt:curCell._cbDelete._idHisCall]]) {
-//        [listDelete removeObject: [NSNumber numberWithInt:curCell._cbDelete._idHisCall]];
-//        [curCell._cbDelete setOn:false animated:true];
-//    }else{
-//        [listDelete addObject: [NSNumber numberWithInt:curCell._cbDelete._idHisCall]];
-//        [curCell._cbDelete setOn:true animated:true];
-//    }
-//
-//    [[NSNotificationCenter defaultCenter] postNotificationName:updateNumberHistoryCallRemove
-//                                                        object:[NSNumber numberWithInt:(int)listDelete.count]];
+    NSIndexPath *indexPath = [checkBox _indexPath];
+    iPadHistoryCallCell *cell = [tbCalls cellForRowAtIndexPath: indexPath];
+    if ([listDelete containsObject:[NSNumber numberWithInt:cell.cbDelete._idHisCall]]) {
+        [listDelete removeObject: [NSNumber numberWithInt:cell.cbDelete._idHisCall]];
+        [cell.cbDelete setOn:false animated:true];
+    }else{
+        [listDelete addObject: [NSNumber numberWithInt:cell.cbDelete._idHisCall]];
+        [cell.cbDelete setOn:true animated:true];
+    }
 }
 
 @end

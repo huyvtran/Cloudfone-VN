@@ -16,7 +16,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnCall;
 @property (weak, nonatomic) IBOutlet UIButton *btnSendMessage;
 
-- (IBAction)btnCallPressed:(UIButton *)sender;
 - (IBAction)btnSendMessagePressed:(UIButton *)sender;
 
 @property (weak, nonatomic) IBOutlet UITableView *tbDetail;

@@ -386,13 +386,13 @@ HMLocalization *localization;
         aCall._rate = -1;
         aCall._duration = -1;
         [result addObject: aCall];
-        [result addObjectsFromArray:[self getAllCallOfMe:account withPhone:phoneNumber onDate:dateStr]];
+        [result addObjectsFromArray:[self getAllCallOfMe:account withPhone:phoneNumber onDate:dateStr onlyMissedCall: NO]];
     }
     [rs close];
     return result;
 }
 
-+ (NSMutableArray *)getAllCallOfMe: (NSString *)mySip withPhone: (NSString *)phoneNumber onDate: (NSString *)dateStr
++ (NSMutableArray *)getAllCallOfMe: (NSString *)mySip withPhone: (NSString *)phoneNumber onDate: (NSString *)dateStr onlyMissedCall: (BOOL)onlyMissedCall
 {
     __block NSMutableArray *resultArr = [[NSMutableArray alloc] init];
     [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db) {
@@ -400,7 +400,11 @@ HMLocalization *localization;
         if ([phoneNumber isEqualToString: hotline]) {
             tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number = '%@' AND date='%@' ORDER BY time_int DESC", mySip, phoneNumber, dateStr];
         }else{
-            tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number LIKE '%%%@%%' AND date='%@' ORDER BY time_int DESC", mySip, phoneNumber, dateStr];
+            if (onlyMissedCall) {
+                tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number LIKE '%%%@%%' AND date='%@' AND status = '%@' ORDER BY time_int DESC", mySip, phoneNumber, dateStr, missed_call];
+            }else{
+                tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number LIKE '%%%@%%' AND date='%@' ORDER BY time_int DESC", mySip, phoneNumber, dateStr];
+            }
         }
         
         FMResultSet *rs = [db executeQuery: tSQL];
@@ -521,8 +525,15 @@ HMLocalization *localization;
     return rsDict;
 }
 
-+ (BOOL)removeHistoryCallsOfUser: (NSString *)user onDate: (NSString *)date ofAccount: (NSString *)account {
-    NSString *tSQL = [NSString stringWithFormat:@"DELETE FROM history WHERE my_sip = '%@' AND phone_number = '%@' AND date = '%@'", account, user, date];
++ (BOOL)removeHistoryCallsOfUser: (NSString *)user onDate: (NSString *)date ofAccount: (NSString *)account onlyMissed: (BOOL)missed
+{
+    NSString *tSQL;
+    if (missed) {
+        tSQL = [NSString stringWithFormat:@"DELETE FROM history WHERE my_sip = '%@' AND phone_number = '%@' AND date = '%@' and status = '%@'", account, user, date, missed_call];
+    }else{
+        tSQL = [NSString stringWithFormat:@"DELETE FROM history WHERE my_sip = '%@' AND phone_number = '%@' AND date = '%@'", account, user, date];
+    }
+    
     BOOL result = [appDelegate._database executeUpdate: tSQL];
     return result;
 }

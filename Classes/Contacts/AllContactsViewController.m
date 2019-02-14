@@ -403,7 +403,7 @@
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] phone number = %@", __FUNCTION__, sender.currentTitle]
                          toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
-    if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
+    if (![AppUtils isNullOrEmpty: sender.currentTitle]) {
         NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
         if (![phoneNumber isEqualToString:@""]) {
             [SipUtils makeCallWithPhoneNumber: phoneNumber];

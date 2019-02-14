@@ -438,16 +438,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 {
     [WriteLogsUtils writeLogContent:@"Call to hotline" toFilePath:appDelegate.logFilePath];
     
-    BOOL networkReady = [DeviceUtils checkNetworkAvailable];
-    if (!networkReady) {
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
-        return;
-    }
- 
-    BOOL success = [SipUtils makeCallWithPhoneNumber: hotline];
-    if (!success) {
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Can not make call now. Perhaps you have not signed your account yet!"] duration:3.0 position:CSToastPositionCenter];
-    }
+    [SipUtils makeCallWithPhoneNumber: hotline];
 }
 
 - (IBAction)_btnNumberPressed:(id)sender {

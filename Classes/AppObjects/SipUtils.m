@@ -222,7 +222,17 @@
     }
 }
 
-+ (BOOL)makeCallWithPhoneNumber: (NSString *)phoneNumber {
++ (BOOL)makeCallWithPhoneNumber: (NSString *)phoneNumber
+{
+    AccountState curState = [SipUtils getStateOfDefaultProxyConfig];
+    if (curState != eAccountOn) {
+        NSString *content = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Can not make call now. Perhaps you have not signed your account yet!"];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:content duration:3.0 position:CSToastPositionCenter];
+        
+        return NO;
+    }
+    
+    
     //  [Khai Le - 27/12/2018]
     phoneNumber = [self makeValidPhoneNumber: phoneNumber];
     
@@ -230,6 +240,9 @@
     {
         BOOL networkReady = [DeviceUtils checkNetworkAvailable];
         if (!networkReady) {
+            NSString *content = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your internet connection!"];
+            [[LinphoneAppDelegate sharedInstance].window makeToast:content duration:2.0 position:CSToastPositionCenter];
+            
             return NO;
         }
         
@@ -248,18 +261,21 @@
         if (addr)
             linphone_address_destroy(addr);
         
-        CallView *controller = VIEW(CallView);
-        if (controller != nil) {
-            controller.phoneNumber = phoneNumber;
-        }
-        
         if (IS_IPHONE || IS_IPOD) {
+            CallView *controller = VIEW(CallView);
+            if (controller != nil) {
+                controller.phoneNumber = phoneNumber;
+            }
+            
             [[PhoneMainView instance] changeCurrentView:[CallView compositeViewDescription] push:TRUE];
         }else{
             [[NSNotificationCenter defaultCenter] postNotificationName:showIpadPopupCall
                                                                 object:phoneNumber];
         }
         return YES;
+    }else{
+        NSString *content = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Phone number can not empty!"];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:content duration:2.0 position:CSToastPositionCenter];
     }
     return NO;
 }

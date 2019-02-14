@@ -302,12 +302,13 @@
     tbContacts.delegate = self;
     tbContacts.dataSource = self;
     tbContacts.separatorStyle = UITableViewCellSeparatorStyleNone;
+    /*  [Khai Le - Close]
     if ([tbContacts respondsToSelector:@selector(setSectionIndexColor:)]) {
         tbContacts.sectionIndexColor = UIColor.grayColor;
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
             tbContacts.sectionIndexBackgroundColor = UIColor.whiteColor;
         }
-    }
+    }   */
     [tbContacts mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewHeader.mas_bottom);
         make.left.right.equalTo(self.view);
@@ -593,6 +594,7 @@
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    return nil;
     NSMutableArray *tmpArr = [[NSMutableArray alloc] initWithArray: [[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
     
     int iCount = 0;

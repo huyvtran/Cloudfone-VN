@@ -686,6 +686,8 @@
     LinphoneCall *call = [[notif.userInfo objectForKey:@"call"] pointerValue];
     LinphoneCallState state = [[notif.userInfo objectForKey:@"state"] intValue];
     [self callUpdate:call state:state animated:TRUE message: message];
+    
+    
 }
 
 - (void)callUpdate:(LinphoneCall *)call state:(LinphoneCallState)state animated:(BOOL)animated message: (NSString *)message
@@ -737,6 +739,20 @@
             lbTime.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Calling"];
             lbTime.textColor = UIColor.whiteColor;
             
+            //  [Khai Le -14/02/2019]
+            if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max && call &&
+                (linphone_core_get_calls_nb(LC) < 2)) {
+                // Link call ID to UUID
+                NSString *callId =
+                [NSString stringWithUTF8String:linphone_call_log_get_call_id(linphone_call_get_call_log(call))];
+                NSUUID *uuid = [LinphoneManager.instance.providerDelegate.uuids objectForKey:@""];
+                if (uuid) {
+                    [LinphoneManager.instance.providerDelegate.uuids removeObjectForKey:@""];
+                    [LinphoneManager.instance.providerDelegate.uuids setObject:uuid forKey:callId];
+                    [LinphoneManager.instance.providerDelegate.calls setObject:callId forKey:uuid];
+                }
+            }
+            
             break;
         }
         case LinphoneCallOutgoingInit:{
@@ -775,6 +791,17 @@
             [self countUpTimeForCall];
             [self updateQualityForCall];
             
+            //  [Khai Le - 14/02/2019]
+            if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max && call) {
+                NSString *callId =
+                [NSString stringWithUTF8String:linphone_call_log_get_call_id(linphone_call_get_call_log(call))];
+                NSUUID *uuid = [LinphoneManager.instance.providerDelegate.uuids objectForKey:callId];
+                if (uuid) {
+                    [LinphoneManager.instance.providerDelegate.provider reportOutgoingCallWithUUID:uuid
+                                                                           startedConnectingAtDate:nil];
+                }
+            }
+            
             break;
         }
         case LinphoneCallStreamsRunning: {
@@ -783,8 +810,7 @@
                 const LinphoneCallParams *param = linphone_call_get_current_params(call);
                 const LinphoneCallAppData *callAppData =
                 (__bridge const LinphoneCallAppData *)(linphone_call_get_user_pointer(call));
-                if (state == LinphoneCallStreamsRunning && callAppData->videoRequested &&
-                    linphone_call_params_low_bandwidth_enabled(param)) {
+                if (callAppData->videoRequested && linphone_call_params_low_bandwidth_enabled(param)) {
                 }
             }
             btnAddCall.enabled = YES;
@@ -797,6 +823,27 @@
             if (linphone_core_get_calls_nb(LC) >= 2) {
                 linphone_core_add_all_to_conference([LinphoneManager getLc]);
             }
+            
+            //  [Khai Le - 14/02/2019]
+            if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max && call) {
+                NSString *callId =
+                [NSString stringWithUTF8String:linphone_call_log_get_call_id(linphone_call_get_call_log(call))];
+                NSUUID *uuid = [LinphoneManager.instance.providerDelegate.uuids objectForKey:callId];
+                if (uuid) {
+                    [LinphoneManager.instance.providerDelegate.provider reportOutgoingCallWithUUID:uuid
+                                                                                   connectedAtDate:nil];
+                    
+                    CXCallUpdate *update = [[CXCallUpdate alloc] init];
+                    NSString *phoneNumber = [SipUtils getPhoneNumberOfCall:call orLinphoneAddress:nil];
+                    update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:phoneNumber];
+                    update.supportsGrouping = TRUE;
+                    update.supportsDTMF = TRUE;
+                    update.supportsHolding = TRUE;
+                    update.supportsUngrouping = TRUE;
+                    [LinphoneManager.instance.providerDelegate.provider reportCallWithUUID:uuid updated:update];
+                }
+            }
+            break;
             
             break;
         }

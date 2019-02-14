@@ -123,7 +123,7 @@
         textSize.width = 60.0;
     }
     
-    btnCall.layer.cornerRadius = 20.0;
+    btnCall.layer.cornerRadius = (3*hAvatar/8)/2;
     btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;
     [btnCall setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     btnCall.titleLabel.font = btnFont;
@@ -237,9 +237,8 @@
 
         [listHistoryCalls addObjectsFromArray: [NSDatabase getAllListCallOfMe:USERNAME withPhoneNumber:phoneNumber]];
     }else{
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Get all list call with phone number %@, on date %@", __FUNCTION__, phoneNumber, onDate] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
-
-        [listHistoryCalls addObjectsFromArray: [NSDatabase getAllCallOfMe:USERNAME withPhone:phoneNumber onDate:onDate]];
+        BOOL onlyMissed = ([LinphoneAppDelegate sharedInstance].historyType == eMissedCalls) ? YES : NO;
+        [listHistoryCalls addObjectsFromArray: [NSDatabase getAllCallOfMe:USERNAME withPhone:phoneNumber onDate:onDate onlyMissedCall: onlyMissed]];
     }
     [tbHistory reloadData];
     
@@ -251,6 +250,16 @@
 
 - (IBAction)btnCallPressed:(UIButton *)sender
 {
+    btnCall.backgroundColor = UIColor.whiteColor;
+    [btnCall setTitleColor:IPAD_HEADER_BG_COLOR forState:UIControlStateNormal];
+    
+    [self performSelector:@selector(startCallAfterChangeBackground) withObject:nil afterDelay:0.2];
+}
+
+- (void)startCallAfterChangeBackground {
+    btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;
+    [btnCall setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    
     if ([phoneNumber isEqualToString: hotline]) {
         NSLog(@"Call to Hotline");
     }else{
@@ -263,6 +272,7 @@
         }
     }
 }
+    
 
 - (IBAction)btnSendMessagePressed:(UIButton *)sender {
     [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"We have not supported this feature yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
@@ -281,9 +291,10 @@
         
         [listHistoryCalls addObjectsFromArray: [NSDatabase getAllListCallOfMe:USERNAME withPhoneNumber:phoneNumber]];
     }else{
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Get all list call with phone number %@, on date %@", __FUNCTION__, phoneNumber, onDate] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Get list call with phone number %@, on date %@", __FUNCTION__, phoneNumber, onDate] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
-        [listHistoryCalls addObjectsFromArray: [NSDatabase getAllCallOfMe:USERNAME withPhone:phoneNumber onDate:onDate]];
+        BOOL onlyMissed = ([LinphoneAppDelegate sharedInstance].historyType == eMissedCalls) ? YES : NO;
+        [listHistoryCalls addObjectsFromArray: [NSDatabase getAllCallOfMe:USERNAME withPhone:phoneNumber onDate:onDate onlyMissedCall: onlyMissed]];
     }
     [tbHistory reloadData];
     

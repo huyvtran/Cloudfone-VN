@@ -30,8 +30,9 @@
 
 @property (nonatomic, retain) NSString *phoneNumber;
 @property (nonatomic, strong) NSString *onDate;
+@property (nonatomic, assign) BOOL onlyMissedCall;
 
-- (void)setPhoneNumberForView:(NSString *)phone andDate: (NSString *)date;
+- (void)setPhoneNumberForView:(NSString *)phone andDate: (NSString *)date onlyMissed: (BOOL)onlyMissed;
 - (IBAction)btnCallPressed:(UIButton *)sender;
 
 @end

@@ -166,14 +166,9 @@
 - (IBAction)btnHotlineClicked:(UIButton *)sender {
     [WriteLogsUtils writeLogContent:@"Call to hotline" toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
-    BOOL networkReady = [DeviceUtils checkNetworkAvailable];
-    if (!networkReady) {
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
-        return;
-    }
-    
     BOOL success = [SipUtils makeCallWithPhoneNumber: hotline];
     if (!success) {
+        
         [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Can not make call now. Perhaps you have not signed your account yet!"] duration:3.0 position:CSToastPositionCenter];
     }
 }
@@ -548,8 +543,14 @@
                 lbStatus.textColor = UIColor.greenColor;
                 lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Online"];
             }else{
-                lbStatus.textColor = UIColor.orangeColor;
-                lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Offline"];
+                if (![DeviceUtils checkNetworkAvailable]) {
+                    lbStatus.textColor = UIColor.orangeColor;
+                    lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No network"];
+                    
+                }else{
+                    lbStatus.textColor = UIColor.orangeColor;
+                    lbStatus.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Offline"];
+                }
             }
             
             [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] AccountId = %@, state is ON", __FUNCTION__, accountID] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];

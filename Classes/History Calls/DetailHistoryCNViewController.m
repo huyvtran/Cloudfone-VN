@@ -26,7 +26,7 @@
 
 @synthesize _viewHeader, bgHeader, _iconBack, _lbHeader, _iconAddNew, _imgAvatar, _lbName, icDelete;
 @synthesize btnCall, _tbHistory;
-@synthesize phoneNumber, onDate;
+@synthesize phoneNumber, onDate, onlyMissedCall;
 
 #pragma mark - UICompositeViewDelegate Functions
 
@@ -61,9 +61,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - Property Functions
 
-- (void)setPhoneNumberForView:(NSString *)phone andDate: (NSString *)date {
+- (void)setPhoneNumberForView:(NSString *)phone andDate: (NSString *)date onlyMissed: (BOOL)onlyMissed {
     phoneNumber = [[NSString alloc] initWithString:[phone copy]];
     onDate = [[NSString alloc] initWithString:[date copy]];
+    onlyMissedCall = onlyMissed;
     
     [self updateView];
     
@@ -198,7 +199,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Get all list call with phone number %@, on date %@", __FUNCTION__, phoneNumber, onDate] toFilePath:appDelegate.logFilePath];
         
-        [listHistoryCalls addObjectsFromArray: [NSDatabase getAllCallOfMe:USERNAME withPhone:phoneNumber onDate:onDate]];
+        [listHistoryCalls addObjectsFromArray: [NSDatabase getAllCallOfMe:USERNAME withPhone:phoneNumber onDate:onDate onlyMissedCall: onlyMissedCall]];
     }
     [_tbHistory reloadData];
 }
