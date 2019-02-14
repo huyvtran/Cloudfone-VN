@@ -37,6 +37,7 @@
 #define showIpadPopupCall                   @"showIpadPopupCall"
 #define updateAvatarAfterDownloadSuccessful @"updateAvatarAfterDownloadSuccessful"
 #define reloadHistoryCallForIpad            @"reloadHistoryCallForIpad"
+#define reloadContactsListForIpad           @"reloadContactsListForIpad"
 
 
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"

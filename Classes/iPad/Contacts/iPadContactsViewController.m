@@ -7,6 +7,7 @@
 
 #import "iPadContactsViewController.h"
 #import "iPadNewContactViewController.h"
+#import "iPadContactDetailViewController.h"
 #import "PBXContactTableCell.h"
 #import "UIImage+GKContact.h"
 #import "NSData+Base64.h"
@@ -127,10 +128,11 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(afterFinishGetPBXContactsList:)
                                                  name:finishGetPBXContacts object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenSyncPBXContactsFinish)
-                                                 name:syncPBXContactsFinish object:nil];
     */
+    
+    //  [Khai Le - 14/02/2019]  reload ipad contacts list after update
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadContactsList)
+                                                 name:reloadContactsListForIpad object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -556,7 +558,29 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //  show contact detail screen if current screen not correct
+    NSArray *listVCs = [LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers;
+    if (listVCs.count >= 2) {
+        UINavigationController *navController = [listVCs objectAtIndex: 1];
+        if ([navController isKindOfClass:[UINavigationController class]]) {
+            UIViewController *lastViewController = [[navController viewControllers] lastObject];
+            NSString *className = NSStringFromClass([lastViewController class]);
+            if (![AppUtils isNullOrEmpty: className] && ![className isEqualToString:@"iPadContactDetailViewController"])
+            {
+                iPadContactDetailViewController *contactDetailVC = [[iPadContactDetailViewController alloc] initWithNibName:@"iPadContactDetailViewController" bundle:nil];
+                [contactDetailVC registerNotifications];
+                UINavigationController *navigationVC = [AppUtils createNavigationWithController: contactDetailVC];
+                [AppUtils showDetailViewWithController: navigationVC];
+                
+                [LinphoneAppDelegate sharedInstance].idContact = 0;
+                [tbContacts reloadData];
+                return;
+            }
+        }
+    }
+    
     if ([LinphoneAppDelegate sharedInstance].contactType == eContactPBX) {
         NSString *key = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section];
         PBXContact *contact = [[contactSections objectForKey: key] objectAtIndex:indexPath.row];
@@ -1093,5 +1117,12 @@
     //  khai le
     //  [[NSNotificationCenter defaultCenter] postNotificationName:searchContactWithValue object:_tfSearch.text];
 }
+
+//  [Khai Le - 14/02/2019]
+- (void)reloadContactsList {
+    [self showAndReloadContactList];
+    [tbContacts reloadData];
+}
+
 
 @end

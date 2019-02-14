@@ -262,8 +262,8 @@
     }];
     
     tfName.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightThin];
-    tfName.textColor = [UIColor colorWithRed:(150/255.0) green:(150/255.0)
-                                        blue:(150/255.0) alpha:1.0];
+    tfName.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
+                                        blue:(50/255.0) alpha:1.0];
     [tfName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(btnAvatar.mas_right).offset(padding);
         make.right.equalTo(viewHeader).offset(-padding);
@@ -521,7 +521,7 @@
     ABRecordSetValue(aRecord, kABPersonFirstNameProperty, (__bridge CFTypeRef)(detailsContact._fullName), &anError);
     ABRecordSetValue(aRecord, kABPersonLastNameProperty, (__bridge CFTypeRef)(detailsContact._lastName), &anError);
     ABRecordSetValue(aRecord, kABPersonOrganizationProperty, (__bridge CFTypeRef)(detailsContact._company), &anError);
-    ABRecordSetValue(aRecord, kABPersonFirstNamePhoneticProperty, (__bridge CFTypeRef)(detailsContact._sipPhone), &anError);
+    ABRecordSetValue(aRecord, kABPersonFirstNamePhoneticProperty, (__bridge CFTypeRef)(@""), &anError);
     
     if (detailsContact._email != nil) {
         ABMutableMultiValueRef email = ABMultiValueCreateMutable(kABMultiStringPropertyType);
@@ -585,11 +585,15 @@
     
     BOOL isSaved = ABAddressBookSave (addressBook,&anError);
     if(isSaved){
-        NSLog(@"saved..");
+        NSString *content = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Contact has been updated"];
+        
+        [[LinphoneAppDelegate sharedInstance].window makeToast:content duration:2.0 position:CSToastPositionCenter];
     }
     
     if (anError != NULL) {
-        NSLog(@"ABAddressBookSave %@", anError);
+        NSString *content = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed. Please try later!"];
+        
+        [[LinphoneAppDelegate sharedInstance].window makeToast:content duration:2.0 position:CSToastPositionCenter];
     }
     
     [self addNewContactToList: aRecord];
@@ -606,6 +610,11 @@
         [[LinphoneAppDelegate sharedInstance].listContacts removeObjectsInArray: filter];
     }
     [[LinphoneAppDelegate sharedInstance].listContacts addObject: aContact];
+    
+    //  [Khai Le - 14/02/2019]  reload ipad contacts list after update
+    [[NSNotificationCenter defaultCenter] postNotificationName:reloadContactsListForIpad object:nil];
+    
+    [self.navigationController popViewControllerAnimated: YES];
 }
 
 - (IBAction)btnAvatarPressed:(UIButton *)sender {
@@ -674,14 +683,18 @@
 }
 
 - (void)pressOnGallery {
-    [LinphoneAppDelegate sharedInstance].fromImagePicker = YES;
-    
-    UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
-    pickerController.delegate = self;
-    
-    UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:pickerController];
-    [popover presentPopoverFromRect:imgAvatar.bounds inView:imgAvatar permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    self.popOver = popover;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [LinphoneAppDelegate sharedInstance].fromImagePicker = YES;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
+            pickerController.delegate = self;
+            
+            UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:pickerController];
+            [popover presentPopoverFromRect:imgAvatar.bounds inView:imgAvatar permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            self.popOver = popover;
+        });
+    });
 }
 
 - (void)removeAvatar {
@@ -717,6 +730,9 @@
 {
     // Crop image trong edits contact
     [LinphoneAppDelegate sharedInstance]._cropAvatar = image;
+    
+    UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = newBackButton;
     
     [picker dismissViewControllerAnimated:YES completion:^{
         [self openEditor];

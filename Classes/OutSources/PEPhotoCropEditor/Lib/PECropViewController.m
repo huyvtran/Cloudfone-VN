@@ -105,7 +105,10 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
 {
     [super viewDidLoad];
     
-    [self addViewHeaderForMainView];
+    if (IS_IPHONE || IS_IPOD) {
+        [self addViewHeaderForMainView];
+    }
+    [self addSaveButtonForMainView];
     
 //    self.navigationController.navigationBar.translucent = NO;
 //    self.navigationController.toolbar.translucent = NO;
@@ -266,7 +269,11 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
     UIImage *cropImage = [AppUtils cropImageWithSize:CGSizeMake(500, 500) fromImage:self.cropView.croppedImage];
     [LinphoneAppDelegate sharedInstance]._dataCrop = UIImageJPEGRepresentation(cropImage, 1);
 //    [LinphoneAppDelegate sharedInstance]._dataCrop = UIImagePNGRepresentation(cropImage);
-    [[PhoneMainView instance] popCurrentView];
+    if (IS_IPHONE || IS_IPOD) {
+        [[PhoneMainView instance] popCurrentView];
+    }else{
+        [self.navigationController popViewControllerAnimated: YES];
+    }
 }
 
 - (void)constrain:(id)sender
@@ -382,8 +389,9 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
         make.centerY.equalTo(_lbHeader.mas_centerY);
         make.width.height.mas_equalTo(35.0);
     }];
-    
-    
+}
+
+- (void)addSaveButtonForMainView {
     _btnSave = [UIButton buttonWithType: UIButtonTypeCustom];
     _btnSave.backgroundColor = [UIColor colorWithRed:(20/255.0) green:(129/255.0)
                                                 blue:(211/255.0) alpha:1.0];
@@ -402,7 +410,11 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
 
 - (void)showContentWithCurrentLanguage
 {
-    _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Crop picture"];
+    if (IS_IPHONE || IS_IPOD) {
+        _lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Crop picture"];
+    }else{
+        self.title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Crop picture"];
+    }
     [_btnSave setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Save"]
               forState:UIControlStateNormal];
 }

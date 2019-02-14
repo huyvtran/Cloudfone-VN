@@ -60,7 +60,6 @@
                             <state key="normal" title="Send message"/>
                             <connections>
                                 <action selector="btnSendMessagePressed:" destination="-1" eventType="touchUpInside" id="5eC-S1-lHd"/>
-                                <action selector="icCallPBXClicked:" destination="-1" eventType="touchUpInside" id="032-XK-kct"/>
                             </connections>
                         </button>
                     </subviews>

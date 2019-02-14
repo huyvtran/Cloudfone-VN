@@ -29,5 +29,6 @@
 
 @property (nonatomic, strong) ContactObject *detailsContact;
 @property (nonatomic, strong) PBXContact *detailsPBXContact;
+- (void)registerNotifications;
 
 @end

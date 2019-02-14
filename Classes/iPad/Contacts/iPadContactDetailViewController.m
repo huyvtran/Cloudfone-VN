@@ -34,6 +34,24 @@
     [super viewWillAppear: animated];
     self.title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Contact info"];
     [self registerNotifications];
+    
+    self.navigationItem.rightBarButtonItem = nil;
+    
+    if ([LinphoneAppDelegate sharedInstance].idContact != 0) {
+        self.navigationItem.rightBarButtonItem = icEdit;
+        
+        detailsContact = [ContactUtils getContactWithId: [LinphoneAppDelegate sharedInstance].idContact];
+        [self displayContactInformation];
+        btnCall.enabled = NO;
+        tbDetail.hidden = NO;
+        tbPBXDetail.hidden = YES;
+        [tbDetail reloadData];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear: animated];
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,6 +69,17 @@
 
 - (IBAction)icCallPBXClicked:(UIButton *)sender {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Call from %@ to %@", __FUNCTION__, USERNAME, sender.currentTitle] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
+    sender.backgroundColor = UIColor.whiteColor;
+    [sender setTitleColor:IPAD_HEADER_BG_COLOR forState:UIControlStateNormal];
+    
+    [self performSelector:@selector(startCallAfterChangeBackground) withObject:nil afterDelay:0.2];
+}
+
+- (void)startCallAfterChangeBackground
+{
+    btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;
+    [btnCall setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     
     if ([AppUtils isNullOrEmpty: detailsPBXContact._number]) {
         [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"] duration:2.0 position:CSToastPositionCenter];
@@ -122,7 +151,8 @@
     
     //  [Khai Le - 14/02/2019]
     btnCall.enabled = YES;
-    btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;it
+    btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;
+    btnCall.layer.borderColor = IPAD_HEADER_BG_COLOR.CGColor;
 }
 
 - (void)displayContactInformation
@@ -145,6 +175,7 @@
     //  [Khai Le - 14/02/2019]
     btnCall.enabled = NO;
     btnCall.backgroundColor = GRAY_COLOR;
+    btnCall.layer.borderColor = GRAY_COLOR.CGColor;
 }
 
 - (void)setupUIForView {
@@ -166,8 +197,8 @@
     }];
     
     lbName.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightThin];
-    lbName.textColor = [UIColor colorWithRed:(120/255.0) green:(120/255.0)
-                                        blue:(120/255.0) alpha:1.0];
+    lbName.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
+                                        blue:(50/255.0) alpha:1.0];
     [lbName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(imgAvatar);
         make.left.equalTo(imgAvatar.mas_right).offset(padding);
@@ -185,6 +216,8 @@
     btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;
     [btnCall setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     btnCall.titleLabel.font = btnFont;
+    btnCall.layer.borderColor = IPAD_HEADER_BG_COLOR.CGColor;
+    btnCall.layer.borderWidth = 1.0;
     [btnCall mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbName.mas_bottom).offset(10.0);
         make.left.equalTo(lbName);
@@ -375,20 +408,10 @@
 
 - (void)onIconCallClicked: (UIButton *)sender
 {
-    btnCall.backgroundColor = UIColor.whiteColor;
-    [btnCall setTitleColor:IPAD_HEADER_BG_COLOR forState:UIControlStateNormal];
-    [self performSelector:@selector(startCallAfterChangeBackground:)
-               withObject:sender.currentTitle afterDelay:0.2];
-}
-
-- (void)startCallAfterChangeBackground: (NSString *)phone {
-    btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;
-    [btnCall setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    
-    if (![AppUtils isNullOrEmpty: phone]) {
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Call from %@ to %@", __FUNCTION__, USERNAME, phone] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    if (![AppUtils isNullOrEmpty: sender.currentTitle]) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Call from %@ to %@", __FUNCTION__, USERNAME, sender.currentTitle] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
-        NSString *number = [AppUtils removeAllSpecialInString: phone];
+        NSString *number = [AppUtils removeAllSpecialInString: sender.currentTitle];
         if (![AppUtils isNullOrEmpty: number]) {
             [SipUtils makeCallWithPhoneNumber: number];
         }

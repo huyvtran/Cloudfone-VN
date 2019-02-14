@@ -2526,6 +2526,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             break;
         }
         case LinphoneCallReleased:{
+            //  [Khai Le - 14/02/2019]
+            [[NSNotificationCenter defaultCenter] postNotificationName:reloadHistoryCallForIpad
+                                                                object:nil];
             NSLog(@"Debug: LinphoneCallReleased");
             break;
         }

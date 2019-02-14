@@ -35,6 +35,10 @@
 - (void)viewWillAppear:(BOOL)animated {
     [WriteLogsUtils writeForGoToScreen:@"iPadDialerViewController"];
     
+    //  [Khai Le - 13/02/2019]  register observer
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getHistoryCallForUser)
+                                                 name:reloadHistoryCallForIpad object:nil];
+    
     if (listDelete == nil) {
         listDelete = [[NSMutableArray alloc] init];
     }
@@ -49,6 +53,11 @@
     
     [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:btnAll radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:SELECT_TAB_BG_COLOR border:2.0];
     [AppUtils addCornerRadiusTopRightAndBottomRightForButton:btnMissed radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:SELECT_TAB_BG_COLOR border:2.0];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear: animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {

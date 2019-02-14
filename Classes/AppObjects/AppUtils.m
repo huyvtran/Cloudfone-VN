@@ -417,23 +417,14 @@
 {
     if (aPerson != nil) {
         NSString *firstName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNameProperty);
-        if (firstName == nil) {
-            firstName = @"";
-        }
         firstName = [firstName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
         firstName = [firstName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
         
         NSString *middleName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonMiddleNameProperty);
-        if (middleName == nil) {
-            middleName = @"";
-        }
         middleName = [middleName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
         middleName = [middleName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
         
         NSString *lastName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonLastNameProperty);
-        if (lastName == nil) {
-            lastName = @"";
-        }
         lastName = [lastName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
         lastName = [lastName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
         
@@ -452,7 +443,7 @@
         }
         
         if (![AppUtils isNullOrEmpty: firstName]) {
-            if ([firstName isEqualToString:@""]) {
+            if ([fullname isEqualToString:@""]) {
                 fullname = firstName;
             }else{
                 fullname = [NSString stringWithFormat:@"%@ %@", fullname, firstName];

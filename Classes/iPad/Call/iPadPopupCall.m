@@ -934,9 +934,6 @@
         
         [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your call has been transfered"] duration:3.0 position:CSToastPositionCenter];
     }
-    //  [Khai Le - 13/02/2019]
-    [[NSNotificationCenter defaultCenter] postNotificationName:reloadHistoryCallForIpad
-                                                        object:nil];
 }
 
 - (void)hideMiniKeypad
