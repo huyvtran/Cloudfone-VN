@@ -38,7 +38,12 @@
     
     //  reset missed call
     [NSDatabase resetMissedCallOfRemote:phoneNumber onDate:onDate ofAccount:USERNAME];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:k11UpdateBarNotifications object:nil];
+    
+    //  [Khai Le - 13/02/2019]  register observer
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadHistoryCallData)
+                                                 name:reloadHistoryCallForIpad object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -262,6 +267,31 @@
 - (IBAction)btnSendMessagePressed:(UIButton *)sender {
     [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"We have not supported this feature yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
 }
+
+//  [Khai Le - 13/02/2019]
+- (void)reloadHistoryCallData
+{
+    if (listHistoryCalls == nil) {
+        listHistoryCalls = [[NSMutableArray alloc] init];
+    }
+    [listHistoryCalls removeAllObjects];
+    
+    if ([AppUtils isNullOrEmpty: onDate]) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Get all list call with phone number %@", __FUNCTION__, phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
+        [listHistoryCalls addObjectsFromArray: [NSDatabase getAllListCallOfMe:USERNAME withPhoneNumber:phoneNumber]];
+    }else{
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Get all list call with phone number %@, on date %@", __FUNCTION__, phoneNumber, onDate] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
+        [listHistoryCalls addObjectsFromArray: [NSDatabase getAllCallOfMe:USERNAME withPhone:phoneNumber onDate:onDate]];
+    }
+    [tbHistory reloadData];
+    
+    float totalHeight = hInfo + hCell * listHistoryCalls.count;
+    scvContent.contentSize = CGSizeMake(SCREEN_WIDTH - SPLIT_MASTER_WIDTH, totalHeight);
+    tbHistory.frame = CGRectMake(tbHistory.frame.origin.x, tbHistory.frame.origin.y, tbHistory.frame.size.width, hCell * listHistoryCalls.count);
+}
+    
 
 #pragma mark - UITableviewCell delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

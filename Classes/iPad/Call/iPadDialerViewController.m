@@ -152,7 +152,7 @@
         make.height.equalTo(btnAll.mas_height);
     }];
     
-    
+    iconDelete.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
     [iconDelete mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(viewHeader);
         make.centerY.equalTo(btnMissed.mas_centerY);
@@ -390,6 +390,8 @@
     if (isDeleted)
     {
         iPadHistoryCallCell *cell = [tableView cellForRowAtIndexPath: indexPath];
+        NSLog(@"Debug: %d", cell.cbDelete._idHisCall);
+        
         if ([listDelete containsObject: [NSNumber numberWithInt: cell.cbDelete._idHisCall]]) {
             [listDelete removeObject: [NSNumber numberWithInt: cell.cbDelete._idHisCall]];
             [cell.cbDelete setOn:false animated:true];
@@ -419,10 +421,20 @@
 }
 
 - (void)btnCallOnCellPressed: (UIButton *)sender {
+    BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+    if (!networkReady) {
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    
     if (sender.currentTitle != nil && ![sender.currentTitle isEqualToString:@""]) {
         NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
         if (![phoneNumber isEqualToString:@""]) {
-            [SipUtils makeCallWithPhoneNumber: phoneNumber];
+            BOOL success = [SipUtils makeCallWithPhoneNumber: phoneNumber];
+            if (!success) {
+                make call fail chua bao
+                [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Can not make call now. Perhaps you have not signed your account yet!"] duration:3.0 position:CSToastPositionCenter];
+            }
         }
         return;
     }

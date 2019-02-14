@@ -97,6 +97,16 @@
 		LinphoneManager.instance.conf = TRUE;
 		linphone_core_terminate_conference(LC);
 	} else if (currentcall != NULL) {
+        LinphoneCall *call = linphone_core_get_current_call(LC);
+        NSUUID *uuid = [LinphoneManager.instance.providerDelegate.uuids objectForKey:[NSString stringWithUTF8String:linphone_call_log_get_call_id(linphone_call_get_call_log(call))]];
+        if(!uuid) {
+            linphone_core_terminate_call(LC, call);
+            return;
+        }
+        CXEndCallAction *act = [[CXEndCallAction alloc] initWithCallUUID:uuid];
+        CXTransaction *tr = [[CXTransaction alloc] initWithAction:act];
+        [LinphoneManager.instance.providerDelegate.controller requestTransaction:tr completion:^(NSError *err){}];
+        
 		linphone_core_terminate_call(LC, currentcall);
 	} else {
 		const MSList *calls = linphone_core_get_calls(LC);
