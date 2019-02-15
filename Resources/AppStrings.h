@@ -18,7 +18,7 @@
 #define SHOW_LOGS @"[Show logs]"
 #define HEADER_ICON_WIDTH 35.0
 #define PADDING_DRAW_CONTROL_VIEW   5.0
-#define IPAD_HEIGHT_TF   45.0
+#define IPAD_HEIGHT_TF   38.0
 
 #define STATUS_BAR_HEIGHT   ([UIApplication sharedApplication].statusBarFrame.size.height)
 #define PADDING_HEADER_ICON 10.0
@@ -38,7 +38,7 @@
 #define updateAvatarAfterDownloadSuccessful @"updateAvatarAfterDownloadSuccessful"
 #define reloadHistoryCallForIpad            @"reloadHistoryCallForIpad"
 #define reloadContactsListForIpad           @"reloadContactsListForIpad"
-
+#define reloadContactAfterAdd               @"reloadContactAfterAdd"
 
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"
 #define AES_KEY         @"OdsCloudfone@123"

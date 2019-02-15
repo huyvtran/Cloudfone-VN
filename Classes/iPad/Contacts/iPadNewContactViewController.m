@@ -19,7 +19,7 @@
 #define ROW_CONTACT_COMPANY 2
 #define NUMBER_ROW_BEFORE   3
 
-@interface iPadNewContactViewController (){
+@interface iPadNewContactViewController ()<PECropViewControllerDelegate>{
     LinphoneAppDelegate *appDelegate;
     UITapGestureRecognizer *tapOnScreen;
     
@@ -28,12 +28,14 @@
     TypePhonePopupView *popupTypePhone;
     UIBarButtonItem *btnSave;
     UIBarButtonItem *btnCancel;
+    
+    PECropViewController *PECropController;
 }
 
 @end
 
 @implementation iPadNewContactViewController
-@synthesize imgAvatar, btnAvatar, tbContents, icWaiting, currentName, currentPhoneNumber;
+@synthesize imgAvatar, btnAvatar, tbContents, currentName, currentPhoneNumber;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -47,7 +49,7 @@
     
     [self setupUIForView];
     
-    btnCancel = [[UIBarButtonItem alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] style:UIBarButtonItemStyleDone target:self action:@selector(saveContactPressed)];
+    btnCancel = [[UIBarButtonItem alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] style:UIBarButtonItemStyleDone target:self action:@selector(resetDataAfterAddContact)];
     self.navigationItem.leftBarButtonItem = btnCancel;
     
     btnSave = [[UIBarButtonItem alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Save"] style:UIBarButtonItemStyleDone target:self action:@selector(saveContactPressed)];
@@ -128,14 +130,15 @@
                                           [appDelegate.localization localizedStringForKey:@"Remove Avatar"],
                                           nil];
         popupAddContact.tag = 100;
-        [popupAddContact showInView:self.view];
+        [popupAddContact showFromRect:imgAvatar.bounds inView:imgAvatar animated:YES];
+        
     }else{
         UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Options"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] destructiveButtonTitle:nil otherButtonTitles:
                                           [appDelegate.localization localizedStringForKey:@"Gallery"],
                                           [appDelegate.localization localizedStringForKey:@"Camera"],
                                           nil];
         popupAddContact.tag = 101;
-        [popupAddContact showInView:self.view];
+        [popupAddContact showFromRect:imgAvatar.bounds inView:imgAvatar animated:YES];
     }
 }
 
@@ -155,21 +158,22 @@
 }
 
 - (void)afterAddAndReloadContactDone {
-    icWaiting.hidden = YES;
-    [icWaiting stopAnimating];
+    [appDelegate showWaiting: NO];
     
     appDelegate._newContact = nil;
-    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Successful"]
-                duration:1.0 position:CSToastPositionCenter];
-    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self
-                                   selector:@selector(backToView)
-                                   userInfo:nil repeats:NO];
+    
+    [appDelegate.window makeToast:[appDelegate.localization localizedStringForKey:@"Successful"] duration:1.0 position:CSToastPositionCenter];
+    [self performSelector:@selector(resetDataAfterAddContact) withObject:nil afterDelay:1.0];
 }
 
-- (void)backToView{
+- (void)resetDataAfterAddContact{
     appDelegate._dataCrop = nil;
-    appDelegate._newContact = nil;
-    [[PhoneMainView instance] popCurrentView];
+    appDelegate._newContact = [[ContactObject alloc] init];
+    appDelegate._newContact._listPhone = [[NSMutableArray alloc] init];
+    
+    imgAvatar.image = [UIImage imageNamed:@"man_user.png"];
+    [tbContents reloadData];
+    btnSave.enabled = NO;
 }
 
 - (void)showContentWithCurrentLanguage {
@@ -189,9 +193,8 @@
     [self.view endEditing: true];
 }
 
-- (void)setupUIForView {
-    float wAvatar = 110.0;
-    
+- (void)setupUIForView
+{
     //  Tap vào màn hình để đóng bàn phím
     tapOnScreen = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(whenTapOnMainScreen)];
     tapOnScreen.delegate = self;
@@ -201,12 +204,9 @@
     imgAvatar.layer.borderColor = UIColor.whiteColor.CGColor;
     imgAvatar.layer.borderWidth = 2.0;
     imgAvatar.image = [UIImage imageNamed:@"man_user.png"];
-    imgAvatar.layer.cornerRadius = wAvatar/2;
-    imgAvatar.clipsToBounds = YES;
     [imgAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(30.0);
-        make.left.right.equalTo(self.view);
-        make.height.mas_equalTo(self.view.frame.size.width);
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo(SCREEN_WIDTH - SPLIT_MASTER_WIDTH);
     }];
     
     [btnAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -223,13 +223,6 @@
     tbContents.backgroundColor = UIColor.clearColor;
     [self.view bringSubviewToFront: tbContents];
     
-    //  waiting for add contact
-    icWaiting.hidden = YES;
-    icWaiting.backgroundColor = UIColor.whiteColor;
-    icWaiting.alpha = 0.5;
-    [icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.bottom.equalTo(self.view);
-    }];
     
     //  Footer view
 //    viewFooter = [[UIView alloc] init];
@@ -419,7 +412,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == ROW_CONTACT_NAME || indexPath.row == ROW_CONTACT_EMAIL || indexPath.row == ROW_CONTACT_COMPANY) {
-        return 115.0;
+        return 15.0 + 35.0 + 5.0 + IPAD_HEIGHT_TF + 15.0;
     }
     return 50.0;
 }
@@ -538,7 +531,27 @@
 }
 
 - (void)saveContactPressed {
+    [self.view endEditing: true];
     
+    if ([AppUtils isNullOrEmpty:appDelegate._newContact._firstName] && [AppUtils isNullOrEmpty:appDelegate._newContact._lastName])
+    {
+        [appDelegate.window makeToast:[appDelegate.localization localizedStringForKey:@"Contact name can not empty!"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    [appDelegate showWaiting: YES];
+    
+    //  Remove all phone number with value is empty
+    for (int iCount=0; iCount<appDelegate._newContact._listPhone.count; iCount++) {
+        ContactDetailObj *aPhone = [appDelegate._newContact._listPhone objectAtIndex: iCount];
+        if ([aPhone._valueStr isEqualToString: @""]) {
+            [appDelegate._newContact._listPhone removeObject: aPhone];
+            iCount--;
+        }
+    }
+    [ContactUtils addNewContacts];
+    
+    appDelegate.needToReloadContactList = YES;
+    [[NSNotificationCenter defaultCenter] postNotificationName:reloadContactAfterAdd object:nil];
 }
 
 
@@ -578,23 +591,27 @@
 }
 
 - (void)pressOnCamera {
-    appDelegate.fromImagePicker = YES;
-    
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    [picker setDelegate: self];
-    [picker setSourceType: UIImagePickerControllerSourceTypeCamera];
-    [self presentViewController:picker animated:YES completion:NULL];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        appDelegate.fromImagePicker = YES;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            [picker setDelegate: self];
+            [picker setSourceType: UIImagePickerControllerSourceTypeCamera];
+            [self presentViewController:picker animated:YES completion:NULL];
+        });
+    });
 }
 
 - (void)pressOnGallery {
-    appDelegate.fromImagePicker = YES;
-    
-    UILabel *testLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, -20, 320, 20)];
-    UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
-    [pickerController.view addSubview: testLabel];
-    
-    pickerController.delegate = self;
-    [self presentViewController:pickerController animated:YES completion:nil];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        appDelegate.fromImagePicker = YES;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
+            pickerController.delegate = self;
+            [self presentViewController:pickerController animated:YES completion:nil];
+        });
+    });
 }
 
 - (void)removeAvatar {
@@ -608,6 +625,9 @@
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo
 {
     appDelegate._cropAvatar = image;
+    
+    UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = newBackButton;
     
     [picker dismissViewControllerAnimated:YES completion:^{
         [self openEditor];
@@ -624,7 +644,6 @@
 }
 
 - (void)openEditor {
-    /*
     PECropController = [[PECropViewController alloc] init];
     PECropController.delegate = self;
     PECropController.image = appDelegate._cropAvatar;
@@ -633,10 +652,7 @@
     CGFloat width = image.size.width;
     CGFloat height = image.size.height;
     CGFloat length = MIN(width, height);
-    PECropController.imageCropRect = CGRectMake((width - length) / 2,
-                                                (height - length) / 2,
-                                                length,
-                                                length);
+    PECropController.imageCropRect = CGRectMake((width - length) / 2, (height - length) / 2, length, length);
     PECropController.keepingCropAspectRatio = true;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: PECropController];
@@ -644,10 +660,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     }
-    [[PhoneMainView instance] changeCurrentView:PECropViewController.compositeViewDescription
-                                           push:true];
-    //  [self presentViewController:navigationController animated:YES completion:NULL];
-    */
+    [self.navigationController pushViewController:PECropController animated:YES];
 }
 
 #pragma mark - PECropViewControllerDelegate methods

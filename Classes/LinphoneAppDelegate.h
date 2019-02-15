@@ -157,6 +157,8 @@ typedef enum{
 @property (nonatomic, assign) BOOL hasBluetoothEar;
 
 @property (nonatomic, strong) CBCentralManager *bluetoothManager;
+@property (nonatomic, strong) UIActivityIndicatorView *ipadWaiting;
+- (void)showWaiting: (BOOL)show;
 
 @end
 

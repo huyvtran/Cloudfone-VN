@@ -44,7 +44,7 @@
                                                    blue:(235/255.0) alpha:1.0].CGColor;
     [tfContent mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(lbTitle);
-        make.top.equalTo(lbTitle.mas_bottom).offset(5);
+        make.top.equalTo(lbTitle.mas_bottom).offset(5.0);
         make.height.mas_equalTo(hTextfield);
     }];
     

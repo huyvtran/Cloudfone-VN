@@ -19,7 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UITextField *tfEmail;
 @property (weak, nonatomic) IBOutlet UITextField *tfCompany;
 @property (weak, nonatomic) IBOutlet UITableView *tbPhone;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *icWaiting;
 
 @property (nonatomic, strong) UIPopoverController *popOver;
 

@@ -15,6 +15,9 @@
 @interface iPadContactDetailViewController () {
     BOOL isPBXContact;
     UIBarButtonItem *icEdit;
+    
+    UIView *viewFooter;
+    UIButton *btnDeleteContact;
 }
 
 @end
@@ -28,6 +31,7 @@
     // Do any additional setup after loading the view from its nib.
     [self setupUIForView];
     [self createEditContactButtonForView];
+    [self createFooterViewForTable];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -197,8 +201,7 @@
     }];
     
     lbName.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightThin];
-    lbName.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
-                                        blue:(50/255.0) alpha:1.0];
+    lbName.textColor = UIColor.blackColor;
     [lbName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(imgAvatar);
         make.left.equalTo(imgAvatar.mas_right).offset(padding);
@@ -422,4 +425,33 @@
 
 - (IBAction)btnSendMessagePressed:(UIButton *)sender {
 }
+
+- (void)createFooterViewForTable {
+    viewFooter = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-SPLIT_MASTER_WIDTH, 80.0)];
+    viewFooter.backgroundColor = UIColor.greenColor;
+    
+    btnDeleteContact = [[UIButton alloc] init];
+    btnDeleteContact.backgroundColor = [UIColor colorWithRed:(202/255.0) green:(212/255.0)
+                                                        blue:(223/255.0) alpha:1.0];
+    [btnDeleteContact setTitleColor:UIColor.redColor forState:UIControlStateNormal];
+    [btnDeleteContact setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete contact"] forState:UIControlStateNormal];
+    btnDeleteContact.titleLabel.font = [UIFont systemFontOfSize:22.0 weight:UIFontWeightThin];
+    [viewFooter addSubview: btnDeleteContact];
+    
+    [btnDeleteContact mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(viewFooter.mas_centerX);
+        make.centerY.equalTo(viewFooter.mas_centerY);
+        make.height.mas_equalTo(50.0);
+        make.width.mas_equalTo(200.0);
+    }];
+    btnDeleteContact.clipsToBounds = YES;
+    btnDeleteContact.layer.cornerRadius = 50.0/2;
+    
+//    [btnDeleteContact addTarget:self
+//                         action:@selector(btnDeleteContactPressed:)
+//               forControlEvents:UIControlEventTouchUpInside];
+    
+    tbDetail.tableFooterView = viewFooter;
+}
+
 @end

@@ -133,6 +133,9 @@
     //  [Khai Le - 14/02/2019]  reload ipad contacts list after update
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadContactsList)
                                                  name:reloadContactsListForIpad object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadContactsList)
+                                                 name:finishLoadContacts object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

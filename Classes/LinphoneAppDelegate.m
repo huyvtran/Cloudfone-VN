@@ -87,7 +87,7 @@
 @synthesize contactLoaded;
 @synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, supportLoginWithPhoneNumber, logFilePath, dbQueue, splashScreen;
 @synthesize supportVoice;
-@synthesize homeSplitVC, contactType, historyType, callTransfered, hNavigation, hasBluetoothEar;
+@synthesize homeSplitVC, contactType, historyType, callTransfered, hNavigation, hasBluetoothEar, ipadWaiting;
 
 #pragma mark - Lifecycle Functions
 
@@ -463,7 +463,7 @@ void onUncaughtException(NSException* exception)
                                                  name:kReachabilityChangedNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadContactListAfterAddSuccess)
-                                                 name:@"reloadContactAfterAdd" object:nil];
+                                                 name:reloadContactAfterAdd object:nil];
     
     if (!IS_IPOD && !IS_IPHONE) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showPopupCallForIpad:)
@@ -525,7 +525,9 @@ void onUncaughtException(NSException* exception)
         notifiCenter.delegate = self;
         [notifiCenter requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error){
             if( !error ){
-                [[UIApplication sharedApplication] registerForRemoteNotifications];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] registerForRemoteNotifications];
+                });
             }
         }];
     }
@@ -585,6 +587,15 @@ void onUncaughtException(NSException* exception)
     }else{
         contactType = eContactPBX;
         [self settingForStartApplicationWithIpad];
+        
+        ipadWaiting = [[UIActivityIndicatorView alloc] init];
+        ipadWaiting.hidden = YES;
+        ipadWaiting.backgroundColor = UIColor.whiteColor;
+        ipadWaiting.alpha = 0.5;
+        [self.window addSubview: ipadWaiting];
+        [ipadWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.left.right.bottom.equalTo(self.window);
+        }];
     }
     
     //  Enable all notification type. VoIP Notifications don't present a UI but we will use this to show local nofications later
@@ -2534,6 +2545,15 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         }
         default:
             break;
+    }
+}
+
+- (void)showWaiting: (BOOL)show {
+    ipadWaiting.hidden = !show;
+    if (show) {
+        [ipadWaiting startAnimating];
+    }else{
+        [ipadWaiting stopAnimating];
     }
 }
 

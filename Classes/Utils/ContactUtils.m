@@ -6,6 +6,7 @@
 //
 
 #import "ContactUtils.h"
+#import "ContactDetailObj.h"
 
 @implementation ContactUtils
 
@@ -190,6 +191,120 @@
     
     imageView.layer.mask = borderLayer;
     imageView.clipsToBounds = YES;
+}
+
++ (void)addNewContacts
+{
+    LinphoneAppDelegate *appDelegate = [LinphoneAppDelegate sharedInstance];
+    NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: appDelegate._newContact._firstName];
+    NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName:convertName];
+    appDelegate._newContact._nameForSearch = nameForSearch;
+    
+    
+    if (appDelegate._dataCrop != nil) {
+        if ([appDelegate._dataCrop respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
+            // iOS 7+
+            appDelegate._newContact._avatar = [appDelegate._dataCrop base64EncodedStringWithOptions: 0];
+        } else {
+            // pre iOS7
+            appDelegate._newContact._avatar = [appDelegate._dataCrop base64Encoding];
+        }
+    }else{
+        appDelegate._newContact._avatar = @"";
+    }
+    
+    ABRecordRef aRecord = ABPersonCreate();
+    CFErrorRef  anError = NULL;
+    
+    // Lưu thông tin
+    ABRecordSetValue(aRecord, kABPersonFirstNameProperty, (__bridge CFTypeRef)(appDelegate._newContact._firstName), &anError);
+    ABRecordSetValue(aRecord, kABPersonLastNameProperty, (__bridge CFTypeRef)(appDelegate._newContact._lastName), &anError);
+    ABRecordSetValue(aRecord, kABPersonOrganizationProperty, (__bridge CFTypeRef)(appDelegate._newContact._company), &anError);
+    ABRecordSetValue(aRecord, kABPersonFirstNamePhoneticProperty, (__bridge CFTypeRef)(appDelegate._newContact._sipPhone), &anError);
+    
+    if (appDelegate._newContact._email == nil) {
+        appDelegate._newContact._email = @"";
+    }
+    
+    ABMutableMultiValueRef email = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+    ABMultiValueAddValueAndLabel(email, (__bridge CFTypeRef)(appDelegate._newContact._email), CFSTR("email"), NULL);
+    ABRecordSetValue(aRecord, kABPersonEmailProperty, email, &anError);
+    
+    if (appDelegate._dataCrop != nil) {
+        CFDataRef cfdata = CFDataCreate(NULL,[appDelegate._dataCrop bytes], [appDelegate._dataCrop length]);
+        ABPersonSetImageData(aRecord, cfdata, &anError);
+    }
+    
+    // Phone number
+    NSMutableArray *listPhone = [[NSMutableArray alloc] init];
+    ABMutableMultiValueRef multiPhone = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+    
+    for (int iCount=0; iCount<appDelegate._newContact._listPhone.count; iCount++) {
+        ContactDetailObj *aPhone = [appDelegate._newContact._listPhone objectAtIndex: iCount];
+        if ([AppUtils isNullOrEmpty: aPhone._valueStr]) {
+            continue;
+        }
+        if ([aPhone._typePhone isEqualToString: type_phone_mobile]) {
+            ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)(aPhone._valueStr), kABPersonPhoneMobileLabel, NULL);
+            [listPhone addObject: aPhone];
+        }else if ([aPhone._typePhone isEqualToString: type_phone_work]){
+            ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)(aPhone._valueStr), kABWorkLabel, NULL);
+            [listPhone addObject: aPhone];
+        }else if ([aPhone._typePhone isEqualToString: type_phone_fax]){
+            ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)(aPhone._valueStr), kABPersonPhoneHomeFAXLabel, NULL);
+            [listPhone addObject: aPhone];
+        }else if ([aPhone._typePhone isEqualToString: type_phone_home]){
+            ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)(aPhone._valueStr), kABHomeLabel, NULL);
+            [listPhone addObject: aPhone];
+        }else if ([aPhone._typePhone isEqualToString: type_phone_other]){
+            ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFTypeRef)(aPhone._valueStr), kABOtherLabel, NULL);
+            [listPhone addObject: aPhone];
+        }
+    }
+    ABRecordSetValue(aRecord, kABPersonPhoneProperty, multiPhone,nil);
+    CFRelease(multiPhone);
+    
+    //Address
+    ABMutableMultiValueRef address = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
+    NSMutableDictionary *addressDict = [[NSMutableDictionary alloc] init];
+    [addressDict setObject:@"" forKey:(NSString *)kABPersonAddressStreetKey];
+    [addressDict setObject:@"" forKey:(NSString *)kABPersonAddressZIPKey];
+    [addressDict setObject:@"" forKey:(NSString *)kABPersonAddressStateKey];
+    [addressDict setObject:@"" forKey:(NSString *)kABPersonAddressCityKey];
+    [addressDict setObject:@"" forKey:(NSString *)kABPersonAddressCountryKey];
+    ABMultiValueAddValueAndLabel(address, (__bridge CFTypeRef)(addressDict), kABWorkLabel, NULL);
+    ABRecordSetValue(aRecord, kABPersonAddressProperty, address, &anError);
+    
+    if (anError != NULL) {
+        NSLog(@"error while creating..");
+    }
+    
+    ABAddressBookRef addressBook;
+    CFErrorRef error = NULL;
+    addressBook = ABAddressBookCreateWithOptions(nil, &error);
+    
+    BOOL isAdded = ABAddressBookAddRecord (addressBook,aRecord,&error);
+    
+    if(isAdded){
+        NSLog(@"added..");
+    }
+    if (error != NULL) {
+        NSLog(@"ABAddressBookAddRecord %@", error);
+    }
+    error = NULL;
+    
+    BOOL isSaved = ABAddressBookSave (addressBook,&error);
+    if(isSaved){
+        NSLog(@"saved..");
+    }
+    
+    if (error != NULL) {
+        NSLog(@"ABAddressBookSave %@", error);
+    }
+    
+    CFRelease(aRecord);
+    CFRelease(email);
+    CFRelease(addressBook);
 }
 
 @end

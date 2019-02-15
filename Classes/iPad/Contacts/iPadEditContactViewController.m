@@ -20,7 +20,7 @@
 @end
 
 @implementation iPadEditContactViewController
-@synthesize viewHeader, btnAvatar, imgAvatar, imgChange, tfName, tfEmail, tfCompany, tbPhone, icWaiting;
+@synthesize viewHeader, btnAvatar, imgAvatar, imgChange, tfName, tfEmail, tfCompany, tbPhone;
 @synthesize detailsContact, idContact, curPhoneNumber;
 
 - (void)viewDidLoad {
@@ -75,6 +75,18 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenSelectTypeForPhone:)
                                                  name:selectTypeForPhoneNumber object:nil];
+}
+
+-(void) viewWillDisappear:(BOOL)animated
+{
+    if ([self.navigationController.viewControllers indexOfObject:self] == NSNotFound)
+    {
+        // Navigation button was pressed. Do some stuff
+        [LinphoneAppDelegate sharedInstance]._dataCrop = nil;
+        
+        [self.navigationController popViewControllerAnimated:NO];
+    }
+    [super viewWillDisappear:animated];
 }
 
 - (void)createSaveContactButtonForView {
@@ -158,8 +170,8 @@
     [LinphoneAppDelegate sharedInstance].needToReloadContactList = YES;
     
     [self.view endEditing: true];
-    icWaiting.hidden = NO;
-    [icWaiting startAnimating];
+    
+    [[LinphoneAppDelegate sharedInstance] showWaiting: YES];
     
     [self updateContactIntoAddressPhoneBook];
     [self performSelector:@selector(hideWaitingView) withObject:nil afterDelay:1.0];
@@ -171,8 +183,7 @@
 }
 
 - (void)hideWaitingView {
-    icWaiting.hidden = YES;
-    [icWaiting stopAnimating];
+    [[LinphoneAppDelegate sharedInstance] showWaiting: NO];
 }
 
 - (void)displayContactInformation
@@ -210,6 +221,9 @@
 
 - (void)showContentWithCurrentLanguage {
     self.title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Edit contact"];
+    tfName.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Fullname"];
+    tfEmail.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Email"];
+    tfCompany.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Company"];
 }
 
 - (void)whenTapOnMainScreen {
@@ -262,8 +276,7 @@
     }];
     
     tfName.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightThin];
-    tfName.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
-                                        blue:(50/255.0) alpha:1.0];
+    tfName.textColor = UIColor.blackColor;
     [tfName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(btnAvatar.mas_right).offset(padding);
         make.right.equalTo(viewHeader).offset(-padding);
@@ -308,14 +321,6 @@
     tbPhone.backgroundColor = UIColor.clearColor;
     tbPhone.delegate = self;
     tbPhone.dataSource = self;
-    
-    icWaiting.backgroundColor = UIColor.whiteColor;
-    icWaiting.alpha = 0.5;
-    icWaiting.hidden = YES;
-    [icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.bottom.equalTo(self.view);
-    }];
-    
     
     /*  [Khai Le]
     btnCancel = [[UIButton alloc] init];
@@ -614,6 +619,7 @@
     //  [Khai Le - 14/02/2019]  reload ipad contacts list after update
     [[NSNotificationCenter defaultCenter] postNotificationName:reloadContactsListForIpad object:nil];
     
+    [LinphoneAppDelegate sharedInstance]._dataCrop = nil;
     [self.navigationController popViewControllerAnimated: YES];
 }
 
@@ -674,12 +680,16 @@
 }
 
 - (void)pressOnCamera {
-    [LinphoneAppDelegate sharedInstance].fromImagePicker = YES;
-    
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    [picker setDelegate: self];
-    [picker setSourceType: UIImagePickerControllerSourceTypeCamera];
-    [self presentViewController:picker animated:YES completion:NULL];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [LinphoneAppDelegate sharedInstance].fromImagePicker = YES;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            [picker setDelegate: self];
+            [picker setSourceType: UIImagePickerControllerSourceTypeCamera];
+            [self presentViewController:picker animated:YES completion:NULL];
+        });
+    });
 }
 
 - (void)pressOnGallery {
@@ -700,7 +710,7 @@
 - (void)removeAvatar {
     if ([LinphoneAppDelegate sharedInstance]._dataCrop != nil) {
         [LinphoneAppDelegate sharedInstance]._dataCrop = nil;
-        if (detailsContact._avatar != nil && ![detailsContact._avatar isEqualToString:@""]){
+        if (![AppUtils isNullOrEmpty: detailsContact._avatar]){
             imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: detailsContact._avatar]];
         }else{
             imgAvatar.image = [UIImage imageNamed:@"avatar"];
@@ -748,10 +758,7 @@
     CGFloat width = image.size.width;
     CGFloat height = image.size.height;
     CGFloat length = MIN(width, height);
-    PECropController.imageCropRect = CGRectMake((width - length) / 2,
-                                                (height - length) / 2,
-                                                length,
-                                                length);
+    PECropController.imageCropRect = CGRectMake((width - length) / 2, (height - length) / 2, length, length);
     PECropController.keepingCropAspectRatio = true;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: PECropController];
@@ -759,10 +766,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     }
-//    [[PhoneMainView instance] changeCurrentView:PECropViewController.compositeViewDescription
-//                                           push:true];
     [self.navigationController pushViewController:PECropController animated:YES];
-    //  [self presentViewController:navigationController animated:YES completion:NULL];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
