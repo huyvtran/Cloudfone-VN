@@ -431,9 +431,8 @@
     viewFooter.backgroundColor = UIColor.greenColor;
     
     btnDeleteContact = [[UIButton alloc] init];
-    btnDeleteContact.backgroundColor = [UIColor colorWithRed:(202/255.0) green:(212/255.0)
-                                                        blue:(223/255.0) alpha:1.0];
-    [btnDeleteContact setTitleColor:UIColor.redColor forState:UIControlStateNormal];
+    btnDeleteContact.backgroundColor = UIColor.redColor;
+    [btnDeleteContact setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     [btnDeleteContact setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete contact"] forState:UIControlStateNormal];
     btnDeleteContact.titleLabel.font = [UIFont systemFontOfSize:22.0 weight:UIFontWeightThin];
     [viewFooter addSubview: btnDeleteContact];
