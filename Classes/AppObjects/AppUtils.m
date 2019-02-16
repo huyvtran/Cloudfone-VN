@@ -965,7 +965,9 @@
     navigationVC.navigationBar.barTintColor = IPAD_HEADER_BG_COLOR;
     navigationVC.navigationBar.translucent = NO;
     navigationVC.navigationBar.tintColor = UIColor.whiteColor;
-    navigationVC.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:UIColor.whiteColor forKey:NSForegroundColorAttributeName];
+    //  navigationVC.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:UIColor.whiteColor forKey:NSForegroundColorAttributeName];
+    [navigationVC.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColor.whiteColor, NSFontAttributeName:[UIFont systemFontOfSize:22.0 weight:UIFontWeightThin]}];
+    
     return navigationVC;
 }
 

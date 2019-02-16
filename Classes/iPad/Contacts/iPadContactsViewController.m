@@ -8,6 +8,7 @@
 #import "iPadContactsViewController.h"
 #import "iPadNewContactViewController.h"
 #import "iPadContactDetailViewController.h"
+#import "iPadNotChooseContactViewController.h"
 #import "PBXContactTableCell.h"
 #import "UIImage+GKContact.h"
 #import "NSData+Base64.h"
@@ -136,6 +137,9 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadContactsList)
                                                  name:finishLoadContacts object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(afterDeleteContact)
+                                                 name:reloadContactsAfterDeleteForIpad object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -161,6 +165,12 @@
 }
 
 - (IBAction)btnPBXPressed:(UIButton *)sender {
+    //  show have not choosen contact
+    iPadNotChooseContactViewController *contentVC = [[iPadNotChooseContactViewController alloc] initWithNibName:@"iPadNotChooseContactViewController" bundle:nil];
+    UINavigationController *navigationVC = [AppUtils createNavigationWithController: contentVC];
+    [AppUtils showDetailViewWithController: navigationVC];
+    //  ----
+    
     [LinphoneAppDelegate sharedInstance].contactType = eContactPBX;
     [self updateUIForView];
     
@@ -169,10 +179,15 @@
     isSearching = NO;
     [self showAndReloadContactList];
     [tbContacts reloadData];
-    [self selectFirstContactIfExists];
 }
 
 - (IBAction)btnAllPressed:(UIButton *)sender {
+    //  show have not choosen contact
+    iPadNotChooseContactViewController *contentVC = [[iPadNotChooseContactViewController alloc] initWithNibName:@"iPadNotChooseContactViewController" bundle:nil];
+    UINavigationController *navigationVC = [AppUtils createNavigationWithController: contentVC];
+    [AppUtils showDetailViewWithController: navigationVC];
+    //  ----
+    
     [LinphoneAppDelegate sharedInstance].contactType = eContactAll;
     [self updateUIForView];
     
@@ -181,7 +196,6 @@
     isSearching = NO;
     [self showAndReloadContactList];
     [tbContacts reloadData];
-    [self selectFirstContactIfExists];
 }
 
 - (IBAction)icSyncClicked:(UIButton *)sender {
@@ -573,17 +587,27 @@
             if (![AppUtils isNullOrEmpty: className] && ![className isEqualToString:@"iPadContactDetailViewController"])
             {
                 iPadContactDetailViewController *contactDetailVC = [[iPadContactDetailViewController alloc] initWithNibName:@"iPadContactDetailViewController" bundle:nil];
-                [contactDetailVC registerNotifications];
+                
+                
+                //  get selected contact info
+                if ([LinphoneAppDelegate sharedInstance].contactType == eContactPBX) {
+                    NSString *key = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section];
+                    PBXContact *contact = [[contactSections objectForKey: key] objectAtIndex:indexPath.row];
+                    contactDetailVC.detailsPBXContact = contact;
+                }else{
+                    NSString *key = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section];
+                    ContactObject *contact = [[contactSections objectForKey: key] objectAtIndex:indexPath.row];
+                    contactDetailVC.detailsContact = contact;
+                }
                 UINavigationController *navigationVC = [AppUtils createNavigationWithController: contactDetailVC];
                 [AppUtils showDetailViewWithController: navigationVC];
                 
-                [LinphoneAppDelegate sharedInstance].idContact = 0;
-                [tbContacts reloadData];
                 return;
             }
         }
     }
     
+    //  get selected contact info
     if ([LinphoneAppDelegate sharedInstance].contactType == eContactPBX) {
         NSString *key = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section];
         PBXContact *contact = [[contactSections objectForKey: key] objectAtIndex:indexPath.row];
@@ -778,28 +802,8 @@
     
     if (contactList.count == 0) {
         tbContacts.hidden = YES;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"showViewNoContactsDetailForIpad" object:nil];
     }else{
         tbContacts.hidden = NO;
-    }
-}
-
-- (void)selectFirstContactIfExists {
-    if ([contactSections allKeys].count > 0) {
-        [tbContacts selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-        
-        if ([LinphoneAppDelegate sharedInstance].contactType == eContactPBX) {
-            NSString *key = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:0];
-            PBXContact *contact = [[contactSections objectForKey: key] objectAtIndex:0];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:showContactInformation
-                                                                object:contact];
-        }else{
-            NSString *key = [[[contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:0];
-            ContactObject *contact = [[contactSections objectForKey: key] objectAtIndex:0];
-            [[NSNotificationCenter defaultCenter] postNotificationName:showContactInformation
-                                                                object:contact];
-        }
     }
 }
 
@@ -1125,6 +1129,17 @@
 - (void)reloadContactsList {
     [self showAndReloadContactList];
     [tbContacts reloadData];
+}
+
+- (void)afterDeleteContact {
+    [self reloadContactsList];
+    [LinphoneAppDelegate sharedInstance].idContact = 0;
+    
+    //  show view select contact
+    sssss
+    iPadNotChooseContactViewController *contentVC = [[iPadNotChooseContactViewController alloc] initWithNibName:@"iPadNotChooseContactViewController" bundle:nil];
+    UINavigationController *detailVC = [AppUtils createNavigationWithController: contentVC];
+    [AppUtils showDetailViewWithController: detailVC];
 }
 
 

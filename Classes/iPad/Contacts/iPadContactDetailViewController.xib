@@ -14,14 +14,11 @@
                 <outlet property="btnCall" destination="QO6-qV-7X2" id="Nfg-ap-xXD"/>
                 <outlet property="btnSendMessage" destination="OJp-jG-PeH" id="h8m-c4-BGE"/>
                 <outlet property="imgAvatar" destination="8HF-wB-Wet" id="P9j-8S-UqR"/>
-                <outlet property="imgNoContacts" destination="K5Y-Sq-Yuz" id="uPf-kk-Nod"/>
                 <outlet property="lbName" destination="DAg-Wa-aJg" id="yVx-7z-7rK"/>
-                <outlet property="lbNoContacts" destination="5VF-jf-KyM" id="2m1-MF-fxB"/>
                 <outlet property="tbDetail" destination="Jnm-dt-hwl" id="R1s-gL-7sj"/>
                 <outlet property="tbPBXDetail" destination="nI7-4D-rHh" id="Ps7-O3-oBf"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="viewHeader" destination="S82-3t-nOG" id="gQw-4H-sp9"/>
-                <outlet property="viewNoContacts" destination="gOu-Ht-DYR" id="0Jg-ca-qWd"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -76,24 +73,6 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gOu-Ht-DYR">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="phonebook_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="K5Y-Sq-Yuz">
-                            <rect key="frame" x="108" y="164" width="104" height="104"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No PBX contacts yet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5VF-jf-KyM">
-                            <rect key="frame" x="81" y="276" width="158" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -102,6 +81,5 @@
     </objects>
     <resources>
         <image name="avatar.png" width="200" height="200"/>
-        <image name="phonebook_empty.png" width="200" height="200"/>
     </resources>
 </document>

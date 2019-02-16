@@ -368,19 +368,15 @@ static UICompositeViewDescription *compositeDescription = nil;
         [waitingHud showInView:self.view animated:YES];
         
         // Remove khỏi addressbook
-        CFErrorRef error = NULL;
-        ABAddressBookRef listAddressBook = ABAddressBookCreateWithOptions(NULL, NULL);
-        ABRecordRef aPerson = ABAddressBookGetPersonWithRecordID(listAddressBook, detailsContact._id_contact);
-        ABAddressBookRemoveRecord(listAddressBook, aPerson, nil);
-        BOOL isSaved = ABAddressBookSave (listAddressBook,&error);
-        if(isSaved){
-            NSLog(@"Contact đã được xoá khỏi addressbook...");
+        BOOL result = [ContactUtils deleteContactFromPhoneWithId: detailsContact._id_contact];
+        if(result){
+            [appDelegate.listContacts removeObject: detailsContact];
+            
+            NSString *msgContent = [appDelegate.localization localizedStringForKey:@"Contact has been deleted"];
+            [self.view makeToast:msgContent duration:2.0 position:CSToastPositionCenter];
         }
-        
-        [appDelegate.listContacts removeObject: detailsContact];
-        
         [waitingHud dismissAnimated:YES];
-        
+
         [[PhoneMainView instance] popCurrentView];
     }
 }

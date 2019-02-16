@@ -48,7 +48,7 @@
 #import "iPadDialerViewController.h"
 #import "iPadKeypadViewController.h"
 #import "iPadContactsViewController.h"
-#import "iPadContactDetailViewController.h"
+#import "iPadNotChooseContactViewController.h"
 #import "iPadMoreViewController.h"
 #import "iPadPopupCall.h"
 #import "TestViewController.h"
@@ -2351,20 +2351,20 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     switch (tabBarController.selectedIndex) {
         case 0:{
-            iPadKeypadViewController *iPadKeypadVC = [[iPadKeypadViewController alloc] initWithNibName:@"iPadKeypadViewController" bundle:nil];
+            iPadKeypadViewController *contentVC = [[iPadKeypadViewController alloc] initWithNibName:@"iPadKeypadViewController" bundle:nil];
             
             UITabBarController *tabbarVC = [homeSplitVC.viewControllers objectAtIndex:0];
-            NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, iPadKeypadVC, nil];
+            NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, contentVC, nil];
             homeSplitVC.viewControllers = viewControllers;
             
             break;
         }
         case 1:{
-            iPadContactDetailViewController *contactDetailVC = [[iPadContactDetailViewController alloc] initWithNibName:@"iPadContactDetailViewController" bundle:nil];
-            UINavigationController *contactDetailNavVC = [AppUtils createNavigationWithController: contactDetailVC];
+            iPadNotChooseContactViewController *contentVC = [[iPadNotChooseContactViewController alloc] initWithNibName:@"iPadNotChooseContactViewController" bundle:nil];
+            UINavigationController *detailVC = [AppUtils createNavigationWithController: contentVC];
             
             UITabBarController *tabbarVC = [homeSplitVC.viewControllers objectAtIndex:0];
-            NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, contactDetailNavVC, nil];
+            NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, detailVC, nil];
             homeSplitVC.viewControllers = viewControllers;
             
             break;

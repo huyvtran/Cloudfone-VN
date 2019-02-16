@@ -184,10 +184,10 @@
 
 "Notifications" =   "Thông báo"
 "Can not find QR Code!"=   "Không thể tìm thấy mã QR!"
-"Close"    =   "Đóng"
-"Failed"               =   "Thất bại!"
-"Delete" = "Xóa"
-"Edit" = "Sửa"
+"Close"     =   "Đóng"
+"Failed"    =   "Thất bại!"
+"Delete"    = "Xóa"
+"Edit"      = "Sửa"
 
 "No network" = "Không internet"
 "Can not send email. Please check your email account again!" = "Không thể gửi email. Vui lòng kiểm tra lại tài khoản email của bạn!"
@@ -206,3 +206,5 @@
 "Search..." = "Tìm kiếm..."
 "Phone number can not empty!" = "Số điện thoại không được rỗng!"
 "Contact name can not empty!" = "Tên liên hệ không được rỗng!"
+"Have not choosen contact" = "Chưa chọn liên hệ"
+"Contact has been deleted" = "Liên hệ đã được xoá"

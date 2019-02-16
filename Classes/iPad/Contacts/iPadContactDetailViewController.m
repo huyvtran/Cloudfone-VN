@@ -23,7 +23,7 @@
 @end
 
 @implementation iPadContactDetailViewController
-@synthesize viewHeader, imgAvatar, lbName, btnCall, btnSendMessage, tbDetail, tbPBXDetail, viewNoContacts, imgNoContacts, lbNoContacts;
+@synthesize viewHeader, imgAvatar, lbName, btnCall, btnSendMessage, tbDetail, tbPBXDetail;
 @synthesize detailsContact, detailsPBXContact;
 
 - (void)viewDidLoad {
@@ -41,6 +41,12 @@
     
     self.navigationItem.rightBarButtonItem = nil;
     
+    if (detailsPBXContact != nil) {
+        [self displayPBXContactInformation];
+    }else if (detailsContact != nil) {
+        [self displayContactInformation];
+    }
+    
     if ([LinphoneAppDelegate sharedInstance].idContact != 0) {
         self.navigationItem.rightBarButtonItem = icEdit;
         
@@ -51,6 +57,7 @@
         tbPBXDetail.hidden = YES;
         [tbDetail reloadData];
     }
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -98,23 +105,11 @@
 - (void)registerNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayContactInformation:)
                                                  name:showContactInformation object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showViewNoContactsDetailForIpad)
-                                                 name:@"showViewNoContactsDetailForIpad" object:nil];
-}
-
-- (void)showViewNoContactsDetailForIpad {
-    viewNoContacts.hidden = NO;
 }
 
 - (void)displayContactInformation: (NSNotification *)notif {
-    viewNoContacts.hidden = YES;
     id object = [notif object];
     if ([object isKindOfClass:[ContactObject class]]) {
-        self.navigationItem.rightBarButtonItem = icEdit;
-        
-        [LinphoneAppDelegate sharedInstance].idContact = [(ContactObject *)object _id_contact];
-        
         detailsContact = [ContactUtils getContactWithId: [(ContactObject *)object _id_contact]];
         if (![AppUtils isNullOrEmpty:detailsContact._sipPhone]) {
             isPBXContact = YES;
@@ -129,10 +124,6 @@
         [tbDetail reloadData];
         
     }else if ([object isKindOfClass:[PBXContact class]]) {
-        [LinphoneAppDelegate sharedInstance].idContact = 0;
-        
-        self.navigationItem.rightBarButtonItem = nil;
-        
         detailsPBXContact = (PBXContact *)object;
         [self displayPBXContactInformation];
         
@@ -145,7 +136,6 @@
 
 - (void)displayPBXContactInformation
 {
-    viewNoContacts.hidden = YES;
     lbName.text = detailsPBXContact._name;
     if ([AppUtils isNullOrEmpty: detailsPBXContact._avatar]) {
         imgAvatar.image = [UIImage imageNamed:@"avatar"];
@@ -157,12 +147,14 @@
     btnCall.enabled = YES;
     btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;
     btnCall.layer.borderColor = IPAD_HEADER_BG_COLOR.CGColor;
+    viewFooter.hidden = YES;
+    self.navigationItem.rightBarButtonItem = nil;
+    
+    [LinphoneAppDelegate sharedInstance].idContact = 0;
 }
 
 - (void)displayContactInformation
 {
-    viewNoContacts.hidden = YES;
-    
     if ([detailsContact._fullName isEqualToString:@""] && ![detailsContact._sipPhone isEqualToString:@""]) {
         lbName.text = detailsContact._sipPhone;
     }else{
@@ -180,6 +172,10 @@
     btnCall.enabled = NO;
     btnCall.backgroundColor = GRAY_COLOR;
     btnCall.layer.borderColor = GRAY_COLOR.CGColor;
+    viewFooter.hidden = NO;
+    self.navigationItem.rightBarButtonItem = icEdit;
+    
+    [LinphoneAppDelegate sharedInstance].idContact = detailsContact._id_contact;
 }
 
 - (void)setupUIForView {
@@ -260,28 +256,9 @@
     tbPBXDetail.dataSource = self;
     tbPBXDetail.separatorStyle = UITableViewCellSeparatorStyleNone;
     tbPBXDetail.backgroundColor = UIColor.clearColor;
+    tbPBXDetail.scrollEnabled = NO;
     [tbPBXDetail mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.bottom.equalTo(tbDetail);
-    }];
-    
-    //  view no contacts
-    [viewNoContacts mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(self.view);
-    }];
-    
-    [imgNoContacts mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(viewNoContacts.mas_centerX);
-        make.centerY.equalTo(viewNoContacts.mas_centerY).offset(-70.0);
-        make.width.height.mas_equalTo(120.0);
-    }];
-    
-    lbNoContacts.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightThin];
-    lbNoContacts.textAlignment = NSTextAlignmentCenter;
-    lbNoContacts.textColor = GRAY_COLOR;
-    [lbNoContacts mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(imgNoContacts.mas_bottom);
-        make.left.right.equalTo(viewNoContacts);
-        make.height.mas_equalTo(50.0);
     }];
 }
 
@@ -427,11 +404,14 @@
 }
 
 - (void)createFooterViewForTable {
-    viewFooter = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-SPLIT_MASTER_WIDTH, 80.0)];
-    viewFooter.backgroundColor = UIColor.greenColor;
+    viewFooter = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-SPLIT_MASTER_WIDTH, 100.0)];
+    viewFooter.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
+                                                  blue:(235/255.0) alpha:1.0];
     
     btnDeleteContact = [[UIButton alloc] init];
     btnDeleteContact.backgroundColor = UIColor.redColor;
+    btnDeleteContact.layer.borderColor = btnDeleteContact.backgroundColor.CGColor;
+    btnDeleteContact.layer.borderWidth = 1.0;
     [btnDeleteContact setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     [btnDeleteContact setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete contact"] forState:UIControlStateNormal];
     btnDeleteContact.titleLabel.font = [UIFont systemFontOfSize:22.0 weight:UIFontWeightThin];
@@ -446,11 +426,53 @@
     btnDeleteContact.clipsToBounds = YES;
     btnDeleteContact.layer.cornerRadius = 50.0/2;
     
-//    [btnDeleteContact addTarget:self
-//                         action:@selector(btnDeleteContactPressed:)
-//               forControlEvents:UIControlEventTouchUpInside];
+    [btnDeleteContact addTarget:self
+                         action:@selector(btnDeleteContactPress:)
+               forControlEvents:UIControlEventTouchUpInside];
     
     tbDetail.tableFooterView = viewFooter;
+}
+
+- (void)btnDeleteContactPress: (UIButton *)sender
+{
+    sender.backgroundColor = UIColor.whiteColor;
+    [sender setTitleColor:UIColor.redColor forState:UIControlStateNormal];
+    [self performSelector:@selector(showAlertForDeleteContact) withObject:nil afterDelay:0.1];
+}
+
+- (void)showAlertForDeleteContact
+{
+    btnDeleteContact.backgroundColor = UIColor.redColor;
+    [btnDeleteContact setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Delete contact"] message:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Are you sure, you want to delete this contact?"] delegate:self cancelButtonTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Cancel"] otherButtonTitles:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Accept"], nil];
+    alertView.delegate = self;
+    [alertView show];
+}
+
+#pragma mark - AlertView delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Confirm delete this contact", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        
+        [[LinphoneAppDelegate sharedInstance] showWaiting: YES];
+        
+        // Remove khỏi addressbook
+        BOOL result = [ContactUtils deleteContactFromPhoneWithId: detailsContact._id_contact];
+        if(result){
+            NSString *msgContent = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Contact has been deleted"];
+            [[LinphoneAppDelegate sharedInstance].window makeToast:msgContent duration:2.0 position:CSToastPositionCenter];
+            
+            [[LinphoneAppDelegate sharedInstance].listContacts removeObject: detailsContact];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:reloadContactsAfterDeleteForIpad
+                                                                object:nil];
+        }else{
+            NSString *msgContent = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed"];
+            [[LinphoneAppDelegate sharedInstance].window makeToast:msgContent duration:2.0 position:CSToastPositionCenter];
+        }
+        [[LinphoneAppDelegate sharedInstance] showWaiting: YES];
+    }
 }
 
 @end

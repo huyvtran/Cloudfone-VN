@@ -307,4 +307,12 @@
     CFRelease(addressBook);
 }
 
++ (BOOL)deleteContactFromPhoneWithId: (int)recordId {
+    CFErrorRef error = NULL;
+    ABAddressBookRef listAddressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+    ABRecordRef aPerson = ABAddressBookGetPersonWithRecordID(listAddressBook, recordId);
+    ABAddressBookRemoveRecord(listAddressBook, aPerson, nil);
+    return ABAddressBookSave (listAddressBook,&error);
+}
+
 @end
