@@ -21,7 +21,12 @@
         make.width.height.mas_equalTo(28.0);
     }];
     
-    lbName.font = [UIFont systemFontOfSize: 16.0];
+    if (IS_IPHONE || IS_IPOD) {
+        lbName.font = [UIFont fontWithName:HelveticaNeue size:16.0];
+    }else{
+        lbName.font = [UIFont systemFontOfSize: 18.0 weight: UIFontWeightThin];
+    }
+    
     lbName.textColor = [UIColor colorWithRed:(80/255.0) green:(80/255.0)
                                         blue:(80/255.0) alpha:1.0];
     [lbName mas_makeConstraints:^(MASConstraintMaker *make) {

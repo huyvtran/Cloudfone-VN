@@ -23,7 +23,7 @@
     
     [lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(self);
-        make.height.mas_equalTo(8.0);
+        make.height.mas_equalTo(1.0);
     }];
     
     [_iconArrow mas_makeConstraints:^(MASConstraintMaker *make) {

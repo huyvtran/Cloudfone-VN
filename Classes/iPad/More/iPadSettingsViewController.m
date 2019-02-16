@@ -64,8 +64,7 @@
 {
     hCell = 68.0;
     
-    self.view.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
-                                                 blue:(230/255.0) alpha:1.0];
+    self.view.backgroundColor = IPAD_BG_COLOR;
     //  tableview
     tbSettings.backgroundColor = UIColor.clearColor;
     [tbSettings mas_makeConstraints:^(MASConstraintMaker *make) {

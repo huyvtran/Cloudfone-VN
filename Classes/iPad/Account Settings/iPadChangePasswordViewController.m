@@ -21,7 +21,7 @@
 @end
 
 @implementation iPadChangePasswordViewController
-@synthesize viewContent, lbPassword, tfPassword, lbNewPassword, tfNewPassword, lbConfirmPassword, tfConfirmPassword, lbPasswordDesc, btnSave, btnCancel, icWaiting;
+@synthesize viewContent, lbPassword, tfPassword, lbNewPassword, tfNewPassword, lbConfirmPassword, tfConfirmPassword, lbPasswordDesc, btnSave, btnCancel;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -40,7 +40,8 @@
     
     serverPBX = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
     
-    icWaiting.hidden = YES;
+    [[LinphoneAppDelegate sharedInstance] showWaiting: NO];
+    
     [self showContentForView];
     tfPassword.text = @"";
     tfNewPassword.text = @"";
@@ -90,17 +91,16 @@
         [self performSelector:@selector(updateBorderColor:) withObject:tfConfirmPassword afterDelay:1.5];
     }
     else if (![tfConfirmPassword.text isEqualToString:tfNewPassword.text]){
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Confirm password not match"] duration:2.0 position:CSToastPositionCenter];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Confirm password not match"] duration:2.0 position:CSToastPositionCenter];
     }
     else if (![tfPassword.text isEqualToString:PASSWORD]){
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Current password not correct"] duration:2.0 position:CSToastPositionCenter];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Current password not correct"] duration:2.0 position:CSToastPositionCenter];
     }else {
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] linphone_core_clear_proxy_config", __FUNCTION__]
                              toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
         
         //  clear proxy, after will update password and register again
-        icWaiting.hidden = NO;
-        [icWaiting startAnimating];
+        [[LinphoneAppDelegate sharedInstance] showWaiting: YES];
         
         linphone_core_clear_proxy_config(LC);
     }
@@ -129,14 +129,7 @@
 
 - (void)setupUIForView {
     float marginX = 20.0;
-    self.view.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
-                                                 blue:(230/255.0) alpha:1.0];
-    
-    icWaiting.backgroundColor = UIColor.whiteColor;
-    icWaiting.alpha = 0.5;
-    [icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.bottom.equalTo(self.view);
-    }];
+    self.view.backgroundColor = IPAD_BG_COLOR;
     
     //  content view
     viewContent.backgroundColor = UIColor.whiteColor;
@@ -148,7 +141,7 @@
     //  Current password
     lbPassword.textColor = [UIColor colorWithRed:(80/255.0) green:(80/255.0)
                                              blue:(80/255.0) alpha:1.0];
-    lbPassword.font = [UIFont fontWithName:HelveticaNeue size:20.0];
+    lbPassword.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightThin];
     [lbPassword mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewContent).offset(20);
         make.left.equalTo(viewContent).offset(marginX);
@@ -161,7 +154,7 @@
     tfPassword.layer.borderWidth = 1.0;
     tfPassword.layer.borderColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
                                                      blue:(230/255.0) alpha:1.0].CGColor;
-    tfPassword.font = [UIFont fontWithName:HelveticaNeue size:20.0];
+    tfPassword.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightThin];
     [tfPassword mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbPassword.mas_bottom).offset(10.0);
         make.left.right.equalTo(lbPassword);
@@ -214,7 +207,7 @@
     tfConfirmPassword.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8.0, 40.0)];
     tfConfirmPassword.leftViewMode = UITextFieldViewModeAlways;
     
-    lbPasswordDesc.font = [UIFont fontWithName:HelveticaNeue size:20.0];
+    lbPasswordDesc.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightThin];
     lbPasswordDesc.textColor = UIColor.orangeColor;
     [lbPasswordDesc mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(tfConfirmPassword.mas_bottom).offset(5.0);
@@ -232,7 +225,7 @@
     btnCancel.clipsToBounds = YES;
     btnCancel.layer.cornerRadius = 45.0/2;
     [btnCancel setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    btnCancel.titleLabel.font = [UIFont fontWithName:HelveticaNeue size:22.0];
+    btnCancel.titleLabel.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightRegular];
     btnCancel.backgroundColor = [UIColor colorWithRed:(248/255.0) green:(83/255.0)
                                                   blue:(86/255.0) alpha:1.0];
     
@@ -245,19 +238,17 @@
     btnSave.clipsToBounds = YES;
     btnSave.layer.cornerRadius = 45.0/2;
     [btnSave setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    btnSave.titleLabel.font = [UIFont fontWithName:HelveticaNeue size:22.0];
-    [btnSave setBackgroundImage:[UIImage imageNamed:@"bg_button.png"]
-                        forState:UIControlStateNormal];
+    btnSave.titleLabel.font = btnCancel.titleLabel.font;
+    btnSave.backgroundColor = IPAD_HEADER_BG_COLOR;
 }
 
 - (void)updatePasswordSuccesful
 {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
-    icWaiting.hidden = YES;
-    [icWaiting stopAnimating];
+    [[LinphoneAppDelegate sharedInstance] showWaiting: NO];
     
-    [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your password has been updated successful"] duration:2.0 position:CSToastPositionCenter];
+    [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your password has been updated successful"] duration:2.0 position:CSToastPositionCenter];
     
     tfPassword.text = @"";
     tfNewPassword.text = @"";
@@ -333,9 +324,9 @@
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] link: %@.\n Response data: %@", __FUNCTION__, link, error] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
-    [icWaiting stopAnimating];
-    icWaiting.hidden = YES;
-    [self.view makeToast:error duration:2.0 position:CSToastPositionCenter];
+    [[LinphoneAppDelegate sharedInstance] showWaiting: NO];
+    
+    [[LinphoneAppDelegate sharedInstance].window makeToast:error duration:2.0 position:CSToastPositionCenter];
 }
 
 - (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data {
@@ -383,22 +374,20 @@
         
         [self registerPBXAccount:USERNAME password:passwordPBX ipAddress:ipPBX port:portPBX];
     }else{
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your information again!"] duration:2.0 position:CSToastPositionCenter];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your information again!"] duration:2.0 position:CSToastPositionCenter];
     }
 }
 
 - (void)registerPBXAccount: (NSString *)pbxAccount password: (NSString *)password ipAddress: (NSString *)address port: (NSString *)portID
 {
     NSArray *data = @[address, pbxAccount, password, portID];
-    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(startRegisterPBX:) userInfo:data repeats:NO];
+    [self performSelector:@selector(startRegisterPBX:) withObject:data afterDelay:1.0];
 }
 
-- (void)startRegisterPBX: (NSTimer *)timer {
-    id data = [timer userInfo];
-    
+- (void)startRegisterPBX: (NSArray *)data {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] data = %@", __FUNCTION__, @[data]] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
-    if ([data isKindOfClass:[NSArray class]] && [data count] == 4) {
+    if (data.count == 4) {
         NSString *pbxDomain = [data objectAtIndex: 0];
         NSString *pbxAccount = [data objectAtIndex: 1];
         NSString *pbxPassword = [data objectAtIndex: 2];

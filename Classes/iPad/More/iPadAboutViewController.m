@@ -67,7 +67,7 @@
     
     //  label version
     lbVersion.textAlignment = NSTextAlignmentCenter;
-    lbVersion.font = [UIFont fontWithName:HelveticaNeue size:24.0];
+    lbVersion.font = [UIFont systemFontOfSize:22.0 weight:UIFontWeightThin];
     [lbVersion mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(imgLogo.mas_bottom).offset(40.0);
         make.left.equalTo(self.view).offset(20.0);
@@ -75,8 +75,9 @@
         make.height.mas_lessThanOrEqualTo(100.0);
     }];
     
-    btnCheckForUpdate.titleLabel.font = [UIFont fontWithName:HelveticaNeue size:24.0];
+    btnCheckForUpdate.titleLabel.font = [UIFont systemFontOfSize:22.0 weight:UIFontWeightRegular];
     [btnCheckForUpdate setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    btnCheckForUpdate.backgroundColor = IPAD_HEADER_BG_COLOR;
     btnCheckForUpdate.clipsToBounds = YES;
     btnCheckForUpdate.layer.cornerRadius = 45.0/2;
     [btnCheckForUpdate mas_makeConstraints:^(MASConstraintMaker *make) {

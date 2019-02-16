@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -14,7 +14,6 @@
                 <outlet property="btnClear" destination="c3o-Yf-W3F" id="EQA-UB-UZo"/>
                 <outlet property="btnLoginWithPhone" destination="eJy-fd-fTR" id="anN-mh-vvQ"/>
                 <outlet property="btnSave" destination="dgc-LC-MGh" id="Ee9-Ku-q3t"/>
-                <outlet property="icWaiting" destination="T2w-0J-d7P" id="aPj-Q3-PbD"/>
                 <outlet property="lbAccount" destination="jtA-Mo-PuG" id="ft3-6C-0UU"/>
                 <outlet property="lbPBX" destination="cO2-5r-cg3" id="Vyp-Yo-n0L"/>
                 <outlet property="lbPassword" destination="L7V-tr-cEb" id="1KM-te-u1t"/>
@@ -125,10 +124,6 @@
                         <action selector="btnLoginWithPhonePressed:" destination="-1" eventType="touchUpInside" id="RBb-cS-Gfh"/>
                     </connections>
                 </button>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="T2w-0J-d7P">
-                    <rect key="frame" x="150" y="230" width="20" height="20"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

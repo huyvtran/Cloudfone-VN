@@ -49,6 +49,7 @@
 #import "iPadKeypadViewController.h"
 #import "iPadContactsViewController.h"
 #import "iPadNotChooseContactViewController.h"
+#import "iPadNotChoosednMoreViewController.h"
 #import "iPadMoreViewController.h"
 #import "iPadPopupCall.h"
 #import "TestViewController.h"
@@ -589,6 +590,7 @@ void onUncaughtException(NSException* exception)
         [self settingForStartApplicationWithIpad];
         
         ipadWaiting = [[UIActivityIndicatorView alloc] init];
+        ipadWaiting.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
         ipadWaiting.hidden = YES;
         ipadWaiting.backgroundColor = UIColor.whiteColor;
         ipadWaiting.alpha = 0.5;
@@ -2370,6 +2372,12 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             break;
         }
         case 2:{
+            iPadNotChoosednMoreViewController *contentVC = [[iPadNotChoosednMoreViewController alloc] initWithNibName:@"iPadNotChoosednMoreViewController" bundle:nil];
+            UINavigationController *detailVC = [AppUtils createNavigationWithController: contentVC];
+            
+            UITabBarController *tabbarVC = [homeSplitVC.viewControllers objectAtIndex:0];
+            NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, detailVC, nil];
+            homeSplitVC.viewControllers = viewControllers;
             
             break;
         }

@@ -15,6 +15,12 @@
     [super awakeFromNib];
     // Initialization code
     
+    if (IS_IPHONE || IS_IPOD) {
+        _lbTitle.font = [UIFont fontWithName:HelveticaNeue size:16.0];
+    }else{
+        _lbTitle.font = [UIFont systemFontOfSize:16.0 weight:UIFontWeightThin];
+    }
+    
     [_imgSelect mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self).offset(-10.0);
         make.centerY.equalTo(self.mas_centerY);

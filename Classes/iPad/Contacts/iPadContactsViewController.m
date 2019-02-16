@@ -1136,7 +1136,6 @@
     [LinphoneAppDelegate sharedInstance].idContact = 0;
     
     //  show view select contact
-    sssss
     iPadNotChooseContactViewController *contentVC = [[iPadNotChooseContactViewController alloc] initWithNibName:@"iPadNotChooseContactViewController" bundle:nil];
     UINavigationController *detailVC = [AppUtils createNavigationWithController: contentVC];
     [AppUtils showDetailViewWithController: detailVC];

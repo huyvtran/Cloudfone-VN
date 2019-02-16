@@ -47,8 +47,7 @@
 }
 
 - (void)setupUIForView {
-    self.view.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
-                                                 blue:(230/255.0) alpha:1.0];
+    self.view.backgroundColor = IPAD_BG_COLOR;
     
     tbSettings.backgroundColor = UIColor.clearColor;
     [tbSettings mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -100,6 +99,14 @@
                 }
             }
             
+            UILabel *lbSepa = [[UILabel alloc] init];
+            lbSepa.backgroundColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0)
+                                                      blue:(235/255.0) alpha:1.0];
+            [cell addSubview: lbSepa];
+            [lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.bottom.left.right.equalTo(cell);
+                make.height.mas_equalTo(1.0);
+            }];
             break;
         }
         case 1:{
@@ -116,11 +123,9 @@
                                                       blue:(235/255.0) alpha:1.0];
             [cell addSubview: lbSepa];
             [lbSepa mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.left.right.equalTo(cell);
+                make.bottom.left.right.equalTo(cell);
                 make.height.mas_equalTo(1.0);
             }];
-            
-            
             break;
         }
         default:

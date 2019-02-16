@@ -13,8 +13,6 @@
 
 @interface iPadPBXSettingViewController : UIViewController<CustomSwitchButtonDelegate, WebServicesDelegate, RegisterPBXWithPhoneViewDelegate, QRCodeReaderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *icWaiting;
-
 @property (weak, nonatomic) IBOutlet UIView *viewContent;
 @property (weak, nonatomic) IBOutlet UILabel *lbPBX;
 @property (weak, nonatomic) IBOutlet UISwitch *swChange;

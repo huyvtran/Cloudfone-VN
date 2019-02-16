@@ -21,7 +21,7 @@
         make.height.mas_equalTo(25.0);
     }];
     
-    lbTitle.font = [UIFont systemFontOfSize: 17.0];
+    lbTitle.font = [UIFont systemFontOfSize: 18.0 weight: UIFontWeightRegular];
     lbTitle.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
                                          blue:(50/255.0) alpha:1.0];
     [lbTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -31,7 +31,7 @@
         make.height.mas_equalTo(25);
     }];
     
-    lbDescription.font = [UIFont systemFontOfSize: 14.0];
+    lbDescription.font = [UIFont systemFontOfSize: 16.0 weight: UIFontWeightThin];
     lbDescription.textColor = [UIColor colorWithRed:(180/255.0) green:(180/255.0)
                                                blue:(180/255.0) alpha:1.0];
     [lbDescription mas_makeConstraints:^(MASConstraintMaker *make) {

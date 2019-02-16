@@ -471,7 +471,7 @@
             NSString *msgContent = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed"];
             [[LinphoneAppDelegate sharedInstance].window makeToast:msgContent duration:2.0 position:CSToastPositionCenter];
         }
-        [[LinphoneAppDelegate sharedInstance] showWaiting: YES];
+        [[LinphoneAppDelegate sharedInstance] showWaiting: NO];
     }
 }
 

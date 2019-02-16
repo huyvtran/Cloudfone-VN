@@ -75,6 +75,8 @@
 
 - (void)setupForView
 {
+    self.view.backgroundColor = IPAD_BG_COLOR;
+    
     [tbLanguage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.right.equalTo(self.view);
     }];
@@ -82,8 +84,7 @@
     tbLanguage.dataSource = self;
     tbLanguage.separatorStyle = UITableViewCellSeparatorStyleNone;
     tbLanguage.backgroundColor = UIColor.clearColor;
-    self.view.backgroundColor = [UIColor colorWithRed:(230/255.0) green:(230/255.0)
-                                                 blue:(230/255.0) alpha:1.0];
+    tbLanguage.scrollEnabled = NO;
 }
 
 #pragma mark - UITableview delegate

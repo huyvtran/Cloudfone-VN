@@ -6,6 +6,7 @@
 //
 
 #import "iPadMoreViewController.h"
+#import "iPadEditProfileViewController.h"
 #import "iPadAccountSettingsViewController.h"
 #import "iPadSettingsViewController.h"
 #import "iPadPolicyViewController.h"
@@ -45,7 +46,6 @@ typedef enum ipadMoreType{
     [super viewWillAppear: animated];
     
     [self showContentWithCurrentLanguage];
-    [self selectDefaultForView];
     
     [self registerNotifications];
     
@@ -70,20 +70,11 @@ typedef enum ipadMoreType{
     listIcon = [[NSMutableArray alloc] initWithObjects: @"ic_setup.png", @"ic_setting.png", @"ic_support.png", @"ic_term.png", @"ic_introduce.png", @"ic_send_logs.png", @"ic_info.png", nil];
 }
 
-- (void)selectDefaultForView {
-    [tbMenu selectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-    
-    iPadAccountSettingsViewController *settingsAccVC = [[iPadAccountSettingsViewController alloc] initWithNibName:@"iPadAccountSettingsViewController" bundle:nil];
-    UINavigationController *navigationVC = [AppUtils createNavigationWithController: settingsAccVC];
-    [AppUtils showDetailViewWithController: navigationVC];
-}
-
 - (void)setupUIForView {
     self.view.backgroundColor = IPAD_BG_COLOR;
     
     //  view info
     btnAvatar.backgroundColor = UIColor.clearColor;
-    btnAvatar.imageEdgeInsets = UIEdgeInsetsMake(15.0, 15.0, 15.0, 15.0);
     [btnAvatar setImage:[UIImage imageNamed:@"man_user.png"] forState:UIControlStateNormal];
     [btnAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
@@ -108,13 +99,32 @@ typedef enum ipadMoreType{
                                                  name:updateAvatarAfterDownloadSuccessful object:nil];
 }
 
-- (void)showAccountInformation {
-    if ([SipUtils getStateOfDefaultProxyConfig] != eAccountNone) {
+- (void)showProfileName {
+    AccountInfoCell *curCell = [tbMenu cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    if ([curCell isKindOfClass:[AccountInfoCell class]]) {
         NSString *accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
         
         NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", accountID];
         NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyName];
-        NSLog(@"%@", name);
+        if (![AppUtils isNullOrEmpty: name]) {
+            curCell.lbAccName.text = name;
+        }else{
+            curCell.lbAccName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Not set"];
+        }
+        
+        if (![AppUtils isNullOrEmpty: accountID]) {
+            curCell.lbAccPhone.text = accountID;
+        }else{
+            curCell.lbAccPhone.text = @"-.-";
+        }
+    }
+}
+
+- (void)showAccountInformation {
+    if ([SipUtils getStateOfDefaultProxyConfig] != eAccountNone) {
+        [self showProfileName];
+        
+        NSString *accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
         
         NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", accountID];
         NSString *avatar = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyAvatar];
@@ -169,6 +179,12 @@ typedef enum ipadMoreType{
     });
 }
 
+- (void)editProfilePress {
+    iPadEditProfileViewController *contentVC = [[iPadEditProfileViewController alloc] initWithNibName:@"iPadEditProfileViewController" bundle:nil];
+    UINavigationController *navigationVC = [AppUtils createNavigationWithController: contentVC];
+    [AppUtils showDetailViewWithController: navigationVC];
+}
+
 #pragma mark - uitableview delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -189,6 +205,10 @@ typedef enum ipadMoreType{
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
                                                 blue:(50/255.0) alpha:0.3];
+        
+        [cell.icEdit addTarget:self
+                        action:@selector(editProfilePress)
+              forControlEvents:UIControlEventTouchUpInside];
         
         return cell;
     }else{
