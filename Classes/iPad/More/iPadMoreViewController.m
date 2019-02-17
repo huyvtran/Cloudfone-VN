@@ -97,6 +97,9 @@ typedef enum ipadMoreType{
 - (void)registerNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMyAvatarAfterDownloaded:)
                                                  name:updateAvatarAfterDownloadSuccessful object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountInformation)
+                                                 name:reloadProfileContentForIpad object:nil];
 }
 
 - (void)showProfileName {

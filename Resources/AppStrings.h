@@ -40,6 +40,7 @@
 #define reloadContactsListForIpad           @"reloadContactsListForIpad"
 #define reloadContactAfterAdd               @"reloadContactAfterAdd"
 #define reloadContactsAfterDeleteForIpad    @"reloadContactsAfterDeleteForIpad"
+#define reloadProfileContentForIpad         @"reloadProfileContentForIpad"
 
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"
 #define AES_KEY         @"OdsCloudfone@123"

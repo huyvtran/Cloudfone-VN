@@ -6,6 +6,7 @@
 //
 
 #import "iPadEditProfileViewController.h"
+#import "iPadAccountSettingsViewController.h"
 #import "NSData+Base64.h"
 #import "PECropViewController.h"
 #import "UploadPicture.h"
@@ -131,7 +132,7 @@
     [self.view endEditing: YES];
     
     if ([LinphoneManager instance].connectivity == none){
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
     
@@ -150,11 +151,19 @@
             NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, accountID];
             UIImage *noneImage = [UIImage imageNamed:@"no_avatar.png"];
             [self startUploadImage:UIImagePNGRepresentation(noneImage) withName: avatarName];
+        }else {
+            [self saveProfileNameForUser];
+            
+            NSString *content = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Profile name has been updated"];
+            [[LinphoneAppDelegate sharedInstance].window makeToast:content duration:2.0 position:CSToastPositionCenter];
         }
     }
 }
 
 - (IBAction)btnResetPress:(UIButton *)sender {
+    iPadAccountSettingsViewController *settingsAccVC = [[iPadAccountSettingsViewController alloc] initWithNibName:@"iPadAccountSettingsViewController" bundle:nil];
+    UINavigationController *navigationVC = [AppUtils createNavigationWithController: settingsAccVC];
+    [AppUtils showDetailViewWithController: navigationVC];
 }
 
 - (IBAction)btnAvatarPress:(UIButton *)sender {
@@ -189,7 +198,7 @@
                 [[LinphoneAppDelegate sharedInstance] showWaiting: NO];
                 
                 if (uploadSession.uploadError != nil) {
-                    [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed. Please try later!"] duration:2.0 position:CSToastPositionCenter];
+                    [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed. Please try later!"] duration:2.0 position:CSToastPositionCenter];
                 }else{
                     if (isRemoveAvatar) {
                         [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your avatar has been removed"] duration:2.0 position:CSToastPositionCenter];
@@ -210,12 +219,7 @@
                     [[NSUserDefaults standardUserDefaults] setObject:strAvatar forKey:pbxKeyAvatar];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                 }
-                
-                if (tfName.text.length > 0) {
-                    NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", accountID];
-                    [[NSUserDefaults standardUserDefaults] setObject: tfName.text forKey:pbxKeyName];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                }
+                [self saveProfileNameForUser];
             });
         }];
     });
@@ -380,6 +384,16 @@
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     }
     [self.navigationController pushViewController:PECropController animated:YES];
+}
+
+- (void)saveProfileNameForUser {
+    if (tfName.text.length > 0) {
+        NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", accountID];
+        [[NSUserDefaults standardUserDefaults] setObject: tfName.text forKey:pbxKeyName];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:reloadProfileContentForIpad object:nil];
+    }
 }
 
 

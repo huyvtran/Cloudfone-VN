@@ -207,3 +207,4 @@
 "Contact name can not empty!" = "Contact name can not empty!"
 "Have not choosen contact" = "Have not choosen contact"
 "Contact has been deleted" = "Contact has been deleted"
+"Profile name has been updated" = "Profile name has been updated"

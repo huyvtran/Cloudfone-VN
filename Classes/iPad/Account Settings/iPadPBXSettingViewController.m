@@ -742,6 +742,9 @@
     
     [swAccount setUIForDisableStateWithActionTarget: NO];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:reloadProfileContentForIpad
+                                                        object:nil];
+    
     [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your account was removed"] duration:2.0 position:CSToastPositionCenter];
     [self performSelector:@selector(popCurrentView) withObject:nil afterDelay:2.0];
 }
@@ -783,6 +786,8 @@
     btnSave.enabled = NO;
     
     [swAccount setUIForEnableStateWithActionTarget: NO];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:reloadProfileContentForIpad object:nil];
     
     [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your account was registered successful."] duration:2.0 position:CSToastPositionCenter];
     [self performSelector:@selector(popCurrentView) withObject:nil afterDelay:2.0];
@@ -1194,25 +1199,24 @@
         NSString *linkAvatar = [NSString stringWithFormat:@"%@/%@", link_picture_chat_group, avatarName];
         NSData *data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: linkAvatar]];
         
+        NSString *folder = [NSString stringWithFormat:@"/avatars/%@", avatarName];
+        [AppUtils saveFileToFolder:data withName: folder];
+        
+        NSString *strAvatar = @"";
+        //  save avatar to get from local
+        NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", myaccount];
+        
         if (data != nil) {
-            NSString *folder = [NSString stringWithFormat:@"/avatars/%@", avatarName];
-            [AppUtils saveFileToFolder:data withName: folder];
-            
-            //  save avatar to get from local
-            NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", myaccount];
-            
-            NSString *strAvatar = @"";
             if ([data respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
                 strAvatar = [data base64EncodedStringWithOptions: 0];
             } else {
                 strAvatar = [data base64Encoding];
             }
-            
-            [[NSUserDefaults standardUserDefaults] setObject:strAvatar forKey:pbxKeyAvatar];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:updateAvatarAfterDownloadSuccessful object:strAvatar];
         }
+        [[NSUserDefaults standardUserDefaults] setObject:strAvatar forKey:pbxKeyAvatar];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:updateAvatarAfterDownloadSuccessful object:strAvatar];
     });
 }
 

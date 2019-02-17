@@ -208,3 +208,4 @@
 "Contact name can not empty!" = "Tên liên hệ không được rỗng!"
 "Have not choosen contact" = "Chưa chọn liên hệ"
 "Contact has been deleted" = "Liên hệ đã được xoá"
+"Profile name has been updated" = "Tên tài khoản đã được cập nhật"
