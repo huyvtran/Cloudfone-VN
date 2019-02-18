@@ -49,7 +49,7 @@ typedef enum ipadMoreType{
     
     [self registerNotifications];
     
-    [self showAccountInformation];
+    [self showProfileName];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,8 +74,9 @@ typedef enum ipadMoreType{
     self.view.backgroundColor = IPAD_BG_COLOR;
     
     //  view info
+    btnAvatar.enabled = NO;
     btnAvatar.backgroundColor = UIColor.clearColor;
-    [btnAvatar setImage:[UIImage imageNamed:@"man_user.png"] forState:UIControlStateNormal];
+    [btnAvatar setImage:[UIImage imageNamed:@"man_user"] forState:UIControlStateNormal];
     [btnAvatar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.mas_equalTo(SPLIT_MASTER_WIDTH);
@@ -95,57 +96,22 @@ typedef enum ipadMoreType{
 }
 
 - (void)registerNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMyAvatarAfterDownloaded:)
-                                                 name:updateAvatarAfterDownloadSuccessful object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountInformation)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showProfileName)
                                                  name:reloadProfileContentForIpad object:nil];
 }
 
 - (void)showProfileName {
     AccountInfoCell *curCell = [tbMenu cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     if ([curCell isKindOfClass:[AccountInfoCell class]]) {
-        NSString *accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
-        
-        NSString *pbxKeyName = [NSString stringWithFormat:@"%@_%@", @"pbxName", accountID];
-        NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyName];
-        if (![AppUtils isNullOrEmpty: name]) {
-            curCell.lbAccName.text = name;
-        }else{
-            curCell.lbAccName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Not set"];
-        }
-        
-        if (![AppUtils isNullOrEmpty: accountID]) {
+        if ([SipUtils getStateOfDefaultProxyConfig] != eAccountNone)
+        {
+            NSString *accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
+            curCell.lbAccName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"PBX account"];
             curCell.lbAccPhone.text = accountID;
         }else{
-            curCell.lbAccPhone.text = @"-.-";
+            curCell.lbAccName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Not logged in"];
+            curCell.lbAccPhone.text = @"N/A";
         }
-    }
-}
-
-- (void)showAccountInformation {
-    if ([SipUtils getStateOfDefaultProxyConfig] != eAccountNone) {
-        [self showProfileName];
-        
-        NSString *accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
-        
-        NSString *pbxKeyAvatar = [NSString stringWithFormat:@"%@_%@", @"pbxAvatar", accountID];
-        NSString *avatar = [[NSUserDefaults standardUserDefaults] objectForKey: pbxKeyAvatar];
-        if (![AppUtils isNullOrEmpty: avatar]){
-            [btnAvatar setImage:[UIImage imageWithData: [NSData dataFromBase64String: avatar]]
-                       forState:UIControlStateNormal];
-        }else{
-            [btnAvatar setImage:[UIImage imageNamed:@"man_user"] forState:UIControlStateNormal];
-            [self downloadMyAvatar: accountID];
-        }
-    }
-}
-
-- (void)updateMyAvatarAfterDownloaded: (NSNotification *)notif {
-    NSString *avatar = [notif object];
-    if (avatar != nil && [avatar isKindOfClass:[NSString class]]) {
-        [btnAvatar setImage:[UIImage imageWithData: [NSData dataFromBase64String: avatar]]
-                   forState:UIControlStateNormal];
     }
 }
 
@@ -208,7 +174,7 @@ typedef enum ipadMoreType{
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
                                                 blue:(50/255.0) alpha:0.3];
-        
+        cell.icEdit.hidden = YES;
         [cell.icEdit addTarget:self
                         action:@selector(editProfilePress)
               forControlEvents:UIControlEventTouchUpInside];

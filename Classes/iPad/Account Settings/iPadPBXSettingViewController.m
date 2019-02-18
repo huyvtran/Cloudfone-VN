@@ -757,7 +757,7 @@
 - (void)whenRegisterPBXSuccessfully
 {
     //  check to download avatar
-    [self downloadMyAvatar: accountPBX];
+    //  [self downloadMyAvatar: accountPBX];
     
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
                          toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
@@ -1058,11 +1058,10 @@
         scanQRCodeVC.delegate = self;
         
         btnScanFromPhoto = [UIButton buttonWithType: UIButtonTypeCustom];
-        btnScanFromPhoto.frame = CGRectMake((SCREEN_WIDTH-250)/2, SCREEN_HEIGHT-38-60, 250, 38);
         btnScanFromPhoto.backgroundColor = [UIColor colorWithRed:(2/255.0) green:(164/255.0)
                                                             blue:(247/255.0) alpha:1.0];
         [btnScanFromPhoto setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        btnScanFromPhoto.layer.cornerRadius = btnScanFromPhoto.frame.size.height/2;
+        btnScanFromPhoto.layer.cornerRadius = 38.0/2;
         btnScanFromPhoto.layer.borderColor = btnScanFromPhoto.backgroundColor.CGColor;
         btnScanFromPhoto.layer.borderWidth = 1.0;
         [btnScanFromPhoto setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"SCAN FROM PHOTO"] forState:UIControlStateNormal];
@@ -1072,6 +1071,18 @@
                    forControlEvents:UIControlEventTouchUpInside];
         
         [scanQRCodeVC.view addSubview: btnScanFromPhoto];
+        
+        float marginBottom = 60.0;
+        if (!IS_IPHONE && !IS_IPOD) {
+            marginBottom = 40.0;
+        }
+        [btnScanFromPhoto mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(scanQRCodeVC.view).offset(-marginBottom);
+            make.centerX.equalTo(scanQRCodeVC.view.mas_centerX);
+            make.width.mas_equalTo(250.0);
+            make.height.mas_equalTo(38.0);
+        }];
+        
         
         [scanQRCodeVC setCompletionWithBlock:^(NSString *resultAsString) {
             NSLog(@"Completion with result: %@", resultAsString);
@@ -1215,8 +1226,6 @@
         }
         [[NSUserDefaults standardUserDefaults] setObject:strAvatar forKey:pbxKeyAvatar];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:updateAvatarAfterDownloadSuccessful object:strAvatar];
     });
 }
 

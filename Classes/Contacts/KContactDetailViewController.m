@@ -199,6 +199,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.width.height.mas_equalTo(HEADER_ICON_WIDTH);
     }];
     
+    _iconEdit.imageEdgeInsets = UIEdgeInsetsMake(7, 7, 7, 7);
     [_iconEdit mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_iconBack);
         make.right.equalTo(_viewHeader);
@@ -370,7 +371,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         // Remove khỏi addressbook
         BOOL result = [ContactUtils deleteContactFromPhoneWithId: detailsContact._id_contact];
         if(result){
-            [appDelegate.listContacts removeObject: detailsContact];
+            [self updateContactListAfterDeleteContact: detailsContact];
             
             NSString *msgContent = [appDelegate.localization localizedStringForKey:@"Contact has been deleted"];
             [self.view makeToast:msgContent duration:2.0 position:CSToastPositionCenter];
@@ -380,6 +381,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         [[PhoneMainView instance] popCurrentView];
     }
 }
+
 
 //  Added by Khai Le on 05/10/2018
 - (int)getRowForSection {
@@ -465,6 +467,15 @@ static UICompositeViewDescription *compositeDescription = nil;
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"The phone number can not empty"]
                     duration:2.0 position:CSToastPositionCenter];
     }
+}
+
+- (void)updateContactListAfterDeleteContact: (ContactObject *)contact {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"contactId = %d", contact._id_contact];
+    NSArray *filter = [appDelegate.listInfoPhoneNumber filteredArrayUsingPredicate: predicate];
+    if (filter.count > 0) {
+        [appDelegate.listInfoPhoneNumber removeObjectsInArray: filter];
+    }
+    [appDelegate.listContacts removeObject: contact];
 }
 
 @end

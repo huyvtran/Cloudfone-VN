@@ -31,11 +31,11 @@
 //  #define IPAD_BG_COLOR ([UIColor colorWithRed:(240/255.0) green:(240/255.0) blue:(240/255.0) alpha:1.0])
 #define IPAD_BG_COLOR ([UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0])
 #define IPAD_HEADER_BG_COLOR ([UIColor colorWithRed:(29/255.0) green:(106/255.0) blue:(207/255.0) alpha:1.0])
-#define SELECT_TAB_BG_COLOR [UIColor colorWithRed:(15/255.0) green:(73/255.0) blue:(165/255.0) alpha:1.0]
+#define IPAD_SELECT_TAB_BG_COLOR [UIColor colorWithRed:(15/255.0) green:(73/255.0) blue:(165/255.0) alpha:1.0]
+#define SELECT_TAB_BG_COLOR [UIColor colorWithRed:(42/255.0) green:(172/255.0) blue:(255/255.0) alpha:1.0]
 #define GRAY_COLOR ([UIColor colorWithRed:(150/255.0) green:(150/255.0) blue:(150/255.0) alpha:1.0])
 
 #define showIpadPopupCall                   @"showIpadPopupCall"
-#define updateAvatarAfterDownloadSuccessful @"updateAvatarAfterDownloadSuccessful"
 #define reloadHistoryCallForIpad            @"reloadHistoryCallForIpad"
 #define reloadContactsListForIpad           @"reloadContactsListForIpad"
 #define reloadContactAfterAdd               @"reloadContactAfterAdd"

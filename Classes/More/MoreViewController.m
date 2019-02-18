@@ -132,8 +132,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     _imgAvatar.hidden = !show;
     lbPBXAccount.hidden = !show;
     _lbName.hidden = !show;
-    icEdit.hidden = !show;
     lbNoAccount.hidden = show;
+    
+    icEdit.hidden = YES;
 }
 
 //  Cập nhật vị trí cho view

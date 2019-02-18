@@ -6,7 +6,9 @@
 //
 
 #import "iPadCallHistoryViewController.h"
+#import "iPadAddContactViewController.h"
 #import "iPadDetailHistoryCallCell.h"
+#import "iPadAllContactsListViewController.h"
 #import "CallHistoryObject.h"
 
 @interface iPadCallHistoryViewController () {
@@ -14,6 +16,8 @@
     float hInfo;
     NSMutableArray *listHistoryCalls;
     float hCell;
+    
+    UIBarButtonItem *itemAddContact;
 }
 
 @end
@@ -26,6 +30,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self setupUIForView];
+    [self createAddNewContact];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -65,6 +70,9 @@
 
 - (void)setupUIForView
 {
+    self.navigationItem.rightBarButtonItem = itemAddContact;
+    
+    
     self.view.backgroundColor = IPAD_BG_COLOR;
 
     tbHeight = SCREEN_WIDTH;
@@ -164,6 +172,20 @@
     }];
 }
 
+- (void)iconAddContactClicked
+{
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
+    if ([phoneNumber isEqualToString:USERNAME]) {
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"You can not add yourself to contact list"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    
+    UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:phoneNumber delegate:self cancelButtonTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Cancel"] destructiveButtonTitle:nil otherButtonTitles: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Create new contact"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Add to existing contact"], nil];
+    popupAddContact.tag = 100;
+    [popupAddContact showFromRect:viewInfo.bounds inView:viewInfo animated:YES];
+}
+
 #pragma mark - Scrollview Delegate
 /*
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -190,18 +212,42 @@
     
 }
 */
+
+- (void)createAddNewContact {
+    UIButton *addnew = [UIButton buttonWithType:UIButtonTypeCustom];
+    addnew.backgroundColor = UIColor.clearColor;
+    [addnew setImage:[UIImage imageNamed:@"ic_add_def"] forState:UIControlStateNormal];
+    addnew.imageEdgeInsets = UIEdgeInsetsMake(7, 7, 7, 7);
+    addnew.frame = CGRectMake(17, 0, 50.0, 50.0 );
+    [addnew addTarget:self
+               action:@selector(iconAddContactClicked)
+     forControlEvents:UIControlEventTouchUpInside];
+    
+    UIView *addnewView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50.0, 50.0)];
+    [addnewView addSubview: addnew];
+    
+    itemAddContact = [[UIBarButtonItem alloc] initWithCustomView: addnewView];
+    itemAddContact.customView.backgroundColor = UIColor.clearColor;
+    self.navigationItem.rightBarButtonItem = itemAddContact;
+}
+
 - (void)showInformationForView
 {
     //  check if is call with hotline
     if ([phoneNumber isEqualToString: hotline]) {
         lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Hotline"];
         imgAvatar.image = [UIImage imageNamed:@"hotline_avatar.png"];
+        lbPhone.hidden = YES;
     }else{
         PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
         lbName.text = ![AppUtils isNullOrEmpty:contact.name] ? contact.name : [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
         lbPhone.text = phoneNumber;
+        lbPhone.hidden = NO;
         
         if (contact == nil) {
+            self.navigationItem.rightBarButtonItem = itemAddContact;
+            imgAvatar.image = [UIImage imageNamed:@"avatar"];
+            
             if (phoneNumber.length < 10) {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                     NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
@@ -219,6 +265,8 @@
                 });
             }
         }else{
+            self.navigationItem.rightBarButtonItem = nil;
+            
             if (![AppUtils isNullOrEmpty: contact.avatar]) {
                 imgAvatar.image = [UIImage imageWithData: [NSData dataFromBase64String: contact.avatar]];
             }else{
@@ -253,29 +301,37 @@
     btnCall.backgroundColor = UIColor.whiteColor;
     [btnCall setTitleColor:IPAD_HEADER_BG_COLOR forState:UIControlStateNormal];
     
-    [self performSelector:@selector(startCallAfterChangeBackground) withObject:nil afterDelay:0.2];
+    [self performSelector:@selector(startCallAfterChangeBackground) withObject:nil afterDelay:0.1];
 }
 
 - (void)startCallAfterChangeBackground {
     btnCall.backgroundColor = IPAD_HEADER_BG_COLOR;
     [btnCall setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Call to %@", __FUNCTION__, phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     if ([phoneNumber isEqualToString: hotline]) {
-        NSLog(@"Call to Hotline");
+        BOOL result = [SipUtils makeCallWithPhoneNumber: hotline];
+        if (!result) {
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Failed to call with phone number: %@", __FUNCTION__, phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+        }
     }else{
         NSString *phone = [AppUtils removeAllSpecialInString: phoneNumber];
         if ([AppUtils isNullOrEmpty: phone]) {
-            [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"] duration:2.0 position:CSToastPositionCenter];
+            [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"The phone number can not empty"] duration:2.0 position:CSToastPositionCenter];
             return;
         }else{
-            [SipUtils makeCallWithPhoneNumber: phone];
+            BOOL result = [SipUtils makeCallWithPhoneNumber: phone];
+            if (!result) {
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Failed to call with phone number: %@", __FUNCTION__, phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+            }
         }
     }
 }
     
 
 - (IBAction)btnSendMessagePressed:(UIButton *)sender {
-    [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"We have not supported this feature yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
+    [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"We have not supported this feature yet. Please try later!"] duration:2.0 position:CSToastPositionCenter];
 }
 
 //  [Khai Le - 13/02/2019]
@@ -415,6 +471,40 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     
+}
+
+#pragma mark - Actionsheet Delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (actionSheet.tag == 100) {
+        switch (buttonIndex) {
+            case 0:{
+                iPadAddContactViewController *contentVC = [[iPadAddContactViewController alloc] initWithNibName:@"iPadAddContactViewController" bundle:nil];
+                
+                if (contentVC) {
+                    contentVC.currentPhoneNumber = phoneNumber;
+                    contentVC.currentName = @"";
+                }
+                
+                UINavigationController *navigationVC = [AppUtils createNavigationWithController: contentVC];
+                [AppUtils showDetailViewWithController: navigationVC];
+                
+                break;
+            }
+            case 1:{
+                iPadAllContactsListViewController *contentVC = [[iPadAllContactsListViewController alloc] initWithNibName:@"iPadAllContactsListViewController" bundle:nil];
+                if (contentVC != nil) {
+                    contentVC.phoneNumber = phoneNumber;
+                }
+                
+                UINavigationController *navigationVC = [AppUtils createNavigationWithController: contentVC];
+                [AppUtils showDetailViewWithController: navigationVC];
+    
+                break;
+            }
+            default:
+                break;
+        }
+    }
 }
 
 @end

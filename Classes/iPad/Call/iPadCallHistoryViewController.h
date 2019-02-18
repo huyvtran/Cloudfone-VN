@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface iPadCallHistoryViewController : UIViewController<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface iPadCallHistoryViewController : UIViewController<UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scvContent;
 

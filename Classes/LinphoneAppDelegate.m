@@ -417,6 +417,8 @@ void onUncaughtException(NSException* exception)
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
     NSString *subDirectory = [NSString stringWithFormat:@"%@/.%@.txt", logsFolderName, [AppUtils getCurrentDate]];
     logFilePath = [WriteLogsUtils makeFilePathWithFileName: subDirectory];
     
@@ -2353,6 +2355,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     switch (tabBarController.selectedIndex) {
         case 0:{
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] ---> selected tab Dialer: index = %lu", __FUNCTION__, tabBarController.selectedIndex] toFilePath:logFilePath];
+            
             iPadKeypadViewController *contentVC = [[iPadKeypadViewController alloc] initWithNibName:@"iPadKeypadViewController" bundle:nil];
             
             UITabBarController *tabbarVC = [homeSplitVC.viewControllers objectAtIndex:0];
@@ -2362,6 +2366,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             break;
         }
         case 1:{
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] ---> selected tab Contacts: index = %lu", __FUNCTION__, tabBarController.selectedIndex] toFilePath:logFilePath];
+            
             iPadNotChooseContactViewController *contentVC = [[iPadNotChooseContactViewController alloc] initWithNibName:@"iPadNotChooseContactViewController" bundle:nil];
             UINavigationController *detailVC = [AppUtils createNavigationWithController: contentVC];
             
@@ -2372,6 +2378,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             break;
         }
         case 2:{
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] ---> selected tab More: index = %lu", __FUNCTION__, (unsigned long)tabBarController.selectedIndex] toFilePath:logFilePath];
+            
             iPadNotChoosednMoreViewController *contentVC = [[iPadNotChoosednMoreViewController alloc] initWithNibName:@"iPadNotChoosednMoreViewController" bundle:nil];
             UINavigationController *detailVC = [AppUtils createNavigationWithController: contentVC];
             
@@ -2393,26 +2401,32 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 - (void)showPopupCallForIpad: (NSNotification *)notif
 {
-    NSString *phonenumber = [notif object];
-    if ([phonenumber isKindOfClass:[NSString class]]) {
-        NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"iPadPopupCall" owner:nil options:nil];
-        iPadPopupCall *popupCall;
-        for(id currentObject in toplevelObject){
-            if ([currentObject isKindOfClass:[iPadPopupCall class]]) {
-                popupCall = (iPadPopupCall *) currentObject;
-                break;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *phonenumber = [notif object];
+        if ([phonenumber isKindOfClass:[NSString class]]) {
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] phone number = %@", __FUNCTION__, phonenumber] toFilePath:logFilePath];
+            
+            NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"iPadPopupCall" owner:nil options:nil];
+            iPadPopupCall *popupCall;
+            for(id currentObject in toplevelObject){
+                if ([currentObject isKindOfClass:[iPadPopupCall class]]) {
+                    popupCall = (iPadPopupCall *) currentObject;
+                    break;
+                }
             }
+            popupCall.frame = CGRectMake((SCREEN_WIDTH-400)/2, (SCREEN_HEIGHT-750)/2, 400, 750);
+            [popupCall setNeedsDisplay];
+            [popupCall setupUIForView];
+            popupCall.phoneNumber = phonenumber;
+            [popupCall showInView:self.window animated:YES];
         }
-        popupCall.frame = CGRectMake((SCREEN_WIDTH-400)/2, (SCREEN_HEIGHT-750)/2, 400, 750);
-        [popupCall setNeedsDisplay];
-        [popupCall setupUIForView];
-        popupCall.phoneNumber = phonenumber;
-        [popupCall showInView:self.window animated:YES];
-    }
+    });
 }
 
 - (void)showIncomingPopupCallForIpad: (NSString *)phoneNumber
 {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] phone number = %@", __FUNCTION__, phoneNumber] toFilePath:logFilePath];
+    
     NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"iPadPopupCall" owner:nil options:nil];
     iPadPopupCall *popupCall;
     for(id currentObject in toplevelObject){

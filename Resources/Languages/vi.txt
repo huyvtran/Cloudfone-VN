@@ -209,3 +209,6 @@
 "Have not choosen contact" = "Chưa chọn liên hệ"
 "Contact has been deleted" = "Liên hệ đã được xoá"
 "Profile name has been updated" = "Tên tài khoản đã được cập nhật"
+"Not logged in" = "Chưa đăng nhập"
+"PBX account" = "Tài khoản PBX"
+"Do you want to call to hotline for assistance?" = "Bạn có muốn gọi đến đường dây nóng của chúng tôi để được hỗ trợ?"

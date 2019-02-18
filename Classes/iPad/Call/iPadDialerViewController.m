@@ -70,6 +70,8 @@
         return;
     }
     
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     isDeleted = NO;
     [listDelete removeAllObjects];
     
@@ -86,6 +88,8 @@
         return;
     }
     
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     isDeleted = NO;
     [listDelete removeAllObjects];
     
@@ -98,6 +102,8 @@
 }
 
 - (IBAction)btnKeypadPress:(UIButton *)sender {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     //  deselect all rows was selected
     NSArray *selectedRows = [tbCalls indexPathsForSelectedRows];
     for (int i=0; i<selectedRows.count; i++) {
@@ -117,6 +123,8 @@
         isDeleted = YES;
         sender.tag = 1;
         [sender setImage:[UIImage imageNamed:@"ic_tick_ipad"] forState:UIControlStateNormal];
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Show delete history call screen", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     }else{
         isDeleted = NO;
         sender.tag = 0;
@@ -147,6 +155,8 @@
         
         //  [Khai Le - 14/02/2019]: If showing detail of history call, after delete all, will not see detail again, so should show keypad
         [self btnKeypadPress: nil];
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Start delete history call screen", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     }
     [tbCalls reloadData];
 }
@@ -323,11 +333,8 @@
         cell.lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Hotline"];
         cell.imgAvatar.image = [UIImage imageNamed:@"hotline_avatar.png"];
         
-//        [cell updateFrameForHotline: YES];
-//        cell._lbPhone.hidden = YES;
-//        cell.lbMissed.hidden = YES;
+        cell.lbNumber.hidden = YES;
     }else{
-        //  [cell updateFrameForHotline: NO];
         cell.lbNumber.hidden = NO;
         
         if ([AppUtils isNullOrEmpty: aCall._phoneName]) {
@@ -338,6 +345,9 @@
         
         if ([AppUtils isNullOrEmpty: aCall._phoneAvatar])
         {
+            //  cell.imgAvatar.image = [[UIImage imageNamed:@"avatar"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+            cell.imgAvatar.image = [UIImage imageNamed:@"avatar"];
+            /*
             if (aCall._phoneNumber.length < 10) {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                     NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
@@ -355,7 +365,7 @@
                 });
             }else{
                 cell.imgAvatar.image = [[UIImage imageNamed:@"avatar"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
-            }
+            }   */
         }else{
             NSData *imgData = [[NSData alloc] initWithData:[NSData dataFromBase64String: aCall._phoneAvatar]];
             cell.imgAvatar.image = [UIImage imageWithData: imgData];
@@ -480,8 +490,12 @@
 }
 
 - (void)btnCallOnCellPressed: (UIButton *)sender {
-    NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
-    [SipUtils makeCallWithPhoneNumber: phoneNumber];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSString *phoneNumber = [AppUtils removeAllSpecialInString: sender.currentTitle];
+        [SipUtils makeCallWithPhoneNumber: phoneNumber];
+        
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] phone number = %@", __FUNCTION__, phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    });
 }
 
 - (void)didTapCheckBox:(BEMCheckBox *)checkBox {

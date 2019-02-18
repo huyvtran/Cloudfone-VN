@@ -13,7 +13,7 @@
 
 
 @implementation iPadPopupCall
-@synthesize imgBgCall, imgAvatar, bgTransparent, lbName, lbPhone, lbTime, lbQuality, scvButtons, btnMute, lbMute, btnKeypad, lbKeypad, btnSpeaker, lbSpeaker, btnAddCall, lbAddCall, btnHoldCall, lbHoldCall, btnTransfer, lbTransfer, btnHangupCall, icShink;
+@synthesize imgBgCall, imgAvatar, bgTransparent, lbName, lbPhone, lbTime, lbQuality, scvButtons, btnMute, lbMute, btnKeypad, lbKeypad, btnSpeaker, lbSpeaker, btnAddCall, lbAddCall, btnHoldCall, lbHoldCall, btnTransfer, lbTransfer, btnHangupCall, icShink, icWaiting;
 @synthesize wButton, hLabel, phoneNumber, callDirection, durationTimer, qualityTimer, needEnableSpeaker, viewKeypad, viewTransferCall;
 
 - (void)customButton: (UIButton *)sender withImage: (UIImage *)normalImg selectedImage: (UIImage *)selectedImg disableImage: (UIImage *)disableImage cornerRadius: (float)radius
@@ -250,7 +250,7 @@
     [lbTime mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lbPhone.mas_bottom).offset(5.0);
         make.left.right.equalTo(lbPhone);
-        make.height.mas_equalTo(30.0);
+        make.height.mas_equalTo(40.0);
     }];
     
     icShink.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8);
@@ -258,6 +258,14 @@
         make.top.equalTo(self).offset(padding);
         make.right.equalTo(self).offset(-padding);
         make.width.height.mas_equalTo(40.0);
+    }];
+    
+    icWaiting.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    icWaiting.backgroundColor = UIColor.whiteColor;
+    icWaiting.alpha = 0.5;
+    icWaiting.hidden = YES;
+    [icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(self);
     }];
     
     //  set text is calling for first
@@ -493,7 +501,9 @@
     PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
     
     if ([phoneNumber isEqualToString:hotline]) {
-        imgAvatar.image = [UIImage imageNamed:@"hotline_avatar.png"];
+        imgAvatar.image = nil;
+        bgTransparent.backgroundColor = [UIColor colorWithRed:(20/255.0) green:(20/255.0)
+                                                         blue:(20/255.0) alpha:1.0];
     }else{
         if ([AppUtils isNullOrEmpty: contact.avatar]) {
             imgAvatar.image = nil;
@@ -1118,9 +1128,11 @@
 
 - (IBAction)btnHangupCallPressed:(UIButton *)sender {
     // Bien cho biết mình kết thúc cuộc gọi
+    icWaiting.hidden = NO;
+    [icWaiting startAnimating];
+    
     [LinphoneAppDelegate sharedInstance]._meEnded = YES;
     
-    return;
     [btnHangupCall setImage:[UIImage imageNamed:@"ic_end_call_red"] forState:UIControlStateNormal];
     btnHangupCall.backgroundColor = UIColor.whiteColor;
     
@@ -1131,7 +1143,22 @@
     [btnHangupCall setImage:[UIImage imageNamed:@"ic_end_call_white"] forState:UIControlStateNormal];
     btnHangupCall.backgroundColor = [UIColor colorWithRed:(216/255.0) green:(0/255.0)
                                                      blue:(39.0/255.0) alpha:1.0];
+    
     linphone_core_terminate_all_calls(LC);
+//    LinphoneCall *currentcall = linphone_core_get_current_call(LC);
+//    if (linphone_core_is_in_conference(LC) ||                                           // In conference
+//        (linphone_core_get_conference_size(LC) > 0 && [UIHangUpButton callCount] == 0) // Only one conf
+//        ) {
+//        LinphoneManager.instance.conf = TRUE;
+//        linphone_core_terminate_conference(LC);
+//    } else if (currentcall != NULL) {
+//        linphone_core_terminate_call(LC, currentcall);
+//    } else {
+//        const MSList *calls = linphone_core_get_calls(LC);
+//        if (bctbx_list_size(calls) == 1) { // Only one call
+//            linphone_core_terminate_call(LC, (LinphoneCall *)(calls->data));
+//        }
+//    }
 }
 
 #pragma mark - UISpeakerButton Delegate

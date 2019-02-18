@@ -134,7 +134,7 @@
 	<key>UIRequiresPersistentWiFi</key>
 	<true/>
 	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleBlackOpaque</string>
+	<string>UIStatusBarStyleLightContent</string>
 	<key>UISupportedExternalAccessoryProtocols</key>
 	<array>
 		<string>com.ods.cloudfonevn</string>
@@ -151,6 +151,6 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
+	<false/>
 </dict>
 </plist>

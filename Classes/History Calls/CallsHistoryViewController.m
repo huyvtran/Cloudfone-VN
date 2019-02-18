@@ -117,8 +117,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear: animated];
     
-    [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:_iconAll radius:(hIcon-10)/2 withColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0] border:2.0];
-    [AppUtils addCornerRadiusTopRightAndBottomRightForButton:_iconMissed radius:(hIcon-10)/2 withColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0] border:2.0];
+    [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:_iconAll radius:(hIcon-10)/2
+                                                 withColor:SELECT_TAB_BG_COLOR border:2.0];
+    
+    [AppUtils addCornerRadiusTopRightAndBottomRightForButton:_iconMissed radius:(hIcon-10)/2
+                                                   withColor:SELECT_TAB_BG_COLOR border:2.0];
 }
 
 - (void)didReceiveMemoryWarning {

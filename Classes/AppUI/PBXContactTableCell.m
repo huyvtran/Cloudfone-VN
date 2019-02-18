@@ -63,6 +63,8 @@
     if (IS_IPHONE || IS_IPOD) {
         _lbName.font = [UIFont fontWithName:HelveticaNeue size:17.0];
         _lbPhone.font = [UIFont fontWithName:HelveticaNeue size:14.0];
+        
+        icCall.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8);
     }else{
         _lbName.font = [UIFont systemFontOfSize:16.0 weight:UIFontWeightRegular];
         _lbPhone.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightThin];

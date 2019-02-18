@@ -979,10 +979,24 @@
 }
 
 + (void)setSelected: (BOOL)selected forButton: (UIButton *)button {
-    if (selected) {
-        button.backgroundColor = SELECT_TAB_BG_COLOR;
+    if (IS_IPHONE || IS_IPOD) {
+        button.backgroundColor = (selected) ? SELECT_TAB_BG_COLOR : UIColor.clearColor;
     }else{
-        button.backgroundColor = UIColor.clearColor;
+        button.backgroundColor = (selected) ? IPAD_SELECT_TAB_BG_COLOR : UIColor.clearColor;
+    }
+}
+
++ (NSString *)getTypeOfPhone: (NSString *)typePhone {
+    if ([typePhone isEqualToString: type_phone_mobile]) {
+        return @"btn_contacts_mobile.png";
+    }else if ([typePhone isEqualToString: type_phone_work]){
+        return @"btn_contacts_work.png";
+    }else if ([typePhone isEqualToString: type_phone_fax]){
+        return @"btn_contacts_fax.png";
+    }else if ([typePhone isEqualToString: type_phone_home]){
+        return @"btn_contacts_home.png";
+    }else{
+        return @"btn_contacts_mobile.png";
     }
 }
 

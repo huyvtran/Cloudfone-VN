@@ -363,15 +363,13 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)registerPBXAccount: (NSString *)pbxAccount password: (NSString *)password ipAddress: (NSString *)address port: (NSString *)portID
 {
     NSArray *data = @[address, pbxAccount, password, portID];
-    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(startRegisterPBX:) userInfo:data repeats:NO];
+    [self performSelector:@selector(startRegisterPBX:) withObject:data afterDelay:1.0];
 }
 
-- (void)startRegisterPBX: (NSTimer *)timer {
-    id data = [timer userInfo];
-    
+- (void)startRegisterPBX: (NSArray *)data {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] data = %@", __FUNCTION__, @[data]] toFilePath:appDelegate.logFilePath];
     
-    if ([data isKindOfClass:[NSArray class]] && [data count] == 4) {
+    if (data.count == 4) {
         NSString *pbxDomain = [data objectAtIndex: 0];
         NSString *pbxAccount = [data objectAtIndex: 1];
         NSString *pbxPassword = [data objectAtIndex: 2];

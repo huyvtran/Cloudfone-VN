@@ -1,61 +1,41 @@
 //
-//  AllContactListViewController.m
+//  iPadAllContactsListViewController.m
 //  linphone
 //
-//  Created by admin on 1/29/18.
+//  Created by lam quang quan on 2/18/19.
 //
 
-#import "AllContactListViewController.h"
-#import "EditContactViewController.h"
-#import "DGActivityIndicatorView.h"
+#import "iPadAllContactsListViewController.h"
+#import "iPadEditContactViewController.h"
 #import "ContactCell.h"
 #import "NSData+Base64.h"
 #import "UIImage+GKContact.h"
 
-@interface AllContactListViewController (){
+@interface iPadAllContactsListViewController () {
+    NSArray *listCharacter;
+    
     float hSection;
     float hCell;
     
     NSTimer *searchTimer;
     BOOL isSearching;
     
-    NSArray *listCharacter;
     BOOL isFound;
     BOOL found;
-    UIFont *textFont;
     
     DGActivityIndicatorView *activityIndicatorView;
 }
-
 @end
 
-@implementation AllContactListViewController
-@synthesize viewHeader, iconBack, lbHeader, bgHeader, tfSearch, iconClear, tbContacts, lbNoContact;
+@implementation iPadAllContactsListViewController
+@synthesize viewSearch, tfSearch, iconClear, tbContacts, lbNoContact;
 @synthesize _searchResults, _contactSections, phoneNumber;
 
-#pragma mark - UICompositeViewDelegate Functions
-static UICompositeViewDescription *compositeDescription = nil;
-+ (UICompositeViewDescription *)compositeViewDescription {
-    if (compositeDescription == nil) {
-        compositeDescription = [[UICompositeViewDescription alloc] init:self.class
-                                                              statusBar:nil
-                                                                 tabBar:nil
-                                                               sideMenu:nil
-                                                             fullscreen:NO
-                                                         isLeftFragment:YES
-                                                           fragmentWith:nil];
-        compositeDescription.darkBackground = true;
-    }
-    return compositeDescription;
-}
-
-- (UICompositeViewDescription *)compositeViewDescription {
-    return self.class.compositeViewDescription;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //  my code here
+    // Do any additional setup after loading the view from its nib.
+    
     _contactSections = [[NSMutableDictionary alloc] init];
     
     listCharacter = [[NSArray alloc] initWithObjects: @"A", @"B", @"C", @"D", @"E", @"F",
@@ -67,7 +47,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self showContentWithCurrentLanguage];
+    self.title = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Choose contact"];
     
     if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
         if (activityIndicatorView == nil) {
@@ -110,21 +90,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)iconBackClicked:(UIButton *)sender {
-    [[PhoneMainView instance] popCurrentView];
-}
-
-- (IBAction)iconCloseClicked:(UIButton *)sender {
-    
-}
-
-#pragma mark - my functions
-
 - (void)whenLoadContactFinish {
     if (activityIndicatorView != nil) {
         [activityIndicatorView stopAnimating];
@@ -133,51 +98,26 @@ static UICompositeViewDescription *compositeDescription = nil;
     [tbContacts reloadData];
 }
 
-- (void)showContentWithCurrentLanguage {
-    lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Choose contact"];
+- (IBAction)iconClearSearchClick:(UIButton *)sender {
+    tfSearch.text = @"";
+    iconClear.hidden = YES;
+    isSearching = NO;
+    
+    [tbContacts reloadData];
 }
 
-//  Setup frame cho view
 - (void)autoLayoutForMainView
 {
-    if (SCREEN_WIDTH > 320) {
-        lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
-    }else{
-        lbHeader.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:18.0];
-    }
-    
-    viewHeader.backgroundColor = UIColor.clearColor;
-    [viewHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.view);
-        make.height.mas_equalTo([LinphoneAppDelegate sharedInstance]._hRegistrationState + 50);
-    }];
-    
-    [bgHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(viewHeader);
-    }];
-    
-    [iconBack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(viewHeader);
-        make.top.equalTo(viewHeader).offset([LinphoneAppDelegate sharedInstance]._hStatus);
-        make.width.height.mas_equalTo(HEADER_ICON_WIDTH);
-    }];
-    
-    [lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(viewHeader.mas_centerX);
-        make.width.mas_equalTo(200);
-        make.top.bottom.equalTo(iconBack);
-    }];
-    
-    [lbHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(viewHeader.mas_centerX);
-        make.width.mas_equalTo(200);
-        make.top.bottom.equalTo(iconBack);
-    }];
-    
     float hTextfield = 32.0;
+    viewSearch.backgroundColor = IPAD_HEADER_BG_COLOR;
+    [viewSearch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.mas_equalTo(60.0);
+    }];
+    
     tfSearch.backgroundColor = [UIColor colorWithRed:(16/255.0) green:(59/255.0)
-                                                 blue:(123/255.0) alpha:0.8];
-    tfSearch.font = [UIFont systemFontOfSize: 16.0];
+                                                blue:(123/255.0) alpha:0.8];
+    tfSearch.font = [UIFont systemFontOfSize: 16.0 weight: UIFontWeightThin];
     tfSearch.borderStyle = UITextBorderStyleNone;
     tfSearch.layer.cornerRadius = hTextfield/2;
     tfSearch.clipsToBounds = YES;
@@ -188,17 +128,17 @@ static UICompositeViewDescription *compositeDescription = nil;
         tfSearch.placeholder = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Search..."];
     }
     [tfSearch addTarget:self
-                  action:@selector(whenTextFieldDidChange:)
-        forControlEvents:UIControlEventEditingChanged];
+                 action:@selector(whenTextFieldDidChange:)
+       forControlEvents:UIControlEventEditingChanged];
     
     UIView *pLeft = [[UIView alloc] initWithFrame:CGRectMake(0, 0, hTextfield, hTextfield)];
     tfSearch.leftView = pLeft;
     tfSearch.leftViewMode = UITextFieldViewModeAlways;
     
     [tfSearch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(lbHeader.mas_bottom).offset(5+(50-hTextfield)/2);
-        make.left.equalTo(viewHeader).offset(30.0);
-        make.right.equalTo(viewHeader).offset(-30.0);
+        make.centerY.equalTo(viewSearch.mas_centerY);
+        make.left.equalTo(viewSearch).offset(30.0);
+        make.right.equalTo(viewSearch).offset(-30.0);
         make.height.mas_equalTo(hTextfield);
     }];
     
@@ -219,7 +159,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     //  table contact
     [tbContacts mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewHeader.mas_bottom);
+        make.top.equalTo(viewSearch.mas_bottom);
         make.left.bottom.right.equalTo(self.view);
     }];
     
@@ -237,7 +177,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     lbNoContact.font = [UIFont fontWithName:HelveticaNeue size:15.0];
     lbNoContact.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No contacts"];
     [lbNoContact mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(viewHeader.mas_bottom);
+        make.top.equalTo(viewSearch.mas_bottom);
         make.left.bottom.right.equalTo(self.view);
     }];
     
@@ -422,15 +362,18 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    ContactObject *contact = [[_contactSections objectForKey:[[[_contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+    UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = newBackButton;
     
-    EditContactViewController *controller = VIEW(EditContactViewController);
-    if (controller != nil) {
-        controller.idContact = contact._id_contact;
-        controller.curPhoneNumber = phoneNumber;
+    ContactObject *contact = [[_contactSections objectForKey:[[[_contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+    [LinphoneAppDelegate sharedInstance].idContact = contact._id_contact;
+    
+    iPadEditContactViewController *contentVC = [[iPadEditContactViewController alloc] initWithNibName:@"iPadEditContactViewController" bundle:nil];
+    if (contentVC != nil) {
+        contentVC.idContact = contact._id_contact;
+        contentVC.curPhoneNumber = phoneNumber;
     }
-    [[PhoneMainView instance] changeCurrentView:[EditContactViewController compositeViewDescription]];
-    //  [[PhoneMainView instance] changeCurrentView:[EditContactViewController compositeViewDescription] push:true];
+    [self.navigationController pushViewController:contentVC animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -451,32 +394,15 @@ static UICompositeViewDescription *compositeDescription = nil;
     UILabel *descLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 150, hSection)];
     descLabel.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
                                            blue:(50/255.0) alpha:1.0];
+    descLabel.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightThin];
     if ([titleHeader isEqualToString:@"z#"]) {
-        descLabel.font = [UIFont fontWithName:HelveticaNeue size:20.0];
         descLabel.text = @"#";
     }else{
-        descLabel.font = textFont;
         descLabel.text = titleHeader;
     }
     descLabel.backgroundColor = UIColor.clearColor;
     [headerView addSubview: descLabel];
     return headerView;
-}
-
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    NSMutableArray *tmpArr = [[NSMutableArray alloc] initWithArray: [[_contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
-    
-    int iCount = 0;
-    while (iCount < tmpArr.count) {
-        NSString *title = [tmpArr objectAtIndex: iCount];
-        if ([title isEqualToString:@"z#"]) {
-            [tmpArr replaceObjectAtIndex:iCount withObject:@"#"];
-            break;
-        }
-        iCount++;
-    }
-    return tmpArr;
 }
 
 @end

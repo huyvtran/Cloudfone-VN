@@ -436,9 +436,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)_btnHotlinePressed:(UIButton *)sender
 {
-    [WriteLogsUtils writeLogContent:@"Call to hotline" toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
-    [SipUtils makeCallWithPhoneNumber: hotline];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Do you want to call to hotline for assistance?"] delegate:self cancelButtonTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Close"] otherButtonTitles: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Call"], nil];
+    alert.delegate = self;
+    alert.tag = 3;
+    [alert show];
 }
 
 - (IBAction)_btnNumberPressed:(id)sender {
@@ -958,6 +961,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         [self checkAccountForApp];
     }
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] internetStatus = %d", __FUNCTION__, internetStatus] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
 }
 
 - (void)whenTappedOnStatusAccount
@@ -1059,6 +1064,10 @@ static UICompositeViewDescription *compositeDescription = nil;
                 [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] You turned on account with Id = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath:appDelegate.logFilePath];
             }
         }
+        
+    }else if (alertView.tag == 2){
+        [WriteLogsUtils writeLogContent:@"Make call to hotline" toFilePath:appDelegate.logFilePath];
+        [SipUtils makeCallWithPhoneNumber: hotline];
     }
 }
 

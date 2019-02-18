@@ -38,7 +38,7 @@
 @end
 
 @implementation iPadContactsViewController
-@synthesize viewHeader, btnAll, btnPBX, tfSearch, tbContacts, icSync, icAddNew, icWaiting;
+@synthesize viewHeader, btnAll, btnPBX, tfSearch, tbContacts, icSync, icAddNew;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -78,8 +78,8 @@
     
     isSearching = NO;
     icClear.hidden = YES;
-    icWaiting.hidden = YES;
-    [icWaiting startAnimating];
+    
+    [[LinphoneAppDelegate sharedInstance] showWaiting: NO];
     
     [self updateUIForView];
     
@@ -265,7 +265,7 @@
     float hTextfield = 32.0;
     tfSearch.backgroundColor = [UIColor colorWithRed:(16/255.0) green:(59/255.0)
                                                 blue:(123/255.0) alpha:0.8];
-    tfSearch.font = [UIFont systemFontOfSize: 16.0];
+    tfSearch.font = [UIFont systemFontOfSize: 16.0 weight: UIFontWeightThin];
     tfSearch.borderStyle = UITextBorderStyleNone;
     tfSearch.layer.cornerRadius = hTextfield/2;
     tfSearch.clipsToBounds = YES;
@@ -332,10 +332,6 @@
         make.top.equalTo(viewHeader.mas_bottom);
         make.left.right.equalTo(self.view);
         make.bottom.equalTo(self.view).offset(-self.tabBarController.tabBar.frame.size.height);
-    }];
-    
-    [icWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.equalTo(tbContacts);
     }];
 }
 
@@ -831,9 +827,7 @@
             [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No account"] duration:2.0 position:CSToastPositionCenter];
             return;
         }
-        
-        icWaiting.hidden = NO;
-        [icWaiting startAnimating];
+        [[LinphoneAppDelegate sharedInstance] showWaiting: YES];
         
         [LinphoneAppDelegate sharedInstance]._isSyncing = YES;
         [self startAnimationForSyncButton: icSync];
@@ -868,8 +862,7 @@
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] link: %@.\nResponse data: %@", __FUNCTION__, link, error] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
-    [icWaiting stopAnimating];
-    icWaiting.hidden = YES;
+    [[LinphoneAppDelegate sharedInstance] showWaiting: NO];
     
     if ([link isEqualToString:getServerContacts]) {
         [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Error"] duration:2.0 position:CSToastPositionCenter];
@@ -1110,8 +1103,7 @@
 {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
-    [icWaiting stopAnimating];
-    icWaiting.hidden = YES;
+    [[LinphoneAppDelegate sharedInstance] showWaiting: NO];
     
     [[LinphoneAppDelegate sharedInstance] set_isSyncing: false];
     [icSync.layer removeAllAnimations];

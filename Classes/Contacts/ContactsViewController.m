@@ -123,8 +123,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear: animated];
     
-    [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:_iconPBX radius:(hIcon-10)/2 withColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0] border:2.0];
-    [AppUtils addCornerRadiusTopRightAndBottomRightForButton:_iconAll radius:(hIcon-10)/2 withColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0] border:2.0];
+    [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:_iconPBX radius:(hIcon-10)/2
+                                                 withColor:SELECT_TAB_BG_COLOR border:2.0];
+    
+    [AppUtils addCornerRadiusTopRightAndBottomRightForButton:_iconAll radius:(hIcon-10)/2
+                                                   withColor:SELECT_TAB_BG_COLOR border:2.0];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -232,7 +235,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.height.equalTo(_iconSyncPBXContact.mas_height);
     }];
     
-    _iconPBX.backgroundColor = [UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0];
+    _iconPBX.backgroundColor = SELECT_TAB_BG_COLOR;
     [_iconPBX setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"PBX"] forState:UIControlStateNormal];
     [_iconPBX setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     [_iconPBX mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -213,9 +213,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     appDelegate._newContact = nil;
     [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Successful"]
                 duration:1.0 position:CSToastPositionCenter];
-    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self
-                                   selector:@selector(backToView)
-                                   userInfo:nil repeats:NO];
+    
+    [self performSelector:@selector(backToView) withObject:nil afterDelay:1.0];
 }
 
 - (void)backToView{
@@ -444,7 +443,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         switch (indexPath.row) {
             case ROW_CONTACT_NAME:{
                 cell.lbTitle.text = [appDelegate.localization localizedStringForKey:@"Fullname"];
-                cell.tfContent.text = [self getFullnameOfContactIfExists];
+                cell.tfContent.text = [ContactUtils getFullnameOfContactIfExists];
                 [cell.tfContent addTarget:self
                                    action:@selector(whenTextfieldFullnameChanged:)
                          forControlEvents:UIControlEventEditingChanged];
@@ -736,18 +735,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (NSString *)getFullnameOfContactIfExists {
-    NSString *fullname = @"";
-    if (appDelegate._newContact._firstName != nil && appDelegate._newContact._lastName != nil) {
-        fullname = [NSString stringWithFormat:@"%@ %@", appDelegate._newContact._lastName, appDelegate._newContact._firstName];
-    }else if (appDelegate._newContact._firstName != nil && appDelegate._newContact._lastName == nil){
-        fullname = appDelegate._newContact._firstName;
-    }else if (appDelegate._newContact._firstName == nil && appDelegate._newContact._lastName != nil){
-        fullname = appDelegate._newContact._lastName;
-    }
-    return fullname;
-}
-
 //  Chọn loại phone cho điện thoại
 - (void)btnTypePhonePressed: (UIButton *)sender {
     [self.view endEditing: true];
@@ -764,20 +751,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [popupTypePhone showInView:appDelegate.window animated:YES];
 }
 
-- (NSString *)getTypeOfPhone: (NSString *)typePhone {
-    if ([typePhone isEqualToString: type_phone_mobile]) {
-        return @"btn_contacts_mobile.png";
-    }else if ([typePhone isEqualToString: type_phone_work]){
-        return @"btn_contacts_work.png";
-    }else if ([typePhone isEqualToString: type_phone_fax]){
-        return @"btn_contacts_fax.png";
-    }else if ([typePhone isEqualToString: type_phone_home]){
-        return @"btn_contacts_home.png";
-    }else{
-        return @"btn_contacts_mobile.png";
-    }
-}
-
 //  Chọn loại phone
 - (void)whenSelectTypeForPhone: (NSNotification *)notif {
     id object = [notif object];
@@ -787,7 +760,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         //  Choose phone type for row: Add new phone
         NewPhoneCell *cell = [_tbContents cellForRowAtIndexPath:[NSIndexPath indexPathForRow:curIndex inSection:0]];
         if ([cell isKindOfClass:[NewPhoneCell class]]) {
-            NSString *imgName = [self getTypeOfPhone: [(TypePhoneObject *)object _strType]];
+            NSString *imgName = [AppUtils getTypeOfPhone: [(TypePhoneObject *)object _strType]];
             [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:imgName]
                                            forState:UIControlStateNormal];
             [cell._iconTypePhone setTitle:[(TypePhoneObject *)object _strType] forState:UIControlStateNormal];
@@ -796,7 +769,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         {
             ContactDetailObj *curPhone = [appDelegate._newContact._listPhone objectAtIndex: (curIndex - NUMBER_ROW_BEFORE)];
             curPhone._typePhone = [(TypePhoneObject *)object _strType];
-            curPhone._iconStr = [self getTypeOfPhone: curPhone._typePhone];
+            curPhone._iconStr = [AppUtils getTypeOfPhone: curPhone._typePhone];
             [_tbContents reloadData];
         }
     }

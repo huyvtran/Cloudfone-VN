@@ -208,3 +208,6 @@
 "Have not choosen contact" = "Have not choosen contact"
 "Contact has been deleted" = "Contact has been deleted"
 "Profile name has been updated" = "Profile name has been updated"
+"Not logged in" = "Not logged in"
+"PBX account" = "PBX account"
+"Do you want to call to hotline for assistance?" = "Do you want to call to hotline for assistance?"

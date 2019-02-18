@@ -17,5 +17,6 @@
 + (void)addBorderForImageView: (UIImageView *)imageView withRectSize: (float)rectSize strokeWidth: (int)stroke strokeColor: (UIColor *)strokeColor radius: (float)radius;
 + (void)addNewContacts;
 + (BOOL)deleteContactFromPhoneWithId: (int)recordId;
++ (NSString *)getFullnameOfContactIfExists;
 
 @end

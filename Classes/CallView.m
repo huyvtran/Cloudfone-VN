@@ -304,25 +304,25 @@ static UICompositeViewDescription *compositeDescription = nil;
     bluetooth.backgroundColor = UIColor.redColor;
     [bluetooth setTitle:@"bluetooth" forState:UIControlStateNormal];
     [bluetooth addTarget:self
-             action:@selector(testtest)
-   forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview: bluetooth];
+                  action:@selector(testtest)
+        forControlEvents:UIControlEventTouchUpInside];
+    //  [self.view addSubview: bluetooth];
     
     UIButton *speaker = [[UIButton alloc] initWithFrame:CGRectMake(120, 50, 100, 50)];
     speaker.backgroundColor = UIColor.redColor;
     [speaker setTitle:@"speaker" forState:UIControlStateNormal];
     [speaker addTarget:self
-             action:@selector(testtest1)
-   forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview: speaker];
+                action:@selector(testtest1)
+      forControlEvents:UIControlEventTouchUpInside];
+    //  [self.view addSubview: speaker];
     
     UIButton *normal = [[UIButton alloc] initWithFrame:CGRectMake(230, 50, 100, 50)];
     normal.backgroundColor = UIColor.redColor;
     [normal setTitle:@"normal" forState:UIControlStateNormal];
     [normal addTarget:self
-                action:@selector(testtest2)
-      forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview: normal];
+               action:@selector(testtest2)
+     forControlEvents:UIControlEventTouchUpInside];
+    //  [self.view addSubview: normal];
 }
 
 - (AVAudioSessionPortDescription*)bluetoothAudioDevice

@@ -45,7 +45,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lbTransfer;
 @property (weak, nonatomic) IBOutlet UIButton *btnTransfer;
 
-@property (weak, nonatomic) IBOutlet UIHangUpButton *btnHangupCall;
+@property (weak, nonatomic) IBOutlet UIButton *btnHangupCall;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *icWaiting;
 
 - (void)setupUIForView;
 - (void)showInView:(UIView *)aView animated:(BOOL)animated;

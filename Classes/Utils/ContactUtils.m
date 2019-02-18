@@ -315,4 +315,19 @@
     return ABAddressBookSave (listAddressBook,&error);
 }
 
++ (NSString *)getFullnameOfContactIfExists {
+    NSString *fullname = @"";
+    
+    if ([LinphoneAppDelegate sharedInstance]._newContact._firstName != nil && [LinphoneAppDelegate sharedInstance]._newContact._lastName != nil) {
+        fullname = [NSString stringWithFormat:@"%@ %@", [LinphoneAppDelegate sharedInstance]._newContact._lastName, [LinphoneAppDelegate sharedInstance]._newContact._firstName];
+        
+    }else if ([LinphoneAppDelegate sharedInstance]._newContact._firstName != nil && [LinphoneAppDelegate sharedInstance]._newContact._lastName == nil){
+        fullname = [LinphoneAppDelegate sharedInstance]._newContact._firstName;
+        
+    }else if ([LinphoneAppDelegate sharedInstance]._newContact._firstName == nil && [LinphoneAppDelegate sharedInstance]._newContact._lastName != nil){
+        fullname = [LinphoneAppDelegate sharedInstance]._newContact._lastName;
+    }
+    return fullname;
+}
+
 @end

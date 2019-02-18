@@ -1,15 +1,17 @@
 //
-//  iPadNewContactViewController.m
+//  iPadAddContactViewController.m
 //  linphone
 //
-//  Created by lam quang quan on 1/16/19.
+//  Created by lam quang quan on 2/18/19.
 //
 
-#import "iPadNewContactViewController.h"
-#import "InfoForNewContactTableCell.h"
-#import "NSData+Base64.h"
+#import "iPadAddContactViewController.h"
+#import "iPadKeypadViewController.h"
 #import "ContactDetailObj.h"
 #import "NewPhoneCell.h"
+#import "InfoForNewContactTableCell.h"
+#import "NSData+Base64.h"
+
 #import "TypePhoneObject.h"
 #import "TypePhonePopupView.h"
 #import "PECropViewController.h"
@@ -19,28 +21,24 @@
 #define ROW_CONTACT_COMPANY 2
 #define NUMBER_ROW_BEFORE   3
 
-@interface iPadNewContactViewController ()<PECropViewControllerDelegate>{
-    LinphoneAppDelegate *appDelegate;
+@interface iPadAddContactViewController ()<PECropViewControllerDelegate> {
     UITapGestureRecognizer *tapOnScreen;
-    
-    UIView *viewFooter;
-    
-    TypePhonePopupView *popupTypePhone;
+    LinphoneAppDelegate *appDelegate;
     UIBarButtonItem *btnSave;
     UIBarButtonItem *btnCancel;
     
+    TypePhonePopupView *popupTypePhone;
     PECropViewController *PECropController;
 }
 
 @end
 
-@implementation iPadNewContactViewController
+@implementation iPadAddContactViewController
 @synthesize imgAvatar, btnAvatar, tbContents, currentName, currentPhoneNumber;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
     appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
     if (appDelegate._newContact == nil) {
         appDelegate._newContact = [[ContactObject alloc] init];
@@ -49,7 +47,7 @@
     
     [self setupUIForView];
     
-    btnCancel = [[UIBarButtonItem alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] style:UIBarButtonItemStyleDone target:self action:@selector(resetDataAfterAddContact)];
+    btnCancel = [[UIBarButtonItem alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] style:UIBarButtonItemStyleDone target:self action:@selector(btnCancelPress)];
     self.navigationItem.leftBarButtonItem = btnCancel;
     
     btnSave = [[UIBarButtonItem alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Save"] style:UIBarButtonItemStyleDone target:self action:@selector(saveContactPressed)];
@@ -59,7 +57,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
-    [WriteLogsUtils writeForGoToScreen: @"iPadNewContactViewController"];
+    [WriteLogsUtils writeForGoToScreen: @"iPadAddContactViewController"];
     
     [self showContentWithCurrentLanguage];
     
@@ -116,11 +114,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (IBAction)btnAvatarPressed:(UIButton *)sender {
     [self.view endEditing: YES];
     if (appDelegate._dataCrop != nil) {
@@ -142,51 +135,37 @@
     }
 }
 
-//  Hiển thị bàn phím
-- (void)keyboardWillShow:(NSNotification *)notif {
-    CGSize keyboardSize = [[[notif userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    [tbContents mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).offset(-keyboardSize.height);
-    }];
+- (void)btnCancelPress {
+    iPadKeypadViewController *keypadVC = [[iPadKeypadViewController alloc] initWithNibName:@"iPadKeypadViewController" bundle:nil];
+    [AppUtils showDetailViewWithController: keypadVC];
 }
 
-//  Ẩn bàn phím
-- (void)keyboardDidHide: (NSNotification *) notif{
-    [tbContents mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view);
-    }];
-}
-
-- (void)afterAddAndReloadContactDone {
-    [appDelegate showWaiting: NO];
+- (void)saveContactPressed {
+    [self.view endEditing: true];
     
-    appDelegate._newContact = nil;
+    if ([AppUtils isNullOrEmpty:appDelegate._newContact._firstName] && [AppUtils isNullOrEmpty:appDelegate._newContact._lastName])
+    {
+        [appDelegate.window makeToast:[appDelegate.localization localizedStringForKey:@"Contact name can not empty!"] duration:2.0 position:CSToastPositionCenter];
+        return;
+    }
+    [appDelegate showWaiting: YES];
     
-    [appDelegate.window makeToast:[appDelegate.localization localizedStringForKey:@"Successful"] duration:1.0 position:CSToastPositionCenter];
-    [self performSelector:@selector(resetDataAfterAddContact) withObject:nil afterDelay:1.0];
-}
-
-- (void)resetDataAfterAddContact{
-    appDelegate._dataCrop = nil;
-    appDelegate._newContact = [[ContactObject alloc] init];
-    appDelegate._newContact._listPhone = [[NSMutableArray alloc] init];
+    //  Remove all phone number with value is empty
+    for (int iCount=0; iCount<appDelegate._newContact._listPhone.count; iCount++) {
+        ContactDetailObj *aPhone = [appDelegate._newContact._listPhone objectAtIndex: iCount];
+        if ([aPhone._valueStr isEqualToString: @""]) {
+            [appDelegate._newContact._listPhone removeObject: aPhone];
+            iCount--;
+        }
+    }
+    [ContactUtils addNewContacts];
     
-    imgAvatar.image = [UIImage imageNamed:@"man_user.png"];
-    [tbContents reloadData];
-    btnSave.enabled = NO;
+    appDelegate.needToReloadContactList = YES;
+    [[NSNotificationCenter defaultCenter] postNotificationName:reloadContactAfterAdd object:nil];
 }
 
 - (void)showContentWithCurrentLanguage {
     self.title = [appDelegate.localization localizedStringForKey: @"Add contact"];
-}
-
-- (BOOL)checkCurrentPhone: (NSString *)phone inList: (NSArray *)listPhone {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_valueStr = %@", phone];
-    NSArray *filter = [listPhone filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        return YES;
-    }
-    return NO;
 }
 
 - (void)whenTapOnMainScreen {
@@ -222,70 +201,63 @@
     tbContents.dataSource = self;
     tbContents.backgroundColor = UIColor.clearColor;
     [self.view bringSubviewToFront: tbContents];
-    
-    
-    //  Footer view
-//    viewFooter = [[UIView alloc] init];
-//    viewFooter.frame = CGRectMake(0, 0, SCREEN_WIDTH, 100);
-//
-//    btnCancel = [[UIButton alloc] init];
-//    [btnCancel setTitle:[appDelegate.localization localizedStringForKey:@"Cancel"]
-//               forState:UIControlStateNormal];
-//
-//    btnCancel.backgroundColor = [UIColor colorWithRed:(210/255.0) green:(51/255.0)
-//                                                 blue:(92/255.0) alpha:1.0];
-//    [btnCancel setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-//    btnCancel.clipsToBounds = YES;
-//    btnCancel.layer.cornerRadius = 40.0/2;
-//    [viewFooter addSubview: btnCancel];
-//    [btnCancel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.right.equalTo(viewFooter.mas_centerX).offset(-10);
-//        make.centerY.equalTo(viewFooter.mas_centerY);
-//        make.width.mas_equalTo(140.0);
-//        make.height.mas_equalTo(40.0);
-//    }];
-//
-//    btnSave = [[UIButton alloc] init];
-//    [btnSave setTitle:[appDelegate.localization localizedStringForKey:@"Save"]
-//             forState:UIControlStateNormal];
-//    btnSave.backgroundColor = [UIColor colorWithRed:(20/255.0) green:(129/255.0)
-//                                               blue:(211/255.0) alpha:1.0];
-//    [btnSave setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-//    btnSave.clipsToBounds = YES;
-//    btnSave.layer.cornerRadius = 40.0/2;
-//    [viewFooter addSubview: btnSave];
-//    [btnSave mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(viewFooter.mas_centerX).offset(10);
-//        make.centerY.equalTo(viewFooter.mas_centerY);
-//        make.width.equalTo(btnCancel.mas_width);
-//        make.height.equalTo(btnCancel.mas_height);
-//    }];
-//    [btnSave addTarget:self
-//                action:@selector(saveContactPressed:)
-//      forControlEvents:UIControlEventTouchUpInside];
-//
-//    tbContents.tableFooterView = viewFooter;
 }
 
-- (void)whenTextfieldFullnameChanged: (UITextField *)textfield {
-    //  Save fullname into first name
-    appDelegate._newContact._firstName = textfield.text;
-    appDelegate._newContact._fullName = textfield.text;
-    appDelegate._newContact._lastName = @"";
+- (void)keyboardWillShow:(NSNotification *)notif {
+    CGSize keyboardSize = [[[notif userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    [tbContents mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view).offset(-keyboardSize.height);
+    }];
+}
+
+- (void)keyboardDidHide: (NSNotification *) notif{
+    [tbContents mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view);
+    }];
+}
+
+- (void)afterAddAndReloadContactDone {
+    [appDelegate showWaiting: NO];
+    appDelegate._newContact = nil;
+    appDelegate._dataCrop = nil;
+    [[NSNotificationCenter defaultCenter] postNotificationName:reloadHistoryCallForIpad object: nil];
+    [self btnCancelPress];
     
-    if (![textfield.text isEqualToString:@""]) {
-        btnSave.enabled = YES;
-    }else{
-        btnSave.enabled = NO;
+    [appDelegate.window makeToast:[appDelegate.localization localizedStringForKey:@"Successful"] duration:1.0 position:CSToastPositionCenter];
+    
+}
+
+//  Chọn loại phone
+- (void)whenSelectTypeForPhone: (NSNotification *)notif {
+    id object = [notif object];
+    if ([object isKindOfClass:[TypePhoneObject class]]) {
+        int curIndex = (int)[popupTypePhone tag];
+        
+        //  Choose phone type for row: Add new phone
+        NewPhoneCell *cell = [tbContents cellForRowAtIndexPath:[NSIndexPath indexPathForRow:curIndex inSection:0]];
+        if ([cell isKindOfClass:[NewPhoneCell class]]) {
+            NSString *imgName = [AppUtils getTypeOfPhone:[(TypePhoneObject *)object _strType]];
+            [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:imgName]
+                                           forState:UIControlStateNormal];
+            [cell._iconTypePhone setTitle:[(TypePhoneObject *)object _strType] forState:UIControlStateNormal];
+        }
+        if (curIndex - NUMBER_ROW_BEFORE >= 0 && (curIndex - NUMBER_ROW_BEFORE) < appDelegate._newContact._listPhone.count)
+        {
+            ContactDetailObj *curPhone = [appDelegate._newContact._listPhone objectAtIndex: (curIndex - NUMBER_ROW_BEFORE)];
+            curPhone._typePhone = [(TypePhoneObject *)object _strType];
+            curPhone._iconStr = [AppUtils getTypeOfPhone: curPhone._typePhone];
+            [tbContents reloadData];
+        }
     }
 }
 
-- (void)whenTextfieldChanged: (UITextField *)textfield {
-    if (textfield.tag == 100) {
-        appDelegate._newContact._email = textfield.text;
-    }else if (textfield.tag == 101){
-        appDelegate._newContact._company = textfield.text;
+- (BOOL)checkCurrentPhone: (NSString *)phone inList: (NSArray *)listPhone {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_valueStr = %@", phone];
+    NSArray *filter = [listPhone filteredArrayUsingPredicate: predicate];
+    if (filter.count > 0) {
+        return YES;
     }
+    return NO;
 }
 
 #pragma mark - UITableview Delegate
@@ -405,6 +377,46 @@
     return 50.0;
 }
 
+- (void)whenTextfieldPhoneDidChanged: (UITextField *)textfield {
+    int row = (int)[textfield tag];
+    if (row-NUMBER_ROW_BEFORE >= 0 && row-NUMBER_ROW_BEFORE < appDelegate._newContact._listPhone.count)
+    {
+        ContactDetailObj *curPhone = [appDelegate._newContact._listPhone objectAtIndex: row];
+        curPhone._valueStr = textfield.text;
+    }
+}
+
+//  Chọn loại phone cho điện thoại
+- (void)btnTypePhonePressed: (UIButton *)sender {
+    [self.view endEditing: true];
+    
+    float hPopup = 4*50 + 6;
+    popupTypePhone = [[TypePhonePopupView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-236)/2, (SCREEN_HEIGHT-hPopup)/2, 236, hPopup)];
+    [popupTypePhone setTag: sender.tag];
+    [popupTypePhone showInView:appDelegate.window animated:YES];
+}
+
+- (void)whenTextfieldFullnameChanged: (UITextField *)textfield {
+    //  Save fullname into first name
+    appDelegate._newContact._firstName = textfield.text;
+    appDelegate._newContact._fullName = textfield.text;
+    appDelegate._newContact._lastName = @"";
+    
+    if (![textfield.text isEqualToString:@""]) {
+        btnSave.enabled = YES;
+    }else{
+        btnSave.enabled = NO;
+    }
+}
+
+- (void)whenTextfieldChanged: (UITextField *)textfield {
+    if (textfield.tag == 100) {
+        appDelegate._newContact._email = textfield.text;
+    }else if (textfield.tag == 101){
+        appDelegate._newContact._company = textfield.text;
+    }
+}
+
 //  Thêm hoặc xoá số phone
 - (void)btnAddPhonePressed: (UIButton *)sender {
     int tag = (int)[sender tag];
@@ -454,80 +466,6 @@
     //  Khi thêm mới hoặc xoá thì chỉ có dòng cuối cùng là new
     [tbContents reloadData];
 }
-
-- (void)whenTextfieldPhoneDidChanged: (UITextField *)textfield {
-    int row = (int)[textfield tag];
-    if (row-NUMBER_ROW_BEFORE >= 0 && row-NUMBER_ROW_BEFORE < appDelegate._newContact._listPhone.count)
-    {
-        ContactDetailObj *curPhone = [appDelegate._newContact._listPhone objectAtIndex: row];
-        curPhone._valueStr = textfield.text;
-    }
-}
-
-//  Chọn loại phone cho điện thoại
-- (void)btnTypePhonePressed: (UIButton *)sender {
-    [self.view endEditing: true];
-    
-    float hPopup;
-    if (SCREEN_WIDTH > 320) {
-        hPopup = 4*50 + 6;
-    }else{
-        hPopup = 4*40 + 6;
-    }
-    
-    popupTypePhone = [[TypePhonePopupView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-236)/2, (SCREEN_HEIGHT-hPopup)/2, 236, hPopup)];
-    [popupTypePhone setTag: sender.tag];
-    [popupTypePhone showInView:appDelegate.window animated:YES];
-}
-
-//  Chọn loại phone
-- (void)whenSelectTypeForPhone: (NSNotification *)notif {
-    id object = [notif object];
-    if ([object isKindOfClass:[TypePhoneObject class]]) {
-        int curIndex = (int)[popupTypePhone tag];
-        
-        //  Choose phone type for row: Add new phone
-        NewPhoneCell *cell = [tbContents cellForRowAtIndexPath:[NSIndexPath indexPathForRow:curIndex inSection:0]];
-        if ([cell isKindOfClass:[NewPhoneCell class]]) {
-            NSString *imgName = [AppUtils getTypeOfPhone: [(TypePhoneObject *)object _strType]];
-            [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:imgName]
-                                           forState:UIControlStateNormal];
-            [cell._iconTypePhone setTitle:[(TypePhoneObject *)object _strType] forState:UIControlStateNormal];
-        }
-        if (curIndex - NUMBER_ROW_BEFORE >= 0 && (curIndex - NUMBER_ROW_BEFORE) < appDelegate._newContact._listPhone.count)
-        {
-            ContactDetailObj *curPhone = [appDelegate._newContact._listPhone objectAtIndex: (curIndex - NUMBER_ROW_BEFORE)];
-            curPhone._typePhone = [(TypePhoneObject *)object _strType];
-            curPhone._iconStr = [AppUtils getTypeOfPhone: curPhone._typePhone];
-            [tbContents reloadData];
-        }
-    }
-}
-
-- (void)saveContactPressed {
-    [self.view endEditing: true];
-    
-    if ([AppUtils isNullOrEmpty:appDelegate._newContact._firstName] && [AppUtils isNullOrEmpty:appDelegate._newContact._lastName])
-    {
-        [appDelegate.window makeToast:[appDelegate.localization localizedStringForKey:@"Contact name can not empty!"] duration:2.0 position:CSToastPositionCenter];
-        return;
-    }
-    [appDelegate showWaiting: YES];
-    
-    //  Remove all phone number with value is empty
-    for (int iCount=0; iCount<appDelegate._newContact._listPhone.count; iCount++) {
-        ContactDetailObj *aPhone = [appDelegate._newContact._listPhone objectAtIndex: iCount];
-        if ([aPhone._valueStr isEqualToString: @""]) {
-            [appDelegate._newContact._listPhone removeObject: aPhone];
-            iCount--;
-        }
-    }
-    [ContactUtils addNewContacts];
-    
-    appDelegate.needToReloadContactList = YES;
-    [[NSNotificationCenter defaultCenter] postNotificationName:reloadContactAfterAdd object:nil];
-}
-
 
 #pragma mark - ActionSheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -649,6 +587,5 @@
 {
     [controller dismissViewControllerAnimated:YES completion:NULL];
 }
-
 
 @end

@@ -129,7 +129,7 @@
         //  Choose phone type for row: Add new phone
         NewPhoneCell *cell = [tbPhone cellForRowAtIndexPath:[NSIndexPath indexPathForRow:curIndex inSection:0]];
         if ([cell isKindOfClass:[NewPhoneCell class]]) {
-            NSString *imgName = [self getTypeOfPhone: [(TypePhoneObject *)object _strType]];
+            NSString *imgName = [AppUtils getTypeOfPhone: [(TypePhoneObject *)object _strType]];
             [cell._iconTypePhone setBackgroundImage:[UIImage imageNamed:imgName]
                                            forState:UIControlStateNormal];
             [cell._iconTypePhone setTitle:[(TypePhoneObject *)object _strType] forState:UIControlStateNormal];
@@ -138,23 +138,9 @@
         {
             ContactDetailObj *curPhone = [detailsContact._listPhone objectAtIndex: curIndex];
             curPhone._typePhone = [(TypePhoneObject *)object _strType];
-            curPhone._iconStr = [self getTypeOfPhone: curPhone._typePhone];
+            curPhone._iconStr = [AppUtils getTypeOfPhone: curPhone._typePhone];
             [tbPhone reloadData];
         }
-    }
-}
-
-- (NSString *)getTypeOfPhone: (NSString *)typePhone {
-    if ([typePhone isEqualToString: type_phone_mobile]) {
-        return @"btn_contacts_mobile.png";
-    }else if ([typePhone isEqualToString: type_phone_work]){
-        return @"btn_contacts_work.png";
-    }else if ([typePhone isEqualToString: type_phone_fax]){
-        return @"btn_contacts_fax.png";
-    }else if ([typePhone isEqualToString: type_phone_home]){
-        return @"btn_contacts_home.png";
-    }else{
-        return @"btn_contacts_mobile.png";
     }
 }
 

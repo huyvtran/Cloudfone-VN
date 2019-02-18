@@ -17,7 +17,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tbContacts;
 @property (weak, nonatomic) IBOutlet UIButton *icSync;
 @property (weak, nonatomic) IBOutlet UIButton *icAddNew;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *icWaiting;
 
 - (IBAction)btnPBXPressed:(UIButton *)sender;
 - (IBAction)btnAllPressed:(UIButton *)sender;

@@ -6,9 +6,9 @@
 //
 
 #import "iPadKeypadViewController.h"
+#import "iPadAddContactViewController.h"
+#import "iPadAllContactsListViewController.h"
 #import "PBXSettingViewController.h"
-#import "NewContactViewController.h"
-#import "AllContactListViewController.h"
 #import "DeviceUtils.h"
 
 @interface iPadKeypadViewController () {
@@ -136,14 +136,17 @@
 }
 
 - (IBAction)icAddContactClicked:(UIButton *)sender {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     if ([addressField.text isEqualToString:USERNAME]) {
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"You can not add yourself to contact list"] duration:2.0 position:CSToastPositionCenter];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"You can not add yourself to contact list"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
     
     UIActionSheet *popupAddContact = [[UIActionSheet alloc] initWithTitle:addressField.text delegate:self cancelButtonTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Cancel"] destructiveButtonTitle:nil otherButtonTitles: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Create new contact"], [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Add to existing contact"], nil];
     popupAddContact.tag = 100;
-    [popupAddContact showInView:self.view];
+    [popupAddContact showFromRect:addressField.bounds inView:addressField animated:YES];
+    //  [popupAddContact showInView:self.view];
 }
 
 - (IBAction)btnBackspaceClicked:(id)sender {
@@ -164,13 +167,12 @@
 }
 
 - (IBAction)btnHotlineClicked:(UIButton *)sender {
-    [WriteLogsUtils writeLogContent:@"Call to hotline" toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
-    BOOL success = [SipUtils makeCallWithPhoneNumber: hotline];
-    if (!success) {
-        
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Can not make call now. Perhaps you have not signed your account yet!"] duration:3.0 position:CSToastPositionCenter];
-    }
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Do you want to call to hotline for assistance?"] delegate:self cancelButtonTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Close"] otherButtonTitles: [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Call"], nil];
+    alert.delegate = self;
+    alert.tag = 3;
+    [alert show];
 }
 
 - (IBAction)btnNumberClicked:(id)sender {
@@ -436,6 +438,8 @@
 }
 
 - (void)onOneLongClick:(id)sender {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     LinphoneManager *lm = LinphoneManager.instance;
     NSString *voiceMail = [lm lpConfigStringForKey:@"voice_mail_uri"];
     LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:voiceMail];
@@ -603,6 +607,8 @@
     }else{
         [self checkAccountForApp];
     }
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] internetStatus = %d", __FUNCTION__, internetStatus] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
 }
 
 - (void)whenTappedOnStatusAccount
@@ -610,14 +616,14 @@
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
     
     if ([LinphoneManager instance].connectivity == none){
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
     }
     
     AccountState curState = [SipUtils getStateOfDefaultProxyConfig];
     //  No account
     if (curState == eAccountNone) {
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"You have not set up an account yet. Do you want to setup now?"] duration:2.5 position:CSToastPositionCenter];
+        [[LinphoneAppDelegate sharedInstance].window makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"You have not set up an account yet. Do you want to setup now?"] duration:2.5 position:CSToastPositionCenter];
         return;
     }
     
@@ -720,26 +726,29 @@
     if (actionSheet.tag == 100) {
         switch (buttonIndex) {
             case 0:{
+                iPadAddContactViewController *contentVC = [[iPadAddContactViewController alloc] initWithNibName:@"iPadAddContactViewController" bundle:nil];
+                
+                if (contentVC) {
+                    contentVC.currentPhoneNumber = addressField.text;
+                    contentVC.currentName = @"";
+                }
                 [self hideSearchView];
                 
-                NewContactViewController *controller = VIEW(NewContactViewController);
-                if (controller) {
-                    controller.currentPhoneNumber = addressField.text;
-                    controller.currentName = @"";
-                }
-                [[PhoneMainView instance] changeCurrentView:[NewContactViewController compositeViewDescription]
-                                                       push:true];
+                UINavigationController *navigationVC = [AppUtils createNavigationWithController: contentVC];
+                [AppUtils showDetailViewWithController: navigationVC];
+                
                 break;
             }
             case 1:{
+                iPadAllContactsListViewController *contentVC = [[iPadAllContactsListViewController alloc] initWithNibName:@"iPadAllContactsListViewController" bundle:nil];
+                if (contentVC != nil) {
+                    contentVC.phoneNumber = addressField.text;
+                }
                 [self hideSearchView];
                 
-                AllContactListViewController *controller = VIEW(AllContactListViewController);
-                if (controller != nil) {
-                    controller.phoneNumber = addressField.text;
-                }
-                [[PhoneMainView instance] changeCurrentView:[AllContactListViewController compositeViewDescription]
-                                                       push:true];
+                UINavigationController *navigationVC = [AppUtils createNavigationWithController: contentVC];
+                [AppUtils showDetailViewWithController: navigationVC];
+                
                 break;
             }
             default:
@@ -795,6 +804,15 @@
                 linphone_core_refresh_registers(LC);
                 
                 [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] You turned on account with Id = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+            }
+        }
+        
+    }else if (alertView.tag == 3) {
+        //  call to hotline
+        if (buttonIndex == 1) {
+            BOOL result = [SipUtils makeCallWithPhoneNumber: hotline];
+            if (!result) {
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Can not make call to hotline", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
             }
         }
     }

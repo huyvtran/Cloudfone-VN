@@ -84,7 +84,7 @@
     sender.backgroundColor = UIColor.whiteColor;
     [sender setTitleColor:IPAD_HEADER_BG_COLOR forState:UIControlStateNormal];
     
-    [self performSelector:@selector(startCallAfterChangeBackground) withObject:nil afterDelay:0.2];
+    [self performSelector:@selector(startCallAfterChangeBackground) withObject:nil afterDelay:0.1];
 }
 
 - (void)startCallAfterChangeBackground
@@ -463,7 +463,7 @@
             NSString *msgContent = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Contact has been deleted"];
             [[LinphoneAppDelegate sharedInstance].window makeToast:msgContent duration:2.0 position:CSToastPositionCenter];
             
-            [[LinphoneAppDelegate sharedInstance].listContacts removeObject: detailsContact];
+            [self updateContactListAfterDeleteContact: detailsContact];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:reloadContactsAfterDeleteForIpad
                                                                 object:nil];
@@ -474,5 +474,15 @@
         [[LinphoneAppDelegate sharedInstance] showWaiting: NO];
     }
 }
+
+- (void)updateContactListAfterDeleteContact: (ContactObject *)contact {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"contactId = %d", contact._id_contact];
+    NSArray *filter = [[LinphoneAppDelegate sharedInstance].listInfoPhoneNumber filteredArrayUsingPredicate: predicate];
+    if (filter.count > 0) {
+        [[LinphoneAppDelegate sharedInstance].listInfoPhoneNumber removeObjectsInArray: filter];
+    }
+    [[LinphoneAppDelegate sharedInstance].listContacts removeObject: contact];
+}
+
 
 @end
