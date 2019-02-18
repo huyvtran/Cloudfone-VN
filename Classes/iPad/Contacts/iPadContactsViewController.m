@@ -145,8 +145,8 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear: animated];
     
-    [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:btnPBX radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:SELECT_TAB_BG_COLOR border:2.0];
-    [AppUtils addCornerRadiusTopRightAndBottomRightForButton:btnAll radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:SELECT_TAB_BG_COLOR border:2.0];
+    [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:btnPBX radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:IPAD_SELECT_TAB_BG_COLOR border:2.0];
+    [AppUtils addCornerRadiusTopRightAndBottomRightForButton:btnAll radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:IPAD_SELECT_TAB_BG_COLOR border:2.0];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -242,7 +242,7 @@
         make.width.height.mas_equalTo(HEIGHT_IPAD_HEADER_BUTTON);
     }];
     
-    btnPBX.backgroundColor = SELECT_TAB_BG_COLOR;
+    btnPBX.backgroundColor = IPAD_SELECT_TAB_BG_COLOR;
     [btnPBX setTitle:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"PBX"] forState:UIControlStateNormal];
     [btnPBX setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     [btnPBX mas_makeConstraints:^(MASConstraintMaker *make) {

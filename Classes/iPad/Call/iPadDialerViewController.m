@@ -51,8 +51,8 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear: animated];
     
-    [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:btnAll radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:SELECT_TAB_BG_COLOR border:2.0];
-    [AppUtils addCornerRadiusTopRightAndBottomRightForButton:btnMissed radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:SELECT_TAB_BG_COLOR border:2.0];
+    [AppUtils addCornerRadiusTopLeftAndBottomLeftForButton:btnAll radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:IPAD_SELECT_TAB_BG_COLOR border:2.0];
+    [AppUtils addCornerRadiusTopRightAndBottomRightForButton:btnMissed radius:HEIGHT_IPAD_HEADER_BUTTON/2 withColor:IPAD_SELECT_TAB_BG_COLOR border:2.0];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -204,7 +204,7 @@
     }];
     
     float top = STATUS_BAR_HEIGHT + (hNav - HEIGHT_HEADER_BTN)/2;
-    btnAll.backgroundColor = SELECT_TAB_BG_COLOR;
+    btnAll.backgroundColor = IPAD_SELECT_TAB_BG_COLOR;
     [btnAll setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     [btnAll mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(viewHeader).offset(top);
