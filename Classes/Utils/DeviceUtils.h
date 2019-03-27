@@ -7,6 +7,12 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    eReceiver = 1,
+    eSpeaker,
+    eEarphone,
+}TypeOutputRoute;
+
 @interface DeviceUtils : NSObject
 
 + (NSString *)getModelsOfCurrentDevice;
@@ -18,5 +24,8 @@
 + (float)getHeightForAddressTextFieldDialerWithDevice: (NSString *)deviceMode;
 + (void)cleanLogFolder;
 + (NSString *)convertLogFileName: (NSString *)fileName;
+
+//  check current route used bluetooth
++ (TypeOutputRoute)getCurrentRouteForCall;
 
 @end

@@ -2010,7 +2010,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     if ([userActivity.activityType isEqualToString:@"INStartVideoCallIntent"]) {
         return YES;
     }
-    
+
     INInteraction *interaction = userActivity.interaction;
     if (interaction != nil) {
         INStartAudioCallIntent *startAudioCallIntent = (INStartAudioCallIntent *)interaction.intent;

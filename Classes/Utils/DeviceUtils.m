@@ -7,6 +7,7 @@
 
 #import "DeviceUtils.h"
 #import <sys/utsname.h>
+#import <AVFoundation/AVFoundation.h>
 
 @implementation DeviceUtils
 
@@ -109,6 +110,24 @@
     fileName = [fileName stringByReplacingOccurrencesOfString:@"-" withString:@"/"];
     
     return [NSString stringWithFormat:@"Log_file_%@", fileName];
+}
+
+//  check current route used bluetooth
++ (TypeOutputRoute)getCurrentRouteForCall {
+    AVAudioSessionRouteDescription *currentRoute = [[AVAudioSession sharedInstance] currentRoute];
+    NSArray *outputs = currentRoute.outputs;
+    for (AVAudioSessionPortDescription *route in outputs) {
+        if (route.portType == AVAudioSessionPortBuiltInReceiver) {
+            return eReceiver;
+            
+        }else if (route.portType == AVAudioSessionPortBuiltInSpeaker || [[route.portType lowercaseString] containsString:@"speaker"]) {
+            return eSpeaker;
+            
+        }else if (route.portType == AVAudioSessionPortBluetoothHFP || route.portType == AVAudioSessionPortBluetoothLE || route.portType == AVAudioSessionPortBluetoothA2DP) {
+            return eEarphone;
+        }
+    }
+    return eReceiver;
 }
 
 @end

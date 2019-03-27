@@ -185,22 +185,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-
-    if (LinphoneManager.instance.bluetoothAvailable) {
-        NSLog(@"Test: BLuetooth da ket noi");
-    }else{
-        NSLog(@"Test: Khong thay gi");
-    }
     
     int count = linphone_core_get_calls_nb([LinphoneManager getLc]);
     if (count > 0) {
         phoneNumber = [self getPhoneNumberOfCall];
-        
-        LinphoneCall *curCall = linphone_core_get_current_call([LinphoneManager getLc]);
-        if (curCall != NULL) {
-            LinphoneCallState callState = linphone_call_get_state(curCall);
-            NSLog(@"call state = %d", callState);
-        }
     }
     
     [WriteLogsUtils writeForGoToScreen: @"CallView"];
@@ -272,6 +260,34 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         _callView.hidden = YES;
         _conferenceView.hidden = NO;
+    }
+    
+    if (count > 0) {
+        if ([DeviceUtils getCurrentRouteForCall] == eEarphone) {
+            [_speakerButton setImage:[UIImage imageNamed:@"ic_speaker_ble_act"]
+                            forState:UIControlStateNormal];
+        }else{
+            if (LinphoneManager.instance.speakerEnabled) {
+                [_speakerButton setImage:[UIImage imageNamed:@"ic_speaker_act"]
+                                forState:UIControlStateNormal];
+            }else{
+                [_speakerButton setImage:[UIImage imageNamed:@"ic_speaker_def"]
+                                forState:UIControlStateNormal];
+            }
+        }
+        //  detect micro
+        //            if (linphone_core_mic_enabled(LC)) {
+        //                [microButton setImage:[UIImage imageNamed:@"mute_normal"] forState:UIControlStateNormal];
+        //            }else{
+        //                [microButton setImage:[UIImage imageNamed:@"mute_enable"] forState:UIControlStateNormal];
+        //            }
+    }else{
+        if ([DeviceUtils getCurrentRouteForCall] == eEarphone) {
+            [_speakerButton setImage:[UIImage imageNamed:@"ic_speaker_ble_act"]
+                            forState:UIControlStateNormal];
+        }
+        
+        _speakerButton.enabled = NO;
     }
 }
 
@@ -1236,6 +1252,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.left.equalTo(_numpadButton.mas_right).offset(marginX);
         make.width.height.mas_equalTo(wFeatureIcon);
     }];
+    
     [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_def.png"] forState:UIControlStateNormal];
     [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_act.png"] forState:UIControlStateSelected];
     [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_dis.png"] forState:UIControlStateDisabled];
