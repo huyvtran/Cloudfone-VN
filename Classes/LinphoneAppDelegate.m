@@ -53,7 +53,6 @@
 #import "iPadMoreViewController.h"
 #import "iPadPopupCall.h"
 #import "TestViewController.h"
-#import <ExternalAccessory/ExternalAccessory.h>
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -2442,54 +2441,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     [popupCall setupUIForView];
     popupCall.phoneNumber = phoneNumber;
     [popupCall showInView:self.window animated:YES];
-}
-
-#pragma mark - Bluetooth Delegate
-
-- (void)detectBluetooth
-{
-    if(!self.bluetoothManager)
-    {
-        // Put on main queue so we can call UIAlertView from delegate callbacks.
-        self.bluetoothManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
-    }
-    [self centralManagerDidUpdateState:self.bluetoothManager]; // Show initial state
-}
-
--(void) centralManagerDidUpdateState:(CBCentralManager *)central {
-    if (central.state == CBCentralManagerStatePoweredOn) {
-        //Powered on means ready for use
-        [self.bluetoothManager scanForPeripheralsWithServices:nil options:nil];
-    }
-}
-
--(void) centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI {
-    // NSLog(@"bluetoothHandler: Found peripheral with UUID : %@ and Name : %@ (%ld dBm)",peripheral.identifier,peripheral.name,(long)[RSSI integerValue]);
-    if (peripheral.state == CBPeripheralStateConnected) {
-        NSLog(@"Ahi ahi");
-    }
-    NSString *localName = [advertisementData objectForKey:CBAdvertisementDataLocalNameKey];
-    NSLog(@"Local name: %@ - state: %d", localName, (int)peripheral.state);
-}
-
--(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
-    NSLog(@"didDisconnectPeripheral called");
-}
-
-
-- (void)centralManager:(CBCentralManager *)central didRetrieveConnectedPeripherals:(NSArray *)peripherals{
-    NSLog(@"didRetrieveConnectedPeripherals called");
-    for (CBPeripheral *a in peripherals){
-        NSLog(@"%@", a);
-    } //but it never ends up logging anything, and I have a BT keyboard paired/connected with the iPhone 5
-}
-
-/// This delegate method is called when iOS has established connection with a
-/// peripheral after the connectToPeripheral call, here we start scanning of
-/// services automatically
-- (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {
-    NSLog(@"bluetoothHandler: Connected to peripheral %@ with UUID : %@", peripheral.name, peripheral.identifier);
-    [self.bluetoothManager stopScan];
 }
 
 #pragma mark - Call update event
