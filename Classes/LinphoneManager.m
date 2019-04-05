@@ -2731,6 +2731,16 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
             }
         }
         
+        //  [Khai Le - 23/03/2019]
+        if (([[AudioHelper bluetoothRoutes] containsObject:route]) && !_speakerEnabled) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"bluetoothEnabled" object:nil];
+        }else if ([[route lowercaseString] containsString:@"speaker"]){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"speakerEnabled" object:nil];
+        }else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"iPhoneReceiverEnabled" object:nil];
+        }
+        //
+        
 	}
 }
 

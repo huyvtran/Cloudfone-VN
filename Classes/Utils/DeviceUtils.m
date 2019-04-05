@@ -117,17 +117,69 @@
     AVAudioSessionRouteDescription *currentRoute = [[AVAudioSession sharedInstance] currentRoute];
     NSArray *outputs = currentRoute.outputs;
     for (AVAudioSessionPortDescription *route in outputs) {
+        NSLog(@"%@", route.portType);
+        
         if (route.portType == AVAudioSessionPortBuiltInReceiver) {
             return eReceiver;
             
         }else if (route.portType == AVAudioSessionPortBuiltInSpeaker || [[route.portType lowercaseString] containsString:@"speaker"]) {
             return eSpeaker;
             
-        }else if (route.portType == AVAudioSessionPortBluetoothHFP || route.portType == AVAudioSessionPortBluetoothLE || route.portType == AVAudioSessionPortBluetoothA2DP) {
+        }else if (route.portType == AVAudioSessionPortBluetoothHFP || route.portType == AVAudioSessionPortBluetoothLE || route.portType == AVAudioSessionPortBluetoothA2DP || [[route.portType lowercaseString] containsString:@"bluetooth"]) {
             return eEarphone;
         }
     }
     return eReceiver;
+}
+
+
++ (BOOL)isConnectedEarPhone {
+    NSArray *bluetoothPorts = @[ AVAudioSessionPortBluetoothA2DP, AVAudioSessionPortBluetoothLE, AVAudioSessionPortBluetoothHFP ];
+    
+    NSArray *routes = [[AVAudioSession sharedInstance] availableInputs];
+    for (AVAudioSessionPortDescription *route in routes) {
+        if ([bluetoothPorts containsObject:route.portType]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
++ (NSString *)getNameOfEarPhoneConnected {
+    NSArray *bluetoothPorts = @[ AVAudioSessionPortBluetoothA2DP, AVAudioSessionPortBluetoothLE, AVAudioSessionPortBluetoothHFP ];
+    
+    NSArray *routes = [[AVAudioSession sharedInstance] availableInputs];
+    for (AVAudioSessionPortDescription *route in routes) {
+        if ([bluetoothPorts containsObject:route.portType]) {
+            return route.portName;
+        }
+    }
+    return @"";
+}
+
++ (void)setBluetoothEarphoneForCurrentCall {
+    [LinphoneManager.instance setSpeakerEnabled:TRUE];
+    [self performSelector:@selector(enableBluetooth)
+               withObject:nil afterDelay:0.25];
+}
+
++ (void)setiPhoneRouteForCall {
+    [LinphoneManager.instance setSpeakerEnabled:FALSE];
+    [self performSelector:@selector(disableBluetooth)
+               withObject:nil afterDelay:0.5];
+}
++ (void)setSpeakerForCurrentCall {
+    [LinphoneManager.instance setSpeakerEnabled:TRUE];
+    [self performSelector:@selector(disableBluetooth)
+               withObject:nil afterDelay:0.5];
+}
+
++ (void)enableBluetooth{
+    [LinphoneManager.instance setBluetoothEnabled:TRUE];
+}
+
++ (void)disableBluetooth{
+    [LinphoneManager.instance setBluetoothEnabled:FALSE];
 }
 
 @end

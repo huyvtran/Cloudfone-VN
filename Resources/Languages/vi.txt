@@ -212,3 +212,5 @@
 "Not logged in" = "Chưa đăng nhập"
 "PBX account" = "Tài khoản PBX"
 "Do you want to call to hotline for assistance?" = "Bạn có muốn gọi đến đường dây nóng của chúng tôi để được hỗ trợ?"
+"Hide" = "Ẩn"
+

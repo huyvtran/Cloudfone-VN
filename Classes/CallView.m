@@ -47,6 +47,7 @@
 #import "UploadPicture.h"
 #import "UIImageView+WebCache.h"
 #import "ConferenceTableViewCell.h"
+#import "ChooseRouteOutputCell.h"
 
 #define kMaxRadius 200
 #define kMaxDuration 10
@@ -76,6 +77,7 @@ const NSInteger SECURE_BUTTON_TAG = 5;
     
     BOOL needEnableSpeaker;
     LinphoneCallDir callDirection;
+    UITableView *tbRoutes;
 }
 
 @end
@@ -233,6 +235,16 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(headsetPluginChanged:)
                                                name:@"headsetPluginChanged" object:nil];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(uiForBluetoothEnabled)
+                                               name:@"bluetoothEnabled" object:nil];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(uiForSpeakerEnabled)
+                                               name:@"speakerEnabled" object:nil];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(uiForiPhoneReceiverEnabled)
+                                               name:@"iPhoneReceiverEnabled" object:nil];
+    
     //  Update address
     [self updateAddress];
     
@@ -261,18 +273,17 @@ static UICompositeViewDescription *compositeDescription = nil;
         _callView.hidden = YES;
         _conferenceView.hidden = NO;
     }
-    
     if (count > 0) {
         if ([DeviceUtils getCurrentRouteForCall] == eEarphone) {
-            [_speakerButton setImage:[UIImage imageNamed:@"ic_speaker_ble_act"]
-                            forState:UIControlStateNormal];
+            [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_ble_act"]
+                                      forState:UIControlStateNormal];
         }else{
             if (LinphoneManager.instance.speakerEnabled) {
-                [_speakerButton setImage:[UIImage imageNamed:@"ic_speaker_act"]
-                                forState:UIControlStateNormal];
+                [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_act"]
+                                          forState:UIControlStateNormal];
             }else{
-                [_speakerButton setImage:[UIImage imageNamed:@"ic_speaker_def"]
-                                forState:UIControlStateNormal];
+                [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_def"]
+                                          forState:UIControlStateNormal];
             }
         }
         //  detect micro
@@ -283,8 +294,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         //            }
     }else{
         if ([DeviceUtils getCurrentRouteForCall] == eEarphone) {
-            [_speakerButton setImage:[UIImage imageNamed:@"ic_speaker_ble_act"]
-                            forState:UIControlStateNormal];
+            [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_ble_act"]
+                                      forState:UIControlStateNormal];
         }
         
         _speakerButton.enabled = NO;
@@ -315,93 +326,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[self callUpdate:call state:state animated:FALSE message:@""];
     
     [self requestAccessToMicroIfNot];
-    
-    UIButton *bluetooth = [[UIButton alloc] initWithFrame:CGRectMake(10, 50, 100, 50)];
-    bluetooth.backgroundColor = UIColor.redColor;
-    [bluetooth setTitle:@"bluetooth" forState:UIControlStateNormal];
-    [bluetooth addTarget:self
-                  action:@selector(testtest)
-        forControlEvents:UIControlEventTouchUpInside];
-    //  [self.view addSubview: bluetooth];
-    
-    UIButton *speaker = [[UIButton alloc] initWithFrame:CGRectMake(120, 50, 100, 50)];
-    speaker.backgroundColor = UIColor.redColor;
-    [speaker setTitle:@"speaker" forState:UIControlStateNormal];
-    [speaker addTarget:self
-                action:@selector(testtest1)
-      forControlEvents:UIControlEventTouchUpInside];
-    //  [self.view addSubview: speaker];
-    
-    UIButton *normal = [[UIButton alloc] initWithFrame:CGRectMake(230, 50, 100, 50)];
-    normal.backgroundColor = UIColor.redColor;
-    [normal setTitle:@"normal" forState:UIControlStateNormal];
-    [normal addTarget:self
-               action:@selector(testtest2)
-     forControlEvents:UIControlEventTouchUpInside];
-    //  [self.view addSubview: normal];
-}
-
-- (AVAudioSessionPortDescription*)bluetoothAudioDevice
-{
-    NSArray* bluetoothRoutes = @[AVAudioSessionPortBluetoothA2DP, AVAudioSessionPortBluetoothLE, AVAudioSessionPortBluetoothHFP];
-    return [self audioDeviceFromTypes:bluetoothRoutes];
-}
-
-- (void)enableBluetooth{
-    [LinphoneManager.instance setBluetoothEnabled:TRUE];
-}
-
-- (void)testtest {
-    [LinphoneManager.instance setSpeakerEnabled:TRUE];
-    [self performSelector:@selector(enableBluetooth)
-               withObject:nil afterDelay:0.5];
-    
-//
-//    UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
-//    AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
-    
-//    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
-//    AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute,sizeof (audioRouteOverride),&audioRouteOverride);
-        //  [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-}
-
-- (void)disableBluetooth{
-    [LinphoneManager.instance setBluetoothEnabled:FALSE];
-}
-
-- (void)testtest1 {
-    [LinphoneManager.instance setSpeakerEnabled:TRUE];
-    [self performSelector:@selector(disableBluetooth)
-               withObject:nil afterDelay:0.5];
-    
-//    UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
-//    AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
-//    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
-//    AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute,sizeof (audioRouteOverride),&audioRouteOverride);
-}
-
-- (void)testtest2 {
-    [LinphoneManager.instance setSpeakerEnabled:FALSE];
-    [self performSelector:@selector(disableBluetooth)
-               withObject:nil afterDelay:0.5];
-    
-//    UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
-//    AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
-//    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_None;
-//    AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute,sizeof (audioRouteOverride),&audioRouteOverride);
-}
-
-- (AVAudioSessionPortDescription*)audioDeviceFromTypes:(NSArray*)types
-{
-    NSArray* routes = [[AVAudioSession sharedInstance] availableInputs];
-    for (AVAudioSessionPortDescription* route in routes)
-    {
-        if ([types containsObject:route.portType])
-        {
-            return route;
-        }
-    }
-    return nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -1890,10 +1814,10 @@ static UICompositeViewDescription *compositeDescription = nil;
         int routeChangeReason = [notif.object intValue];
         if (routeChangeReason == kAudioSessionRouteChangeReason_OldDeviceUnavailable) {
             if (needEnableSpeaker) {
-                [_speakerButton setOn];
+                //[_speakerButton setOn];
                 _speakerButton.selected = YES;
             }else{
-                [_speakerButton setOff];
+                //[_speakerButton setOff];
                 _speakerButton.selected = NO;
             }
             [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] routeChangeReason == kAudioSessionRouteChangeReason_OldDeviceUnavailable", __FUNCTION__]
@@ -1901,7 +1825,7 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
         if (routeChangeReason == kAudioSessionRouteChangeReason_NewDeviceAvailable) {
             needEnableSpeaker = _speakerButton.isEnabled;
-            [_speakerButton setOff];
+            //[_speakerButton setOff];
             _speakerButton.selected = NO;
             
             [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] routeChangeReason == kAudioSessionRouteChangeReason_NewDeviceAvailable", __FUNCTION__]
@@ -1965,12 +1889,64 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (tableView == tbRoutes) {
+        return 3;
+    }
+    
     int count = linphone_core_get_calls_nb(LC);
     return count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (tableView == tbRoutes) {
+        NSString *identifier = @"ChooseRouteOutputCell";
+        ChooseRouteOutputCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+        if (cell == nil) {
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"ChooseRouteOutputCell" owner:nil options:nil] lastObject];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        TypeOutputRoute routeType = [DeviceUtils getCurrentRouteForCall];
+        switch (indexPath.row) {
+            case 0:{
+                cell.lbContent.text = [DeviceUtils getNameOfEarPhoneConnected];
+                cell.imgType.image = [UIImage imageNamed:@"route_earphone"];
+                cell.imgType.hidden = NO;
+                if (routeType == eEarphone) {
+                    cell.imgSelected.hidden = NO;
+                }else{
+                    cell.imgSelected.hidden = YES;
+                }
+                break;
+            }
+            case 1:{
+                cell.lbContent.text = @"iPhone";
+                cell.imgType.hidden = YES;
+                if (routeType == eReceiver) {
+                    cell.imgSelected.hidden = NO;
+                }else{
+                    cell.imgSelected.hidden = YES;
+                }
+                break;
+            }
+            case 2:{
+                cell.lbContent.text = [appDelegate.localization localizedStringForKey:@"Speaker"];
+                cell.imgType.image = [UIImage imageNamed:@"route_speaker"];
+                cell.imgType.hidden = NO;
+                if (routeType == eSpeaker) {
+                    cell.imgSelected.hidden = NO;
+                }else{
+                    cell.imgSelected.hidden = YES;
+                }
+                break;
+            }
+            default:
+                break;
+        }
+        return cell;
+    }
+    
     static NSString *identifier = @"ConferenceTableViewCell";
     ConferenceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
     if (cell == nil) {
@@ -2013,6 +1989,32 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     return cell;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self dismissViewControllerAnimated:YES completion:^{
+        switch (indexPath.row) {
+            case 0:{
+                [DeviceUtils setBluetoothEarphoneForCurrentCall];
+                break;
+            }
+            case 1:{
+                [DeviceUtils setiPhoneRouteForCall];
+                break;
+            }
+            case 2:{
+                [DeviceUtils setSpeakerForCurrentCall];
+                break;
+            }
+            default:
+                break;
+        }
+    }];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 58.0;
+}
+
 
 - (NSString *)getPhoneNumberOfCall: (LinphoneCall *)call {
     NSString *phone = @"";
@@ -2057,6 +2059,68 @@ static UICompositeViewDescription *compositeDescription = nil;
             }
         }];
     }
+}
+
+- (IBAction)speakerButtonPress:(UIButton *)sender {
+    if ([DeviceUtils isConnectedEarPhone]) {
+        [self showOptionChooseRouteOutputForCall];
+        
+    }else{
+        BOOL isEnabled = LinphoneManager.instance.speakerEnabled;
+        if (isEnabled) {
+            [sender setImage:[UIImage imageNamed:@"speaker_normal"] forState:UIControlStateNormal];
+            [LinphoneManager.instance setSpeakerEnabled: NO];
+        }else{
+            [sender setImage:[UIImage imageNamed:@"speaker_enable"] forState:UIControlStateNormal];
+            [LinphoneManager.instance setSpeakerEnabled: YES];
+        }
+    }
+}
+
+- (void)showOptionChooseRouteOutputForCall {
+    UIAlertController * alertViewController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction* hideAction = [UIAlertAction actionWithTitle:[appDelegate.localization localizedStringForKey:@"Hide"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){}];
+    [hideAction setValue:UIColor.redColor forKey:@"titleTextColor"];
+    [alertViewController addAction: hideAction];
+    
+    
+    UIViewController *contentVC = [[UIViewController alloc] init];
+    [contentVC setPreferredContentSize:CGSizeMake(alertViewController.view.frame.size.width, 58.0*3)];
+    
+    tbRoutes = [[UITableView alloc] init];
+    tbRoutes.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tbRoutes.delegate = self;
+    tbRoutes.scrollEnabled = NO;
+    tbRoutes.dataSource = self;
+    [contentVC.view addSubview: tbRoutes];
+    [tbRoutes mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.equalTo(contentVC.view);
+    }];
+    [alertViewController setValue:contentVC forKey:@"contentViewController"];
+    
+    [self presentViewController:alertViewController animated:YES completion:nil];
+}
+
+- (void)uiForBluetoothEnabled {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_ble_act"]
+                                  forState:UIControlStateNormal];
+    });
+}
+
+- (void)uiForSpeakerEnabled {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_act"]
+                                  forState:UIControlStateNormal];
+    });
+}
+
+- (void)uiForiPhoneReceiverEnabled{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_def"]
+                                  forState:UIControlStateNormal];
+    });
 }
 
 @end

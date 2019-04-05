@@ -61,6 +61,7 @@ typedef enum typeCall{
 @property (weak, nonatomic) IBOutlet UIButton *icAddCall;
 @property (weak, nonatomic) IBOutlet UILabel *lbAddCall;
 
+
 @property(nonatomic, strong) IBOutlet CallPausedTableView *pausedCallsTable;
 @property(weak, nonatomic) IBOutlet UIView *callView;
 
@@ -68,7 +69,9 @@ typedef enum typeCall{
 @property(nonatomic, strong) IBOutlet UIButton *optionsConferenceButton;
 @property(nonatomic, strong) IBOutlet UIMutedMicroButton *microButton;
 
-@property(nonatomic, strong) IBOutlet UISpeakerButton *speakerButton;
+@property(nonatomic, strong) IBOutlet UIButton *speakerButton;
+- (IBAction)speakerButtonPress:(UIButton *)sender;
+
 @property(nonatomic, strong) IBOutlet UIToggleButton *routesButton;
 @property(nonatomic, strong) IBOutlet UIToggleButton *optionsButton;
 @property(nonatomic, strong) IBOutlet UIHangUpButton *hangupButton;

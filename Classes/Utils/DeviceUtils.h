@@ -27,5 +27,13 @@ typedef enum {
 
 //  check current route used bluetooth
 + (TypeOutputRoute)getCurrentRouteForCall;
+//  Check device connected to bluetooth earphone
++ (BOOL)isConnectedEarPhone;
++ (NSString *)getNameOfEarPhoneConnected;
++ (void)setBluetoothEarphoneForCurrentCall;
++ (void)enableBluetooth;
++ (void)setiPhoneRouteForCall;
++ (void)disableBluetooth;
++ (void)setSpeakerForCurrentCall;
 
 @end
