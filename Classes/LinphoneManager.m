@@ -688,8 +688,16 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 	}
 #pragma deploymate pop
 
+    
+    const char *contact = linphone_call_get_remote_contact(call);
+    NSLog(@"%s", contact);
+    
+    
 	const LinphoneAddress *addr = linphone_call_get_remote_address(call);
     
+    const char *lDisplayName = linphone_address_get_display_name(addr);
+    NSLog(@"lDisplayName %s", lDisplayName);
+    //  PhuongNH-EXT-SP
     const char *username = linphone_address_get_username(addr);
     NSString *callerId = [NSString stringWithUTF8String:username];
     NSString *address = [self getNameForCurrentPhoneNumber: callerId];
