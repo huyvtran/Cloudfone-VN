@@ -188,8 +188,13 @@
         [cell updateFrameForHotline: NO];
         cell._lbPhone.hidden = NO;
         
-        if ([aCall._phoneName isEqualToString: @""]) {
-            cell._lbName.text = aCall._phoneNumber;
+        if ([AppUtils isNullOrEmpty: aCall._phoneName]) {
+            NSString *display = [AppUtils getNameWasStoredFromUserInfo: aCall._phoneNumber];
+            if (![AppUtils isNullOrEmpty: display]) {
+                cell._lbName.text = display;
+            }else{
+                cell._lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+            }
         }else{
             cell._lbName.text = aCall._phoneName;
         }

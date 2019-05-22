@@ -33,6 +33,16 @@
     return number;
 }
 
++ (NSString *)onlyGetContactNameForCallWithNumber: (NSString *)number {
+    PhoneObject *contact = [self getContactPhoneObjectWithNumber: number];
+    if (![AppUtils isNullOrEmpty: contact.name]) {
+        return contact.name;
+    }
+    return @"";
+}
+
+
+
 + (NSAttributedString *)getSearchValueFromResultForNewSearchMethod: (NSArray *)searchs
 {
     UIFont *font = [UIFont fontWithName:MYRIADPRO_BOLD size:16.0];

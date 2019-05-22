@@ -18,5 +18,6 @@
 + (void)addNewContacts;
 + (BOOL)deleteContactFromPhoneWithId: (int)recordId;
 + (NSString *)getFullnameOfContactIfExists;
++ (NSString *)onlyGetContactNameForCallWithNumber: (NSString *)number;
 
 @end

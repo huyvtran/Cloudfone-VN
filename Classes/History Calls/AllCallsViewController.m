@@ -177,7 +177,12 @@
         cell._lbPhone.hidden = NO;
         
         if ([AppUtils isNullOrEmpty: aCall._phoneName]) {
-            cell._lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+            NSString *display = [AppUtils getNameWasStoredFromUserInfo: aCall._phoneNumber];
+            if (![AppUtils isNullOrEmpty: display]) {
+                cell._lbName.text = display;
+            }else{
+                cell._lbName.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+            }
         }else{
             cell._lbName.text = aCall._phoneName;
         }

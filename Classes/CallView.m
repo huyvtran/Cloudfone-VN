@@ -1080,17 +1080,33 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)updateAddress {
     [self view]; //Force view load
     PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
-    
-    if ([phoneNumber isEqualToString:hotline]) {
-        _avatarImage.image = [UIImage imageNamed:@"hotline_avatar.png"];
-    }else{
+    NSString *displayName = @"";
+    if (contact != nil) {
         if ([AppUtils isNullOrEmpty: contact.avatar]) {
             _avatarImage.image = [UIImage imageNamed:@"no_avatar.png"];
         }else{
             _avatarImage.image = [UIImage imageWithData:[NSData dataFromBase64String: contact.avatar]];
         }
+        displayName = contact.name;
+        
+    }else{
+        _avatarImage.image = [UIImage imageNamed:@"no_avatar.png"];
     }
-    _nameLabel.text = contact.name;
+    
+    if ([AppUtils isNullOrEmpty: displayName]) {
+        LinphoneCall *call = linphone_core_get_current_call(LC);
+        const LinphoneAddress *addr = linphone_call_get_remote_address(call);
+        const char *lDisplayName = linphone_address_get_display_name(addr);
+        displayName = [NSString stringWithUTF8String:lDisplayName];
+        if ([AppUtils isNullOrEmpty: displayName]) {
+            displayName = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+        }
+    }
+    
+    if ([phoneNumber isEqualToString:hotline]) {
+        _avatarImage.image = [UIImage imageNamed:@"hotline_avatar.png"];
+    }
+    _nameLabel.text = displayName;
     lbPhoneNumber.text = phoneNumber;
 }
 

@@ -647,12 +647,6 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 	}
 }
 
-//  Add new by Khai Le on 01/12/2017
-- (NSString *)getNameForCurrentPhoneNumber: (NSString *)callerId {
-    NSString *name = [ContactUtils getContactNameWithNumber: callerId];
-    return [NSString stringWithFormat:@"%@ - %@", name, callerId];
-}
-
 - (ABRecordRef)getPBXContactInPhoneBook
 {
     ABAddressBookRef addressListBook = ABAddressBookCreateWithOptions(NULL, NULL);
@@ -687,25 +681,32 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 		_silentPushCompletion = nil;
 	}
 #pragma deploymate pop
-
-    
-    const char *contact = linphone_call_get_remote_contact(call);
-    NSLog(@"%s", contact);
-    
-    
 	const LinphoneAddress *addr = linphone_call_get_remote_address(call);
     
-    const char *lDisplayName = linphone_address_get_display_name(addr);
-    NSLog(@"lDisplayName %s", lDisplayName);
+    
     //  PhuongNH-EXT-SP
     const char *username = linphone_address_get_username(addr);
     NSString *callerId = [NSString stringWithUTF8String:username];
-    NSString *address = [self getNameForCurrentPhoneNumber: callerId];
-    if ([address isEqualToString: callerId]) {
-        address = [ContactUtils getContactNameWithNumber: callerId];
+    NSString *name = [ContactUtils onlyGetContactNameForCallWithNumber: callerId];
+    
+    NSString *address = @"";
+    if ([AppUtils isNullOrEmpty: name]) {
+        const char *lDisplayName = linphone_address_get_display_name(addr);
+        NSString *displayName = [NSString stringWithUTF8String:lDisplayName];
+        if (![AppUtils isNullOrEmpty: displayName]) {
+            address = [NSString stringWithFormat:@"%@ - %@", displayName, callerId];
+            
+            NSString *key = [NSString stringWithFormat:@"name_for_%@", callerId];
+            [[NSUserDefaults standardUserDefaults] setObject:displayName forKey:key];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }else{
+            address = callerId;
+        }
+    }else{
+        address = [NSString stringWithFormat:@"%@ - %@", name, callerId];
     }
     
-	if (state == LinphoneCallIncomingReceived) {
+    if (state == LinphoneCallIncomingReceived) {
 		// TESTING !!
 		// linphone_call_accept_early_media(call);
 		LinphoneCallLog *callLog = linphone_call_get_call_log(call);

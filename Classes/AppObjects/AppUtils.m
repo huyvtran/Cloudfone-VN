@@ -1000,4 +1000,10 @@
     }
 }
 
++ (NSString *)getNameWasStoredFromUserInfo: (NSString *)number {
+    NSString *key = [NSString stringWithFormat:@"name_for_%@", number];
+    NSString *display = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+    return display;
+}
+
 @end
