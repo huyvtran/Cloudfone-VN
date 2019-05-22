@@ -95,8 +95,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [WriteLogsUtils writeForGoToScreen:@"DetailHistoryCNViewController"];
     
-    [self showContentWithCurrentLanguage];
-    
     // Tắt màn hình cảm biến
     UIDevice *device = [UIDevice currentDevice];
     [device setProximityMonitoringEnabled: NO];
@@ -108,21 +106,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear: animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)showContentWithCurrentLanguage {
-    if (!newLayout) {
-        _lbHeader.text = [appDelegate.localization localizedStringForKey:@"Calls detail"];
-    }else{
-        if (![AppUtils isNullOrEmpty: phoneNumber]) {
-            PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
-            if (![AppUtils isNullOrEmpty:contact.name]) {
-                _lbHeader.text = contact.name;
-            }else{
-                _lbHeader.text = [appDelegate.localization localizedStringForKey:@"Calls detail"];
-            }
-        }
-    }
 }
 
 //  Cập nhật view sau khi get xong phone number
@@ -177,8 +160,15 @@ static UICompositeViewDescription *compositeDescription = nil;
             PhoneObject *contact = [ContactUtils getContactPhoneObjectWithNumber: phoneNumber];
             if (![AppUtils isNullOrEmpty:contact.name]) {
                 _lbHeader.text = contact.name;
+                _lbName.text = contact.number;
             }else{
-                _lbHeader.text = [appDelegate.localization localizedStringForKey:@"Calls detail"];
+                NSString *display = [AppUtils getNameWasStoredFromUserInfo: phoneNumber];
+                if (![AppUtils isNullOrEmpty: display]) {
+                    _lbHeader.text = display;
+                }else{
+                    _lbHeader.text = [appDelegate.localization localizedStringForKey:@"Calls detail"];
+                }
+                _lbName.text = phoneNumber;
             }
             
             if (![AppUtils isNullOrEmpty: contact.avatar]) {
@@ -186,7 +176,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             }else{
                 _imgAvatar.image = [UIImage imageNamed:@"no_avatar.png"];
             }
-            _lbName.text = contact.number;
+            
         }
     }
     

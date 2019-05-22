@@ -656,6 +656,11 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallOutgoingInit:{
+            const LinphoneAddress *addr = linphone_call_get_remote_address(call);
+            const char *lDisplayName = linphone_address_get_display_name(addr);
+            NSString *displayName = [NSString stringWithUTF8String:lDisplayName];
+            NSLog(@"%@", displayName);
+            
             if (self.halo == nil) {
                 [self addAnimationForOutgoingCall];
             }
@@ -674,6 +679,11 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallConnected:{
+            const LinphoneAddress *addr = linphone_call_get_remote_address(call);
+            const char *lDisplayName = linphone_address_get_display_name(addr);
+            NSString *displayName = [NSString stringWithUTF8String:lDisplayName];
+            NSLog(@"%@", displayName);
+            
             //  Check if in call with hotline
             if (![phoneNumber isEqualToString:hotline]) {
                 icAddCall.enabled = YES;
@@ -686,7 +696,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             _numpadButton.enabled = YES;
             _callPauseButton.enabled = YES;
             _microButton.enabled = YES;
-            
+            _speakerButton.enabled = YES;
             _lbQuality.hidden = NO;
             
             // Add tất cả các cuộc gọi vào nhóm
@@ -1095,11 +1105,18 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     if ([AppUtils isNullOrEmpty: displayName]) {
         LinphoneCall *call = linphone_core_get_current_call(LC);
-        const LinphoneAddress *addr = linphone_call_get_remote_address(call);
-        const char *lDisplayName = linphone_address_get_display_name(addr);
-        displayName = [NSString stringWithUTF8String:lDisplayName];
-        if ([AppUtils isNullOrEmpty: displayName]) {
-            displayName = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+        if (call != nil) {
+            const LinphoneAddress *addr = linphone_call_get_remote_address(call);
+            const char *lDisplayName = linphone_address_get_display_name(addr);
+            displayName = [NSString stringWithUTF8String:lDisplayName];
+            if ([AppUtils isNullOrEmpty: displayName]) {
+                displayName = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+            }
+        }else{
+            displayName = [AppUtils getNameWasStoredFromUserInfo: phoneNumber];
+            if ([AppUtils isNullOrEmpty: displayName]) {
+                displayName = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+            }
         }
     }
     

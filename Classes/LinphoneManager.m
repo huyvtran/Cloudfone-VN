@@ -683,7 +683,6 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 #pragma deploymate pop
 	const LinphoneAddress *addr = linphone_call_get_remote_address(call);
     
-    
     //  PhuongNH-EXT-SP
     const char *username = linphone_address_get_username(addr);
     NSString *callerId = [NSString stringWithUTF8String:username];
@@ -696,9 +695,11 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
         if (![AppUtils isNullOrEmpty: displayName]) {
             address = [NSString stringWithFormat:@"%@ - %@", displayName, callerId];
             
-            NSString *key = [NSString stringWithFormat:@"name_for_%@", callerId];
-            [[NSUserDefaults standardUserDefaults] setObject:displayName forKey:key];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            if (state == LinphoneCallIncomingReceived) {
+                NSString *key = [NSString stringWithFormat:@"name_for_%@", callerId];
+                [[NSUserDefaults standardUserDefaults] setObject:displayName forKey:key];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
         }else{
             address = callerId;
         }
