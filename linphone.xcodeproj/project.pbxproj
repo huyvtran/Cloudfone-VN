@@ -123,6 +123,7 @@
 		1599BB1721B14E9600A7903D /* AESCrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = 1599BB1021B14E8F00A7903D /* AESCrypt.m */; };
 		1599BB1821B14E9600A7903D /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 1599BB1121B14E9000A7903D /* NSData+Base64.m */; };
 		1599BB1921B14E9600A7903D /* NSData+CommonCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 1599BB1321B14E9200A7903D /* NSData+CommonCrypto.m */; };
+		159BC1A722A507B500BE15FC /* launch_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 159BC1A022A507B500BE15FC /* launch_background.png */; };
 		159E0871217984BD0056E2BB /* RegisterPBXWithPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */; };
 		159E0879217984F00056E2BB /* RegisterPBXWithPhoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */; };
 		159E08842179E9130056E2BB /* ic_not_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 159E08822179E9110056E2BB /* ic_not_check.png */; };
@@ -1087,6 +1088,7 @@
 		1599BB1321B14E9200A7903D /* NSData+CommonCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+CommonCrypto.m"; path = "Classes/Utils/AESCrypt/NSData+CommonCrypto.m"; sourceTree = SOURCE_ROOT; };
 		1599BB1421B14E9400A7903D /* NSString+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Base64.h"; path = "Classes/Utils/AESCrypt/NSString+Base64.h"; sourceTree = SOURCE_ROOT; };
 		1599BB1521B14E9500A7903D /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "Classes/Utils/AESCrypt/NSData+Base64.h"; sourceTree = SOURCE_ROOT; };
+		159BC1A022A507B500BE15FC /* launch_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch_background.png; sourceTree = "<group>"; };
 		159E086F217984BD0056E2BB /* RegisterPBXWithPhoneView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RegisterPBXWithPhoneView.h; path = AppUI/RegisterPBXWithPhoneView.h; sourceTree = "<group>"; };
 		159E0870217984BD0056E2BB /* RegisterPBXWithPhoneView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RegisterPBXWithPhoneView.m; path = AppUI/RegisterPBXWithPhoneView.m; sourceTree = "<group>"; };
 		159E0878217984F00056E2BB /* RegisterPBXWithPhoneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RegisterPBXWithPhoneView.xib; path = AppUI/RegisterPBXWithPhoneView.xib; sourceTree = "<group>"; };
@@ -3110,6 +3112,7 @@
 			isa = PBXGroup;
 			children = (
 				15482219224E00020062CB5B /* route_tick.png */,
+				159BC1A022A507B500BE15FC /* launch_background.png */,
 				156910DD21F5AC2A005D20DF /* messi.jpg */,
 				8494CB9722101778001D6FB4 /* ic_dial.png */,
 				8494CB9F22102F1B001D6FB4 /* ic_trash_ipad.png */,
@@ -4678,6 +4681,7 @@
 				15F2E5F5216B56F60076CB1F /* ic_setting.png in Resources */,
 				153D000F2164A67E007B69B3 /* numpad_six_default.png in Resources */,
 				1521E0A921EED5140085EAB1 /* iPadNewContactViewController.xib in Resources */,
+				159BC1A722A507B500BE15FC /* launch_background.png in Resources */,
 				1578D07221AD3DDF00E8BA5F /* SendLogFileCell.xib in Resources */,
 				153D004C2164D9D3007B69B3 /* numpad_two_hover.png in Resources */,
 				841B359E2191F26D0019BD45 /* button-endcall.png in Resources */,
@@ -5851,7 +5855,7 @@
 				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
 				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Development";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "$(inherited)";
 				WARNING_CFLAGS = (
 					"-Werror=objc-method-access",
@@ -5960,7 +5964,7 @@
 				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
 				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Addhoc";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "$(inherited)";
 				WARNING_CFLAGS = (
 					"-Werror=objc-method-access",
@@ -6066,10 +6070,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfonevn;
 				PRODUCT_NAME = linphone;
-				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
-				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Addhoc";
+				PROVISIONING_PROFILE = "529d4e85-fb55-4123-b5ed-aa22b9e06a64";
+				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN App Store";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "$(inherited)";
 				WARNING_CFLAGS = (
 					"-Werror=objc-method-access",
@@ -6175,10 +6179,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ods.cloudfonevn;
 				PRODUCT_NAME = linphone;
-				PROVISIONING_PROFILE = "9ba894d8-f515-44bd-be45-7fcdf2b92481";
-				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN Addhoc";
+				PROVISIONING_PROFILE = "529d4e85-fb55-4123-b5ed-aa22b9e06a64";
+				PROVISIONING_PROFILE_SPECIFIER = "CLOUDFONEVN App Store";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "$(inherited)";
 				WARNING_CFLAGS = (
 					"-Werror=objc-method-access",

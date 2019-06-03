@@ -6,7 +6,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UICompositeView.h"
 
-@interface TestViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
+@interface TestViewController : UIViewController<UICompositeViewDelegate, MFMailComposeViewControllerDelegate>
 
 @end

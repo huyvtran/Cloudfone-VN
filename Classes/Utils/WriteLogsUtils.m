@@ -110,6 +110,13 @@
     return directoryContent;
 }
 
++ (NSString *)getLogFileNameForCurrentDay {
+    NSString *curDate = [AppUtils getCurrentDate];
+    NSString *filename = [NSString stringWithFormat:@".%@.txt", curDate];
+    return filename;
+}
+
+
 + (void)writeForGoToScreen: (NSString *)screen {
     [self writeLogContent:[NSString stringWithFormat:@"-------------> Go to %@ screen.\n", screen] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
 }

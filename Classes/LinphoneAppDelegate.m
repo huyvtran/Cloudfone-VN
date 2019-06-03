@@ -53,6 +53,7 @@
 #import "iPadMoreViewController.h"
 #import "iPadPopupCall.h"
 #import "TestViewController.h"
+#import "AESCrypt.h"
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -409,9 +410,10 @@ void onUncaughtException(NSException* exception)
     
     NSString *messageSend = [NSString stringWithFormat:@"------------------------------\nDevice: %@\nOS Version: %@\nApp version: %@\nApp bundle ID: %@\n------------------------------\nAccount ID: %@\n------------------------------\nReason: %@\n------------------------------\n%@", device, osVersion, appVersion, bundleIdentifier, USERNAME, reason, crashContent];
     
-    NSString *totalEmail = [NSString stringWithFormat:@"mailto:%@?subject=%@&body=%@", @"lekhai0212@gmail.com,cfreport@cloudfone.vn", [NSString stringWithFormat:@"Report crash from %@", USERNAME], messageSend];
-    NSString *url = [totalEmail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
+    NSString *fileName = [WriteLogsUtils getLogFileNameForCurrentDay];
+    [[NSUserDefaults standardUserDefaults] setObject:fileName forKey:@"crash_file"];
+    [[NSUserDefaults standardUserDefaults] setObject:messageSend forKey:@"crash_content"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -575,8 +577,17 @@ void onUncaughtException(NSException* exception)
     }
     
     if (IS_IPHONE || IS_IPOD) {
-        //  [self testRootVC];
-        [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
+        NSString *crashFile = [[NSUserDefaults standardUserDefaults] objectForKey:@"crash_file"];
+        if (![AppUtils isNullOrEmpty: crashFile])
+        {
+            if ([MFMailComposeViewController canSendMail]) {
+                [[PhoneMainView instance] changeCurrentView:[TestViewController compositeViewDescription]];
+            }else{
+                [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
+            }
+        }else{
+            [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
+        }
         [PhoneMainView.instance updateStatusBar:nil];
     }else{
         contactType = eContactPBX;

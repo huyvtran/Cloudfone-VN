@@ -102,6 +102,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)updateInformationOfUser
 {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
     if ([SipUtils getStateOfDefaultProxyConfig] != eAccountNone) {
         NSString *accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
         lbPBXAccount.text = accountID;

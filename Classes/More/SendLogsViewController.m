@@ -229,10 +229,14 @@ static UICompositeViewDescription *compositeDescription = nil;
 #pragma mark - Email
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    if (error) {
-        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed to send email. Please check again!"] duration:4.0 position:CSToastPositionCenter];
-    }else{
+    if (result == MFMailComposeResultSent) {
         [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your email was sent. Thank you!"] duration:4.0 position:CSToastPositionCenter];
+        
+    }else if (result == MFMailComposeResultSaved) {
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your email was saved. Thank you!"] duration:4.0 position:CSToastPositionCenter];
+        
+    }else if (result == MFMailComposeResultFailed) {
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed to send email. Please check again!"] duration:4.0 position:CSToastPositionCenter];   
     }
     [self performSelector:@selector(goBack) withObject:nil afterDelay:2.0];
 }

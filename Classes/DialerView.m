@@ -218,8 +218,52 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[super viewDidAppear:animated];
 	[LinphoneManager.instance shouldPresentLinkPopup];
     
-    //  Check for first time, after installed app
-    //  [self checkForShowFirstSettingAccount];
+    //  Check for Crash
+    [self checkCrashHasOccuredBefore];
+}
+
+- (void)checkCrashHasOccuredBefore {
+    NSString *crashFile = [[NSUserDefaults standardUserDefaults] objectForKey:@"crash_file"];
+    if (![AppUtils isNullOrEmpty: crashFile])
+    {
+        if ([MFMailComposeViewController canSendMail]) {
+            BOOL networkReady = [DeviceUtils checkNetworkAvailable];
+            if (!networkReady) {
+                return;
+            }
+            
+            NSString *crashContent = [[NSUserDefaults standardUserDefaults] objectForKey:@"crash_content"];
+            
+            MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
+            
+            NSString *emailTitle =  @"Ứng dụng của bạn đã bị crash trước đây";
+            NSString *messageBody = [NSString stringWithFormat:@"Xin vui lòng gửi thông tin cho chúng tôi để cải thiện sản phầm tốt hơn.\nXin chân thành cảm ơn.\n\n%@", crashContent];
+            NSArray *toRecipents = @[@"lekhai0212@gmail.com"];
+            NSArray *ccRecipents = @[@"cfreport@cloudfone.vn"];
+            
+            //  get content file
+            NSString *path = [NgnFileUtils getPathOfFileWithSubDir:[NSString stringWithFormat:@"%@/%@", logsFolderName, crashFile]];
+            NSString* content = [NSString stringWithContentsOfFile:path
+                                                          encoding:NSUTF8StringEncoding
+                                                             error:NULL];
+            NSString *encryptStr = [AESCrypt encrypt:content password:AES_KEY];
+            NSData *logFileData = [encryptStr dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *nameForSend = [DeviceUtils convertLogFileName: crashFile];
+            [mc addAttachmentData:logFileData mimeType:@"text/plain" fileName:nameForSend];
+            
+            mc.mailComposeDelegate = self;
+            [mc setSubject:emailTitle];
+            [mc setMessageBody:messageBody isHTML:NO];
+            [mc setToRecipients:toRecipents];
+            [mc setCcRecipients: ccRecipents];
+            
+            [self presentViewController:mc animated:YES completion:NULL];
+            
+            [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"crash_file"];
+            [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"crash_content"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
 }
 
 #pragma mark - Event Functions
@@ -298,11 +342,22 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller
 		  didFinishWithResult:(MFMailComposeResult)result
-						error:(NSError *)error {
-	[controller dismissViewControllerAnimated:TRUE
-								   completion:^{
-								   }];
-	[self.navigationController setNavigationBarHidden:TRUE animated:FALSE];
+						error:(NSError *)error
+{
+    [controller dismissViewControllerAnimated:TRUE
+                                   completion:^{
+                                       [self autoLayoutForView];
+                                   }];
+    if (result == MFMailComposeResultSent) {
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your email was sent. Thank you!"] duration:4.0 position:CSToastPositionCenter];
+        
+    }else if (result == MFMailComposeResultSaved) {
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Your email was saved. Thank you!"] duration:4.0 position:CSToastPositionCenter];
+        
+    }else if (result == MFMailComposeResultFailed) {
+        [self.view makeToast:[[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Failed to send email. Please check again!"] duration:4.0 position:CSToastPositionCenter];
+    }
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark - Action Functions
@@ -997,21 +1052,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Call function %@", __FUNCTION__, @"refreshRegisters"] toFilePath:appDelegate.logFilePath];
     [LinphoneManager.instance refreshRegisters];
-}
-
-- (void)checkForShowFirstSettingAccount {
-    NSString *needSetting = [[NSUserDefaults standardUserDefaults] objectForKey:@"SHOWED_SETTINGS_ACCOUNT_FOR_FIRST"];
-    if (needSetting == nil){
-        LinphoneProxyConfig *defaultConfig = linphone_core_get_default_proxy_config(LC);
-        if (defaultConfig == NULL) {
-            NSString *content = [NSString stringWithFormat:@"%@", [appDelegate.localization localizedStringForKey:@"You have not set up an account yet. Do you want to setup now?"]];
-            
-            UIAlertView *alertAcc = [[UIAlertView alloc] initWithTitle:nil message:content delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] otherButtonTitles: [appDelegate.localization localizedStringForKey:@"Go to settings?"], nil];
-            [alertAcc show];
-        }
-        [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:@"SHOWED_SETTINGS_ACCOUNT_FOR_FIRST"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
 }
 
 - (void)addressfieldDidChanged: (UITextField *)textfield {

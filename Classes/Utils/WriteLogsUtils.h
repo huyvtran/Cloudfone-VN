@@ -17,6 +17,7 @@
 + (void)clearLogFilesAfterExpireTime: (long)expireTime;
 + (void)removeFileWithPath: (NSString *)path;
 + (NSArray *)getAllFilesInDirectory: (NSString *)subPath;
++ (NSString *)getLogFileNameForCurrentDay;
 + (void)writeForGoToScreen: (NSString *)screen;
 
 @end
