@@ -515,7 +515,6 @@
 		846586951FCA9AC900C5142C /* KMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 846586921FCA9AC600C5142C /* KMessageViewController.xib */; };
 		846586961FCA9AC900C5142C /* KMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846586931FCA9AC700C5142C /* KMessageViewController.m */; };
 		846586991FCA9BD600C5142C /* SwipeableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 846586981FCA9BD600C5142C /* SwipeableTableViewCell.m */; };
-		84699CBF21FCCD6300C82EFD /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84699CB521FCC03800C82EFD /* CoreBluetooth.framework */; };
 		846B716920E240410019AD41 /* SipUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 846B716120E240400019AD41 /* SipUtils.m */; };
 		84767D6121664BCA00561A85 /* call-background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84767D5A21664BC900561A85 /* call-background.jpg */; };
 		84767D6321664C2900561A85 /* ic_call_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 84767D6221664C2900561A85 /* ic_call_back.png */; };
@@ -2249,7 +2248,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84699CBF21FCCD6300C82EFD /* CoreBluetooth.framework in Frameworks */,
 				15E9154321C4C40B0083EC30 /* Intents.framework in Frameworks */,
 				84E2BB4E200A4B9200F152C1 /* AVKit.framework in Frameworks */,
 				84E2862E1FC9D699009CBA27 /* CoreData.framework in Frameworks */,
