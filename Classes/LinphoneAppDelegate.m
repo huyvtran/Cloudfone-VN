@@ -45,13 +45,6 @@
 #import "PhoneObject.h"
 #import <Intents/Intents.h>
 
-#import "iPadDialerViewController.h"
-#import "iPadKeypadViewController.h"
-#import "iPadContactsViewController.h"
-#import "iPadNotChooseContactViewController.h"
-#import "iPadNotChoosednMoreViewController.h"
-#import "iPadMoreViewController.h"
-#import "iPadPopupCall.h"
 #import "TestViewController.h"
 #import "AESCrypt.h"
 
@@ -88,7 +81,7 @@
 @synthesize contactLoaded;
 @synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, supportLoginWithPhoneNumber, logFilePath, dbQueue, splashScreen;
 @synthesize supportVoice;
-@synthesize homeSplitVC, contactType, historyType, callTransfered, hNavigation, hasBluetoothEar, ipadWaiting;
+@synthesize contactType, historyType, callTransfered, hNavigation, hasBluetoothEar;
 
 #pragma mark - Lifecycle Functions
 
@@ -461,14 +454,6 @@ void onUncaughtException(NSException* exception)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadContactListAfterAddSuccess)
                                                  name:reloadContactAfterAdd object:nil];
     
-    if (!IS_IPOD && !IS_IPHONE) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showPopupCallForIpad:)
-                                                     name:showIpadPopupCall object:nil];
-        
-        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(callUpdateEvent:)
-                                                   name:kLinphoneCallUpdate object:nil];
-    }
-    
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(registrationUpdateEvent:)
                                                name:kLinphoneRegistrationUpdate object:nil];
     
@@ -576,33 +561,18 @@ void onUncaughtException(NSException* exception)
         [self showSplashScreenOnView: YES];
     }
     
-    if (IS_IPHONE || IS_IPOD) {
-        NSString *crashFile = [[NSUserDefaults standardUserDefaults] objectForKey:@"crash_file"];
-        if (![AppUtils isNullOrEmpty: crashFile])
-        {
-            if ([MFMailComposeViewController canSendMail]) {
-                [[PhoneMainView instance] changeCurrentView:[TestViewController compositeViewDescription]];
-            }else{
-                [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
-            }
+    NSString *crashFile = [[NSUserDefaults standardUserDefaults] objectForKey:@"crash_file"];
+    if (![AppUtils isNullOrEmpty: crashFile])
+    {
+        if ([MFMailComposeViewController canSendMail]) {
+            [[PhoneMainView instance] changeCurrentView:[TestViewController compositeViewDescription]];
         }else{
             [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
         }
-        [PhoneMainView.instance updateStatusBar:nil];
     }else{
-        contactType = eContactPBX;
-        [self settingForStartApplicationWithIpad];
-        
-        ipadWaiting = [[UIActivityIndicatorView alloc] init];
-        ipadWaiting.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-        ipadWaiting.hidden = YES;
-        ipadWaiting.backgroundColor = UIColor.whiteColor;
-        ipadWaiting.alpha = 0.5;
-        [self.window addSubview: ipadWaiting];
-        [ipadWaiting mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.left.right.bottom.equalTo(self.window);
-        }];
+        [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
     }
+    [PhoneMainView.instance updateStatusBar:nil];
     
     //  Enable all notification type. VoIP Notifications don't present a UI but we will use this to show local nofications later
     UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert| UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
@@ -2313,233 +2283,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] You turned on account with Id = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath: logFilePath];
             }
         }
-    }
-}
-
-//  [Khai Le - 11/01/2019]
-- (void)settingForStartApplicationWithIpad {
-    UITabBarController *tabBars = [[UITabBarController alloc] init];
-    //  Dialer and call history
-    iPadDialerViewController *iPadDialerVC = [[iPadDialerViewController alloc] initWithNibName:@"iPadDialerViewController" bundle:nil];
-    iPadDialerVC.tabBarItem.title = @"Dialer";
-    iPadDialerVC.tabBarItem.image = [UIImage imageNamed:@"ic_call_bottom_bar_def"];
-    iPadDialerVC.tabBarItem.selectedImage = [UIImage imageNamed:@"ic_call_bottom_bar_act"];
-    
-    //  contacts
-    iPadContactsViewController *iPadContactsVC = [[iPadContactsViewController alloc] initWithNibName:@"iPadContactsViewController" bundle:nil];
-    iPadContactsVC.tabBarItem.title = @"Contacts";
-    iPadContactsVC.tabBarItem.image = [UIImage imageNamed:@"ic_phonebook_bottom_bar_def"];
-    iPadContactsVC.tabBarItem.selectedImage = [UIImage imageNamed:@"ic_phonebook_bottom_bar_act"];
-    
-    //  more
-    
-    iPadMoreViewController *iPadMoreVC = [[iPadMoreViewController alloc] initWithNibName:@"iPadMoreViewController" bundle:nil];
-    iPadMoreVC.tabBarItem.title = @"More";
-    iPadMoreVC.tabBarItem.image = [UIImage imageNamed:@"ic_more_bottom_bar_def"];
-    iPadMoreVC.tabBarItem.selectedImage = [UIImage imageNamed:@"ic_more_bottom_bar_act"];
-    
-    UINavigationController *moreNavigationVC = [AppUtils createNavigationWithController: iPadMoreVC];
-    
-    //  save navigation bar height
-    hNavigation = moreNavigationVC.navigationBar.frame.size.height;
-    
-    NSArray *listVC = @[iPadDialerVC, iPadContactsVC, moreNavigationVC];
-    tabBars.viewControllers = listVC;
-    tabBars.delegate = self;
-    
-    iPadKeypadViewController *iPadKeypadVC = [[iPadKeypadViewController alloc] initWithNibName:@"iPadKeypadViewController" bundle:nil];
-    
-    homeSplitVC = [[HomeSplitViewController alloc] init];
-    homeSplitVC.maximumPrimaryColumnWidth = SPLIT_MASTER_WIDTH;
-    homeSplitVC.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
-    homeSplitVC.viewControllers = [NSArray arrayWithObjects:tabBars, iPadKeypadVC, nil];
-    self.window.rootViewController = homeSplitVC;
-}
-
-//  [Khai Le - 11/01/2019]
-- (void)testRootVC {
-    
-    TestViewController *testVC = [[TestViewController alloc] initWithNibName:@"TestViewController" bundle:nil];
-    self.window.rootViewController = testVC;
-}
-
-#pragma mark - UITabbar delegate
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-    switch (tabBarController.selectedIndex) {
-        case 0:{
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] ---> selected tab Dialer: index = %d", __FUNCTION__, (int)tabBarController.selectedIndex] toFilePath:logFilePath];
-            
-            iPadKeypadViewController *contentVC = [[iPadKeypadViewController alloc] initWithNibName:@"iPadKeypadViewController" bundle:nil];
-            
-            UITabBarController *tabbarVC = [homeSplitVC.viewControllers objectAtIndex:0];
-            NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, contentVC, nil];
-            homeSplitVC.viewControllers = viewControllers;
-            
-            break;
-        }
-        case 1:{
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] ---> selected tab Contacts: index = %d", __FUNCTION__, (int)tabBarController.selectedIndex] toFilePath:logFilePath];
-            
-            iPadNotChooseContactViewController *contentVC = [[iPadNotChooseContactViewController alloc] initWithNibName:@"iPadNotChooseContactViewController" bundle:nil];
-            UINavigationController *detailVC = [AppUtils createNavigationWithController: contentVC];
-            
-            UITabBarController *tabbarVC = [homeSplitVC.viewControllers objectAtIndex:0];
-            NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, detailVC, nil];
-            homeSplitVC.viewControllers = viewControllers;
-            
-            break;
-        }
-        case 2:{
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] ---> selected tab More: index = %d", __FUNCTION__, (int)tabBarController.selectedIndex] toFilePath:logFilePath];
-            
-            iPadNotChoosednMoreViewController *contentVC = [[iPadNotChoosednMoreViewController alloc] initWithNibName:@"iPadNotChoosednMoreViewController" bundle:nil];
-            UINavigationController *detailVC = [AppUtils createNavigationWithController: contentVC];
-            
-            UITabBarController *tabbarVC = [homeSplitVC.viewControllers objectAtIndex:0];
-            NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, detailVC, nil];
-            homeSplitVC.viewControllers = viewControllers;
-            
-            break;
-        }
-        default:
-            break;
-    }
-    NSLog(@"%@ - index = %lu", [viewController class], (unsigned long)tabBarController.selectedIndex);
-}
-
--(void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
-    NSLog(@"%@", item);
-}
-
-- (void)showPopupCallForIpad: (NSNotification *)notif
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *phonenumber = [notif object];
-        if ([phonenumber isKindOfClass:[NSString class]]) {
-            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] phone number = %@", __FUNCTION__, phonenumber] toFilePath:logFilePath];
-            
-            NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"iPadPopupCall" owner:nil options:nil];
-            iPadPopupCall *popupCall;
-            for(id currentObject in toplevelObject){
-                if ([currentObject isKindOfClass:[iPadPopupCall class]]) {
-                    popupCall = (iPadPopupCall *) currentObject;
-                    break;
-                }
-            }
-            popupCall.frame = CGRectMake((SCREEN_WIDTH-400)/2, (SCREEN_HEIGHT-750)/2, 400, 750);
-            [popupCall setNeedsDisplay];
-            [popupCall setupUIForView];
-            popupCall.phoneNumber = phonenumber;
-            [popupCall showInView:self.window animated:YES];
-        }
-    });
-}
-
-- (void)showIncomingPopupCallForIpad: (NSString *)phoneNumber
-{
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] phone number = %@", __FUNCTION__, phoneNumber] toFilePath:logFilePath];
-    
-    NSArray *toplevelObject = [[NSBundle mainBundle] loadNibNamed:@"iPadPopupCall" owner:nil options:nil];
-    iPadPopupCall *popupCall;
-    for(id currentObject in toplevelObject){
-        if ([currentObject isKindOfClass:[iPadPopupCall class]]) {
-            popupCall = (iPadPopupCall *) currentObject;
-            break;
-        }
-    }
-    popupCall.frame = CGRectMake((SCREEN_WIDTH-400)/2, (SCREEN_HEIGHT-750)/2, 400, 750);
-    [popupCall setNeedsDisplay];
-    [popupCall setupUIForView];
-    popupCall.phoneNumber = phoneNumber;
-    [popupCall showInView:self.window animated:YES];
-}
-
-#pragma mark - Call update event
-- (void)callUpdateEvent:(NSNotification *)notif {
-    NSString *message = [notif.userInfo objectForKey:@"message"];
-    LinphoneCall *call = [[notif.userInfo objectForKey:@"call"] pointerValue];
-    LinphoneCallState state = [[notif.userInfo objectForKey:@"state"] intValue];
-    [self callUpdate:call state:state animated:TRUE message: message];
-}
-
-- (void)callUpdate:(LinphoneCall *)call state:(LinphoneCallState)state animated:(BOOL)animated message: (NSString *)message
-{
-    // Fake call update
-    if (call == NULL) {
-        return;
-    }
-    
-    switch (state) {
-        case LinphoneCallOutgoingRinging:{
-            NSLog(@"Debug: LinphoneCallOutgoingRinging");
-            break;
-        }
-        case LinphoneCallIncomingReceived:{
-            NSLog(@"Debug: LinphoneCallIncomingReceived");
-            break;
-        }
-        case LinphoneCallOutgoingProgress:{
-            NSLog(@"Debug: LinphoneCallOutgoingProgress");
-            
-            break;
-        }
-        case LinphoneCallOutgoingInit:{
-            NSLog(@"Debug: LinphoneCallOutgoingInit");
-            break;
-        }
-        case LinphoneCallConnected:{
-            LinphoneCallDir callDirection = linphone_call_get_dir(call);
-            if (callDirection == LinphoneCallIncoming) {
-                NSString *phoneNumber = [SipUtils getPhoneNumberOfCall:call orLinphoneAddress:nil];
-                [self showIncomingPopupCallForIpad: phoneNumber];
-            }
-            
-            NSLog(@"Debug: LinphoneCallConnected");
-            
-            break;
-        }
-        case LinphoneCallStreamsRunning: {
-            NSLog(@"Debug: LinphoneCallStreamsRunning");
-            
-            break;
-        }
-        case LinphoneCallUpdatedByRemote: {
-            NSLog(@"Debug: LinphoneCallUpdatedByRemote");
-            break;
-        }
-        case LinphoneCallPausing:
-        case LinphoneCallPaused:{
-            break;
-        }
-        case LinphoneCallPausedByRemote:
-            NSLog(@"Debug: LinphoneCallPausedByRemote");
-            break;
-        case LinphoneCallEnd:{
-            NSLog(@"Debug: LinphoneCallEnd");
-            break;
-        }
-        case LinphoneCallError:{
-            NSLog(@"Debug: LinphoneCallError");
-            break;
-        }
-        case LinphoneCallReleased:{
-            //  [Khai Le - 14/02/2019]
-            [[NSNotificationCenter defaultCenter] postNotificationName:reloadHistoryCallForIpad
-                                                                object:nil];
-            NSLog(@"Debug: LinphoneCallReleased");
-            break;
-        }
-        default:
-            break;
-    }
-}
-
-- (void)showWaiting: (BOOL)show {
-    ipadWaiting.hidden = !show;
-    if (show) {
-        [ipadWaiting startAnimating];
-    }else{
-        [ipadWaiting stopAnimating];
     }
 }
 

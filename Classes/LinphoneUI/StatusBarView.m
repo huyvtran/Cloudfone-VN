@@ -188,8 +188,7 @@
 	if ([PhoneMainView.instance.currentView equal:AssistantView.compositeViewDescription] || [PhoneMainView.instance.currentView equal:CountryListView.compositeViewDescription]) {
 		message = NSLocalizedString(@"Configuring account", nil);
 	} else if (gstate == LinphoneGlobalOn && !linphone_core_is_network_reachable(LC)) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkDown"
-                                                            object:nil];
+        //  [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkDown" object:nil];
 	} else if (gstate == LinphoneGlobalConfiguring) {
 		message = NSLocalizedString(@"Fetching remote configuration", nil);
 	} else if (config == NULL) {

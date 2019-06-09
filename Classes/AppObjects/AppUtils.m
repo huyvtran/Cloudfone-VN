@@ -971,13 +971,6 @@
     return navigationVC;
 }
 
-+ (void)showDetailViewWithController: (UIViewController *)detailVC
-{
-    UITabBarController *tabbarVC = [[LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers objectAtIndex:0];
-    NSArray *viewControllers = [[NSArray alloc] initWithObjects:tabbarVC, detailVC, nil];
-    [LinphoneAppDelegate sharedInstance].homeSplitVC.viewControllers = viewControllers;
-}
-
 + (void)setSelected: (BOOL)selected forButton: (UIButton *)button {
     if (IS_IPHONE || IS_IPOD) {
         button.backgroundColor = (selected) ? SELECT_TAB_BG_COLOR : UIColor.clearColor;

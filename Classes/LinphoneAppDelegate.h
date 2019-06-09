@@ -36,7 +36,6 @@
 #import "UIView+Toast.h"
 #import "WebServices.h"
 #import "Constant.h"
-#import "HomeSplitViewController.h"
 
 #define MINI_KEYPAD_TAG 101
 #define MINI_TRANSFER_CALL_VIEW_TAG 102
@@ -147,16 +146,12 @@ typedef enum{
 @property (nonatomic, assign) BOOL supportVoice;
 
 //  [Khai le - 11/01/2019]
-@property (nonatomic, strong) HomeSplitViewController *homeSplitVC;
 @property (nonatomic, assign) eContact contactType;
 @property (nonatomic, assign) eTypeHistory historyType;
 @property (nonatomic, assign) float hNavigation;
 
 @property (nonatomic, assign) BOOL callTransfered;
 @property (nonatomic, assign) BOOL hasBluetoothEar;
-
-@property (nonatomic, strong) UIActivityIndicatorView *ipadWaiting;
-- (void)showWaiting: (BOOL)show;
 
 @end
 
