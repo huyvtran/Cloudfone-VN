@@ -1083,6 +1083,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - UIAlertview Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"alertView.tag = %d, buttonIndex = %d", (int)alertView.tag, (int)buttonIndex] toFilePath:appDelegate.logFilePath];
+    
     if (alertView.tag == 1)
     {
         if (buttonIndex == 1){
@@ -1105,7 +1107,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             }
         }
         
-    }else if (alertView.tag == 2){
+    }else if (alertView.tag == 3){
         [WriteLogsUtils writeLogContent:@"Make call to hotline" toFilePath:appDelegate.logFilePath];
         [SipUtils makeCallWithPhoneNumber: hotline];
     }
