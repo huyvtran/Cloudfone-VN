@@ -12,6 +12,7 @@
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
 #import "DDLegacyMacros.h"
+#import "DDContextFilterLogFormatter.h"
 
 @interface Constant : NSObject
 

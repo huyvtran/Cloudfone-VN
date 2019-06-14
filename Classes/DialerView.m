@@ -35,6 +35,12 @@
 #import "PBXContact.h"
 #import "AESCrypt.h"
 
+#define LOG_CONTEXT_JS 1
+#define DDLogJS(frmt, ...) LOG_OBJC_MAYBE(LOG_ASYNC_INFO, LOG_LEVEL_DEF, LOG_FLAG_INFO,    LOG_CONTEXT_JS, frmt, ##__VA_ARGS__)
+
+#define LOG_CONTEXT_HTTP 2
+#define DDLogHTTP(frmt, ...) LOG_OBJC_MAYBE(LOG_ASYNC_INFO, LOG_LEVEL_DEF, LOG_FLAG_INFO,    LOG_CONTEXT_HTTP, frmt, ##__VA_ARGS__)
+
 @interface DialerView (){
     LinphoneAppDelegate *appDelegate;
     NSMutableArray *listPhoneSearched;
@@ -76,20 +82,52 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - ViewController Functions
 
+- (void)setupForWriteLogFileForApp
+{
+    //  set logs file path
+    NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDir = [documentPaths objectAtIndex:0];
+    NSString *logFilePath = [documentsDir stringByAppendingPathComponent:@"One"];
+    NSString *logFilePath2 = [documentsDir stringByAppendingPathComponent:@"Two"];
+    
+    DDLogFileManagerDefault *fileManagerJS = [[DDLogFileManagerDefault alloc] initWithLogsDirectory:logFilePath];
+    DDFileLogger *loggerJS = [[DDFileLogger alloc] initWithLogFileManager:fileManagerJS];
+    
+    DDContextWhitelistFilterLogFormatter *formatterJS = [[DDContextWhitelistFilterLogFormatter alloc] init];
+    [formatterJS addToWhitelist:LOG_CONTEXT_JS];
+    [loggerJS setLogFormatter:formatterJS];
+    [DDLog addLogger:loggerJS];
+    
+    
+    DDLogFileManagerDefault *fileManagerHttp = [[DDLogFileManagerDefault alloc] initWithLogsDirectory:logFilePath2];
+    DDFileLogger *loggerHttp = [[DDFileLogger alloc] initWithLogFileManager:fileManagerHttp];
+    DDContextWhitelistFilterLogFormatter *formatterHttp = [[DDContextWhitelistFilterLogFormatter alloc] init];
+    [formatterHttp addToWhitelist:LOG_CONTEXT_HTTP];
+    [loggerHttp setLogFormatter:formatterHttp];
+    [DDLog addLogger:loggerHttp];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
     
     [WriteLogsUtils writeForGoToScreen: @"DialerView"];
     
+    [NgnFileUtils createDirectoryAndSubDirectory:@"One"];
+    [NgnFileUtils createDirectoryAndSubDirectory:@"Two"];
     
-//    NSString* path = [[NSBundle mainBundle] pathForResource:@"file_encrypt"
-//                                                     ofType:@"txt"];
-//
-//    NSString* content = [NSString stringWithContentsOfFile:path
-//                                                  encoding:NSUTF8StringEncoding
-//                                                     error:NULL];
-//    NSString *decrypt = [AESCrypt decrypt:content password:AES_KEY];
-//    NSLog(@"%@", decrypt);
+    [self setupForWriteLogFileForApp];
+    
+    DDLogJS(@"%@", @"123");
+    DDLogHTTP(@"%@", @"khi moc");
+    
+    NSString* path = [[NSBundle mainBundle] pathForResource:@"file_encrypt"
+                                                     ofType:@"txt"];
+
+    NSString* content = [NSString stringWithContentsOfFile:path
+                                                  encoding:NSUTF8StringEncoding
+                                                     error:NULL];
+    NSString *decrypt = [AESCrypt decrypt:content password:AES_KEY];
+    NSLog(@"%@", decrypt);
     
     //  Added by Khai Le on 30/09/2018
     [self checkAccountForApp];
