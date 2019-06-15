@@ -1145,7 +1145,7 @@ static UICompositeViewDescription *compositeDescription = nil;
             }
         }
         
-    }else if (alertView.tag == 3){
+    }else if (alertView.tag == 3 && buttonIndex == 1){
         [WriteLogsUtils writeLogContent:@"Make call to hotline" toFilePath:appDelegate.logFilePath];
         [SipUtils makeCallWithPhoneNumber: hotline];
     }
