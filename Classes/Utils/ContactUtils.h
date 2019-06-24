@@ -12,12 +12,21 @@
 + (PhoneObject *)getContactPhoneObjectWithNumber: (NSString *)number;
 + (NSString *)getContactNameWithNumber: (NSString *)number;
 + (NSAttributedString *)getSearchValueFromResultForNewSearchMethod: (NSArray *)searchs;
-+ (ContactObject *)getContactWithId: (int)idContact;
-+ (PBXContact *)getPBXContactWithId: (int)idContact;
 + (void)addBorderForImageView: (UIImageView *)imageView withRectSize: (float)rectSize strokeWidth: (int)stroke strokeColor: (UIColor *)strokeColor radius: (float)radius;
-+ (void)addNewContacts;
++ (ABRecordRef)addNewContacts;
 + (BOOL)deleteContactFromPhoneWithId: (int)recordId;
 + (NSString *)getFullnameOfContactIfExists;
 + (NSString *)onlyGetContactNameForCallWithNumber: (NSString *)number;
+
++ (NSString *)getFullNameFromContact: (ABRecordRef)aPerson;
++ (NSString *)getBase64AvatarFromContact: (ABRecordRef)aPerson;
++ (UIImage *)getAvatarFromContact: (ABRecordRef)aPerson;
++ (NSString *)getCompanyFromContact: (ABRecordRef)aPerson;
++ (NSString *)getEmailFromContact: (ABRecordRef)aPerson;
++ (NSMutableArray *)getListPhoneOfContactPerson: (ABRecordRef)aPerson;
+
+//  Get first name and last name of contact
++ (NSArray *)getFirstNameAndLastNameOfContact: (ABRecordRef)aPerson;
++ (NSString *)getFirstPhoneFromContact: (ABRecordRef)aPerson;
 
 @end

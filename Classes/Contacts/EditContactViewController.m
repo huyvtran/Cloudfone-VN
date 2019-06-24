@@ -89,7 +89,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     //  Get contact information
     if (detailsContact == nil) {
-        detailsContact = [appDelegate getContactInPhoneBookWithIdRecord: idContact];
+        detailsContact = [self getContactInPhoneBookWithIdRecord: idContact];
         
         if (curPhoneNumber != nil && ![curPhoneNumber isEqualToString:@""] && ![self checkCurrentPhone: curPhoneNumber inList: detailsContact._listPhone])
         {
@@ -162,6 +162,62 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 #pragma mark - my functions
+
+- (ContactObject *)getContactInPhoneBookWithIdRecord: (int)idRecord
+{
+    ABRecordRef aPerson = ABAddressBookGetPersonWithRecordID(appDelegate.addressListBook, idRecord);
+    
+    ContactObject *aContact = [[ContactObject alloc] init];
+    aContact.person = aPerson;
+    aContact._id_contact = idRecord;
+    aContact._fullName = [ContactUtils getFullNameFromContact: aPerson];
+    NSArray *nameInfo = [ContactUtils getFirstNameAndLastNameOfContact: aPerson];
+    aContact._firstName = [nameInfo objectAtIndex: 0];
+    aContact._lastName = [nameInfo objectAtIndex: 1];
+    
+    if (![aContact._fullName isEqualToString:@""]) {
+        NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: aContact._fullName];
+        aContact._nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
+    }
+    
+    //  Email
+    aContact._email = [ContactUtils getEmailFromContact: aPerson];
+    
+    ABMultiValueRef map = ABRecordCopyValue(aPerson, kABPersonEmailProperty);
+    if (map) {
+        for (int i = 0; i < ABMultiValueGetCount(map); ++i) {
+            ABMultiValueIdentifier identifier = ABMultiValueGetIdentifierAtIndex(map, i);
+            NSInteger index = ABMultiValueGetIndexForIdentifier(map, identifier);
+            if (index != -1) {
+                NSString *valueRef = CFBridgingRelease(ABMultiValueCopyValueAtIndex(map, index));
+                if (valueRef != NULL && ![valueRef isEqualToString:@""]) {
+                    //  just get one email for contact
+                    aContact._email = valueRef;
+                    break;
+                }
+            }
+        }
+        CFRelease(map);
+    }
+    
+    //  Company
+    CFStringRef companyRef  = ABRecordCopyValue(aPerson, kABPersonOrganizationProperty);
+    if (companyRef != NULL && companyRef != nil){
+        NSString *company = (__bridge NSString *)companyRef;
+        if (company != nil && ![company isEqualToString:@""]){
+            aContact._company = company;
+        }
+    }
+    
+    aContact._avatar = [ContactUtils getBase64AvatarFromContact: aPerson];
+    aContact._listPhone = [self getListPhoneOfContactPerson: aPerson withName: aContact._fullName];
+    
+    if (aContact._listPhone.count > 0) {
+        ContactDetailObj *anItem = [aContact._listPhone firstObject];
+        aContact._sipPhone = anItem._valueStr;
+    }
+    return aContact;
+}
 
 //  Chọn loại phone
 - (void)whenSelectTypeForPhone: (NSNotification *)notif {
@@ -306,15 +362,33 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)addNewContactToList: (ABRecordRef)aPerson
 {
-    ContactObject *aContact = [appDelegate getContactInPhoneBookWithIdRecord: idContact];
-    
-    //  Replace current contact with new contact after updated
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_id_contact = %d", idContact];
-    NSArray *filter = [appDelegate.listContacts filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        [appDelegate.listContacts removeObjectsInArray: filter];
+    ABMultiValueRef phones = ABRecordCopyValue(aPerson, kABPersonPhoneProperty);
+    if (ABMultiValueGetCount(phones) > 0)
+    {
+        NSString *fullname = [ContactUtils getFullNameFromContact: aPerson];
+        NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: fullname];
+        NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
+        NSString *avatar = [ContactUtils getBase64AvatarFromContact: aPerson];
+        
+        for(CFIndex j = 0; j < ABMultiValueGetCount(phones); j++)
+        {
+            CFStringRef phoneNumberRef = ABMultiValueCopyValueAtIndex(phones, j);
+            NSString *phoneNumber = (__bridge NSString *)phoneNumberRef;
+            phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+            
+            PhoneObject *phone = [[PhoneObject alloc] init];
+            phone.number = phoneNumber;
+            phone.name = fullname;
+            phone.nameForSearch = nameForSearch;
+            phone.avatar = avatar;
+            phone.contactId = appDelegate.idContact;
+            phone.phoneType = eNormalPhone;
+            
+            if (![appDelegate.listInfoPhoneNumber containsObject: phone]) {
+                [appDelegate.listInfoPhoneNumber addObject: phone];
+            }
+        }
     }
-    [appDelegate.listContacts addObject: aContact];
 }
 
 - (void)showContentWithCurrentLanguage {
@@ -648,6 +722,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     [waitingHud showInView:self.view animated:YES];
     
     [self updateContactIntoAddressPhoneBook];
+    [appDelegate fetchAllContactsFromPhoneBook];
+    
     [self performSelector:@selector(hideWaitingView) withObject:nil afterDelay:1.0];
 }
 

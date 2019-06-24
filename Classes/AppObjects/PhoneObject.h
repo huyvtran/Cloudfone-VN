@@ -14,7 +14,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *nameForSearch;
 @property (nonatomic, strong) NSString *avatar;
-@property (nonatomic, assign) int contactId;
+@property (nonatomic, assign) long contactId;
 @property (nonatomic, assign) int phoneType;
 
 @end

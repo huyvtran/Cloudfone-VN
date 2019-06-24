@@ -8,7 +8,7 @@
 
 #import "ContactsViewController.h"
 #import "NewContactViewController.h"
-#import "AllContactsViewController.h"
+#import "PhoneContactsViewController.h"
 #import "PBXContactsViewController.h"
 #import "JSONKit.h"
 #import "StatusBarView.h"
@@ -16,7 +16,7 @@
 #import "PBXContact.h"
 
 @interface ContactsViewController (){
-    AllContactsViewController *allContactsVC;
+    PhoneContactsViewController *allContactsVC;
     PBXContactsViewController *pbxContactsVC;
     int currentView;
     float hIcon;
@@ -78,7 +78,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     _pageViewController.dataSource = self;
     
     pbxContactsVC = [[PBXContactsViewController alloc] init];
-    allContactsVC = [[AllContactsViewController alloc] init];
+    allContactsVC = [[PhoneContactsViewController alloc] init];
     
     NSArray *viewControllers = [NSArray arrayWithObject:pbxContactsVC];
     [_pageViewController setViewControllers:viewControllers
@@ -282,6 +282,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.right.equalTo(_viewHeader).offset(-30.0);
         make.height.mas_equalTo(hTextfield);
     }];
+    _tfSearch.returnKeyType = UIReturnKeyDone;
+    _tfSearch.delegate = self;
     
     UIImageView *imgSearch = [[UIImageView alloc] init];
     imgSearch.image = [UIImage imageNamed:@"ic_search"];
@@ -334,7 +336,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [searchTimer invalidate];
     searchTimer = nil;
-    searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self
+    searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self
                                                  selector:@selector(startSearchPhoneBook)
                                                  userInfo:nil repeats:NO];
 }
@@ -663,6 +665,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:searchContactWithValue
                                                         object:_tfSearch.text];
+}
+#pragma mark - UItextfield delegate
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == _tfSearch) {
+        [_tfSearch resignFirstResponder];
+    }
+    return TRUE;
 }
 
 @end

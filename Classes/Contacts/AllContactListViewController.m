@@ -7,12 +7,12 @@
 
 #import "AllContactListViewController.h"
 #import "EditContactViewController.h"
-#import "DGActivityIndicatorView.h"
 #import "ContactCell.h"
-#import "NSData+Base64.h"
-#import "UIImage+GKContact.h"
 
-@interface AllContactListViewController (){
+@interface AllContactListViewController ()<UITextFieldDelegate>{
+    NSMutableDictionary *contactsInfo;
+    NSMutableArray *searchs;
+    
     float hSection;
     float hCell;
     
@@ -20,18 +20,14 @@
     BOOL isSearching;
     
     NSArray *listCharacter;
-    BOOL isFound;
-    BOOL found;
     UIFont *textFont;
-    
-    DGActivityIndicatorView *activityIndicatorView;
 }
 
 @end
 
 @implementation AllContactListViewController
 @synthesize viewHeader, iconBack, lbHeader, bgHeader, tfSearch, iconClear, tbContacts, lbNoContact;
-@synthesize _searchResults, _contactSections, phoneNumber;
+@synthesize phoneNumber;
 
 #pragma mark - UICompositeViewDelegate Functions
 static UICompositeViewDescription *compositeDescription = nil;
@@ -56,8 +52,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidLoad {
     [super viewDidLoad];
     //  my code here
-    _contactSections = [[NSMutableDictionary alloc] init];
-    
     listCharacter = [[NSArray alloc] initWithObjects: @"A", @"B", @"C", @"D", @"E", @"F",
                      @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil];
     
@@ -66,43 +60,35 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    if (contactsInfo == nil) {
+        contactsInfo = [[NSMutableDictionary alloc] init];
+    }else{
+        [contactsInfo removeAllObjects];
+    }
+    
+    if (searchs == nil) {
+        searchs = [[NSMutableArray alloc] init];
+    }else{
+        [searchs removeAllObjects];
+    }
     
     [self showContentWithCurrentLanguage];
     
-    if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
-        if (activityIndicatorView == nil) {
-            activityIndicatorView = [[DGActivityIndicatorView alloc] initWithType:DGActivityIndicatorAnimationTypeNineDots tintColor:[UIColor grayColor]];
-            [self.view addSubview:activityIndicatorView];
-        }
-        tbContacts.hidden = YES;
-        lbNoContact.hidden = YES;
-        
-        activityIndicatorView.frame = tbContacts.frame;
-        [activityIndicatorView startAnimating];
-    }else{
-        [activityIndicatorView stopAnimating];
-        tbContacts.hidden = NO;
-        
-        if ([tfSearch.text isEqualToString:@""]) {
-            iconClear.hidden = YES;
-            isSearching = NO;
-            if ([LinphoneAppDelegate sharedInstance].listContacts.count > 0) {
-                lbNoContact.hidden = YES;
-            }else{
-                lbNoContact.hidden = NO;
-            }
-            [tbContacts reloadData];
+    if ([tfSearch.text isEqualToString:@""]) {
+        iconClear.hidden = TRUE;
+        isSearching = FALSE;
+        if ([LinphoneAppDelegate sharedInstance].contacts.count > 0) {
+            lbNoContact.hidden = TRUE;
         }else{
-            iconClear.hidden = NO;
-            isSearching = YES;
-            
-            [self startSearchPhoneBook];
+            lbNoContact.hidden = FALSE;
         }
+        [tbContacts reloadData];
+    }else{
+        iconClear.hidden = FALSE;
+        isSearching = TRUE;
+        
+        [self startSearchPhoneBook];
     }
-    
-    //  notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenLoadContactFinish)
-                                                 name:finishLoadContacts object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -120,18 +106,15 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (IBAction)iconCloseClicked:(UIButton *)sender {
-    
+    iconClear.hidden = TRUE;
+    tfSearch.text = @"";
+    [searchs removeAllObjects];
+    isSearching = FALSE;
+    tbContacts.hidden = FALSE;
+    [tbContacts reloadData];
 }
 
 #pragma mark - my functions
-
-- (void)whenLoadContactFinish {
-    if (activityIndicatorView != nil) {
-        [activityIndicatorView stopAnimating];
-    }
-    tbContacts.hidden = NO;
-    [tbContacts reloadData];
-}
 
 - (void)showContentWithCurrentLanguage {
     lbHeader.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Choose contact"];
@@ -201,6 +184,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.right.equalTo(viewHeader).offset(-30.0);
         make.height.mas_equalTo(hTextfield);
     }];
+    tfSearch.returnKeyType = UIReturnKeyDone;
+    tfSearch.delegate = self;
     
     UIImageView *imgSearch = [[UIImageView alloc] init];
     imgSearch.image = [UIImage imageNamed:@"ic_search"];
@@ -247,22 +232,25 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)whenTextFieldDidChange: (UITextField *)textField {
     if (textField.text.length == 0) {
-        isSearching = false;
-        [iconClear setHidden: true];
+        isSearching = FALSE;
+        iconClear.hidden = TRUE;
+        
         [tbContacts reloadData];
     }else{
-        [iconClear setHidden: false];
-        isSearching = true;
+        isSearching = TRUE;
+        iconClear.hidden = FALSE;
         
         [searchTimer invalidate];
         searchTimer = nil;
-        searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self
+        searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self
                                                      selector:@selector(startSearchPhoneBook)
                                                      userInfo:nil repeats:NO];
     }
 }
 
 - (void)startSearchPhoneBook {
+    [searchs removeAllObjects];
+    
     NSString *strSearch = tfSearch.text;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self searchPhoneBook: strSearch];
@@ -274,103 +262,86 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)searchPhoneBook: (NSString *)strSearch
 {
-    if (_searchResults == nil) {
-        _searchResults = [[NSMutableArray alloc] init];
-    }
-    
-    NSMutableArray *tmpList = [[NSMutableArray alloc] initWithArray: [LinphoneAppDelegate sharedInstance].listContacts];
-    
-    //  search theo ten va sipPhone
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_fullName contains[cd] %@ OR _sipPhone contains[cd] %@", strSearch, strSearch];
-    [_searchResults removeAllObjects];
-    NSArray *filter = [tmpList filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        [_searchResults addObjectsFromArray: filter];
-        [tmpList removeObjectsInArray: filter];
-    }
-    
-    predicate = [NSPredicate predicateWithFormat:@"_valueStr contains[cd] %@", strSearch];
-    for (int iCount=0; iCount<tmpList.count; iCount++) {
-        ContactObject *contact = [tmpList objectAtIndex: iCount];
-        NSArray *filter = [contact._listPhone filteredArrayUsingPredicate: predicate];
-        if (filter.count > 0) {
-            [_searchResults addObject: contact];
+    NSArray *arrayOfAllPeople = (__bridge  NSArray *) ABAddressBookCopyArrayOfAllPeople([LinphoneAppDelegate sharedInstance].addressListBook);
+    for (int i=0; i<[arrayOfAllPeople count]; i++ )
+    {
+        ABRecordRef person = (__bridge ABRecordRef)[arrayOfAllPeople objectAtIndex:i];
+        
+        NSString *fullname = [ContactUtils getFullNameFromContact: person];
+        NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: fullname];
+        
+        if ([convertName rangeOfString: strSearch options: NSCaseInsensitiveSearch].location != NSNotFound) {
+            [searchs addObject: (__bridge id _Nonnull)(person)];
+            continue;
+        }
+        
+        ABMutableMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
+        CFIndex phoneNumberCount = ABMultiValueGetCount( phoneNumbers );
+        
+        for (int k=0; k<phoneNumberCount; k++ )
+        {
+            CFStringRef phoneNumberValue = ABMultiValueCopyValueAtIndex( phoneNumbers, k );
+            NSString *phoneNumber = (__bridge NSString *)phoneNumberValue;
+            phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+            if ([phoneNumber containsString: strSearch]) {
+                [searchs addObject: (__bridge id _Nonnull)(person)];
+                break;
+            }
         }
     }
 }
 
 - (void)getSectionsForContactsList: (NSMutableArray *)contactList {
-    [_contactSections removeAllObjects];
+    [contactsInfo removeAllObjects];
     
     // Loop through the books and create our keys
-    for (ContactObject *contactItem in contactList){
+    for (int index=0; index<contactList.count; index++) {
+        ABRecordRef person = (__bridge ABRecordRef)[contactList objectAtIndex: index];
+        NSString *fullname = [ContactUtils getFullNameFromContact: person];
+        
         NSString *c = @"";
-        if (contactItem._fullName.length > 1) {
-            c = [[contactItem._fullName substringToIndex: 1] uppercaseString];
+        if (fullname.length > 1) {
+            c = [[fullname substringToIndex: 1] uppercaseString];
             c = [AppUtils convertUTF8StringToString: c];
         }
         
         if (![listCharacter containsObject:c]) {
-            c = @"*";
+            c = @"z#";
         }
         
-        found = NO;
-        for (NSString *str in [_contactSections allKeys]){
-            if ([str isEqualToString:c]){
-                found = YES;
-            }
+        if (![[contactsInfo allKeys] containsObject: c]) {
+            NSMutableArray *list = [[NSMutableArray alloc] init];
+            [list addObject: (__bridge id _Nonnull)(person)];
+            [contactsInfo setObject:list forKey:c];
+            
+        }else{
+            NSMutableArray *list = [contactsInfo objectForKey: c];
+            [list addObject: (__bridge id _Nonnull)(person)];
+            [contactsInfo setObject:list forKey:c];
         }
-        if (!found){
-            [_contactSections setObject:[[NSMutableArray alloc] init] forKey:c];
-        }
-    }
-    
-    // Loop again and sort the books into their respective keys
-    for (ContactObject *contactItem in contactList){
-        NSString *c = @"";
-        if (contactItem._fullName.length > 1) {
-            c = [[contactItem._fullName substringToIndex: 1] uppercaseString];
-            c = [AppUtils convertUTF8StringToString: c];
-        }
-        if (![listCharacter containsObject:c]) {
-            c = @"*";
-        }
-        
-        [[_contactSections objectForKey: c] addObject:contactItem];
-    }
-    // Sort each section array
-    for (NSString *key in [_contactSections allKeys]){
-        [[_contactSections objectForKey:key] sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"_fullName" ascending:YES]]];
     }
 }
 
 #pragma mark - TableView Delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
-        return 0;
-    }
-    
     if (isSearching) {
-        [self getSectionsForContactsList: _searchResults];
+        [self getSectionsForContactsList: searchs];
     }else{
-        [self getSectionsForContactsList: [LinphoneAppDelegate sharedInstance].listContacts];
+        [self getSectionsForContactsList: [LinphoneAppDelegate sharedInstance].contacts];
     }
-    return [[_contactSections allKeys] count];
+    return [contactsInfo allKeys].count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (![LinphoneAppDelegate sharedInstance].contactLoaded) {
-        return 0;
-    }
-    
-    NSString *str = [[[_contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section];
-    return [[_contactSections objectForKey:str] count];
+    NSString *key = [[[contactsInfo allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section];
+    return [[contactsInfo objectForKey:key] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ContactObject *contact = [[_contactSections objectForKey:[[[_contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+    NSString *key = [[[contactsInfo allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section];
+    ABRecordRef person = (__bridge ABRecordRef)[[contactsInfo objectForKey: key] objectAtIndex:indexPath.row];
     
     
     static NSString *identifier = @"ContactCell";
@@ -381,56 +352,30 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    // Tên contact
-    if (contact._fullName != nil) {
-        if ([contact._fullName isEqualToString: @""]) {
-            cell.name.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
-        }else{
-            cell.name.text = contact._fullName;
-        }
-    }
+    NSString *fullname = [ContactUtils getFullNameFromContact: person];
+    cell.name.text = fullname;
     
-    if (![AppUtils isNullOrEmpty: contact._avatar]){
-        NSData *imageData = [NSData dataFromBase64String:contact._avatar];
-        cell.image.image = [UIImage imageWithData: imageData];
-    }else {
-        NSString *keyAvatar = @"";
-        if (contact._lastName != nil && ![contact._lastName isEqualToString:@""]) {
-            keyAvatar = [contact._lastName substringToIndex: 1];
-        }
-        
-        if (contact._firstName != nil && ![contact._firstName isEqualToString:@""]) {
-            if (![keyAvatar isEqualToString:@""]) {
-                keyAvatar = [NSString stringWithFormat:@"%@ %@", keyAvatar, [contact._firstName substringToIndex: 1]];
-            }else{
-                keyAvatar = [contact._firstName substringToIndex: 1];
-            }
-        }
-        
-        UIImage *avatar = [UIImage imageForName:[keyAvatar uppercaseString] size:CGSizeMake(60.0, 60.0)
-                                backgroundColor:[UIColor colorWithRed:0.169 green:0.53 blue:0.949 alpha:1.0]
-                                      textColor:UIColor.whiteColor
-                                           font:nil];
-        cell.image.image = avatar;
-    }
+    UIImage *avatar = [ContactUtils getAvatarFromContact: person];
+    cell.image.image = avatar;
     
-    cell.tag = contact._id_contact;
-    cell.phone.text = contact._sipPhone;
-    cell.icCall.hidden = YES;
+    NSString *firstPhone = [ContactUtils getFirstPhoneFromContact: person];
+    cell.phone.text = firstPhone;
+    cell.icCall.hidden = TRUE;
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    ContactObject *contact = [[_contactSections objectForKey:[[[_contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+    NSString *key = [[[contactsInfo allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section];
+    ABRecordRef person = (__bridge ABRecordRef)[[contactsInfo objectForKey: key] objectAtIndex:indexPath.row];
+    int contactId = ABRecordGetRecordID(person);
     
     EditContactViewController *controller = VIEW(EditContactViewController);
     if (controller != nil) {
-        controller.idContact = contact._id_contact;
+        controller.idContact = contactId;
         controller.curPhoneNumber = phoneNumber;
     }
     [[PhoneMainView instance] changeCurrentView:[EditContactViewController compositeViewDescription]];
-    //  [[PhoneMainView instance] changeCurrentView:[EditContactViewController compositeViewDescription] push:true];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -442,30 +387,26 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    NSString *titleHeader = [[[_contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section];;
+    NSString *key = [[[contactsInfo allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section];;
     
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, hSection)];
-    headerView.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0)
-                                                  blue:(240/255.0) alpha:1.0];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 35.0)];
+    headerView.backgroundColor = [UIColor colorWithRed:(240/255.0) green:(240/255.0) blue:(240/255.0) alpha:1.0];
     
-    UILabel *descLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 150, hSection)];
-    descLabel.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0)
-                                           blue:(50/255.0) alpha:1.0];
-    if ([titleHeader isEqualToString:@"z#"]) {
-        descLabel.font = [UIFont fontWithName:HelveticaNeue size:20.0];
+    UILabel *descLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, headerView.frame.size.width-20, headerView.frame.size.height)];
+    descLabel.textColor = [UIColor colorWithRed:(50/255.0) green:(50/255.0) blue:(50/255.0) alpha:1.0];
+    if ([key isEqualToString:@"z#"]) {
         descLabel.text = @"#";
     }else{
-        descLabel.font = textFont;
-        descLabel.text = titleHeader;
+        descLabel.text = key;
     }
     descLabel.backgroundColor = UIColor.clearColor;
+    descLabel.font = [UIFont fontWithName:MYRIADPRO_BOLD size:20.0];
     [headerView addSubview: descLabel];
     return headerView;
 }
 
-
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    NSMutableArray *tmpArr = [[NSMutableArray alloc] initWithArray: [[_contactSections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
+    NSMutableArray *tmpArr = [[NSMutableArray alloc] initWithArray: [[contactsInfo allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
     
     int iCount = 0;
     while (iCount < tmpArr.count) {
@@ -477,6 +418,14 @@ static UICompositeViewDescription *compositeDescription = nil;
         iCount++;
     }
     return tmpArr;
+}
+
+#pragma mark - UITextfield delegate
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == tfSearch) {
+        [tfSearch resignFirstResponder];
+    }
+    return TRUE;
 }
 
 @end

@@ -413,7 +413,6 @@
 
 - (void)showAndReloadContactList {
     [tbDatas removeAllObjects];
-    [tbDatas addObjectsFromArray:[[LinphoneAppDelegate sharedInstance].listContacts copy]];
     
     if (tbDatas.count > 0) {
         _tbContacts.hidden = NO;

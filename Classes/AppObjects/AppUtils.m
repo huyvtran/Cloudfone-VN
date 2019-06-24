@@ -454,49 +454,6 @@
     return @"";
 }
 
-//  Get first name and last name of contact
-+ (NSArray *)getFirstNameAndLastNameOfContact: (ABRecordRef)aPerson
-{
-    if (aPerson != nil) {
-        NSString *firstName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNameProperty);
-        if (firstName == nil) {
-            firstName = @"";
-        }
-        firstName = [firstName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
-        firstName = [firstName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
-        
-        NSString *middleName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonMiddleNameProperty);
-        if (middleName == nil) {
-            middleName = @"";
-        }
-        middleName = [middleName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
-        middleName = [middleName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
-        
-        NSString *lastName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonLastNameProperty);
-        if (lastName == nil) {
-            lastName = @"";
-        }
-        lastName = [lastName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
-        lastName = [lastName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
-        
-        // Lưu tên contact cho search phonebook
-        NSString *fullname = @"";
-        if (![lastName isEqualToString:@""]) {
-            fullname = lastName;
-        }
-        
-        if (![middleName isEqualToString:@""]) {
-            if ([fullname isEqualToString:@""]) {
-                fullname = middleName;
-            }else{
-                fullname = [NSString stringWithFormat:@"%@ %@", fullname, middleName];
-            }
-        }
-        return @[firstName, fullname];
-    }
-    return @[@"", @""];
-}
-
 //  Get tên (custom label) của contact
 + (NSString *)getNameOfPhoneOfContact: (ABRecordRef)aPerson andPhoneNumber: (NSString *)phoneNumber
 {
@@ -577,16 +534,6 @@
     if (filter.count > 0) {
         PBXContact *contact = [filter objectAtIndex: 0];
         return contact._name;
-    }
-    return @"";
-}
-
-+ (NSString *)getAvatarOfContact: (int)idContact {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_id_contact = %d", idContact];
-    NSArray *filter = [[LinphoneAppDelegate sharedInstance].listContacts filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        ContactObject *contact = [filter objectAtIndex: 0];
-        return contact._avatar;
     }
     return @"";
 }

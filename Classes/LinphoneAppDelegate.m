@@ -53,7 +53,7 @@
 @interface LinphoneAppDelegate (){
     Reachability* hostReachable;
     
-    ABAddressBookRef addressListBook;
+    
     NSThread *getContactThread;
     NSThread *addContactThread;
 }
@@ -70,7 +70,7 @@
 @synthesize _deviceToken, _updateTokenSuccess;
 @synthesize _meEnded;
 @synthesize _acceptCall;
-@synthesize listContacts, pbxContacts;
+@synthesize pbxContacts;
 @synthesize idContact;
 @synthesize _database, _databasePath;
 @synthesize _busyForCall;
@@ -82,6 +82,7 @@
 @synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, supportLoginWithPhoneNumber, logFilePath, dbQueue, splashScreen;
 @synthesize supportVoice;
 @synthesize contactType, historyType, callTransfered, hNavigation, hasBluetoothEar;
+@synthesize contacts, addressListBook;
 
 #pragma mark - Lifecycle Functions
 
@@ -430,6 +431,9 @@ void onUncaughtException(NSException* exception)
     //  [Khai le - 25/10/2018]: Add write logs for app
     [self setupForWriteLogFileForApp];
     
+    //  get contacts from cache
+    [self getContactsFromCache];
+    
     //  Khoi tao
     webService = [[WebServices alloc] init];
     webService.delegate = self;
@@ -525,10 +529,6 @@ void onUncaughtException(NSException* exception)
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
     }
     
-    //  get list contact
-    contactLoaded = NO;
-    [self getContactsListForFirstLoad];
-    
 	LinphoneManager *instance = [LinphoneManager instance];
 	BOOL background_mode = [instance lpConfigBoolForKey:@"backgroundmode_preference"];
 	BOOL start_at_boot = [instance lpConfigBoolForKey:@"start_at_boot_preference"];
@@ -556,11 +556,6 @@ void onUncaughtException(NSException* exception)
 	[RootViewManager setupWithPortrait:(PhoneMainView *)self.window.rootViewController];
 	//  [PhoneMainView.instance startUp];
     
-    NSDictionary *userActivityDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsUserActivityDictionaryKey];
-    if (userActivityDictionary != nil) {
-        [self showSplashScreenOnView: YES];
-    }
-    
     NSString *crashFile = [[NSUserDefaults standardUserDefaults] objectForKey:@"crash_file"];
     if (![AppUtils isNullOrEmpty: crashFile])
     {
@@ -586,12 +581,15 @@ void onUncaughtException(NSException* exception)
     // Request authorization to Address Book
     ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, NULL);
     
-    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined) {
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized) {
         ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(bool granted, CFErrorRef error) {
             if (granted) {
                 // First time access has been granted, add the contact
                 contactLoaded = NO;
-                [self getContactsListForFirstLoad];
+                
+                [self fetchAllContactsFromPhoneBook];
+                
+                [self getContactsFromPhoneBook];
             } else {
                 NSLog(@"User denied access");
             }
@@ -611,7 +609,7 @@ void onUncaughtException(NSException* exception)
 - (void)reloadContactListAfterAddSuccess {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:logFilePath];
     
-    [self getContactsListForFirstLoad];
+    [self getContactsFromPhoneBook];
 }
 
 - (void) registerForVoIPPushes {
@@ -1557,15 +1555,10 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 #pragma mark - my functions
 
-- (void)getContactsListForFirstLoad
+- (void)getContactsFromPhoneBook
 {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
                          toFilePath:logFilePath];
-    
-    if (listContacts == nil) {
-        listContacts = [[NSMutableArray alloc] init];
-    }
-    [listContacts removeAllObjects];
     
     if (pbxContacts == nil) {
         pbxContacts = [[NSMutableArray alloc] init];
@@ -1575,7 +1568,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self getAllIDContactInPhoneBook];
         dispatch_async(dispatch_get_main_queue(), ^(void){
-            contactLoaded = YES;
+            //  save data for listInfoPhoneNumber
+            [self saveContactsToCache: listInfoPhoneNumber];
+            contactLoaded = TRUE;
             [[NSNotificationCenter defaultCenter] postNotificationName:finishLoadContacts
                                                                 object:nil];
             [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] GET PHONE'S CONTACT FINISH. POST EVENT finishLoadContacts", __FUNCTION__] toFilePath:logFilePath];
@@ -1666,65 +1661,22 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         }
         //  [Khai le - 29/10/2018]: Check if contact has phone numbers
         NSString *fullname = [AppUtils getNameOfContact: aPerson];
+        
         if (![AppUtils isNullOrEmpty: fullname])
         {
             NSMutableArray *listPhone = [self getListPhoneOfContactPerson: aPerson withName: fullname];
             if (listPhone != nil && listPhone.count > 0) {
-                ContactObject *aContact = [[ContactObject alloc] init];
-                aContact.person = aPerson;
-                aContact._id_contact = contactId;
-                aContact._fullName = fullname;
-                NSArray *nameInfo = [AppUtils getFirstNameAndLastNameOfContact: aPerson];
-                aContact._firstName = [nameInfo objectAtIndex: 0];
-                aContact._lastName = [nameInfo objectAtIndex: 1];
+                NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: fullname];
+                NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
                 
-                NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: aContact._fullName];
-                aContact._nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
-                
-                //  Email
-                ABMultiValueRef map = ABRecordCopyValue(aPerson, kABPersonEmailProperty);
-                if (map) {
-                    for (int i = 0; i < ABMultiValueGetCount(map); ++i) {
-                        ABMultiValueIdentifier identifier = ABMultiValueGetIdentifierAtIndex(map, i);
-                        NSInteger index = ABMultiValueGetIndexForIdentifier(map, identifier);
-                        if (index != -1) {
-                            NSString *valueRef = CFBridgingRelease(ABMultiValueCopyValueAtIndex(map, index));
-                            if (valueRef != NULL && ![valueRef isEqualToString:@""]) {
-                                //  just get one email for contact
-                                aContact._email = valueRef;
-                                break;
-                            }
-                        }
-                    }
-                    CFRelease(map);
-                }
-                
-                //  Company
-                CFStringRef companyRef  = ABRecordCopyValue(aPerson, kABPersonOrganizationProperty);
-                if (companyRef != NULL && companyRef != nil){
-                    NSString *company = (__bridge NSString *)companyRef;
-                    if (company != nil && ![company isEqualToString:@""]){
-                        aContact._company = company;
-                    }
-                }
-                
-                aContact._avatar = [self getAvatarOfContact: aPerson];
-                aContact._listPhone = listPhone;
-                [listContacts addObject: aContact];
-                
-                //  Added by Khai Le on 09/10/2018
-                ContactDetailObj *anItem = [aContact._listPhone firstObject];
-                aContact._sipPhone = anItem._valueStr;
-                
-                //  [Khai le - 02/11/2018]
                 for (int i=0; i<listPhone.count; i++) {
                     ContactDetailObj *phoneItem = [listPhone objectAtIndex: i];
                     
                     PhoneObject *phone = [[PhoneObject alloc] init];
                     phone.number = phoneItem._valueStr;
                     phone.name = fullname;
-                    phone.nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
-                    phone.avatar = [self getAvatarOfContact: aPerson];
+                    phone.nameForSearch = nameForSearch;
+                    phone.avatar = [ContactUtils getBase64AvatarFromContact: aPerson];
                     phone.contactId = contactId;
                     phone.phoneType = eNormalPhone;
                     
@@ -1746,7 +1698,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     aContact.person = aPerson;
     aContact._id_contact = idRecord;
     aContact._fullName = [AppUtils getNameOfContact: aPerson];
-    NSArray *nameInfo = [AppUtils getFirstNameAndLastNameOfContact: aPerson];
+    NSArray *nameInfo = [ContactUtils getFirstNameAndLastNameOfContact: aPerson];
     aContact._firstName = [nameInfo objectAtIndex: 0];
     aContact._lastName = [nameInfo objectAtIndex: 1];
     
@@ -1782,7 +1734,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         }
     }
     
-    aContact._avatar = [self getAvatarOfContact: aPerson];
+    aContact._avatar = [ContactUtils getBase64AvatarFromContact: aPerson];
     aContact._listPhone = [self getListPhoneOfContactPerson: aPerson withName: aContact._fullName];
     
     if (aContact._listPhone.count > 0) {
@@ -1930,27 +1882,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     return result;
 }
 
-- (NSString *)getAvatarOfContact: (ABRecordRef)aPerson
-{
-    NSString *avatar = @"";
-    if (aPerson != nil) {
-        NSData  *imgData = (__bridge NSData *)ABPersonCopyImageData(aPerson);
-        if (imgData != nil) {
-            UIImage *imageAvatar = [UIImage imageWithData: imgData];
-            CGRect rect = CGRectMake(0,0,120,120);
-            UIGraphicsBeginImageContext(rect.size );
-            [imageAvatar drawInRect:rect];
-            UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            NSData *tmpImgData = UIImagePNGRepresentation(picture1);
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
-                avatar = [tmpImgData base64EncodedStringWithOptions: 0];
-            }
-        }
-    }
-    return avatar;
-}
-
 // copy database
 - (void)copyFileDataToDocument : (NSString *)filename {
     NSArray *arrPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -2038,9 +1969,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 {
                     phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
                     if ([AppUtils isNullOrEmpty: phoneNumber]) {
-                        [self showSplashScreenOnView: NO];
+                        //  [self showSplashScreenOnView: NO];
                     }else{
-                        [self showSplashScreenOnView: YES];
+                        //  [self showSplashScreenOnView: YES];
 
                         [[NSUserDefaults standardUserDefaults] setObject:phoneNumber forKey:UserActivity];
                         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -2283,6 +2214,44 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] You turned on account with Id = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath: logFilePath];
             }
         }
+    }
+}
+
+- (void)getContactsFromCache {
+    HERE return;
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:logFilePath];
+    
+    NSData *phonesData = [[NSUserDefaults standardUserDefaults] objectForKey:contacts_cache];
+    NSArray *contacts = [NSKeyedUnarchiver unarchiveObjectWithData: phonesData];
+    if (contacts != nil) {
+        listInfoPhoneNumber = [[NSMutableArray alloc] initWithArray: contacts];
+        contactLoaded = TRUE;
+    }else{
+        contactLoaded = FALSE;
+    }
+}
+
+- (void)saveContactsToCache: (NSArray *)saveList {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:logFilePath];
+    
+    NSData *contactsData = [NSKeyedArchiver archivedDataWithRootObject: saveList];
+    [[NSUserDefaults standardUserDefaults] setObject:contactsData forKey:contacts_cache];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)fetchAllContactsFromPhoneBook {
+    if (contacts == nil) {
+        contacts = [[NSMutableArray alloc] init];
+    }else{
+        [contacts removeAllObjects];
+    }
+    
+    addressListBook = ABAddressBookCreate();
+    NSArray *arrayOfAllPeople = (__bridge  NSArray *) ABAddressBookCopyArrayOfAllPeople(addressListBook);
+    NSLog(@"contacts count: %d", (int)arrayOfAllPeople.count);
+    
+    if (arrayOfAllPeople != nil) {
+        [contacts addObjectsFromArray: arrayOfAllPeople];
     }
 }
 

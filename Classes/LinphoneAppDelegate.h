@@ -98,7 +98,6 @@ typedef enum{
 
 @property (nonatomic, assign) BOOL _acceptCall;
 
-@property (nonatomic, strong) NSMutableArray *listContacts;
 @property (nonatomic, strong) NSMutableArray *pbxContacts;
 @property (nonatomic, assign) int idContact;
 
@@ -152,6 +151,11 @@ typedef enum{
 
 @property (nonatomic, assign) BOOL callTransfered;
 @property (nonatomic, assign) BOOL hasBluetoothEar;
+
+@property (nonatomic, strong) NSMutableArray *contacts;
+@property (nonatomic, assign) ABAddressBookRef addressListBook;
+
+- (void)fetchAllContactsFromPhoneBook;
 
 @end
 

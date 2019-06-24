@@ -45,6 +45,8 @@
 #define cloudfoneBundleID   @"com.ods.cloudfoneapp"
 #define AES_KEY         @"OdsCloudfone@123"
 
+#define contacts_cache  @"contacts_cache"
+
 #define simulator       @"x86_64"
 #define Iphone4s        @"iPhone4,1"
 #define Iphone5_1       @"iPhone5,1"

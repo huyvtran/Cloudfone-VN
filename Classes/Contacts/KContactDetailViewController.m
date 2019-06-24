@@ -11,7 +11,6 @@
 #import "UIContactPhoneCell.h"
 #import "JSONKit.h"
 #import "NSData+Base64.h"
-#import <CommonCrypto/CommonDigest.h>
 #import "TypePhoneContact.h"
 #import "ContactDetailObj.h"
 #import "EditContactViewController.h"
@@ -19,30 +18,7 @@
 @interface KContactDetailViewController (){
     LinphoneAppDelegate *appDelegate;
     float hCell;
-    
-    YBHud *waitingHud;
-    BOOL isPBXContact;
-    
-    UIButton *btnDelete;
 }
-@end
-
-@implementation NSString (MD5)
-
-- (NSString *)MD5String {
-    const char *cstr = [self UTF8String];
-    unsigned char result[16];
-    CC_MD5(cstr, (int)strlen(cstr), result);
-    
-    return [NSString stringWithFormat:
-            @"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
-            result[0], result[1], result[2], result[3],
-            result[4], result[5], result[6], result[7],
-            result[8], result[9], result[10], result[11],
-            result[12], result[13], result[14], result[15]
-            ];
-}
-
 @end
 
 @implementation KContactDetailViewController
@@ -76,11 +52,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     //  MY CODE HERE
     appDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
     [self autoLayoutForView];
-    
-    //  add waiting view
-    waitingHud = [[YBHud alloc] initWithHudType:DGActivityIndicatorAnimationTypeLineScale andText:@""];
-    waitingHud.tintColor = [UIColor whiteColor];
-    waitingHud.dimAmount = 0.5;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -97,24 +68,13 @@ static UICompositeViewDescription *compositeDescription = nil;
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Get contact info with id: %d", appDelegate.idContact]
                          toFilePath:appDelegate.logFilePath];
     
-    detailsContact = [ContactUtils getContactWithId: appDelegate.idContact];
-    if (![AppUtils isNullOrEmpty:detailsContact._sipPhone]) {
-        isPBXContact = YES;
-    }else{
-        isPBXContact = NO;
-    }
-    
-    [self displayContactInformation];
+    detailsContact = nil;
+    [self showPhonebookContactInformation];
     [_tbContactInfo reloadData];
-    
-    [btnDelete setTitle:[appDelegate.localization localizedStringForKey:@"Delete contact"]
-               forState:UIControlStateNormal];
 }
 
 -(void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    
-    [self setupFooterForTableView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -263,6 +223,16 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 //  Hiển thị thông tin của contact
+- (void)showPhonebookContactInformation {
+    ABRecordRef contact = ABAddressBookGetPersonWithRecordID(appDelegate.addressListBook, appDelegate.idContact);
+    NSString *name = [ContactUtils getFullNameFromContact: contact];
+    _lbContactName.text = name;
+    
+    UIImage *avatar = [ContactUtils getAvatarFromContact: contact];
+    _imgAvatar.image = avatar;
+}
+
+
 - (void)displayContactInformation
 {
     if ([detailsContact._fullName isEqualToString:@""] && ![detailsContact._sipPhone isEqualToString:@""]) {
@@ -361,28 +331,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     return hCell;
 }
 
-#pragma mark - Alertview Delegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Confirm delete this contact", __FUNCTION__] toFilePath:appDelegate.logFilePath];
-        
-        [waitingHud showInView:self.view animated:YES];
-        
-        // Remove khỏi addressbook
-        BOOL result = [ContactUtils deleteContactFromPhoneWithId: detailsContact._id_contact];
-        if(result){
-            [self updateContactListAfterDeleteContact: detailsContact];
-            
-            NSString *msgContent = [appDelegate.localization localizedStringForKey:@"Contact has been deleted"];
-            [self.view makeToast:msgContent duration:2.0 position:CSToastPositionCenter];
-        }
-        [waitingHud dismissAnimated:YES];
-
-        [[PhoneMainView instance] popCurrentView];
-    }
-}
-
-
 //  Added by Khai Le on 05/10/2018
 - (int)getRowForSection {
     int result = (int)detailsContact._listPhone.count;
@@ -394,64 +342,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         result = result + 1;
     }
     return result;
-}
-
-- (void)setupFooterForTableView {
-    UIView *footerView = [_tbContactInfo tableFooterView];
-    if (footerView == nil) {
-        float hFooterDefault = 100.0;
-        footerView = [[UIView alloc] init];
-        footerView.backgroundColor = UIColor.greenColor;
-        if (_tbContactInfo.contentSize.height > _tbContactInfo.frame.size.height) {
-            footerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, hFooterDefault);
-            _tbContactInfo.scrollEnabled = YES;
-        }else{
-            float tmpHeight = _tbContactInfo.frame.size.height - _tbContactInfo.contentSize.height;
-            if (tmpHeight <= hFooterDefault) {
-                footerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, hFooterDefault);
-                _tbContactInfo.scrollEnabled = YES;
-            }else{
-                footerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, tmpHeight);
-                _tbContactInfo.scrollEnabled = NO;
-            }
-        }
-        footerView.backgroundColor = UIColor.clearColor;
-        _tbContactInfo.tableFooterView = footerView;
-        
-        btnDelete = [[UIButton alloc] init];
-        btnDelete.backgroundColor = [UIColor colorWithRed:(202/255.0) green:(212/255.0)
-                                                     blue:(223/255.0) alpha:1.0];
-        [btnDelete setTitleColor:UIColor.redColor forState:UIControlStateNormal];
-        [btnDelete setTitle:[appDelegate.localization localizedStringForKey:@"Delete contact"]
-                   forState:UIControlStateNormal];
-        btnDelete.titleLabel.font = [UIFont fontWithName:MYRIADPRO_REGULAR size:20.0];
-        [footerView addSubview: btnDelete];
-        
-        [btnDelete mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(footerView).offset(-25.0);
-            make.left.equalTo(footerView).offset(50);
-            make.right.equalTo(footerView).offset(-50);
-            make.height.mas_equalTo(50.0);
-        }];
-        btnDelete.clipsToBounds = YES;
-        btnDelete.layer.cornerRadius = 50.0/2;
-        
-        [btnDelete addTarget:self
-                      action:@selector(btnDeleteContactPressed:)
-            forControlEvents:UIControlEventTouchUpInside];
-    }else{
-        NSLog(@"You setted FooterView for UITableview");
-    }
-}
-
-- (void)btnDeleteContactPressed: (UIButton *)sender
-{
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
-                         toFilePath:appDelegate.logFilePath];
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[appDelegate.localization localizedStringForKey:@"Delete contact"] message:[appDelegate.localization localizedStringForKey:@"Are you sure, you want to delete this contact?"] delegate:self cancelButtonTitle:[appDelegate.localization localizedStringForKey:@"Cancel"] otherButtonTitles:[appDelegate.localization localizedStringForKey:@"Accept"], nil];
-    alertView.delegate = self;
-    [alertView show];
 }
 
 - (void)onIconCallClicked: (UIButton *)sender
@@ -469,13 +359,90 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)updateContactListAfterDeleteContact: (ContactObject *)contact {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"contactId = %d", contact._id_contact];
-    NSArray *filter = [appDelegate.listInfoPhoneNumber filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        [appDelegate.listInfoPhoneNumber removeObjectsInArray: filter];
+- (NSMutableArray *)getListPhoneOfContactPerson: (ABRecordRef)aPerson
+{
+    NSMutableArray *result = nil;
+    ABMultiValueRef phones = ABRecordCopyValue(aPerson, kABPersonPhoneProperty);
+    NSString *strPhone = [[NSMutableString alloc] init];
+    if (ABMultiValueGetCount(phones) > 0)
+    {
+        result = [[NSMutableArray alloc] init];
+        
+        for(CFIndex j = 0; j < ABMultiValueGetCount(phones); j++)
+        {
+            CFStringRef phoneNumberRef = ABMultiValueCopyValueAtIndex(phones, j);
+            CFStringRef locLabel = ABMultiValueCopyLabelAtIndex(phones, j);
+            
+            NSString *phoneNumber = (__bridge NSString *)phoneNumberRef;
+            phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+            
+            strPhone = @"";
+            if (locLabel == nil) {
+                ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                anItem._iconStr = @"btn_contacts_home.png";
+                anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Home"];
+                anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                anItem._buttonStr = @"contact_detail_icon_call.png";
+                anItem._typePhone = type_phone_home;
+                [result addObject: anItem];
+            }else{
+                if (CFStringCompare(locLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
+                    ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                    anItem._iconStr = @"btn_contacts_home.png";
+                    anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Home"];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._buttonStr = @"contact_detail_icon_call.png";
+                    anItem._typePhone = type_phone_home;
+                    [result addObject: anItem];
+                }else if (CFStringCompare(locLabel, kABWorkLabel, 0) == kCFCompareEqualTo)
+                {
+                    ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                    anItem._iconStr = @"btn_contacts_work.png";
+                    anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Work"];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._buttonStr = @"contact_detail_icon_call.png";
+                    anItem._typePhone = type_phone_work;
+                    [result addObject: anItem];
+                }else if (CFStringCompare(locLabel, kABPersonPhoneMobileLabel, 0) == kCFCompareEqualTo)
+                {
+                    ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                    anItem._iconStr = @"btn_contacts_mobile.png";
+                    anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Mobile"];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._buttonStr = @"contact_detail_icon_call.png";
+                    anItem._typePhone = type_phone_mobile;
+                    [result addObject: anItem];
+                }else if (CFStringCompare(locLabel, kABPersonPhoneHomeFAXLabel, 0) == kCFCompareEqualTo)
+                {
+                    ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                    anItem._iconStr = @"btn_contacts_fax.png";
+                    anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Fax"];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._buttonStr = @"contact_detail_icon_call.png";
+                    anItem._typePhone = type_phone_fax;
+                    [result addObject: anItem];
+                }else if (CFStringCompare(locLabel, kABOtherLabel, 0) == kCFCompareEqualTo)
+                {
+                    ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                    anItem._iconStr = @"btn_contacts_fax.png";
+                    anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Other"];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._buttonStr = @"contact_detail_icon_call.png";
+                    anItem._typePhone = type_phone_other;
+                    [result addObject: anItem];
+                }else{
+                    ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                    anItem._iconStr = @"btn_contacts_mobile.png";
+                    anItem._titleStr = [appDelegate.localization localizedStringForKey:@"Mobile"];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._buttonStr = @"contact_detail_icon_call.png";
+                    anItem._typePhone = type_phone_mobile;
+                    [result addObject: anItem];
+                }
+            }
+        }
     }
-    [appDelegate.listContacts removeObject: contact];
+    return result;
 }
 
 @end

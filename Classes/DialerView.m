@@ -28,7 +28,7 @@
 #import "NSData+Base64.h"
 #import <objc/runtime.h>
 #import "ContactDetailObj.h"
-#import "UIVIew+Toast.h"
+#import "UIView+Toast.h"
 
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
@@ -116,9 +116,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [NgnFileUtils createDirectoryAndSubDirectory:@"Two"];
     
     [self setupForWriteLogFileForApp];
-    
-    DDLogJS(@"%@", @"123");
-    DDLogHTTP(@"%@", @"khi moc");
     
     NSString* path = [[NSBundle mainBundle] pathForResource:@"file_encrypt"
                                                      ofType:@"txt"];
@@ -896,24 +893,22 @@ static UICompositeViewDescription *compositeDescription = nil;
     if (actionSheet.tag == 100) {
         switch (buttonIndex) {
             case 0:{
-                [self hideSearchView];
-                
                 NewContactViewController *controller = VIEW(NewContactViewController);
                 if (controller) {
                     controller.currentPhoneNumber = _addressField.text;
                     controller.currentName = @"";
                 }
+                [self hideSearchView];
                 [[PhoneMainView instance] changeCurrentView:[NewContactViewController compositeViewDescription]
                                                        push:true];
                 break;
             }
             case 1:{
-                [self hideSearchView];
-                
                 AllContactListViewController *controller = VIEW(AllContactListViewController);
                 if (controller != nil) {
                     controller.phoneNumber = _addressField.text;
                 }
+                [self hideSearchView];
                 [[PhoneMainView instance] changeCurrentView:[AllContactListViewController compositeViewDescription]
                                                        push:true];
                 break;

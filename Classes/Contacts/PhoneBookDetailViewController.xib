@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" variant="6xAndEarlier" propertyAccessControl="none" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -9,97 +9,86 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KContactDetailViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PhoneBookDetailViewController">
             <connections>
-                <outlet property="_iconBack" destination="SH9-Tm-9oL" id="mgp-lI-KLD"/>
-                <outlet property="_iconEdit" destination="ebi-bN-yCa" id="zQz-6R-Ccg"/>
-                <outlet property="_imgAvatar" destination="RYe-DI-Cke" id="6GF-pA-Ls9"/>
-                <outlet property="_lbContactName" destination="wwm-MS-yCc" id="kyI-tU-gFa"/>
-                <outlet property="_lbTitle" destination="ylX-Bj-OmX" id="7bc-ra-jrH"/>
-                <outlet property="_tbContactInfo" destination="pzQ-vA-Ie6" id="Sfa-2i-6fc"/>
-                <outlet property="_viewHeader" destination="wp5-3m-J3y" id="BrP-on-nsK"/>
-                <outlet property="bgHeader" destination="3u3-SQ-kik" id="eYj-pS-bNJ"/>
-                <outlet property="buttonCallPBX" destination="z32-n2-ME0" id="DJo-3e-h4w"/>
+                <outlet property="_iconBack" destination="0uA-yz-65w" id="Lta-2L-nal"/>
+                <outlet property="_iconEdit" destination="yBW-Yu-Jox" id="3Zl-46-kPq"/>
+                <outlet property="_imgAvatar" destination="KOf-PO-wxA" id="93j-c1-gL2"/>
+                <outlet property="_lbContactName" destination="90K-sD-XQh" id="gNs-Tb-Sgz"/>
+                <outlet property="_lbTitle" destination="qQq-Ad-KB3" id="en2-TF-DCH"/>
+                <outlet property="_tbContactInfo" destination="twD-em-npa" id="720-cI-ZXp"/>
+                <outlet property="_viewHeader" destination="toj-E7-n3B" id="oec-gF-t3T"/>
+                <outlet property="bgHeader" destination="VCv-Mp-pu8" id="ipy-LR-loh"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="wp5-3m-J3y" userLabel="ToolBar View">
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="toj-E7-n3B" userLabel="ToolBar View">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="140"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background_header.png" id="3u3-SQ-kik">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background_header.png" translatesAutoresizingMaskIntoConstraints="NO" id="VCv-Mp-pu8">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="140"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="SH9-Tm-9oL">
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0uA-yz-65w">
                             <rect key="frame" x="1" y="1" width="40" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" backgroundImage="ic_back.png">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
-                                <action selector="_iconBackClicked:" destination="-1" eventType="touchUpInside" id="rA8-L0-lzn"/>
+                                <action selector="_iconBackClicked:" destination="-1" eventType="touchUpInside" id="eIo-Wu-u0T"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thông tin liên lạc" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ylX-Bj-OmX">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Thông tin liên lạc" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qQq-Ad-KB3">
                             <rect key="frame" x="89" y="10" width="142" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="no_avatar.png" id="RYe-DI-Cke">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="no_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="KOf-PO-wxA">
                             <rect key="frame" x="128" y="39" width="49" height="49"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wwm-MS-yCc" customClass="MarqueeLabel">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Contact Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="90K-sD-XQh" customClass="MarqueeLabel">
                             <rect key="frame" x="41" y="96" width="223" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ebi-bN-yCa">
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yBW-Yu-Jox">
                             <rect key="frame" x="282" y="5" width="30" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" image="ic_edit.png">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
-                                <action selector="_iconEditClicked:" destination="-1" eventType="touchUpInside" id="ssJ-Vt-ukT"/>
+                                <action selector="_iconEditClicked:" destination="-1" eventType="touchUpInside" id="bu2-av-Zrg"/>
                             </connections>
                         </button>
                     </subviews>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="pzQ-vA-Ie6">
-                    <rect key="frame" x="0.0" y="140" width="320" height="250"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="twD-em-npa">
+                    <rect key="frame" x="0.0" y="140" width="320" height="340"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                 </tableView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="z32-n2-ME0">
-                    <rect key="frame" x="137" y="115" width="50" height="50"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" backgroundImage="call_default.png"/>
-                    <connections>
-                        <action selector="buttonCallPBXPressed:" destination="-1" eventType="touchUpInside" id="fhC-2f-Ge4"/>
-                    </connections>
-                </button>
             </subviews>
-            <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
-            <nil key="simulatedStatusBarMetrics"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-192" y="-323"/>
+            <point key="canvasLocation" x="-3.2000000000000002" y="95.352323838080963"/>
         </view>
     </objects>
     <resources>
         <image name="background_header.png" width="750" height="130"/>
-        <image name="call_default.png" width="201" height="201"/>
         <image name="ic_back.png" width="100" height="100"/>
         <image name="ic_edit.png" width="128" height="128"/>
         <image name="no_avatar.png" width="198" height="198"/>

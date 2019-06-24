@@ -132,9 +132,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:)
                                                  name:UIKeyboardDidHideNotification object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(afterAddAndReloadContactDone)
-                                                 name:finishLoadContacts object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(whenSelectTypeForPhone:)
                                                  name:selectTypeForPhoneNumber object:nil];
 }
@@ -187,37 +184,17 @@ static UICompositeViewDescription *compositeDescription = nil;
              forState:UIControlStateNormal];
 }
 
-- (NSString *)getAvatarOfContact: (ABRecordRef)aPerson
-{
-    NSString *avatar = @"";
-    if (aPerson != nil) {
-        NSData  *imgData = (__bridge NSData *)ABPersonCopyImageData(aPerson);
-        if (imgData != nil) {
-            UIImage *imageAvatar = [UIImage imageWithData: imgData];
-            CGRect rect = CGRectMake(0,0,120,120);
-            UIGraphicsBeginImageContext(rect.size );
-            [imageAvatar drawInRect:rect];
-            UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            NSData *tmpImgData = UIImagePNGRepresentation(picture1);
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
-                avatar = [tmpImgData base64EncodedStringWithOptions: 0];
-            }
-        }
-    }
-    return avatar;
-}
-
 - (void)afterAddAndReloadContactDone {
-    [waitingHud dismissAnimated:YES];
     appDelegate._newContact = nil;
     [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Successful"]
                 duration:1.0 position:CSToastPositionCenter];
     
-    [self performSelector:@selector(backToView) withObject:nil afterDelay:1.0];
+    [self performSelector:@selector(backToView) withObject:nil afterDelay:2.0];
 }
 
 - (void)backToView{
+    [waitingHud dismissAnimated:YES];
+    
     appDelegate._dataCrop = nil;
     appDelegate._newContact = nil;
     [[PhoneMainView instance] popCurrentView];
@@ -669,27 +646,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     [waitingHud showInView:self.view animated:YES];
     
-    //  Check if user input phone number into textfield but have not added to list phone ---> still add
-    /*
-    if (appDelegate._newContact._listPhone.count == 0) {
-        NewPhoneCell *cell = [_tbContents cellForRowAtIndexPath:[NSIndexPath indexPathForRow:(NUMBER_ROW_BEFORE + appDelegate._newContact._listPhone.count) inSection:0]];
-        if (cell != nil && [cell isKindOfClass:[NewPhoneCell class]] && [cell._iconNewPhone.currentTitle isEqualToString:@"Add"]) {
-            if (![cell._tfPhone.text isEqualToString:@""]) {
-                ContactDetailObj *aPhone = [[ContactDetailObj alloc] init];
-                aPhone._iconStr = @"btn_contacts_mobile.png";
-                aPhone._titleStr = [appDelegate.localization localizedStringForKey:type_phone_mobile];
-                aPhone._valueStr = cell._tfPhone.text;
-                aPhone._buttonStr = @"contact_detail_icon_call.png";
-                aPhone._typePhone = type_phone_mobile;
-                [appDelegate._newContact._listPhone addObject: aPhone];
-                NSLog(@"-------%@", cell._tfPhone.text);
-            }else{
-                NSLog(@"-------EMPTY!!!!!!!");
-            }
-            
-        }
-    }   */
-    
     //  Remove all phone number with value is empty
     for (int iCount=0; iCount<appDelegate._newContact._listPhone.count; iCount++) {
         ContactDetailObj *aPhone = [appDelegate._newContact._listPhone objectAtIndex: iCount];
@@ -698,9 +654,42 @@ static UICompositeViewDescription *compositeDescription = nil;
             iCount--;
         }
     }
-    [ContactUtils addNewContacts];
-    [LinphoneAppDelegate sharedInstance].needToReloadContactList = YES;
-    [[NSNotificationCenter defaultCenter] postNotificationName:reloadContactAfterAdd object:nil];
+    
+    ABRecordRef contact = [ContactUtils addNewContacts];
+    [self updatePhonebookInfoWithNewContact: contact];
+    [appDelegate fetchAllContactsFromPhoneBook];
+    [self afterAddAndReloadContactDone];
+}
+
+- (void)updatePhonebookInfoWithNewContact: (ABRecordRef)aPerson
+{
+    ABMultiValueRef phones = ABRecordCopyValue(aPerson, kABPersonPhoneProperty);
+    if (ABMultiValueGetCount(phones) > 0)
+    {
+        NSString *fullname = [ContactUtils getFullNameFromContact: aPerson];
+        NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: fullname];
+        NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
+        NSString *avatar = [ContactUtils getBase64AvatarFromContact: aPerson];
+        
+        for(CFIndex j = 0; j < ABMultiValueGetCount(phones); j++)
+        {
+            CFStringRef phoneNumberRef = ABMultiValueCopyValueAtIndex(phones, j);
+            NSString *phoneNumber = (__bridge NSString *)phoneNumberRef;
+            phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+            
+            PhoneObject *phone = [[PhoneObject alloc] init];
+            phone.number = phoneNumber;
+            phone.name = fullname;
+            phone.nameForSearch = nameForSearch;
+            phone.avatar = avatar;
+            phone.contactId = appDelegate.idContact;
+            phone.phoneType = eNormalPhone;
+            
+            if (![appDelegate.listInfoPhoneNumber containsObject: phone]) {
+                [appDelegate.listInfoPhoneNumber addObject: phone];
+            }
+        }
+    }
 }
 
 - (void)whenTextfieldFullnameChanged: (UITextField *)textfield {

@@ -75,7 +75,6 @@
 + (BOOL)saveVideoToFiles: (NSData *)videoData withName: (NSString *)videoName;
 
 + (NSString *)getPBXNameWithPhoneNumber: (NSString *)phonenumber;
-+ (NSString *)getAvatarOfContact: (int)idContact;
 
 + (UIImage *)getImageDataWithName: (NSString *)imageName;
 
@@ -99,8 +98,7 @@
 + (NSString *)getDateStringFromTimeInterval: (double)timeInterval;
 + (NSString *)getTimeStringFromTimeInterval:(double)timeInterval;
 
-//  Get first name and last name of contact
-+ (NSArray *)getFirstNameAndLastNameOfContact: (ABRecordRef)aPerson;
+
 +(BOOL)isNullOrEmpty:(NSString*)string;
 + (NSString *)getAppVersionWithBuildVersion: (BOOL)showBuildVersion;
 + (UIImage *)imageWithColor:(UIColor *)color andBounds:(CGRect)imgBounds;

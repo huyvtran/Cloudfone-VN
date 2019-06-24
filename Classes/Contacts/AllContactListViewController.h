@@ -24,8 +24,6 @@
 - (IBAction)iconBackClicked:(UIButton *)sender;
 - (IBAction)iconCloseClicked:(UIButton *)sender;
 
-@property (nonatomic, strong) NSMutableDictionary *_contactSections;
-@property (nonatomic, strong) NSMutableArray *_searchResults;
 @property (nonatomic, strong) NSString *phoneNumber;
 
 @end

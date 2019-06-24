@@ -101,24 +101,6 @@
     return attrResult;
 }
 
-+ (ContactObject *)getContactWithId: (int)idContact {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_id_contact = %d", idContact];
-    NSArray *filter = [[LinphoneAppDelegate sharedInstance].listContacts filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        return [filter objectAtIndex: 0];
-    }
-    return nil;
-}
-
-+ (PBXContact *)getPBXContactWithId: (int)idContact {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_id_contact = %d", idContact];
-    NSArray *filter = [[LinphoneAppDelegate sharedInstance].listContacts filteredArrayUsingPredicate: predicate];
-    if (filter.count > 0) {
-        return [filter objectAtIndex: 0];
-    }
-    return nil;
-}
-
 
 + (void)addBorderForImageView: (UIImageView *)imageView withRectSize: (float)rectSize strokeWidth: (int)stroke strokeColor: (UIColor *)strokeColor radius: (float)radius
 {
@@ -203,7 +185,7 @@
     imageView.clipsToBounds = YES;
 }
 
-+ (void)addNewContacts
++ (ABRecordRef)addNewContacts
 {
     LinphoneAppDelegate *appDelegate = [LinphoneAppDelegate sharedInstance];
     NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: appDelegate._newContact._firstName];
@@ -311,10 +293,7 @@
     if (error != NULL) {
         NSLog(@"ABAddressBookSave %@", error);
     }
-    
-    CFRelease(aRecord);
-    CFRelease(email);
-    CFRelease(addressBook);
+    return aRecord;
 }
 
 + (BOOL)deleteContactFromPhoneWithId: (int)recordId {
@@ -338,6 +317,266 @@
         fullname = [LinphoneAppDelegate sharedInstance]._newContact._lastName;
     }
     return fullname;
+}
+
++ (NSString *)getFullNameFromContact: (ABRecordRef)aPerson
+{
+    if (aPerson != nil) {
+        NSString *firstName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNameProperty);
+        firstName = [firstName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
+        firstName = [firstName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
+        
+        NSString *middleName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonMiddleNameProperty);
+        middleName = [middleName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
+        middleName = [middleName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
+        
+        NSString *lastName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonLastNameProperty);
+        lastName = [lastName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
+        lastName = [lastName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
+        
+        // Lưu tên contact cho search phonebook
+        NSString *fullname = @"";
+        if (![AppUtils isNullOrEmpty: lastName]) {
+            fullname = lastName;
+        }
+        
+        if (![AppUtils isNullOrEmpty: middleName]) {
+            if ([fullname isEqualToString:@""]) {
+                fullname = middleName;
+            }else{
+                fullname = [NSString stringWithFormat:@"%@ %@", fullname, middleName];
+            }
+        }
+        
+        if (![AppUtils isNullOrEmpty: firstName]) {
+            if ([fullname isEqualToString:@""]) {
+                fullname = firstName;
+            }else{
+                fullname = [NSString stringWithFormat:@"%@ %@", fullname, firstName];
+            }
+        }
+        if ([fullname isEqualToString:@""]) {
+            return [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+        }
+        return fullname;
+    }
+    return [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+}
+
++ (NSString *)getBase64AvatarFromContact: (ABRecordRef)aPerson
+{
+    NSString *avatar = @"";
+    if (aPerson != nil) {
+        NSData  *imgData = (__bridge NSData *)ABPersonCopyImageData(aPerson);
+        if (imgData != nil) {
+            UIImage *imageAvatar = [UIImage imageWithData: imgData];
+            CGRect rect = CGRectMake(0, 0, 120, 120);
+            UIGraphicsBeginImageContext(rect.size );
+            [imageAvatar drawInRect:rect];
+            UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            NSData *tmpImgData = UIImagePNGRepresentation(picture1);
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+                avatar = [tmpImgData base64EncodedStringWithOptions: 0];
+            }
+        }
+    }
+    return avatar;
+}
+
++ (UIImage *)getAvatarFromContact: (ABRecordRef)aPerson
+{
+    if (aPerson != nil) {
+        NSData  *imgData = (__bridge NSData *)ABPersonCopyImageData(aPerson);
+        if (imgData != nil) {
+            UIImage *imageAvatar = [UIImage imageWithData: imgData];
+            CGRect rect = CGRectMake(0,0,120,120);
+            UIGraphicsBeginImageContext(rect.size );
+            [imageAvatar drawInRect:rect];
+            UIImage *rsAvatar = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            return rsAvatar;
+        }
+    }
+    return [UIImage imageNamed:@"no_avatar.png"];
+}
+
++ (NSString *)getEmailFromContact: (ABRecordRef)aPerson {
+    NSString *email = @"";
+    ABMultiValueRef map = ABRecordCopyValue(aPerson, kABPersonEmailProperty);
+    if (map) {
+        for (int i = 0; i < ABMultiValueGetCount(map); ++i) {
+            ABMultiValueIdentifier identifier = ABMultiValueGetIdentifierAtIndex(map, i);
+            NSInteger index = ABMultiValueGetIndexForIdentifier(map, identifier);
+            if (index != -1) {
+                NSString *valueRef = CFBridgingRelease(ABMultiValueCopyValueAtIndex(map, index));
+                if (valueRef != NULL && ![valueRef isEqualToString:@""]) {
+                    //  just get one email for contact
+                    email = valueRef;
+                    break;
+                }
+            }
+        }
+        CFRelease(map);
+    }
+    return email;
+}
+
++ (NSString *)getCompanyFromContact: (ABRecordRef)aPerson {
+    NSString *result = @"";
+    CFStringRef companyRef  = ABRecordCopyValue(aPerson, kABPersonOrganizationProperty);
+    if (companyRef != NULL && companyRef != nil){
+        NSString *company = (__bridge NSString *)companyRef;
+        if (company != nil && ![company isEqualToString:@""]){
+            result = company;
+        }
+    }
+    return result;
+}
+
++ (NSMutableArray *)getListPhoneOfContactPerson: (ABRecordRef)aPerson
+{
+    NSMutableArray *result = nil;
+    ABMultiValueRef phones = ABRecordCopyValue(aPerson, kABPersonPhoneProperty);
+    NSString *strPhone = [[NSMutableString alloc] init];
+    if (ABMultiValueGetCount(phones) > 0)
+    {
+        result = [[NSMutableArray alloc] init];
+        
+        for(CFIndex j = 0; j < ABMultiValueGetCount(phones); j++)
+        {
+            CFStringRef phoneNumberRef = ABMultiValueCopyValueAtIndex(phones, j);
+            CFStringRef locLabel = ABMultiValueCopyLabelAtIndex(phones, j);
+            
+            NSString *phoneNumber = (__bridge NSString *)phoneNumberRef;
+            phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+            
+            strPhone = @"";
+            if (locLabel == nil) {
+                ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                anItem._iconStr = @"btn_contacts_home.png";
+                anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Home"];
+                anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                anItem._buttonStr = @"contact_detail_icon_call.png";
+                anItem._typePhone = type_phone_home;
+                [result addObject: anItem];
+            }else{
+                if (CFStringCompare(locLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
+                    ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                    anItem._iconStr = @"btn_contacts_home.png";
+                    anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Home"];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._buttonStr = @"contact_detail_icon_call.png";
+                    anItem._typePhone = type_phone_home;
+                    [result addObject: anItem];
+                }else if (CFStringCompare(locLabel, kABWorkLabel, 0) == kCFCompareEqualTo)
+                {
+                    ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                    anItem._iconStr = @"btn_contacts_work.png";
+                    anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Work"];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._buttonStr = @"contact_detail_icon_call.png";
+                    anItem._typePhone = type_phone_work;
+                    [result addObject: anItem];
+                }else if (CFStringCompare(locLabel, kABPersonPhoneMobileLabel, 0) == kCFCompareEqualTo)
+                {
+                    ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                    anItem._iconStr = @"btn_contacts_mobile.png";
+                    anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Mobile"];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._buttonStr = @"contact_detail_icon_call.png";
+                    anItem._typePhone = type_phone_mobile;
+                    [result addObject: anItem];
+                }else if (CFStringCompare(locLabel, kABPersonPhoneHomeFAXLabel, 0) == kCFCompareEqualTo)
+                {
+                    ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                    anItem._iconStr = @"btn_contacts_fax.png";
+                    anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Fax"];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._buttonStr = @"contact_detail_icon_call.png";
+                    anItem._typePhone = type_phone_fax;
+                    [result addObject: anItem];
+                }else if (CFStringCompare(locLabel, kABOtherLabel, 0) == kCFCompareEqualTo)
+                {
+                    ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                    anItem._iconStr = @"btn_contacts_fax.png";
+                    anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Other"];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._buttonStr = @"contact_detail_icon_call.png";
+                    anItem._typePhone = type_phone_other;
+                    [result addObject: anItem];
+                }else{
+                    ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
+                    anItem._iconStr = @"btn_contacts_mobile.png";
+                    anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Mobile"];
+                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._buttonStr = @"contact_detail_icon_call.png";
+                    anItem._typePhone = type_phone_mobile;
+                    [result addObject: anItem];
+                }
+            }
+        }
+    }
+    return result;
+}
+
+//  Get first name and last name of contact
++ (NSArray *)getFirstNameAndLastNameOfContact: (ABRecordRef)aPerson
+{
+    if (aPerson != nil) {
+        NSString *firstName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNameProperty);
+        if (firstName == nil) {
+            firstName = @"";
+        }
+        firstName = [firstName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
+        firstName = [firstName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
+        
+        NSString *middleName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonMiddleNameProperty);
+        if (middleName == nil) {
+            middleName = @"";
+        }
+        middleName = [middleName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
+        middleName = [middleName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
+        
+        NSString *lastName = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonLastNameProperty);
+        if (lastName == nil) {
+            lastName = @"";
+        }
+        lastName = [lastName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
+        lastName = [lastName stringByReplacingOccurrencesOfString:@"\n" withString: @""];
+        
+        // Lưu tên contact cho search phonebook
+        NSString *fullname = @"";
+        if (![lastName isEqualToString:@""]) {
+            fullname = lastName;
+        }
+        
+        if (![middleName isEqualToString:@""]) {
+            if ([fullname isEqualToString:@""]) {
+                fullname = middleName;
+            }else{
+                fullname = [NSString stringWithFormat:@"%@ %@", fullname, middleName];
+            }
+        }
+        return @[firstName, fullname];
+    }
+    return @[@"", @""];
+}
+
++ (NSString *)getFirstPhoneFromContact: (ABRecordRef)aPerson
+{
+    ABMultiValueRef phones = ABRecordCopyValue(aPerson, kABPersonPhoneProperty);
+    if (ABMultiValueGetCount(phones) > 0)
+    {
+        for(CFIndex j = 0; j < ABMultiValueGetCount(phones); j++)
+        {
+            CFStringRef phoneNumberRef = ABMultiValueCopyValueAtIndex(phones, j);
+            NSString *phoneNumber = (__bridge NSString *)phoneNumberRef;
+            phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+            return phoneNumber;
+        }
+    }
+    return @"";
 }
 
 @end
