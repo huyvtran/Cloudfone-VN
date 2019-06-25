@@ -36,6 +36,7 @@
 #import "UIView+Toast.h"
 #import "WebServices.h"
 #import "Constant.h"
+#import "YBHud.h"
 
 #define MINI_KEYPAD_TAG 101
 #define MINI_TRANSFER_CALL_VIEW_TAG 102
@@ -154,6 +155,7 @@ typedef enum{
 
 @property (nonatomic, strong) NSMutableArray *contacts;
 @property (nonatomic, assign) ABAddressBookRef addressListBook;
+@property (nonatomic, strong) YBHud *waitingHud;
 
 - (void)fetchAllContactsFromPhoneBook;
 

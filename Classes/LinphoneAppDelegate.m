@@ -82,7 +82,7 @@
 @synthesize webService, keepAwakeTimer, listNumber, listInfoPhoneNumber, enableForTest, supportLoginWithPhoneNumber, logFilePath, dbQueue, splashScreen;
 @synthesize supportVoice;
 @synthesize contactType, historyType, callTransfered, hNavigation, hasBluetoothEar;
-@synthesize contacts, addressListBook;
+@synthesize contacts, addressListBook, waitingHud;
 
 #pragma mark - Lifecycle Functions
 
@@ -201,14 +201,14 @@
                 default:
                     break;
             }
-            if (accState == eAccountNone) {
-                
-            }else if (accState == eAccountOff){
+            if (accState == eAccountNone || accState == eAccountOff) {
                 
             }else{
                 //  Check registration state
                 LinphoneRegistrationState state = [SipUtils getRegistrationStateOfDefaultProxyConfig];
                 if (state == LinphoneRegistrationOk) {
+                    [waitingHud dismissAnimated: TRUE];
+                    
                     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Call with UserActivity phone number = %@", phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
                     
                     splashScreen.hidden = YES;
@@ -218,6 +218,13 @@
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:UserActivity];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                 }else {
+                    if (waitingHud == nil) {
+                        waitingHud = [[YBHud alloc] initWithHudType:DGActivityIndicatorAnimationTypeLineScale andText:@""];
+                        waitingHud.tintColor = [UIColor whiteColor];
+                        waitingHud.dimAmount = 0.5;
+                    }
+                    [waitingHud showInView:self.window animated:TRUE];
+                    
                     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Call with UserActivity phone number = %@, but waiting for register to SIP", phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
                 }
             }
@@ -449,8 +456,6 @@ void onUncaughtException(NSException* exception)
     supportLoginWithPhoneNumber = NO;
     supportVoice = NO;
     
-    listInfoPhoneNumber = [[NSMutableArray alloc] init];
-    
     // check for internet connection
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:)
                                                  name:kReachabilityChangedNotification object:nil];
@@ -595,12 +600,19 @@ void onUncaughtException(NSException* exception)
             }
         });
     }
-    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized) {
-        NSLog(@"The user has previously given access, add the contact");
-    }
-    else {
-        // The user has previously denied access
-        // Send an alert telling user to change privacy setting in settings app
+    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined){
+        ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(bool granted, CFErrorRef error) {
+            if (granted) {
+                // First time access has been granted, add the contact
+                contactLoaded = NO;
+                [self fetchAllContactsFromPhoneBook];
+                [self getContactsFromPhoneBook];
+            } else {
+                NSLog(@"User denied access");
+            }
+        });
+        
+        
     }
     
 	return YES;
@@ -1811,14 +1823,14 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             CFStringRef locLabel = ABMultiValueCopyLabelAtIndex(phones, j);
             
             NSString *phoneNumber = (__bridge NSString *)phoneNumberRef;
-            phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+            phoneNumber = [self removeAllSpecialInString: phoneNumber];
             
             strPhone = @"";
             if (locLabel == nil) {
                 ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                 anItem._iconStr = @"btn_contacts_home.png";
                 anItem._titleStr = [localization localizedStringForKey:@"Home"];
-                anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                anItem._valueStr = phoneNumber;
                 anItem._buttonStr = @"contact_detail_icon_call.png";
                 anItem._typePhone = type_phone_home;
                 [result addObject: anItem];
@@ -1827,7 +1839,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_home.png";
                     anItem._titleStr = [localization localizedStringForKey:@"Home"];
-                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._valueStr = phoneNumber;
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_home;
                     [result addObject: anItem];
@@ -1836,7 +1848,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_work.png";
                     anItem._titleStr = [localization localizedStringForKey:@"Work"];
-                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._valueStr = phoneNumber;
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_work;
                     [result addObject: anItem];
@@ -1845,7 +1857,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_mobile.png";
                     anItem._titleStr = [localization localizedStringForKey:@"Mobile"];
-                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._valueStr = phoneNumber;
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_mobile;
                     [result addObject: anItem];
@@ -1854,7 +1866,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_fax.png";
                     anItem._titleStr = [localization localizedStringForKey:@"Fax"];
-                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._valueStr = phoneNumber;
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_fax;
                     [result addObject: anItem];
@@ -1863,7 +1875,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_fax.png";
                     anItem._titleStr = [localization localizedStringForKey:@"Other"];
-                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._valueStr = phoneNumber;
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_other;
                     [result addObject: anItem];
@@ -1871,7 +1883,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_mobile.png";
                     anItem._titleStr = [localization localizedStringForKey:@"Mobile"];
-                    anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
+                    anItem._valueStr = phoneNumber;
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_mobile;
                     [result addObject: anItem];
@@ -1924,7 +1936,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 //                NSString *phoneNumber = personHandle.value;
 //                if (![AppUtils isNullOrEmpty: phoneNumber])
 //                {
-//                    phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+//                    phoneNumber = [self removeAllSpecialInString: phoneNumber];
 //                    if ([AppUtils isNullOrEmpty: phoneNumber]) {
 //                        [self showSplashScreenOnView: NO];
 //                    }else{
@@ -1967,7 +1979,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 NSString *phoneNumber = personHandle.value;
                 if (![AppUtils isNullOrEmpty: phoneNumber])
                 {
-                    phoneNumber = [AppUtils removeAllSpecialInString: phoneNumber];
+                    phoneNumber = [self removeAllSpecialInString: phoneNumber];
                     if ([AppUtils isNullOrEmpty: phoneNumber]) {
                         //  [self showSplashScreenOnView: NO];
                     }else{
@@ -2154,20 +2166,20 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             [self getMissedCallFromServer];
             
             //  [Khai Le - 15/12/2018]
-            if (!splashScreen.hidden) {
-                NSString *phoneNumber = [[NSUserDefaults standardUserDefaults] objectForKey: UserActivity];
-                if (![AppUtils isNullOrEmpty: phoneNumber]) {
-                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Register to SIP okay. Call with UserActivity phone number = %@", phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
-                    
-                    splashScreen.hidden = YES;
-                    [SipUtils makeCallWithPhoneNumber: phoneNumber];
-                    //  reset value
-                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:UserActivity];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    
-                }else{
-                    splashScreen.hidden = YES;
-                }
+            NSString *phoneNumber = [[NSUserDefaults standardUserDefaults] objectForKey: UserActivity];
+            if (![AppUtils isNullOrEmpty: phoneNumber]) {
+                [waitingHud dismissAnimated: TRUE];
+                
+                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"Register to SIP okay. Call with UserActivity phone number = %@", phoneNumber] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+                
+                splashScreen.hidden = YES;
+                [SipUtils makeCallWithPhoneNumber: phoneNumber];
+                //  reset value
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:UserActivity];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+            }else{
+                splashScreen.hidden = YES;
             }
             break;
         }
@@ -2218,13 +2230,13 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 }
 
 - (void)getContactsFromCache {
-    HERE return;
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:logFilePath];
+    listInfoPhoneNumber = [[NSMutableArray alloc] init];
     
     NSData *phonesData = [[NSUserDefaults standardUserDefaults] objectForKey:contacts_cache];
     NSArray *contacts = [NSKeyedUnarchiver unarchiveObjectWithData: phonesData];
     if (contacts != nil) {
-        listInfoPhoneNumber = [[NSMutableArray alloc] initWithArray: contacts];
+        [listInfoPhoneNumber addObjectsFromArray: contacts];
         contactLoaded = TRUE;
     }else{
         contactLoaded = FALSE;
@@ -2248,11 +2260,21 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     
     addressListBook = ABAddressBookCreate();
     NSArray *arrayOfAllPeople = (__bridge  NSArray *) ABAddressBookCopyArrayOfAllPeople(addressListBook);
-    NSLog(@"contacts count: %d", (int)arrayOfAllPeople.count);
-    
     if (arrayOfAllPeople != nil) {
         [contacts addObjectsFromArray: arrayOfAllPeople];
     }
+}
+
+- (NSString *)removeAllSpecialInString: (NSString *)phoneString {
+    NSString *resultStr = @"";
+    for (int strCount=0; strCount<phoneString.length; strCount++) {
+        char characterChar = [phoneString characterAtIndex: strCount];
+        NSString *characterStr = [NSString stringWithFormat:@"%c", characterChar];
+        if ([listNumber containsObject: characterStr]) {
+            resultStr = [NSString stringWithFormat:@"%@%@", resultStr, characterStr];
+        }
+    }
+    return resultStr;
 }
 
 @end
