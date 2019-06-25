@@ -13,7 +13,5 @@
 @property (nonatomic, strong) NSString *_name;
 @property (nonatomic, strong) NSString *_number;
 @property (nonatomic, strong) NSString *_nameForSearch;
-@property (nonatomic, assign) int _idContact;
-@property (nonatomic, strong) NSString *_avatar;
 
 @end

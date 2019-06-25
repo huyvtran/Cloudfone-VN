@@ -116,8 +116,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         _iconSyncPBXContact.hidden = NO;
     }
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeKeyboard)
-                                                 name:@"closeKeyboard" object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -346,10 +344,6 @@ static UICompositeViewDescription *compositeDescription = nil;
                                                         object:_tfSearch.text];
 }
 
-- (void)closeKeyboard {
-    [self.view endEditing: YES];
-}
-
 - (void)startSyncPBXContactsForAccount
 {
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
@@ -412,6 +406,35 @@ static UICompositeViewDescription *compositeDescription = nil;
     
 }
 
+- (void)savePBXContactToCache: (NSArray *)saveList {
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+    
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    for (int i=0; i<saveList.count; i++) {
+        NSDictionary *info = [saveList objectAtIndex: i];
+        NSString *name = [info objectForKey:@"name"];
+        NSString *number = [info objectForKey:@"number"];
+        
+        PBXContact *pbxContact = [[PBXContact alloc] init];
+        pbxContact._name = name;
+        pbxContact._number = number;
+        
+        NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: name];
+        NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
+        pbxContact._nameForSearch = nameForSearch;
+        
+        [result addObject: pbxContact];
+    }
+    
+    NSData *pbxData = [NSKeyedArchiver archivedDataWithRootObject: result];
+    [[NSUserDefaults standardUserDefaults] setObject:pbxData forKey:pbx_contact_cache];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [[LinphoneAppDelegate sharedInstance].pbxContacts removeAllObjects];
+    [[LinphoneAppDelegate sharedInstance].pbxContacts addObjectsFromArray: result];
+}
+
 //  Xử lý pbx contacts trả về
 - (void)whenStartSyncPBXContacts: (NSArray *)data
 {
@@ -419,6 +442,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self savePBXContactInPhoneBook: data];
+        [self savePBXContactToCache: data];
+        
         [self getListPhoneWithCurrentContactPBX];
         dispatch_async(dispatch_get_main_queue(), ^(void){
             [self syncContactsSuccessfully];
@@ -601,49 +626,19 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)getListPhoneWithCurrentContactPBX {
-    if ([LinphoneAppDelegate sharedInstance].pbxContacts == nil) {
-        [LinphoneAppDelegate sharedInstance].pbxContacts = [[NSMutableArray alloc] init];
-    }
-    [[LinphoneAppDelegate sharedInstance].pbxContacts removeAllObjects];
-    
-    ABAddressBookRef addressListBook = ABAddressBookCreateWithOptions(NULL, NULL);
-    NSArray *arrayOfAllPeople = (__bridge  NSArray *) ABAddressBookCopyArrayOfAllPeople(addressListBook);
+- (void)getListPhoneWithCurrentContactPBX
+{
+    NSArray *arrayOfAllPeople = (__bridge  NSArray *) ABAddressBookCopyArrayOfAllPeople([LinphoneAppDelegate sharedInstance].addressListBook);
     for (int peopleCounter = (int)arrayOfAllPeople.count-1; peopleCounter >= 0; peopleCounter--)
     {
         ABRecordRef aPerson = (__bridge ABRecordRef)[arrayOfAllPeople objectAtIndex:peopleCounter];
-        
-        ABRecordID idContact = ABRecordGetRecordID(aPerson);
-        NSLog(@"-----id: %d", idContact);
-        
         NSString *sipNumber = (__bridge NSString *)ABRecordCopyValue(aPerson, kABPersonFirstNamePhoneticProperty);
         if (sipNumber != nil && [sipNumber isEqualToString: keySyncPBX])
         {
-            ABMultiValueRef phones = ABRecordCopyValue(aPerson, kABPersonPhoneProperty);
-            if (ABMultiValueGetCount(phones) > 0)
-            {
-                for(CFIndex j = 0; j < ABMultiValueGetCount(phones); j++)
-                {
-                    CFStringRef phoneNumberRef = ABMultiValueCopyValueAtIndex(phones, j);
-                    CFStringRef locLabel = ABMultiValueCopyLabelAtIndex(phones, j);
-                    
-                    NSString *curPhoneValue = (__bridge NSString *)phoneNumberRef;
-                    curPhoneValue = [[curPhoneValue componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
-                    
-                    NSString *nameValue = (__bridge NSString *)locLabel;
-                    
-                    if (curPhoneValue != nil && nameValue != nil) {
-                        PBXContact *aContact = [[PBXContact alloc] init];
-                        aContact._name = nameValue;
-                        aContact._number = curPhoneValue;
-                        
-                        [[LinphoneAppDelegate sharedInstance].pbxContacts addObject: aContact];
-                    }
-                }
-                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:idContact]
-                                                          forKey:PBX_ID_CONTACT];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-            }
+            ABRecordID idContact = ABRecordGetRecordID(aPerson);
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:idContact]
+                                                      forKey:PBX_ID_CONTACT];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
 }

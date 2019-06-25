@@ -344,14 +344,6 @@
 
 #pragma mark -
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"closeKeyboard" object:nil];
-}
-
-- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"closeKeyboard" object:nil];
-}
-
 //  Added by Khai Le on 04/10/2018
 - (void)startSearchContactWithValue: (NSNotification *)notif {
     id object = [notif object];

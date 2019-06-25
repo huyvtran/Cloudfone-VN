@@ -1572,11 +1572,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
                          toFilePath:logFilePath];
     
-    if (pbxContacts == nil) {
-        pbxContacts = [[NSMutableArray alloc] init];
-    }
-    [pbxContacts removeAllObjects];
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self getAllIDContactInPhoneBook];
         dispatch_async(dispatch_get_main_queue(), ^(void){
@@ -1610,6 +1605,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
             ABMultiValueRef phones = ABRecordCopyValue(aPerson, kABPersonPhoneProperty);
             if (ABMultiValueGetCount(phones) > 0)
             {
+                NSMutableArray *listPBX = [[NSMutableArray alloc] init];
+                
                 for(CFIndex j = 0; j < ABMultiValueGetCount(phones); j++)
                 {
                     CFStringRef phoneNumberRef = ABMultiValueCopyValueAtIndex(phones, j);
@@ -1628,7 +1625,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                         NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: nameStr];
                         NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName: convertName];
                         pbxContact._nameForSearch = nameForSearch;
+                        [listPBX addObject: pbxContact];
                         
+                        //  get avatar
                         NSString *avatarStr = @"";
                         if (![AppUtils isNullOrEmpty: pbxServer]) {
                             NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, phoneStr];
@@ -1641,11 +1640,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                                 } else {
                                     avatarStr = [avatarData base64Encoding];
                                 }
-                                pbxContact._avatar = avatarStr;
                             }
                         }
-                        [pbxContacts addObject: pbxContact];
-                        
                         //  [Khai le - 02/11/2018]
                         PhoneObject *phone = [[PhoneObject alloc] init];
                         phone.number = phoneStr;
@@ -1658,17 +1654,23 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                         [listInfoPhoneNumber addObject: phone];
                     }
                 }
+                //  save pbx contact to cache
+                [self savePBXContactToCache: listPBX];
+                [pbxContacts removeAllObjects];
+                [pbxContacts addObjectsFromArray: listPBX];
             }
             
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:contactId]
                                                       forKey:PBX_ID_CONTACT];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:finishGetPBXContacts object:nil];
+            });
+            
             //  Post event to PBXContactViewController to reload pbx contacts list
             [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Found PBX contact with id = %d. Post event to show pbxContacts", __FUNCTION__, contactId] toFilePath:logFilePath];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:finishGetPBXContacts
-                                                                object:[NSNumber numberWithInt:contactId]];
             continue;
         }
         //  [Khai le - 29/10/2018]: Check if contact has phone numbers
@@ -1798,7 +1800,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                         } else {
                             avatarStr = [avatarData base64Encoding];
                         }
-                        pbxContact._avatar = avatarStr;
                     }
                 }
                 [result addObject: pbxContact];
@@ -2231,8 +2232,18 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 - (void)getContactsFromCache {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:logFilePath];
+    
+    pbxContacts = [[NSMutableArray alloc] init];
     listInfoPhoneNumber = [[NSMutableArray alloc] init];
     
+    //  get pbx contact from cache
+    NSData *pbxData = [[NSUserDefaults standardUserDefaults] objectForKey:pbx_contact_cache];
+    NSArray *pbxs = [NSKeyedUnarchiver unarchiveObjectWithData: pbxData];
+    if (pbxs != nil) {
+        [pbxContacts addObjectsFromArray: pbxs];
+    }
+    
+    //  get phone contacts from cache
     NSData *phonesData = [[NSUserDefaults standardUserDefaults] objectForKey:contacts_cache];
     NSArray *contacts = [NSKeyedUnarchiver unarchiveObjectWithData: phonesData];
     if (contacts != nil) {
@@ -2275,6 +2286,15 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         }
     }
     return resultStr;
+}
+
+- (void)savePBXContactToCache: (NSArray *)saveList {
+    
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:logFilePath];
+    
+    NSData *pbxData = [NSKeyedArchiver archivedDataWithRootObject: saveList];
+    [[NSUserDefaults standardUserDefaults] setObject:pbxData forKey:pbx_contact_cache];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

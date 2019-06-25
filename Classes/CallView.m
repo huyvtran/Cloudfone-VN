@@ -205,11 +205,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         _avatarImage.image = [UIImage imageNamed:@"no_avatar.png"];
     }
     
-    if (contact.phoneType == ePBXPhone) {
-        //  Download avatar of user if exists
-        [self checkToDownloadAvatarOfUser: phoneNumber];
-    }
-    
     //  Leo Kelvin
     _bottomBar.hidden = YES;
     _bottomBar.clipsToBounds = YES;
@@ -1807,39 +1802,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
     [self callQualityUpdate];
     qualityTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(callQualityUpdate) userInfo:nil repeats:YES];
-}
-
-- (void)checkToDownloadAvatarOfUser: (NSString *)phone
-{
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] phone number = %@", __FUNCTION__, phone] toFilePath:appDelegate.logFilePath];
-    
-    if (phone.length > 9 || [phone isEqualToString:hotline]) {
-        return;
-    }
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSString *pbxServer = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
-        NSString *avatarName = [NSString stringWithFormat:@"%@_%@.png", pbxServer, phone];
-        NSString *linkAvatar = [NSString stringWithFormat:@"%@/%@", link_picture_chat_group, avatarName];
-        NSData *data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: linkAvatar]];
-        
-        if (data != nil) {
-            NSString *folder = [NSString stringWithFormat:@"/avatars/%@", avatarName];
-            [AppUtils saveFileToFolder:data withName: folder];
-            
-            //  set avatar value for pbx contact list if exists
-            PBXContact *contact = [AppUtils getPBXContactFromListWithPhoneNumber: phoneNumber];
-            if (contact != nil) {
-                if ([data respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
-                    contact._avatar = [data base64EncodedStringWithOptions: 0];
-                } else {
-                    contact._avatar = [data base64Encoding];
-                }
-            }
-            dispatch_async(dispatch_get_main_queue(), ^(void){
-                _avatarImage.image = [UIImage imageWithData: data];
-            });
-        }
-    });
 }
 
 - (void)headsetPluginChanged: (NSNotification *)notif {
