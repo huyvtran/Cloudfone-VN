@@ -496,7 +496,7 @@ void onUncaughtException(NSException* exception)
     
     //  Set default language for app if haven't setted yet
     NSString *curLanguage = [[NSUserDefaults standardUserDefaults] objectForKey:language_key];
-    if (curLanguage == nil) {
+    if (curLanguage == nil && [NSLocale preferredLanguages].count > 0) {
         NSString * devLanguage = [[NSLocale preferredLanguages] firstObject];
         if (![AppUtils isNullOrEmpty: devLanguage] && [devLanguage hasPrefix:@"vi"]) {
             curLanguage = key_vi;

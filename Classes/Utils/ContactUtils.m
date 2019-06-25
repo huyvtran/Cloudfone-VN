@@ -72,7 +72,7 @@
         [secondAttr addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, phone.name.length)];
         [secondAttr addAttribute: NSLinkAttributeName value:phone.number range: NSMakeRange(0, phone.name.length)];
         [attrResult appendAttributedString:secondAttr];
-    }else{
+    }else if (searchs.count > 0){
         PhoneObject *phone = [searchs firstObject];
         
         NSMutableAttributedString * str1 = [[NSMutableAttributedString alloc] initWithString:phone.name];
