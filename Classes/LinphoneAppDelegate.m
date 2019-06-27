@@ -424,10 +424,11 @@ void onUncaughtException(NSException* exception)
     NSString *subDirectory = [NSString stringWithFormat:@"%@/.%@.txt", logsFolderName, [AppUtils getCurrentDate]];
     logFilePath = [WriteLogsUtils makeFilePathWithFileName: subDirectory];
     
+    NSString *version = [AppUtils getAppVersionWithBuildVersion: YES];
     if (IS_IPHONE || IS_IPOD) {
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"==================================================\n==               START APPLICATION ON IPHONE OR IPOD              ==\n=================================================="] toFilePath:logFilePath];
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@">>>>>>>>>>>>>>>>>>>> START APPLICATION ON IPHONE with APP VERSION: %@ <<<<<<<<<<<<<<<<<<<<", version] toFilePath:logFilePath];
     }else{
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"==================================================\n==               START APPLICATION ON IPAD              ==\n=================================================="] toFilePath:logFilePath];
+        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@">>>>>>>>>>>>>>>>>>>> START APPLICATION ON IPAD with APP VERSION: %@ <<<<<<<<<<<<<<<<<<<<", version] toFilePath:logFilePath];
     }
     
     UIApplication *app = [UIApplication sharedApplication];

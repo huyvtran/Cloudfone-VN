@@ -301,7 +301,6 @@
 #define outgoing_call           @"Outgoing"
 #define hotline                 @"4113"
 
-
 #define Close   @"Close"
 
 #endif /* AppStrings_h */

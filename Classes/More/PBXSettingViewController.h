@@ -13,7 +13,8 @@
 #import "CustomSwitchButton.h"
 #import "WebServices.h"
 
-@interface PBXSettingViewController : UIViewController<UICompositeViewDelegate, WebServicesDelegate, QRCodeReaderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RegisterPBXWithPhoneViewDelegate, CustomSwitchButtonDelegate>
+@interface PBXSettingViewController : UIViewController<UICompositeViewDelegate, WebServicesDelegate, QRCodeReaderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RegisterPBXWithPhoneViewDelegate, CustomSwitchButtonDelegate, UITextFieldDelegate>
+
 @property (weak, nonatomic) IBOutlet UIView *_viewHeader;
 @property (weak, nonatomic) IBOutlet UIButton *_iconBack;
 @property (weak, nonatomic) IBOutlet UILabel *_lbTitle;

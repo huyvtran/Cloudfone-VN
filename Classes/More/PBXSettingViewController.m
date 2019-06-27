@@ -20,22 +20,15 @@
     UIButton *btnScanFromPhoto;
     QRCodeReaderViewController *scanQRCodeVC;
     //  For register pbx with qrcode
-    int typeRegister;
-    NSString *serverPBX;
-    NSString *accountPBX;
-    NSString *passwordPBX;
-    NSString *ipPBX;
-    NSString *portPBX;
     RegisterPBXWithPhoneView *viewPBXRegisterWithPhone;
     float hTextfield;
     
-    LinphoneProxyConfig *enableProxyConfig;
-    BOOL clearingAccount;
-
     CustomSwitchButton *swAccount;
     AccountState accState;
     BOOL turnOffAcc;
     BOOL turnOnAcc;
+    
+    NSMutableDictionary *registerInfo;
 }
 
 @end
@@ -76,17 +69,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     webService.delegate = self;
     
     [self autoLayoutForMainView];
-    
-    UITapGestureRecognizer *tapOnScreen = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard)];
-    [self.view addGestureRecognizer: tapOnScreen];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
     [WriteLogsUtils writeForGoToScreen: @"PBXSettingViewController"];
-    
-    clearingAccount = NO;
     
     [self showContentForView];
     [self showPBXAccountInformation];
@@ -249,6 +237,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         make.height.mas_equalTo(hLabel);
     }];
     
+    _tfServerID.delegate = _tfAccount.delegate = _tfPassword.delegate = self;
+    _tfServerID.returnKeyType = _tfAccount.returnKeyType = _tfPassword.returnKeyType = UIReturnKeyDone;
     
     _tfServerID.borderStyle = UITextBorderStyleNone;
     _tfServerID.layer.cornerRadius = 3.0;
@@ -387,8 +377,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)_iconQRCodeClicked:(UIButton *)sender
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
-                         toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:@"USER PRESSED ON QRCODE ICON" toFilePath:appDelegate.logFilePath];
     
     if ([QRCodeReader supportsMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]]) {
         QRCodeReader *reader = [QRCodeReader readerWithMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]];
@@ -427,8 +416,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (IBAction)_btnClearPressed:(UIButton *)sender
 {
+    [WriteLogsUtils writeLogContent:@">>>>>>>> USER PRESSED CLEAR ACCOUNT" toFilePath:appDelegate.logFilePath];
+    
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Clear proxy config with networkReady = %d", __FUNCTION__, networkReady] toFilePath:appDelegate.logFilePath];
     
     if (!networkReady) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
@@ -437,19 +427,24 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [_icWaiting startAnimating];
     _icWaiting.hidden = NO;
-    clearingAccount = YES;
+    
     linphone_core_clear_proxy_config(LC);
-    //  [[LinphoneManager instance] removeAllAccounts];
+    
+    NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:key_login];
+    if (![AppUtils isNullOrEmpty: server] && ![AppUtils isNullOrEmpty: username]) {
+        [self updateCustomerTokenIOSForPBX:server andUsername:username withTokenValue:@""];
+    }
+    [self performSelector:@selector(whenClearPBXSuccessfully) withObject:nil afterDelay:3.0];
 }
 
 - (IBAction)_btnSavePressed:(UIButton *)sender
 {
+    [WriteLogsUtils writeLogContent:@">>>>>>>> USER PRESSED SAVE BUTTON" toFilePath:appDelegate.logFilePath];
+    
     [self.view endEditing: YES];
     
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
-    
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Save proxy config with networkReady = %d", __FUNCTION__, networkReady] toFilePath:appDelegate.logFilePath];
-    
     if (!networkReady) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
@@ -470,23 +465,12 @@ static UICompositeViewDescription *compositeDescription = nil;
         return;
     }
     
-    //  check if this account is default and registration state is okay
-    BOOL same = [self checkAccount: _tfAccount.text withServer: _tfServerID.text];
-    if (!same) {
-        typeRegister = normalLogin;
-        
-        _icWaiting.hidden = NO;
-        [_icWaiting startAnimating];
-        
-        [self getInfoForPBXWithServerName: _tfServerID.text];
-        
-    }else{
-        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"This account is being registered"] duration:2.0 position:CSToastPositionCenter];
-    }
-}
-
-- (void)closeKeyboard {
-    [self.view endEditing: YES];
+    //  start register sip account
+    
+    _icWaiting.hidden = NO;
+    [_icWaiting startAnimating];
+    
+    [self getInfoForPBXWithServerName: _tfServerID.text];
 }
 
 - (void)showContentForView {
@@ -518,11 +502,9 @@ static UICompositeViewDescription *compositeDescription = nil;
     [jsonDict setObject:AuthUser forKey:@"AuthUser"];
     [jsonDict setObject:AuthKey forKey:@"AuthKey"];
     [jsonDict setObject:serverName forKey:@"ServerName"];
-    
     [webService callWebServiceWithLink:getServerInfoFunc withParams:jsonDict];
     
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] jsonDict = %@", __FUNCTION__, @[jsonDict]]
-                         toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] jsonDict = %@", __FUNCTION__, @[jsonDict]] toFilePath:appDelegate.logFilePath];
 }
 
 - (void)updateCustomerTokenIOSForPBX: (NSString *)pbxService andUsername: (NSString *)pbxUsername withTokenValue: (NSString *)tokenValue
@@ -536,9 +518,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [jsonDict setObject:pbxUsername forKey:@"PBXExt"];
     
     [webService callWebServiceWithLink:ChangeCustomerIOSToken withParams:jsonDict];
-    
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] jsonDict = %@", __FUNCTION__, @[jsonDict]]
-                         toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] jsonDict = %@", __FUNCTION__, @[jsonDict]] toFilePath:appDelegate.logFilePath];
 }
 
 
@@ -546,35 +526,47 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)failedToCallWebService:(NSString *)link andError:(NSString *)error
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] link: %@\nResponse data: %@", __FUNCTION__, link, error] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] function: %@ - error: %@", __FUNCTION__, link, @[error]] toFilePath:appDelegate.logFilePath];
     
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
     if ([link isEqualToString:getServerInfoFunc]) {
         [self.view makeToast:error duration:2.0 position:CSToastPositionCenter];
+        
     }else if ([link isEqualToString: ChangeCustomerIOSToken]){
+        if (registerInfo != nil) {
+            [self whenRegisterPBXSuccessfully];
+            
+        }else if (turnOnAcc) {
+            [self whenTurnOnPBXSuccessfully];
+            
+        } else if (turnOffAcc) {
+            [self whenTurnOffPBXSuccessfully];
+            
+        }else{
+            [self whenRegisterPBXSuccessfully];
+        }
+        
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Can not update push token"]
                     duration:2.0 position:CSToastPositionCenter];
         
-        [self whenRegisterPBXSuccessfully];
+        
     }
 }
 
 - (void)successfulToCallWebService:(NSString *)link withData:(NSDictionary *)data
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] link: %@\nResponse data: %@", __FUNCTION__, link, @[data]] toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] function: %@ - data: %@", __FUNCTION__, link, @[data]] toFilePath:appDelegate.logFilePath];
     
     if ([link isEqualToString:getServerInfoFunc]) {
         [self startLoginPBXWithInfo: data];
+        
     }else if ([link isEqualToString: ChangeCustomerIOSToken]){
         if (turnOnAcc) {
             [self whenTurnOnPBXSuccessfully];
             
         } else if (turnOffAcc) {
             [self whenTurnOffPBXSuccessfully];
-            
-        }else if (clearingAccount) {
-            [self whenClearPBXSuccessfully];
             
         }else{
             [self whenRegisterPBXSuccessfully];
@@ -590,50 +582,35 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)startLoginPBXWithInfo: (NSDictionary *)info
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] %@", __FUNCTION__, @[info]]
-                         toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] info = %@", __FUNCTION__, @[info]] toFilePath:appDelegate.logFilePath];
     
-    NSString *pbxIp = [info objectForKey:@"ipAddress"];
-    NSString *pbxPort = [info objectForKey:@"port"];
-    NSString *serverName = [info objectForKey:@"serverName"];
+    NSString *domain = [info objectForKey:@"ipAddress"];
+    NSString *port = [info objectForKey:@"port"];
+    NSString *server = [info objectForKey:@"serverName"];
+    NSString *account = _tfAccount.text;
+    NSString *password = _tfPassword.text;
     
-    if (pbxIp != nil && ![pbxIp isEqualToString: @""] && pbxPort != nil && ![pbxPort isEqualToString: @""] && serverName != nil)
+    if (![AppUtils isNullOrEmpty: domain] && ![AppUtils isNullOrEmpty: port] && ![AppUtils isNullOrEmpty: server])
     {
-        if (typeRegister == normalLogin) {
-            serverPBX = serverName;
-            accountPBX = _tfAccount.text;
-            passwordPBX = _tfPassword.text;
-        }
         //  save info if must clear all before account
-        ipPBX = pbxIp;
-        portPBX = pbxPort;
+        [WriteLogsUtils writeLogContent:@"-----> Save register info and clear all proxy config before register sip account" toFilePath:appDelegate.logFilePath];
         
-        [self registerPBXAccount:accountPBX password:passwordPBX ipAddress:ipPBX port:portPBX];
+        registerInfo = [[NSMutableDictionary alloc] initWithObjectsAndKeys:account, @"account", password, @"password", domain, @"domain", port, @"port", server, @"server", nil];
+        linphone_core_clear_proxy_config(LC);
+        [self performSelector:@selector(continueAfterClearAllProxyConfig) withObject:nil afterDelay:2.0];
+        
     }else{
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your information again!"] duration:2.0 position:CSToastPositionCenter];
     }
 }
 
-- (void)registerPBXAccount: (NSString *)pbxAccount password: (NSString *)password ipAddress: (NSString *)address port: (NSString *)portID
+- (void)registerPBXAccount: (NSString *)account password: (NSString *)password domain: (NSString *)domain port: (NSString *)port
 {
-    NSArray *data = @[address, pbxAccount, password, portID];
-    [self performSelector:@selector(startRegisterPBX:) withObject:data afterDelay:1.0];
-}
-
-- (void)startRegisterPBX: (NSArray *)data {
-    if (data.count == 4) {
-        NSString *pbxDomain = [data objectAtIndex: 0];
-        NSString *pbxAccount = [data objectAtIndex: 1];
-        NSString *pbxPassword = [data objectAtIndex: 2];
-        NSString *pbxPort = [data objectAtIndex: 3];
-        
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] with info %@", __FUNCTION__, @[data]]
-                             toFilePath:appDelegate.logFilePath];
-        
-        BOOL success = [SipUtils loginSipWithDomain:pbxDomain username:pbxAccount password:pbxPassword port:pbxPort];
-        if (success) {
-            [SipUtils registerProxyWithUsername:pbxAccount password:pbxPassword domain:pbxDomain port:pbxPort];
-        }
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] account: %@, password: %@, domain: %@, port: %@", __FUNCTION__, account, password, domain, port] toFilePath:appDelegate.logFilePath];
+    
+    BOOL success = [SipUtils loginSipWithDomain:domain username:account password:password port:port];
+    if (success) {
+        [SipUtils registerProxyWithUsername:account password:password domain:domain port:port];
     }
 }
 
@@ -649,138 +626,58 @@ static UICompositeViewDescription *compositeDescription = nil;
     switch (state) {
         case LinphoneRegistrationOk:
         {
-            if (turnOnAcc) {
-                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationOk, turnOnAcc = YES", __FUNCTION__] toFilePath:appDelegate.logFilePath];
-                
-                NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
-                //  Update token after registration okay
-                if (![AppUtils isNullOrEmpty: server] && ![AppUtils isNullOrEmpty: appDelegate._deviceToken]) {
-                    [self updateCustomerTokenIOSForPBX:server andUsername: USERNAME withTokenValue:appDelegate._deviceToken];
-                }else{
-                    [self whenTurnOnPBXSuccessfully];
-                }
-                
-                break;
-            }
-            if (enableProxyConfig == nil) {
-                //  Nếu registration thành công, backup profxy config hiện tại, sẽ remove hết các acc cũ và register lại account mới
-                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationOk --> enableProxyConfig = proxy --> call function \"linphone_core_clear_proxy_config\" to clear all proxy cofig", __FUNCTION__] toFilePath:appDelegate.logFilePath];
-                
-                enableProxyConfig = proxy;
-                linphone_core_clear_proxy_config(LC);
-                
-            }else if (enableProxyConfig == proxy){
-                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationOk with typeRegister = %d, set enableProxyConfig = nil", __FUNCTION__, typeRegister] toFilePath:appDelegate.logFilePath];
-                
-                enableProxyConfig = nil;
-                    
-                if (typeRegister == normalLogin)
-                {
-                    if (![_tfAccount.text isEqualToString:@""] && ![_tfPassword.text isEqualToString:@""]) {
-                        [[NSUserDefaults standardUserDefaults] setObject:_tfAccount.text forKey:key_login];
-                        [[NSUserDefaults standardUserDefaults] setObject:_tfPassword.text forKey:key_password];
-                        [[NSUserDefaults standardUserDefaults] synchronize];
-                        
-                        if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
-                            [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
-                        }else{
-                            [self whenRegisterPBXSuccessfully];
-                        }
-                    }
-                }else if (typeRegister == qrCodeLogin){
-                    if (![accountPBX isEqualToString:@""] && ![passwordPBX isEqualToString:@""]) {
-                        [[NSUserDefaults standardUserDefaults] setObject:accountPBX forKey:key_login];
-                        [[NSUserDefaults standardUserDefaults] setObject:passwordPBX forKey:key_password];
-                        [[NSUserDefaults standardUserDefaults] synchronize];
-                        
-                        if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
-                            [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
-                        }else{
-                            [self whenRegisterPBXSuccessfully];
-                        }
-                    }
-                }
-                
-                break;
-            }
+            [WriteLogsUtils writeLogContent:@"----->RECEIVED STATE is LinphoneRegistrationOk" toFilePath:appDelegate.logFilePath];
             
+            [timeoutTimer invalidate];
+            timeoutTimer = nil;
+            
+            if (appDelegate._deviceToken != nil && ![_tfServerID.text isEqualToString:@""] && ![_tfAccount.text isEqualToString:@""]) {
+                [self updateCustomerTokenIOSForPBX: _tfServerID.text andUsername: _tfAccount.text withTokenValue:appDelegate._deviceToken];
+            }else{
+                if (turnOnAcc) {
+                    [self whenTurnOnPBXSuccessfully];
+                }else{
+                    [self whenRegisterPBXSuccessfully];
+                }
+            }
             break;
         }
         case LinphoneRegistrationNone:{
-            if (clearingAccount) {
-                NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
-                NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:key_login];
-                if (![AppUtils isNullOrEmpty: server] && ![AppUtils isNullOrEmpty: username]) {
-                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationNone with clearingAccount = YES, clear token for %@", __FUNCTION__, username] toFilePath:appDelegate.logFilePath];
-                    
-                    [self updateCustomerTokenIOSForPBX:server andUsername:username withTokenValue:@""];
-                }else{
-                    [self whenClearPBXSuccessfully];
-                    
-                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationNone with clearingAccount = YES, call function whenClearPBXSuccessfully", __FUNCTION__] toFilePath:appDelegate.logFilePath];
-                }
-                break;
-            }
-            
-            if (enableProxyConfig != NULL || enableProxyConfig != nil) {
-                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationNone with enableProxyConfig != NULL. So, register with enableProxyConfig", __FUNCTION__] toFilePath:appDelegate.logFilePath];
-                
-                [self performSelector:@selector(addRegisteredProxyConfig)
-                           withObject:nil afterDelay:2.0];
-            }
-            
+            [WriteLogsUtils writeLogContent:@"----->RECEIVED STATE is LinphoneRegistrationNone" toFilePath:appDelegate.logFilePath];
             break;
         }
         case LinphoneRegistrationCleared: {
             if (turnOffAcc) {
-                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state LinphoneRegistrationCleared, with turnOffAcc = YES, clear token pbx for account", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+                [WriteLogsUtils writeLogContent:@"----->RECEIVED STATE is LinphoneRegistrationCleared for turn off account" toFilePath:appDelegate.logFilePath];
                 
                 NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
                 [self updateCustomerTokenIOSForPBX:server andUsername: USERNAME withTokenValue:@""];
-                return;
             }
-            
-            if (enableProxyConfig != NULL || enableProxyConfig != nil) {
-                [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationCleared with enableProxyConfig != NULL. So, register with enableProxyConfig", __FUNCTION__] toFilePath:appDelegate.logFilePath];
-                
-                [self performSelector:@selector(addRegisteredProxyConfig)
-                           withObject:nil afterDelay:2.0];
-            }else{
-                //  Check if clear pbx successfully, update token for user
-                if (clearingAccount) {
-                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] state is LinphoneRegistrationCleared with clearingAccount = YES", __FUNCTION__] toFilePath:appDelegate.logFilePath];
-                    
-                    NSString *server = [[NSUserDefaults standardUserDefaults] objectForKey:PBX_SERVER];
-                    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:key_login];
-                    if (![AppUtils isNullOrEmpty: server] && ![AppUtils isNullOrEmpty: username]) {
-                        [self updateCustomerTokenIOSForPBX:server andUsername:username withTokenValue:@""];
-                    }else{
-                        [self whenClearPBXSuccessfully];
-                    }
-                }
-            }
-            // _waitView.hidden = true;
             break;
         }
         case LinphoneRegistrationFailed:
         {
-            if (proxy != NULL) {
-                const char *proxyUsername = linphone_address_get_username(linphone_proxy_config_get_identity_address(proxy));
-                NSString* defaultUsername = [NSString stringWithFormat:@"%s" , proxyUsername];
-                if (defaultUsername != nil)
-                {
-                    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s: state is %@ for proxyUsername %@", __FUNCTION__, @"LinphoneRegistrationFailed", defaultUsername] toFilePath:appDelegate.logFilePath];
-                    
-                    if ([defaultUsername isEqualToString: accountPBX]) {
-                        _icWaiting.hidden = YES;
-                        [_icWaiting stopAnimating];
-                        
-                        linphone_core_remove_proxy_config(LC, proxy);
-                        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your information again!"] duration:2.0 position:CSToastPositionCenter];
-                    }else{
-                        
-                    }
-                }
+            [WriteLogsUtils writeLogContent:@"----->RECEIVED STATE is LinphoneRegistrationFailed for turn off account" toFilePath:appDelegate.logFilePath];
+            
+            if (registerInfo != nil) {
+                registerInfo = nil;
+                
+                //  clear info if register failed
+                _icWaiting.hidden = YES;
+                [_icWaiting stopAnimating];
+                
+                [timeoutTimer invalidate];
+                timeoutTimer = nil;
+                
+                linphone_core_remove_proxy_config(LC, proxy);
+                [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your information again!"] duration:2.0 position:CSToastPositionCenter];
+                
+                [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_SERVER];
+                [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_ID];
+                [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:PBX_PORT];
+                [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:key_login];
+                [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:key_password];
+                [[NSUserDefaults standardUserDefaults] synchronize];
             }
             break;
         }
@@ -796,26 +693,33 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)whenRegisterPBXSuccessfully
 {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
-                         toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:@"----------> REGISTER PBX SUCCESSFULLY <----------" toFilePath:appDelegate.logFilePath];
     
-    [[NSUserDefaults standardUserDefaults] setObject:serverPBX forKey:PBX_SERVER];
-    [[NSUserDefaults standardUserDefaults] setObject:ipPBX forKey:PBX_ID];
-    [[NSUserDefaults standardUserDefaults] setObject:portPBX forKey:PBX_PORT];
-    [[NSUserDefaults standardUserDefaults] setObject:accountPBX forKey:key_login];
-    [[NSUserDefaults standardUserDefaults] setObject:passwordPBX forKey:key_password];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSString *account = @"";
+    NSString *password = @"";
+    NSString *server = @"";
+    
+    if (registerInfo != nil) {
+        account = [registerInfo objectForKey:@"account"];
+        password = [registerInfo objectForKey:@"password"];
+        NSString *domain = [registerInfo objectForKey:@"domain"];
+        NSString *port = [registerInfo objectForKey:@"port"];
+        server = [registerInfo objectForKey:@"server"];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:server forKey:PBX_SERVER];
+        [[NSUserDefaults standardUserDefaults] setObject:domain forKey:PBX_ID];
+        [[NSUserDefaults standardUserDefaults] setObject:port forKey:PBX_PORT];
+        [[NSUserDefaults standardUserDefaults] setObject:account forKey:key_login];
+        [[NSUserDefaults standardUserDefaults] setObject:password forKey:key_password];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
+    
     
     //  Added by Khai Le on 02/10/2018
-    _tfServerID.text = serverPBX;
-    _tfAccount.text = accountPBX;
-    _tfPassword.text = passwordPBX;
-    
-    portPBX = @"";
-    ipPBX = @"";
-    serverPBX = @"";
-    accountPBX = @"";
-    passwordPBX = @"";
+    _tfServerID.text = server;
+    _tfAccount.text = account;
+    _tfPassword.text = password;
     
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
@@ -823,9 +727,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     _btnSave.enabled = NO;
     
     [swAccount setUIForEnableStateWithActionTarget: NO];
-    
-    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was registered successful."]
-                duration:2.0 position:CSToastPositionCenter];
+    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was registered successful."] duration:2.0 position:CSToastPositionCenter];
+    [self performSelector:@selector(popCurrentView) withObject:nil afterDelay:2.0];
 }
 
 - (void)whenTurnOnPBXSuccessfully {
@@ -847,55 +750,43 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)whenTurnOffPBXSuccessfully {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
-                         toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:@"-------> YOUR ACCOUNT WAS TURNED OFF" toFilePath:appDelegate.logFilePath];
     
     turnOffAcc = NO;
-    
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
     
-    _btnClear.enabled = YES;
-    _btnSave.enabled = NO;
-    
     [swAccount setUIForDisableStateWithActionTarget: NO];
-    
     [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was disabled successful"]
                 duration:2.0 position:CSToastPositionCenter];
 }
 
 - (void)registerPBXTimeOut {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
-                         toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:@">>>>>>>>>>>>>>> CAN NOT REGISTER SIP ACCOUNT, SHOW ERROR WITH TIMER <<<<<<<<<<<<<<<<<<" toFilePath:appDelegate.logFilePath];
     
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
     
-    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Register PBX failed"]
+    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Register PBX failed. Please check your account!"]
                 duration:2.0 position:CSToastPositionCenter];
-    [timeoutTimer invalidate];
-    timeoutTimer = nil;
+    
+    if (timeoutTimer) {
+        [timeoutTimer invalidate];
+        timeoutTimer = nil;
+    }
+    registerInfo = nil;
 }
 
 - (void)whenClearPBXSuccessfully {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__]
-                         toFilePath:appDelegate.logFilePath];
+    [WriteLogsUtils writeLogContent:@"------> CLEAR PBX SUCCESSFULLY" toFilePath:appDelegate.logFilePath];
     
     [_icWaiting stopAnimating];
     _icWaiting.hidden = YES;
-    
-    serverPBX = @"";
-    accountPBX = @"";
-    passwordPBX = @"";
-    ipPBX = @"";
-    portPBX = @"";
     
     _tfAccount.text = @"";
     _tfPassword.text = @"";
     _tfServerID.text = @"";
     
-    typeRegister = normalLogin;
-    clearingAccount = NO;
     _btnClear.enabled = NO;
     _btnSave.enabled = NO;
     
@@ -908,8 +799,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [swAccount setUIForDisableStateWithActionTarget: NO];
     
-    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was removed"]
-                duration:2.0 position:CSToastPositionCenter];
+    [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was removed"] duration:2.0 position:CSToastPositionCenter];
     [self performSelector:@selector(popCurrentView) withObject:nil afterDelay:2.0];
 }
 
@@ -952,8 +842,11 @@ static UICompositeViewDescription *compositeDescription = nil;
         NSString *result = [data objectForKey:@"result"];
         if (result != nil && [result isEqualToString:@"success"]) {
             NSString *message = [data objectForKey:@"message"];
+            [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"-----> Received data from QRCode: %@", message] toFilePath:appDelegate.logFilePath];
             
             [self loginPBXFromStringHashCodeResult: message];
+        }else{
+            [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Can not find QR Code!"] duration:3.0 position:CSToastPositionCenter];
         }
         return;
     }
@@ -965,43 +858,23 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)loginPBXFromStringHashCodeResult: (NSString *)message {
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] %@", __FUNCTION__, message]
-                         toFilePath:appDelegate.logFilePath];
-    
     NSArray *tmpArr = [message componentsSeparatedByString:@"/"];
     if (tmpArr.count == 3)
     {
-        NSString *pbxDomain = [tmpArr objectAtIndex: 0];
-        NSString *pbxAccount = [tmpArr objectAtIndex: 1];
-        NSString *pbxPassword = [tmpArr objectAtIndex: 2];
+        NSString *server = [tmpArr objectAtIndex: 0];
+        NSString *account = [tmpArr objectAtIndex: 1];
+        NSString *password = [tmpArr objectAtIndex: 2];
         
-        if (![pbxDomain isEqualToString:@""] && ![pbxAccount isEqualToString:@""] && ![pbxPassword isEqualToString:@""])
+        if (![AppUtils isNullOrEmpty: server] && ![AppUtils isNullOrEmpty: account] && ![AppUtils isNullOrEmpty: password])
         {
-            typeRegister = qrCodeLogin;
+            _tfAccount.text = account;
+            _tfServerID.text = server;
+            _tfPassword.text = password;
             
-            serverPBX = pbxDomain;
-            accountPBX = pbxAccount;
-            passwordPBX = pbxPassword;
+            _icWaiting.hidden = NO;
+            [_icWaiting startAnimating];
             
-            _tfAccount.text = accountPBX;
-            _tfServerID.text = serverPBX;
-            _tfPassword.text = passwordPBX;
-            
-            BOOL same = [self checkAccount: _tfAccount.text withServer: _tfServerID.text];
-            if (!same) {
-                typeRegister = normalLogin;
-                
-                _icWaiting.hidden = NO;
-                [_icWaiting startAnimating];
-                
-                [self getInfoForPBXWithServerName: _tfServerID.text];
-                
-            }else{
-                _icWaiting.hidden = YES;
-                [_icWaiting stopAnimating];
-                
-                [self.view makeToast:[appDelegate.localization localizedStringForKey:@"This account is being registered"] duration:2.0 position:CSToastPositionCenter];
-            }
+            [self getInfoForPBXWithServerName: server];
         }
     }else{
         [_icWaiting stopAnimating];
@@ -1188,36 +1061,23 @@ static UICompositeViewDescription *compositeDescription = nil;
             _tfPassword.text = [[NSUserDefaults standardUserDefaults] objectForKey: key_password];
             _tfServerID.text = [[NSUserDefaults standardUserDefaults] objectForKey: PBX_SERVER];
             
-            _btnSave.enabled = NO;
+            _btnSave.enabled = FALSE;
         }
     }else{
-        _btnSave.enabled = NO;
-    }
-}
-
-- (void)addRegisteredProxyConfig {
-    if (enableProxyConfig != NULL && enableProxyConfig != nil) {
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"%s", __FUNCTION__] toFilePath:appDelegate.logFilePath];
-        
-        linphone_core_add_proxy_config(LC, enableProxyConfig);
-        linphone_core_set_default_proxy_config(LC, enableProxyConfig);
-        linphone_proxy_config_enable_register(enableProxyConfig, YES);
-        linphone_proxy_config_register_enabled(enableProxyConfig);
-        linphone_proxy_config_done(enableProxyConfig);
-        
-        linphone_core_refresh_registers(LC);
-    }else{
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] But enableProxyConfig == NULL", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+        _tfServerID.text = _tfAccount.text = _tfPassword.text = @"";
+        _btnSave.enabled = FALSE;
     }
 }
 
 #pragma mark - Switch Custom Delegate
 - (void)switchButtonEnabled
 {
+    [self.view endEditing: TRUE];
+    //  set lại info nếu user change thông tin và bấm turn off account
+    [self showPBXAccountInformation];
+    
+    [WriteLogsUtils writeLogContent:@"USER PRESSED TURN ON SIP ACCOUNT" toFilePath:appDelegate.logFilePath];
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
-    
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] with networkReady = %d", __FUNCTION__, networkReady] toFilePath:appDelegate.logFilePath];
-    
     if (!networkReady) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
@@ -1237,16 +1097,19 @@ static UICompositeViewDescription *compositeDescription = nil;
     }else{
         [swAccount setUIForDisableStateWithActionTarget: NO];
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"You have not signed your account yet"] duration:2.0 position:CSToastPositionCenter];
-        
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Can not enable with defaultConfig = NULL", __FUNCTION__] toFilePath:appDelegate.logFilePath];
     }
 }
 
-- (void)switchButtonDisabled {
+- (void)switchButtonDisabled
+{
+    [self.view endEditing: TRUE];
+    
+    //  set lại info nếu user change thông tin và bấm turn off account
+    [self showPBXAccountInformation];
+    
+    [WriteLogsUtils writeLogContent:@"USER PRESSED TURN OFF SIP ACCOUNT" toFilePath:appDelegate.logFilePath];
+    
     BOOL networkReady = [DeviceUtils checkNetworkAvailable];
-    
-    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] with networkReady = %d", __FUNCTION__, networkReady] toFilePath:appDelegate.logFilePath];
-    
     if (!networkReady) {
         [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Please check your internet connection!"] duration:2.0 position:CSToastPositionCenter];
         return;
@@ -1263,6 +1126,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         [SipUtils enableProxyConfig:defaultConfig withValue:NO withRefresh:YES];
         
         [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s] Disable proxy config with accountId = %@", __FUNCTION__, [SipUtils getAccountIdOfDefaultProxyConfig]] toFilePath:appDelegate.logFilePath];
+    }else{
+        [self.view makeToast:[appDelegate.localization localizedStringForKey:@"You have not signed your account yet"] duration:2.0 position:CSToastPositionCenter];
     }
 }
 
@@ -1276,6 +1141,33 @@ static UICompositeViewDescription *compositeDescription = nil;
         }
     }
     return NO;
+}
+
+- (void)continueAfterClearAllProxyConfig {
+    [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    
+    if (registerInfo != nil) {
+        [WriteLogsUtils writeLogContent:@"-----> registerInfo != NULL, so continue to register SIP ACCOUNT" toFilePath:appDelegate.logFilePath];
+        
+        if (timeoutTimer) {
+            [timeoutTimer invalidate];
+            timeoutTimer = nil;
+        }
+        timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:15.0 target:self selector:@selector(registerPBXTimeOut) userInfo:nil repeats:FALSE];
+        
+        NSString *account = [registerInfo objectForKey:@"account"];
+        NSString *password = [registerInfo objectForKey:@"password"];
+        NSString *domain = [registerInfo objectForKey:@"domain"];
+        NSString *port = [registerInfo objectForKey:@"port"];
+        
+        [self registerPBXAccount:account password:password domain:domain port:port];
+    }
+}
+
+#pragma mark - UITextfield delegate
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self.view endEditing: TRUE];
+    return TRUE;
 }
 
 @end

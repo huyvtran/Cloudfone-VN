@@ -129,7 +129,7 @@
         NSLog(@"%@", NSLocalizedString(@"Invalid route", nil));
     }
     
-    //  BOOL is_default = YES;
+    BOOL is_default = YES;
     int expire = 3600;
     BOOL use_avpf = NO;
     
@@ -137,11 +137,11 @@
     linphone_proxy_config_enable_avpf(proxyCfg, use_avpf);
     linphone_proxy_config_set_expires(proxyCfg, expire);
     //  [Khai le - 31/10/2018]
-//    if (is_default) {
-//        linphone_core_set_default_proxy_config(LC, proxyCfg);
-//    } else if (linphone_core_get_default_proxy_config(LC) == proxyCfg) {
-//        linphone_core_set_default_proxy_config(LC, NULL);
-//    }
+    if (is_default) {
+        linphone_core_set_default_proxy_config(LC, proxyCfg);
+    } else if (linphone_core_get_default_proxy_config(LC) == proxyCfg) {
+        linphone_core_set_default_proxy_config(LC, NULL);
+    }
     
     LinphoneAuthInfo *proxyAi = (LinphoneAuthInfo *)linphone_proxy_config_find_auth_info(proxyCfg);
     char *realm;

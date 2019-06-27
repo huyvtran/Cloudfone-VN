@@ -212,3 +212,5 @@
 "PBX account" = "PBX account"
 "Do you want to call to hotline for assistance?" = "Do you want to call to hotline for assistance?"
 "Hide" = "Hide"
+
+"Register PBX failed. Please check your account!" = "Register PBX failed. Please check your account!";
