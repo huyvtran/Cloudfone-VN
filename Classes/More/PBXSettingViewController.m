@@ -27,6 +27,7 @@
     AccountState accState;
     BOOL turnOffAcc;
     BOOL turnOnAcc;
+    BOOL clearAcc;
     
     NSMutableDictionary *registerInfo;
 }
@@ -75,6 +76,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     [super viewWillAppear: animated];
     
     [WriteLogsUtils writeForGoToScreen: @"PBXSettingViewController"];
+    
+    clearAcc = FALSE;
     
     [self showContentForView];
     [self showPBXAccountInformation];
@@ -427,6 +430,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [_icWaiting startAnimating];
     _icWaiting.hidden = NO;
+    clearAcc = TRUE;
     
     linphone_core_clear_proxy_config(LC);
     
@@ -568,6 +572,8 @@ static UICompositeViewDescription *compositeDescription = nil;
         } else if (turnOffAcc) {
             [self whenTurnOffPBXSuccessfully];
             
+        } else if (clearAcc) {
+            clearAcc = FALSE;
         }else{
             [self whenRegisterPBXSuccessfully];
         }
@@ -714,8 +720,6 @@ static UICompositeViewDescription *compositeDescription = nil;
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
-    
-    
     //  Added by Khai Le on 02/10/2018
     _tfServerID.text = server;
     _tfAccount.text = account;
@@ -729,6 +733,8 @@ static UICompositeViewDescription *compositeDescription = nil;
     [swAccount setUIForEnableStateWithActionTarget: NO];
     [self.view makeToast:[appDelegate.localization localizedStringForKey:@"Your account was registered successful."] duration:2.0 position:CSToastPositionCenter];
     [self performSelector:@selector(popCurrentView) withObject:nil afterDelay:2.0];
+    
+    [[Crashlytics sharedInstance] setUserName: account];
 }
 
 - (void)whenTurnOnPBXSuccessfully {

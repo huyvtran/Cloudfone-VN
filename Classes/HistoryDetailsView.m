@@ -135,8 +135,12 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[ContactDisplay setDisplayNameLabel:_contactLabel forAddress:addr];
 	[_avatarImage setImage:[UIImage imageNamed:@"no_avatar"] bordered:NO withRoundedRadius:YES];
 	char *addrURI = linphone_address_as_string_uri_only(addr);
-	_addressLabel.text = [NSString stringWithUTF8String:addrURI];
-	ms_free(addrURI);
+    if (addrURI != nil && addrURI != NULL) {
+        _addressLabel.text = [NSString stringWithUTF8String:addrURI];
+        ms_free(addrURI);
+    }else{
+        _addressLabel.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+    }
 
 	[_tableView loadDataForAddress:(callLog ? linphone_call_log_get_remote_address(callLog) : NULL)];
 }

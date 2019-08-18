@@ -14,6 +14,7 @@
 
 @interface AppUtils : NSObject
 
++ (void)startAppUtils;
 + (CGSize)getSizeWithText: (NSString *)text withFont: (UIFont *)font;
 + (CGSize)getSizeWithText: (NSString *)text withFont: (UIFont *)font andMaxWidth: (float )maxWidth;
 

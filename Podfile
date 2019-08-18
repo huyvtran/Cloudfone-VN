@@ -22,7 +22,9 @@ target 'linphone' do
   	pod 'Masonry'
   	pod 'Toast'
   	pod 'CocoaLumberjack'
-
+    pod 'Fabric'
+    pod 'Crashlytics'
+    
   target 'linphoneTests' do
     inherit! :search_paths
     # Pods for testing

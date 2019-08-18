@@ -9,6 +9,7 @@
 
 @interface ContactUtils : NSObject
 
++ (void)startContactUtils;
 + (PhoneObject *)getContactPhoneObjectWithNumber: (NSString *)number;
 + (NSString *)getContactNameWithNumber: (NSString *)number;
 + (NSAttributedString *)getSearchValueFromResultForNewSearchMethod: (NSArray *)searchs;

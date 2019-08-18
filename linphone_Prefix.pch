@@ -35,3 +35,6 @@
 #import "SipUtils.h"
 #import "NgnFileUtils.h"
 #import "ContactUtils.h"
+
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>

@@ -42,7 +42,7 @@ HMLocalization *localization;
 + (int)getUnreadMissedCallHisotryWithAccount: (NSString *)account
 {
     __block int result = 0;
-    [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db) {
+    [appDelegate.dbQueue inDatabase:^(FMDatabase *db) {
         NSString *tSQL = [NSString stringWithFormat:@"SELECT COUNT(*) as numMissedCall FROM history WHERE my_sip = '%@' and status = '%@' and unread = %d", account, @"Missed", 1];
         FMResultSet *rs = [db executeQuery: tSQL];
         while ([rs next]) {
@@ -78,7 +78,7 @@ HMLocalization *localization;
     __block NSMutableArray *listDate = [[NSMutableArray alloc] init];
     __block NSMutableArray *result = [[NSMutableArray alloc] init];
     
-    [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db) {
+    [appDelegate.dbQueue inDatabase:^(FMDatabase *db) {
         NSString *tSQL = [NSString stringWithFormat:@"SELECT date FROM history WHERE my_sip = '%@' GROUP BY date ORDER BY time_int DESC", account];
         FMResultSet *rs = [db executeQuery: tSQL];
         while ([rs next]) {
@@ -145,7 +145,7 @@ HMLocalization *localization;
 {
     __block NSMutableArray *result = [[NSMutableArray alloc] init];
     
-    [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db)
+    [appDelegate.dbQueue inDatabase:^(FMDatabase *db)
     {
         NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND call_direction = 'Incomming' AND status = 'Missed' AND date = '%@' GROUP BY phone_number ORDER BY _id DESC", account, dateStr];
         FMResultSet *rs = [db executeQuery: tSQL];
@@ -220,7 +220,7 @@ HMLocalization *localization;
 {
     __block NSMutableArray *result = [[NSMutableArray alloc] init];
     
-    [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db)
+    [appDelegate.dbQueue inDatabase:^(FMDatabase *db)
      {
          NSString *tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip = '%@' AND date = '%@' GROUP BY phone_number ORDER BY time_int DESC", account, dateStr];;
          
@@ -395,7 +395,7 @@ HMLocalization *localization;
 + (NSMutableArray *)getAllCallOfMe: (NSString *)mySip withPhone: (NSString *)phoneNumber onDate: (NSString *)dateStr onlyMissedCall: (BOOL)onlyMissedCall
 {
     __block NSMutableArray *resultArr = [[NSMutableArray alloc] init];
-    [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db) {
+    [appDelegate.dbQueue inDatabase:^(FMDatabase *db) {
         NSString *tSQL = @"";
         if ([phoneNumber isEqualToString: hotline]) {
             tSQL = [NSString stringWithFormat:@"SELECT * FROM history WHERE my_sip='%@' AND phone_number = '%@' AND date='%@' ORDER BY time_int DESC", mySip, phoneNumber, dateStr];
@@ -554,7 +554,7 @@ HMLocalization *localization;
 + (int)getAllMissedCallUnreadofAccount: (NSString *)account
 {
     __block int result = 0;
-    [[LinphoneAppDelegate sharedInstance].dbQueue inDatabase:^(FMDatabase *db) {
+    [appDelegate.dbQueue inDatabase:^(FMDatabase *db) {
         NSString *tSQL = [NSString stringWithFormat:@"SELECT COUNT(*) as numMissedCall FROM history WHERE my_sip = '%@' and status = '%@' and unread = %d", account, @"Missed", 1];
         FMResultSet *rs = [db executeQuery: tSQL];
         while ([rs next]) {

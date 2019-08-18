@@ -59,7 +59,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+        
     [WriteLogsUtils writeForGoToScreen:@"AllCallsViewController"];
     
     [self showContentWithCurrentLanguage];
@@ -67,10 +67,6 @@
     
     _tbListCalls.hidden = YES;
     isDeleted = false;
-    
-    //  Sự kiện click trên icon Edit
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beginEditHistoryView)
-                                                 name:editHistoryCallView object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteHistoryCallsPressed:)
                                                  name:deleteHistoryCallsChoosed object:nil];
@@ -124,12 +120,6 @@
 
 - (void)showContentWithCurrentLanguage {
     _lbNoCalls.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No call in your history"];
-}
-
-//  Click trên button Edit
-- (void)beginEditHistoryView {
-    isDeleted = true;
-    [_tbListCalls reloadData];
 }
 
 //  Get lại danh sách các cuộc gọi sau khi xoá

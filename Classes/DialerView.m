@@ -117,15 +117,6 @@ static UICompositeViewDescription *compositeDescription = nil;
     
     [self setupForWriteLogFileForApp];
     
-    NSString* path = [[NSBundle mainBundle] pathForResource:@"file_encrypt"
-                                                     ofType:@"txt"];
-
-    NSString* content = [NSString stringWithContentsOfFile:path
-                                                  encoding:NSUTF8StringEncoding
-                                                     error:NULL];
-    NSString *decrypt = [AESCrypt decrypt:content password:AES_KEY];
-    NSLog(@"%@", decrypt);
-    
     //  Added by Khai Le on 30/09/2018
     [self checkAccountForApp];
     
@@ -173,7 +164,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 	LinphoneCallState state = (call != NULL) ? linphone_call_get_state(call) : 0;
 	[self callUpdate:call state:state];
 
-    [self enableNAT];
+    [self disableIPV6ForApp];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -221,6 +212,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 	[self.view addGestureRecognizer: tapOnScreen];
 
     _lbStatus.text = @"";
+    
+    [self setUsernameForCrashlytics];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -252,53 +245,6 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[LinphoneManager.instance shouldPresentLinkPopup];
-    
-    //  Check for Crash
-    [self checkCrashHasOccuredBefore];
-}
-
-- (void)checkCrashHasOccuredBefore {
-    NSString *crashFile = [[NSUserDefaults standardUserDefaults] objectForKey:@"crash_file"];
-    if (![AppUtils isNullOrEmpty: crashFile])
-    {
-        if ([MFMailComposeViewController canSendMail]) {
-            BOOL networkReady = [DeviceUtils checkNetworkAvailable];
-            if (!networkReady) {
-                return;
-            }
-            
-            NSString *crashContent = [[NSUserDefaults standardUserDefaults] objectForKey:@"crash_content"];
-            
-            MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
-            
-            NSString *emailTitle =  @"Ứng dụng của bạn đã bị crash trước đây";
-            NSString *messageBody = [NSString stringWithFormat:@"Xin vui lòng gửi thông tin cho chúng tôi để cải thiện sản phầm tốt hơn.\nXin chân thành cảm ơn.\n\n%@", crashContent];
-            NSArray *toRecipents = @[@"lekhai0212@gmail.com"];
-            NSArray *ccRecipents = @[@"cfreport@cloudfone.vn"];
-            
-            //  get content file
-            NSString *path = [NgnFileUtils getPathOfFileWithSubDir:[NSString stringWithFormat:@"%@/%@", logsFolderName, crashFile]];
-            NSString* content = [NSString stringWithContentsOfFile:path
-                                                          encoding:NSUTF8StringEncoding
-                                                             error:NULL];
-            NSString *encryptStr = [AESCrypt encrypt:content password:AES_KEY];
-            NSData *logFileData = [encryptStr dataUsingEncoding:NSUTF8StringEncoding];
-            NSString *nameForSend = [DeviceUtils convertLogFileName: crashFile];
-            [mc addAttachmentData:logFileData mimeType:@"text/plain" fileName:nameForSend];
-            
-            mc.mailComposeDelegate = self;
-            [mc setSubject:emailTitle];
-            [mc setMessageBody:messageBody isHTML:NO];
-            [mc setToRecipients:toRecipents];
-            [mc setCcRecipients: ccRecipents];
-            
-            [self presentViewController:mc animated:YES completion:NULL];
-            
-            [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"crash_file"];
-            [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"crash_content"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-    }
 }
 
 #pragma mark - Event Functions
@@ -625,10 +571,12 @@ static UICompositeViewDescription *compositeDescription = nil;
     }
 }
 
-- (void)enableNAT
+- (void)disableIPV6ForApp
 {
     [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"[%s]", __FUNCTION__] toFilePath:appDelegate.logFilePath];
+    linphone_core_enable_ipv6(LC, NO);
     
+    return;
     LinphoneNatPolicy *LNP = linphone_core_get_nat_policy(LC);
     linphone_nat_policy_enable_ice(LNP, FALSE);
 }
@@ -995,6 +943,16 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 //  Added by Khai Le on 30/09/2018
+- (void)setUsernameForCrashlytics
+{
+    AccountState curState = [SipUtils getStateOfDefaultProxyConfig];
+    NSString *accountID = @"Unknown";
+    if (curState != eAccountNone) {
+        accountID = [SipUtils getAccountIdOfDefaultProxyConfig];
+    }
+    [[Crashlytics sharedInstance] setUserName: accountID];
+}
+
 - (void)checkAccountForApp
 {
     AccountState curState = [SipUtils getStateOfDefaultProxyConfig];

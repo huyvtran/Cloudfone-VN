@@ -261,17 +261,13 @@
         if (addr)
             linphone_address_destroy(addr);
         
-        if (IS_IPHONE || IS_IPOD) {
-            CallView *controller = VIEW(CallView);
-            if (controller != nil) {
-                controller.phoneNumber = phoneNumber;
-            }
-            
-            [[PhoneMainView instance] changeCurrentView:[CallView compositeViewDescription] push:TRUE];
-        }else{
-            [[NSNotificationCenter defaultCenter] postNotificationName:showIpadPopupCall
-                                                                object:phoneNumber];
+        CallView *controller = VIEW(CallView);
+        if (controller != nil) {
+            controller.phoneNumber = phoneNumber;
         }
+        
+        [[PhoneMainView instance] changeCurrentView:[CallView compositeViewDescription] push:TRUE];
+        
         return YES;
     }else{
         NSString *content = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Phone number can not empty!"];
@@ -378,8 +374,10 @@
     if (addr != NULL) {
         linphone_address_clean(addr);
         char *tmp = linphone_address_as_string(addr);
-        normalizedSipAddress = [NSString stringWithUTF8String:tmp];
-        ms_free(tmp);
+        if (tmp) {
+            normalizedSipAddress = [NSString stringWithUTF8String:tmp];
+            ms_free(tmp);
+        }
         linphone_address_destroy(addr);
     }
     return normalizedSipAddress;

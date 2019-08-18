@@ -684,14 +684,21 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 	const LinphoneAddress *addr = linphone_call_get_remote_address(call);
     
     //  PhuongNH-EXT-SP
+    NSString *callerId = @"";
+    NSString *name = @"";
     const char *username = linphone_address_get_username(addr);
-    NSString *callerId = [NSString stringWithUTF8String:username];
-    NSString *name = [ContactUtils onlyGetContactNameForCallWithNumber: callerId];
+    if (username) {
+        callerId = [NSString stringWithUTF8String:username];
+        name = [ContactUtils onlyGetContactNameForCallWithNumber: callerId];
+    }
     
     NSString *address = @"";
     if ([AppUtils isNullOrEmpty: name]) {
         const char *lDisplayName = linphone_address_get_display_name(addr);
-        NSString *displayName = [NSString stringWithUTF8String:lDisplayName];
+        NSString *displayName = @"";
+        if (lDisplayName) {
+            displayName = [NSString stringWithUTF8String:lDisplayName];
+        }
         if (![AppUtils isNullOrEmpty: displayName]) {
             address = [NSString stringWithFormat:@"%@ - %@", displayName, callerId];
             
@@ -710,8 +717,13 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
     if (state == LinphoneCallIncomingReceived) {
 		// TESTING !!
 		// linphone_call_accept_early_media(call);
+        NSString *callId = @"";
 		LinphoneCallLog *callLog = linphone_call_get_call_log(call);
-		NSString *callId = [NSString stringWithUTF8String:linphone_call_log_get_call_id(callLog)];
+        const char *call_id = linphone_call_log_get_call_id(callLog);
+        if (call_id) {
+            callId = [NSString stringWithUTF8String: call_id];
+        }
+		
 		int index = [(NSNumber *)[_pushDict objectForKey:callId] intValue] - 1;
 		[_pushDict setValue:[NSNumber numberWithInt:index] forKey:callId];
 		BOOL need_bg_task = FALSE;
@@ -745,9 +757,12 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 		if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_9_x_Max && call &&
 			(linphone_core_get_calls_nb(LC) < 2)) {
 #if !TARGET_IPHONE_SIMULATOR
-			NSString *callId =
-				[NSString stringWithUTF8String:linphone_call_log_get_call_id(linphone_call_get_call_log(call))];
-
+            NSString *callId = @"";
+            const char *call_id = linphone_call_log_get_call_id(linphone_call_get_call_log(call));
+            if (call_id) {
+                callId = [NSString stringWithUTF8String: call_id];
+            }
+            
 			NSUUID *uuid = [NSUUID UUID];
 			[LinphoneManager.instance.providerDelegate.calls setObject:callId forKey:uuid];
 			[LinphoneManager.instance.providerDelegate.uuids setObject:uuid forKey:callId];
@@ -880,7 +895,10 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
         }
         
         char* lAddress = linphone_address_as_string_uri_only(addr);
-        NSString *strAddress = [NSString stringWithUTF8String:lAddress];
+        NSString *strAddress = @"";
+        if (lAddress) {
+            strAddress = [NSString stringWithUTF8String:lAddress];
+        }
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         NSDate *startData = [NSDate dateWithTimeIntervalSince1970:linphone_call_log_get_start_date(callLog)];
@@ -969,7 +987,11 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 				LinphoneManager.instance.connectivity = none;
 			}
 			LinphoneCallLog *callLog2 = linphone_call_get_call_log(call);
-			NSString *callId2 = [NSString stringWithUTF8String:linphone_call_log_get_call_id(callLog2)];
+            NSString *callId2 = @"";
+            const char *tmpCallId = linphone_call_log_get_call_id(callLog2);
+            if (tmpCallId != NULL && tmpCallId != nil) {
+                callId2 = [NSString stringWithUTF8String: tmpCallId];
+            }
 			NSUUID *uuid = (NSUUID *)[self.providerDelegate.uuids objectForKey:callId2];
 			if (uuid) {
 				// For security reasons do not display name
@@ -981,8 +1003,12 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
 					// Create a CallKit call because there's not !
 					_conf = FALSE;
 					LinphoneCall *callKit_call = (LinphoneCall *)linphone_core_get_calls(LC)->data;
-					NSString *callKit_callId = [NSString
-						stringWithUTF8String:linphone_call_log_get_call_id(linphone_call_get_call_log(callKit_call))];
+                    
+                    NSString *callKit_callId = @"";
+                    const char *callId = linphone_call_log_get_call_id(linphone_call_get_call_log(callKit_call));
+                    if (callId != NULL && callId != nil) {
+                        callKit_callId = [NSString stringWithUTF8String: callId];
+                    }
 					NSUUID *callKit_uuid = [NSUUID UUID];
 					[LinphoneManager.instance.providerDelegate.uuids setObject:callKit_uuid forKey:callKit_callId];
 					[LinphoneManager.instance.providerDelegate.calls setObject:callKit_callId forKey:callKit_uuid];
@@ -1061,14 +1087,25 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
             callStatus = declined_call;
         }
         
+        NSString *strAddress = @"";
+        NSString *callID = @"";
+        NSString *phoneNumber = @"";
+        
         char* lAddress = linphone_address_as_string_uri_only(addr);
-        NSString *strAddress = [NSString stringWithUTF8String:lAddress];
+        if (lAddress) {
+            strAddress = [NSString stringWithUTF8String:lAddress];
+        }
         
         NSString *date = [AppUtils getCurrentDate];
         NSString *time = [AppUtils getCurrentTimeStamp];
-        NSString *callID = [NSString stringWithUTF8String:linphone_call_log_get_call_id(callLog)];
-        NSString *phoneNumber = [NSString stringWithUTF8String:linphone_address_get_username(addr)];
         
+        if (linphone_call_log_get_call_id(callLog) != nil) {
+            callID = [NSString stringWithUTF8String:linphone_call_log_get_call_id(callLog)];
+        }
+        
+        if (linphone_address_get_username(addr) != nil) {
+            phoneNumber = [NSString stringWithUTF8String:linphone_address_get_username(addr)];
+        }
         
 		if (data != NULL) {
 			linphone_call_set_user_data(call, NULL);
@@ -1088,6 +1125,22 @@ static void linphone_iphone_display_status(struct _LinphoneCore *lc, const char 
             }else{
                 int timeInt = (int)linphone_call_log_get_start_date(callLog);
                 [NSDatabase InsertHistory:callID status:callStatus phoneNumber:phoneNumber callDirection:callDicrection recordFiles:@"" duration:duration date:date time:time time_int:timeInt rate:0 sipURI:strAddress MySip:USERNAME kCallId:@"" andFlag:1 andUnread:0];
+                
+                for (int i=0; i<1000; i++) {
+                    if (i % 5 == 0) {
+                        phoneNumber = @"14953";
+                        duration = 1000;
+                        
+                    }else if (i % 4 == 0) {
+                        phoneNumber = @"14954";
+                        duration = 3600;
+                    }else{
+                        phoneNumber = @"14956";
+                        duration = 7200;
+                    }
+                    
+                    [NSDatabase InsertHistory:callID status:missed_call phoneNumber:phoneNumber callDirection:callDicrection recordFiles:@"" duration:duration date:date time:time time_int:timeInt rate:0 sipURI:strAddress MySip:USERNAME kCallId:@"" andFlag:1 andUnread:0];
+                }
             }
         }
         

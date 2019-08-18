@@ -70,10 +70,6 @@
     
     [self getMissedHistoryCallForUser];
     
-    //  Sự kiện click trên icon Edit
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beginEditHistoryView)
-                                                 name:editHistoryCallView object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteHistoryCallsPressed:)
                                                  name:deleteHistoryCallsChoosed object:nil];
     
@@ -121,12 +117,6 @@
 
 - (void)showContentWithCurrentMessage {
     _lbNoCalls.text = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"No missed call in your history"];
-}
-
-//  Click trên button Edit
-- (void)beginEditHistoryView {
-    isDeleted = true;
-    [_tbListCalls reloadData];
 }
 
 //  Click trên button xoá

@@ -8,11 +8,17 @@
 #import "ContactUtils.h"
 #import "ContactDetailObj.h"
 
+LinphoneAppDelegate *aDelegate;
+
 @implementation ContactUtils
+
++ (void)startContactUtils {
+    aDelegate = (LinphoneAppDelegate *)[[UIApplication sharedApplication] delegate];
+}
 
 + (PhoneObject *)getContactPhoneObjectWithNumber: (NSString *)number {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"number = %@", number];
-    NSMutableArray *list = [LinphoneAppDelegate sharedInstance].listInfoPhoneNumber;
+    NSMutableArray *list = aDelegate.listInfoPhoneNumber;
     NSArray *filter = [list filteredArrayUsingPredicate: predicate];
     if (filter.count > 0) {
         for (int i=0; i<filter.count; i++) {
@@ -65,7 +71,7 @@
         
         phone = [searchs lastObject];
         
-        NSString *strOR = [NSString stringWithFormat:@" %@ ", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"or"]];
+        NSString *strOR = [NSString stringWithFormat:@" %@ ", [aDelegate.localization localizedStringForKey:@"or"]];
         [attrResult appendAttributedString:[[NSAttributedString alloc] initWithString: strOR]];
         
         NSMutableAttributedString *secondAttr = [[NSMutableAttributedString alloc] initWithString: phone.name];
@@ -81,13 +87,13 @@
         [str1 addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, phone.name.length)];
         [attrResult appendAttributedString:str1];
         
-        NSString *strAND = [NSString stringWithFormat:@" %@ ", [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"and"]];
+        NSString *strAND = [NSString stringWithFormat:@" %@ ", [aDelegate.localization localizedStringForKey:@"and"]];
         NSMutableAttributedString * attrAnd = [[NSMutableAttributedString alloc] initWithString:strAND];
         [attrAnd addAttribute: NSFontAttributeName value: [UIFont fontWithName:MYRIADPRO_REGULAR size:16.0]
                         range: NSMakeRange(0, strAND.length)];
         [attrResult appendAttributedString:attrAnd];
         
-        NSString *strOthers = [NSString stringWithFormat:@"%d %@", (int)searchs.count-1, [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"others"]];
+        NSString *strOthers = [NSString stringWithFormat:@"%d %@", (int)searchs.count-1, [aDelegate.localization localizedStringForKey:@"others"]];
         NSMutableAttributedString * str2 = [[NSMutableAttributedString alloc] initWithString:strOthers];
         [str2 addAttribute: NSLinkAttributeName value: @"others" range: NSMakeRange(0, strOthers.length)];
         [str2 addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleNone) range:NSMakeRange(0, strOthers.length)];
@@ -188,43 +194,42 @@
 
 + (ABRecordRef)addNewContacts
 {
-    LinphoneAppDelegate *appDelegate = [LinphoneAppDelegate sharedInstance];
-    NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: appDelegate._newContact._firstName];
+    NSString *convertName = [AppUtils convertUTF8CharacterToCharacter: aDelegate._newContact._firstName];
     NSString *nameForSearch = [AppUtils getNameForSearchOfConvertName:convertName];
-    appDelegate._newContact._nameForSearch = nameForSearch;
+    aDelegate._newContact._nameForSearch = nameForSearch;
     
     
-    if (appDelegate._dataCrop != nil) {
-        if ([appDelegate._dataCrop respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
+    if (aDelegate._dataCrop != nil) {
+        if ([aDelegate._dataCrop respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
             // iOS 7+
-            appDelegate._newContact._avatar = [appDelegate._dataCrop base64EncodedStringWithOptions: 0];
+            aDelegate._newContact._avatar = [aDelegate._dataCrop base64EncodedStringWithOptions: 0];
         } else {
             // pre iOS7
-            appDelegate._newContact._avatar = [appDelegate._dataCrop base64Encoding];
+            aDelegate._newContact._avatar = [aDelegate._dataCrop base64Encoding];
         }
     }else{
-        appDelegate._newContact._avatar = @"";
+        aDelegate._newContact._avatar = @"";
     }
     
     ABRecordRef aRecord = ABPersonCreate();
     CFErrorRef  anError = NULL;
     
     // Lưu thông tin
-    ABRecordSetValue(aRecord, kABPersonFirstNameProperty, (__bridge CFTypeRef)(appDelegate._newContact._firstName), &anError);
-    ABRecordSetValue(aRecord, kABPersonLastNameProperty, (__bridge CFTypeRef)(appDelegate._newContact._lastName), &anError);
-    ABRecordSetValue(aRecord, kABPersonOrganizationProperty, (__bridge CFTypeRef)(appDelegate._newContact._company), &anError);
-    ABRecordSetValue(aRecord, kABPersonFirstNamePhoneticProperty, (__bridge CFTypeRef)(appDelegate._newContact._sipPhone), &anError);
+    ABRecordSetValue(aRecord, kABPersonFirstNameProperty, (__bridge CFTypeRef)(aDelegate._newContact._firstName), &anError);
+    ABRecordSetValue(aRecord, kABPersonLastNameProperty, (__bridge CFTypeRef)(aDelegate._newContact._lastName), &anError);
+    ABRecordSetValue(aRecord, kABPersonOrganizationProperty, (__bridge CFTypeRef)(aDelegate._newContact._company), &anError);
+    ABRecordSetValue(aRecord, kABPersonFirstNamePhoneticProperty, (__bridge CFTypeRef)(aDelegate._newContact._sipPhone), &anError);
     
-    if (appDelegate._newContact._email == nil) {
-        appDelegate._newContact._email = @"";
+    if (aDelegate._newContact._email == nil) {
+        aDelegate._newContact._email = @"";
     }
     
     ABMutableMultiValueRef email = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-    ABMultiValueAddValueAndLabel(email, (__bridge CFTypeRef)(appDelegate._newContact._email), CFSTR("email"), NULL);
+    ABMultiValueAddValueAndLabel(email, (__bridge CFTypeRef)(aDelegate._newContact._email), CFSTR("email"), NULL);
     ABRecordSetValue(aRecord, kABPersonEmailProperty, email, &anError);
     
-    if (appDelegate._dataCrop != nil) {
-        CFDataRef cfdata = CFDataCreate(NULL,[appDelegate._dataCrop bytes], [appDelegate._dataCrop length]);
+    if (aDelegate._dataCrop != nil) {
+        CFDataRef cfdata = CFDataCreate(NULL,[aDelegate._dataCrop bytes], [aDelegate._dataCrop length]);
         ABPersonSetImageData(aRecord, cfdata, &anError);
     }
     
@@ -232,8 +237,8 @@
     NSMutableArray *listPhone = [[NSMutableArray alloc] init];
     ABMutableMultiValueRef multiPhone = ABMultiValueCreateMutable(kABMultiStringPropertyType);
     
-    for (int iCount=0; iCount<appDelegate._newContact._listPhone.count; iCount++) {
-        ContactDetailObj *aPhone = [appDelegate._newContact._listPhone objectAtIndex: iCount];
+    for (int iCount=0; iCount<aDelegate._newContact._listPhone.count; iCount++) {
+        ContactDetailObj *aPhone = [aDelegate._newContact._listPhone objectAtIndex: iCount];
         if ([AppUtils isNullOrEmpty: aPhone._valueStr]) {
             continue;
         }
@@ -308,14 +313,14 @@
 + (NSString *)getFullnameOfContactIfExists {
     NSString *fullname = @"";
     
-    if ([LinphoneAppDelegate sharedInstance]._newContact._firstName != nil && [LinphoneAppDelegate sharedInstance]._newContact._lastName != nil) {
-        fullname = [NSString stringWithFormat:@"%@ %@", [LinphoneAppDelegate sharedInstance]._newContact._lastName, [LinphoneAppDelegate sharedInstance]._newContact._firstName];
+    if (aDelegate._newContact._firstName != nil && aDelegate._newContact._lastName != nil) {
+        fullname = [NSString stringWithFormat:@"%@ %@", aDelegate._newContact._lastName, aDelegate._newContact._firstName];
         
-    }else if ([LinphoneAppDelegate sharedInstance]._newContact._firstName != nil && [LinphoneAppDelegate sharedInstance]._newContact._lastName == nil){
-        fullname = [LinphoneAppDelegate sharedInstance]._newContact._firstName;
+    }else if (aDelegate._newContact._firstName != nil && aDelegate._newContact._lastName == nil){
+        fullname = aDelegate._newContact._firstName;
         
-    }else if ([LinphoneAppDelegate sharedInstance]._newContact._firstName == nil && [LinphoneAppDelegate sharedInstance]._newContact._lastName != nil){
-        fullname = [LinphoneAppDelegate sharedInstance]._newContact._lastName;
+    }else if (aDelegate._newContact._firstName == nil && aDelegate._newContact._lastName != nil){
+        fullname = aDelegate._newContact._lastName;
     }
     return fullname;
 }
@@ -357,11 +362,11 @@
             }
         }
         if ([fullname isEqualToString:@""]) {
-            return [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+            return [aDelegate.localization localizedStringForKey:@"Unknown"];
         }
         return fullname;
     }
-    return [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+    return [aDelegate.localization localizedStringForKey:@"Unknown"];
 }
 
 + (NSString *)getBase64AvatarFromContact: (ABRecordRef)aPerson
@@ -456,7 +461,7 @@
             if (locLabel == nil) {
                 ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                 anItem._iconStr = @"btn_contacts_home.png";
-                anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Home"];
+                anItem._titleStr = [aDelegate.localization localizedStringForKey:@"Home"];
                 anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                 anItem._buttonStr = @"contact_detail_icon_call.png";
                 anItem._typePhone = type_phone_home;
@@ -465,7 +470,7 @@
                 if (CFStringCompare(locLabel, kABHomeLabel, 0) == kCFCompareEqualTo) {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_home.png";
-                    anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Home"];
+                    anItem._titleStr = [aDelegate.localization localizedStringForKey:@"Home"];
                     anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_home;
@@ -474,7 +479,7 @@
                 {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_work.png";
-                    anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Work"];
+                    anItem._titleStr = [aDelegate.localization localizedStringForKey:@"Work"];
                     anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_work;
@@ -483,7 +488,7 @@
                 {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_mobile.png";
-                    anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Mobile"];
+                    anItem._titleStr = [aDelegate.localization localizedStringForKey:@"Mobile"];
                     anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_mobile;
@@ -492,7 +497,7 @@
                 {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_fax.png";
-                    anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Fax"];
+                    anItem._titleStr = [aDelegate.localization localizedStringForKey:@"Fax"];
                     anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_fax;
@@ -501,7 +506,7 @@
                 {
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_fax.png";
-                    anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Other"];
+                    anItem._titleStr = [aDelegate.localization localizedStringForKey:@"Other"];
                     anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_other;
@@ -509,7 +514,7 @@
                 }else{
                     ContactDetailObj *anItem = [[ContactDetailObj alloc] init];
                     anItem._iconStr = @"btn_contacts_mobile.png";
-                    anItem._titleStr = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Mobile"];
+                    anItem._titleStr = [aDelegate.localization localizedStringForKey:@"Mobile"];
                     anItem._valueStr = [AppUtils removeAllSpecialInString: phoneNumber];
                     anItem._buttonStr = @"contact_detail_icon_call.png";
                     anItem._typePhone = type_phone_mobile;

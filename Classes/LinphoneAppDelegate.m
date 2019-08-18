@@ -44,8 +44,6 @@
 #import "NSData+Base64.h"
 #import "PhoneObject.h"
 #import <Intents/Intents.h>
-
-#import "TestViewController.h"
 #import "AESCrypt.h"
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
@@ -85,6 +83,7 @@
 @synthesize contacts, addressListBook, waitingHud;
 
 #pragma mark - Lifecycle Functions
+
 
 - (id)init {
 	self = [super init];
@@ -395,28 +394,6 @@
 }
 #pragma deploymate pop
 
-void onUncaughtException(NSException* exception)
-{
-    NSString *reason = exception.reason;
-    NSString *crashContent = [NSString stringWithFormat:@"%@",[exception callStackSymbols]];
-    NSString *device = [AppUtils getDeviceNameFromModelName:[AppUtils getDeviceModel]];
-    NSString *osVersion = [AppUtils getCurrentOSVersionOfDevice];
-    NSString *appVersion = [AppUtils getCurrentVersionApplicaton];
-    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
-    
-    id info = [exception.userInfo objectForKey:@"NSTargetObjectUserInfoKey"];
-    if (info != nil) {
-        reason = [NSString stringWithFormat:@"%@: %@", NSStringFromClass([info class]), reason];
-    }
-    
-    NSString *messageSend = [NSString stringWithFormat:@"------------------------------\nDevice: %@\nOS Version: %@\nApp version: %@\nApp bundle ID: %@\n------------------------------\nAccount ID: %@\n------------------------------\nReason: %@\n------------------------------\n%@", device, osVersion, appVersion, bundleIdentifier, USERNAME, reason, crashContent];
-    
-    NSString *fileName = [WriteLogsUtils getLogFileNameForCurrentDay];
-    [[NSUserDefaults standardUserDefaults] setObject:fileName forKey:@"crash_file"];
-    [[NSUserDefaults standardUserDefaults] setObject:messageSend forKey:@"crash_content"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -434,8 +411,6 @@ void onUncaughtException(NSException* exception)
     UIApplication *app = [UIApplication sharedApplication];
 	UIApplicationState state = app.applicationState;
     
-    NSSetUncaughtExceptionHandler(&onUncaughtException);
-    
     //  [Khai le - 25/10/2018]: Add write logs for app
     [self setupForWriteLogFileForApp];
     
@@ -449,11 +424,14 @@ void onUncaughtException(NSException* exception)
     // Copy database and connect
     [self copyFileDataToDocument:@"callnex.sqlite"];
     [NSDatabase connectToDatabase];
+    [AppUtils startAppUtils];
+    [ContactUtils startContactUtils];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:k11UpdateBarNotifications object:nil];
     
     //  Ghi âm cuộc gọi
     _isSyncing = false;
-    enableForTest = YES;
+    enableForTest = FALSE;
     supportLoginWithPhoneNumber = NO;
     supportVoice = NO;
     
@@ -562,17 +540,7 @@ void onUncaughtException(NSException* exception)
 	[RootViewManager setupWithPortrait:(PhoneMainView *)self.window.rootViewController];
 	//  [PhoneMainView.instance startUp];
     
-    NSString *crashFile = [[NSUserDefaults standardUserDefaults] objectForKey:@"crash_file"];
-    if (![AppUtils isNullOrEmpty: crashFile])
-    {
-        if ([MFMailComposeViewController canSendMail]) {
-            [[PhoneMainView instance] changeCurrentView:[TestViewController compositeViewDescription]];
-        }else{
-            [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
-        }
-    }else{
-        [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
-    }
+    [[PhoneMainView instance] changeCurrentView:[DialerView compositeViewDescription]];
     [PhoneMainView.instance updateStatusBar:nil];
     
     //  Enable all notification type. VoIP Notifications don't present a UI but we will use this to show local nofications later
@@ -612,10 +580,9 @@ void onUncaughtException(NSException* exception)
                 NSLog(@"User denied access");
             }
         });
-        
-        
     }
     
+    [Fabric with:@[[Crashlytics class]]];
 	return YES;
 }
 

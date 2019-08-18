@@ -88,6 +88,7 @@
         address = [address substringFromIndex:2];
         address = [NSString stringWithFormat:@"0%@", address];
     }
+    
     address = [AppUtils removeAllSpecialInString: address];
     
     BOOL success = [SipUtils makeCallWithPhoneNumber: address];
@@ -97,13 +98,14 @@
     }
     
 	if ([address length] > 0) {
-        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s -> %@ make call to %@", __FUNCTION__, USERNAME, address] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
-        
-		LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:address];
-		[LinphoneManager.instance call:addr];
-		if (addr)
-			linphone_address_destroy(addr);
+//        [WriteLogsUtils writeLogContent:[NSString stringWithFormat:@"\n%s -> %@ make call to %@", __FUNCTION__, USERNAME, address] toFilePath:[LinphoneAppDelegate sharedInstance].logFilePath];
+//
+//        LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:address];
+//        [LinphoneManager.instance call:addr];
+//        if (addr)
+//            linphone_address_destroy(addr);
 	}
+    return;
     
     CallView *controller = VIEW(CallView);
     if (controller != nil) {

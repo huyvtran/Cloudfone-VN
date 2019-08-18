@@ -293,7 +293,7 @@ static UICompositeViewDescription *compositeDescription = nil;
                                       forState:UIControlStateNormal];
         }
         
-        _speakerButton.enabled = NO;
+        //  _speakerButton.enabled = NO;
     }
 }
 
@@ -651,11 +651,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallOutgoingInit:{
-            const LinphoneAddress *addr = linphone_call_get_remote_address(call);
-            const char *lDisplayName = linphone_address_get_display_name(addr);
-            NSString *displayName = [NSString stringWithUTF8String:lDisplayName];
-            NSLog(@"%@", displayName);
-            
             if (self.halo == nil) {
                 [self addAnimationForOutgoingCall];
             }
@@ -674,11 +669,6 @@ static UICompositeViewDescription *compositeDescription = nil;
             break;
         }
         case LinphoneCallConnected:{
-            const LinphoneAddress *addr = linphone_call_get_remote_address(call);
-            const char *lDisplayName = linphone_address_get_display_name(addr);
-            NSString *displayName = [NSString stringWithUTF8String:lDisplayName];
-            NSLog(@"%@", displayName);
-            
             //  Check if in call with hotline
             if (![phoneNumber isEqualToString:hotline]) {
                 icAddCall.enabled = YES;
@@ -1103,9 +1093,11 @@ static UICompositeViewDescription *compositeDescription = nil;
         if (call != nil) {
             const LinphoneAddress *addr = linphone_call_get_remote_address(call);
             const char *lDisplayName = linphone_address_get_display_name(addr);
-            displayName = [NSString stringWithUTF8String:lDisplayName];
-            if ([AppUtils isNullOrEmpty: displayName]) {
-                displayName = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+            if (lDisplayName) {
+                displayName = [NSString stringWithUTF8String:lDisplayName];
+                if ([AppUtils isNullOrEmpty: displayName]) {
+                    displayName = [[LinphoneAppDelegate sharedInstance].localization localizedStringForKey:@"Unknown"];
+                }
             }
         }else{
             displayName = [AppUtils getNameWasStoredFromUserInfo: phoneNumber];
@@ -1209,7 +1201,7 @@ static UICompositeViewDescription *compositeDescription = nil;
     [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_act.png"] forState:UIControlStateSelected];
     [_speakerButton setBackgroundImage:[UIImage imageNamed:@"ic_speaker_dis.png"] forState:UIControlStateDisabled];
     _speakerButton.backgroundColor = UIColor.clearColor;
-    _speakerButton.enabled = NO;
+    //  _speakerButton.enabled = NO;
     
     lbSpeaker.font = lbKeypad.font;
     [lbSpeaker mas_makeConstraints:^(MASConstraintMaker *make) {
